@@ -14,7 +14,7 @@ def construct_blueprint():
     @general.route('/')
     @require_login
     def index():
-        tracks = Track.query.join(User).filter(User.username == session['username']).all()
+        tracks = Track.query.join(User).filter(User.username == session['username']).order_by(Track.startTime.desc()).all()
         return render_template('index.jinja2', tracks=tracks)
 
     return general
