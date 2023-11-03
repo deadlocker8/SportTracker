@@ -37,14 +37,17 @@
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
-                <div class="row py-lg-5">
+                <div class="row">
                     <div class="col-lg-6 col-md-8 mx-auto">
                         <h1 class="text-light">Tracks</h1>
                     </div>
                 </div>
 
-                {% for track in tracks %}
-                    {{ render_track_card(track) }}
+                {% for monthName, tracks in tracksByMonth.items() %}
+                    <h3 class="text-light mt-4">{{ monthName }}</h3>
+                    {% for track in tracks %}
+                        {{ render_track_card(track) }}
+                    {% endfor %}
                 {% endfor %}
             </section>
         </div>
