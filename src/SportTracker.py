@@ -25,8 +25,9 @@ class SportTracker(FlaskBaseApp):
                                                     backupCount=loggingSettings['numberOfBackups'])
 
     def _register_blueprints(self, app):
-        app.register_blueprint(Authentication.construct_blueprint(self._userService))
-        app.register_blueprint(General.construct_blueprint(self._version['name']))
+        versionName = self._version['name']
+        app.register_blueprint(Authentication.construct_blueprint(versionName, self._userService))
+        app.register_blueprint(General.construct_blueprint(versionName))
 
 
 if __name__ == '__main__':

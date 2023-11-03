@@ -4,33 +4,51 @@
         <title>SportTracker - Login</title>
         {% import 'macros.jinja2' as macros %}
         {{ macros.header() }}
+
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/login.css") }}"/>
     </head>
-    <body class="bg-dark">
-        <div class="container vh-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                    <div class="login-form bg-light p-4">
-                        <form action="{{ url_for('authentication.login') }}" method="post" class="row g-3">
-                            <h4>SportTracker</h4>
-                            <div class="col-10">
-                                <input type="password" name="password" class="form-control" placeholder="">
-                            </div>
-
-                            <div class="col-2">
-                                <button type="submit" class="btn btn-dark">Login</button>
-                            </div>
-
-                            {% if message %}
-                                <div class="col-12 text-center text-danger">
-                                    <i class="material-icons align-middle">warning</i>
-                                    <span id="loginMessage" class="align-middle">{{ message }}</span>
-                                </div>
-                            {% endif %}
-                        </form>
-                    </div>
+    <body class="bg-light">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <img alt="SportTracker logo" src="{{ url_for('static', filename="images/SportTracker.png") }}" width="35" height="35" class="d-inline-block align-top">
+                    SportTracker - {{ versionName }}
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    </ul>
                 </div>
             </div>
-        </div>
+        </nav>
+        <main>
+            <div class="form-signin align-middle card">
+                <form role="form" action="{{ url_for('authentication.login') }}" method="post">
+                    <img class="mb-4" src="{{ url_for('static', filename="images/SportTracker.png") }}" alt="" width="80" height="80">
+                    <h1 class="h3 mb-3 fw-normal">SportTracker</h1>
+
+                    <label for="username" class="visually-hidden">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Username"
+                           required="" autofocus="">
+
+                    <label for="password" class="visually-hidden">Password</label>
+                    <input type="password" id="password" name="password" class="form-control mb-4"
+                           placeholder="Password" required="">
+
+                    <button class="w-100 my-3 btn btn-lg btn-primary" type="submit">Login</button>
+
+                    {% if message %}
+                        <div class="col-12 text-center text-danger">
+                            <i class="material-icons align-middle">warning</i>
+                            <span id="loginMessage" class="align-middle">{{ message }}</span>
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
+        </main>
 
         {{ macros.scripts() }}
     </body>
