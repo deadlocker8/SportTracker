@@ -18,7 +18,7 @@
 {%- endmacro %}
 
 
-{% macro navbar(versionName) -%}
+{% macro navbar() -%}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">
@@ -33,6 +33,15 @@
             <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 </ul>
+
+                {% if 'authorized' in session %}
+                    <div class="d-flex align-items-center">
+                        <div class="text-white mx-md-3 my-2 my-md-0">
+                            <a href="" class="link-light text-decoration-none d-flex align-items-center"><span class="material-icons">person</span> {{ session['username']|capitalize }}</a>
+                        </div>
+                        <a href="{{ url_for('authentication.logout') }}" class="btn btn-primary">Logout</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </nav>

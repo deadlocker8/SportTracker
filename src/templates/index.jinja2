@@ -4,11 +4,11 @@
     <head>
         <meta charset="UTF-8">
         <title>SportTracker</title>
-        {% import 'macros.jinja2' as macros %}
+        {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
     <body class="bg-dark">
-        <a href="{{ url_for('authentication.logout') }}" class="btn btn-primary position-fixed">Logout</a>
+        {{ macros.navbar() }}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
