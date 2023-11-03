@@ -6,10 +6,10 @@ import click
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils import FlaskBaseApp
 from flask import Flask
-
 from blueprints import General, Authentication
 from logic import Constants
 from logic.UserService import UserService
+from logic.model.Models import db
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
@@ -31,6 +31,14 @@ class SportTracker(FlaskBaseApp):
     def _create_flask_app(self):
         app = Flask(self._rootDir)
         app.debug = self._isDebug
+
+        currentDirectory = os.path.abspath(os.path.dirname(__file__))
+        app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///' + os.path.join(os.path.dirname(currentDirectory), 'sportTracker.db')
+
+        db.init_app(app)
+
+        with app.app_context():
+            db.create_all()
 
         @app.context_processor
         def inject_version_name() -> dict[str, Any]:

@@ -16,6 +16,7 @@ thecodelabs-flaskutils = {version = "*", source = "TheCodeLabs" }
 flask = "3.0.0"
 gevent = "23.9.1"
 click = "8.1.7"
+Flask-SQLAlchemy = "3.1.1"
 
 [tool.poetry.dev-dependencies]
 
