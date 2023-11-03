@@ -1,0 +1,16 @@
+{
+    "server": {
+        "listen": "0.0.0.0",
+        "port": 10022,
+        "secret": "",
+        "useSSL": false,
+        "keyfile": "",
+        "certfile": ""
+    },
+    "logging": {
+        "enableRotatingLogFile": false,
+        "fileName": "SportTracker.log",
+        "maxBytes": 2097152,
+        "numberOfBackups": 3
+    }
+}

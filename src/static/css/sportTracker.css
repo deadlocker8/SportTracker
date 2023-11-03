@@ -1,0 +1,16 @@
+:root {
+    --color-background: #212121;
+}
+
+body {
+    background-color: var(--color-background);
+    color: white;
+}
+
+.debug {
+    outline: 1px solid red !important;
+}
+
+.hidden {
+    display: none;
+}
