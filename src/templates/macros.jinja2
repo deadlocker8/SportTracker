@@ -39,7 +39,7 @@
                         <div class="text-white mx-md-3 my-2 my-md-0">
                             <a href="" class="link-light text-decoration-none d-flex align-items-center"><span class="material-icons">person</span> {{ session['username']|capitalize }}</a>
                         </div>
-                        <a href="{{ url_for('authentication.logout') }}" class="btn btn-primary">Logout</a>
+                        <a href="{{ url_for('authentication.logout') }}" class="btn btn-danger">Logout</a>
                     </div>
                 {% endif %}
             </div>
