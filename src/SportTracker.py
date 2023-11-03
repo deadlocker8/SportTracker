@@ -9,7 +9,7 @@ from flask import Flask
 from blueprints import General, Authentication
 from logic import Constants
 from logic.UserService import UserService
-from logic.model.Models import db
+from logic.model.Models import db, User
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
@@ -33,18 +33,30 @@ class SportTracker(FlaskBaseApp):
         app.debug = self._isDebug
 
         currentDirectory = os.path.abspath(os.path.dirname(__file__))
-        app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///' + os.path.join(os.path.dirname(currentDirectory), 'sportTracker.db')
+        databasePath = os.path.join(os.path.dirname(currentDirectory), 'sportTracker.db')
+        app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///' + databasePath
 
         db.init_app(app)
 
         with app.app_context():
             db.create_all()
+            self.__create_users(db)
 
         @app.context_processor
         def inject_version_name() -> dict[str, Any]:
             return {'versionName': self._version['name']}
 
         return app
+
+    def __create_users(self, database):
+        for username in self._userService.get_users().keys():
+            existingUser = User.query.filter_by(username=username).first()
+            if existingUser is None:
+                LOGGER.debug(f'Creating missing user "{username}"')
+                user = User()
+                user.username = username
+                database.session.add(user)
+                database.session.commit()
 
     def _register_blueprints(self, app):
         app.register_blueprint(Authentication.construct_blueprint(self._userService))
