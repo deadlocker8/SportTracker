@@ -7,12 +7,12 @@ from logic import Constants
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
 
-def construct_blueprint(versionName: str):
+def construct_blueprint():
     general = Blueprint('general', __name__, static_folder='static')
 
     @general.route('/')
     @require_login
     def index():
-        return render_template('index.jinja2', versionName=versionName)
+        return render_template('index.jinja2')
 
     return general

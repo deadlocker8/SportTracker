@@ -3,12 +3,12 @@ from flask import Blueprint, render_template, redirect, url_for, request, sessio
 from logic.UserService import UserService
 
 
-def construct_blueprint(versionName: str, userService: UserService):
+def construct_blueprint(userService: UserService):
     authentication = Blueprint('authentication', __name__)
 
     @authentication.route('/login')
     def login():
-        return render_template('login.jinja2', versionName=versionName)
+        return render_template('login.jinja2')
 
     @authentication.route('/login', methods=['POST'])
     def login_post():
