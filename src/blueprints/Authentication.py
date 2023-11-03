@@ -30,6 +30,7 @@ def construct_blueprint(userService: UserService):
             return render_template('login.jinja2', message='Falsches Passwort')
 
         session['authorized'] = True
+        session['username'] = username
         return redirect(url_for('general.index'))
 
     @authentication.route('/logout')
