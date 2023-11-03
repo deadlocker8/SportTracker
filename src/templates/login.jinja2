@@ -2,13 +2,13 @@
 <html>
     <head>
         <title>SportTracker - Login</title>
-        {% import 'macros.jinja2' as macros %}
+        {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
 
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/login.css") }}"/>
     </head>
     <body class="bg-light">
-        {{ macros.navbar(versionName) }}
+        {{ macros.navbar() }}
 
         <main>
             <div class="form-signin align-middle card">
