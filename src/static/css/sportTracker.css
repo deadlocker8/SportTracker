@@ -5,6 +5,12 @@
 body {
 }
 
+.track-type {
+    font-size: 3rem;
+    border-radius: 50%;
+    padding: 1.3rem;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

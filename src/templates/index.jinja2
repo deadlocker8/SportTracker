@@ -17,6 +17,31 @@
                         <h1 class="text-light">SportTracker - {{ versionName }}</h1>
                     </div>
                 </div>
+
+                {% for track in tracks %}
+                    <div class="row py-lg-3">
+                        <div class="col-lg-6 col-md-8 mx-auto">
+                            <div class="card mb-3">
+                                <div class="row g-0">
+                                    <div class="col-3 d-flex align-items-center justify-content-center">
+                                        <span class="material-icons track-type {{ track.type.background_color }} text-bright">{{ track.type.icon }}</span>
+                                    </div>
+                                    <div class="col-9">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-truncate text-start">{{ track.name }}</h5>
+
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div class="fs-2 py-2">{{ track.distance / 1000 }} km</div>
+                                                <div class="fs-2 py-2">{{ track.duration | format_duration }} h</div>
+                                                <div class="fs-5 me-2 text-body-secondary">{{ track.startTime.strftime('%d.%m.%y') }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </section>
         </div>
 
