@@ -8,22 +8,8 @@
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/login.css") }}"/>
     </head>
     <body class="bg-light">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">
-                    <img alt="SportTracker logo" src="{{ url_for('static', filename="images/SportTracker.png") }}" width="35" height="35" class="d-inline-block align-top">
-                    SportTracker - {{ versionName }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        {{ macros.navbar(versionName) }}
+
         <main>
             <div class="form-signin align-middle card">
                 <form role="form" action="{{ url_for('authentication.login') }}" method="post">
