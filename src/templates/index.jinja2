@@ -4,13 +4,18 @@
     <head>
         <meta charset="UTF-8">
         <title>SportTracker</title>
-
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sportTracker.css') }}"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% import 'macros.jinja2' as macros %}
+        {{ macros.header() }}
     </head>
-    <body>
-        <h1>SportTracker</h1>
-
-        <script defer src="{{ url_for('static', filename='js/sportTracker.js') }}" type="text/javascript"></script>
+   <body class="bg-dark">
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row py-lg-5">
+                    <div class="col-lg-6 col-md-8 mx-auto">
+                        <h1 class="text-light">SportTracker</h1>
+                    </div>
+                </div>
+            </section>
+        </div>
     </body>
 </html>
