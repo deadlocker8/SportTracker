@@ -12,5 +12,11 @@
         "fileName": "SportTracker.log",
         "maxBytes": 2097152,
         "numberOfBackups": 3
-    }
+    },
+    "users": [
+        {
+            "name": "admin",
+            "password": "123"
+        }
+    ]
 }

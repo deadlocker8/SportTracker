@@ -7,7 +7,9 @@
         {% import 'macros.jinja2' as macros %}
         {{ macros.header() }}
     </head>
-   <body class="bg-dark">
+    <body class="bg-dark">
+        <a href="{{ url_for('authentication.logout') }}" class="btn btn-primary position-fixed">Logout</a>
+
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row py-lg-5">
@@ -17,5 +19,7 @@
                 </div>
             </section>
         </div>
+
+        {{ macros.scripts() }}
     </body>
 </html>

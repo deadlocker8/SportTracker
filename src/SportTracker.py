@@ -4,8 +4,9 @@ import os
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils import FlaskBaseApp
 
-from blueprints import General
+from blueprints import General, Authentication
 from logic import Constants
+from logic.UserService import UserService
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
@@ -13,6 +14,8 @@ LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 class SportTracker(FlaskBaseApp):
     def __init__(self, appName: str, rootDir: str, logger: logging.Logger):
         super().__init__(appName, rootDir, logger, serveFavicon=False)
+
+        self._userService = UserService(self._settings['users'])
 
         loggingSettings = self._settings['logging']
         if loggingSettings['enableRotatingLogFile']:
@@ -22,6 +25,7 @@ class SportTracker(FlaskBaseApp):
                                                     backupCount=loggingSettings['numberOfBackups'])
 
     def _register_blueprints(self, app):
+        app.register_blueprint(Authentication.construct_blueprint(self._userService))
         app.register_blueprint(General.construct_blueprint(self._version['name']))
 
 
