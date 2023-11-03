@@ -8,6 +8,9 @@ def construct_blueprint(userService: UserService):
 
     @authentication.route('/login')
     def login():
+        if 'authorized' in session:
+            return redirect(url_for('general.index'))
+
         return render_template('login.jinja2')
 
     @authentication.route('/login', methods=['POST'])
