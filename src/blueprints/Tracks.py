@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import datetime, date
 
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
@@ -22,6 +23,12 @@ class TrackFormModel(BaseModel):
     durationSeconds: int
 
 
+@dataclass
+class MonthModel:
+    name: str
+    tracks: list[Track]
+
+
 def construct_blueprint():
     tracks = Blueprint('tracks', __name__, static_folder='static', url_prefix='/tracks')
 
@@ -31,20 +38,20 @@ def construct_blueprint():
         tracks = Track.query.join(User).filter(User.username == session['username']).order_by(
             Track.startTime.desc()).all()
 
-        tracksByMonth: dict[str, list[Track]] = {}
+        tracksByMonth: list[MonthModel] = []
         currentMonth = None
         currentTracks = []
         for track in tracks:
             month = date(year=track.startTime.year, month=track.startTime.month, day=1)
             if month != currentMonth:
                 if currentMonth is not None:
-                    tracksByMonth[currentMonth.strftime('%B %Y')] = currentTracks
+                    tracksByMonth.append(MonthModel(currentMonth.strftime('%B %Y'), currentTracks))
                 currentMonth = date(year=track.startTime.year, month=track.startTime.month, day=1)
                 currentTracks = []
 
             currentTracks.append(track)
 
-        tracksByMonth[currentMonth.strftime('%B %Y')] = currentTracks
+        tracksByMonth.append(MonthModel(currentMonth.strftime('%B %Y'), currentTracks))
 
         return render_template('index.jinja2', tracksByMonth=tracksByMonth)
 

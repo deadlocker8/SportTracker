@@ -43,9 +43,9 @@
                     </div>
                 </div>
 
-                {% for monthName, tracks in tracksByMonth.items() %}
-                    <h3 class="mt-4">{{ monthName }}</h3>
-                    {% for track in tracks %}
+                {% for monthModel in tracksByMonth %}
+                    <h3 class="mt-4">{{ monthModel.name }}</h3>
+                    {% for track in monthModel.tracks %}
                         {{ render_track_card(track) }}
                     {% endfor %}
                 {% endfor %}
