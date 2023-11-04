@@ -29,7 +29,7 @@ class TrackFormModel(BaseModel):
 class MonthModel:
     name: str
     tracks: list[Track]
-    goal: MonthGoalSummary
+    goals: list[MonthGoalSummary]
 
 
 def construct_blueprint():
@@ -48,29 +48,31 @@ def construct_blueprint():
             month = date(year=track.startTime.year, month=track.startTime.month, day=1)
             if month != currentMonth:
                 if currentMonth is not None:
-                    tracksByMonth.append(
-                        MonthModel(currentMonth.strftime('%B %Y'), currentTracks, __get_goal_summary(currentMonth)))
+                    tracksByMonth.append(MonthModel(currentMonth.strftime('%B %Y'),
+                                                    currentTracks,
+                                                    __get_goal_summaries(currentMonth)))
                 currentMonth = date(year=track.startTime.year, month=track.startTime.month, day=1)
                 currentTracks = []
 
             currentTracks.append(track)
 
-        tracksByMonth.append(
-            MonthModel(currentMonth.strftime('%B %Y'), currentTracks, __get_goal_summary(currentMonth)))
+        tracksByMonth.append(MonthModel(currentMonth.strftime('%B %Y'),
+                                        currentTracks,
+                                        __get_goal_summaries(currentMonth)))
 
         return render_template('tracks.jinja2', tracksByMonth=tracksByMonth)
 
-    def __get_goal_summary(dateObject: date) -> MonthGoalSummary:
-        goal: MonthGoal = (MonthGoal.query.join(User)
-                           .filter(User.username == session['username'])
-                           .filter(MonthGoal.year == dateObject.year)
-                           .filter(MonthGoal.month == dateObject.month)
-                           .first())
+    def __get_goal_summaries(dateObject: date) -> list[MonthGoalSummary]:
+        goals = (MonthGoal.query.join(User)
+                 .filter(User.username == session['username'])
+                 .filter(MonthGoal.year == dateObject.year)
+                 .filter(MonthGoal.month == dateObject.month)
+                 .all())
 
-        if goal is None:
-            return MonthGoalSummary(-1, '', 0, 0, 0, 0, 'bg-danger')
+        if not goals:
+            return []
 
-        return get_month_goal_summary(goal)
+        return [get_month_goal_summary(goal) for goal in goals]
 
     @tracks.route('/add')
     @require_login
