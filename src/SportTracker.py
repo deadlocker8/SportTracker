@@ -8,10 +8,10 @@ from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils import FlaskBaseApp
 from flask import Flask
 
-from blueprints import General, Authentication, Tracks
+from blueprints import General, Authentication, Tracks, MonthGoals
 from logic import Constants
 from logic.UserService import UserService
-from logic.model.Models import db, User, Track, TrackType
+from logic.model.Models import db, User, Track, TrackType, MonthGoal
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
@@ -90,12 +90,23 @@ class SportTracker(FlaskBaseApp):
                           startTime=datetime(year=2023, month=10, day=28, hour=19, minute=30, second=41),
                           duration=60 * 93, distance=1000 * 42.2, user_id=1)
             database.session.add(track)
+
+            monthGoal = MonthGoal(type=TrackType.BICYCLE, year=2023, month=11, distance_minimum=100 * 1000,
+                                  distance_perfect=200 * 1000, user_id=1)
+            database.session.add(monthGoal)
+            monthGoal = MonthGoal(type=TrackType.BICYCLE, year=2023, month=9, distance_minimum=100 * 1000,
+                                  distance_perfect=200 * 1000, user_id=1)
+            database.session.add(monthGoal)
+            monthGoal = MonthGoal(type=TrackType.BICYCLE, year=2023, month=10, distance_minimum=50 * 1000,
+                                  distance_perfect=100 * 1000, user_id=1)
+            database.session.add(monthGoal)
             database.session.commit()
 
     def _register_blueprints(self, app):
         app.register_blueprint(Authentication.construct_blueprint(self._userService))
         app.register_blueprint(General.construct_blueprint())
         app.register_blueprint(Tracks.construct_blueprint())
+        app.register_blueprint(MonthGoals.construct_blueprint())
 
 
 @click.command()

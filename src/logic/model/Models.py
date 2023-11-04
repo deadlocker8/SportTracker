@@ -32,3 +32,13 @@ class Track(db.Model):
     duration: Mapped[int] = mapped_column(Integer, nullable=False)
     distance: Mapped[int] = mapped_column(Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+
+class MonthGoal(db.Model):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    type = db.Column(db.Enum(TrackType))
+    year: Mapped[int] = mapped_column(Integer, nullable=False)
+    month: Mapped[int] = mapped_column(Integer, nullable=False)
+    distance_minimum: Mapped[int] = mapped_column(Integer, nullable=False)
+    distance_perfect: Mapped[int] = mapped_column(Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
