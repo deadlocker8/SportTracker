@@ -36,6 +36,9 @@
                         <li class="nav-item">
                             <a class="nav-link {% if activeLink == 'tracks' %}active {% endif %}" href="/">Tracks</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if activeLink == 'monthGoals' %}active {% endif %}" href="{{ url_for('monthGoals.listMonthGoals') }}">Goals</a>
+                        </li>
                     {% endif %}
                 </ul>
 

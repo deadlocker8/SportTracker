@@ -10,6 +10,12 @@ body {
     padding: 1.3rem;
 }
 
+.progress {
+  background-color: #AAAAAA;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
 .debug {
     outline: 1px solid red !important;
 }
