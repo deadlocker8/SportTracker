@@ -18,7 +18,7 @@
 {%- endmacro %}
 
 
-{% macro navbar() -%}
+{% macro navbar(activeLink) -%}
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">
@@ -32,12 +32,18 @@
             </button>
             <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {% if 'authorized' in session %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if activeLink == 'tracks' %}active {% endif %}" href="/">Tracks</a>
+                        </li>
+                    {% endif %}
                 </ul>
 
                 {% if 'authorized' in session %}
                     <div class="d-flex align-items-center">
                         <div class="text-white mx-md-3 my-2 my-md-0">
-                            <a href="" class="link-light text-decoration-none d-flex align-items-center"><span class="material-icons">person</span> {{ session['username']|capitalize }}</a>
+                            <a href="" class="link-light text-decoration-none d-flex align-items-center"><span
+                                    class="material-icons">person</span> {{ session['username']|capitalize }}</a>
                         </div>
                         <a href="{{ url_for('authentication.logout') }}" class="btn btn-danger">Logout</a>
                     </div>

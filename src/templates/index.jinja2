@@ -28,17 +28,17 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker</title>
+        <title>SportTracker - Tracks</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
     <body class="bg-dark text-light">
-        {{ macros.navbar() }}
+        {{ macros.navbar('tracks') }}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row">
-                    <div class="col-lg-6 col-md-8 mx-auto">
+                    <div class="col-12 mx-auto">
                         <h1>Tracks <a href="{{ url_for('tracks.add') }}" class="link-light text-decoration-none d-flex-inline align-items-center"><span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span></a></h1>
                     </div>
                 </div>
