@@ -135,6 +135,23 @@ def construct_blueprint():
 
         return redirect(url_for('tracks.listTracks'))
 
+    @tracks.route('/delete/<int:track_id>')
+    @require_login
+    def delete(track_id: int):
+        track = (Track.query.join(User)
+                 .filter(User.username == session['username'])
+                 .filter(Track.id == track_id)
+                 .first())
+
+        if track is None:
+            abort(404)
+
+        LOGGER.debug(f'Deleted track: {track}')
+        db.session.delete(track)
+        db.session.commit()
+
+        return redirect(url_for('tracks.listTracks'))
+
     def __calculate_start_time(form):
         return datetime.strptime(f'{form.date} {form.time}', '%Y-%m-%d %H:%M')
 

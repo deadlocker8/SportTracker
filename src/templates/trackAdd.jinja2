@@ -16,6 +16,7 @@
                     <div class="col-12 mx-auto">
                         {% if track %}
                             <h1>Edit Track</h1>
+                            <a href="{{ url_for('tracks.delete', track_id=track_id) }}" class="btn btn-danger mt-3">Delete</a>
                         {% else %}
                             <h1>New Track</h1>
                         {% endif %}
