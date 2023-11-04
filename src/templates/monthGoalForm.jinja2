@@ -28,6 +28,13 @@
                         <form role="form" action="{% if goal %}{{ url_for('monthGoals.editPost', goal_id=goal_id) }}{% else %}{{ url_for('monthGoals.addPost') }}{% endif %}"
                               method="post">
                             <div class="mb-3">
+                                <label for="month-goal-type" class="form-label">Type</label>
+                                <select class="form-select" id="month-goal-type" name="type" required="required">
+                                    <option value="BICYCLE" {% if goal and goal.type == 'BICYCLE'%}selected{% endif %}>Biking</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
                                 <div class="row">
                                     <div class="col-6">
                                         <label for="month-goal-year" class="form-label">Year</label>

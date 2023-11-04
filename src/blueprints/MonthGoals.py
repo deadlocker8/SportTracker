@@ -15,6 +15,7 @@ LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
 
 class MonthGoalFormModel(BaseModel):
+    type: str
     year: int
     month: int
     distance_minimum: float
@@ -24,6 +25,7 @@ class MonthGoalFormModel(BaseModel):
 @dataclass
 class MonthGoalSummary:
     id: int
+    type: TrackType
     name: str
     goal_distance_minimum: float
     goal_distance_perfect: float
@@ -48,6 +50,7 @@ def get_month_goal_summary(goal) -> MonthGoalSummary:
     name = date(year=goal.year, month=goal.month, day=1).strftime('%B %y')
     percentage = actualDistance / goal.distance_perfect * 100
     return MonthGoalSummary(goal.id,
+                            goal.type,
                             name,
                             goal.distance_minimum / 1000,
                             goal.distance_perfect / 1000,
@@ -89,7 +92,7 @@ def construct_blueprint():
     @require_login
     @validate()
     def addPost(form: MonthGoalFormModel):
-        monthGoal = MonthGoal(type=TrackType.BICYCLE,
+        monthGoal = MonthGoal(type=TrackType(form.type),
                               year=form.year,
                               month=form.month,
                               distance_minimum=form.distance_minimum * 1000,
@@ -112,7 +115,8 @@ def construct_blueprint():
         if monthGoal is None:
             abort(404)
 
-        goalModel = MonthGoalFormModel(year=monthGoal.year,
+        goalModel = MonthGoalFormModel(type=monthGoal.type.name,
+                                       year=monthGoal.year,
                                        month=monthGoal.month,
                                        distance_minimum=monthGoal.distance_minimum / 1000,
                                        distance_perfect=monthGoal.distance_perfect / 1000)
@@ -131,6 +135,7 @@ def construct_blueprint():
         if monthGoal is None:
             abort(404)
 
+        monthGoal.type = TrackType(form.type)
         monthGoal.year = form.year
         monthGoal.month = form.month
         monthGoal.distance_minimum = form.distance_minimum * 1000
