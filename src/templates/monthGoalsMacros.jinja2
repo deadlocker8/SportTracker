@@ -1,29 +1,31 @@
 {% macro render_month_goal_progress_bar(goalSummary) -%}
-        <div class="progress" role="progressbar">
-            <div class="progress-bar {{ goalSummary.color }}" style="width: {{ goalSummary.percentage }}%"></div>
-        </div>
+    <div class="progress" role="progressbar">
+        <div class="progress-bar {{ goalSummary.color }}" style="width: {{ goalSummary.percentage }}%"></div>
+    </div>
 {%- endmacro %}
 
 {% macro render_month_goal_distance(goalSummary) -%}
-      <div class="fs-5">{{ goalSummary.actual_distance }}/{{ goalSummary.goal_distance_perfect }} km</div>
+    <div class="fs-5">{{ goalSummary.actual_distance }}/{{ goalSummary.goal_distance_perfect }} km</div>
 {%- endmacro %}
 
 {% macro render_month_goal_summary_card(goalSummary) -%}
     <div class="row py-lg-3">
         <div class="col-8 mx-auto">
-            <div class="card">
-                <div class="row g-0 d-flex align-items-center p-2">
-                    <div class="col-4 text-start fs-4 ps-3">
-                        {{ goalSummary.name }}
-                    </div>
-                    <div class="col-5">
-                        {{ render_month_goal_progress_bar(goalSummary) }}
-                    </div>
-                    <div class="col-3">
-                        {{ render_month_goal_distance(goalSummary) }}
+            <a href="{{ url_for('monthGoals.edit', goal_id=goalSummary.id) }}" class="text-decoration-none">
+                <div class="card">
+                    <div class="row g-0 d-flex align-items-center p-2">
+                        <div class="col-4 text-start fs-4 ps-3">
+                            {{ goalSummary.name }}
+                        </div>
+                        <div class="col-5">
+                            {{ render_month_goal_progress_bar(goalSummary) }}
+                        </div>
+                        <div class="col-3">
+                            {{ render_month_goal_distance(goalSummary) }}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 {%- endmacro %}

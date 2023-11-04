@@ -65,6 +65,10 @@ def construct_blueprint():
                            .filter(MonthGoal.year == dateObject.year)
                            .filter(MonthGoal.month == dateObject.month)
                            .first())
+
+        if goal is None:
+            return MonthGoalSummary(-1, '', 0, 0, 0, 0, 'bg-danger')
+
         return get_month_goal_summary(goal)
 
     @tracks.route('/add')
@@ -107,7 +111,7 @@ def construct_blueprint():
                                     durationMinutes=track.duration % 3600 // 60,
                                     durationSeconds=track.duration % 3600 % 60)
 
-        return render_template('trackform.jinja2', track=trackModel, track_id=track_id)
+        return render_template('trackForm.jinja2', track=trackModel, track_id=track_id)
 
     @tracks.route('/edit/<int:track_id>', methods=['POST'])
     @require_login

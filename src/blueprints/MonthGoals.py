@@ -3,7 +3,7 @@ from datetime import date
 
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils.auth.SessionLoginWrapper import require_login
-from flask import Blueprint, render_template, session, redirect, url_for
+from flask import Blueprint, render_template, session, redirect, url_for, abort
 from flask_pydantic import validate
 from pydantic import BaseModel
 from sqlalchemy import extract
@@ -23,6 +23,7 @@ class MonthGoalFormModel(BaseModel):
 
 @dataclass
 class MonthGoalSummary:
+    id: int
     name: str
     goal_distance_minimum: float
     goal_distance_perfect: float
@@ -46,7 +47,8 @@ def get_month_goal_summary(goal) -> MonthGoalSummary:
     color = determine_color(actualDistance, goal)
     name = date(year=goal.year, month=goal.month, day=1).strftime('%B %y')
     percentage = actualDistance / goal.distance_perfect * 100
-    return MonthGoalSummary(name,
+    return MonthGoalSummary(goal.id,
+                            name,
                             goal.distance_minimum / 1000,
                             goal.distance_perfect / 1000,
                             actualDistance / 1000,
@@ -95,6 +97,64 @@ def construct_blueprint():
                               user_id=session['userId'])
         LOGGER.debug(f'Saved new month goal: {monthGoal}')
         db.session.add(monthGoal)
+        db.session.commit()
+
+        return redirect(url_for('monthGoals.listMonthGoals'))
+
+    @monthGoals.route('/edit/<int:goal_id>')
+    @require_login
+    def edit(goal_id: int):
+        monthGoal = (MonthGoal.query.join(User)
+                     .filter(User.username == session['username'])
+                     .filter(MonthGoal.id == goal_id)
+                     .first())
+
+        if monthGoal is None:
+            abort(404)
+
+        goalModel = MonthGoalFormModel(year=monthGoal.year,
+                                       month=monthGoal.month,
+                                       distance_minimum=monthGoal.distance_minimum / 1000,
+                                       distance_perfect=monthGoal.distance_perfect / 1000)
+
+        return render_template('monthGoalForm.jinja2', goal=goalModel, goal_id=goal_id)
+
+    @monthGoals.route('/edit/<int:goal_id>', methods=['POST'])
+    @require_login
+    @validate()
+    def editPost(goal_id: int, form: MonthGoalFormModel):
+        monthGoal = (MonthGoal.query.join(User)
+                     .filter(User.username == session['username'])
+                     .filter(MonthGoal.id == goal_id)
+                     .first())
+
+        if monthGoal is None:
+            abort(404)
+
+        monthGoal.year = form.year
+        monthGoal.month = form.month
+        monthGoal.distance_minimum = form.distance_minimum * 1000
+        monthGoal.distance_perfect = form.distance_perfect * 1000
+        monthGoal.user_id = session['userId']
+
+        LOGGER.debug(f'Updated month goal: {monthGoal}')
+        db.session.commit()
+
+        return redirect(url_for('monthGoals.listMonthGoals'))
+
+    @monthGoals.route('/delete/<int:goal_id>')
+    @require_login
+    def delete(goal_id: int):
+        monthGoal = (MonthGoal.query.join(User)
+                     .filter(User.username == session['username'])
+                     .filter(MonthGoal.id == goal_id)
+                     .first())
+
+        if monthGoal is None:
+            abort(404)
+
+        LOGGER.debug(f'Deleted month goal: {monthGoal}')
+        db.session.delete(monthGoal)
         db.session.commit()
 
         return redirect(url_for('monthGoals.listMonthGoals'))
