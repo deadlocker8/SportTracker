@@ -3,7 +3,7 @@ from datetime import datetime, date
 
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils.auth.SessionLoginWrapper import require_login
-from flask import Blueprint, render_template, session, redirect, url_for
+from flask import Blueprint, render_template, session, redirect, url_for, abort
 from flask_pydantic import validate
 from pydantic import BaseModel
 
@@ -37,23 +37,25 @@ def construct_blueprint():
     @tracks.route('/')
     @require_login
     def listTracks():
-        tracks = Track.query.join(User).filter(User.username == session['username']).order_by(
+        trackList = Track.query.join(User).filter(User.username == session['username']).order_by(
             Track.startTime.desc()).all()
 
         tracksByMonth: list[MonthModel] = []
         currentMonth = None
         currentTracks = []
-        for track in tracks:
+        for track in trackList:
             month = date(year=track.startTime.year, month=track.startTime.month, day=1)
             if month != currentMonth:
                 if currentMonth is not None:
-                    tracksByMonth.append(MonthModel(currentMonth.strftime('%B %Y'), currentTracks, __get_goal_summary(currentMonth)))
+                    tracksByMonth.append(
+                        MonthModel(currentMonth.strftime('%B %Y'), currentTracks, __get_goal_summary(currentMonth)))
                 currentMonth = date(year=track.startTime.year, month=track.startTime.month, day=1)
                 currentTracks = []
 
             currentTracks.append(track)
 
-        tracksByMonth.append(MonthModel(currentMonth.strftime('%B %Y'), currentTracks, __get_goal_summary(currentMonth)))
+        tracksByMonth.append(
+            MonthModel(currentMonth.strftime('%B %Y'), currentTracks, __get_goal_summary(currentMonth)))
 
         return render_template('index.jinja2', tracksByMonth=tracksByMonth)
 
@@ -74,16 +76,70 @@ def construct_blueprint():
     @require_login
     @validate()
     def addPost(form: TrackFormModel):
-        duration = 3600 * form.durationHours + 60 * form.durationMinutes + form.durationSeconds
+        duration = __calculate_duration(form)
 
         track = Track(type=TrackType.BICYCLE,
                       name=form.name,
-                      startTime=datetime.strptime(f'{form.date} {form.time}', '%Y-%m-%d %H:%M'),
+                      startTime=__calculate_start_time(form),
                       duration=duration, distance=form.distance * 1000, user_id=session['userId'])
         LOGGER.debug(f'Saved new track: {track}')
         db.session.add(track)
         db.session.commit()
 
         return redirect(url_for('tracks.listTracks'))
+
+    @tracks.route('/edit/<int:track_id>')
+    @require_login
+    def edit(track_id: int):
+        track = (Track.query.join(User)
+                 .filter(User.username == session['username'])
+                 .filter(Track.id == track_id)
+                 .first())
+
+        if track is None:
+            abort(404)
+
+        trackModel = TrackFormModel(name=track.name,
+                                    date=track.startTime.strftime('%Y-%m-%d'),
+                                    time=track.startTime.strftime('%H:%M'),
+                                    distance=track.distance / 1000,
+                                    durationHours=track.duration // 3600,
+                                    durationMinutes=track.duration % 3600 // 60,
+                                    durationSeconds=track.duration % 3600 % 60)
+
+        return render_template('trackAdd.jinja2', track=trackModel, track_id=track_id)
+
+    @tracks.route('/edit/<int:track_id>', methods=['POST'])
+    @require_login
+    @validate()
+    def editPost(track_id: int, form: TrackFormModel):
+        track = (Track.query.join(User)
+                 .filter(User.username == session['username'])
+                 .filter(Track.id == track_id)
+                 .first())
+
+        if track is None:
+            abort(404)
+
+        duration = __calculate_duration(form)
+
+        track.type = TrackType.BICYCLE
+        track.name = form.name
+        track.startTime = __calculate_start_time(form)
+        track.distance = form.distance * 1000
+        track.duration = duration
+        track.user_id = session['userId']
+
+        LOGGER.debug(f'Updated track: {track}')
+        db.session.commit()
+
+        return redirect(url_for('tracks.listTracks'))
+
+    def __calculate_start_time(form):
+        return datetime.strptime(f'{form.date} {form.time}', '%Y-%m-%d %H:%M')
+
+    def __calculate_duration(form):
+        duration = 3600 * form.durationHours + 60 * form.durationMinutes + form.durationSeconds
+        return duration
 
     return tracks

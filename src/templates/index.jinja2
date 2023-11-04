@@ -3,24 +3,26 @@
 {% macro render_track_card(track) -%}
     <div class="row py-2">
         <div class="col-lg-6 col-md-8 mx-auto">
-            <div class="card">
-                <div class="row g-0">
-                    <div class="col-3 d-flex align-items-center justify-content-center">
-                        <span class="material-icons rounded-circle track-type {{ track.type.background_color }}">{{ track.type.icon }}</span>
-                    </div>
-                    <div class="col-9">
-                        <div class="card-body">
-                            <h5 class="card-title text-truncate text-start">{{ track.name }}</h5>
+            <a href="{{ url_for('tracks.edit', track_id=track.id) }}" class="text-decoration-none">
+                <div class="card">
+                    <div class="row g-0">
+                        <div class="col-3 d-flex align-items-center justify-content-center">
+                            <span class="material-icons rounded-circle track-type {{ track.type.background_color }}">{{ track.type.icon }}</span>
+                        </div>
+                        <div class="col-9">
+                            <div class="card-body">
+                                <h5 class="card-title text-truncate text-start">{{ track.name }}</h5>
 
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="fs-3">{{ track.distance / 1000 }} km</div>
-                                <div class="fs-3">{{ track.duration | format_duration }} h</div>
-                                <div class="fs-6 me-2 text-body-secondary">{{ track.startTime.strftime('%d.%m.%y') }}</div>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="fs-3">{{ track.distance / 1000 }} km</div>
+                                    <div class="fs-3">{{ track.duration | format_duration }} h</div>
+                                    <div class="fs-6 me-2 text-body-secondary">{{ track.startTime.strftime('%d.%m.%y') }}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 {%- endmacro %}

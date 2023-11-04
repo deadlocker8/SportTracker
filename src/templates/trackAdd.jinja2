@@ -14,17 +14,23 @@
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col-12 mx-auto">
-                        <h1>New Track</h1>
+                        {% if track %}
+                            <h1>Edit Track</h1>
+                        {% else %}
+                            <h1>New Track</h1>
+                        {% endif %}
                     </div>
                 </div>
 
                 <div class="row mt-5 text-start">
                     <div class="col-9 mx-auto">
-                        <form role="form" action="{{ url_for('tracks.addPost') }}" method="post">
+                        <form role="form" action="
+                                {% if track %}{{ url_for('tracks.editPost', track_id=track_id) }}{% else %}{{ url_for('tracks.addPost') }}{% endif %}"
+                              method="post">
                             <div class="mb-3">
                                 <label for="track-name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="track-name" name="name"
-                                       required="required">
+                                       required="required" {% if track %}value="{{ track.name }}"{% endif %}>
                             </div>
 
                             <div class="mb-3">
@@ -32,12 +38,12 @@
                                     <div class="col-6">
                                         <label for="track-date" class="form-label">Date</label>
                                         <input type="date" class="form-control" id="track-date" name="date"
-                                               required="required">
+                                               required="required" {% if track %}value="{{ track.date }}"{% endif %}>
                                     </div>
                                     <div class="col-6">
                                         <label for="track-time" class="form-label">Start Time</label>
                                         <input type="time" class="form-control" id="track-time" name="time"
-                                               required="required">
+                                               required="required" {% if track %}value="{{ track.time }}"{% endif %}>
                                     </div>
                                 </div>
                             </div>
@@ -45,7 +51,8 @@
                             <div class="mb-3">
                                 <label for="track-distance" class="form-label">Distance (in km)</label>
                                 <input type="number" step="0.01" min="0" class="form-control" id="track-distance"
-                                       name="distance" required="required">
+                                       name="distance" required="required"
+                                       {% if track %}value="{{ track.distance }}"{% endif %}>
                             </div>
 
                             <div class="mb-5">
@@ -54,19 +61,22 @@
                                         <label for="track-duration-hours" class="form-label">Duration</label>
                                         <input type="number" step="1" min="0" class="form-control"
                                                id="track-duration-hours" name="durationHours" placeholder="Hours"
-                                               required="required">
+                                               required="required"
+                                               {% if track %}value="{{ track.durationHours }}"{% endif %}>
                                     </div>
                                     <div class="col-2">
                                         <label for="track-duration-minutes" class="form-label">&nbsp;</label>
                                         <input type="number" step="1" min="0" max="59" class="form-control"
                                                id="track-duration-minutes" name="durationMinutes"
-                                               placeholder="Minutes" required="required">
+                                               placeholder="Minutes" required="required"
+                                               {% if track %}value="{{ track.durationMinutes }}"{% endif %}>
                                     </div>
                                     <div class="col-2">
                                         <label for="track-duration-seconds" class="form-label">&nbsp;</label>
                                         <input type="number" step="1" min="0" max="59" class="form-control"
                                                id="track-duration-seconds" name="durationSeconds"
-                                               placeholder="Seconds" required="required">
+                                               placeholder="Seconds" required="required"
+                                               {% if track %}value="{{ track.durationSeconds }}"{% endif %}>
                                     </div>
                                 </div>
                             </div>
