@@ -10,7 +10,7 @@ def construct_blueprint(userService: UserService):
     @authentication.route('/login')
     def login():
         if 'authorized' in session:
-            return redirect(url_for('general.index'))
+            return redirect(url_for('tracks.listTracks'))
 
         return render_template('login.jinja2')
 
@@ -40,7 +40,7 @@ def construct_blueprint(userService: UserService):
             return render_template('login.jinja2', message='Unbekannter Nutzer')
         session['userId'] = user.id
 
-        return redirect(url_for('general.index'))
+        return redirect(url_for('tracks.listTracks'))
 
     @authentication.route('/logout')
     def logout():
