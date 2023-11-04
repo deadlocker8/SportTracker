@@ -57,7 +57,7 @@ def construct_blueprint():
         tracksByMonth.append(
             MonthModel(currentMonth.strftime('%B %Y'), currentTracks, __get_goal_summary(currentMonth)))
 
-        return render_template('index.jinja2', tracksByMonth=tracksByMonth)
+        return render_template('tracks.jinja2', tracksByMonth=tracksByMonth)
 
     def __get_goal_summary(dateObject: date) -> MonthGoalSummary:
         goal: MonthGoal = (MonthGoal.query.join(User)
@@ -70,7 +70,7 @@ def construct_blueprint():
     @tracks.route('/add')
     @require_login
     def add():
-        return render_template('trackAdd.jinja2')
+        return render_template('trackForm.jinja2')
 
     @tracks.route('/post', methods=['POST'])
     @require_login
@@ -107,7 +107,7 @@ def construct_blueprint():
                                     durationMinutes=track.duration % 3600 // 60,
                                     durationSeconds=track.duration % 3600 % 60)
 
-        return render_template('trackAdd.jinja2', track=trackModel, track_id=track_id)
+        return render_template('trackform.jinja2', track=trackModel, track_id=track_id)
 
     @tracks.route('/edit/<int:track_id>', methods=['POST'])
     @require_login

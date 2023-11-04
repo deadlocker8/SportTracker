@@ -81,7 +81,7 @@ def construct_blueprint():
     @monthGoals.route('/add')
     @require_login
     def add():
-        return render_template('monthGoalAdd.jinja2')
+        return render_template('monthGoalForm.jinja2')
 
     @monthGoals.route('/post', methods=['POST'])
     @require_login
