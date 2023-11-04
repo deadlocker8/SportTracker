@@ -8,7 +8,7 @@ from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils import FlaskBaseApp
 from flask import Flask
 
-from blueprints import General, Authentication
+from blueprints import General, Authentication, Tracks
 from logic import Constants
 from logic.UserService import UserService
 from logic.model.Models import db, User, Track, TrackType
@@ -95,6 +95,7 @@ class SportTracker(FlaskBaseApp):
     def _register_blueprints(self, app):
         app.register_blueprint(Authentication.construct_blueprint(self._userService))
         app.register_blueprint(General.construct_blueprint())
+        app.register_blueprint(Tracks.construct_blueprint())
 
 
 @click.command()

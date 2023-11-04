@@ -6,7 +6,7 @@
             <div class="card mb-3">
                 <div class="row g-0">
                     <div class="col-3 d-flex align-items-center justify-content-center">
-                        <span class="material-icons track-type {{ track.type.background_color }} text-bright">{{ track.type.icon }}</span>
+                        <span class="material-icons rounded-circle track-type {{ track.type.background_color }}">{{ track.type.icon }}</span>
                     </div>
                     <div class="col-9">
                         <div class="card-body">
@@ -32,19 +32,19 @@
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
-    <body class="bg-dark">
+    <body class="bg-dark text-light">
         {{ macros.navbar() }}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col-lg-6 col-md-8 mx-auto">
-                        <h1 class="text-light">Tracks</h1>
+                        <h1>Tracks <a href="{{ url_for('tracks.add') }}" class="link-light text-decoration-none d-flex-inline align-items-center"><span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span></a></h1>
                     </div>
                 </div>
 
                 {% for monthName, tracks in tracksByMonth.items() %}
-                    <h3 class="text-light mt-4">{{ monthName }}</h3>
+                    <h3 class="mt-4">{{ monthName }}</h3>
                     {% for track in tracks %}
                         {{ render_track_card(track) }}
                     {% endfor %}
