@@ -14,11 +14,11 @@
             <a href="{{ url_for('monthGoals.edit', goal_id=goalSummary.id) }}" class="text-decoration-none">
                 <div class="card">
                     <div class="row g-0 d-flex align-items-center p-2">
-                        <div class="col-3 text-start fs-4 ps-3">
-                            {{ goalSummary.name }}
-                        </div>
-                        <div class="col-2 text-start fs-4 ps-3">
+                        <div class="col-2">
                              <span class="material-icons rounded-circle fs-3 p-2 {{ goalSummary.type.background_color }}">{{ goalSummary.type.icon }}</span>
+                        </div>
+                        <div class="col-3 text-start fs-4">
+                            {{ goalSummary.name }}
                         </div>
                         <div class="col-4">
                             {{ render_month_goal_progress_bar(goalSummary) }}
