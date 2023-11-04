@@ -15,6 +15,7 @@ LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
 
 class TrackFormModel(BaseModel):
+    type: str
     name: str
     date: str
     time: str
@@ -82,7 +83,7 @@ def construct_blueprint():
     def addPost(form: TrackFormModel):
         duration = __calculate_duration(form)
 
-        track = Track(type=TrackType.BICYCLE,
+        track = Track(type=TrackType(form.type),
                       name=form.name,
                       startTime=__calculate_start_time(form),
                       duration=duration, distance=form.distance * 1000, user_id=session['userId'])
@@ -103,7 +104,8 @@ def construct_blueprint():
         if track is None:
             abort(404)
 
-        trackModel = TrackFormModel(name=track.name,
+        trackModel = TrackFormModel(type=track.type.name,
+                                    name=track.name,
                                     date=track.startTime.strftime('%Y-%m-%d'),
                                     time=track.startTime.strftime('%H:%M'),
                                     distance=track.distance / 1000,
@@ -127,7 +129,7 @@ def construct_blueprint():
 
         duration = __calculate_duration(form)
 
-        track.type = TrackType.BICYCLE
+        track.type = TrackType(form.type)
         track.name = form.name
         track.startTime = __calculate_start_time(form)
         track.distance = form.distance * 1000

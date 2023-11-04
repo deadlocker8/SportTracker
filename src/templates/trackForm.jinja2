@@ -25,8 +25,14 @@
 
                 <div class="row mt-5 text-start">
                     <div class="col-9 mx-auto">
-                        <form role="form" action="{% if track %}{{ url_for('tracks.editPost', track_id=track_id) }}{% else %}{{ url_for('tracks.addPost') }}{% endif %}"
-                              method="post">
+                        <form role="form" action="{% if track %}{{ url_for('tracks.editPost', track_id=track_id) }}{% else %}{{ url_for('tracks.addPost') }}{% endif %}" method="post">
+                            <div class="mb-3">
+                                <label for="track-type" class="form-label">Type</label>
+                                <select class="form-select" id="track-type" name="type" required="required">
+                                    <option value="BICYCLE" {% if track and track.type == 'BICYCLE'%}selected{% endif %}>Biking</option>
+                                </select>
+                            </div>
+
                             <div class="mb-3">
                                 <label for="track-name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="track-name" name="name"
