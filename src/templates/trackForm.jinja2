@@ -30,6 +30,7 @@
                                 <label for="track-type" class="form-label">Type</label>
                                 <select class="form-select" id="track-type" name="type" required="required">
                                     <option value="BICYCLE" {% if track and track.type == 'BICYCLE'%}selected{% endif %}>Biking</option>
+                                    <option value="RUNNING" {% if track and track.type == 'RUNNING'%}selected{% endif %}>Running</option>
                                 </select>
                             </div>
 

@@ -31,6 +31,7 @@
                                 <label for="month-goal-type" class="form-label">Type</label>
                                 <select class="form-select" id="month-goal-type" name="type" required="required">
                                     <option value="BICYCLE" {% if goal and goal.type == 'BICYCLE'%}selected{% endif %}>Biking</option>
+                                    <option value="RUNNING" {% if goal and goal.type == 'RUNNING'%}selected{% endif %}>Running</option>
                                 </select>
                             </div>
 

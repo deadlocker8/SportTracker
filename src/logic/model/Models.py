@@ -15,6 +15,7 @@ class User(db.Model):
 
 class TrackType(enum.Enum):
     BICYCLE = 'BICYCLE', 'directions_bike', 'bg-warning'
+    RUNNING = 'RUNNING', 'directions_run', 'bg-info'
 
     def __new__(cls, name: str, icon: str, background_color: str):
         member = object.__new__(cls)
