@@ -35,16 +35,26 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('tracks') }}
 
+        {% import 'monthGoalsMacros.jinja2' as monthGoalsMacros with context %}
+
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col-12 mx-auto">
-                        <h1>Tracks <a href="{{ url_for('tracks.add') }}" class="link-light text-decoration-none d-flex-inline align-items-center"><span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span></a></h1>
+                        <h1>Tracks <a href="{{ url_for('tracks.add') }}"
+                                      class="link-light text-decoration-none d-flex-inline align-items-center"><span
+                                class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span></a></h1>
                     </div>
                 </div>
 
                 {% for monthModel in tracksByMonth %}
                     <h3 class="mt-4">{{ monthModel.name }}</h3>
+                    <div class="row py-lg-3">
+                        <div class="col-lg-6 col-md-8 mx-auto">
+                            {{ monthGoalsMacros.render_month_goal_progress_bar(monthModel.goal) }}
+                        </div>
+                    </div>
+
                     {% for track in monthModel.tracks %}
                         {{ render_track_card(track) }}
                     {% endfor %}

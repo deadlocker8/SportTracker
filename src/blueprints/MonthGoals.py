@@ -1,4 +1,4 @@
-import dataclasses
+from dataclasses import dataclass
 from datetime import date
 
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
@@ -21,7 +21,7 @@ class MonthGoalFormModel(BaseModel):
     distance_perfect: float
 
 
-@dataclasses.dataclass
+@dataclass
 class MonthGoalSummary:
     name: str
     goal_distance_minimum: float
@@ -29,6 +29,38 @@ class MonthGoalSummary:
     actual_distance: float
     percentage: float
     color: str
+
+
+def get_month_goal_summary(goal) -> MonthGoalSummary:
+    tracks = (Track.query.join(User)
+              .filter(User.username == session['username'])
+              .filter(extract('month', Track.startTime) == goal.month)
+              .filter(extract('year', Track.startTime) == goal.year)
+              .all())
+
+    if tracks:
+        actualDistance = sum([t.distance for t in tracks])
+    else:
+        actualDistance = 0
+
+    color = determine_color(actualDistance, goal)
+    name = date(year=goal.year, month=goal.month, day=1).strftime('%B %y')
+    percentage = actualDistance / goal.distance_perfect * 100
+    return MonthGoalSummary(name,
+                            goal.distance_minimum / 1000,
+                            goal.distance_perfect / 1000,
+                            actualDistance / 1000,
+                            percentage,
+                            color)
+
+
+def determine_color(actualDistance: float, goal: MonthGoal) -> str:
+    if actualDistance >= goal.distance_perfect:
+        return 'bg-success'
+    elif actualDistance >= goal.distance_minimum:
+        return 'bg-warning'
+
+    return 'bg-danger'
 
 
 def construct_blueprint():
@@ -42,38 +74,9 @@ def construct_blueprint():
 
         goalSummaries = []
         for goal in goals:
-            tracks = (Track.query.join(User)
-                      .filter(User.username == session['username'])
-                      .filter(extract('month', Track.startTime) == goal.month)
-                      .filter(extract('year', Track.startTime) == goal.year)
-                      .all())
-
-            if tracks:
-                actualDistance = sum([t.distance for t in tracks])
-            else:
-                actualDistance = 0
-
-            color = __determine_color(actualDistance, goal)
-
-            name = date(year=goal.year, month=goal.month, day=1).strftime('%B %y')
-
-            percentage = actualDistance / goal.distance_perfect * 100
-            goalSummaries.append(MonthGoalSummary(name,
-                                                  goal.distance_minimum / 1000,
-                                                  goal.distance_perfect / 1000,
-                                                  actualDistance / 1000,
-                                                  percentage,
-                                                  color))
+            goalSummaries.append(get_month_goal_summary(goal))
 
         return render_template('monthGoals.jinja2', monthGoalSummaries=goalSummaries)
-
-    def __determine_color(actualDistance: float, goal: MonthGoal) -> str:
-        if actualDistance >= goal.distance_perfect:
-            return 'bg-success'
-        elif actualDistance >= goal.distance_minimum:
-            return 'bg-warning'
-
-        return 'bg-danger'
 
     @monthGoals.route('/add')
     @require_login

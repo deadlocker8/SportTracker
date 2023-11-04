@@ -1,27 +1,5 @@
 <!DOCTYPE html>
 
-{% macro render_month_goal_summary_card(goalSummary) -%}
-    <div class="row py-lg-3">
-        <div class="col-8 mx-auto">
-            <div class="card">
-                <div class="row g-0 d-flex align-items-center p-2">
-                    <div class="col-4 text-start fs-4 ps-3">
-                        {{ goalSummary.name }}
-                    </div>
-                    <div class="col-5">
-                        <div class="progress" role="progressbar">
-                            <div class="progress-bar {{ goalSummary.color }}" style="width: {{ goalSummary.percentage }}%"></div>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="fs-5">{{ goalSummary.actual_distance }}/{{ goalSummary.goal_distance_perfect }} km</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-{%- endmacro %}
-
 <html>
     <head>
         <meta charset="UTF-8">
@@ -31,6 +9,8 @@
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('monthGoals') }}
+
+        {% import 'monthGoalsMacros.jinja2' as monthGoalsMacros with context %}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
@@ -45,7 +25,7 @@
                 </div>
 
                 {% for goalSummary in monthGoalSummaries %}
-                    {{ render_month_goal_summary_card(goalSummary) }}
+                    {{ monthGoalsMacros.render_month_goal_summary_card(goalSummary) }}
                 {% endfor %}
             </section>
         </div>
