@@ -39,6 +39,9 @@
                         <li class="nav-item">
                             <a class="nav-link {% if activeLink == 'monthGoals' %}active {% endif %}" href="{{ url_for('monthGoals.listMonthGoals') }}">Goals</a>
                         </li>
+                         <li class="nav-item">
+                            <a class="nav-link {% if activeLink == 'charts' %}active {% endif %}" href="{{ url_for('charts.showCharts') }}">Charts</a>
+                        </li>
                     {% endif %}
                 </ul>
 

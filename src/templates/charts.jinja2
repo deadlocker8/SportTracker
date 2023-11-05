@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - Tracks</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('charts') }}
+
+        {% import 'monthGoalsMacros.jinja2' as monthGoalsMacros with context %}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col-12 mx-auto">
+                        <h1>Charts</h1>
+                    </div>
+                </div>
+
+                <div id="chartDistancePerMonth"></div>
+            </section>
+        </div>
+
+        <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+        {{ macros.scripts() }}
+        <script>
+            // chart: distance per month
+            const data = [
+
+                {% for entry in chartDataDistancePerMonth %}
+                    {
+                        x: {{ entry['monthNames'] }},
+                        y: {{ entry['values'] }},
+                        type: 'bar',
+                        marker: {
+                            color: '{{ entry.type.background_color_hex }}'
+                        },
+                        name: '{{ entry.type.name | capitalize }}'
+                    },
+                {% endfor %}
+            ];
+
+            const plotlyLayout = {
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                title: {
+                    text: 'Distance per Month',
+                    font: {
+                        color: '#FFFFFF'
+                    }
+                },
+                xaxis: {
+                    type: 'category',
+                    color: '#FFFFFF'
+                },
+                yaxis: {
+                    title: 'Distance in km',
+                    rangemode: 'tozero',
+                    tickformat: '.0f',
+                    showline: true,
+                    color: '#FFFFFF'
+                },
+                barmode: 'group',
+                legend: {
+                    font: {
+                        color: '#FFFFFF'
+                    }
+                }
+            }
+
+            const plotlyConfig = {
+                responsive: true,
+                displayModeBar: false
+            };
+
+            Plotly.newPlot('chartDistancePerMonth', data, plotlyLayout, plotlyConfig);
+        </script>
+    </body>
+</html>

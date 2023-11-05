@@ -14,14 +14,15 @@ class User(db.Model):
 
 
 class TrackType(enum.Enum):
-    BICYCLE = 'BICYCLE', 'directions_bike', 'bg-warning'
-    RUNNING = 'RUNNING', 'directions_run', 'bg-info'
+    BICYCLE = 'BICYCLE', 'directions_bike', 'bg-warning', '#FFC107'
+    RUNNING = 'RUNNING', 'directions_run', 'bg-info', '#0DCAF0'
 
-    def __new__(cls, name: str, icon: str, background_color: str):
+    def __new__(cls, name: str, icon: str, background_color: str, background_color_hex: str):
         member = object.__new__(cls)
         member._value_ = name
         member.icon = icon
         member.background_color = background_color
+        member.background_color_hex = background_color_hex
         return member
 
 
