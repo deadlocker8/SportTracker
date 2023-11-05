@@ -2,7 +2,7 @@
 
 {% macro render_track_card(track) -%}
     <div class="row py-2">
-        <div class="col-lg-6 col-md-8 mx-auto">
+        <div class="col-lg-7 col-md-8 mx-auto">
             <a href="{{ url_for('tracks.edit', track_id=track.id) }}" class="text-decoration-none">
                 <div class="card">
                     <div class="row g-0">
@@ -14,8 +14,9 @@
                                 <h5 class="card-title text-truncate text-start">{{ track.name }}</h5>
 
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <div class="fs-3">{{ track.distance / 1000 }} km</div>
-                                    <div class="fs-3">{{ track.duration | format_duration }} h</div>
+                                    <div class="fs-4">{{ track.distance / 1000 }} km</div>
+                                    <div class="fs-4">{{ track.duration | format_duration }} h</div>
+                                    <div class="fs-4">{{ (track.distance / track.duration * 3.6) | round(1)}} km/h</div>
                                     <div class="fs-6 me-2 text-body-secondary">{{ track.startTime.strftime('%d.%m.%y') }}</div>
                                 </div>
                             </div>
@@ -54,7 +55,7 @@
                     <div class="py-2">
                         {% for goal in monthModel.goals %}
                             <div class="row">
-                                <div class="col-lg-6 col-md-8 mx-auto">
+                                <div class="col-lg-7 col-md-8 mx-auto">
                                     <div class="row d-flex align-items-center">
                                         <div class="col-1">
                                             <span class="material-icons fs-5 py-1 text-light">{{ goal.type.icon }}</span>
