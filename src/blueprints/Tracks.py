@@ -56,9 +56,10 @@ def construct_blueprint():
 
             currentTracks.append(track)
 
-        tracksByMonth.append(MonthModel(currentMonth.strftime('%B %Y'),
-                                        currentTracks,
-                                        __get_goal_summaries(currentMonth)))
+        if trackList:
+            tracksByMonth.append(MonthModel(currentMonth.strftime('%B %Y'),
+                                            currentTracks,
+                                            __get_goal_summaries(currentMonth)))
 
         return render_template('tracks.jinja2', tracksByMonth=tracksByMonth)
 
