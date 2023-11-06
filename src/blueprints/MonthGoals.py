@@ -1,7 +1,7 @@
+import logging
 from dataclasses import dataclass
 from datetime import date
 
-from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from flask import Blueprint, render_template, redirect, url_for, abort
 from flask_login import login_required, current_user
 from flask_pydantic import validate
@@ -11,7 +11,7 @@ from sqlalchemy import extract
 from logic import Constants
 from logic.model.Models import Track, TrackType, db, MonthGoal, User
 
-LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
+LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 class MonthGoalFormModel(BaseModel):

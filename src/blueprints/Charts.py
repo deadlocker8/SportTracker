@@ -1,7 +1,6 @@
+import logging
 from typing import Any
 
-from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
-from TheCodeLabs_FlaskUtils.auth.SessionLoginWrapper import require_login
 from flask import Blueprint, render_template
 from flask_login import login_required
 from sqlalchemy import extract, func
@@ -9,7 +8,7 @@ from sqlalchemy import extract, func
 from logic import Constants
 from logic.model.Models import Track, TrackType
 
-LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
+LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 def construct_blueprint():

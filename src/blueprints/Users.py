@@ -1,6 +1,6 @@
+import logging
 from dataclasses import dataclass
 
-from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from flask import Blueprint, render_template, redirect, url_for, abort
 from flask_bcrypt import Bcrypt
 from flask_login import login_required, current_user
@@ -11,7 +11,7 @@ from logic import Constants
 from logic.AdminWrapper import admin_role_required
 from logic.model.Models import db, User
 
-LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
+LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 class NewUserFormModel(BaseModel):
@@ -148,7 +148,8 @@ def construct_blueprint():
             return render_template('profile.jinja2', errorMessage=f'Password must not be empty')
 
         if len(password) < MIN_PASSWORD_LENGTH:
-            return render_template('profile.jinja2', errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
+            return render_template('profile.jinja2',
+                                   errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
 
         user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
 

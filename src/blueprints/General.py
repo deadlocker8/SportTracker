@@ -1,10 +1,11 @@
-from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
+import logging
+
 from flask import Blueprint, redirect, url_for
 from flask_login import login_required, current_user
 
 from logic import Constants
 
-LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
+LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 def construct_blueprint():
