@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for, request, session
+from flask import Blueprint, render_template, redirect, url_for, request
+from flask_bcrypt import Bcrypt
 from flask_login import login_user, logout_user, login_required, current_user
 
 from logic.model.Models import User
@@ -30,7 +31,7 @@ def construct_blueprint():
         if password is None:
             return render_template('login.jinja2', message='Error parameter "password"!')
 
-        if password != user.password:
+        if not Bcrypt().check_password_hash(user.password, password):
             return render_template('login.jinja2', message='Falsches Passwort')
 
         user = User.query.filter_by(username=username).first()

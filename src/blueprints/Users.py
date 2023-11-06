@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from flask import Blueprint, render_template, redirect, url_for, abort
+from flask_bcrypt import Bcrypt
 from flask_login import login_required
 from flask_pydantic import validate
 from pydantic import BaseModel
@@ -67,7 +68,7 @@ def construct_blueprint():
             return render_template('userForm.jinja2',
                                    errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
 
-        user = User(username=form.username, password=form.password, isAdmin=False)
+        user = User(username=username, password=Bcrypt().generate_password_hash(password).decode('utf-8'), isAdmin=False)
         LOGGER.debug(f'Saved new user: {user.username}')
         db.session.add(user)
         db.session.commit()
@@ -111,8 +112,8 @@ def construct_blueprint():
         if len(password) < MIN_PASSWORD_LENGTH:
             return render_template('userForm.jinja2', user=user, user_id=user_id, errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
 
-        user.username = form.username
-        user.password = form.password
+        user.username = username
+        user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
 
         LOGGER.debug(f'Updated user: {user.username}')
         db.session.commit()

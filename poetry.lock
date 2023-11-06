@@ -278,6 +278,21 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "flask-bcrypt"
+version = "1.0.1"
+description = "Brcrypt hashing for Flask."
+optional = false
+python-versions = "*"
+files = [
+    {file = "Flask-Bcrypt-1.0.1.tar.gz", hash = "sha256:f07b66b811417ea64eb188ae6455b0b708a793d966e1a80ceec4a23bc42a4369"},
+    {file = "Flask_Bcrypt-1.0.1-py3-none-any.whl", hash = "sha256:062fd991dc9118d05ac0583675507b9fe4670e44416c97e0e6819d03d01f808a"},
+]
+
+[package.dependencies]
+bcrypt = ">=3.1.1"
+Flask = "*"
+
+[[package]]
 name = "flask-login"
 version = "0.6.3"
 description = "User authentication and session management for Flask."
@@ -1070,4 +1085,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "2da3e983b270814138d285ce010b418bcd99263cbe81bc755ae591e5ef0676a2"
+content-hash = "73023872a65237da3f74f9942424f95935b65f9c90a68a8f6f7d4f60733e6b74"
