@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session
+from flask_login import login_user, logout_user, login_required, current_user
 
 from logic.model.Models import User
 
@@ -8,8 +9,8 @@ def construct_blueprint():
 
     @authentication.route('/login')
     def login():
-        if 'authorized' in session:
-            return redirect(url_for('tracks.listTracks'))
+        if current_user.is_authenticated:
+            return redirect(url_for('general.index'))
 
         return render_template('login.jinja2')
 
@@ -32,22 +33,17 @@ def construct_blueprint():
         if password != user.password:
             return render_template('login.jinja2', message='Falsches Passwort')
 
-        session['authorized'] = True
-        session['username'] = username
         user = User.query.filter_by(username=username).first()
         if user is None:
             return render_template('login.jinja2', message='Unbekannter Nutzer')
-        session['userId'] = user.id
-        session['isAdmin'] = user.username == 'admin'
 
-        return redirect(url_for('tracks.listTracks'))
+        login_user(user, remember=True)
+        return redirect(url_for('general.index'))
 
     @authentication.route('/logout')
+    @login_required
     def logout():
-        del session['authorized']
-        del session['username']
-        del session['userId']
-        del session['isAdmin']
+        logout_user()
 
         return redirect(url_for('authentication.login'))
 

@@ -3,6 +3,7 @@ from typing import Any
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils.auth.SessionLoginWrapper import require_login
 from flask import Blueprint, render_template
+from flask_login import login_required
 from sqlalchemy import extract, func
 
 from logic import Constants
@@ -15,7 +16,7 @@ def construct_blueprint():
     charts = Blueprint('charts', __name__, static_folder='static', url_prefix='/charts')
 
     @charts.route('/')
-    @require_login
+    @login_required
     def showCharts():
         chartDataDistancePerMonth = [__get_distance_per_month_by_type(TrackType.BICYCLE),
                                      __get_distance_per_month_by_type(TrackType.RUNNING)]

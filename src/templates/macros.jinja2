@@ -32,8 +32,8 @@
             </button>
             <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    {% if 'authorized' in session %}
-                        {% if session.get('isAdmin', False) %}
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.isAdmin %}
                             <li class="nav-item">
                                 <a class="nav-link {% if activeLink == 'users' %}active {% endif %}" href="{{ url_for('users.listUsers') }}">Users</a>
                             </li>
@@ -51,11 +51,11 @@
                     {% endif %}
                 </ul>
 
-                {% if 'authorized' in session %}
+                {% if current_user.is_authenticated %}
                     <div class="d-flex align-items-center">
                         <div class="text-white mx-md-3 my-2 my-md-0">
                             <a href="" class="link-light text-decoration-none d-flex align-items-center"><span
-                                    class="material-icons">person</span> {{ session['username']|capitalize }}</a>
+                                    class="material-icons">person</span> {{ current_user.username|capitalize }}</a>
                         </div>
                         <a href="{{ url_for('authentication.logout') }}" class="btn btn-danger">Logout</a>
                     </div>

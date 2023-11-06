@@ -7,6 +7,7 @@ import click
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils import FlaskBaseApp
 from flask import Flask
+from flask_login import LoginManager
 
 from blueprints import General, Authentication, Tracks, MonthGoals, Charts, Users
 from logic import Constants
@@ -58,19 +59,27 @@ class SportTracker(FlaskBaseApp):
 
         app.add_template_filter(format_duration)
 
+        login_manager = LoginManager()
+        login_manager.login_view = 'authentication.login'
+        login_manager.init_app(app)
+
+        @login_manager.user_loader
+        def load_user(user_id):
+            return User.query.get(int(user_id))
+
         return app
 
     def __create_admin_user(self, database):
         if User.query.filter_by(username='admin').first() is None:
             LOGGER.debug(f'Creating admin user')
-            user = User(username='admin', password='admin')
+            user = User(username='admin', password='admin', isAdmin=True)
             database.session.add(user)
 
     def __create_dummy_data(self, database):
         user = User.query.filter_by(username='demo').first()
         if user is None:
             LOGGER.debug(f'Creating demo user')
-            user = User(username='demo', password='demo')
+            user = User(username='demo', password='demo', isAdmin=False)
             database.session.add(user)
 
         if Track.query.count() == 0:

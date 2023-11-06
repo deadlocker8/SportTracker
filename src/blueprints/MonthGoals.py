@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from datetime import date
 
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
-from TheCodeLabs_FlaskUtils.auth.SessionLoginWrapper import require_login
-from flask import Blueprint, render_template, session, redirect, url_for, abort
+from flask import Blueprint, render_template, redirect, url_for, abort
+from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel
 from sqlalchemy import extract
@@ -36,7 +36,7 @@ class MonthGoalSummary:
 
 def get_month_goal_summary(goal) -> MonthGoalSummary:
     tracks = (Track.query.join(User)
-              .filter(User.username == session['username'])
+              .filter(User.username == current_user.username)
               .filter(extract('month', Track.startTime) == goal.month)
               .filter(extract('year', Track.startTime) == goal.year)
               .all())
@@ -72,9 +72,9 @@ def construct_blueprint():
     monthGoals = Blueprint('monthGoals', __name__, static_folder='static', url_prefix='/goals')
 
     @monthGoals.route('/')
-    @require_login
+    @login_required
     def listMonthGoals():
-        goals: list[MonthGoal] = MonthGoal.query.join(User).filter(User.username == session['username']).order_by(
+        goals: list[MonthGoal] = MonthGoal.query.join(User).filter(User.username == current_user.username).order_by(
             MonthGoal.year.desc()).order_by(MonthGoal.month.desc()).all()
 
         goalSummaries = []
@@ -84,12 +84,12 @@ def construct_blueprint():
         return render_template('monthGoals.jinja2', monthGoalSummaries=goalSummaries)
 
     @monthGoals.route('/add')
-    @require_login
+    @login_required
     def add():
         return render_template('monthGoalForm.jinja2')
 
     @monthGoals.route('/post', methods=['POST'])
-    @require_login
+    @login_required
     @validate()
     def addPost(form: MonthGoalFormModel):
         monthGoal = MonthGoal(type=TrackType(form.type),
@@ -97,7 +97,7 @@ def construct_blueprint():
                               month=form.month,
                               distance_minimum=form.distance_minimum * 1000,
                               distance_perfect=form.distance_perfect * 1000,
-                              user_id=session['userId'])
+                              user_id=current_user.id)
         LOGGER.debug(f'Saved new month goal: {monthGoal}')
         db.session.add(monthGoal)
         db.session.commit()
@@ -105,10 +105,10 @@ def construct_blueprint():
         return redirect(url_for('monthGoals.listMonthGoals'))
 
     @monthGoals.route('/edit/<int:goal_id>')
-    @require_login
+    @login_required
     def edit(goal_id: int):
         monthGoal = (MonthGoal.query.join(User)
-                     .filter(User.username == session['username'])
+                     .filter(User.username == current_user.username)
                      .filter(MonthGoal.id == goal_id)
                      .first())
 
@@ -124,11 +124,11 @@ def construct_blueprint():
         return render_template('monthGoalForm.jinja2', goal=goalModel, goal_id=goal_id)
 
     @monthGoals.route('/edit/<int:goal_id>', methods=['POST'])
-    @require_login
+    @login_required
     @validate()
     def editPost(goal_id: int, form: MonthGoalFormModel):
         monthGoal = (MonthGoal.query.join(User)
-                     .filter(User.username == session['username'])
+                     .filter(User.username == current_user.username)
                      .filter(MonthGoal.id == goal_id)
                      .first())
 
@@ -140,7 +140,7 @@ def construct_blueprint():
         monthGoal.month = form.month
         monthGoal.distance_minimum = form.distance_minimum * 1000
         monthGoal.distance_perfect = form.distance_perfect * 1000
-        monthGoal.user_id = session['userId']
+        monthGoal.user_id = current_user.id
 
         LOGGER.debug(f'Updated month goal: {monthGoal}')
         db.session.commit()
@@ -148,10 +148,10 @@ def construct_blueprint():
         return redirect(url_for('monthGoals.listMonthGoals'))
 
     @monthGoals.route('/delete/<int:goal_id>')
-    @require_login
+    @login_required
     def delete(goal_id: int):
         monthGoal = (MonthGoal.query.join(User)
-                     .filter(User.username == session['username'])
+                     .filter(User.username == current_user.username)
                      .filter(MonthGoal.id == goal_id)
                      .first())
 

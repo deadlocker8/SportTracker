@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
-from TheCodeLabs_FlaskUtils.auth.SessionLoginWrapper import require_login
 from flask import Blueprint, render_template, redirect, url_for, abort
+from flask_login import login_required
 from flask_pydantic import validate
 from pydantic import BaseModel
 
 from logic import Constants
+from logic.AdminWrapper import admin_role_required
 from logic.model.Models import db, User
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
@@ -35,19 +36,22 @@ def construct_blueprint():
     users = Blueprint('users', __name__, static_folder='static', url_prefix='/users')
 
     @users.route('/')
-    @require_login
+    @admin_role_required
+    @login_required
     def listUsers():
         allUsers = User.query.order_by(User.username.asc()).all()
 
         return render_template('users.jinja2', users=allUsers)
 
     @users.route('/add')
-    @require_login
+    @admin_role_required
+    @login_required
     def add():
         return render_template('userForm.jinja2')
 
     @users.route('/post', methods=['POST'])
-    @require_login
+    @admin_role_required
+    @login_required
     @validate()
     def addPost(form: NewUserFormModel):
         username = form.username.strip().lower()
@@ -63,7 +67,7 @@ def construct_blueprint():
             return render_template('userForm.jinja2',
                                    errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
 
-        user = User(username=form.username, password=form.password)
+        user = User(username=form.username, password=form.password, isAdmin=False)
         LOGGER.debug(f'Saved new user: {user.username}')
         db.session.add(user)
         db.session.commit()
@@ -71,7 +75,8 @@ def construct_blueprint():
         return redirect(url_for('users.listUsers'))
 
     @users.route('/edit/<int:user_id>')
-    @require_login
+    @admin_role_required
+    @login_required
     def edit(user_id: int):
         user = User.query.filter(User.id == user_id).first()
 
@@ -83,7 +88,8 @@ def construct_blueprint():
         return render_template('userForm.jinja2', user=userModel, user_id=user_id)
 
     @users.route('/edit/<int:user_id>', methods=['POST'])
-    @require_login
+    @admin_role_required
+    @login_required
     @validate()
     def editPost(user_id: int, form: EditUserFormModel):
         user = User.query.filter(User.id == user_id).first()
@@ -114,7 +120,8 @@ def construct_blueprint():
         return redirect(url_for('users.listUsers'))
 
     @users.route('/delete/<int:user_id>')
-    @require_login
+    @admin_role_required
+    @login_required
     def delete(user_id: int):
         user = User.query.filter(User.id == user_id).first()
 
