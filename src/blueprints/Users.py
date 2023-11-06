@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from flask import Blueprint, render_template, redirect, url_for, abort
 from flask_bcrypt import Bcrypt
-from flask_login import login_required
+from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel
 
@@ -22,6 +22,10 @@ class NewUserFormModel(BaseModel):
 class EditUserFormModel(BaseModel):
     old_username: str
     username: str
+    password: str
+
+
+class EditSelfUserFormModel(BaseModel):
     password: str
 
 
@@ -68,7 +72,8 @@ def construct_blueprint():
             return render_template('userForm.jinja2',
                                    errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
 
-        user = User(username=username, password=Bcrypt().generate_password_hash(password).decode('utf-8'), isAdmin=False)
+        user = User(username=username, password=Bcrypt().generate_password_hash(password).decode('utf-8'),
+                    isAdmin=False)
         LOGGER.debug(f'Saved new user: {user.username}')
         db.session.add(user)
         db.session.commit()
@@ -104,13 +109,16 @@ def construct_blueprint():
 
         if username != old_username:
             if __user_already_exists(username):
-                return render_template('userForm.jinja2', user=user, user_id=user_id, errorMessage=f'Username "{form.username}" already exists')
+                return render_template('userForm.jinja2', user=user, user_id=user_id,
+                                       errorMessage=f'Username "{form.username}" already exists')
 
         if not password:
-            return render_template('userForm.jinja2', user=user, user_id=user_id, errorMessage=f'Password must not be empty')
+            return render_template('userForm.jinja2', user=user, user_id=user_id,
+                                   errorMessage=f'Password must not be empty')
 
         if len(password) < MIN_PASSWORD_LENGTH:
-            return render_template('userForm.jinja2', user=user, user_id=user_id, errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
+            return render_template('userForm.jinja2', user=user, user_id=user_id,
+                                   errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
 
         user.username = username
         user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
@@ -119,6 +127,35 @@ def construct_blueprint():
         db.session.commit()
 
         return redirect(url_for('users.listUsers'))
+
+    @users.route('/editSelf')
+    @login_required
+    def editSelf():
+        return render_template('profile.jinja2')
+
+    @users.route('/editSelfPost', methods=['POST'])
+    @login_required
+    @validate()
+    def editSelfPost(form: EditSelfUserFormModel):
+        user = User.query.filter(User.id == current_user.id).first()
+
+        if user is None:
+            abort(404)
+
+        password = form.password.strip()
+
+        if not password:
+            return render_template('profile.jinja2', errorMessage=f'Password must not be empty')
+
+        if len(password) < MIN_PASSWORD_LENGTH:
+            return render_template('profile.jinja2', errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
+
+        user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
+
+        LOGGER.debug(f'Updated own user: {user.username}')
+        db.session.commit()
+
+        return redirect(url_for('users.editSelf'))
 
     @users.route('/delete/<int:user_id>')
     @admin_role_required

@@ -54,7 +54,7 @@
                 {% if current_user.is_authenticated %}
                     <div class="d-flex align-items-center">
                         <div class="text-white mx-md-3 my-2 my-md-0">
-                            <a href="" class="link-light text-decoration-none d-flex align-items-center"><span
+                            <a href="{{ url_for('users.editSelf') }}" class="link-light text-decoration-none d-flex align-items-center"><span
                                     class="material-icons">person</span> {{ current_user.username|capitalize }}</a>
                         </div>
                         <a href="{{ url_for('authentication.logout') }}" class="btn btn-danger">Logout</a>
