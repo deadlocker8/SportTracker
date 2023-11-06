@@ -10,7 +10,8 @@ db = SQLAlchemy()
 class User(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     username: Mapped[str] = mapped_column(String, unique=True, nullable=False)
-    tracks = db.relationship('Track', backref='user', lazy=True)
+    password: Mapped[str] = mapped_column(String, nullable=False)
+    tracks = db.relationship('Track', backref='user', lazy=True, cascade='delete')
 
 
 class TrackType(enum.Enum):
