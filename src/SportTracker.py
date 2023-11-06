@@ -54,7 +54,10 @@ class SportTracker(FlaskBaseApp):
         def inject_version_name() -> dict[str, Any]:
             return {'versionName': self._version['name']}
 
-        def format_duration(value):
+        def format_duration(value: int | None) -> str:
+            if value is None:
+                return '--:--'
+
             hours = value // 3600
             minutes = value % 3600 // 60
 

@@ -34,7 +34,7 @@ class Track(db.Model):
     type = db.Column(db.Enum(TrackType))
     name: Mapped[String] = mapped_column(String, nullable=False)
     startTime: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
-    duration: Mapped[int] = mapped_column(Integer, nullable=False)
+    duration: Mapped[int] = mapped_column(Integer, nullable=True)
     distance: Mapped[int] = mapped_column(Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
