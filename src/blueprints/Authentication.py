@@ -38,6 +38,7 @@ def construct_blueprint():
         if user is None:
             return render_template('login.jinja2', message='Unbekannter Nutzer')
         session['userId'] = user.id
+        session['isAdmin'] = user.username == 'admin'
 
         return redirect(url_for('tracks.listTracks'))
 
@@ -46,6 +47,8 @@ def construct_blueprint():
         del session['authorized']
         del session['username']
         del session['userId']
+        del session['isAdmin']
+
         return redirect(url_for('authentication.login'))
 
     return authentication

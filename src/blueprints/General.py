@@ -1,6 +1,6 @@
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils.auth.SessionLoginWrapper import require_login
-from flask import Blueprint, redirect, url_for
+from flask import Blueprint, redirect, url_for, session
 
 from logic import Constants
 
@@ -13,6 +13,9 @@ def construct_blueprint():
     @general.route('/')
     @require_login
     def index():
+        if session['isAdmin']:
+            return redirect(url_for('users.listUsers'))
+
         return redirect(url_for('tracks.listTracks'))
 
     return general

@@ -109,6 +109,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Tracks.construct_blueprint())
         app.register_blueprint(MonthGoals.construct_blueprint())
         app.register_blueprint(Charts.construct_blueprint())
+        app.register_blueprint(Users.construct_blueprint())
 
 
 @click.command()

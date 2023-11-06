@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - Tracks</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('users') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col-12 mx-auto">
+                        <h1>Users <a href="{{ url_for('users.add') }}"
+                                     class="link-light text-decoration-none d-flex-inline align-items-center"><span
+                                class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span></a></h1>
+                    </div>
+                </div>
+
+                {% for user in users %}
+                    <div class="row py-3">
+                        <div class="col-lg-6 col-md-8 mx-auto">
+                            <a href="{{ url_for('users.edit', user_id=user.id) }}" class="text-decoration-none">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h2 class="card-title text-truncate">{{ user.username }}</h2>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>
