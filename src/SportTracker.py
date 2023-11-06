@@ -1,5 +1,7 @@
 import logging
 import os
+import secrets
+import string
 from datetime import datetime
 from typing import Any
 
@@ -73,8 +75,15 @@ class SportTracker(FlaskBaseApp):
     def __create_admin_user(self, database):
         if User.query.filter_by(username='admin').first() is None:
             LOGGER.debug(f'Creating admin user')
-            user = User(username='admin', password=Bcrypt().generate_password_hash('admin').decode('utf-8'), isAdmin=True)
+            password = self.__generate_password()
+            LOGGER.info(f'Created default admin user with password: "{password}". CAUTION: password is only shown once. Save it now!')
+
+            user = User(username='admin', password=Bcrypt().generate_password_hash(password).decode('utf-8'), isAdmin=True)
             database.session.add(user)
+
+    def __generate_password(self) -> str:
+        alphabet = string.ascii_letters + string.digits
+        return ''.join(secrets.choice(alphabet) for i in range(20))
 
     def __create_dummy_data(self, database):
         user = User.query.filter_by(username='demo').first()
