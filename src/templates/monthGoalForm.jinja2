@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - Add Month Goal</title>
+        <title>SportTracker - {% if goal %}Add{% else %}Edit{% endif %} Month Goal</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
