@@ -83,6 +83,7 @@ class SportTracker(FlaskBaseApp):
 
             user = User(username='admin', password=Bcrypt().generate_password_hash(password).decode('utf-8'), isAdmin=True)
             database.session.add(user)
+            database.session.commit()
 
     def __generate_password(self) -> str:
         alphabet = string.ascii_letters + string.digits
