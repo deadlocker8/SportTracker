@@ -37,6 +37,7 @@ class Track(db.Model):
     duration: Mapped[int] = mapped_column(Integer, nullable=True)
     distance: Mapped[int] = mapped_column(Integer, nullable=False)
     averageHeartRate: Mapped[int] = mapped_column(Integer, nullable=True)
+    elevationSum: Mapped[int] = mapped_column(Integer, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 

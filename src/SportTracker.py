@@ -113,17 +113,17 @@ class SportTracker(FlaskBaseApp):
             track = Track(type=TrackType.BICYCLE,
                           name='Short after work',
                           startTime=datetime(year=2023, month=11, day=3, hour=12, minute=15, second=48),
-                          duration=60 * 35, distance=1000 * 15, averageHeartRate=88, user_id=user.id)
+                          duration=60 * 35, distance=1000 * 15, averageHeartRate=88, elevationSum=512, user_id=user.id)
             database.session.add(track)
             track = Track(type=TrackType.BICYCLE,
                           name='Normal One',
                           startTime=datetime(year=2023, month=10, day=15, hour=18, minute=23, second=12),
-                          duration=60 * 67, distance=1000 * 31, averageHeartRate=122, user_id=user.id)
+                          duration=60 * 67, distance=1000 * 31, averageHeartRate=122, elevationSum=16, user_id=user.id)
             database.session.add(track)
             track = Track(type=TrackType.BICYCLE,
                           name='Longest tour I\'ve ever made and was quite interesting',
                           startTime=datetime(year=2023, month=10, day=28, hour=19, minute=30, second=41),
-                          duration=60 * 93, distance=1000 * 42.2,averageHeartRate=165, user_id=user.id)
+                          duration=60 * 93, distance=1000 * 42.2, averageHeartRate=165, elevationSum=138, user_id=user.id)
             database.session.add(track)
 
             monthGoal = MonthGoal(type=TrackType.BICYCLE, year=2023, month=11, distance_minimum=100 * 1000,

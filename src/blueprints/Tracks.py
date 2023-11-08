@@ -24,8 +24,9 @@ class TrackFormModel(BaseModel):
     durationMinutes: int
     durationSeconds: int
     averageHeartRate: int | None = None
+    elevationSum: int | None = None
 
-    @field_validator('averageHeartRate', mode='before')
+    @field_validator(*['averageHeartRate', 'elevationSum'], mode='before')
     def averageHeartRateCheck(cls, value: str, info) -> str | None:
         if isinstance(value, str):
             value = value.strip()
@@ -101,6 +102,7 @@ def construct_blueprint():
                       duration=duration,
                       distance=form.distance * 1000,
                       averageHeartRate=form.averageHeartRate,
+                      elevationSum=form.elevationSum,
                       user_id=current_user.id)
         LOGGER.debug(f'Saved new track: {track}')
         db.session.add(track)
@@ -127,7 +129,8 @@ def construct_blueprint():
                                     durationHours=track.duration // 3600,
                                     durationMinutes=track.duration % 3600 // 60,
                                     durationSeconds=track.duration % 3600 % 60,
-                                    averageHeartRate=track.averageHeartRate)
+                                    averageHeartRate=track.averageHeartRate,
+                                    elevationSum=track.elevationSum)
 
         return render_template('trackForm.jinja2', track=trackModel, track_id=track_id)
 
@@ -151,6 +154,7 @@ def construct_blueprint():
         track.distance = form.distance * 1000
         track.duration = duration
         track.averageHeartRate = form.averageHeartRate
+        track.elevationSum = form.elevationSum
         track.user_id = current_user.id
 
         LOGGER.debug(f'Updated track: {track}')
