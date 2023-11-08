@@ -1,8 +1,8 @@
 import enum
 
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Integer, DateTime, String, Boolean
+from sqlalchemy import Integer, DateTime, String, Boolean, extract
 from sqlalchemy.orm import Mapped, mapped_column
 
 db = SQLAlchemy()
@@ -49,3 +49,11 @@ class MonthGoal(db.Model):
     distance_minimum: Mapped[int] = mapped_column(Integer, nullable=False)
     distance_perfect: Mapped[int] = mapped_column(Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+
+def get_tracks_by_year_and_month(year: int, month: int) -> list[Track]:
+    return (Track.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(extract('year', Track.startTime) == year)
+            .filter(extract('month', Track.startTime) == month)
+            .order_by(Track.startTime.desc()).all())

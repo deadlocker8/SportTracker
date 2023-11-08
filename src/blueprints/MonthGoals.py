@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from sqlalchemy import extract
 
 from logic import Constants
-from logic.model.Models import Track, TrackType, db, MonthGoal, User
+from logic.model.Models import Track, TrackType, db, MonthGoal, User, get_tracks_by_year_and_month
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -35,11 +35,7 @@ class MonthGoalSummary:
 
 
 def get_month_goal_summary(goal) -> MonthGoalSummary:
-    tracks = (Track.query.join(User)
-              .filter(User.username == current_user.username)
-              .filter(extract('month', Track.startTime) == goal.month)
-              .filter(extract('year', Track.startTime) == goal.year)
-              .all())
+    tracks = get_tracks_by_year_and_month(goal.year, goal.month)
 
     if tracks:
         actualDistance = sum([t.distance for t in tracks])
