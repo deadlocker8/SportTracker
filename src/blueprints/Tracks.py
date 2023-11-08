@@ -2,6 +2,7 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime, date
 
+from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template, redirect, url_for, abort
 from flask_login import login_required, current_user
 from flask_pydantic import validate
@@ -9,7 +10,7 @@ from pydantic import BaseModel, field_validator
 
 from blueprints.MonthGoals import MonthGoalSummary, get_month_goal_summary
 from logic import Constants
-from logic.model.Models import Track, TrackType, db, User, MonthGoal
+from logic.model.Models import Track, TrackType, db, User, MonthGoal, get_tracks_by_year_and_month
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -45,33 +46,26 @@ class MonthModel:
 def construct_blueprint():
     tracks = Blueprint('tracks', __name__, static_folder='static', url_prefix='/tracks')
 
-    @tracks.route('/')
+    @tracks.route('/<int:year>/<int:month>')
     @login_required
-    def listTracks():
-        trackList = Track.query.join(User).filter(User.username == current_user.username).order_by(
-            Track.startTime.desc()).all()
+    def listTracks(year: int, month: int):
+        monthRightSideDate = date(year=year, month=month, day=1)
+        monthRightSide = MonthModel(monthRightSideDate.strftime('%B %Y'),
+                                    get_tracks_by_year_and_month(monthRightSideDate.year, monthRightSideDate.month),
+                                    __get_goal_summaries(monthRightSideDate))
 
-        tracksByMonth: list[MonthModel] = []
-        currentMonth = None
-        currentTracks = []
-        for track in trackList:
-            month = date(year=track.startTime.year, month=track.startTime.month, day=1)
-            if month != currentMonth:
-                if currentMonth is not None:
-                    tracksByMonth.append(MonthModel(currentMonth.strftime('%B %Y'),
-                                                    currentTracks,
-                                                    __get_goal_summaries(currentMonth)))
-                currentMonth = date(year=track.startTime.year, month=track.startTime.month, day=1)
-                currentTracks = []
+        monthLeftSideDate = monthRightSideDate - relativedelta(months=1)
+        monthLeftSide = MonthModel(monthLeftSideDate.strftime('%B %Y'),
+                                   get_tracks_by_year_and_month(monthLeftSideDate.year, monthLeftSideDate.month),
+                                   __get_goal_summaries(monthLeftSideDate))
 
-            currentTracks.append(track)
+        nextMonthDate = monthRightSideDate + relativedelta(months=1)
 
-        if trackList:
-            tracksByMonth.append(MonthModel(currentMonth.strftime('%B %Y'),
-                                            currentTracks,
-                                            __get_goal_summaries(currentMonth)))
-
-        return render_template('tracks.jinja2', tracksByMonth=tracksByMonth)
+        return render_template('tracks.jinja2',
+                               monthLeftSide=monthLeftSide,
+                               monthRightSide=monthRightSide,
+                               previousMonthDate=monthLeftSideDate,
+                               nextMonthDate=nextMonthDate)
 
     def __get_goal_summaries(dateObject: date) -> list[MonthGoalSummary]:
         goals = (MonthGoal.query.join(User)

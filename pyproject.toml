@@ -20,6 +20,7 @@ Flask-SQLAlchemy = "3.1.1"
 Flask-Pydantic = "0.11.0"
 Flask-Login = "0.6.3"
 Flask-Bcrypt = "1.0.1"
+python-dateutil = "2.8.2"
 
 [tool.poetry.dev-dependencies]
 
