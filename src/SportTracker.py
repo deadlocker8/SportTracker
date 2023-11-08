@@ -63,7 +63,18 @@ class SportTracker(FlaskBaseApp):
 
             return f'{hours}:{str(minutes).zfill(2)}'
 
+        def format_actual_distance(value: float) -> str:
+            value = str(int(value))
+
+            if len(value) == 1:
+                return f'&nbsp;&nbsp;{value}'
+            elif len(value) == 2:
+                return f'&nbsp;{value}'
+            else:
+                return value
+
         app.add_template_filter(format_duration)
+        app.add_template_filter(format_actual_distance)
 
         login_manager = LoginManager()
         login_manager.login_view = 'authentication.login'
