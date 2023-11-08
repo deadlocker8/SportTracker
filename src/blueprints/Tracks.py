@@ -5,7 +5,7 @@ from datetime import datetime, date
 from flask import Blueprint, render_template, redirect, url_for, abort
 from flask_login import login_required, current_user
 from flask_pydantic import validate
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from blueprints.MonthGoals import MonthGoalSummary, get_month_goal_summary
 from logic import Constants
@@ -23,6 +23,15 @@ class TrackFormModel(BaseModel):
     durationHours: int
     durationMinutes: int
     durationSeconds: int
+    averageHeartRate: int | None = None
+
+    @field_validator('averageHeartRate', mode='before')
+    def averageHeartRateCheck(cls, value: str, info) -> str | None:
+        if isinstance(value, str):
+            value = value.strip()
+        if value == '':
+            return None
+        return value
 
 
 @dataclass
@@ -89,7 +98,10 @@ def construct_blueprint():
         track = Track(type=TrackType(form.type),
                       name=form.name,
                       startTime=__calculate_start_time(form),
-                      duration=duration, distance=form.distance * 1000, user_id=current_user.id)
+                      duration=duration,
+                      distance=form.distance * 1000,
+                      averageHeartRate=form.averageHeartRate,
+                      user_id=current_user.id)
         LOGGER.debug(f'Saved new track: {track}')
         db.session.add(track)
         db.session.commit()
@@ -114,7 +126,8 @@ def construct_blueprint():
                                     distance=track.distance / 1000,
                                     durationHours=track.duration // 3600,
                                     durationMinutes=track.duration % 3600 // 60,
-                                    durationSeconds=track.duration % 3600 % 60)
+                                    durationSeconds=track.duration % 3600 % 60,
+                                    averageHeartRate=track.averageHeartRate)
 
         return render_template('trackForm.jinja2', track=trackModel, track_id=track_id)
 
@@ -137,6 +150,7 @@ def construct_blueprint():
         track.startTime = __calculate_start_time(form)
         track.distance = form.distance * 1000
         track.duration = duration
+        track.averageHeartRate = form.averageHeartRate
         track.user_id = current_user.id
 
         LOGGER.debug(f'Updated track: {track}')
