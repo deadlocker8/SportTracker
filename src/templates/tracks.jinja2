@@ -93,11 +93,14 @@
                             <a href="{{ url_for('tracks.listTracks', year=previousMonthDate.year, month=previousMonthDate.month) }}" class="text-decoration-none text-light">
                                  <span class="material-icons fs-1">chevron_left</span>
                             </a>
-                            <h1 class="px-2">Tracks <a href="{{ url_for('tracks.add') }}"
+                            <h1 class="px-3">Tracks <a href="{{ url_for('tracks.add') }}"
                                           class="link-light text-decoration-none d-flex-inline align-items-center"><span
                                     class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span></a></h1>
                             <a href="{{ url_for('tracks.listTracks', year=nextMonthDate.year, month=nextMonthDate.month) }}" class="text-decoration-none text-light">
                                 <span class="material-icons fs-1">chevron_right</span>
+                            </a>
+                            <a href="{{ url_for('tracks.listTracks', year=currentMonthDate.year, month=currentMonthDate.month) }}" class="text-decoration-none text-light">
+                                <span class="material-icons fs-2">today</span>
                             </a>
                         </div>
                     </div>

@@ -65,7 +65,8 @@ def construct_blueprint():
                                monthLeftSide=monthLeftSide,
                                monthRightSide=monthRightSide,
                                previousMonthDate=monthLeftSideDate,
-                               nextMonthDate=nextMonthDate)
+                               nextMonthDate=nextMonthDate,
+                               currentMonthDate=datetime.now().date())
 
     def __get_goal_summaries(dateObject: date) -> list[MonthGoalSummary]:
         goals = (MonthGoal.query.join(User)
