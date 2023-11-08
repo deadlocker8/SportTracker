@@ -46,10 +46,15 @@ class MonthModel:
 def construct_blueprint():
     tracks = Blueprint('tracks', __name__, static_folder='static', url_prefix='/tracks')
 
+    @tracks.route('/', defaults={'year': None, 'month': None})
     @tracks.route('/<int:year>/<int:month>')
     @login_required
     def listTracks(year: int, month: int):
-        monthRightSideDate = date(year=year, month=month, day=1)
+        if year is None or month is None:
+            monthRightSideDate = datetime.now().date()
+        else:
+            monthRightSideDate = date(year=year, month=month, day=1)
+
         monthRightSide = MonthModel(monthRightSideDate.strftime('%B %Y'),
                                     get_tracks_by_year_and_month(monthRightSideDate.year, monthRightSideDate.month),
                                     __get_goal_summaries(monthRightSideDate))
