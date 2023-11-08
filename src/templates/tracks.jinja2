@@ -24,10 +24,12 @@
                                         <div class="fs-4">{{ (track.distance / track.duration * 3.6) | round(1)}} km/h</div>
                                     {% endif %}
 
-                                    {% if track.averageHeartRate is none %}
-                                        <div class="fs-4">- bpm</div>
-                                    {% else %}
+                                    {% if track.averageHeartRate is not none %}
                                         <div class="fs-4">{{ track.averageHeartRate }} bpm</div>
+                                    {% endif %}
+
+                                    {% if track.elevationSum is not none %}
+                                        <div class="fs-4">{{ track.elevationSum }} m</div>
                                     {% endif %}
 
                                     <div class="fs-6 me-2 text-body-secondary">{{ track.startTime.strftime('%d.%m.%y') }}</div>
