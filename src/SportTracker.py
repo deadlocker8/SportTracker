@@ -12,9 +12,9 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
-from blueprints import General, Authentication, Tracks, MonthGoals, Charts, Users
+from blueprints import General, Authentication, Tracks, MonthGoals, Charts, Users, BikingTracks, RunningTracks
 from logic import Constants
-from logic.model.Models import db, User, Track, TrackType, MonthGoal
+from logic.model.Models import db, User, Track, TrackType, MonthGoal, get_number_of_all_tracks
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
@@ -141,6 +141,8 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Authentication.construct_blueprint())
         app.register_blueprint(General.construct_blueprint())
         app.register_blueprint(Tracks.construct_blueprint())
+        app.register_blueprint(BikingTracks.construct_blueprint())
+        app.register_blueprint(RunningTracks.construct_blueprint())
         app.register_blueprint(MonthGoals.construct_blueprint())
         app.register_blueprint(Charts.construct_blueprint())
         app.register_blueprint(Users.construct_blueprint())

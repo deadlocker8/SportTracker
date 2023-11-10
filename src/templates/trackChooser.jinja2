@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {% if track %}Add{% else %}Edit{% endif %} Track</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('tracks') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col-12 mx-auto">
+                        <h1>New Track</h1>
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-6">
+                        <a href="{{ url_for('bikingTracks.add') }}"
+                           class="btn btn-link d-flex align-items-center justify-content-center text-decoration-none">
+                            <span class="material-icons rounded-circle fs-1 p-3 text-dark bg-warning me-3">directions_bike</span>
+                            <span class="fs-3 text-light">New Biking Track</span>
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a href="{{ url_for('runningTracks.add') }}"
+                           class="btn btn-link d-flex align-items-center justify-content-center text-decoration-none">
+                            <span class="material-icons rounded-circle fs-1 p-3 text-dark bg-info me-3">directions_run</span>
+                            <span class="fs-3 text-light">New Running Track</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>

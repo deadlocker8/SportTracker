@@ -15,30 +15,18 @@
                 <div class="row">
                     <div class="col-12 mx-auto">
                         {% if track %}
-                            <h1>Edit Track</h1>
-                            <a href="{{ url_for('tracks.delete', track_id=track_id) }}" class="btn btn-danger mt-3">Delete</a>
+                            <h1>Edit Running Track</h1>
+                            <a href="{{ url_for('runningTracks.delete', track_id=track_id) }}" class="btn btn-danger mt-3">Delete</a>
                         {% else %}
-                            <h1>New Track</h1>
+                            <h1>New Running Track</h1>
                         {% endif %}
                     </div>
                 </div>
 
                 <div class="row mt-5 text-start">
                     <div class="col-9 mx-auto">
-                        <form role="form" action="{% if track %}{{ url_for('tracks.editPost', track_id=track_id) }}{% else %}{{ url_for('tracks.addPost') }}{% endif %}"
+                        <form role="form" action="{% if track %}{{ url_for('runningTracks.editPost', track_id=track_id) }}{% else %}{{ url_for('runningTracks.addPost') }}{% endif %}"
                               method="post">
-                            <div class="mb-3">
-                                <label for="track-type" class="form-label">Type</label>
-                                <select class="form-select" id="track-type" name="type" required="required">
-                                    <option value="BICYCLE"
-                                            {% if track and track.type == 'BICYCLE' %}selected{% endif %}>Biking
-                                    </option>
-                                    <option value="RUNNING"
-                                            {% if track and track.type == 'RUNNING' %}selected{% endif %}>Running
-                                    </option>
-                                </select>
-                            </div>
-
                             <div class="mb-3">
                                 <label for="track-name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="track-name" name="name"

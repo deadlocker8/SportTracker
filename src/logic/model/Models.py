@@ -13,7 +13,8 @@ class User(UserMixin, db.Model):
     username: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
     isAdmin: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    tracks = db.relationship('Track', backref='user', lazy=True, cascade='delete')
+    bikingTracks = db.relationship('BikingTrack', backref='user', lazy=True, cascade='delete')
+    runningTracks = db.relationship('RunningTrack', backref='user', lazy=True, cascade='delete')
 
 
 class TrackType(enum.Enum):
@@ -30,8 +31,8 @@ class TrackType(enum.Enum):
 
 
 class Track(db.Model):
+    __abstract__ = True
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    type = db.Column(db.Enum(TrackType))
     name: Mapped[String] = mapped_column(String, nullable=False)
     startTime: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     duration: Mapped[int] = mapped_column(Integer, nullable=True)
@@ -39,6 +40,15 @@ class Track(db.Model):
     averageHeartRate: Mapped[int] = mapped_column(Integer, nullable=True)
     elevationSum: Mapped[int] = mapped_column(Integer, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+
+class BikingTrack(Track):
+    type = TrackType.BICYCLE
+    bike: Mapped[String] = mapped_column(String, nullable=True)
+
+
+class RunningTrack(Track):
+    type = TrackType.RUNNING
 
 
 class MonthGoal(db.Model):
@@ -51,9 +61,21 @@ class MonthGoal(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
+def get_number_of_all_tracks() -> int:
+    return BikingTrack.query.count() + RunningTrack.query.count()
+
+
 def get_tracks_by_year_and_month(year: int, month: int) -> list[Track]:
-    return (Track.query.join(User)
-            .filter(User.username == current_user.username)
-            .filter(extract('year', Track.startTime) == year)
-            .filter(extract('month', Track.startTime) == month)
-            .order_by(Track.startTime.desc()).all())
+    bikingTracks = (BikingTrack.query.join(User)
+                    .filter(User.username == current_user.username)
+                    .filter(extract('year', BikingTrack.startTime) == year)
+                    .filter(extract('month', BikingTrack.startTime) == month)
+                    .order_by(BikingTrack.startTime.desc()).all())
+
+    runningTracks = (RunningTrack.query.join(User)
+                     .filter(User.username == current_user.username)
+                     .filter(extract('year', RunningTrack.startTime) == year)
+                     .filter(extract('month', RunningTrack.startTime) == month)
+                     .order_by(RunningTrack.startTime.desc()).all())
+
+    return sorted(bikingTracks + runningTracks, key=lambda track: track.startTime)

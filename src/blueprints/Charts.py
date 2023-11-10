@@ -6,7 +6,7 @@ from flask_login import login_required
 from sqlalchemy import extract, func
 
 from logic import Constants
-from logic.model.Models import Track, TrackType
+from logic.model.Models import BikingTrack, RunningTrack
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -17,17 +17,16 @@ def construct_blueprint():
     @charts.route('/')
     @login_required
     def showCharts():
-        chartDataDistancePerMonth = [__get_distance_per_month_by_type(TrackType.BICYCLE),
-                                     __get_distance_per_month_by_type(TrackType.RUNNING)]
+        chartDataDistancePerMonth = [__get_distance_per_month_by_type(BikingTrack),
+                                     __get_distance_per_month_by_type(RunningTrack)]
 
         return render_template('charts.jinja2', chartDataDistancePerMonth=chartDataDistancePerMonth)
 
-    def __get_distance_per_month_by_type(trackType: TrackType) -> dict[str, Any]:
-        rows = (Track.query.with_entities(Track.startTime, func.sum(Track.distance) / 1000)
-                .filter(Track.type == trackType)
+    def __get_distance_per_month_by_type(trackClass) -> dict[str, Any]:
+        rows = (trackClass.query.with_entities(trackClass.startTime, func.sum(trackClass.distance) / 1000)
                 .group_by(
-            extract('year', Track.startTime),
-            extract('month', Track.startTime),
+            extract('year', trackClass.startTime),
+            extract('month', trackClass.startTime),
         ).all())
 
         monthNames = []
@@ -40,7 +39,7 @@ def construct_blueprint():
         return {
             'monthNames': monthNames,
             'values': values,
-            'type': trackType
+            'type': trackClass.type
         }
 
     return charts

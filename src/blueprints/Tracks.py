@@ -3,37 +3,14 @@ from dataclasses import dataclass
 from datetime import datetime, date
 
 from dateutil.relativedelta import relativedelta
-from flask import Blueprint, render_template, redirect, url_for, abort
+from flask import Blueprint, render_template
 from flask_login import login_required, current_user
-from flask_pydantic import validate
-from pydantic import BaseModel, field_validator
 
 from blueprints.MonthGoals import MonthGoalSummary, get_month_goal_summary
 from logic import Constants
-from logic.model.Models import Track, TrackType, db, User, MonthGoal, get_tracks_by_year_and_month
+from logic.model.Models import Track, User, MonthGoal, get_tracks_by_year_and_month
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
-
-
-class TrackFormModel(BaseModel):
-    type: str
-    name: str
-    date: str
-    time: str
-    distance: float
-    durationHours: int
-    durationMinutes: int
-    durationSeconds: int
-    averageHeartRate: int | None = None
-    elevationSum: int | None = None
-
-    @field_validator(*['averageHeartRate', 'elevationSum'], mode='before')
-    def averageHeartRateCheck(cls, value: str, info) -> str | None:
-        if isinstance(value, str):
-            value = value.strip()
-        if value == '':
-            return None
-        return value
 
 
 @dataclass
@@ -88,101 +65,6 @@ def construct_blueprint():
     @tracks.route('/add')
     @login_required
     def add():
-        return render_template('trackForm.jinja2')
-
-    @tracks.route('/post', methods=['POST'])
-    @login_required
-    @validate()
-    def addPost(form: TrackFormModel):
-        duration = __calculate_duration(form)
-
-        track = Track(type=TrackType(form.type),
-                      name=form.name,
-                      startTime=__calculate_start_time(form),
-                      duration=duration,
-                      distance=form.distance * 1000,
-                      averageHeartRate=form.averageHeartRate,
-                      elevationSum=form.elevationSum,
-                      user_id=current_user.id)
-        LOGGER.debug(f'Saved new track: {track}')
-        db.session.add(track)
-        db.session.commit()
-
-        return redirect(url_for('tracks.listTracks'))
-
-    @tracks.route('/edit/<int:track_id>')
-    @login_required
-    def edit(track_id: int):
-        track = (Track.query.join(User)
-                 .filter(User.username == current_user.username)
-                 .filter(Track.id == track_id)
-                 .first())
-
-        if track is None:
-            abort(404)
-
-        trackModel = TrackFormModel(type=track.type.name,
-                                    name=track.name,
-                                    date=track.startTime.strftime('%Y-%m-%d'),
-                                    time=track.startTime.strftime('%H:%M'),
-                                    distance=track.distance / 1000,
-                                    durationHours=track.duration // 3600,
-                                    durationMinutes=track.duration % 3600 // 60,
-                                    durationSeconds=track.duration % 3600 % 60,
-                                    averageHeartRate=track.averageHeartRate,
-                                    elevationSum=track.elevationSum)
-
-        return render_template('trackForm.jinja2', track=trackModel, track_id=track_id)
-
-    @tracks.route('/edit/<int:track_id>', methods=['POST'])
-    @login_required
-    @validate()
-    def editPost(track_id: int, form: TrackFormModel):
-        track = (Track.query.join(User)
-                 .filter(User.username == current_user.username)
-                 .filter(Track.id == track_id)
-                 .first())
-
-        if track is None:
-            abort(404)
-
-        duration = __calculate_duration(form)
-
-        track.type = TrackType(form.type)
-        track.name = form.name
-        track.startTime = __calculate_start_time(form)
-        track.distance = form.distance * 1000
-        track.duration = duration
-        track.averageHeartRate = form.averageHeartRate
-        track.elevationSum = form.elevationSum
-        track.user_id = current_user.id
-
-        LOGGER.debug(f'Updated track: {track}')
-        db.session.commit()
-
-        return redirect(url_for('tracks.listTracks'))
-
-    @tracks.route('/delete/<int:track_id>')
-    @login_required
-    def delete(track_id: int):
-        track = (Track.query.join(User)
-                 .filter(User.username == current_user.username)
-                 .filter(Track.id == track_id)
-                 .first())
-
-        if track is None:
-            abort(404)
-
-        LOGGER.debug(f'Deleted track: {track}')
-        db.session.delete(track)
-        db.session.commit()
-
-        return redirect(url_for('tracks.listTracks'))
-
-    def __calculate_start_time(form):
-        return datetime.strptime(f'{form.date} {form.time}', '%Y-%m-%d %H:%M')
-
-    def __calculate_duration(form):
-        return 3600 * form.durationHours + 60 * form.durationMinutes + form.durationSeconds
+        return render_template('trackChooser.jinja2')
 
     return tracks

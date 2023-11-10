@@ -6,10 +6,9 @@ from flask import Blueprint, render_template, redirect, url_for, abort
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel
-from sqlalchemy import extract
 
 from logic import Constants
-from logic.model.Models import Track, TrackType, db, MonthGoal, User, get_tracks_by_year_and_month
+from logic.model.Models import TrackType, db, MonthGoal, User, get_tracks_by_year_and_month
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
