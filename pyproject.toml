@@ -11,8 +11,8 @@ priority = "explicit"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-thecodelabs-baseutils = {version = "*", source = "TheCodeLabs" }
-thecodelabs-flaskutils = {version = "*", source = "TheCodeLabs" }
+thecodelabs-baseutils = { version = "*", source = "TheCodeLabs" }
+thecodelabs-flaskutils = { version = "*", source = "TheCodeLabs" }
 flask = "3.0.0"
 gevent = "23.9.1"
 click = "8.1.7"
@@ -20,6 +20,7 @@ Flask-SQLAlchemy = "3.1.1"
 Flask-Pydantic = "0.11.0"
 Flask-Login = "0.6.3"
 Flask-Bcrypt = "1.0.1"
+flask-babel = "4.0.0"
 python-dateutil = "2.8.2"
 
 [tool.poetry.dev-dependencies]

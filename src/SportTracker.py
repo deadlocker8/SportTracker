@@ -8,7 +8,8 @@ from typing import Any
 import click
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils import FlaskBaseApp
-from flask import Flask
+from flask import Flask, request
+from flask_babel import Babel
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
@@ -82,6 +83,16 @@ class SportTracker(FlaskBaseApp):
         @login_manager.user_loader
         def load_user(user_id):
             return User.query.get(int(user_id))
+
+        app.config['LANGUAGES'] = {
+            'en': 'English',
+            'de': 'Deutsch'
+        }
+
+        def get_locale():
+            return request.accept_languages.best_match(app.config['LANGUAGES'].keys())
+
+        babel = Babel(app, locale_selector=get_locale)
 
         return app
 
