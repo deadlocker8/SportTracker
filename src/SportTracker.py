@@ -73,8 +73,16 @@ class SportTracker(FlaskBaseApp):
             else:
                 return value
 
+        def format_pace(track: Track) -> str:
+            speed = int(track.duration / (track.distance / 1000))
+
+            minutes = speed // 60
+            seconds = speed % 60
+            return f'{minutes}:{str(seconds).zfill(2)}'
+
         app.add_template_filter(format_duration)
         app.add_template_filter(format_actual_distance)
+        app.add_template_filter(format_pace)
 
         login_manager = LoginManager()
         login_manager.login_view = 'authentication.login'
