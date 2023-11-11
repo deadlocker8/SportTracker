@@ -8,7 +8,8 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 
 from logic import Constants
-from logic.model.Models import TrackType, db, MonthGoal, User, get_tracks_by_year_and_month
+from logic.model.Models import TrackType, db, MonthGoal, User, get_tracks_by_year_and_month, \
+    get_tracks_by_year_and_month_by_type, get_track_class_by_ty_type
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -34,7 +35,7 @@ class MonthGoalSummary:
 
 
 def get_month_goal_summary(goal) -> MonthGoalSummary:
-    tracks = get_tracks_by_year_and_month(goal.year, goal.month)
+    tracks = get_tracks_by_year_and_month_by_type(goal.year, goal.month, get_track_class_by_ty_type(goal.type))
 
     if tracks:
         actualDistance = sum([t.distance for t in tracks])

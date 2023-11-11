@@ -66,16 +66,25 @@ def get_number_of_all_tracks() -> int:
 
 
 def get_tracks_by_year_and_month(year: int, month: int) -> list[Track]:
-    bikingTracks = (BikingTrack.query.join(User)
-                    .filter(User.username == current_user.username)
-                    .filter(extract('year', BikingTrack.startTime) == year)
-                    .filter(extract('month', BikingTrack.startTime) == month)
-                    .order_by(BikingTrack.startTime.desc()).all())
-
-    runningTracks = (RunningTrack.query.join(User)
-                     .filter(User.username == current_user.username)
-                     .filter(extract('year', RunningTrack.startTime) == year)
-                     .filter(extract('month', RunningTrack.startTime) == month)
-                     .order_by(RunningTrack.startTime.desc()).all())
+    bikingTracks = get_tracks_by_year_and_month_by_type(year, month, BikingTrack)
+    runningTracks = get_tracks_by_year_and_month_by_type(year, month, RunningTrack)
 
     return sorted(bikingTracks + runningTracks, key=lambda track: track.startTime)
+
+
+def get_tracks_by_year_and_month_by_type(year: int, month: int, trackClass) -> list[Track]:
+    return (trackClass.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(extract('year', trackClass.startTime) == year)
+            .filter(extract('month', trackClass.startTime) == month)
+            .order_by(trackClass.startTime.desc()).all())
+
+
+def get_track_class_by_ty_type(trackType: TrackType):
+    if trackType == TrackType.BICYCLE:
+        return BikingTrack
+
+    if trackType == TrackType.RUNNING:
+        return RunningTrack
+
+    raise ValueError(f'Could not determine track class for track type "{trackType}"')
