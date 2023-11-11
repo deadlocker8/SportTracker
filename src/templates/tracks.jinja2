@@ -124,7 +124,7 @@
         </div>
 
         {% for track in monthModel.tracks %}
-            {% if track.type.name == 'BICYCLE' %}
+            {% if track.type.name == 'BIKING' %}
                 {{ render_track_biking_card(track) }}
             {% elif track.type.name == 'RUNNING' %}
                 {{ render_track_running_card(track) }}

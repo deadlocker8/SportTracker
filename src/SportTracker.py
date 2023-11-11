@@ -114,32 +114,36 @@ class SportTracker(FlaskBaseApp):
         if Track.query.count() == 0:
             LOGGER.debug('Creating dummy data...')
 
-            track = Track(type=TrackType.BICYCLE,
+            track = Track(type=TrackType.BIKING,
                           name='Short after work',
                           startTime=datetime(year=2023, month=11, day=3, hour=12, minute=15, second=48),
                           duration=60 * 35, distance=1000 * 15, averageHeartRate=88, elevationSum=512, user_id=user.id)
             database.session.add(track)
-            track = Track(type=TrackType.BICYCLE,
+            track = Track(type=TrackType.BIKING,
                           name='Normal One',
                           startTime=datetime(year=2023, month=10, day=15, hour=18, minute=23, second=12),
                           duration=60 * 67, distance=1000 * 31, averageHeartRate=122, elevationSum=16, user_id=user.id)
             database.session.add(track)
-            track = Track(type=TrackType.BICYCLE,
+            track = Track(type=TrackType.BIKING,
                           name='Longest tour I\'ve ever made and was quite interesting',
                           startTime=datetime(year=2023, month=10, day=28, hour=19, minute=30, second=41),
                           duration=60 * 93, distance=1000 * 42.2, averageHeartRate=165, elevationSum=138,
                           user_id=user.id)
             database.session.add(track)
 
-            monthGoal = MonthGoalDistance(type=TrackType.BICYCLE, year=2023, month=11, distance_minimum=100 * 1000,
+            monthGoal = MonthGoalDistance(type=TrackType.BIKING, year=2023, month=11, distance_minimum=100 * 1000,
                                           distance_perfect=200 * 1000, user_id=user.id)
             database.session.add(monthGoal)
-            monthGoal = MonthGoalDistance(type=TrackType.BICYCLE, year=2023, month=9, distance_minimum=100 * 1000,
+            monthGoal = MonthGoalDistance(type=TrackType.BIKING, year=2023, month=9, distance_minimum=100 * 1000,
                                           distance_perfect=200 * 1000, user_id=user.id)
             database.session.add(monthGoal)
-            monthGoal = MonthGoalDistance(type=TrackType.BICYCLE, year=2023, month=10, distance_minimum=50 * 1000,
+            monthGoal = MonthGoalDistance(type=TrackType.BIKING, year=2023, month=10, distance_minimum=50 * 1000,
                                           distance_perfect=100 * 1000, user_id=user.id)
             database.session.add(monthGoal)
+            monthGoal = MonthGoalCount(type=TrackType.BIKING, year=2023, month=10, count_minimum=2,
+                                       count_perfect=5, user_id=user.id)
+            database.session.add(monthGoal)
+
             database.session.commit()
 
     def _register_blueprints(self, app):

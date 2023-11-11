@@ -22,7 +22,7 @@ class User(UserMixin, db.Model):
 
 
 class TrackType(enum.Enum):
-    BICYCLE = 'BICYCLE', 'directions_bike', 'bg-warning', '#FFC107'
+    BIKING = 'BIKING', 'directions_bike', 'bg-warning', '#FFC107'
     RUNNING = 'RUNNING', 'directions_run', 'bg-info', '#0DCAF0'
 
     def __new__(cls, name: str, icon: str, background_color: str, background_color_hex: str):
@@ -47,7 +47,7 @@ class Track(db.Model):
 
 
 class BikingTrack(Track):
-    type = TrackType.BICYCLE
+    type = TrackType.BIKING
     bike: Mapped[String] = mapped_column(String, nullable=True)
 
 
@@ -199,7 +199,7 @@ def get_tracks_by_year_and_month_by_type(year: int, month: int, trackClass) -> l
 
 
 def get_track_class_by_ty_type(trackType: TrackType):
-    if trackType == TrackType.BICYCLE:
+    if trackType == TrackType.BIKING:
         return BikingTrack
 
     if trackType == TrackType.RUNNING:
