@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {% if goal %}Add{% else %}Edit{% endif %} Month Goal</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('monthGoals') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col-12 mx-auto">
+                        {% if goal %}
+                            <h1>Edit Distance Month Goal</h1>
+                            <a href="{{ url_for('monthGoalsDistance.delete', goal_id=goal_id) }}" class="btn btn-danger mt-3">Delete</a>
+                        {% else %}
+                            <h1>New Distance Month Goal</h1>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row mt-5 text-start">
+                    <div class="col-9 mx-auto">
+                        <form role="form" action="{% if goal %}{{ url_for('monthGoalsDistance.editPost', goal_id=goal_id) }}{% else %}{{ url_for('monthGoalsDistance.addPost') }}{% endif %}"
+                              method="post">
+                            <div class="mb-3">
+                                <label for="month-goal-type" class="form-label">Type</label>
+                                <select class="form-select" id="month-goal-type" name="type" required="required">
+                                    <option value="BICYCLE" {% if goal and goal.type == 'BICYCLE'%}selected{% endif %}>Biking</option>
+                                    <option value="RUNNING" {% if goal and goal.type == 'RUNNING'%}selected{% endif %}>Running</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="month-goal-year" class="form-label">Year</label>
+                                        <input type="number" step="1" min="2023" class="form-control"
+                                               id="month-goal-year" name="year" placeholder="YYYY"
+                                               required="required" {% if goal %}value="{{ goal.year }}"{% endif %}>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="month-goal-month" class="form-label">Month</label>
+                                        <input type="number" min="1" max="12" class="form-control" id="month-goal-month"
+                                               name="month" placeholder="MM"
+                                               required="required" {% if goal %}value="{{ goal.month }}"{% endif %}>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-5">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="month-goal-minimum" class="form-label">Minimum Goal (in km)</label>
+                                        <input type="number" step="0.01" min="0" class="form-control"
+                                               id="month-goal-minimum" name="distance_minimum" required="required"
+                                               {% if goal %}value="{{ goal.distance_minimum }}"{% endif %}>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="month-goal-perfect" class="form-label">Perfect Goal (in km)</label>
+                                        <input type="number" step="0.01" min="0" class="form-control"
+                                               id="month-goal-perfect" name="distance_perfect" required="required"
+                                               {% if goal %}value="{{ goal.distance_perfect }}"{% endif %}>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>

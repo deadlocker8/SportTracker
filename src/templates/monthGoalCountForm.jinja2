@@ -15,17 +15,17 @@
                 <div class="row">
                     <div class="col-12 mx-auto">
                         {% if goal %}
-                            <h1>Edit Month Goal</h1>
-                            <a href="{{ url_for('monthGoals.delete', goal_id=goal_id) }}" class="btn btn-danger mt-3">Delete</a>
+                            <h1>Edit Count Month Goal</h1>
+                            <a href="{{ url_for('monthGoalsCount.delete', goal_id=goal_id) }}" class="btn btn-danger mt-3">Delete</a>
                         {% else %}
-                            <h1>New Month Goal</h1>
+                            <h1>New Count Month Goal</h1>
                         {% endif %}
                     </div>
                 </div>
 
                 <div class="row mt-5 text-start">
                     <div class="col-9 mx-auto">
-                        <form role="form" action="{% if goal %}{{ url_for('monthGoals.editPost', goal_id=goal_id) }}{% else %}{{ url_for('monthGoals.addPost') }}{% endif %}"
+                        <form role="form" action="{% if goal %}{{ url_for('monthGoalsCount.editPost', goal_id=goal_id) }}{% else %}{{ url_for('monthGoalsCount.addPost') }}{% endif %}"
                               method="post">
                             <div class="mb-3">
                                 <label for="month-goal-type" class="form-label">Type</label>
@@ -55,16 +55,16 @@
                             <div class="mb-5">
                                 <div class="row">
                                     <div class="col-6">
-                                        <label for="month-goal-minimum" class="form-label">Minimum Goal (in km)</label>
-                                        <input type="number" step="0.01" min="0" class="form-control"
-                                               id="month-goal-minimum" name="distance_minimum" required="required"
-                                               {% if goal %}value="{{ goal.distance_minimum }}"{% endif %}>
+                                        <label for="month-goal-minimum" class="form-label">Minimum number of tracks</label>
+                                        <input type="number" step="1" min="0" class="form-control"
+                                               id="month-goal-minimum" name="count_minimum" required="required"
+                                               {% if goal %}value="{{ goal.count_minimum }}"{% endif %}>
                                     </div>
                                     <div class="col-6">
-                                        <label for="month-goal-perfect" class="form-label">Perfect Goal (in km)</label>
-                                        <input type="number" step="0.01" min="0" class="form-control"
-                                               id="month-goal-perfect" name="distance_perfect" required="required"
-                                               {% if goal %}value="{{ goal.distance_perfect }}"{% endif %}>
+                                        <label for="month-goal-perfect" class="form-label">Perfect number of tracks</label>
+                                        <input type="number" step="1" min="0" class="form-control"
+                                               id="month-goal-perfect" name="count_perfect" required="required"
+                                               {% if goal %}value="{{ goal.count_perfect }}"{% endif %}>
                                     </div>
                                 </div>
                             </div>

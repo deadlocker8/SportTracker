@@ -4,11 +4,11 @@ from datetime import datetime, date
 
 from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template
-from flask_login import login_required, current_user
+from flask_login import login_required
 
-from blueprints.MonthGoals import get_month_goal_summary, MonthGoalDistanceFormModel, MonthGoalDistanceSummary
 from logic import Constants
-from logic.model.Models import Track, User, get_tracks_by_year_and_month, MonthGoalDistance
+from logic.model.Models import Track, get_tracks_by_year_and_month, get_goal_summaries_by_year_and_month, \
+    MonthGoalSummary
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -17,7 +17,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 class MonthModel:
     name: str
     tracks: list[Track]
-    goals: list[MonthGoalDistanceSummary]
+    goals: list[MonthGoalSummary]
 
 
 def construct_blueprint():
@@ -34,12 +34,14 @@ def construct_blueprint():
 
         monthRightSide = MonthModel(monthRightSideDate.strftime('%B %Y'),
                                     get_tracks_by_year_and_month(monthRightSideDate.year, monthRightSideDate.month),
-                                    __get_goal_summaries(monthRightSideDate))
+                                    get_goal_summaries_by_year_and_month(monthRightSideDate.year,
+                                                                         monthRightSideDate.month))
 
         monthLeftSideDate = monthRightSideDate - relativedelta(months=1)
         monthLeftSide = MonthModel(monthLeftSideDate.strftime('%B %Y'),
                                    get_tracks_by_year_and_month(monthLeftSideDate.year, monthLeftSideDate.month),
-                                   __get_goal_summaries(monthLeftSideDate))
+                                   get_goal_summaries_by_year_and_month(monthLeftSideDate.year,
+                                                                        monthLeftSideDate.month))
 
         nextMonthDate = monthRightSideDate + relativedelta(months=1)
 
@@ -49,18 +51,6 @@ def construct_blueprint():
                                previousMonthDate=monthLeftSideDate,
                                nextMonthDate=nextMonthDate,
                                currentMonthDate=datetime.now().date())
-
-    def __get_goal_summaries(dateObject: date) -> list[MonthGoalDistanceSummary]:
-        goals = (MonthGoalDistance.query.join(User)
-                 .filter(User.username == current_user.username)
-                 .filter(MonthGoalDistance.year == dateObject.year)
-                 .filter(MonthGoalDistance.month == dateObject.month)
-                 .all())
-
-        if not goals:
-            return []
-
-        return [get_month_goal_summary(goal) for goal in goals]
 
     @tracks.route('/add')
     @login_required

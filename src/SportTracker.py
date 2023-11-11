@@ -12,10 +12,12 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
-from blueprints import General, Authentication, Tracks, MonthGoals, Charts, Users, BikingTracks, RunningTracks
+from blueprints import General, Authentication, Tracks, MonthGoals, Charts, Users, BikingTracks, RunningTracks, \
+    MonthGoalsDistance, MonthGoalsCount
 from logic import Constants
 from logic.CsvParser import CsvParser
-from logic.model.Models import db, User, Track, TrackType, MonthGoal, get_number_of_all_tracks, MonthGoalDistance
+from logic.model.Models import db, User, Track, TrackType, MonthGoal, get_number_of_all_tracks, MonthGoalDistance, \
+    MonthGoalCount
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
@@ -64,16 +66,6 @@ class SportTracker(FlaskBaseApp):
 
             return f'{hours}:{str(minutes).zfill(2)}'
 
-        def format_actual_distance(value: float) -> str:
-            value = str(int(value))
-
-            if len(value) == 1:
-                return f'&nbsp;&nbsp;{value}'
-            elif len(value) == 2:
-                return f'&nbsp;{value}'
-            else:
-                return value
-
         def format_pace(track: Track) -> str:
             speed = int(track.duration / (track.distance / 1000))
 
@@ -82,7 +74,6 @@ class SportTracker(FlaskBaseApp):
             return f'{minutes}:{str(seconds).zfill(2)}'
 
         app.add_template_filter(format_duration)
-        app.add_template_filter(format_actual_distance)
         app.add_template_filter(format_pace)
 
         login_manager = LoginManager()
@@ -158,6 +149,8 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(BikingTracks.construct_blueprint())
         app.register_blueprint(RunningTracks.construct_blueprint())
         app.register_blueprint(MonthGoals.construct_blueprint())
+        app.register_blueprint(MonthGoalsDistance.construct_blueprint())
+        app.register_blueprint(MonthGoalsCount.construct_blueprint())
         app.register_blueprint(Charts.construct_blueprint())
         app.register_blueprint(Users.construct_blueprint())
 

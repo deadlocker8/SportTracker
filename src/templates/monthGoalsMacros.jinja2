@@ -8,13 +8,18 @@
     <div class="fs-5">{{ goalSummary.actual_distance }}/{{ goalSummary.goal_distance_perfect }} km</div>
 {%- endmacro %}
 
-{% macro render_month_goal_summary_card(goalSummary) -%}
+{% macro render_month_goal_count(goalSummary) -%}
+    <div class="fs-5">{{ goalSummary.actual_count }}/{{ goalSummary.goal_count_perfect }}</div>
+{%- endmacro %}
+
+{% macro render_month_goal_distance_summary_card(goalSummary) -%}
     <div class="row py-lg-3">
         <div class="col-8 mx-auto">
-            <a href="{{ url_for('monthGoals.edit', goal_id=goalSummary.id) }}" class="text-decoration-none">
+            <a href="{{ url_for('monthGoalsDistance.edit', goal_id=goalSummary.id) }}" class="text-decoration-none">
                 <div class="card">
                     <div class="row g-0 d-flex align-items-center p-2">
                         <div class="col-2">
+                             <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
                              <span class="material-icons rounded-circle fs-3 p-2 text-dark {{ goalSummary.type.background_color }}">{{ goalSummary.type.icon }}</span>
                         </div>
                         <div class="col-3 text-start fs-4">
@@ -25,6 +30,33 @@
                         </div>
                         <div class="col-3">
                             {{ render_month_goal_distance(goalSummary) }}
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+{%- endmacro %}
+
+
+{% macro render_month_goal_count_summary_card(goalSummary) -%}
+    <div class="row py-lg-3">
+        <div class="col-8 mx-auto">
+            <a href="{{ url_for('monthGoalsCount.edit', goal_id=goalSummary.id) }}" class="text-decoration-none">
+                <div class="card">
+                    <div class="row g-0 d-flex align-items-center p-2">
+                        <div class="col-2">
+                             <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                             <span class="material-icons rounded-circle fs-3 p-2 text-dark {{ goalSummary.type.background_color }}">{{ goalSummary.type.icon }}</span>
+                        </div>
+                        <div class="col-3 text-start fs-4">
+                            {{ goalSummary.name }}
+                        </div>
+                        <div class="col-4">
+                            {{ render_month_goal_progress_bar(goalSummary) }}
+                        </div>
+                        <div class="col-3">
+                            {{ render_month_goal_count(goalSummary) }}
                         </div>
                     </div>
                 </div>
