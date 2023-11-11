@@ -24,6 +24,12 @@ class BikingTrackFormModel(BaseModel):
     elevationSum: int | None = None
     bike: str | None = None
 
+    def calculate_start_time(self) -> datetime:
+        return datetime.strptime(f'{self.date} {self.time}', '%Y-%m-%d %H:%M')
+
+    def calculate_duration(self) -> int:
+        return 3600 * self.durationHours + 60 * self.durationMinutes + self.durationSeconds
+
     @field_validator(*['averageHeartRate', 'elevationSum', 'bike'], mode='before')
     def averageHeartRateCheck(cls, value: str, info) -> str | None:
         if isinstance(value, str):
@@ -45,11 +51,9 @@ def construct_blueprint():
     @login_required
     @validate()
     def addPost(form: BikingTrackFormModel):
-        duration = __calculate_duration(form)
-
         track = BikingTrack(name=form.name,
-                            startTime=__calculate_start_time(form),
-                            duration=duration,
+                            startTime=form.calculate_start_time(),
+                            duration=form.calculate_duration(),
                             distance=form.distance * 1000,
                             averageHeartRate=form.averageHeartRate,
                             elevationSum=form.elevationSum,
@@ -98,12 +102,10 @@ def construct_blueprint():
         if track is None:
             abort(404)
 
-        duration = __calculate_duration(form)
-
         track.name = form.name
-        track.startTime = __calculate_start_time(form)
+        track.startTime = form.calculate_start_time()
         track.distance = form.distance * 1000
-        track.duration = duration
+        track.duration = form.calculate_duration()
         track.averageHeartRate = form.averageHeartRate
         track.elevationSum = form.elevationSum
         track.user_id = current_user.id
@@ -130,11 +132,5 @@ def construct_blueprint():
         db.session.commit()
 
         return redirect(url_for('tracks.listTracks'))
-
-    def __calculate_start_time(form: BikingTrackFormModel) -> datetime:
-        return datetime.strptime(f'{form.date} {form.time}', '%Y-%m-%d %H:%M')
-
-    def __calculate_duration(form: BikingTrackFormModel) -> int:
-        return 3600 * form.durationHours + 60 * form.durationMinutes + form.durationSeconds
 
     return bikingTracks
