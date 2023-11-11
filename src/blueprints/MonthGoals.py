@@ -2,20 +2,11 @@ import logging
 
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
-from pydantic import BaseModel
 
 from logic import Constants
 from logic.model.Models import User, MonthGoalDistance, MonthGoalCount
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
-
-
-class MonthGoalDistanceFormModel(BaseModel):
-    type: str
-    year: int
-    month: int
-    distance_minimum: float
-    distance_perfect: float
 
 
 def construct_blueprint():
