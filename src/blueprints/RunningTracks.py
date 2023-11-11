@@ -53,7 +53,7 @@ def construct_blueprint():
                              averageHeartRate=form.averageHeartRate,
                              elevationSum=form.elevationSum,
                              user_id=current_user.id)
-        LOGGER.debug(f'Saved new track: {track}')
+        LOGGER.debug(f'Saved new running track: {track}')
         db.session.add(track)
         db.session.commit()
 
@@ -105,7 +105,7 @@ def construct_blueprint():
         track.elevationSum = form.elevationSum
         track.user_id = current_user.id
 
-        LOGGER.debug(f'Updated track: {track}')
+        LOGGER.debug(f'Updated running track: {track}')
         db.session.commit()
 
         return redirect(url_for('tracks.listTracks'))
@@ -121,7 +121,7 @@ def construct_blueprint():
         if track is None:
             abort(404)
 
-        LOGGER.debug(f'Deleted track: {track}')
+        LOGGER.debug(f'Deleted running track: {track}')
         db.session.delete(track)
         db.session.commit()
 
