@@ -14,7 +14,8 @@ from flask_login import LoginManager
 
 from blueprints import General, Authentication, Tracks, MonthGoals, Charts, Users, BikingTracks, RunningTracks
 from logic import Constants
-from logic.model.Models import db, User, Track, TrackType, MonthGoal, get_number_of_all_tracks
+from logic.CsvParser import CsvParser
+from logic.model.Models import db, User, Track, TrackType, MonthGoal, get_number_of_all_tracks, MonthGoalDistance
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
@@ -100,7 +101,9 @@ class SportTracker(FlaskBaseApp):
             password = self.__generate_password()
             LOGGER.info(f'Created default admin user with password: "{password}". CAUTION: password is only shown once. Save it now!')
 
-            user = User(username='admin', password=Bcrypt().generate_password_hash(password).decode('utf-8'), isAdmin=True)
+            user = User(username='admin',
+                        password=Bcrypt().generate_password_hash(password).decode('utf-8'),
+                        isAdmin=True)
             database.session.add(user)
             database.session.commit()
 
@@ -112,7 +115,9 @@ class SportTracker(FlaskBaseApp):
         user = User.query.filter_by(username='demo').first()
         if user is None:
             LOGGER.debug(f'Creating demo user')
-            user = User(username='demo', password=Bcrypt().generate_password_hash('demo').decode('utf-8'), isAdmin=False)
+            user = User(username='demo',
+                        password=Bcrypt().generate_password_hash('demo').decode('utf-8'),
+                        isAdmin=False)
             database.session.add(user)
 
         if Track.query.count() == 0:
@@ -131,17 +136,18 @@ class SportTracker(FlaskBaseApp):
             track = Track(type=TrackType.BICYCLE,
                           name='Longest tour I\'ve ever made and was quite interesting',
                           startTime=datetime(year=2023, month=10, day=28, hour=19, minute=30, second=41),
-                          duration=60 * 93, distance=1000 * 42.2, averageHeartRate=165, elevationSum=138, user_id=user.id)
+                          duration=60 * 93, distance=1000 * 42.2, averageHeartRate=165, elevationSum=138,
+                          user_id=user.id)
             database.session.add(track)
 
-            monthGoal = MonthGoal(type=TrackType.BICYCLE, year=2023, month=11, distance_minimum=100 * 1000,
-                                  distance_perfect=200 * 1000, user_id=user.id)
+            monthGoal = MonthGoalDistance(type=TrackType.BICYCLE, year=2023, month=11, distance_minimum=100 * 1000,
+                                          distance_perfect=200 * 1000, user_id=user.id)
             database.session.add(monthGoal)
-            monthGoal = MonthGoal(type=TrackType.BICYCLE, year=2023, month=9, distance_minimum=100 * 1000,
-                                  distance_perfect=200 * 1000, user_id=user.id)
+            monthGoal = MonthGoalDistance(type=TrackType.BICYCLE, year=2023, month=9, distance_minimum=100 * 1000,
+                                          distance_perfect=200 * 1000, user_id=user.id)
             database.session.add(monthGoal)
-            monthGoal = MonthGoal(type=TrackType.BICYCLE, year=2023, month=10, distance_minimum=50 * 1000,
-                                  distance_perfect=100 * 1000, user_id=user.id)
+            monthGoal = MonthGoalDistance(type=TrackType.BICYCLE, year=2023, month=10, distance_minimum=50 * 1000,
+                                          distance_perfect=100 * 1000, user_id=user.id)
             database.session.add(monthGoal)
             database.session.commit()
 

@@ -6,9 +6,9 @@ from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
-from blueprints.MonthGoals import MonthGoalSummary, get_month_goal_summary
+from blueprints.MonthGoals import get_month_goal_summary, MonthGoalDistanceFormModel, MonthGoalDistanceSummary
 from logic import Constants
-from logic.model.Models import Track, User, MonthGoal, get_tracks_by_year_and_month
+from logic.model.Models import Track, User, get_tracks_by_year_and_month, MonthGoalDistance
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -17,7 +17,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 class MonthModel:
     name: str
     tracks: list[Track]
-    goals: list[MonthGoalSummary]
+    goals: list[MonthGoalDistanceSummary]
 
 
 def construct_blueprint():
@@ -50,11 +50,11 @@ def construct_blueprint():
                                nextMonthDate=nextMonthDate,
                                currentMonthDate=datetime.now().date())
 
-    def __get_goal_summaries(dateObject: date) -> list[MonthGoalSummary]:
-        goals = (MonthGoal.query.join(User)
+    def __get_goal_summaries(dateObject: date) -> list[MonthGoalDistanceSummary]:
+        goals = (MonthGoalDistance.query.join(User)
                  .filter(User.username == current_user.username)
-                 .filter(MonthGoal.year == dateObject.year)
-                 .filter(MonthGoal.month == dateObject.month)
+                 .filter(MonthGoalDistance.year == dateObject.year)
+                 .filter(MonthGoalDistance.month == dateObject.month)
                  .all())
 
         if not goals:

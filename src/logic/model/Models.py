@@ -52,13 +52,17 @@ class RunningTrack(Track):
 
 
 class MonthGoal(db.Model):
+    __abstract__ = True
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     type = db.Column(db.Enum(TrackType))
     year: Mapped[int] = mapped_column(Integer, nullable=False)
     month: Mapped[int] = mapped_column(Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+
+class MonthGoalDistance(MonthGoal):
     distance_minimum: Mapped[int] = mapped_column(Integer, nullable=False)
     distance_perfect: Mapped[int] = mapped_column(Integer, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
 def get_number_of_all_tracks() -> int:

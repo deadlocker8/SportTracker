@@ -8,13 +8,13 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 
 from logic import Constants
-from logic.model.Models import TrackType, db, MonthGoal, User, get_tracks_by_year_and_month, \
-    get_tracks_by_year_and_month_by_type, get_track_class_by_ty_type
+from logic.model.Models import TrackType, db, MonthGoal, User, get_tracks_by_year_and_month_by_type, \
+    get_track_class_by_ty_type, MonthGoalDistance
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-class MonthGoalFormModel(BaseModel):
+class MonthGoalDistanceFormModel(BaseModel):
     type: str
     year: int
     month: int
@@ -23,7 +23,7 @@ class MonthGoalFormModel(BaseModel):
 
 
 @dataclass
-class MonthGoalSummary:
+class MonthGoalDistanceSummary:
     id: int
     type: TrackType
     name: str
@@ -34,7 +34,7 @@ class MonthGoalSummary:
     color: str
 
 
-def get_month_goal_summary(goal) -> MonthGoalSummary:
+def get_month_goal_summary(goal) -> MonthGoalDistanceSummary:
     tracks = get_tracks_by_year_and_month_by_type(goal.year, goal.month, get_track_class_by_ty_type(goal.type))
 
     if tracks:
@@ -45,14 +45,14 @@ def get_month_goal_summary(goal) -> MonthGoalSummary:
     color = determine_color(actualDistance, goal)
     name = date(year=goal.year, month=goal.month, day=1).strftime('%B %y')
     percentage = actualDistance / goal.distance_perfect * 100
-    return MonthGoalSummary(goal.id,
-                            goal.type,
-                            name,
-                            goal.distance_minimum / 1000,
-                            goal.distance_perfect / 1000,
-                            actualDistance / 1000,
-                            percentage,
-                            color)
+    return MonthGoalDistanceSummary(goal.id,
+                                    goal.type,
+                                    name,
+                                    goal.distance_minimum / 1000,
+                                    goal.distance_perfect / 1000,
+                                    actualDistance / 1000,
+                                    percentage,
+                                    color)
 
 
 def determine_color(actualDistance: float, goal: MonthGoal) -> str:
@@ -70,8 +70,11 @@ def construct_blueprint():
     @monthGoals.route('/')
     @login_required
     def listMonthGoals():
-        goals: list[MonthGoal] = MonthGoal.query.join(User).filter(User.username == current_user.username).order_by(
-            MonthGoal.year.desc()).order_by(MonthGoal.month.desc()).all()
+        goals: list[MonthGoalDistance] = (MonthGoalDistance.query.join(User)
+                                          .filter(User.username == current_user.username)
+                                          .order_by(MonthGoalDistance.year.desc())
+                                          .order_by(MonthGoalDistance.month.desc())
+                                          .all())
 
         goalSummaries = []
         for goal in goals:
@@ -87,13 +90,13 @@ def construct_blueprint():
     @monthGoals.route('/post', methods=['POST'])
     @login_required
     @validate()
-    def addPost(form: MonthGoalFormModel):
-        monthGoal = MonthGoal(type=TrackType(form.type),
-                              year=form.year,
-                              month=form.month,
-                              distance_minimum=form.distance_minimum * 1000,
-                              distance_perfect=form.distance_perfect * 1000,
-                              user_id=current_user.id)
+    def addPost(form: MonthGoalDistanceFormModel):
+        monthGoal = MonthGoalDistance(type=TrackType(form.type),
+                                      year=form.year,
+                                      month=form.month,
+                                      distance_minimum=form.distance_minimum * 1000,
+                                      distance_perfect=form.distance_perfect * 1000,
+                                      user_id=current_user.id)
         LOGGER.debug(f'Saved new month goal: {monthGoal}')
         db.session.add(monthGoal)
         db.session.commit()
@@ -103,29 +106,29 @@ def construct_blueprint():
     @monthGoals.route('/edit/<int:goal_id>')
     @login_required
     def edit(goal_id: int):
-        monthGoal = (MonthGoal.query.join(User)
+        monthGoal = (MonthGoalDistance.query.join(User)
                      .filter(User.username == current_user.username)
-                     .filter(MonthGoal.id == goal_id)
+                     .filter(MonthGoalDistance.id == goal_id)
                      .first())
 
         if monthGoal is None:
             abort(404)
 
-        goalModel = MonthGoalFormModel(type=monthGoal.type.name,
-                                       year=monthGoal.year,
-                                       month=monthGoal.month,
-                                       distance_minimum=monthGoal.distance_minimum / 1000,
-                                       distance_perfect=monthGoal.distance_perfect / 1000)
+        goalModel = MonthGoalDistanceFormModel(type=monthGoal.type.name,
+                                               year=monthGoal.year,
+                                               month=monthGoal.month,
+                                               distance_minimum=monthGoal.distance_minimum / 1000,
+                                               distance_perfect=monthGoal.distance_perfect / 1000)
 
         return render_template('monthGoalForm.jinja2', goal=goalModel, goal_id=goal_id)
 
     @monthGoals.route('/edit/<int:goal_id>', methods=['POST'])
     @login_required
     @validate()
-    def editPost(goal_id: int, form: MonthGoalFormModel):
-        monthGoal = (MonthGoal.query.join(User)
+    def editPost(goal_id: int, form: MonthGoalDistanceFormModel):
+        monthGoal = (MonthGoalDistance.query.join(User)
                      .filter(User.username == current_user.username)
-                     .filter(MonthGoal.id == goal_id)
+                     .filter(MonthGoalDistance.id == goal_id)
                      .first())
 
         if monthGoal is None:
@@ -146,7 +149,7 @@ def construct_blueprint():
     @monthGoals.route('/delete/<int:goal_id>')
     @login_required
     def delete(goal_id: int):
-        monthGoal = (MonthGoal.query.join(User)
+        monthGoal = (MonthGoalDistance.query.join(User)
                      .filter(User.username == current_user.username)
                      .filter(MonthGoal.id == goal_id)
                      .first())
