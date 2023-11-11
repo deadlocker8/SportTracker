@@ -110,6 +110,7 @@ class SportTracker(FlaskBaseApp):
                         password=Bcrypt().generate_password_hash('demo').decode('utf-8'),
                         isAdmin=False)
             database.session.add(user)
+            database.session.commit()
 
         if BikingTrack.query.count() == 0 and RunningTrack.query.count() == 0:
             LOGGER.debug('Creating dummy data...')
