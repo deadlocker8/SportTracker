@@ -30,11 +30,24 @@ def construct_blueprint():
         goals = goalsDistance + goalsCount
         goals.sort(key=lambda summary: f'{summary.year}_{str(summary.month).zfill(2)}', reverse=True)
 
-        goalSummaries = []
+        currentYear = None
+        summariesByYear = {}
+        summaries = []
         for goal in goals:
-            goalSummaries.append(goal.get_summary())
+            if currentYear is None:
+                currentYear = goal.year
 
-        return render_template('monthGoals.jinja2', monthGoalSummaries=goalSummaries)
+            if goal.year != currentYear:
+                summariesByYear[currentYear] = summaries
+                currentYear = goal.year
+                summaries = []
+
+            summaries.append(goal.get_summary())
+
+        if currentYear is not None:
+            summariesByYear[currentYear] = summaries
+
+        return render_template('monthGoals.jinja2', monthGoalSummariesByYear=summariesByYear)
 
     @monthGoals.route('/add')
     @login_required

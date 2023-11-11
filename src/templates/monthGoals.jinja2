@@ -24,12 +24,16 @@
                     </div>
                 </div>
 
-                {% for goalSummary in monthGoalSummaries %}
-                    {% if goalSummary.type_name == 'DISTANCE' %}
-                        {{ monthGoalsMacros.render_month_goal_distance_summary_card(goalSummary) }}
-                    {% elif goalSummary.type_name == 'COUNT' %}
-                        {{ monthGoalsMacros.render_month_goal_count_summary_card(goalSummary) }}
-                    {% endif %}
+                {% for year, summaries in monthGoalSummariesByYear.items() %}
+                    <h3 class="mt-4">{{ year }}</h3>
+                    {% for goalSummary in summaries %}
+
+                        {% if goalSummary.type_name == 'DISTANCE' %}
+                            {{ monthGoalsMacros.render_month_goal_distance_summary_card(goalSummary) }}
+                        {% elif goalSummary.type_name == 'COUNT' %}
+                            {{ monthGoalsMacros.render_month_goal_count_summary_card(goalSummary) }}
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
             </section>
         </div>
