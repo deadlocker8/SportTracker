@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - Tracks</title>
+        <title>SportTracker - {{ gettext('Charts') }}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -16,7 +16,7 @@
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col-12 mx-auto">
-                        <h1>Charts</h1>
+                        <h1>{{ gettext('Charts') }}</h1>
                     </div>
                 </div>
 

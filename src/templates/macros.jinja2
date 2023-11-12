@@ -39,20 +39,20 @@
                         {% if current_user.isAdmin %}
                             <li class="nav-item">
                                 <a class="nav-link {% if activeLink == 'users' %}active {% endif %}"
-                                   href="{{ url_for('users.listUsers') }}">Users</a>
+                                   href="{{ url_for('users.listUsers') }}">{{ gettext('Users') }}</a>
                             </li>
                         {% else %}
                             <li class="nav-item">
                                 <a class="nav-link {% if activeLink == 'tracks' %}active {% endif %}"
-                                   href="/">Tracks</a>
+                                   href="/">{{ gettext('Tracks') }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {% if activeLink == 'monthGoals' %}active {% endif %}"
-                                   href="{{ url_for('monthGoals.listMonthGoals') }}">Goals</a>
+                                   href="{{ url_for('monthGoals.listMonthGoals') }}">{{ gettext('Goals') }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {% if activeLink == 'charts' %}active {% endif %}"
-                                   href="{{ url_for('charts.showCharts') }}">Charts</a>
+                                   href="{{ url_for('charts.showCharts') }}">{{ gettext('Charts') }}</a>
                             </li>
                         {% endif %}
                     {% endif %}

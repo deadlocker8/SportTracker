@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-12 00:35+0100\n"
+"POT-Creation-Date: 2023-11-12 01:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,40 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.13.1\n"
 
+#: ../templates/charts.jinja2:6 ../templates/charts.jinja2:19
+#: ../templates/macros.jinja2:55
+msgid "Charts"
+msgstr ""
+
+#: ../templates/macros.jinja2:42
+msgid "Users"
+msgstr ""
+
+#: ../templates/macros.jinja2:47
+msgid "Tracks"
+msgstr ""
+
+#: ../templates/macros.jinja2:51
+msgid "Goals"
+msgstr ""
+
 #: ../templates/monthGoals.jinja2:19
 msgid "Month Goals"
+msgstr ""
+
+#: ../templates/profile.jinja2:6 ../templates/profile.jinja2:17
+msgid "Profile"
+msgstr ""
+
+#: ../templates/profile.jinja2:31
+msgid "Password"
+msgstr ""
+
+#: ../templates/profile.jinja2:36 ../templates/profile.jinja2:48
+msgid "Save"
+msgstr ""
+
+#: ../templates/profile.jinja2:41
+msgid "Language"
 msgstr ""
 
