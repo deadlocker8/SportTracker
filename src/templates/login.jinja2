@@ -16,11 +16,11 @@
                     <img class="mb-4" src="{{ url_for('static', filename="images/SportTracker.png") }}" alt="" width="80" height="80">
                     <h1 class="h3 mb-3 fw-normal">SportTracker</h1>
 
-                    <label for="username" class="visually-hidden">Username</label>
+                    <label for="username" class="visually-hidden">{{ gettext('Username') }}</label>
                     <input type="text" id="username" name="username" class="form-control" placeholder="Username"
                            required="" autofocus="">
 
-                    <label for="password" class="visually-hidden">Password</label>
+                    <label for="password" class="visually-hidden">{{ gettext('Password') }}</label>
                     <input type="password" id="password" name="password" class="form-control mb-4"
                            placeholder="Password" required="">
 

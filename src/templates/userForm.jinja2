@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {% if user %}Add{% else %}Edit{% endif %} User</title>
+        <title>SportTracker - {% if user %}{{ gettext('Edit User') }}{% else %}{{ gettext('New User') }}{% endif %}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -15,11 +15,11 @@
                 <div class="row">
                     <div class="col-12 mx-auto">
                         {% if user %}
-                            <h1>Edit User</h1>
+                            <h1>{{ gettext('Edit User') }}</h1>
                             <a href="{{ url_for('users.delete', user_id=user_id) }}"
-                               class="btn btn-danger mt-3">Delete</a>
+                               class="btn btn-danger mt-3">{{ gettext('Delete') }}</a>
                         {% else %}
-                            <h1>New User</h1>
+                            <h1>{{ gettext('New User') }}</h1>
                         {% endif %}
                     </div>
                 </div>
@@ -36,13 +36,13 @@
                               method="post">
 
                             <div class="mb-3">
-                                <label for="user-name" class="form-label">Name</label>
+                                <label for="user-name" class="form-label">{{ gettext('Username') }}</label>
                                 <input type="text" class="form-control"
                                        id="user-name" name="username"
                                        required="required" {% if user %}value="{{ user.username }}"{% endif %}>
                             </div>
                             <div class="mb-5">
-                                <label for="user-password" class="form-label">Password</label>
+                                <label for="user-password" class="form-label">{{ gettext('Password') }}</label>
                                 <input type="password" class="form-control" id="user-password"
                                        name="password" required="required">
                             </div>
@@ -51,7 +51,7 @@
                                 <input type="hidden" name="old_username" value="{{ user.username }}">
                             {% endif %}
 
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

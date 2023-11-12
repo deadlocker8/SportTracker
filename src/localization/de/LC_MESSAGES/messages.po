@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-12 01:16+0100\n"
-"PO-Revision-Date: 2023-11-12 01:16+0100\n"
+"POT-Creation-Date: 2023-11-12 12:05+0100\n"
+"PO-Revision-Date: 2023-11-12 12:07+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,23 +17,129 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.13.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: ../templates/charts.jinja2:6 ../templates/charts.jinja2:19
 #: ../templates/macros.jinja2:55
 msgid "Charts"
 msgstr "Diagramme"
 
-#: ../templates/macros.jinja2:42
+#: ../templates/charts.jinja2:50
+msgid "Distance per Month"
+msgstr "Strecke pro Monat"
+
+#: ../templates/charts.jinja2:60
+msgid "Distance in km"
+msgstr "Strecke in km"
+
+#: ../templates/login.jinja2:19 ../templates/userForm.jinja2:39
+msgid "Username"
+msgstr "Benutzer"
+
+#: ../templates/login.jinja2:23 ../templates/profile.jinja2:31
+#: ../templates/userForm.jinja2:45
+msgid "Password"
+msgstr "Passwort"
+
+#: ../templates/macros.jinja2:42 ../templates/users.jinja2:6
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../templates/macros.jinja2:47
+#: ../templates/macros.jinja2:47 ../templates/tracks.jinja2:140
 msgid "Tracks"
 msgstr "Tracks"
 
-#: ../templates/macros.jinja2:51
+#: ../templates/macros.jinja2:51 ../templates/monthGoals.jinja2:6
 msgid "Goals"
 msgstr "Monatsziele"
+
+#: ../templates/monthGoalChooser.jinja2:6
+#: ../templates/monthGoalChooser.jinja2:17
+msgid "New Month Goal"
+msgstr "Neues Monatsziel"
+
+#: ../templates/monthGoalChooser.jinja2:26
+msgid "New Distance Goal"
+msgstr "Neues Streckenziel"
+
+#: ../templates/monthGoalChooser.jinja2:33
+msgid "New Count Goal"
+msgstr "Neues Anzahlziel"
+
+#: ../templates/monthGoalCountForm.jinja2:6
+#: ../templates/monthGoalCountForm.jinja2:18
+msgid "Edit Count Month Goal"
+msgstr "Anzahlziel bearbeiten"
+
+#: ../templates/monthGoalCountForm.jinja2:6
+#: ../templates/monthGoalCountForm.jinja2:21
+#: ../templates/monthGoalDistanceForm.jinja2:6
+msgid "New Count Month Goal"
+msgstr "Neues Anzahlziel"
+
+#: ../templates/monthGoalCountForm.jinja2:19
+#: ../templates/monthGoalDistanceForm.jinja2:19
+#: ../templates/trackBikingForm.jinja2:19
+#: ../templates/trackRunningForm.jinja2:19 ../templates/userForm.jinja2:20
+msgid "Delete"
+msgstr "Löschen"
+
+#: ../templates/monthGoalCountForm.jinja2:31
+#: ../templates/monthGoalDistanceForm.jinja2:31
+msgid "Type"
+msgstr "Typ"
+
+#: ../templates/monthGoalCountForm.jinja2:33
+#: ../templates/monthGoalDistanceForm.jinja2:33
+msgid "Biking"
+msgstr "Fahrrad fahren"
+
+#: ../templates/monthGoalCountForm.jinja2:34
+#: ../templates/monthGoalDistanceForm.jinja2:34
+msgid "Running"
+msgstr "Laufen"
+
+#: ../templates/monthGoalCountForm.jinja2:41
+#: ../templates/monthGoalDistanceForm.jinja2:41
+msgid "Year"
+msgstr "Jahr"
+
+#: ../templates/monthGoalCountForm.jinja2:47
+#: ../templates/monthGoalDistanceForm.jinja2:47
+msgid "Month"
+msgstr "Monat"
+
+#: ../templates/monthGoalCountForm.jinja2:58
+msgid "Minimum number of tracks"
+msgstr "Minimale Anzahl an Tracks"
+
+#: ../templates/monthGoalCountForm.jinja2:64
+msgid "Perfect number of tracks"
+msgstr "Ideale Anzahl an Tracks"
+
+#: ../templates/monthGoalCountForm.jinja2:72
+#: ../templates/monthGoalDistanceForm.jinja2:72 ../templates/profile.jinja2:36
+#: ../templates/profile.jinja2:48 ../templates/trackBikingForm.jinja2:103
+#: ../templates/trackRunningForm.jinja2:98 ../templates/userForm.jinja2:54
+msgid "Save"
+msgstr "Speichern"
+
+#: ../templates/monthGoalDistanceForm.jinja2:6
+#: ../templates/monthGoalDistanceForm.jinja2:18
+msgid "Edit Distance Month Goal"
+msgstr "Streckenziel bearbeiten"
+
+#: ../templates/monthGoalDistanceForm.jinja2:21
+msgid "New Distance Month Goal"
+msgstr "Neues Streckenziel"
+
+#: ../templates/monthGoalDistanceForm.jinja2:58
+msgid "Minimum Distance (in km)"
+msgstr "Minimale Strecke (in km)"
+
+#: ../templates/monthGoalDistanceForm.jinja2:64
+msgid "Perfect Distance (in km)"
+msgstr "Ideale Strecke (in km)"
 
 #: ../templates/monthGoals.jinja2:19
 msgid "Month Goals"
@@ -43,15 +149,98 @@ msgstr "Monatsziele"
 msgid "Profile"
 msgstr "Profil"
 
-#: ../templates/profile.jinja2:31
-msgid "Password"
-msgstr "Passwort"
-
-#: ../templates/profile.jinja2:36 ../templates/profile.jinja2:48
-msgid "Save"
-msgstr "Speichern"
-
 #: ../templates/profile.jinja2:41
 msgid "Language"
 msgstr "Sprache"
 
+#: ../templates/trackBikingForm.jinja2:6 ../templates/trackBikingForm.jinja2:18
+#: ../templates/trackRunningForm.jinja2:18
+msgid "Edit Biking Track"
+msgstr "Fahrrad-Track bearbeiten"
+
+#: ../templates/trackBikingForm.jinja2:6 ../templates/trackBikingForm.jinja2:21
+#: ../templates/trackChooser.jinja2:26 ../templates/trackRunningForm.jinja2:6
+#: ../templates/trackRunningForm.jinja2:21
+msgid "New Biking Track"
+msgstr "Neuer Fahrrad-Track"
+
+#: ../templates/trackBikingForm.jinja2:31
+#: ../templates/trackRunningForm.jinja2:31
+msgid "Name"
+msgstr "Name"
+
+#: ../templates/trackBikingForm.jinja2:39
+#: ../templates/trackRunningForm.jinja2:39
+msgid "Date"
+msgstr "Datum"
+
+#: ../templates/trackBikingForm.jinja2:44
+#: ../templates/trackRunningForm.jinja2:44
+msgid "Start Time"
+msgstr "Startuhrzeit"
+
+#: ../templates/trackBikingForm.jinja2:52
+#: ../templates/trackRunningForm.jinja2:52
+msgid "Distance (in km)"
+msgstr "Strecke (in km)"
+
+#: ../templates/trackBikingForm.jinja2:61
+#: ../templates/trackRunningForm.jinja2:61
+msgid "Duration"
+msgstr "Dauer"
+
+#: ../templates/trackBikingForm.jinja2:63
+#: ../templates/trackRunningForm.jinja2:63
+msgid "Hours"
+msgstr "Stunden"
+
+#: ../templates/trackBikingForm.jinja2:71
+#: ../templates/trackRunningForm.jinja2:71
+msgid "Minutes"
+msgstr "Minuten"
+
+#: ../templates/trackBikingForm.jinja2:78
+#: ../templates/trackRunningForm.jinja2:78
+msgid "Seconds"
+msgstr "Sekunden"
+
+#: ../templates/trackBikingForm.jinja2:85
+#: ../templates/trackRunningForm.jinja2:85
+msgid "Average Heart Rate"
+msgstr "Durchschnittliche Herzfrequenz"
+
+#: ../templates/trackBikingForm.jinja2:92
+#: ../templates/trackRunningForm.jinja2:92
+msgid "Elevation Sum (in m)"
+msgstr "Summe Höhenmeter (in m)"
+
+#: ../templates/trackBikingForm.jinja2:99
+msgid "Bike"
+msgstr "Fahrrad"
+
+#: ../templates/trackChooser.jinja2:6 ../templates/trackChooser.jinja2:17
+msgid "New Track"
+msgstr "Neuer Track"
+
+#: ../templates/trackChooser.jinja2:33
+msgid "New Running Track"
+msgstr "Neuer Lauf-Track"
+
+#: ../templates/trackRunningForm.jinja2:6
+msgid "Edit Running Track"
+msgstr "Lauf-Track bearbeiten"
+
+#: ../templates/userForm.jinja2:6 ../templates/userForm.jinja2:18
+msgid "Edit User"
+msgstr "Nutzer bearbeiten"
+
+#: ../templates/userForm.jinja2:6 ../templates/userForm.jinja2:22
+msgid "New User"
+msgstr "Neuer Nutzer"
+
+#: ../templates/users.jinja2:31
+msgid "Administrator"
+msgstr "Administrator"
+
+#~ msgid "Momth"
+#~ msgstr "Monat"

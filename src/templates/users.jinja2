@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - Tracks</title>
+        <title>SportTracker - {{ gettext('Users') }}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -28,7 +28,7 @@
                                     <div class="card-body">
                                         <h2 class="card-title text-truncate">{{ user.username }}</h2>
                                         {% if user.isAdmin %}
-                                            (Administrator)
+                                            ({{ gettext('Administrator') }})
                                         {% endif %}
                                     </div>
                                 </div>

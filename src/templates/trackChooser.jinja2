@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - New Track</title>
+        <title>SportTracker - {{ gettext('New Track') }}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -14,7 +14,7 @@
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col-12 mx-auto">
-                        <h1>New Track</h1>
+                        <h1>{{ gettext('New Track') }}</h1>
                     </div>
                 </div>
 
@@ -23,14 +23,14 @@
                         <a href="{{ url_for('bikingTracks.add') }}"
                            class="btn btn-link d-flex align-items-center justify-content-center text-decoration-none">
                             <span class="material-icons rounded-circle fs-1 p-3 text-dark bg-warning me-3">directions_bike</span>
-                            <span class="fs-3 text-light">New Biking Track</span>
+                            <span class="fs-3 text-light">{{ gettext('New Biking Track') }}</span>
                         </a>
                     </div>
                     <div class="col-6">
                         <a href="{{ url_for('runningTracks.add') }}"
                            class="btn btn-link d-flex align-items-center justify-content-center text-decoration-none">
                             <span class="material-icons rounded-circle fs-1 p-3 text-dark bg-info me-3">directions_run</span>
-                            <span class="fs-3 text-light">New Running Track</span>
+                            <span class="fs-3 text-light">{{ gettext('New Running Track') }}</span>
                         </a>
                     </div>
                 </div>
