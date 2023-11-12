@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {% if track %}{{ gettext('Edit Running Track') }}{% else %}{{ gettext('New Biking Track') }}{% endif %}</title>
+        <title>SportTracker - {% if track %}{{ gettext('Edit Running Track') }}{% else %}{{ gettext('New Running Track') }}{% endif %}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -15,10 +15,10 @@
                 <div class="row">
                     <div class="col-12 mx-auto">
                         {% if track %}
-                            <h1>{{ gettext('Edit Biking Track') }}</h1>
+                            <h1>{{ gettext('Edit Running Track') }}</h1>
                             <a href="{{ url_for('runningTracks.delete', track_id=track_id) }}" class="btn btn-danger mt-3">{{ gettext('Delete') }}</a>
                         {% else %}
-                            <h1>{{ gettext('New Biking Track') }}</h1>
+                            <h1>{{ gettext('New Running Track') }}</h1>
                         {% endif %}
                     </div>
                 </div>
