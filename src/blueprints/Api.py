@@ -50,7 +50,7 @@ def construct_blueprint(version: dict):
 
     @api.route('/version')
     @login_required
-    def add():
+    def version():
         return jsonify(version)
 
     @api.route('/addBikingTrack', methods=['POST'])
