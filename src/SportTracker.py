@@ -11,13 +11,13 @@ from TheCodeLabs_FlaskUtils import FlaskBaseApp
 from flask import Flask, request
 from flask_babel import Babel
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 
 from blueprints import General, Authentication, Tracks, MonthGoals, Charts, Users, BikingTracks, RunningTracks, \
     MonthGoalsDistance, MonthGoalsCount, Api
 from logic import Constants
 from logic.model.Models import db, User, Track, TrackType, MonthGoalDistance, \
-    MonthGoalCount, BikingTrack, RunningTrack
+    MonthGoalCount, BikingTrack, RunningTrack, Language
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
@@ -85,14 +85,18 @@ class SportTracker(FlaskBaseApp):
             return User.query.get(int(user_id))
 
         app.config['LANGUAGES'] = {
-            'en': 'English',
-            'de': 'Deutsch'
+            Language.ENGLISH.shortCode: Language.ENGLISH.localizedName,
+            Language.GERMAN.shortCode: Language.GERMAN.localizedName
         }
+        app.config['BABEL_TRANSLATION_DIRECTORIES'] = os.path.join(currentDirectory, 'localization')
 
         def get_locale():
+            if current_user.is_authenticated:
+                return current_user.language.shortCode
+
             return request.accept_languages.best_match(app.config['LANGUAGES'].keys())
 
-        babel = Babel(app, locale_selector=get_locale)
+        Babel(app, locale_selector=get_locale)
 
         return app
 
@@ -105,7 +109,8 @@ class SportTracker(FlaskBaseApp):
 
             user = User(username='admin',
                         password=Bcrypt().generate_password_hash(password).decode('utf-8'),
-                        isAdmin=True)
+                        isAdmin=True,
+                        language=Language.ENGLISH)
             database.session.add(user)
             database.session.commit()
 
@@ -119,7 +124,8 @@ class SportTracker(FlaskBaseApp):
             LOGGER.debug(f'Creating demo user')
             user = User(username='demo',
                         password=Bcrypt().generate_password_hash('demo').decode('utf-8'),
-                        isAdmin=False)
+                        isAdmin=False,
+                        language=Language.ENGLISH)
             database.session.add(user)
             database.session.commit()
 

@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - Profile</title>
+        <title>SportTracker - {{ gettext('Profile') }}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -14,7 +14,7 @@
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col-12 mx-auto">
-                        <h1>Profile</h1>
+                        <h1>{{ gettext('Profile') }}</h1>
                     </div>
                 </div>
 
@@ -26,16 +26,26 @@
                             </div>
                         {% endif %}
 
-                        <form role="form" action="{{ url_for('users.editSelfPost') }}"
-                              method="post">
-
-                            <div class="mb-5">
-                                <label for="user-password" class="form-label">Password</label>
+                        <form role="form" action="{{ url_for('users.editSelfPost') }}" method="post">
+                            <div class="mb-4">
+                                <label for="user-password" class="form-label">{{ gettext('Password') }}</label>
                                 <input type="password" class="form-control" id="user-password"
                                        name="password" required="required">
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
+                        </form>
+
+                        <form role="form" action="{{ url_for('users.editSelfLanguagePost') }}" method="post" class="mt-5">
+                           <div class="mb-4">
+                                <label for="user-language" class="form-label">{{ gettext('Language') }}</label>
+                                <select class="form-select" id="user-language" name="language" required="required">
+                                    <option value="ENGLISH" {% if userLanguage == 'ENGLISH'%}selected{% endif %}>English</option>
+                                    <option value="GERMAN" {% if userLanguage == 'GERMAN'%}selected{% endif %}>Deutsch</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

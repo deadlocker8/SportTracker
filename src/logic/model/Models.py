@@ -12,11 +12,24 @@ from sqlalchemy.orm import Mapped, mapped_column
 db = SQLAlchemy()
 
 
+class Language(enum.Enum):
+    ENGLISH = 'ENGLISH', 'en', 'English'
+    GERMAN = 'GERMAN', 'de', 'Deutsch'
+
+    def __new__(cls, name: str, shortCode: str, localizedName: str):
+        member = object.__new__(cls)
+        member._value_ = name
+        member.shortCode = shortCode
+        member.localizedName = localizedName
+        return member
+
+
 class User(UserMixin, db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     username: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
     isAdmin: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    language = db.Column(db.Enum(Language))
     bikingTracks = db.relationship('BikingTrack', backref='user', lazy=True, cascade='delete')
     runningTracks = db.relationship('RunningTrack', backref='user', lazy=True, cascade='delete')
 

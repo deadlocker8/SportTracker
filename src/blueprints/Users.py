@@ -9,7 +9,7 @@ from pydantic import BaseModel
 
 from logic import Constants
 from logic.AdminWrapper import admin_role_required
-from logic.model.Models import db, User
+from logic.model.Models import db, User, Language
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -27,6 +27,10 @@ class EditUserFormModel(BaseModel):
 
 class EditSelfUserFormModel(BaseModel):
     password: str
+
+
+class EditSelfLanguageFormModel(BaseModel):
+    language: str
 
 
 @dataclass
@@ -131,7 +135,7 @@ def construct_blueprint():
     @users.route('/editSelf')
     @login_required
     def editSelf():
-        return render_template('profile.jinja2')
+        return render_template('profile.jinja2', userLanguage=current_user.language.name)
 
     @users.route('/editSelfPost', methods=['POST'])
     @login_required
@@ -154,6 +158,22 @@ def construct_blueprint():
         user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
 
         LOGGER.debug(f'Updated own user: {user.username}')
+        db.session.commit()
+
+        return redirect(url_for('users.editSelf'))
+
+    @users.route('/editSelfLanguagePost', methods=['POST'])
+    @login_required
+    @validate()
+    def editSelfLanguagePost(form: EditSelfLanguageFormModel):
+        user = User.query.filter(User.id == current_user.id).first()
+
+        if user is None:
+            abort(404)
+
+        user.language = Language(form.language)
+
+        LOGGER.debug(f'Updated language for user: {user.username} to {form.language}')
         db.session.commit()
 
         return redirect(url_for('users.editSelf'))
