@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-12 12:05+0100\n"
+"POT-Creation-Date: 2023-11-12 17:57+0100\n"
 "PO-Revision-Date: 2023-11-12 12:07+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
@@ -17,7 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.13.1\n"
-"X-Generator: Poedit 2.4.2\n"
 
 #: ../templates/charts.jinja2:6 ../templates/charts.jinja2:19
 #: ../templates/macros.jinja2:55
@@ -154,13 +153,11 @@ msgid "Language"
 msgstr "Sprache"
 
 #: ../templates/trackBikingForm.jinja2:6 ../templates/trackBikingForm.jinja2:18
-#: ../templates/trackRunningForm.jinja2:18
 msgid "Edit Biking Track"
 msgstr "Fahrrad-Track bearbeiten"
 
 #: ../templates/trackBikingForm.jinja2:6 ../templates/trackBikingForm.jinja2:21
-#: ../templates/trackChooser.jinja2:26 ../templates/trackRunningForm.jinja2:6
-#: ../templates/trackRunningForm.jinja2:21
+#: ../templates/trackChooser.jinja2:26
 msgid "New Biking Track"
 msgstr "Neuer Fahrrad-Track"
 
@@ -222,11 +219,13 @@ msgstr "Fahrrad"
 msgid "New Track"
 msgstr "Neuer Track"
 
-#: ../templates/trackChooser.jinja2:33
+#: ../templates/trackChooser.jinja2:33 ../templates/trackRunningForm.jinja2:6
+#: ../templates/trackRunningForm.jinja2:21
 msgid "New Running Track"
 msgstr "Neuer Lauf-Track"
 
 #: ../templates/trackRunningForm.jinja2:6
+#: ../templates/trackRunningForm.jinja2:18
 msgid "Edit Running Track"
 msgstr "Lauf-Track bearbeiten"
 
@@ -244,3 +243,4 @@ msgstr "Administrator"
 
 #~ msgid "Momth"
 #~ msgstr "Monat"
+

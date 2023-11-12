@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-12 12:05+0100\n"
+"POT-Creation-Date: 2023-11-12 17:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -152,13 +152,11 @@ msgid "Language"
 msgstr ""
 
 #: ../templates/trackBikingForm.jinja2:6 ../templates/trackBikingForm.jinja2:18
-#: ../templates/trackRunningForm.jinja2:18
 msgid "Edit Biking Track"
 msgstr ""
 
 #: ../templates/trackBikingForm.jinja2:6 ../templates/trackBikingForm.jinja2:21
-#: ../templates/trackChooser.jinja2:26 ../templates/trackRunningForm.jinja2:6
-#: ../templates/trackRunningForm.jinja2:21
+#: ../templates/trackChooser.jinja2:26
 msgid "New Biking Track"
 msgstr ""
 
@@ -220,11 +218,13 @@ msgstr ""
 msgid "New Track"
 msgstr ""
 
-#: ../templates/trackChooser.jinja2:33
+#: ../templates/trackChooser.jinja2:33 ../templates/trackRunningForm.jinja2:6
+#: ../templates/trackRunningForm.jinja2:21
 msgid "New Running Track"
 msgstr ""
 
 #: ../templates/trackRunningForm.jinja2:6
+#: ../templates/trackRunningForm.jinja2:18
 msgid "Edit Running Track"
 msgstr ""
 
