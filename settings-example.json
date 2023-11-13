@@ -12,5 +12,8 @@
         "fileName": "SportTracker.log",
         "maxBytes": 2097152,
         "numberOfBackups": 3
+    },
+    "database": {
+        "uri": "postgresql://username:password@localhost:5432/your_database"
     }
 }

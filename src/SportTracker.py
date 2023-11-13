@@ -41,8 +41,7 @@ class SportTracker(FlaskBaseApp):
         app.debug = self._isDebug
 
         currentDirectory = os.path.abspath(os.path.dirname(__file__))
-        databasePath = os.path.join(os.path.dirname(currentDirectory), 'sportTracker.db')
-        app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///' + databasePath
+        app.config["SQLALCHEMY_DATABASE_URI"] = self._settings['database']['uri']
 
         db.init_app(app)
 
