@@ -15,7 +15,7 @@ RUN ln -s $($HOME/.local/share/pypoetry/venv/bin/poetry env info -p) /opt/SportT
 FROM python:3.11-alpine
 
 RUN apk update && apk upgrade && \
-    apk add git && \
+    apk add py3-psycopg2 && \
     rm -rf /var/cache/apk
 
 COPY src/ /opt/SportTracker/src
