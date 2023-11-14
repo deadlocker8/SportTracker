@@ -14,7 +14,7 @@ class CsvParser:
     DATE_FORMAT = '%d.%m.%Y'
 
     @classmethod
-    def import_csv(cls, csvPath: str, session) -> None:
+    def import_csv(cls, csvPath: str, session, url: str) -> None:
         LOGGER.debug(f'Parsing csv file "{csvPath}"...')
 
         tracks = 0
@@ -49,7 +49,7 @@ class CsvParser:
                             'distance_perfect': distance_perfect
                         }
                         LOGGER.debug(f'Importing {data}')
-                        response = session.post('http://127.0.0.1:10022/api/addMonthGoalDistance', json=goalData)
+                        response = session.post(f'{url}/api/addMonthGoalDistance', json=goalData)
                         LOGGER.debug(response.content)
                         if not response.ok:
                             raise RuntimeError(response)
@@ -69,7 +69,7 @@ class CsvParser:
                     'bike': row[9]
                 }
                 LOGGER.debug(f'Importing {data}')
-                response = session.post('http://127.0.0.1:10022/api/addBikingTrack', json=data)
+                response = session.post(f'{url}/api/addBikingTrack', json=data)
                 LOGGER.debug(response.content)
                 if not response.ok:
                     raise RuntimeError(response)
@@ -97,13 +97,19 @@ class CsvParser:
 @click.command()
 @click.option('--username', '-u', help='Username', required=True)
 @click.option('--password', '-p', help='Password', required=True)
-def run(username, password):
+@click.option('--url', '-url', help='API URL', required=True)
+@click.option('--csv', '-csv', help='CSV Path', required=True)
+def run(username, password, url, csv):
     LOGGER.debug('Log in...')
     session = requests.Session()
-    session.post('http://127.0.0.1:10022/login', data={'username': username, 'password': password})
+    response = session.post(f'{url}/login', data={'username': username, 'password': password})
+    LOGGER.debug(response.content)
+    if not response.ok:
+        raise RuntimeError(response)
+
     LOGGER.debug('Log in DONE')
 
-    CsvParser.import_csv(r'C:\Users\RobertG\Desktop\Fahrrad - Fahrrad.csv', session)
+    CsvParser.import_csv(csv, session, url)
 
 
 if __name__ == '__main__':
