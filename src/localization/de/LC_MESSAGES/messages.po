@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-12 17:57+0100\n"
-"PO-Revision-Date: 2023-11-12 12:07+0100\n"
+"POT-Creation-Date: 2023-11-14 22:16+0100\n"
+"PO-Revision-Date: 2023-11-14 22:16+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,17 +17,26 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.13.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
-#: ../templates/charts.jinja2:6 ../templates/charts.jinja2:19
-#: ../templates/macros.jinja2:55
+#: ../templates/chartChooser.jinja2:6 ../templates/chartChooser.jinja2:17
+#: ../templates/chartMacros.jinja2:7 ../templates/chartMacros.jinja2:20
+#: ../templates/macros.jinja2:52
 msgid "Charts"
 msgstr "Diagramme"
 
-#: ../templates/charts.jinja2:50
+#: ../templates/chartChooser.jinja2:26
+#: ../templates/chartDistancePerMonth.jinja2:21
 msgid "Distance per Month"
 msgstr "Strecke pro Monat"
 
-#: ../templates/charts.jinja2:60
+#: ../templates/chartChooser.jinja2:33
+#: ../templates/chartDistancePerYear.jinja2:22
+msgid "Distance per Year"
+msgstr "Strecke pro Jahr"
+
+#: ../templates/chartDistancePerMonth.jinja2:31
+#: ../templates/chartDistancePerYear.jinja2:32
 msgid "Distance in km"
 msgstr "Strecke in km"
 
@@ -40,15 +49,15 @@ msgstr "Benutzer"
 msgid "Password"
 msgstr "Passwort"
 
-#: ../templates/macros.jinja2:42 ../templates/users.jinja2:6
+#: ../templates/macros.jinja2:39 ../templates/users.jinja2:6
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../templates/macros.jinja2:47 ../templates/tracks.jinja2:140
+#: ../templates/macros.jinja2:44 ../templates/tracks.jinja2:140
 msgid "Tracks"
 msgstr "Tracks"
 
-#: ../templates/macros.jinja2:51 ../templates/monthGoals.jinja2:6
+#: ../templates/macros.jinja2:48 ../templates/monthGoals.jinja2:6
 msgid "Goals"
 msgstr "Monatsziele"
 
@@ -243,4 +252,3 @@ msgstr "Administrator"
 
 #~ msgid "Momth"
 #~ msgstr "Monat"
-
