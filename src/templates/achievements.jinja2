@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+{% macro renderAchievement(icon, borderColor, title, description) -%}
+    <div class="col">
+        <div class="tile">
+            <div class="diamond d-flex align-items-center justify-content-center mx-auto bg-secondary-subtle {{ borderColor }} text-dark">
+                <div class="label fw-bold">
+                    <span class="material-icons">{{ icon }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="card height-60">
+            <div class="card-body">
+                <h5 class="card-title mt-5">{{ gettext(title) }}</h5>
+                <p class="card-text">{{ description }}</p>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Achievements') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('achievements') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row mt-3 mb-3">
+                    <div class="col-12 mx-auto">
+                        <h3 class="d-flex align-items-center justify-content-center">
+                            <span class="material-icons rounded-circle fs-2 p-2 text-dark bg-warning me-3">directions_bike</span><span>{{ gettext('Biking') }}</span>
+                        </h3>
+                    </div>
+                </div>
+
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-5">
+                    {{ renderAchievement('sports_score', 'border-warning', 'Month Goals In A Row', 'You have achieved all your monthly goals for <span class="fw-bold">3</span> months in a row!') }}
+                    {{ renderAchievement('route', 'border-warning', 'Longest Track', 'You cycled <span class="fw-bold">128 km</span> in one trip!') }}
+                    {{ renderAchievement('map', 'border-warning', 'Total Distance', 'You cycled a total of <span class="fw-bold">10245 km</span>!') }}
+                    {{ renderAchievement('calendar_month', 'border-warning', 'Best Month', '<span class="fw-bold">August 2022</span> was your best month with <span class="fw-bold">312,5 km</span>!') }}
+                </div>
+
+                <div class="mt-5">&nbsp;</div>
+
+                <div class="row mt-5 mb-3">
+                    <div class="col-12 mx-auto">
+                        <h3 class="d-flex align-items-center justify-content-center">
+                            <span class="material-icons rounded-circle fs-2 p-2 text-dark bg-info me-3">directions_run</span><span>{{ gettext('Running') }}</span>
+                        </h3>
+                    </div>
+                </div>
+
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-5">
+                    {{ renderAchievement('sports_score', 'border-info', 'Month Goals In A Row', 'You have achieved all your monthly goals for <span class="fw-bold">7</span> months in a row!') }}
+                    {{ renderAchievement('route', 'border-info', 'Longest Track', 'You ran  <span class="fw-bold">12 km</span> in one trip!') }}
+                    {{ renderAchievement('map', 'border-info', 'Total Distance', 'You ran a total of <span class="fw-bold">153,3 km</span>!') }}
+                    {{ renderAchievement('calendar_month', 'border-info', 'Best Month', '<span class="fw-bold">May 2023</span> was your best month with <span class="fw-bold">45,8 km</span>!') }}
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+        <style>
+            .tile {
+                transform: rotateY(0);
+                transform-origin: center center;
+                transition: all 0.3s ease-out;
+                position: relative;
+                z-index: 2;
+            }
+
+            .diamond {
+                width: 8rem;
+                height: 8rem;
+                border-radius: 0.5rem;
+                border: 0.75rem solid;
+                transform: translateY(25%) rotateZ(45deg);
+                transform-origin: center center;
+                transform-style: preserve-3d;
+            }
+
+            .label {
+                transform: rotateZ(-45deg);
+                transform-style: preserve-3d;
+            }
+
+            .label .material-icons {
+                font-size: 4rem;
+            }
+
+            .height-60 {
+                height: 60%;
+            }
+        </style>
+    </body>
+</html>

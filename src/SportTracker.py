@@ -14,7 +14,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, current_user
 
 from blueprints import General, Authentication, Tracks, MonthGoals, Charts, Users, BikingTracks, RunningTracks, \
-    MonthGoalsDistance, MonthGoalsCount, Api
+    MonthGoalsDistance, MonthGoalsCount, Api, Achievements
 from logic import Constants
 from logic.model.Models import db, User, Track, TrackType, MonthGoalDistance, \
     MonthGoalCount, BikingTrack, RunningTrack, Language
@@ -177,6 +177,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Charts.construct_blueprint())
         app.register_blueprint(Users.construct_blueprint())
         app.register_blueprint(Api.construct_blueprint(self._version))
+        app.register_blueprint(Achievements.construct_blueprint())
 
 
 @click.command()

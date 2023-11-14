@@ -51,6 +51,10 @@
                                 <a class="nav-link {% if activeLink == 'charts' %}active {% endif %}"
                                    href="{{ url_for('charts.chartChooser') }}">{{ gettext('Charts') }}</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if activeLink == 'achievements' %}active {% endif %}"
+                                   href="{{ url_for('achievements.showAchievements') }}">{{ gettext('Achievements') }}</a>
+                            </li>
                         {% endif %}
                     {% endif %}
                 </ul>
