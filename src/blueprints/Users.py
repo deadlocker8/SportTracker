@@ -77,7 +77,7 @@ def construct_blueprint():
                                    errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
 
         user = User(username=username, password=Bcrypt().generate_password_hash(password).decode('utf-8'),
-                    isAdmin=False)
+                    isAdmin=False, language=Language.ENGLISH)
         LOGGER.debug(f'Saved new user: {user.username}')
         db.session.add(user)
         db.session.commit()
