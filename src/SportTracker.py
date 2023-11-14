@@ -24,7 +24,7 @@ LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
 class SportTracker(FlaskBaseApp):
     def __init__(self, appName: str, rootDir: str, logger: logging.Logger, isDebug: bool, generateDummyData: bool):
-        super().__init__(appName, rootDir, logger, serveFavicon=False)
+        super().__init__(appName, rootDir, logger, serveFavicon=True)
 
         self._isDebug = isDebug
         self._generateDummyData = generateDummyData
