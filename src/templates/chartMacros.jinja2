@@ -1,0 +1,35 @@
+{% macro chart() -%}
+    <!DOCTYPE html>
+
+    <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>SportTracker - {{ gettext('Charts') }}</title>
+            {% import 'macros.jinja2' as macros with context %}
+            {{ macros.header() }}
+        </head>
+        <body class="bg-dark text-light">
+            {{ macros.navbar('charts') }}
+
+            {% import 'monthGoalsMacros.jinja2' as monthGoalsMacros with context %}
+
+            <div id="main" class="center-align">
+                <section class="py-5 text-center container">
+                    <div class="row">
+                        <div class="col-12 mx-auto">
+                            <h1>{{ gettext('Charts') }}</h1>
+                        </div>
+                    </div>
+
+                    <div id="chartContainer"></div>
+                </section>
+            </div>
+
+            {{ macros.scripts() }}
+            <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+            <script>
+                 {{ caller() }}
+            </script>
+        </body>
+    </html>
+{%- endmacro %}

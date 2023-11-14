@@ -17,11 +17,16 @@ def construct_blueprint():
 
     @charts.route('/')
     @login_required
-    def showCharts():
+    def chartChooser():
+        return render_template('chartChooser.jinja2')
+
+    @charts.route('/distancePerMonth')
+    @login_required
+    def chartDistancePerMonth():
         chartDataDistancePerMonth = [__get_distance_per_month_by_type(BikingTrack),
                                      __get_distance_per_month_by_type(RunningTrack)]
 
-        return render_template('charts.jinja2', chartDataDistancePerMonth=chartDataDistancePerMonth)
+        return render_template('chartDistancePerMonth.jinja2', chartDataDistancePerMonth=chartDataDistancePerMonth)
 
     def __get_distance_per_month_by_type(trackClass) -> dict[str, Any]:
         year = extract('year', trackClass.startTime)
