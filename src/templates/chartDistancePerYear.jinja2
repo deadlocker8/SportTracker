@@ -1,0 +1,52 @@
+{% import 'chartMacros.jinja2' as chartMacros with context %}
+{% call chartMacros.chart() %}
+     const data = [
+        {% for entry in chartDataDistancePerYear %}
+            {
+                x: {{ entry['yearNames'] }},
+                y: {{ entry['values'] }},
+                type: 'bar',
+                marker: {
+                    color: '{{ entry.type.background_color_hex }}'
+                },
+                text: {{ entry['values'] }},
+                name: '{{ entry.type.name | capitalize }}'
+            },
+        {% endfor %}
+    ];
+
+    const plotlyLayout = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        title: {
+            text: '{{ gettext('Distance per Year') }}',
+            font: {
+                color: '#FFFFFF'
+            }
+        },
+        xaxis: {
+            type: 'category',
+            color: '#FFFFFF'
+        },
+        yaxis: {
+            title: '{{ gettext('Distance in km') }}',
+            rangemode: 'tozero',
+            tickformat: '.0f',
+            showline: true,
+            color: '#FFFFFF'
+        },
+        barmode: 'group',
+        legend: {
+            font: {
+                color: '#FFFFFF'
+            }
+        }
+    }
+
+    const plotlyConfig = {
+        responsive: true,
+        displayModeBar: false
+    };
+
+    Plotly.newPlot('chartContainer', data, plotlyLayout, plotlyConfig);
+{% endcall %}

@@ -20,6 +20,14 @@ def construct_blueprint():
     def chartChooser():
         return render_template('chartChooser.jinja2')
 
+    @charts.route('/distancePerYear')
+    @login_required
+    def chartDistancePerYear():
+        chartDataDistancePerYear = [__get_distance_per_year_by_type(BikingTrack),
+                                    __get_distance_per_year_by_type(RunningTrack)]
+
+        return render_template('chartDistancePerYear.jinja2', chartDataDistancePerYear=chartDataDistancePerYear)
+
     @charts.route('/distancePerMonth')
     @login_required
     def chartDistancePerMonth():
@@ -47,6 +55,27 @@ def construct_blueprint():
 
         return {
             'monthNames': monthNames,
+            'values': values,
+            'type': trackClass.type
+        }
+
+    def __get_distance_per_year_by_type(trackClass) -> dict[str, Any]:
+        year = extract('year', trackClass.startTime)
+
+        rows = (trackClass.query.with_entities(func.sum(trackClass.distance) / 1000, year)
+                .group_by(year)
+                .order_by(year)
+                .all())
+
+        yearNames = []
+        values = []
+
+        for row in rows:
+            yearNames.append(row[1])
+            values.append(float(row[0]))
+
+        return {
+            'yearNames': yearNames,
             'values': values,
             'type': trackClass.type
         }
