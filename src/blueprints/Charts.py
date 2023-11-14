@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from typing import Any
 
 from flask import Blueprint, render_template
@@ -23,18 +24,21 @@ def construct_blueprint():
         return render_template('charts.jinja2', chartDataDistancePerMonth=chartDataDistancePerMonth)
 
     def __get_distance_per_month_by_type(trackClass) -> dict[str, Any]:
-        rows = (trackClass.query.with_entities(trackClass.startTime, func.sum(trackClass.distance) / 1000)
-                .group_by(
-            extract('year', trackClass.startTime),
-            extract('month', trackClass.startTime),
-        ).all())
+        year = extract('year', trackClass.startTime)
+        month = extract('month', trackClass.startTime)
+
+        rows = (trackClass.query.with_entities(func.sum(trackClass.distance) / 1000, year, month)
+                .group_by(year, month)
+                .order_by(year, month)
+                .all())
 
         monthNames = []
         values = []
 
         for row in rows:
-            monthNames.append(row[0].strftime('%B %y'))
-            values.append(float(row[1]))
+            month = datetime.strptime(f'{int(row[1])}-{str(int(row[2])).zfill(2)}', '%Y-%m')
+            monthNames.append(month.strftime('%B %y'))
+            values.append(float(row[0]))
 
         return {
             'monthNames': monthNames,
