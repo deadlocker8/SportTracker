@@ -3,11 +3,11 @@ from datetime import datetime
 from typing import Any
 
 from flask import Blueprint, render_template
-from flask_login import login_required
+from flask_login import login_required, current_user
 from sqlalchemy import extract, func
 
 from logic import Constants
-from logic.model.Models import BikingTrack, RunningTrack
+from logic.model.Models import BikingTrack, RunningTrack, User
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -40,7 +40,9 @@ def construct_blueprint():
         year = extract('year', trackClass.startTime)
         month = extract('month', trackClass.startTime)
 
-        rows = (trackClass.query.with_entities(func.sum(trackClass.distance) / 1000, year, month)
+        rows = (trackClass.query
+                .with_entities(func.sum(trackClass.distance) / 1000, year, month)
+                .filter(trackClass.user_id == current_user.id)
                 .group_by(year, month)
                 .order_by(year, month)
                 .all())
@@ -63,6 +65,7 @@ def construct_blueprint():
         year = extract('year', trackClass.startTime)
 
         rows = (trackClass.query.with_entities(func.sum(trackClass.distance) / 1000, year)
+                .filter(trackClass.user_id == current_user.id)
                 .group_by(year)
                 .order_by(year)
                 .all())
