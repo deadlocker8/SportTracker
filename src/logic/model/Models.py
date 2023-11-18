@@ -6,7 +6,7 @@ from typing import ClassVar
 
 from flask_login import UserMixin, current_user
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Integer, DateTime, String, Boolean, extract
+from sqlalchemy import Integer, DateTime, String, Boolean, extract, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 db = SQLAlchemy()
@@ -234,3 +234,15 @@ def get_goal_summaries_by_year_and_month(year: int, month: int) -> list[MonthGoa
                   .all())
 
     return [goal.get_summary() for goal in goalsDistance + goalsCount]
+
+
+def get_distance_per_month_by_type(trackClass) -> list:
+    year = extract('year', trackClass.startTime)
+    month = extract('month', trackClass.startTime)
+
+    return (trackClass.query
+            .with_entities(func.sum(trackClass.distance) / 1000, year, month)
+            .filter(trackClass.user_id == current_user.id)
+            .group_by(year, month)
+            .order_by(year, month)
+            .all())

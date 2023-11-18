@@ -7,7 +7,7 @@ from flask_login import login_required, current_user
 from sqlalchemy import extract, func
 
 from logic import Constants
-from logic.model.Models import BikingTrack, RunningTrack, User
+from logic.model.Models import BikingTrack, RunningTrack, get_distance_per_month_by_type
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -37,16 +37,7 @@ def construct_blueprint():
         return render_template('chartDistancePerMonth.jinja2', chartDataDistancePerMonth=chartDataDistancePerMonth)
 
     def __get_distance_per_month_by_type(trackClass) -> dict[str, Any]:
-        year = extract('year', trackClass.startTime)
-        month = extract('month', trackClass.startTime)
-
-        rows = (trackClass.query
-                .with_entities(func.sum(trackClass.distance) / 1000, year, month)
-                .filter(trackClass.user_id == current_user.id)
-                .group_by(year, month)
-                .order_by(year, month)
-                .all())
-
+        rows = get_distance_per_month_by_type(trackClass)
         monthNames = []
         values = []
 
