@@ -24,6 +24,7 @@
         <title>SportTracker - {{ gettext('Achievements') }}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/achievements.css") }}"/>
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('achievements') }}
@@ -65,36 +66,5 @@
         </div>
 
         {{ macros.scripts() }}
-        <style>
-            .tile {
-                transform: rotateY(0);
-                transform-origin: center center;
-                position: relative;
-                z-index: 2;
-            }
-
-            .diamond {
-                width: 8rem;
-                height: 8rem;
-                border-radius: 0.5rem;
-                border: 0.75rem solid;
-                transform: translateY(25%) rotateZ(45deg);
-                transform-origin: center center;
-                transform-style: preserve-3d;
-            }
-
-            .label {
-                transform: rotateZ(-45deg);
-                transform-style: preserve-3d;
-            }
-
-            .label .material-icons {
-                font-size: 4rem;
-            }
-
-            .height-60 {
-                height: 60%;
-            }
-        </style>
     </body>
 </html>
