@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from datetime import datetime, date
 
 from flask import Blueprint, render_template
 from flask_babel import gettext
@@ -47,8 +47,8 @@ def construct_blueprint():
             return gettext('No month'), 0
 
         bestMonth = max(rows, key=lambda row: row[0])
-        month = datetime.strptime(f'{int(bestMonth[1])}-{str(int(bestMonth[2])).zfill(2)}', '%Y-%m')
-        return month.strftime('%B %Y'), float(bestMonth[0])
+        bestMonthDate = date(year=int(bestMonth[1]), month=int(bestMonth[2]), day=1)
+        return bestMonthDate.strftime('%B %Y'), float(bestMonth[0])
 
     def __get_streaks_by_type(trackClass) -> tuple[int, int]:
         firstTrack = (trackClass.query

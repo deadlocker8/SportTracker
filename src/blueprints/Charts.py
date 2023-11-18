@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from datetime import datetime, date
 from typing import Any
 
 from flask import Blueprint, render_template
@@ -42,8 +42,8 @@ def construct_blueprint():
         values = []
 
         for row in rows:
-            month = datetime.strptime(f'{int(row[1])}-{str(int(row[2])).zfill(2)}', '%Y-%m')
-            monthNames.append(month.strftime('%B %y'))
+            monthDate = date(year=int(row[1]), month=int(row[2]), day=1)
+            monthNames.append(monthDate.strftime('%B %y'))
             values.append(float(row[0]))
 
         return {
