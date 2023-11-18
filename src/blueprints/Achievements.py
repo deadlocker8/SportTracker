@@ -23,11 +23,11 @@ def construct_blueprint():
                                bikingLongestTrack=__get_longest_distance_by_type(BikingTrack) / 1000,
                                bikingTotalDistance=__get_total_distance_by_type(BikingTrack) / 1000,
                                bikingBestMonth=__get_best_month_by_type(BikingTrack),
-                               bikingHighestStreak=__get_highest_streak_by_type(BikingTrack),
+                               bikingStreak=__get_streaks_by_type(BikingTrack),
                                runningLongestTrack=__get_longest_distance_by_type(RunningTrack) / 1000,
                                runningTotalDistance=__get_total_distance_by_type(RunningTrack) / 1000,
                                runningBestMonth=__get_best_month_by_type(RunningTrack),
-                               runningHighestStreak=__get_highest_streak_by_type(RunningTrack),
+                               runningStreak=__get_streaks_by_type(RunningTrack),
                                )
 
     def __get_longest_distance_by_type(trackClass) -> int:
@@ -50,12 +50,12 @@ def construct_blueprint():
         month = datetime.strptime(f'{int(bestMonth[1])}-{str(int(bestMonth[2])).zfill(2)}', '%Y-%m')
         return month.strftime('%B %Y'), float(bestMonth[0])
 
-    def __get_highest_streak_by_type(trackClass) -> int:
+    def __get_streaks_by_type(trackClass) -> tuple[int, int]:
         firstTrack = (trackClass.query
                       .filter(trackClass.user_id == current_user.id)
                       .order_by(asc(trackClass.startTime)).first())
         if firstTrack is None:
-            return 0
+            return 0, 0
 
         now = datetime.now()
         currentYear = now.year
@@ -74,7 +74,6 @@ def construct_blueprint():
                 currentStreak += 1
                 if currentStreak > highestStreak:
                     highestStreak = currentStreak
-                    print(year, month)
             else:
                 currentStreak = 0
 
@@ -83,6 +82,6 @@ def construct_blueprint():
                 month = 1
                 year += 1
 
-        return highestStreak
+        return highestStreak, currentStreak
 
     return achievements
