@@ -3,6 +3,7 @@ from datetime import datetime, date
 from typing import Any
 
 from flask import Blueprint, render_template
+from flask_babel import gettext
 from flask_login import login_required, current_user
 from sqlalchemy import extract, func
 
@@ -35,6 +36,29 @@ def construct_blueprint():
                                      __get_distance_per_month_by_type(RunningTrack)]
 
         return render_template('chartDistancePerMonth.jinja2', chartDataDistancePerMonth=chartDataDistancePerMonth)
+
+    @charts.route('/chartDistancePerBike')
+    @login_required
+    def chartDistancePerBike():
+        rows = (BikingTrack.query.with_entities(func.sum(BikingTrack.distance) / 1000, BikingTrack.bike)
+                .filter(BikingTrack.user_id == current_user.id)
+                .group_by(BikingTrack.bike)
+                .order_by(BikingTrack.bike)
+                .all())
+
+        bikeNames = []
+        values = []
+        for row in rows:
+            values.append(float(row[0]))
+            name = row[1]
+            if name is None:
+                bikeNames.append(gettext('Unknown'))
+            else:
+                bikeNames.append(row[1])
+
+        chartDistancePerBikeData = {'bikeNames': bikeNames, 'values': values}
+
+        return render_template('chartDistancePerBike.jinja2', chartDistancePerBikeData=chartDistancePerBikeData)
 
     def __get_distance_per_month_by_type(trackClass) -> dict[str, Any]:
         rows = get_distance_per_month_by_type(trackClass)

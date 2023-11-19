@@ -34,6 +34,16 @@
                         </a>
                     </div>
                 </div>
+
+                <div class="row mt-5">
+                    <div class="col-6">
+                        <a href="{{ url_for('charts.chartDistancePerBike') }}"
+                           class="btn btn-link d-flex align-items-center justify-content-center text-decoration-none">
+                            <span class="material-icons rounded-circle fs-1 p-3 text-dark bg-primary-subtle me-3">bar_chart</span>
+                            <span class="fs-3 text-light">{{ gettext('Distance per Bike') }}</span>
+                        </a>
+                    </div>
+                </div>
             </section>
         </div>
 

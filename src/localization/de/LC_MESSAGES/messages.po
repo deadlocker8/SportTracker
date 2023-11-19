@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-19 11:19+0100\n"
-"PO-Revision-Date: 2023-11-19 11:19+0100\n"
+"POT-Creation-Date: 2023-11-19 11:30+0100\n"
+"PO-Revision-Date: 2023-11-19 11:31+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -79,6 +79,10 @@ msgstr ""
 msgid "No month"
 msgstr "Kein Monat"
 
+#: ../blueprints/Charts.py:55
+msgid "Unknown"
+msgstr "Unbekannt"
+
 #: ../templates/achievements.jinja2:24 ../templates/macros.jinja2:56
 msgid "Achievements"
 msgstr "Errungenschaften"
@@ -109,6 +113,12 @@ msgstr "Strecke pro Monat"
 msgid "Distance per Year"
 msgstr "Strecke pro Jahr"
 
+#: ../templates/chartChooser.jinja2:43
+#: ../templates/chartDistancePerBike.jinja2:16
+msgid "Distance per Bike"
+msgstr "Strecke pro Fahrrad"
+
+#: ../templates/chartDistancePerBike.jinja2:26
 #: ../templates/chartDistancePerMonth.jinja2:31
 #: ../templates/chartDistancePerYear.jinja2:32
 msgid "Distance in km"
