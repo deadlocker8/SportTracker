@@ -11,7 +11,7 @@
         </div>
         <div class="card height-60">
             <div class="card-body">
-                <h5 class="card-title mt-5">{{ gettext(title) }}</h5>
+                <h5 class="card-title mt-5">{{ title }}</h5>
                 <p class="card-text">{{ description }}</p>
             </div>
         </div>
@@ -40,10 +40,9 @@
                 </div>
 
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-5">
-                    {{ renderAchievement('sports_score', 'border-warning', 'Month Goal Streak', 'You have achieved all your monthly goals for <span class="fw-bold">' + bikingStreak[1] | string + '</span> months in a row!<br>(Best: <span class="fw-bold">' + bikingStreak[0] | string + '</span>)') }}
-                    {{ renderAchievement('route', 'border-warning', 'Longest Track', 'You cycled <span class="fw-bold">' + bikingLongestTrack | string + ' km</span> in one trip!') }}
-                    {{ renderAchievement('map', 'border-warning', 'Total Distance', 'You cycled a total of <span class="fw-bold">' + bikingTotalDistance | string + ' km</span>!') }}
-                    {{ renderAchievement('calendar_month', 'border-warning', 'Best Month', '<span class="fw-bold">' + bikingBestMonth[0] + '</span> was your best month with <span class="fw-bold">' + bikingBestMonth[1] | string + ' km</span>!') }}
+                    {% for achievement in bikingAchievements %}
+                        {{ renderAchievement(achievement.icon, achievement.color, achievement.title, achievement.description) }}
+                    {% endfor %}
                 </div>
 
                 <div class="mt-5">&nbsp;</div>
@@ -57,10 +56,9 @@
                 </div>
 
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-5">
-                    {{ renderAchievement('sports_score', 'border-info', 'Month Goal Streak', 'You have achieved all your monthly goals for <span class="fw-bold">' + runningStreak[1] | string + '</span> months in a row!<br>(Best: <span class="fw-bold">' + runningStreak[0] | string + '</span>)') }}
-                    {{ renderAchievement('route', 'border-info', 'Longest Track', 'You ran  <span class="fw-bold">' + runningLongestTrack | string + ' km</span> in one trip!') }}
-                    {{ renderAchievement('map', 'border-info', 'Total Distance', 'You ran a total of <span class="fw-bold">' + runningTotalDistance | string + ' km</span>!') }}
-                    {{ renderAchievement('calendar_month', 'border-info', 'Best Month', '<span class="fw-bold">' + runningBestMonth[0] + '</span> was your best month with <span class="fw-bold">' + runningBestMonth[1] | string + ' km</span>!') }}
+                    {% for achievement in runningAchievements %}
+                        {{ renderAchievement(achievement.icon, achievement.color, achievement.title, achievement.description) }}
+                    {% endfor %}
                 </div>
             </section>
         </div>

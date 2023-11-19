@@ -246,3 +246,11 @@ def get_distance_per_month_by_type(trackClass) -> list:
             .group_by(year, month)
             .order_by(year, month)
             .all())
+
+
+@dataclass
+class Achievement:
+    icon: str
+    color: str
+    title: str
+    description: str

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-14 22:16+0100\n"
-"PO-Revision-Date: 2023-11-14 22:16+0100\n"
+"POT-Creation-Date: 2023-11-19 11:19+0100\n"
+"PO-Revision-Date: 2023-11-19 11:19+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -18,6 +18,80 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.13.1\n"
 "X-Generator: Poedit 2.4.2\n"
+
+#: ../blueprints/Achievements.py:32 ../blueprints/Achievements.py:67
+msgid "Month Goal Streak"
+msgstr "Monatsziele in Folge"
+
+#: ../blueprints/Achievements.py:33 ../blueprints/Achievements.py:68
+msgid ""
+"You have achieved all your monthly goals for <span class=\"fw-bold"
+"\">{currentStreak}</span> months in a row!<br>(Best: <span class=\"fw-bold"
+"\">{maxStreak}</span>)"
+msgstr ""
+"Du hast alle deine monatlichen Ziele für <span class=\"fw-bold"
+"\">{currentStreak}</span> Monate in Folge erreicht!<br>(Beste: <span class="
+"\"fw-bold\">{maxStreak}</span>)"
+
+#: ../blueprints/Achievements.py:40 ../blueprints/Achievements.py:75
+msgid "Longest Track"
+msgstr "Längster Track"
+
+#: ../blueprints/Achievements.py:41
+msgid "You cycled <span class=\"fw-bold\">{longestTrack} km</span> in one trip!"
+msgstr ""
+"Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einer Fahrt "
+"zurückgelegt!"
+
+#: ../blueprints/Achievements.py:46 ../blueprints/Achievements.py:81
+msgid "Total Distance"
+msgstr "Gesamtstrecke"
+
+#: ../blueprints/Achievements.py:47
+msgid "You cycled a total of <span class=\"fw-bold\">{totalDistance} km</span>!"
+msgstr ""
+"Du bist insgesamt <span class=\"fw-bold\">{totalDistance} km</span> gefahren!"
+
+#: ../blueprints/Achievements.py:53 ../blueprints/Achievements.py:88
+msgid "Best Month"
+msgstr "Bester Monat"
+
+#: ../blueprints/Achievements.py:54 ../blueprints/Achievements.py:89
+msgid ""
+"<span class=\"fw-bold\">{bestMonthName}</span> was your best month with <span "
+"class=\"fw-bold\">{bestMonthDistance} km</span>!"
+msgstr ""
+"<span class=\"fw-bold\">{bestMonthName}</span> war dein bester Monat mit "
+"<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
+
+#: ../blueprints/Achievements.py:76
+msgid "You ran <span class=\"fw-bold\">{longestTrack} km</span> in one trip!"
+msgstr ""
+"Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einem Lauf "
+"zurückgelegt!"
+
+#: ../blueprints/Achievements.py:82
+msgid "You ran a total of <span class=\"fw-bold\">{totalDistance} km</span>!"
+msgstr ""
+"Du bist insgesamt <span class=\"fw-bold\">{totalDistance} km</span> gelaufen!"
+
+#: ../blueprints/Achievements.py:110
+msgid "No month"
+msgstr "Kein Monat"
+
+#: ../templates/achievements.jinja2:24 ../templates/macros.jinja2:56
+msgid "Achievements"
+msgstr "Errungenschaften"
+
+#: ../templates/achievements.jinja2:37 ../templates/monthGoalCountForm.jinja2:33
+#: ../templates/monthGoalDistanceForm.jinja2:33
+msgid "Biking"
+msgstr "Fahrrad fahren"
+
+#: ../templates/achievements.jinja2:53 ../templates/monthGoalCountForm.jinja2:34
+#: ../templates/monthGoalDistanceForm.jinja2:34
+msgid "Running"
+msgstr "Laufen"
 
 #: ../templates/chartChooser.jinja2:6 ../templates/chartChooser.jinja2:17
 #: ../templates/chartMacros.jinja2:7 ../templates/chartMacros.jinja2:20
@@ -96,16 +170,6 @@ msgstr "Löschen"
 #: ../templates/monthGoalDistanceForm.jinja2:31
 msgid "Type"
 msgstr "Typ"
-
-#: ../templates/monthGoalCountForm.jinja2:33
-#: ../templates/monthGoalDistanceForm.jinja2:33
-msgid "Biking"
-msgstr "Fahrrad fahren"
-
-#: ../templates/monthGoalCountForm.jinja2:34
-#: ../templates/monthGoalDistanceForm.jinja2:34
-msgid "Running"
-msgstr "Laufen"
 
 #: ../templates/monthGoalCountForm.jinja2:41
 #: ../templates/monthGoalDistanceForm.jinja2:41
