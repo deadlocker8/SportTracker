@@ -1,0 +1,111 @@
+openapi: 3.0.3
+info:
+  title: Sport-Tracker-API
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:10022'
+paths:
+  /login:
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: "Okay"
+  /bikingTracks/post:
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BikingTrackFormModel'
+      responses:
+        200:
+          description: "Okay"
+  /runningTracks/post:
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RunningTrackFormModel'
+      responses:
+        200:
+          description: "Okay"
+
+components:
+  schemas:
+    BikingTrackFormModel:
+      type: object
+      required:
+        - name
+        - date
+        - time
+        - distance
+        - durationHours
+        - durationMinutes
+        - durationSeconds
+      properties:
+        name:
+          type: string
+        date:
+          type: string
+          example: 2023-11-19
+        time:
+          type: string
+          example: 11:23
+        distance:
+          type: number
+          format: float
+        durationHours:
+          type: integer
+        durationMinutes:
+          type: integer
+        durationSeconds:
+          type: integer
+        averageHeartRate:
+          type: integer
+        elevationSum:
+          type: integer
+        bike:
+          type: string
+    RunningTrackFormModel:
+      type: object
+      required:
+        - name
+        - date
+        - time
+        - distance
+        - durationHours
+        - durationMinutes
+        - durationSeconds
+      properties:
+        name:
+          type: string
+        date:
+          type: string
+          example: 2023-11-19
+        time:
+          type: string
+          example: 11:23
+        distance:
+          type: number
+          format: float
+        durationHours:
+          type: integer
+        durationMinutes:
+          type: integer
+        durationSeconds:
+          type: integer
+        averageHeartRate:
+          type: integer
+        elevationSum:
+          type: integer
