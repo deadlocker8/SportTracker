@@ -91,7 +91,7 @@ def construct_blueprint():
     def delete(goal_id: int):
         monthGoal = (MonthGoalCount.query.join(User)
                      .filter(User.username == current_user.username)
-                     .filter(MonthGoal.id == goal_id)
+                     .filter(MonthGoalCount.id == goal_id)
                      .first())
 
         if monthGoal is None:
