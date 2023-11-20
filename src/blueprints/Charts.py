@@ -89,7 +89,7 @@ def construct_blueprint():
         values = []
 
         for row in rows:
-            yearNames.append(row[1])
+            yearNames.append(int(row[1]))
             values.append(float(row[0]))
 
         return {
