@@ -104,14 +104,22 @@ def construct_blueprint():
                 .scalar() or 0)
 
     def __get_best_month_by_type(trackClass) -> tuple[str, float]:
-        rows = get_distance_per_month_by_type(trackClass)
+        minDate, maxDate = (
+            db.session.query(func.min(trackClass.startTime), func.max(trackClass.startTime)
+                             .filter(trackClass.user_id == current_user.id))
+            .first())
 
-        if not rows:
+        if minDate is None or maxDate is None:
             return gettext('No month'), 0
 
-        bestMonth = max(rows, key=lambda row: row[0])
-        bestMonthDate = date(year=int(bestMonth[1]), month=int(bestMonth[2]), day=1)
-        return bestMonthDate.strftime('%B %Y'), float(bestMonth[0])
+        monthDistanceSums = get_distance_per_month_by_type(trackClass, minDate.year, maxDate.year)
+
+        if not monthDistanceSums:
+            return gettext('No month'), 0
+
+        bestMonth = max(monthDistanceSums, key=lambda monthDistanceSum: monthDistanceSum.distanceSum)
+        bestMonthDate = date(year=bestMonth.year, month=bestMonth.month, day=1)
+        return bestMonthDate.strftime('%B %Y'), bestMonth.distanceSum
 
     def __get_streaks_by_type(trackClass) -> tuple[int, int]:
         firstTrack = (trackClass.query

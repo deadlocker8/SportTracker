@@ -236,16 +236,37 @@ def get_goal_summaries_by_year_and_month(year: int, month: int) -> list[MonthGoa
     return [goal.get_summary() for goal in goalsDistance + goalsCount]
 
 
-def get_distance_per_month_by_type(trackClass) -> list:
+@dataclass
+class MonthDistanceSum:
+    year: int
+    month: int
+    distanceSum: float
+
+
+def get_distance_per_month_by_type(trackClass, minYear: int, maxYear: int) -> list[MonthDistanceSum]:
     year = extract('year', trackClass.startTime)
     month = extract('month', trackClass.startTime)
 
-    return (trackClass.query
-            .with_entities(func.sum(trackClass.distance) / 1000, year, month)
+    rows = (trackClass.query
+            .with_entities(func.sum(trackClass.distance / 1000).label('distanceSum'),
+                           year.label('year'),
+                           month.label('month'))
             .filter(trackClass.user_id == current_user.id)
             .group_by(year, month)
             .order_by(year, month)
             .all())
+
+    result = []
+    for year in range(minYear, maxYear + 1):
+        for month in range(1, 13):
+            for row in rows:
+                if row.year == year and row.month == month:
+                    result.append(MonthDistanceSum(year=year, month=month, distanceSum=float(row.distanceSum)))
+                    break
+            else:
+                result.append(MonthDistanceSum(year=year, month=month, distanceSum=0.0))
+
+    return result
 
 
 @dataclass
