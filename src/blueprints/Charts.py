@@ -26,11 +26,12 @@ def construct_blueprint():
     def chartDistancePerYear():
         minYear, maxYear = __get_min_and_max_year()
 
+        chartDataDistancePerYear = []
         if minYear is None or maxYear is None:
-            chartDataDistancePerYear = [[], []]
+            return chartDataDistancePerYear
         else:
-            chartDataDistancePerYear = [__get_distance_per_year_by_type(TrackType.BIKING, minYear, maxYear),
-                                        __get_distance_per_year_by_type(TrackType.RUNNING, minYear, maxYear)]
+            for trackType in TrackType:
+                chartDataDistancePerYear.append(__get_distance_per_year_by_type(trackType, minYear, maxYear))
 
         return render_template('chartDistancePerYear.jinja2', chartDataDistancePerYear=chartDataDistancePerYear)
 
@@ -39,11 +40,12 @@ def construct_blueprint():
     def chartDistancePerMonth():
         minYear, maxYear = __get_min_and_max_year()
 
+        chartDataDistancePerMonth = []
         if minYear is None or maxYear is None:
-            chartDataDistancePerMonth = [[], []]
+            return chartDataDistancePerMonth
         else:
-            chartDataDistancePerMonth = [__get_distance_per_month_by_type(TrackType.BIKING, minYear, maxYear),
-                                         __get_distance_per_month_by_type(TrackType.RUNNING, minYear, maxYear)]
+            for trackType in TrackType:
+                chartDataDistancePerMonth.append(__get_distance_per_month_by_type(trackType, minYear, maxYear))
 
         return render_template('chartDistancePerMonth.jinja2', chartDataDistancePerMonth=chartDataDistancePerMonth)
 

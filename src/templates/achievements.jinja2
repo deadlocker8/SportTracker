@@ -31,35 +31,23 @@
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
-                <div class="row mt-3 mb-3">
-                    <div class="col-12 mx-auto">
-                        <h3 class="d-flex align-items-center justify-content-center">
-                            <span class="material-icons rounded-circle fs-2 p-2 text-dark bg-warning me-3">directions_bike</span><span>{{ gettext('Biking') }}</span>
-                        </h3>
+                {% for trackType, achievements in achievements.items() %}
+                    <div class="row mt-3 mb-3">
+                        <div class="col-12 mx-auto">
+                            <h3 class="d-flex align-items-center justify-content-center">
+                                <span class="material-icons rounded-circle fs-2 p-2 text-dark {{ trackType.background_color }} me-3">{{ trackType.icon }}</span><span>{{ trackType.get_localized_name() }}</span>
+                            </h3>
+                        </div>
                     </div>
-                </div>
 
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-5">
-                    {% for achievement in bikingAchievements %}
-                        {{ renderAchievement(achievement.icon, achievement.color, achievement.title, achievement.description) }}
-                    {% endfor %}
-                </div>
-
-                <div class="mt-5">&nbsp;</div>
-
-                <div class="row mt-5 mb-3">
-                    <div class="col-12 mx-auto">
-                        <h3 class="d-flex align-items-center justify-content-center">
-                            <span class="material-icons rounded-circle fs-2 p-2 text-dark bg-info me-3">directions_run</span><span>{{ gettext('Running') }}</span>
-                        </h3>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-5">
+                        {% for achievement in achievements %}
+                            {{ renderAchievement(achievement.icon, achievement.color, achievement.title, achievement.description) }}
+                        {% endfor %}
                     </div>
-                </div>
 
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-5">
-                    {% for achievement in runningAchievements %}
-                        {{ renderAchievement(achievement.icon, achievement.color, achievement.title, achievement.description) }}
-                    {% endfor %}
-                </div>
+                    <div class="mt-5">&nbsp;</div>
+                {% endfor %}
             </section>
         </div>
 

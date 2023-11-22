@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from datetime import date
 from typing import ClassVar
 
+from flask_babel import gettext
 from flask_login import UserMixin, current_user
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Integer, DateTime, String, Boolean, extract, func
@@ -35,16 +36,25 @@ class User(UserMixin, db.Model):
 
 
 class TrackType(enum.Enum):
-    BIKING = 'BIKING', 'directions_bike', 'bg-warning', '#FFC107'
-    RUNNING = 'RUNNING', 'directions_run', 'bg-info', '#0DCAF0'
+    BIKING = 'BIKING', 'directions_bike', 'bg-warning', '#FFC107', 'border-warning'
+    RUNNING = 'RUNNING', 'directions_run', 'bg-info', '#0DCAF0', 'border-info'
 
-    def __new__(cls, name: str, icon: str, background_color: str, background_color_hex: str):
+    def __new__(cls, name: str, icon: str, background_color: str, background_color_hex: str, border_color: str):
         member = object.__new__(cls)
         member._value_ = name
         member.icon = icon
         member.background_color = background_color
         member.background_color_hex = background_color_hex
+        member.border_color = border_color
         return member
+
+    def get_localized_name(self) -> str:
+        if self == self.BIKING:
+            return gettext('Biking')
+        elif self == self.RUNNING:
+            return gettext('Running')
+
+        raise ValueError(f'Could not get localized name for unsupported TrackType: {self}')
 
 
 class Track(db.Model):
@@ -124,7 +134,7 @@ class MonthGoalDistance(MonthGoal):
     distance_perfect: Mapped[int] = mapped_column(Integer, nullable=False)
 
     def get_summary(self) -> MonthGoalDistanceSummary:
-        tracks = get_tracks_by_year_and_month_by_type(self.year, self.month, self.type)
+        tracks = get_tracks_by_year_and_month_by_type(self.year, self.month, [self.type])
 
         actualDistance = 0
         if tracks:
@@ -156,7 +166,7 @@ class MonthGoalCount(MonthGoal):
     count_perfect: Mapped[int] = mapped_column(Integer, nullable=False)
 
     def get_summary(self) -> MonthGoalCountSummary:
-        tracks = get_tracks_by_year_and_month_by_type(self.year, self.month, self.type)
+        tracks = get_tracks_by_year_and_month_by_type(self.year, self.month, [self.type])
 
         actualCount = 0
         if tracks:
@@ -187,16 +197,9 @@ def get_number_of_all_tracks() -> int:
     return Track.query.count()
 
 
-def get_tracks_by_year_and_month(year: int, month: int) -> list[Track]:
-    bikingTracks = get_tracks_by_year_and_month_by_type(year, month, TrackType.BIKING)
-    runningTracks = get_tracks_by_year_and_month_by_type(year, month, TrackType.RUNNING)
-
-    return sorted(bikingTracks + runningTracks, key=lambda track: track.startTime)
-
-
-def get_tracks_by_year_and_month_by_type(year: int, month: int, trackType: TrackType) -> list[Track]:
+def get_tracks_by_year_and_month_by_type(year: int, month: int, trackTypes: list[TrackType]) -> list[Track]:
     return (Track.query.join(User)
-            .filter(Track.type == trackType)
+            .filter(Track.type.in_(trackTypes))
             .filter(User.username == current_user.username)
             .filter(extract('year', Track.startTime) == year)
             .filter(extract('month', Track.startTime) == month)

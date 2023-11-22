@@ -7,8 +7,8 @@ from flask import Blueprint, render_template
 from flask_login import login_required
 
 from logic import Constants
-from logic.model.Models import Track, get_tracks_by_year_and_month, get_goal_summaries_by_year_and_month, \
-    MonthGoalSummary
+from logic.model.Models import Track, get_goal_summaries_by_year_and_month, MonthGoalSummary, TrackType, \
+    get_tracks_by_year_and_month_by_type
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -33,13 +33,17 @@ def construct_blueprint():
             monthRightSideDate = date(year=year, month=month, day=1)
 
         monthRightSide = MonthModel(monthRightSideDate.strftime('%B %Y'),
-                                    get_tracks_by_year_and_month(monthRightSideDate.year, monthRightSideDate.month),
+                                    get_tracks_by_year_and_month_by_type(monthRightSideDate.year,
+                                                                         monthRightSideDate.month,
+                                                                         [t for t in TrackType]),
                                     get_goal_summaries_by_year_and_month(monthRightSideDate.year,
                                                                          monthRightSideDate.month))
 
         monthLeftSideDate = monthRightSideDate - relativedelta(months=1)
         monthLeftSide = MonthModel(monthLeftSideDate.strftime('%B %Y'),
-                                   get_tracks_by_year_and_month(monthLeftSideDate.year, monthLeftSideDate.month),
+                                   get_tracks_by_year_and_month_by_type(monthLeftSideDate.year,
+                                                                        monthLeftSideDate.month,
+                                                                        [t.value for t in TrackType]),
                                    get_goal_summaries_by_year_and_month(monthLeftSideDate.year,
                                                                         monthLeftSideDate.month))
 

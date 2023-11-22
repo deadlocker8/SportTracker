@@ -19,82 +19,46 @@ def construct_blueprint():
     @achievements.route('/')
     @login_required
     def showAchievements():
-        return render_template('achievements.jinja2',
-                               bikingAchievements=__get_biking_achievements(),
-                               runningAchievements=__get_running_achievements(), )
+        return render_template('achievements.jinja2', achievements=__get_achievements())
 
-    def __get_biking_achievements() -> list[Achievement]:
-        bikingAchievements = []
+    def __get_achievements() -> dict[TrackType, list[Achievement]]:
+        result = {}
 
-        streak = __get_streaks_by_type(TrackType.BIKING)
-        bikingAchievements.append(Achievement(icon='sports_score',
-                                              color='border-warning',
-                                              title=gettext('Month Goal Streak'),
-                                              description=gettext('You have achieved all your monthly goals for '
-                                                                  '<span class="fw-bold">{currentStreak}</span> '
-                                                                  'months in a row!<br>(Best: <span class="fw-bold">'
-                                                                  '{maxStreak}</span>)').format(
-                                                  currentStreak=streak[1], maxStreak=streak[0])))
-        bikingAchievements.append(Achievement(icon='route',
-                                              color='border-warning',
-                                              title=gettext('Longest Track'),
-                                              description=gettext('You cycled <span class="fw-bold">{longestTrack} km'
-                                                                  '</span> in one trip!').format(
-                                                  longestTrack=__get_longest_distance_by_type(
-                                                      TrackType.BIKING) / 1000)))
-        bikingAchievements.append(Achievement(icon='map',
-                                              color='border-warning',
-                                              title=gettext('Total Distance'),
-                                              description=gettext('You cycled a total of <span class="fw-bold">'
-                                                                  '{totalDistance} km</span>!').format(
-                                                  totalDistance=__get_total_distance_by_type(TrackType.BIKING) / 1000)))
-        bestMonth = __get_best_month_by_type(TrackType.BIKING)
-        bikingAchievements.append(Achievement(icon='calendar_month',
-                                              color='border-warning',
-                                              title=gettext('Best Month'),
-                                              description=gettext('<span class="fw-bold">{bestMonthName}</span> was '
-                                                                  'your best month with <span class="fw-bold">'
-                                                                  '{bestMonthDistance} km</span>!').format(
-                                                  bestMonthName=bestMonth[0],
-                                                  bestMonthDistance=bestMonth[1])))
-        return bikingAchievements
+        for trackType in TrackType:
+            achievementList = []
 
-    def __get_running_achievements() -> list[Achievement]:
-        runningAchievements = []
-
-        streak = __get_streaks_by_type(TrackType.RUNNING)
-        runningAchievements.append(Achievement(icon='sports_score',
-                                               color='border-info',
+            streak = __get_streaks_by_type(trackType)
+            achievementList.append(Achievement(icon='sports_score',
+                                               color=trackType.border_color,
                                                title=gettext('Month Goal Streak'),
                                                description=gettext('You have achieved all your monthly goals for '
                                                                    '<span class="fw-bold">{currentStreak}</span> '
                                                                    'months in a row!<br>(Best: <span class="fw-bold">'
                                                                    '{maxStreak}</span>)').format(
                                                    currentStreak=streak[1], maxStreak=streak[0])))
-        runningAchievements.append(Achievement(icon='route',
-                                               color='border-info',
+            achievementList.append(Achievement(icon='route',
+                                               color=trackType.border_color,
                                                title=gettext('Longest Track'),
-                                               description=gettext('You ran <span class="fw-bold">{longestTrack} km'
-                                                                   '</span> in one trip!').format(
-                                                   longestTrack=__get_longest_distance_by_type(
-                                                       TrackType.RUNNING) / 1000)))
-        runningAchievements.append(Achievement(icon='map',
-                                               color='border-info',
+                                               description=gettext('You completed <span class="fw-bold">{longestTrack} '
+                                                                   'km</span> in one trip!').format(
+                                                   longestTrack=__get_longest_distance_by_type(trackType) / 1000)))
+            achievementList.append(Achievement(icon='map',
+                                               color=trackType.border_color,
                                                title=gettext('Total Distance'),
-                                               description=gettext('You ran a total of <span class="fw-bold">'
+                                               description=gettext('You completed a total of <span class="fw-bold">'
                                                                    '{totalDistance} km</span>!').format(
-                                                   totalDistance=__get_total_distance_by_type(
-                                                       TrackType.RUNNING) / 1000)))
-        bestMonth = __get_best_month_by_type(TrackType.RUNNING)
-        runningAchievements.append(Achievement(icon='calendar_month',
-                                               color='border-info',
+                                                   totalDistance=__get_total_distance_by_type(trackType) / 1000)))
+            bestMonth = __get_best_month_by_type(trackType)
+            achievementList.append(Achievement(icon='calendar_month',
+                                               color=trackType.border_color,
                                                title=gettext('Best Month'),
                                                description=gettext('<span class="fw-bold">{bestMonthName}</span> was '
                                                                    'your best month with <span class="fw-bold">'
                                                                    '{bestMonthDistance} km</span>!').format(
                                                    bestMonthName=bestMonth[0],
                                                    bestMonthDistance=bestMonth[1])))
-        return runningAchievements
+            result[trackType] = achievementList
+        return result
 
     def __get_longest_distance_by_type(trackType: TrackType) -> int:
         return (db.session.query(func.max(Track.distance))
