@@ -9,7 +9,7 @@ paths:
     post:
       requestBody:
         content:
-          multipart/form-data:
+          application/json:
             schema:
               type: object
               properties:
@@ -20,42 +20,37 @@ paths:
       responses:
         200:
           description: "Okay"
-  /bikingTracks/post:
+  /api/addTrack:
     post:
       requestBody:
         content:
-          multipart/form-data:
+          application/json:
             schema:
-              $ref: '#/components/schemas/BikingTrackFormModel'
-      responses:
-        200:
-          description: "Okay"
-  /runningTracks/post:
-    post:
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/RunningTrackFormModel'
+              $ref: '#/components/schemas/TrackFormModel'
       responses:
         200:
           description: "Okay"
 
 components:
   schemas:
-    BikingTrackFormModel:
+    TrackFormModel:
       type: object
       required:
         - name
+        - type
         - date
         - time
         - distance
         - durationHours
         - durationMinutes
         - durationSeconds
+        - customFields
       properties:
         name:
           type: string
+        type:
+           type: string
+           example: BIKING or RUNNING
         date:
           type: string
           example: 2023-11-19
@@ -75,37 +70,6 @@ components:
           type: integer
         elevationSum:
           type: integer
-        bike:
+        customFields:
           type: string
-    RunningTrackFormModel:
-      type: object
-      required:
-        - name
-        - date
-        - time
-        - distance
-        - durationHours
-        - durationMinutes
-        - durationSeconds
-      properties:
-        name:
-          type: string
-        date:
-          type: string
-          example: 2023-11-19
-        time:
-          type: string
-          example: 11:23
-        distance:
-          type: number
-          format: float
-        durationHours:
-          type: integer
-        durationMinutes:
-          type: integer
-        durationSeconds:
-          type: integer
-        averageHeartRate:
-          type: integer
-        elevationSum:
-          type: integer
+          example: {'bike': 'Cube'}

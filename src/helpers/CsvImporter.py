@@ -59,6 +59,7 @@ class CsvParser:
 
                 data = {
                     'name': row[5],
+                    'type': TrackType.BIKING.name,
                     'date': trackDate.strftime('%Y-%m-%d'),
                     'time': '12:00',
                     'durationHours': hours,
@@ -66,10 +67,10 @@ class CsvParser:
                     'durationSeconds': seconds,
                     'distance': cls.__calculate_distance(row[4]),
                     'averageHeartRate': None,
-                    'bike': row[9]
+                    'customFields': {'bike': row[9]}
                 }
                 LOGGER.debug(f'Importing {data}')
-                response = session.post(f'{url}/api/addBikingTrack', json=data)
+                response = session.post(f'{url}/api/addTrack', json=data)
                 LOGGER.debug(response.content)
                 if not response.ok:
                     raise RuntimeError(response)

@@ -7,7 +7,7 @@ from flask_pydantic import validate
 from pydantic import BaseModel, field_validator
 
 from logic import Constants
-from logic.model.Models import db, User, BikingTrack
+from logic.model.Models import db, User, Track, TrackType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -51,14 +51,15 @@ def construct_blueprint():
     @login_required
     @validate()
     def addPost(form: BikingTrackFormModel):
-        track = BikingTrack(name=form.name,
-                            startTime=form.calculate_start_time(),
-                            duration=form.calculate_duration(),
-                            distance=form.distance * 1000,
-                            averageHeartRate=form.averageHeartRate,
-                            elevationSum=form.elevationSum,
-                            bike=form.bike,
-                            user_id=current_user.id)
+        track = Track(name=form.name,
+                      type=TrackType.BIKING,
+                      startTime=form.calculate_start_time(),
+                      duration=form.calculate_duration(),
+                      distance=form.distance * 1000,
+                      averageHeartRate=form.averageHeartRate,
+                      elevationSum=form.elevationSum,
+                      custom_fields={'bike': form.bike},
+                      user_id=current_user.id)
         LOGGER.debug(f'Saved new biking track: {track}')
         db.session.add(track)
         db.session.commit()
@@ -68,10 +69,10 @@ def construct_blueprint():
     @bikingTracks.route('/edit/<int:track_id>')
     @login_required
     def edit(track_id: int):
-        track: BikingTrack | None = (BikingTrack.query.join(User)
-                                     .filter(User.username == current_user.username)
-                                     .filter(BikingTrack.id == track_id)
-                                     .first())
+        track: Track | None = (Track.query.join(User)
+                               .filter(User.username == current_user.username)
+                               .filter(Track.id == track_id)
+                               .first())
 
         if track is None:
             abort(404)
@@ -86,7 +87,7 @@ def construct_blueprint():
             durationSeconds=track.duration % 3600 % 60,
             averageHeartRate=track.averageHeartRate,
             elevationSum=track.elevationSum,
-            bike=track.bike)
+            bike=track.custom_fields.get('bike', None))
 
         return render_template('trackBikingForm.jinja2', track=trackModel, track_id=track_id)
 
@@ -94,9 +95,9 @@ def construct_blueprint():
     @login_required
     @validate()
     def editPost(track_id: int, form: BikingTrackFormModel):
-        track = (BikingTrack.query.join(User)
+        track = (Track.query.join(User)
                  .filter(User.username == current_user.username)
-                 .filter(BikingTrack.id == track_id)
+                 .filter(Track.id == track_id)
                  .first())
 
         if track is None:
@@ -109,7 +110,7 @@ def construct_blueprint():
         track.averageHeartRate = form.averageHeartRate
         track.elevationSum = form.elevationSum
         track.user_id = current_user.id
-        track.bike = form.bike
+        track.custom_fields = {'bike': form.bike}
 
         LOGGER.debug(f'Updated biking track: {track}')
         db.session.commit()
@@ -119,9 +120,9 @@ def construct_blueprint():
     @bikingTracks.route('/delete/<int:track_id>')
     @login_required
     def delete(track_id: int):
-        track = (BikingTrack.query.join(User)
+        track = (Track.query.join(User)
                  .filter(User.username == current_user.username)
-                 .filter(BikingTrack.id == track_id)
+                 .filter(Track.id == track_id)
                  .first())
 
         if track is None:

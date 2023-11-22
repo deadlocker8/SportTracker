@@ -7,6 +7,7 @@ from typing import ClassVar
 from flask_login import UserMixin, current_user
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Integer, DateTime, String, Boolean, extract, func
+from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import Mapped, mapped_column
 
 db = SQLAlchemy()
@@ -30,8 +31,7 @@ class User(UserMixin, db.Model):
     password: Mapped[str] = mapped_column(String, nullable=False)
     isAdmin: Mapped[bool] = mapped_column(Boolean, nullable=False)
     language = db.Column(db.Enum(Language))
-    bikingTracks = db.relationship('BikingTrack', backref='user', lazy=True, cascade='delete')
-    runningTracks = db.relationship('RunningTrack', backref='user', lazy=True, cascade='delete')
+    tracks = db.relationship('Track', backref='user', lazy=True, cascade='delete')
 
 
 class TrackType(enum.Enum):
@@ -48,8 +48,8 @@ class TrackType(enum.Enum):
 
 
 class Track(db.Model):
-    __abstract__ = True
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    type = db.Column(db.Enum(TrackType))
     name: Mapped[String] = mapped_column(String, nullable=False)
     startTime: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     duration: Mapped[int] = mapped_column(Integer, nullable=True)
@@ -57,15 +57,7 @@ class Track(db.Model):
     averageHeartRate: Mapped[int] = mapped_column(Integer, nullable=True)
     elevationSum: Mapped[int] = mapped_column(Integer, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-
-class BikingTrack(Track):
-    type = TrackType.BIKING
-    bike: Mapped[String] = mapped_column(String, nullable=True)
-
-
-class RunningTrack(Track):
-    type = TrackType.RUNNING
+    custom_fields = db.Column(JSON)
 
 
 @dataclass
@@ -132,7 +124,7 @@ class MonthGoalDistance(MonthGoal):
     distance_perfect: Mapped[int] = mapped_column(Integer, nullable=False)
 
     def get_summary(self) -> MonthGoalDistanceSummary:
-        tracks = get_tracks_by_year_and_month_by_type(self.year, self.month, get_track_class_by_ty_type(self.type))
+        tracks = get_tracks_by_year_and_month_by_type(self.year, self.month, self.type)
 
         actualDistance = 0
         if tracks:
@@ -164,7 +156,7 @@ class MonthGoalCount(MonthGoal):
     count_perfect: Mapped[int] = mapped_column(Integer, nullable=False)
 
     def get_summary(self) -> MonthGoalCountSummary:
-        tracks = get_tracks_by_year_and_month_by_type(self.year, self.month, get_track_class_by_ty_type(self.type))
+        tracks = get_tracks_by_year_and_month_by_type(self.year, self.month, self.type)
 
         actualCount = 0
         if tracks:
@@ -192,33 +184,24 @@ class MonthGoalCount(MonthGoal):
 
 
 def get_number_of_all_tracks() -> int:
-    return BikingTrack.query.count() + RunningTrack.query.count()
+    return Track.query.count()
 
 
 def get_tracks_by_year_and_month(year: int, month: int) -> list[Track]:
-    bikingTracks = get_tracks_by_year_and_month_by_type(year, month, BikingTrack)
-    runningTracks = get_tracks_by_year_and_month_by_type(year, month, RunningTrack)
+    bikingTracks = get_tracks_by_year_and_month_by_type(year, month, TrackType.BIKING)
+    runningTracks = get_tracks_by_year_and_month_by_type(year, month, TrackType.RUNNING)
 
     return sorted(bikingTracks + runningTracks, key=lambda track: track.startTime)
 
 
-def get_tracks_by_year_and_month_by_type(year: int, month: int, trackClass) -> list[Track]:
-    return (trackClass.query.join(User)
+def get_tracks_by_year_and_month_by_type(year: int, month: int, trackType: TrackType) -> list[Track]:
+    return (Track.query.join(User)
+            .filter(Track.type == trackType)
             .filter(User.username == current_user.username)
-            .filter(extract('year', trackClass.startTime) == year)
-            .filter(extract('month', trackClass.startTime) == month)
-            .order_by(trackClass.startTime.desc())
+            .filter(extract('year', Track.startTime) == year)
+            .filter(extract('month', Track.startTime) == month)
+            .order_by(Track.startTime.desc())
             .all())
-
-
-def get_track_class_by_ty_type(trackType: TrackType):
-    if trackType == TrackType.BIKING:
-        return BikingTrack
-
-    if trackType == TrackType.RUNNING:
-        return RunningTrack
-
-    raise ValueError(f'Could not determine track class for track type "{trackType}"')
 
 
 def get_goal_summaries_by_year_and_month(year: int, month: int) -> list[MonthGoalSummary]:
@@ -243,15 +226,16 @@ class MonthDistanceSum:
     distanceSum: float
 
 
-def get_distance_per_month_by_type(trackClass, minYear: int, maxYear: int) -> list[MonthDistanceSum]:
-    year = extract('year', trackClass.startTime)
-    month = extract('month', trackClass.startTime)
+def get_distance_per_month_by_type(trackType: TrackType, minYear: int, maxYear: int) -> list[MonthDistanceSum]:
+    year = extract('year', Track.startTime)
+    month = extract('month', Track.startTime)
 
-    rows = (trackClass.query
-            .with_entities(func.sum(trackClass.distance / 1000).label('distanceSum'),
+    rows = (Track.query
+            .with_entities(func.sum(Track.distance / 1000).label('distanceSum'),
                            year.label('year'),
                            month.label('month'))
-            .filter(trackClass.user_id == current_user.id)
+            .filter(Track.type == trackType)
+            .filter(Track.user_id == current_user.id)
             .group_by(year, month)
             .order_by(year, month)
             .all())

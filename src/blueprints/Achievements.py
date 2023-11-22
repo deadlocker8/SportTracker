@@ -7,8 +7,8 @@ from flask_login import login_required, current_user
 from sqlalchemy import func, asc
 
 from logic import Constants
-from logic.model.Models import BikingTrack, db, RunningTrack, get_distance_per_month_by_type, \
-    get_goal_summaries_by_year_and_month, Achievement
+from logic.model.Models import db, get_distance_per_month_by_type, get_goal_summaries_by_year_and_month, Achievement, \
+    TrackType, Track
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -26,7 +26,7 @@ def construct_blueprint():
     def __get_biking_achievements() -> list[Achievement]:
         bikingAchievements = []
 
-        streak = __get_streaks_by_type(BikingTrack)
+        streak = __get_streaks_by_type(TrackType.BIKING)
         bikingAchievements.append(Achievement(icon='sports_score',
                                               color='border-warning',
                                               title=gettext('Month Goal Streak'),
@@ -40,14 +40,15 @@ def construct_blueprint():
                                               title=gettext('Longest Track'),
                                               description=gettext('You cycled <span class="fw-bold">{longestTrack} km'
                                                                   '</span> in one trip!').format(
-                                                  longestTrack=__get_longest_distance_by_type(BikingTrack) / 1000)))
+                                                  longestTrack=__get_longest_distance_by_type(
+                                                      TrackType.BIKING) / 1000)))
         bikingAchievements.append(Achievement(icon='map',
                                               color='border-warning',
                                               title=gettext('Total Distance'),
                                               description=gettext('You cycled a total of <span class="fw-bold">'
                                                                   '{totalDistance} km</span>!').format(
-                                                  totalDistance=__get_total_distance_by_type(BikingTrack) / 1000)))
-        bestMonth = __get_best_month_by_type(BikingTrack)
+                                                  totalDistance=__get_total_distance_by_type(TrackType.BIKING) / 1000)))
+        bestMonth = __get_best_month_by_type(TrackType.BIKING)
         bikingAchievements.append(Achievement(icon='calendar_month',
                                               color='border-warning',
                                               title=gettext('Best Month'),
@@ -61,7 +62,7 @@ def construct_blueprint():
     def __get_running_achievements() -> list[Achievement]:
         runningAchievements = []
 
-        streak = __get_streaks_by_type(RunningTrack)
+        streak = __get_streaks_by_type(TrackType.RUNNING)
         runningAchievements.append(Achievement(icon='sports_score',
                                                color='border-info',
                                                title=gettext('Month Goal Streak'),
@@ -75,14 +76,16 @@ def construct_blueprint():
                                                title=gettext('Longest Track'),
                                                description=gettext('You ran <span class="fw-bold">{longestTrack} km'
                                                                    '</span> in one trip!').format(
-                                                   longestTrack=__get_longest_distance_by_type(RunningTrack) / 1000)))
+                                                   longestTrack=__get_longest_distance_by_type(
+                                                       TrackType.RUNNING) / 1000)))
         runningAchievements.append(Achievement(icon='map',
                                                color='border-info',
                                                title=gettext('Total Distance'),
                                                description=gettext('You ran a total of <span class="fw-bold">'
                                                                    '{totalDistance} km</span>!').format(
-                                                   totalDistance=__get_total_distance_by_type(RunningTrack) / 1000)))
-        bestMonth = __get_best_month_by_type(RunningTrack)
+                                                   totalDistance=__get_total_distance_by_type(
+                                                       TrackType.RUNNING) / 1000)))
+        bestMonth = __get_best_month_by_type(TrackType.RUNNING)
         runningAchievements.append(Achievement(icon='calendar_month',
                                                color='border-info',
                                                title=gettext('Best Month'),
@@ -93,26 +96,29 @@ def construct_blueprint():
                                                    bestMonthDistance=bestMonth[1])))
         return runningAchievements
 
-    def __get_longest_distance_by_type(trackClass) -> int:
-        return (db.session.query(func.max(trackClass.distance))
-                .filter(trackClass.user_id == current_user.id)
+    def __get_longest_distance_by_type(trackType: TrackType) -> int:
+        return (db.session.query(func.max(Track.distance))
+                .filter(Track.type == trackType)
+                .filter(Track.user_id == current_user.id)
                 .scalar() or 0)
 
-    def __get_total_distance_by_type(trackClass) -> int:
-        return (db.session.query(func.sum(trackClass.distance))
-                .filter(trackClass.user_id == current_user.id)
+    def __get_total_distance_by_type(trackType: TrackType) -> int:
+        return (db.session.query(func.sum(Track.distance))
+                .filter(Track.type == trackType)
+                .filter(Track.user_id == current_user.id)
                 .scalar() or 0)
 
-    def __get_best_month_by_type(trackClass) -> tuple[str, float]:
+    def __get_best_month_by_type(trackType: TrackType) -> tuple[str, float]:
         minDate, maxDate = (
-            db.session.query(func.min(trackClass.startTime), func.max(trackClass.startTime)
-                             .filter(trackClass.user_id == current_user.id))
+            db.session.query(func.min(Track.startTime), func.max(Track.startTime)
+                             .filter(Track.type == trackType)
+                             .filter(Track.user_id == current_user.id))
             .first())
 
         if minDate is None or maxDate is None:
             return gettext('No month'), 0
 
-        monthDistanceSums = get_distance_per_month_by_type(trackClass, minDate.year, maxDate.year)
+        monthDistanceSums = get_distance_per_month_by_type(trackType, minDate.year, maxDate.year)
 
         if not monthDistanceSums:
             return gettext('No month'), 0
@@ -121,10 +127,11 @@ def construct_blueprint():
         bestMonthDate = date(year=bestMonth.year, month=bestMonth.month, day=1)
         return bestMonthDate.strftime('%B %Y'), bestMonth.distanceSum
 
-    def __get_streaks_by_type(trackClass) -> tuple[int, int]:
-        firstTrack = (trackClass.query
-                      .filter(trackClass.user_id == current_user.id)
-                      .order_by(asc(trackClass.startTime)).first())
+    def __get_streaks_by_type(trackType: TrackType) -> tuple[int, int]:
+        firstTrack = (Track.query
+                      .filter(Track.type == trackType)
+                      .filter(Track.user_id == current_user.id)
+                      .order_by(asc(Track.startTime)).first())
         if firstTrack is None:
             return 0, 0
 

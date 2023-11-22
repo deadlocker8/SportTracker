@@ -8,13 +8,14 @@ from pydantic import ValidationError, BaseModel
 from blueprints.MonthGoalsCount import MonthGoalCountFormModel
 from blueprints.MonthGoalsDistance import MonthGoalDistanceFormModel
 from logic import Constants
-from logic.model.Models import db, BikingTrack, RunningTrack, MonthGoalDistance, TrackType, MonthGoalCount
+from logic.model.Models import db, MonthGoalDistance, TrackType, MonthGoalCount, Track
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 class TrackApiFormModel(BaseModel):
     name: str
+    type: str
     date: str
     time: str
     distance: float
@@ -23,6 +24,7 @@ class TrackApiFormModel(BaseModel):
     durationSeconds: int | None = None
     averageHeartRate: int | None = None
     elevationSum: int | None = None
+    customFields: dict[str, str] | None = None
 
     def calculate_start_time(self) -> datetime:
         return datetime.strptime(f'{self.date} {self.time}', '%Y-%m-%d %H:%M')
@@ -37,14 +39,6 @@ class TrackApiFormModel(BaseModel):
         return 3600 * self.durationHours + 60 * self.durationMinutes + self.durationSeconds
 
 
-class BikingTrackApiFormModel(TrackApiFormModel):
-    bike: str | None = None
-
-
-class RunningTrackApiFormModel(TrackApiFormModel):
-    pass
-
-
 def construct_blueprint(version: dict):
     api = Blueprint('api', __name__, static_folder='static', url_prefix='/api')
 
@@ -53,46 +47,25 @@ def construct_blueprint(version: dict):
     def version():
         return jsonify(version)
 
-    @api.route('/addBikingTrack', methods=['POST'])
+    @api.route('/addTrack', methods=['POST'])
     @login_required
-    def addBikingTrack():
+    def addTrack():
         try:
-            form = BikingTrackApiFormModel.model_validate_json(request.data)
+            form = TrackApiFormModel.model_validate_json(request.data)
         except ValidationError as e:
             return jsonify({'error': str(e)}), 400
 
-        track = BikingTrack(name=form.name,
-                            startTime=form.calculate_start_time(),
-                            duration=form.calculate_duration(),
-                            distance=form.distance * 1000,
-                            averageHeartRate=form.averageHeartRate,
-                            elevationSum=form.elevationSum,
-                            bike=form.bike,
-                            user_id=current_user.id)
+        track = Track(name=form.name,
+                      type=TrackType(form.type),
+                      startTime=form.calculate_start_time(),
+                      duration=form.calculate_duration(),
+                      distance=form.distance * 1000,
+                      averageHeartRate=form.averageHeartRate,
+                      elevationSum=form.elevationSum,
+                      user_id=current_user.id,
+                      custom_fields={} if form.customFields is None else form.customFields)
 
-        LOGGER.debug(f'Saved new biking track from api: {track}')
-        db.session.add(track)
-        db.session.commit()
-
-        return '', 200
-
-    @api.route('/addRunningTrack', methods=['POST'])
-    @login_required
-    def addRunningTrack():
-        try:
-            form = RunningTrackApiFormModel.model_validate_json(request.data)
-        except ValidationError as e:
-            return jsonify({'error': str(e)}), 400
-
-        track = RunningTrack(name=form.name,
-                             startTime=form.calculate_start_time(),
-                             duration=form.calculate_duration(),
-                             distance=form.distance * 1000,
-                             averageHeartRate=form.averageHeartRate,
-                             elevationSum=form.elevationSum,
-                             user_id=current_user.id)
-
-        LOGGER.debug(f'Saved new running track api: {track}')
+        LOGGER.debug(f'Saved new track of type {track.type} from api: {track}')
         db.session.add(track)
         db.session.commit()
 
