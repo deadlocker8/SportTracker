@@ -13,8 +13,8 @@ from flask_babel import Babel
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, current_user
 
-from blueprints import General, Authentication, Tracks, MonthGoals, Charts, Users, BikingTracks, RunningTracks, \
-    MonthGoalsDistance, MonthGoalsCount, Api, Achievements
+from blueprints import General, Authentication, Tracks, MonthGoals, Charts, Users, MonthGoalsDistance, MonthGoalsCount, \
+    Api, Achievements
 from logic import Constants
 from logic.model.Models import db, User, Track, TrackType, MonthGoalDistance, MonthGoalCount, Language
 
@@ -168,8 +168,6 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Authentication.construct_blueprint())
         app.register_blueprint(General.construct_blueprint())
         app.register_blueprint(Tracks.construct_blueprint())
-        app.register_blueprint(BikingTracks.construct_blueprint())
-        app.register_blueprint(RunningTracks.construct_blueprint())
         app.register_blueprint(MonthGoals.construct_blueprint())
         app.register_blueprint(MonthGoalsDistance.construct_blueprint())
         app.register_blueprint(MonthGoalsCount.construct_blueprint())
