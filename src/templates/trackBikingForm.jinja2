@@ -3,7 +3,8 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {% if track %}{{ gettext('Edit Biking Track') }}{% else %}{{ gettext('New Biking Track') }}{% endif %}</title>
+        <title>SportTracker - {% if track %}{{ gettext('Edit Biking Track') }}{% else %}
+            {{ gettext('New Biking Track') }}{% endif %}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -16,7 +17,8 @@
                     <div class="col-12 mx-auto">
                         {% if track %}
                             <h1>{{ gettext('Edit Biking Track') }}</h1>
-                            <a href="{{ url_for('tracks.delete', track_id=track_id) }}" class="btn btn-danger mt-3">{{ gettext('Delete') }}</a>
+                            <a href="{{ url_for('tracks.delete', track_id=track_id) }}"
+                               class="btn btn-danger mt-3">{{ gettext('Delete') }}</a>
                         {% else %}
                             <h1>{{ gettext('New Biking Track') }}</h1>
                         {% endif %}
@@ -25,7 +27,8 @@
 
                 <div class="row mt-5 text-start">
                     <div class="col-9 mx-auto">
-                        <form role="form" action="{% if track %}{{ url_for('tracks.editPost', track_id=track_id) }}{% else %}{{ url_for('tracks.addPost') }}{% endif %}"
+                        <form role="form" action="
+                                {% if track %}{{ url_for('tracks.editPost', track_id=track_id) }}{% else %}{{ url_for('tracks.addPost') }}{% endif %}"
                               method="post">
 
                             <input type="hidden" class="form-control" id="track-type" name="type" value="BIKING">
@@ -61,9 +64,11 @@
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-2">
-                                        <label for="track-duration-hours" class="form-label">{{ gettext('Duration') }}</label>
+                                        <label for="track-duration-hours"
+                                               class="form-label">{{ gettext('Duration') }}</label>
                                         <input type="number" step="1" min="0" class="form-control"
-                                               id="track-duration-hours" name="durationHours" placeholder="{{ gettext('Hours') }}"
+                                               id="track-duration-hours" name="durationHours"
+                                               placeholder="{{ gettext('Hours') }}"
                                                required="required"
                                                {% if track %}value="{{ track.durationHours }}"{% endif %}>
                                     </div>
@@ -85,25 +90,26 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="track-averageHeartRate" class="form-label">{{ gettext('Average Heart Rate') }}</label>
+                                <label for="track-averageHeartRate"
+                                       class="form-label">{{ gettext('Average Heart Rate') }}</label>
                                 <input type="number" step="1" min="0" class="form-control" id="track-averageHeartRate"
                                        name="averageHeartRate"
                                        {% if track and track.averageHeartRate is not none %}value="{{ track.averageHeartRate }}"{% endif %}>
                             </div>
 
                             <div class="mb-3">
-                                <label for="track-elevationSum" class="form-label">{{ gettext('Elevation Sum (in m)') }}</label>
+                                <label for="track-elevationSum"
+                                       class="form-label">{{ gettext('Elevation Sum (in m)') }}</label>
                                 <input type="number" step="1" min="0" class="form-control" id="track-elevationSum"
                                        name="elevationSum"
                                        {% if track and track.elevationSum is not none %}value="{{ track.elevationSum }}"{% endif %}>
                             </div>
 
-                            <div class="mb-5">
-                                <label for="track-bike" class="form-label">{{ gettext('Bike') }}</label>
-                                <input type="text" class="form-control" id="track-bike" name="bike" {% if track and track.bike is not none %}value="{{ track.bike }}"{% endif %}>
-                            </div>
+                            {% for field in customFields %}
+                                {{ macros.customFieldInput(field) }}
+                            {% endfor %}
 
-                            <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary mt-3">{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

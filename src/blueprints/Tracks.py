@@ -10,7 +10,7 @@ from pydantic import BaseModel, ConfigDict, field_validator
 
 from logic import Constants
 from logic.model.Models import Track, get_goal_summaries_by_year_and_month, MonthGoalSummary, TrackType, \
-    get_tracks_by_year_and_month_by_type, User, db
+    get_tracks_by_year_and_month_by_type, User, db, CustomTrackField
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -97,7 +97,12 @@ def construct_blueprint():
     @tracks.route('/add/<string:track_type>')
     @login_required
     def addType(track_type: str):
-        return render_template(f'track{track_type.capitalize()}Form.jinja2')
+        customFields = (CustomTrackField.query
+                        .filter(CustomTrackField.user_id == current_user.id)
+                        .filter(CustomTrackField.track_type == track_type)
+                        .all())
+        return render_template(f'track{track_type.capitalize()}Form.jinja2',
+                               customFields=customFields)
 
     @tracks.route('/post', methods=['POST'])
     @login_required
@@ -142,7 +147,15 @@ def construct_blueprint():
             elevationSum=track.elevationSum,
             **track.custom_fields)
 
-        return render_template(f'track{track.type.name.capitalize()}Form.jinja2', track=trackModel, track_id=track_id)
+        customFields = (CustomTrackField.query
+                        .filter(CustomTrackField.user_id == current_user.id)
+                        .filter(CustomTrackField.track_type == track.type)
+                        .all())
+
+        return render_template(f'track{track.type.name.capitalize()}Form.jinja2',
+                               track=trackModel,
+                               track_id=track_id,
+                               customFields=customFields)
 
     @tracks.route('/edit/<int:track_id>', methods=['POST'])
     @login_required

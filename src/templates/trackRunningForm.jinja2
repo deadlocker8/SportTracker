@@ -91,14 +91,18 @@
                                        {% if track and track.averageHeartRate is not none %}value="{{ track.averageHeartRate }}"{% endif %}>
                             </div>
 
-                            <div class="mb-5">
+                            <div class="mb-3">
                                 <label for="track-elevationSum" class="form-label">{{ gettext('Elevation Sum (in m)') }}</label>
                                 <input type="number" step="1" min="0" class="form-control" id="track-elevationSum"
                                        name="elevationSum"
                                        {% if track and track.elevationSum is not none %}value="{{ track.elevationSum }}"{% endif %}>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
+                            {% for field in customFields %}
+                                {{ macros.customFieldInput(field) }}
+                            {% endfor %}
+
+                            <button type="submit" class="btn btn-primary mt-3">{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>
