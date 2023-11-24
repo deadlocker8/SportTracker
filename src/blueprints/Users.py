@@ -9,7 +9,7 @@ from pydantic import BaseModel
 
 from logic import Constants
 from logic.AdminWrapper import admin_role_required
-from logic.model.Models import db, User, Language
+from logic.model.Models import db, User, Language, TrackType, CustomTrackField, CustomTrackFieldType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -31,6 +31,13 @@ class EditSelfUserFormModel(BaseModel):
 
 class EditSelfLanguageFormModel(BaseModel):
     language: str
+
+
+class CustomTrackFieldFormModel(BaseModel):
+    name: str
+    type: str
+    track_type: str
+    is_required: bool = False
 
 
 @dataclass
@@ -135,7 +142,17 @@ def construct_blueprint():
     @users.route('/editSelf')
     @login_required
     def editSelf():
-        return render_template('profile.jinja2', userLanguage=current_user.language.name)
+        customFieldsByTrackType = {}
+
+        for trackType in TrackType:
+            customFieldsByTrackType[trackType] = (CustomTrackField.query
+                                                  .filter(CustomTrackField.user_id == current_user.id)
+                                                  .filter(CustomTrackField.track_type == trackType)
+                                                  .all())
+
+        return render_template('profile.jinja2',
+                               userLanguage=current_user.language.name,
+                               customFieldsByTrackType=customFieldsByTrackType)
 
     @users.route('/editSelfPost', methods=['POST'])
     @login_required
@@ -192,6 +209,85 @@ def construct_blueprint():
         db.session.commit()
 
         return redirect(url_for('users.listUsers'))
+
+    @users.route('/customFields/add/<string:track_type>')
+    @login_required
+    def customFieldsAdd(track_type: str):
+        trackType = TrackType(track_type)
+        return render_template('customFieldsForm.jinja2', trackType=trackType)
+
+    @users.route('/customFields/post', methods=['POST'])
+    @login_required
+    @validate()
+    def customFieldsAddPost(form: CustomTrackFieldFormModel):
+        track = CustomTrackField(name=form.name,
+                                 type=CustomTrackFieldType(form.type),
+                                 track_type=TrackType(form.track_type),
+                                 is_required=form.is_required,
+                                 user_id=current_user.id)
+        LOGGER.debug(f'Saved new custom field: {track}')
+        db.session.add(track)
+        db.session.commit()
+
+        return redirect(url_for('users.editSelf'))
+
+    @users.route('/customFields/edit/<int:field_id>')
+    @login_required
+    def customFieldsEdit(field_id: int):
+        field: CustomTrackField | None = (CustomTrackField.query.join(User)
+                                          .filter(User.username == current_user.username)
+                                          .filter(CustomTrackField.id == field_id)
+                                          .first())
+
+        if field is None:
+            abort(404)
+
+        fieldModel = CustomTrackFieldFormModel(
+            name=field.name,
+            type=field.type,
+            track_type=field.track_type.name,
+            is_required=field.is_required)
+
+        return render_template(f'customFieldsForm.jinja2', field=fieldModel, field_id=field_id)
+
+    @users.route('/customFields/edit/<int:field_id>', methods=['POST'])
+    @login_required
+    @validate()
+    def customFieldsEditPost(field_id: int, form: CustomTrackFieldFormModel):
+        field: CustomTrackField | None = (CustomTrackField.query.join(User)
+                                          .filter(User.username == current_user.username)
+                                          .filter(CustomTrackField.id == field_id)
+                                          .first())
+
+        if field is None:
+            abort(404)
+
+        field.name = form.name
+        field.type = form.type
+        field.track_type = form.track_type
+        field.is_required = form.is_required
+
+        LOGGER.debug(f'Updated custom field: {field}')
+        db.session.commit()
+
+        return redirect(url_for('users.editSelf'))
+
+    @users.route('/customFields/delete/<int:field_id>')
+    @login_required
+    def customFieldsDelete(field_id: int):
+        field: CustomTrackField | None = (CustomTrackField.query.join(User)
+                                          .filter(User.username == current_user.username)
+                                          .filter(CustomTrackField.id == field_id)
+                                          .first())
+
+        if field is None:
+            abort(404)
+
+        LOGGER.debug(f'Deleted custom field: {field}')
+        db.session.delete(field)
+        db.session.commit()
+
+        return redirect(url_for('users.editSelf'))
 
     def __user_already_exists(username: str) -> bool:
         return User.query.filter(User.username == username).first() is not None

@@ -33,6 +33,7 @@ class User(UserMixin, db.Model):
     isAdmin: Mapped[bool] = mapped_column(Boolean, nullable=False)
     language = db.Column(db.Enum(Language))
     tracks = db.relationship('Track', backref='user', lazy=True, cascade='delete')
+    customFields = db.relationship('CustomTrackField', backref='user', lazy=True, cascade='delete')
 
 
 class TrackType(enum.Enum):
@@ -68,6 +69,21 @@ class Track(db.Model):
     elevationSum: Mapped[int] = mapped_column(Integer, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     custom_fields = db.Column(JSON)
+
+
+class CustomTrackFieldType(enum.Enum):
+    STRING = 'STRING'
+    INTEGER = 'INTEGER'
+    FLOAT = 'FLOAT'
+
+
+class CustomTrackField(db.Model):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    type = db.Column(db.Enum(CustomTrackFieldType))
+    track_type = db.Column(db.Enum(TrackType))
+    name: Mapped[String] = mapped_column(String, nullable=False)
+    is_required: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
 @dataclass

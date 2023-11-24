@@ -49,6 +49,57 @@
                         </form>
                     </div>
                 </div>
+
+                <div class="row mt-5 text-start">
+                    <div class="col-9 mx-auto">
+                        <h3 class="text-center mb-5">{{ gettext('Custom Track Fields') }}</h3>
+
+                        {% for trackType, customFields in customFieldsByTrackType.items() %}
+                             <div class="row mt-5 mb-3">
+                                 <div class="col-12 mx-auto">
+                                     <h3 class="d-flex align-items-center justify-content-center">
+                                         <span class="material-icons rounded-circle fs-2 p-2 text-dark {{ trackType.background_color }} me-3">{{ trackType.icon }}</span>
+                                         <span class="me-3">{{ trackType.get_localized_name() }}</span>
+                                         <a href="{{ url_for('users.customFieldsAdd', track_type=trackType.name)}}"
+                                            class="link-light text-decoration-none d-flex-inline align-items-center">
+                                             <span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span>
+                                         </a>
+                                     </h3>
+                                 </div>
+                             </div>
+
+                            <table class="table table-dark">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">{{ gettext('Name') }}</th>
+                                        <th scope="col">{{ gettext('Type') }}</th>
+                                        <th scope="col">{{ gettext('Is Required') }}</th>
+                                        <th scope="col">{{ gettext('Action') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for field in customFields %}
+                                        <tr>
+                                            <td>{{ field.name }}</td>
+                                            <td>{{ field.type.name }}</td>
+                                            <td>{{ field.is_required }}</td>
+                                            <td>
+                                                <a href="{{ url_for('users.customFieldsEdit', field_id=field.id) }}"
+                                                   class="link-light text-decoration-none">
+                                                    <span class="p-1 fs-5 material-icons">edit</span>
+                                                </a>
+                                                <a href="{{ url_for('users.customFieldsDelete', field_id=field.id) }}"
+                                                   class="link-light text-decoration-none">
+                                                    <span class="p-1 fs-5 material-icons">delete</span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endfor %}
+                    </div>
+                </div>
             </section>
         </div>
 
