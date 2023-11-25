@@ -82,7 +82,7 @@ def construct_blueprint():
 
         nextMonthDate = monthRightSideDate + relativedelta(months=1)
 
-        return render_template('tracks.jinja2',
+        return render_template('tracks/tracks.jinja2',
                                monthLeftSide=monthLeftSide,
                                monthRightSide=monthRightSide,
                                previousMonthDate=monthLeftSideDate,
@@ -92,7 +92,7 @@ def construct_blueprint():
     @tracks.route('/add')
     @login_required
     def add():
-        return render_template('trackChooser.jinja2')
+        return render_template('tracks/trackChooser.jinja2')
 
     @tracks.route('/add/<string:track_type>')
     @login_required
