@@ -1,0 +1,52 @@
+{% import 'charts/chartMacros.jinja2' as chartMacros with context %}
+{% call chartMacros.chart() %}
+     const data = [
+        {
+            x: {{ chartDataDurationPerTrack['dates'] }},
+            y: {{ chartDataDurationPerTrack['values'] }},
+            type: 'bar',
+            marker: {
+                color: '{{ chartDataDurationPerTrack.type.background_color_hex }}'
+            },
+            name: '{{ chartDataDurationPerTrack.type.name | capitalize }}',
+            text: {{ chartDataDurationPerTrack['texts'] }}
+        },
+    ];
+
+    const plotlyLayout = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        title: {
+            text: '{{ gettext('Duration per Track') }}',
+            font: {
+                color: '#FFFFFF'
+            }
+        },
+        xaxis: {
+            type: 'category',
+            color: '#FFFFFF',
+            automargin: true
+        },
+        yaxis: {
+            title: '{{ gettext('Duration in s') }}',
+            rangemode: 'tozero',
+            tickformat: '.0f',
+            showline: true,
+            color: '#FFFFFF',
+            range: [{{ chartDataDurationPerTrack.min }}, {{ chartDataDurationPerTrack.max }}]
+        },
+        barmode: 'group',
+        legend: {
+            font: {
+                color: '#FFFFFF'
+            }
+        }
+    }
+
+    const plotlyConfig = {
+        responsive: true,
+        displayModeBar: false
+    };
+
+    Plotly.newPlot('chartContainer', data, plotlyLayout, plotlyConfig);
+{% endcall %}

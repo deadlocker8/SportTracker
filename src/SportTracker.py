@@ -15,6 +15,7 @@ from flask_login import LoginManager, current_user
 
 from blueprints import General, Authentication, Tracks, MonthGoals, Charts, Users, MonthGoalsDistance, MonthGoalsCount, \
     Api, Achievements
+from helpers import Helpers
 from logic import Constants
 from logic.model.Models import db, User, Track, TrackType, MonthGoalDistance, MonthGoalCount, Language
 
@@ -56,13 +57,7 @@ class SportTracker(FlaskBaseApp):
             return {'versionName': self._version['name']}
 
         def format_duration(value: int | None) -> str:
-            if value is None:
-                return '--:--'
-
-            hours = value // 3600
-            minutes = value % 3600 // 60
-
-            return f'{hours}:{str(minutes).zfill(2)}'
+            return Helpers.format_duration(value)
 
         def format_pace(track: Track) -> str:
             speed = int(track.duration / (track.distance / 1000))

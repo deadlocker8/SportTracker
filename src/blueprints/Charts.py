@@ -7,6 +7,7 @@ from flask_babel import gettext
 from flask_login import login_required, current_user
 from sqlalchemy import extract, func, String
 
+from helpers.Helpers import format_duration
 from logic import Constants
 from logic.model.Models import get_distance_per_month_by_type, db, Track, TrackType, CustomTrackField, \
     get_custom_fields_by_track_type
@@ -48,7 +49,8 @@ def construct_blueprint():
             for trackType in TrackType:
                 chartDataDistancePerMonth.append(__get_distance_per_month_by_type(trackType, minYear, maxYear))
 
-        return render_template('charts/chartDistancePerMonth.jinja2', chartDataDistancePerMonth=chartDataDistancePerMonth)
+        return render_template('charts/chartDistancePerMonth.jinja2',
+                               chartDataDistancePerMonth=chartDataDistancePerMonth)
 
     def __get_min_and_max_year() -> tuple[int | None, int | None]:
         minDate, maxDate = (
@@ -129,6 +131,60 @@ def construct_blueprint():
                 })
 
         return render_template('charts/chartAverageSpeed.jinja2', chartDataAverageSpeed=chartDataAverageSpeed)
+
+    @charts.route('/durationPerTrackChooser')
+    @login_required
+    def chartDurationPerTrackChooser():
+        trackNamesByTrackType = {}
+        for trackType in TrackType:
+            rows = (Track.query.with_entities(Track.name)
+                    .filter(Track.user_id == current_user.id)
+                    .filter(Track.type == trackType)
+                    .group_by(Track.name)
+                    .having(func.count(Track.name) > 2)
+                    .order_by(Track.name.asc())
+                    .all())
+
+            trackNamesByTrackType[trackType] = [row[0] for row in rows]
+
+        return render_template('charts/chartDurationPerTrackChooser.jinja2',
+                               trackNamesByTrackType=trackNamesByTrackType)
+
+    @charts.route('/durationPerTrack/<string:track_type>/<string:name>')
+    @login_required
+    def chartDurationPerTrack(track_type: str, name: str):
+        trackType = TrackType(track_type)
+
+        tracks = (Track.query
+                  .filter(Track.user_id == current_user.id)
+                  .filter(Track.type == trackType)
+                  .filter(Track.name == name)
+                  .filter(Track.duration.is_not(None))
+                  .order_by(Track.startTime.asc())
+                  .all())
+
+        dates = []
+        values = []
+        texts = []
+        for track in tracks:
+            if track.duration is None:
+                continue
+
+            dates.append(track.startTime.strftime('%d.%m.%y'))
+            values.append(track.duration)
+            texts.append(f'{format_duration(track.duration)} h')
+
+        chartDataDurationPerTrack = {
+            'dates': dates,
+            'values': values,
+            'texts': texts,
+            'type': trackType,
+            'min': min(values) - 300,
+            'max': max(values) + 300
+        }
+
+        return render_template('charts/chartDurationPerTrack.jinja2',
+                               chartDataDurationPerTrack=chartDataDurationPerTrack)
 
     def __get_distance_per_month_by_type(trackType: TrackType, minYear: int, maxYear: int) -> dict[str, Any]:
         monthDistanceSums = get_distance_per_month_by_type(trackType, minYear, maxYear)
