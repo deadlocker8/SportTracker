@@ -1,3 +1,6 @@
+# 1.4.1
+- fix: track edit page
+
 # 1.4.0
 - BREAKING CHANGE: replaced special track classes with single class and custom fields
 - add: new chart: average speed (bar chart)
