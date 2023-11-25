@@ -67,7 +67,7 @@ class CsvParser:
                     'durationSeconds': seconds,
                     'distance': cls.__calculate_distance(row[4]),
                     'averageHeartRate': None,
-                    'customFields': {'bike': row[9]}
+                    'customFields': {'Bike': row[9]}
                 }
                 LOGGER.debug(f'Importing {data}')
                 response = session.post(f'{url}/api/addTrack', json=data)
