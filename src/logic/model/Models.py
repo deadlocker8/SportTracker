@@ -288,3 +288,14 @@ def get_custom_fields_by_track_type() -> dict[TrackType, list[CustomTrackField]]
                                               .filter(CustomTrackField.track_type == trackType)
                                               .all())
     return customFieldsByTrackType
+
+
+def get_track_names_by_track_type(trackType: TrackType) -> list[str]:
+    rows = (Track.query.with_entities(Track.name)
+            .filter(Track.user_id == current_user.id)
+            .filter(Track.type == trackType)
+            .distinct()
+            .order_by(Track.name.asc())
+            .all())
+
+    return [row[0] for row in rows]
