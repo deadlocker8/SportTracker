@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('About') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('about') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <img alt="SportTracker logo" src="{{ url_for('static', filename="images/SportTracker.png") }}"
+                             width="200" height="200" class="">
+                        <h1 class="my-5">SportTracker - {{ versionName }}</h1>
+                    </div>
+                </div>
+
+                <h3 class="mb-5">{{ gettext('Changelog') }}</h3>
+
+                {% for version, entries in changelog.items() %}
+                    <div class="card mb-4">
+                        <div class="card-header bg-dark-subtle fw-bold">
+                            v{{ version }}
+                        </div>
+                        <ul class="list-group list-group-flush text-start">
+                            {% for entry in entries %}
+                                <li class="list-group-item">{{ entry }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>
