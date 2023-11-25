@@ -48,7 +48,7 @@
 
                             <div class="mb-3">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" {% if field %}value="{{ field.is_required }}"{% endif %} id="field-is-required" name="is_required">
+                                    <input class="form-check-input" type="checkbox" {% if field and field.is_required %}checked{% endif %} id="field-is-required" name="is_required">
                                     <label class="form-check-label" for="field-is-required">
                                         {{ gettext('Is required') }}
                                     </label>

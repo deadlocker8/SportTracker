@@ -5,7 +5,7 @@ from flask import Blueprint, render_template, redirect, url_for, abort
 from flask_bcrypt import Bcrypt
 from flask_login import login_required, current_user
 from flask_pydantic import validate
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from logic import Constants
 from logic.AdminWrapper import admin_role_required
@@ -39,6 +39,14 @@ class CustomTrackFieldFormModel(BaseModel):
     type: str
     track_type: str
     is_required: bool = False
+
+    @field_validator(*['is_required', ], mode='before')
+    def averageHeartRateCheck(cls, value: str, info) -> str | None:
+        if isinstance(value, str):
+            value = value.strip()
+        if value == '':
+            return None
+        return value
 
 
 @dataclass
