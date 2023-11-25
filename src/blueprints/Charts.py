@@ -85,6 +85,39 @@ def construct_blueprint():
 
         return render_template('chartDistancePerBike.jinja2', chartDistancePerBikeData=chartDistancePerBikeData)
 
+    @charts.route('/chartAverageSpeed')
+    @login_required
+    def chartAverageSpeed():
+        minYear, maxYear = __get_min_and_max_year()
+
+        chartDataAverageSpeed = []
+        if minYear is None or maxYear is None:
+            return chartDataAverageSpeed
+        else:
+            for trackType in TrackType:
+                tracks = (Track.query
+                          .filter(Track.user_id == current_user.id)
+                          .filter(Track.type == trackType)
+                          .order_by(Track.startTime.asc())
+                          .all())
+
+                dates = []
+                speedData = []
+                for track in tracks:
+                    if track.duration is None:
+                        continue
+
+                    dates.append(track.startTime.strftime('%d.%m.%y'))
+                    speedData.append(round(track.distance / track.duration * 3.6, 2))
+
+                chartDataAverageSpeed.append({
+                    'dates': dates,
+                    'values': speedData,
+                    'type': trackType
+                })
+
+        return render_template('chartAverageSpeed.jinja2', chartDataAverageSpeed=chartDataAverageSpeed)
+
     def __get_distance_per_month_by_type(trackType: TrackType, minYear: int, maxYear: int) -> dict[str, Any]:
         monthDistanceSums = get_distance_per_month_by_type(trackType, minYear, maxYear)
         monthNames = []
@@ -128,5 +161,6 @@ def construct_blueprint():
             'values': values,
             'type': trackType
         }
+
 
     return charts
