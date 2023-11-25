@@ -1,6 +1,6 @@
 import logging
 from datetime import date
-from typing import Any, Type
+from typing import Any
 
 from flask import Blueprint, render_template
 from flask_babel import gettext
@@ -8,7 +8,7 @@ from flask_login import login_required, current_user
 from sqlalchemy import extract, func, String
 
 from logic import Constants
-from logic.model.Models import get_distance_per_month_by_type, db, Track, TrackType
+from logic.model.Models import get_distance_per_month_by_type, db, Track, TrackType, CustomTrackField
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -60,30 +60,48 @@ def construct_blueprint():
 
         return minDate.year, maxDate.year
 
-    @charts.route('/chartDistancePerBike')
+    @charts.route('/chartDistancePerCustomFieldChooser')
     @login_required
-    def chartDistancePerBike():
-        bike = Track.custom_fields['bike'].astext.cast(String)
+    def chartDistancePerCustomFieldChooser():
+        customFieldsByTrackType = {}
 
-        rows = (Track.query.with_entities(func.sum(Track.distance) / 1000, bike)
+        for trackType in TrackType:
+            customFieldsByTrackType[trackType] = (CustomTrackField.query
+                                                  .filter(CustomTrackField.user_id == current_user.id)
+                                                  .filter(CustomTrackField.track_type == trackType)
+                                                  .all())
+        return render_template('chartDistancePerCustomFieldChooser.jinja2',
+                               customFieldsByTrackType=customFieldsByTrackType)
+
+    @charts.route('/chartDistancePerCustomField/<string:track_type>/<string:name>')
+    @login_required
+    def chartDistancePerCustomField(track_type: str, name: str):
+        trackType = TrackType(track_type)
+
+        customField = Track.custom_fields[name].astext.cast(String)
+
+        rows = (Track.query.with_entities(func.sum(Track.distance) / 1000, customField)
                 .filter(Track.user_id == current_user.id)
-                .group_by(bike)
-                .order_by(bike)
+                .filter(Track.type == trackType)
+                .group_by(customField)
+                .order_by(customField)
                 .all())
 
-        bikeNames = []
+        keys = []
         values = []
         for row in rows:
             values.append(float(row[0]))
-            name = row[1]
-            if name is None:
-                bikeNames.append(gettext('Unknown'))
+            key = row[1]
+            if key is None:
+                keys.append(gettext('Unknown'))
             else:
-                bikeNames.append(row[1])
+                keys.append(key)
 
-        chartDistancePerBikeData = {'bikeNames': bikeNames, 'values': values}
+        chartDistancePerCustomFieldData = {'keys': keys, 'values': values}
 
-        return render_template('chartDistancePerBike.jinja2', chartDistancePerBikeData=chartDistancePerBikeData)
+        return render_template('chartDistancePerCustomField.jinja2',
+                               chartDistancePerCustomFieldData=chartDistancePerCustomFieldData,
+                               customFieldName=name)
 
     @charts.route('/chartAverageSpeed')
     @login_required
@@ -161,6 +179,5 @@ def construct_blueprint():
             'values': values,
             'type': trackType
         }
-
 
     return charts
