@@ -155,7 +155,7 @@ def construct_blueprint():
                         .filter(CustomTrackField.track_type == track.type)
                         .all())
 
-        return render_template(f'track{track.type.name.capitalize()}Form.jinja2',
+        return render_template(f'tracks/track{track.type.name.capitalize()}Form.jinja2',
                                track=trackModel,
                                track_id=track_id,
                                customFields=customFields,
