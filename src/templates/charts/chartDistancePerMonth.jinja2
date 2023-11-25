@@ -1,15 +1,14 @@
-{% import 'chartMacros.jinja2' as chartMacros with context %}
+{% import 'charts/chartMacros.jinja2' as chartMacros with context %}
 {% call chartMacros.chart() %}
      const data = [
-        {% for entry in chartDataDistancePerYear %}
+        {% for entry in chartDataDistancePerMonth %}
             {
-                x: {{ entry['yearNames'] }},
+                x: {{ entry['monthNames'] }},
                 y: {{ entry['values'] }},
                 type: 'bar',
                 marker: {
                     color: '{{ entry.type.background_color_hex }}'
                 },
-                text: {{ entry['values'] }},
                 name: '{{ entry.type.name | capitalize }}'
             },
         {% endfor %}
@@ -19,14 +18,15 @@
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
         title: {
-            text: '{{ gettext('Distance per Year') }}',
+            text: '{{ gettext('Distance per Month') }}',
             font: {
                 color: '#FFFFFF'
             }
         },
         xaxis: {
             type: 'category',
-            color: '#FFFFFF'
+            color: '#FFFFFF',
+            automargin: true
         },
         yaxis: {
             title: '{{ gettext('Distance in km') }}',

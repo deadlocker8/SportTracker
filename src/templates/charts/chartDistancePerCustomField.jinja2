@@ -1,39 +1,29 @@
-{% import 'chartMacros.jinja2' as chartMacros with context %}
+{% import 'charts/chartMacros.jinja2' as chartMacros with context %}
 {% call chartMacros.chart() %}
      const data = [
-        {% for entry in chartDataAverageSpeed %}
-            {
-                x: {{ entry['dates'] }},
-                y: {{ entry['values'] }},
-                type: 'scatter',
-                fill: 'tozeroy',
-                marker: {
-                    color: '{{ entry.type.background_color_hex }}'
-                },
-                text: {{ entry['values'] }},
-                name: '{{ entry.type.name | capitalize }}'
-            },
-        {% endfor %}
+        {
+            labels: {{ chartDistancePerCustomFieldData['keys'] }},
+            values: {{ chartDistancePerCustomFieldData['values'] }},
+            type: 'pie',
+            text: {{ chartDistancePerCustomFieldData['values'] }}
+        },
     ];
 
     const plotlyLayout = {
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
         title: {
-            text: '{{ gettext('Average Speed') }}',
+            text: '{{ gettext('Distance per custom field "%(name)s"', name=customFieldName) }}',
             font: {
                 color: '#FFFFFF'
             }
         },
         xaxis: {
             type: 'category',
-            color: '#FFFFFF',
-            automargin: true,
-            showgrid: false,
-            visible: false
+            color: '#FFFFFF'
         },
         yaxis: {
-            title: '{{ gettext('Speed in km/h') }}',
+            title: '{{ gettext('Distance in km') }}',
             rangemode: 'tozero',
             tickformat: '.0f',
             showline: true,

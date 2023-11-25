@@ -20,7 +20,7 @@ def construct_blueprint():
     @charts.route('/')
     @login_required
     def chartChooser():
-        return render_template('chartChooser.jinja2')
+        return render_template('charts/chartChooser.jinja2')
 
     @charts.route('/distancePerYear')
     @login_required
@@ -34,7 +34,7 @@ def construct_blueprint():
             for trackType in TrackType:
                 chartDataDistancePerYear.append(__get_distance_per_year_by_type(trackType, minYear, maxYear))
 
-        return render_template('chartDistancePerYear.jinja2', chartDataDistancePerYear=chartDataDistancePerYear)
+        return render_template('charts/chartDistancePerYear.jinja2', chartDataDistancePerYear=chartDataDistancePerYear)
 
     @charts.route('/distancePerMonth')
     @login_required
@@ -48,7 +48,7 @@ def construct_blueprint():
             for trackType in TrackType:
                 chartDataDistancePerMonth.append(__get_distance_per_month_by_type(trackType, minYear, maxYear))
 
-        return render_template('chartDistancePerMonth.jinja2', chartDataDistancePerMonth=chartDataDistancePerMonth)
+        return render_template('charts/chartDistancePerMonth.jinja2', chartDataDistancePerMonth=chartDataDistancePerMonth)
 
     def __get_min_and_max_year() -> tuple[int | None, int | None]:
         minDate, maxDate = (
@@ -64,7 +64,7 @@ def construct_blueprint():
     @charts.route('/chartDistancePerCustomFieldChooser')
     @login_required
     def chartDistancePerCustomFieldChooser():
-        return render_template('chartDistancePerCustomFieldChooser.jinja2',
+        return render_template('charts/chartDistancePerCustomFieldChooser.jinja2',
                                customFieldsByTrackType=get_custom_fields_by_track_type())
 
     @charts.route('/chartDistancePerCustomField/<string:track_type>/<string:name>')
@@ -93,7 +93,7 @@ def construct_blueprint():
 
         chartDistancePerCustomFieldData = {'keys': keys, 'values': values}
 
-        return render_template('chartDistancePerCustomField.jinja2',
+        return render_template('charts/chartDistancePerCustomField.jinja2',
                                chartDistancePerCustomFieldData=chartDistancePerCustomFieldData,
                                customFieldName=name)
 
@@ -128,7 +128,7 @@ def construct_blueprint():
                     'type': trackType
                 })
 
-        return render_template('chartAverageSpeed.jinja2', chartDataAverageSpeed=chartDataAverageSpeed)
+        return render_template('charts/chartAverageSpeed.jinja2', chartDataAverageSpeed=chartDataAverageSpeed)
 
     def __get_distance_per_month_by_type(trackType: TrackType, minYear: int, maxYear: int) -> dict[str, Any]:
         monthDistanceSums = get_distance_per_month_by_type(trackType, minYear, maxYear)
