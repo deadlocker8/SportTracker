@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-25 22:50+0100\n"
-"PO-Revision-Date: 2023-11-25 22:56+0100\n"
+"POT-Creation-Date: 2023-11-25 23:32+0100\n"
+"PO-Revision-Date: 2023-11-25 23:33+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -70,29 +70,31 @@ msgstr ""
 msgid "No month"
 msgstr "Kein Monat"
 
-#: ../blueprints/Charts.py:90
+#: ../blueprints/Charts.py:92
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: ../blueprints/MonthGoalsCount.py:69 ../blueprints/MonthGoalsDistance.py:70
+#: ../blueprints/MonthGoalsCount.py:70 ../blueprints/MonthGoalsDistance.py:70
 msgid "End Year must be greater or equal Start Year."
 msgstr "Das Endjahr muss größer oder gleich dem Anfangsjahr sein."
 
-#: ../blueprints/MonthGoalsCount.py:72 ../blueprints/MonthGoalsDistance.py:73
+#: ../blueprints/MonthGoalsCount.py:73 ../blueprints/MonthGoalsDistance.py:73
 msgid "End Month must be greater or equal Start Month."
 msgstr "Der Endmonat muss größer oder gleich dem Startmonat sein."
 
-#: ../logic/model/Models.py:54 ../templates/monthGoalCountForm.jinja2:33
-#: ../templates/monthGoalCountMultipleForm.jinja2:28
-#: ../templates/monthGoalDistanceForm.jinja2:33
-#: ../templates/monthGoalDistanceMultipleForm.jinja2:28
+#: ../logic/model/Models.py:54
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:33
+#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:28
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:33
+#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:28
 msgid "Biking"
 msgstr "Fahrrad fahren"
 
-#: ../logic/model/Models.py:56 ../templates/monthGoalCountForm.jinja2:34
-#: ../templates/monthGoalCountMultipleForm.jinja2:29
-#: ../templates/monthGoalDistanceForm.jinja2:34
-#: ../templates/monthGoalDistanceMultipleForm.jinja2:29
+#: ../logic/model/Models.py:56
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:34
+#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:29
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:34
+#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:29
 msgid "Running"
 msgstr "Laufen"
 
@@ -100,333 +102,363 @@ msgstr "Laufen"
 msgid "Achievements"
 msgstr "Errungenschaften"
 
-#: ../templates/chartAverageSpeed.jinja2:23 ../templates/chartChooser.jinja2:43
-msgid "Average Speed"
-msgstr "Durchschnittsgeschwindigkeit"
+#: ../templates/login.jinja2:19 ../templates/users/userForm.jinja2:39
+msgid "Username"
+msgstr "Benutzer"
 
-#: ../templates/chartAverageSpeed.jinja2:36
-msgid "Speed in km/h"
-msgstr "Geschwindigkeit in km/h"
+#: ../templates/login.jinja2:23 ../templates/settings/profile.jinja2:31
+#: ../templates/users/userForm.jinja2:45
+msgid "Password"
+msgstr "Passwort"
 
-#: ../templates/chartChooser.jinja2:6 ../templates/chartChooser.jinja2:17
-#: ../templates/chartDistancePerCustomFieldChooser.jinja2:6
-#: ../templates/chartDistancePerCustomFieldChooser.jinja2:17
-#: ../templates/chartMacros.jinja2:7 ../templates/chartMacros.jinja2:20
-#: ../templates/macros.jinja2:52
+#: ../templates/macros.jinja2:39 ../templates/users/users.jinja2:6
+msgid "Users"
+msgstr "Benutzer"
+
+#: ../templates/macros.jinja2:44 ../templates/tracks/tracks.jinja2:140
+msgid "Tracks"
+msgstr "Tracks"
+
+#: ../templates/macros.jinja2:48 ../templates/monthGoals/monthGoals.jinja2:6
+msgid "Goals"
+msgstr "Monatsziele"
+
+#: ../templates/charts/chartChooser.jinja2:6
+#: ../templates/charts/chartChooser.jinja2:17
+#: ../templates/charts/chartDistancePerCustomFieldChooser.jinja2:6
+#: ../templates/charts/chartDistancePerCustomFieldChooser.jinja2:17
+#: ../templates/charts/chartDurationPerTrackChooser.jinja2:6
+#: ../templates/charts/chartDurationPerTrackChooser.jinja2:17
+#: ../templates/charts/chartMacros.jinja2:7
+#: ../templates/charts/chartMacros.jinja2:20 ../templates/macros.jinja2:52
 msgid "Charts"
 msgstr "Diagramme"
 
-#: ../templates/chartChooser.jinja2:26
-#: ../templates/chartDistancePerMonth.jinja2:21
+#: ../templates/charts/chartAverageSpeed.jinja2:23
+#: ../templates/charts/chartChooser.jinja2:43
+msgid "Average Speed"
+msgstr "Durchschnittsgeschwindigkeit"
+
+#: ../templates/charts/chartAverageSpeed.jinja2:36
+msgid "Speed in km/h"
+msgstr "Geschwindigkeit in km/h"
+
+#: ../templates/charts/chartChooser.jinja2:26
+#: ../templates/charts/chartDistancePerMonth.jinja2:21
 msgid "Distance per Month"
 msgstr "Strecke pro Monat"
 
-#: ../templates/chartChooser.jinja2:33
-#: ../templates/chartDistancePerYear.jinja2:22
+#: ../templates/charts/chartChooser.jinja2:33
+#: ../templates/charts/chartDistancePerYear.jinja2:22
 msgid "Distance per Year"
 msgstr "Strecke pro Jahr"
 
-#: ../templates/chartChooser.jinja2:50
+#: ../templates/charts/chartChooser.jinja2:50
 msgid "Distance per Custom Field"
 msgstr "Strecke pro benutzerdefiniertem Feld"
 
-#: ../templates/chartDistancePerCustomField.jinja2:16
+#: ../templates/charts/chartChooser.jinja2:60
+#: ../templates/charts/chartDurationPerTrack.jinja2:20
+msgid "Duration per Track"
+msgstr "Dauer pro Track"
+
+#: ../templates/charts/chartDistancePerCustomField.jinja2:16
 #, python-format
 msgid "Distance per custom field \"%(name)s\""
 msgstr "Strecke pro benutzerdefiniertem Feld \"%(name)s\""
 
-#: ../templates/chartDistancePerCustomField.jinja2:26
-#: ../templates/chartDistancePerMonth.jinja2:32
-#: ../templates/chartDistancePerYear.jinja2:32
+#: ../templates/charts/chartDistancePerCustomField.jinja2:26
+#: ../templates/charts/chartDistancePerMonth.jinja2:32
+#: ../templates/charts/chartDistancePerYear.jinja2:32
 msgid "Distance in km"
 msgstr "Strecke in km"
 
-#: ../templates/chartDistancePerCustomFieldChooser.jinja2:23
+#: ../templates/charts/chartDistancePerCustomFieldChooser.jinja2:23
 msgid "Choose custom field"
 msgstr "Benutzerdefiniertes Feld auswählen"
 
-#: ../templates/customFieldsForm.jinja2:6
-#: ../templates/customFieldsForm.jinja2:19
-msgid "Edit Custom Track Field"
-msgstr "Benutzerdefiniertes Feld bearbeiten"
+#: ../templates/charts/chartDurationPerTrack.jinja2:31
+msgid "Duration in s"
+msgstr "Dauer in s"
 
-#: ../templates/customFieldsForm.jinja2:7
-#: ../templates/customFieldsForm.jinja2:21
-msgid "New Custom Track Field"
-msgstr "Neues benutzerdefiniertes Feld"
+#: ../templates/charts/chartDurationPerTrackChooser.jinja2:23
+msgid "Choose track name"
+msgstr "Namen wählen"
 
-#: ../templates/customFieldsForm.jinja2:35 ../templates/profile.jinja2:74
-#: ../templates/trackBikingForm.jinja2:37
-#: ../templates/trackRunningForm.jinja2:34
-msgid "Name"
-msgstr "Name"
+#: ../templates/charts/chartDurationPerTrackChooser.jinja2:24
+msgid "Note: Only names with at least two tracks are listed"
+msgstr "Hinweis: Es werden nur Namen mit mindestens zwei Tracks angezeigt"
 
-#: ../templates/customFieldsForm.jinja2:41
-#: ../templates/monthGoalCountForm.jinja2:31
-#: ../templates/monthGoalCountMultipleForm.jinja2:26
-#: ../templates/monthGoalDistanceForm.jinja2:31
-#: ../templates/monthGoalDistanceMultipleForm.jinja2:26
-#: ../templates/profile.jinja2:75
-msgid "Type"
-msgstr "Typ"
-
-#: ../templates/customFieldsForm.jinja2:43
-msgid "String"
-msgstr "Zeichenkette"
-
-#: ../templates/customFieldsForm.jinja2:44
-msgid "Integer"
-msgstr "Ganzzahl"
-
-#: ../templates/customFieldsForm.jinja2:45
-msgid "Float"
-msgstr "Kommazahl"
-
-#: ../templates/customFieldsForm.jinja2:53
-msgid "Is required"
-msgstr "Ist Pflichtfeld"
-
-#: ../templates/customFieldsForm.jinja2:58
-#: ../templates/monthGoalCountForm.jinja2:72
-#: ../templates/monthGoalCountMultipleForm.jinja2:87
-#: ../templates/monthGoalDistanceForm.jinja2:72
-#: ../templates/monthGoalDistanceMultipleForm.jinja2:87
-#: ../templates/profile.jinja2:36 ../templates/profile.jinja2:48
-#: ../templates/trackBikingForm.jinja2:112
-#: ../templates/trackRunningForm.jinja2:105 ../templates/userForm.jinja2:54
-msgid "Save"
-msgstr "Speichern"
-
-#: ../templates/login.jinja2:19 ../templates/userForm.jinja2:39
-msgid "Username"
-msgstr "Benutzer"
-
-#: ../templates/login.jinja2:23 ../templates/profile.jinja2:31
-#: ../templates/userForm.jinja2:45
-msgid "Password"
-msgstr "Passwort"
-
-#: ../templates/macros.jinja2:39 ../templates/users.jinja2:6
-msgid "Users"
-msgstr "Benutzer"
-
-#: ../templates/macros.jinja2:44 ../templates/tracks.jinja2:140
-msgid "Tracks"
-msgstr "Tracks"
-
-#: ../templates/macros.jinja2:48 ../templates/monthGoals.jinja2:6
-msgid "Goals"
-msgstr "Monatsziele"
-
-#: ../templates/monthGoalChooser.jinja2:6
-#: ../templates/monthGoalChooser.jinja2:17
+#: ../templates/monthGoals/monthGoalChooser.jinja2:6
+#: ../templates/monthGoals/monthGoalChooser.jinja2:17
 msgid "New Month Goal"
 msgstr "Neues Monatsziel"
 
-#: ../templates/monthGoalChooser.jinja2:26
+#: ../templates/monthGoals/monthGoalChooser.jinja2:26
 msgid "New Distance Goal"
 msgstr "Neues Streckenziel"
 
-#: ../templates/monthGoalChooser.jinja2:33
+#: ../templates/monthGoals/monthGoalChooser.jinja2:33
 msgid "New Count Goal"
 msgstr "Neues Anzahlziel"
 
-#: ../templates/monthGoalChooser.jinja2:42
+#: ../templates/monthGoals/monthGoalChooser.jinja2:42
 msgid "Multiple New Distance Goals"
 msgstr "Mehrere neue Streckenziele"
 
-#: ../templates/monthGoalChooser.jinja2:49
+#: ../templates/monthGoals/monthGoalChooser.jinja2:49
 msgid "Multiple New Count Goals"
 msgstr "Mehrere neue Anzahlziele"
 
-#: ../templates/monthGoalCountForm.jinja2:6
-#: ../templates/monthGoalCountForm.jinja2:18
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:6
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:18
 msgid "Edit Count Month Goal"
 msgstr "Anzahlziel bearbeiten"
 
-#: ../templates/monthGoalCountForm.jinja2:6
-#: ../templates/monthGoalCountForm.jinja2:21
-#: ../templates/monthGoalDistanceForm.jinja2:6
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:6
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:21
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:6
 msgid "New Count Month Goal"
 msgstr "Neues Anzahlziel"
 
-#: ../templates/monthGoalCountForm.jinja2:19
-#: ../templates/monthGoalDistanceForm.jinja2:19
-#: ../templates/trackBikingForm.jinja2:21
-#: ../templates/trackRunningForm.jinja2:19 ../templates/userForm.jinja2:20
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:19
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:19
+#: ../templates/tracks/trackBikingForm.jinja2:21
+#: ../templates/tracks/trackRunningForm.jinja2:19
+#: ../templates/users/userForm.jinja2:20
 msgid "Delete"
 msgstr "Löschen"
 
-#: ../templates/monthGoalCountForm.jinja2:41
-#: ../templates/monthGoalDistanceForm.jinja2:41
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:31
+#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:26
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:31
+#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:26
+#: ../templates/settings/customFieldsForm.jinja2:41
+#: ../templates/settings/profile.jinja2:75
+msgid "Type"
+msgstr "Typ"
+
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:41
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:41
 msgid "Year"
 msgstr "Jahr"
 
-#: ../templates/monthGoalCountForm.jinja2:47
-#: ../templates/monthGoalDistanceForm.jinja2:47
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:47
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:47
 msgid "Month"
 msgstr "Monat"
 
-#: ../templates/monthGoalCountForm.jinja2:58
-#: ../templates/monthGoalCountMultipleForm.jinja2:74
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:58
+#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:74
 msgid "Minimum number of tracks"
 msgstr "Minimale Anzahl an Tracks"
 
-#: ../templates/monthGoalCountForm.jinja2:64
-#: ../templates/monthGoalCountMultipleForm.jinja2:80
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:64
+#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:80
 msgid "Perfect number of tracks"
 msgstr "Ideale Anzahl an Tracks"
 
-#: ../templates/monthGoalCountMultipleForm.jinja2:6
-#: ../templates/monthGoalCountMultipleForm.jinja2:17
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:72
+#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:87
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:72
+#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:87
+#: ../templates/settings/customFieldsForm.jinja2:58
+#: ../templates/settings/profile.jinja2:36
+#: ../templates/settings/profile.jinja2:48
+#: ../templates/tracks/trackBikingForm.jinja2:112
+#: ../templates/tracks/trackRunningForm.jinja2:105
+#: ../templates/users/userForm.jinja2:54
+msgid "Save"
+msgstr "Speichern"
+
+#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:6
+#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:17
 msgid "Multiple New Count Month Goals"
 msgstr "Mehrere neue Anzahlziele"
 
-#: ../templates/monthGoalCountMultipleForm.jinja2:36
-#: ../templates/monthGoalDistanceMultipleForm.jinja2:36
+#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:36
+#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:36
 msgid "Start Year"
 msgstr "Anfangsjahr"
 
-#: ../templates/monthGoalCountMultipleForm.jinja2:42
-#: ../templates/monthGoalDistanceMultipleForm.jinja2:42
+#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:42
+#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:42
 msgid "Start Month"
 msgstr "Anfangsmonat"
 
-#: ../templates/monthGoalCountMultipleForm.jinja2:54
-#: ../templates/monthGoalDistanceMultipleForm.jinja2:54
+#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:54
+#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:54
 msgid "End Year"
 msgstr "Endjahr"
 
-#: ../templates/monthGoalCountMultipleForm.jinja2:61
-#: ../templates/monthGoalDistanceMultipleForm.jinja2:61
+#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:61
+#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:61
 msgid "End Month"
 msgstr "Endmonat"
 
-#: ../templates/monthGoalDistanceForm.jinja2:6
-#: ../templates/monthGoalDistanceForm.jinja2:18
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:6
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:18
 msgid "Edit Distance Month Goal"
 msgstr "Streckenziel bearbeiten"
 
-#: ../templates/monthGoalDistanceForm.jinja2:21
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:21
 msgid "New Distance Month Goal"
 msgstr "Neues Streckenziel"
 
-#: ../templates/monthGoalDistanceForm.jinja2:58
-#: ../templates/monthGoalDistanceMultipleForm.jinja2:73
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:58
+#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:73
 msgid "Minimum Distance (in km)"
 msgstr "Minimale Strecke (in km)"
 
-#: ../templates/monthGoalDistanceForm.jinja2:64
-#: ../templates/monthGoalDistanceMultipleForm.jinja2:79
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:64
+#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:79
 msgid "Perfect Distance (in km)"
 msgstr "Ideale Strecke (in km)"
 
-#: ../templates/monthGoalDistanceMultipleForm.jinja2:6
-#: ../templates/monthGoalDistanceMultipleForm.jinja2:17
+#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:6
+#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:17
 msgid "Multiple New Distance Month Goals"
 msgstr "Mehrere neue Streckenziele"
 
-#: ../templates/monthGoals.jinja2:19
+#: ../templates/monthGoals/monthGoals.jinja2:19
 msgid "Month Goals"
 msgstr "Monatsziele"
 
-#: ../templates/profile.jinja2:6 ../templates/profile.jinja2:17
+#: ../templates/settings/customFieldsForm.jinja2:6
+#: ../templates/settings/customFieldsForm.jinja2:19
+msgid "Edit Custom Track Field"
+msgstr "Benutzerdefiniertes Feld bearbeiten"
+
+#: ../templates/settings/customFieldsForm.jinja2:7
+#: ../templates/settings/customFieldsForm.jinja2:21
+msgid "New Custom Track Field"
+msgstr "Neues benutzerdefiniertes Feld"
+
+#: ../templates/settings/customFieldsForm.jinja2:35
+#: ../templates/settings/profile.jinja2:74
+#: ../templates/tracks/trackBikingForm.jinja2:37
+#: ../templates/tracks/trackRunningForm.jinja2:34
+msgid "Name"
+msgstr "Name"
+
+#: ../templates/settings/customFieldsForm.jinja2:43
+msgid "String"
+msgstr "Zeichenkette"
+
+#: ../templates/settings/customFieldsForm.jinja2:44
+msgid "Integer"
+msgstr "Ganzzahl"
+
+#: ../templates/settings/customFieldsForm.jinja2:45
+msgid "Float"
+msgstr "Kommazahl"
+
+#: ../templates/settings/customFieldsForm.jinja2:53
+msgid "Is required"
+msgstr "Ist Pflichtfeld"
+
+#: ../templates/settings/profile.jinja2:6
+#: ../templates/settings/profile.jinja2:17
 msgid "Profile"
 msgstr "Profil"
 
-#: ../templates/profile.jinja2:41
+#: ../templates/settings/profile.jinja2:41
 msgid "Language"
 msgstr "Sprache"
 
-#: ../templates/profile.jinja2:55
+#: ../templates/settings/profile.jinja2:55
 msgid "Custom Track Fields"
 msgstr "Benutzerdefinierte Felder"
 
-#: ../templates/profile.jinja2:76
+#: ../templates/settings/profile.jinja2:76
 msgid "Is Required"
 msgstr "Ist Pflichtfeld"
 
-#: ../templates/profile.jinja2:77
+#: ../templates/settings/profile.jinja2:77
 msgid "Action"
 msgstr "Aktion"
 
-#: ../templates/trackBikingForm.jinja2:6 ../templates/trackBikingForm.jinja2:19
+#: ../templates/tracks/trackBikingForm.jinja2:6
+#: ../templates/tracks/trackBikingForm.jinja2:19
 msgid "Edit Biking Track"
 msgstr "Fahrrad-Track bearbeiten"
 
-#: ../templates/trackBikingForm.jinja2:7 ../templates/trackBikingForm.jinja2:23
-#: ../templates/trackChooser.jinja2:26
+#: ../templates/tracks/trackBikingForm.jinja2:7
+#: ../templates/tracks/trackBikingForm.jinja2:23
+#: ../templates/tracks/trackChooser.jinja2:26
 msgid "New Biking Track"
 msgstr "Neuer Fahrrad-Track"
 
-#: ../templates/trackBikingForm.jinja2:45
-#: ../templates/trackRunningForm.jinja2:42
+#: ../templates/tracks/trackBikingForm.jinja2:45
+#: ../templates/tracks/trackRunningForm.jinja2:42
 msgid "Date"
 msgstr "Datum"
 
-#: ../templates/trackBikingForm.jinja2:50
-#: ../templates/trackRunningForm.jinja2:47
+#: ../templates/tracks/trackBikingForm.jinja2:50
+#: ../templates/tracks/trackRunningForm.jinja2:47
 msgid "Start Time"
 msgstr "Startuhrzeit"
 
-#: ../templates/trackBikingForm.jinja2:58
-#: ../templates/trackRunningForm.jinja2:55
+#: ../templates/tracks/trackBikingForm.jinja2:58
+#: ../templates/tracks/trackRunningForm.jinja2:55
 msgid "Distance (in km)"
 msgstr "Strecke (in km)"
 
-#: ../templates/trackBikingForm.jinja2:68
-#: ../templates/trackRunningForm.jinja2:64
+#: ../templates/tracks/trackBikingForm.jinja2:68
+#: ../templates/tracks/trackRunningForm.jinja2:64
 msgid "Duration"
 msgstr "Dauer"
 
-#: ../templates/trackBikingForm.jinja2:71
-#: ../templates/trackRunningForm.jinja2:66
+#: ../templates/tracks/trackBikingForm.jinja2:71
+#: ../templates/tracks/trackRunningForm.jinja2:66
 msgid "Hours"
 msgstr "Stunden"
 
-#: ../templates/trackBikingForm.jinja2:79
-#: ../templates/trackRunningForm.jinja2:74
+#: ../templates/tracks/trackBikingForm.jinja2:79
+#: ../templates/tracks/trackRunningForm.jinja2:74
 msgid "Minutes"
 msgstr "Minuten"
 
-#: ../templates/trackBikingForm.jinja2:86
-#: ../templates/trackRunningForm.jinja2:81
+#: ../templates/tracks/trackBikingForm.jinja2:86
+#: ../templates/tracks/trackRunningForm.jinja2:81
 msgid "Seconds"
 msgstr "Sekunden"
 
-#: ../templates/trackBikingForm.jinja2:94
-#: ../templates/trackRunningForm.jinja2:88
+#: ../templates/tracks/trackBikingForm.jinja2:94
+#: ../templates/tracks/trackRunningForm.jinja2:88
 msgid "Average Heart Rate"
 msgstr "Durchschnittliche Herzfrequenz"
 
-#: ../templates/trackBikingForm.jinja2:102
-#: ../templates/trackRunningForm.jinja2:95
+#: ../templates/tracks/trackBikingForm.jinja2:102
+#: ../templates/tracks/trackRunningForm.jinja2:95
 msgid "Elevation Sum (in m)"
 msgstr "Summe Höhenmeter (in m)"
 
-#: ../templates/trackChooser.jinja2:6 ../templates/trackChooser.jinja2:17
+#: ../templates/tracks/trackChooser.jinja2:6
+#: ../templates/tracks/trackChooser.jinja2:17
 msgid "New Track"
 msgstr "Neuer Track"
 
-#: ../templates/trackChooser.jinja2:33 ../templates/trackRunningForm.jinja2:6
-#: ../templates/trackRunningForm.jinja2:21
+#: ../templates/tracks/trackChooser.jinja2:33
+#: ../templates/tracks/trackRunningForm.jinja2:6
+#: ../templates/tracks/trackRunningForm.jinja2:21
 msgid "New Running Track"
 msgstr "Neuer Lauf-Track"
 
-#: ../templates/trackRunningForm.jinja2:6
-#: ../templates/trackRunningForm.jinja2:18
+#: ../templates/tracks/trackRunningForm.jinja2:6
+#: ../templates/tracks/trackRunningForm.jinja2:18
 msgid "Edit Running Track"
 msgstr "Lauf-Track bearbeiten"
 
-#: ../templates/userForm.jinja2:6 ../templates/userForm.jinja2:18
+#: ../templates/users/userForm.jinja2:6 ../templates/users/userForm.jinja2:18
 msgid "Edit User"
 msgstr "Nutzer bearbeiten"
 
-#: ../templates/userForm.jinja2:6 ../templates/userForm.jinja2:22
+#: ../templates/users/userForm.jinja2:6 ../templates/users/userForm.jinja2:22
 msgid "New User"
 msgstr "Neuer Nutzer"
 
-#: ../templates/users.jinja2:31
+#: ../templates/users/users.jinja2:31
 msgid "Administrator"
 msgstr "Administrator"
 
