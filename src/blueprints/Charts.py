@@ -8,7 +8,8 @@ from flask_login import login_required, current_user
 from sqlalchemy import extract, func, String
 
 from logic import Constants
-from logic.model.Models import get_distance_per_month_by_type, db, Track, TrackType, CustomTrackField
+from logic.model.Models import get_distance_per_month_by_type, db, Track, TrackType, CustomTrackField, \
+    get_custom_fields_by_track_type
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -63,15 +64,8 @@ def construct_blueprint():
     @charts.route('/chartDistancePerCustomFieldChooser')
     @login_required
     def chartDistancePerCustomFieldChooser():
-        customFieldsByTrackType = {}
-
-        for trackType in TrackType:
-            customFieldsByTrackType[trackType] = (CustomTrackField.query
-                                                  .filter(CustomTrackField.user_id == current_user.id)
-                                                  .filter(CustomTrackField.track_type == trackType)
-                                                  .all())
         return render_template('chartDistancePerCustomFieldChooser.jinja2',
-                               customFieldsByTrackType=customFieldsByTrackType)
+                               customFieldsByTrackType=get_custom_fields_by_track_type())
 
     @charts.route('/chartDistancePerCustomField/<string:track_type>/<string:name>')
     @login_required

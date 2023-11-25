@@ -9,7 +9,8 @@ from pydantic import BaseModel
 
 from logic import Constants
 from logic.AdminWrapper import admin_role_required
-from logic.model.Models import db, User, Language, TrackType, CustomTrackField, CustomTrackFieldType
+from logic.model.Models import db, User, Language, TrackType, CustomTrackField, CustomTrackFieldType, \
+    get_custom_fields_by_track_type
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -142,17 +143,9 @@ def construct_blueprint():
     @users.route('/editSelf')
     @login_required
     def editSelf():
-        customFieldsByTrackType = {}
-
-        for trackType in TrackType:
-            customFieldsByTrackType[trackType] = (CustomTrackField.query
-                                                  .filter(CustomTrackField.user_id == current_user.id)
-                                                  .filter(CustomTrackField.track_type == trackType)
-                                                  .all())
-
         return render_template('profile.jinja2',
                                userLanguage=current_user.language.name,
-                               customFieldsByTrackType=customFieldsByTrackType)
+                               customFieldsByTrackType=get_custom_fields_by_track_type())
 
     @users.route('/editSelfPost', methods=['POST'])
     @login_required
@@ -166,11 +159,16 @@ def construct_blueprint():
         password = form.password.strip()
 
         if not password:
-            return render_template('profile.jinja2', errorMessage=f'Password must not be empty')
+            return render_template('profile.jinja2',
+                                   errorMessage=f'Password must not be empty',
+                                   userLanguage=current_user.language.name,
+                                   customFieldsByTrackType=get_custom_fields_by_track_type())
 
         if len(password) < MIN_PASSWORD_LENGTH:
             return render_template('profile.jinja2',
-                                   errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
+                                   errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long',
+                                   userLanguage=current_user.language.name,
+                                   customFieldsByTrackType=get_custom_fields_by_track_type())
 
         user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
 
