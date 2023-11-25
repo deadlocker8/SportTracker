@@ -58,13 +58,13 @@ def construct_blueprint():
     def listUsers():
         allUsers = User.query.order_by(User.username.asc()).all()
 
-        return render_template('users.jinja2', users=allUsers)
+        return render_template('users/users.jinja2', users=allUsers)
 
     @users.route('/add')
     @admin_role_required
     @login_required
     def add():
-        return render_template('userForm.jinja2')
+        return render_template('users/userForm.jinja2')
 
     @users.route('/post', methods=['POST'])
     @admin_role_required
@@ -75,13 +75,13 @@ def construct_blueprint():
         password = form.password.strip()
 
         if __user_already_exists(username):
-            return render_template('userForm.jinja2', errorMessage=f'Username "{form.username}" already exists')
+            return render_template('users/userForm.jinja2', errorMessage=f'Username "{form.username}" already exists')
 
         if not password:
-            return render_template('userForm.jinja2', errorMessage=f'Password must not be empty')
+            return render_template('users/userForm.jinja2', errorMessage=f'Password must not be empty')
 
         if len(password) < MIN_PASSWORD_LENGTH:
-            return render_template('userForm.jinja2',
+            return render_template('users/userForm.jinja2',
                                    errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
 
         user = User(username=username, password=Bcrypt().generate_password_hash(password).decode('utf-8'),
@@ -103,7 +103,7 @@ def construct_blueprint():
 
         userModel = UserModel(username=user.username)
 
-        return render_template('userForm.jinja2', user=userModel, user_id=user_id)
+        return render_template('users/userForm.jinja2', user=userModel, user_id=user_id)
 
     @users.route('/edit/<int:user_id>', methods=['POST'])
     @admin_role_required
@@ -121,15 +121,15 @@ def construct_blueprint():
 
         if username != old_username:
             if __user_already_exists(username):
-                return render_template('userForm.jinja2', user=user, user_id=user_id,
+                return render_template('users/userForm.jinja2', user=user, user_id=user_id,
                                        errorMessage=f'Username "{form.username}" already exists')
 
         if not password:
-            return render_template('userForm.jinja2', user=user, user_id=user_id,
+            return render_template('users/userForm.jinja2', user=user, user_id=user_id,
                                    errorMessage=f'Password must not be empty')
 
         if len(password) < MIN_PASSWORD_LENGTH:
-            return render_template('userForm.jinja2', user=user, user_id=user_id,
+            return render_template('users/userForm.jinja2', user=user, user_id=user_id,
                                    errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
 
         user.username = username
