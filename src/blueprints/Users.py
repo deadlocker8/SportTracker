@@ -143,7 +143,7 @@ def construct_blueprint():
     @users.route('/editSelf')
     @login_required
     def editSelf():
-        return render_template('profile.jinja2',
+        return render_template('settings/profile.jinja2',
                                userLanguage=current_user.language.name,
                                customFieldsByTrackType=get_custom_fields_by_track_type())
 
@@ -159,13 +159,13 @@ def construct_blueprint():
         password = form.password.strip()
 
         if not password:
-            return render_template('profile.jinja2',
+            return render_template('settings/profile.jinja2',
                                    errorMessage=f'Password must not be empty',
                                    userLanguage=current_user.language.name,
                                    customFieldsByTrackType=get_custom_fields_by_track_type())
 
         if len(password) < MIN_PASSWORD_LENGTH:
-            return render_template('profile.jinja2',
+            return render_template('settings/profile.jinja2',
                                    errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long',
                                    userLanguage=current_user.language.name,
                                    customFieldsByTrackType=get_custom_fields_by_track_type())
@@ -212,7 +212,7 @@ def construct_blueprint():
     @login_required
     def customFieldsAdd(track_type: str):
         trackType = TrackType(track_type)
-        return render_template('customFieldsForm.jinja2', trackType=trackType)
+        return render_template('settings/customFieldsForm.jinja2', trackType=trackType)
 
     @users.route('/customFields/post', methods=['POST'])
     @login_required
@@ -246,7 +246,7 @@ def construct_blueprint():
             track_type=field.track_type.name,
             is_required=field.is_required)
 
-        return render_template(f'customFieldsForm.jinja2', field=fieldModel, field_id=field_id)
+        return render_template(f'settings/customFieldsForm.jinja2', field=fieldModel, field_id=field_id)
 
     @users.route('/customFields/edit/<int:field_id>', methods=['POST'])
     @login_required
