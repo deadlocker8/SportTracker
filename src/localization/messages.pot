@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-25 23:32+0100\n"
+"POT-Creation-Date: 2023-11-26 00:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,7 +62,7 @@ msgstr ""
 msgid "No month"
 msgstr ""
 
-#: ../blueprints/Charts.py:92
+#: ../blueprints/Charts.py:91
 msgid "Unknown"
 msgstr ""
 
@@ -88,6 +88,14 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:34
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:29
 msgid "Running"
+msgstr ""
+
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:60
+msgid "About"
+msgstr ""
+
+#: ../templates/about.jinja2:23
+msgid "Changelog"
 msgstr ""
 
 #: ../templates/achievements.jinja2:24 ../templates/macros.jinja2:56
@@ -257,7 +265,7 @@ msgstr ""
 #: ../templates/settings/customFieldsForm.jinja2:58
 #: ../templates/settings/profile.jinja2:36
 #: ../templates/settings/profile.jinja2:48
-#: ../templates/tracks/trackBikingForm.jinja2:112
+#: ../templates/tracks/trackBikingForm.jinja2:120
 #: ../templates/tracks/trackRunningForm.jinja2:105
 #: ../templates/users/userForm.jinja2:54
 msgid "Save"
@@ -328,7 +336,7 @@ msgstr ""
 
 #: ../templates/settings/customFieldsForm.jinja2:35
 #: ../templates/settings/profile.jinja2:74
-#: ../templates/tracks/trackBikingForm.jinja2:37
+#: ../templates/tracks/trackBikingForm.jinja2:38
 #: ../templates/tracks/trackRunningForm.jinja2:34
 msgid "Name"
 msgstr ""
@@ -381,47 +389,47 @@ msgstr ""
 msgid "New Biking Track"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:45
+#: ../templates/tracks/trackBikingForm.jinja2:53
 #: ../templates/tracks/trackRunningForm.jinja2:42
 msgid "Date"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:50
+#: ../templates/tracks/trackBikingForm.jinja2:58
 #: ../templates/tracks/trackRunningForm.jinja2:47
 msgid "Start Time"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:58
+#: ../templates/tracks/trackBikingForm.jinja2:66
 #: ../templates/tracks/trackRunningForm.jinja2:55
 msgid "Distance (in km)"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:68
+#: ../templates/tracks/trackBikingForm.jinja2:76
 #: ../templates/tracks/trackRunningForm.jinja2:64
 msgid "Duration"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:71
+#: ../templates/tracks/trackBikingForm.jinja2:79
 #: ../templates/tracks/trackRunningForm.jinja2:66
 msgid "Hours"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:79
+#: ../templates/tracks/trackBikingForm.jinja2:87
 #: ../templates/tracks/trackRunningForm.jinja2:74
 msgid "Minutes"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:86
+#: ../templates/tracks/trackBikingForm.jinja2:94
 #: ../templates/tracks/trackRunningForm.jinja2:81
 msgid "Seconds"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:94
+#: ../templates/tracks/trackBikingForm.jinja2:102
 #: ../templates/tracks/trackRunningForm.jinja2:88
 msgid "Average Heart Rate"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:102
+#: ../templates/tracks/trackBikingForm.jinja2:110
 #: ../templates/tracks/trackRunningForm.jinja2:95
 msgid "Elevation Sum (in m)"
 msgstr ""
