@@ -1,3 +1,6 @@
+# 1.4.2
+- fix: custom field form
+
 # 1.4.1
 - fix: track edit page
 
