@@ -34,6 +34,22 @@
                         </a>
                     </div>
                 </div>
+                <div class="row mt-5">
+                    <div class="col-6">
+                        <a href="{{ url_for('monthGoalsDistance.addMultiple') }}"
+                           class="btn btn-link d-flex align-items-center justify-content-center text-decoration-none">
+                            <span class="material-icons rounded-circle fs-1 p-3 text-light bg-secondary me-3">route</span>
+                            <span class="fs-3 text-light">{{ gettext('Multiple New Distance Goals') }}</span>
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a href="{{ url_for('monthGoalsCount.addMultiple') }}"
+                           class="btn btn-link d-flex align-items-center justify-content-center text-decoration-none">
+                            <span class="material-icons rounded-circle fs-1 p-3 text-dark bg-primary-subtle me-3">format_list_numbered</span>
+                            <span class="fs-3 text-light">{{ gettext('Multiple New Count Goals') }}</span>
+                        </a>
+                    </div>
+                </div>
             </section>
         </div>
 

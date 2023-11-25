@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Multiple New Distance Month Goals') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('monthGoals') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col-12 mx-auto">
+                        <h1>{{ gettext('Multiple New Distance Month Goals') }}</h1>
+                    </div>
+                </div>
+
+                <div class="row mt-5 text-start">
+                    <div class="col-9 mx-auto">
+                        <form role="form" action="{{ url_for('monthGoalsDistance.addMultiplePost') }}"
+                              method="post">
+                            <div class="mb-3">
+                                <label for="month-goal-type" class="form-label">{{ gettext('Type') }}</label>
+                                <select class="form-select" id="month-goal-type" name="type" required="required">
+                                    <option value="BIKING" {% if goal and goal.type == 'BIKING'%}selected{% endif %}>{{ gettext('Biking') }}</option>
+                                    <option value="RUNNING" {% if goal and goal.type == 'RUNNING'%}selected{% endif %}>{{ gettext('Running') }}</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="month-goal-start-year" class="form-label">{{ gettext('Start Year') }}</label>
+                                        <input type="number" step="1" min="2023" class="form-control"
+                                               id="month-goal-start-year" name="start_year" placeholder="YYYY"
+                                               required="required">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="month-goal-start-month" class="form-label">{{ gettext('Start Month') }}</label>
+                                        <input type="number" min="1" max="12" class="form-control" id="month-goal-start-month"
+                                               name="start_month" placeholder="MM"
+                                               required="required" >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="month-goal-end-year"
+                                               class="form-label">{{ gettext('End Year') }}</label>
+                                        <input type="number" step="1" min="2023" class="form-control"
+                                               id="month-goal-end-year" name="end_year" placeholder="YYYY"
+                                               required="required">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="month-goal-end-month"
+                                               class="form-label">{{ gettext('End Month') }}</label>
+                                        <input type="number" min="1" max="12" class="form-control"
+                                               id="month-goal-end-month"
+                                               name="end_month" placeholder="MM"
+                                               required="required">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-5">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="month-goal-minimum" class="form-label">{{ gettext('Minimum Distance (in km)') }}</label>
+                                        <input type="number" step="0.01" min="0" class="form-control"
+                                               id="month-goal-minimum" name="distance_minimum" required="required"
+                                               {% if goal %}value="{{ goal.distance_minimum }}"{% endif %}>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="month-goal-perfect" class="form-label">{{ gettext('Perfect Distance (in km)') }}</label>
+                                        <input type="number" step="0.01" min="0" class="form-control"
+                                               id="month-goal-perfect" name="distance_perfect" required="required"
+                                               {% if goal %}value="{{ goal.distance_perfect }}"{% endif %}>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>
