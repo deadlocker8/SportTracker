@@ -36,7 +36,7 @@ def construct_blueprint():
     @monthGoalsCount.route('/add')
     @login_required
     def add():
-        return render_template('monthGoalCountForm.jinja2')
+        return render_template('monthGoals/monthGoalCountForm.jinja2')
 
     @monthGoalsCount.route('/post', methods=['POST'])
     @login_required
@@ -57,7 +57,7 @@ def construct_blueprint():
     @monthGoalsCount.route('/addMultiple')
     @login_required
     def addMultiple():
-        return render_template('monthGoalCountMultipleForm.jinja2')
+        return render_template('monthGoals/monthGoalCountMultipleForm.jinja2')
 
     @monthGoalsCount.route('/postMultiple', methods=['POST'])
     @login_required
@@ -110,7 +110,7 @@ def construct_blueprint():
                                             count_minimum=monthGoal.count_minimum,
                                             count_perfect=monthGoal.count_perfect)
 
-        return render_template('monthGoalCountForm.jinja2', goal=goalModel, goal_id=goal_id)
+        return render_template('monthGoals/monthGoalCountForm.jinja2', goal=goalModel, goal_id=goal_id)
 
     @monthGoalsCount.route('/edit/<int:goal_id>', methods=['POST'])
     @login_required

@@ -47,11 +47,11 @@ def construct_blueprint():
         if currentYear is not None:
             summariesByYear[currentYear] = summaries
 
-        return render_template('monthGoals.jinja2', monthGoalSummariesByYear=summariesByYear)
+        return render_template('monthGoals/monthGoals.jinja2', monthGoalSummariesByYear=summariesByYear)
 
     @monthGoals.route('/add')
     @login_required
     def add():
-        return render_template('monthGoalChooser.jinja2')
+        return render_template('monthGoals/monthGoalChooser.jinja2')
 
     return monthGoals
