@@ -56,11 +56,26 @@
                                 <h5 class="card-title text-truncate text-start">{{ track.name }}</h5>
 
                                 <div class="d-flex align-items-center justify-content-between">
-                                    {{ render_track_distance(track) }}
-                                    {{ render_track_duration(track) }}
-                                    {{ render_track_running_speed(track) }}
-                                    {{ render_track_average_heart_rate(track) }}
-                                    {{ render_track_elevation(track) }}
+                                     {% if is_track_info_item_activated('DISTANCE') %}
+                                        {{ render_track_distance(track) }}
+                                    {% endif %}
+
+                                    {% if is_track_info_item_activated('DURATION') %}
+                                        {{ render_track_duration(track) }}
+                                    {% endif %}
+
+                                    {% if is_track_info_item_activated('SPEED') %}
+                                        {{ render_track_running_speed(track) }}
+                                    {% endif %}
+
+                                    {% if is_track_info_item_activated('AVERAGE_HEART_RATE') %}
+                                        {{ render_track_average_heart_rate(track) }}
+                                    {% endif %}
+
+                                    {% if is_track_info_item_activated('ELEVATION_SUM') %}
+                                        {{ render_track_elevation(track) }}
+                                    {% endif %}
+
                                     {{ render_track_start_time(track) }}
                                 </div>
                             </div>
@@ -86,11 +101,26 @@
                                 <h5 class="card-title text-truncate text-start">{{ track.name }}</h5>
 
                                 <div class="d-flex align-items-center justify-content-between">
-                                    {{ render_track_distance(track) }}
-                                    {{ render_track_duration(track) }}
-                                    {{ render_track_biking_speed(track) }}
-                                    {{ render_track_average_heart_rate(track) }}
-                                    {{ render_track_elevation(track) }}
+                                    {% if is_track_info_item_activated('DISTANCE') %}
+                                        {{ render_track_distance(track) }}
+                                    {% endif %}
+
+                                    {% if is_track_info_item_activated('DURATION') %}
+                                        {{ render_track_duration(track) }}
+                                    {% endif %}
+
+                                    {% if is_track_info_item_activated('SPEED') %}
+                                        {{ render_track_biking_speed(track) }}
+                                    {% endif %}
+
+                                    {% if is_track_info_item_activated('AVERAGE_HEART_RATE') %}
+                                        {{ render_track_average_heart_rate(track) }}
+                                    {% endif %}
+
+                                    {% if is_track_info_item_activated('ELEVATION_SUM') %}
+                                        {{ render_track_elevation(track) }}
+                                    {% endif %}
+
                                     {{ render_track_start_time(track) }}
                                 </div>
                             </div>

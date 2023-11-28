@@ -19,7 +19,7 @@ from helpers import Helpers
 from logic import Constants
 from logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
 from logic.model.Track import Track, TrackType
-from logic.model.User import User, Language, create_user
+from logic.model.User import User, Language, create_user, TrackInfoItem, TrackInfoItemType
 from logic.model.db import db
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
@@ -68,6 +68,17 @@ class SportTracker(FlaskBaseApp):
             minutes = speed // 60
             seconds = speed % 60
             return f'{minutes}:{str(seconds).zfill(2)}'
+
+        @app.context_processor
+        def utility_processor():
+            def is_track_info_item_activated(name: str) -> bool:
+                trackInfoItem = (TrackInfoItem.query
+                                 .filter(TrackInfoItem.user_id == current_user.id)
+                                 .filter(TrackInfoItem.type == TrackInfoItemType(name))
+                                 .first())
+                return trackInfoItem.is_activated
+
+            return {'is_track_info_item_activated': is_track_info_item_activated}
 
         app.add_template_filter(format_duration)
         app.add_template_filter(format_pace)
