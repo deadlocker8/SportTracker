@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel, field_validator
+from sqlalchemy import asc, func
 
 from logic import Constants
 from logic.AdminWrapper import admin_role_required
@@ -64,7 +65,7 @@ def construct_blueprint():
     @admin_role_required
     @login_required
     def listUsers():
-        allUsers = User.query.order_by(User.username.asc()).all()
+        allUsers = User.query.order_by(asc(func.lower(User.username))).all()
 
         return render_template('users/users.jinja2', users=allUsers)
 

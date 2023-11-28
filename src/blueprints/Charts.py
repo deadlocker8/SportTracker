@@ -5,7 +5,7 @@ from typing import Any
 from flask import Blueprint, render_template
 from flask_babel import gettext
 from flask_login import login_required, current_user
-from sqlalchemy import extract, func, String
+from sqlalchemy import extract, func, String, asc
 
 from helpers.Helpers import format_duration
 from logic import Constants
@@ -79,7 +79,7 @@ def construct_blueprint():
                 .filter(Track.user_id == current_user.id)
                 .filter(Track.type == trackType)
                 .group_by(customField)
-                .order_by(customField)
+                .order_by(asc(func.lower(customField)))
                 .all())
 
         keys = []
@@ -141,7 +141,7 @@ def construct_blueprint():
                     .filter(Track.type == trackType)
                     .group_by(Track.name)
                     .having(func.count(Track.name) > 2)
-                    .order_by(Track.name.asc())
+                    .order_by(asc(func.lower(Track.name)))
                     .all())
 
             trackNamesByTrackType[trackType] = [row[0] for row in rows]
