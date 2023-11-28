@@ -45,7 +45,7 @@ class TrackInfoItemType(enum.Enum):
         elif self == self.DURATION:
             return gettext('Duration')
         elif self == self.SPEED:
-            return gettext('Speed')
+            return gettext('Average Speed')
         elif self == self.AVERAGE_HEART_RATE:
             return gettext('Average Heart Rate')
         elif self == self.ELEVATION_SUM:

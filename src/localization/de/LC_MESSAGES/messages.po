@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-26 00:27+0100\n"
-"PO-Revision-Date: 2023-11-26 00:28+0100\n"
+"POT-Creation-Date: 2023-11-28 22:49+0100\n"
+"PO-Revision-Date: 2023-11-28 22:50+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Generated-By: Babel 2.13.1\n"
 "X-Generator: Poedit 2.4.2\n"
 
-#: ../blueprints/Achievements.py:33
+#: ../blueprints/Achievements.py:35
 msgid "Month Goal Streak"
 msgstr "Monatsziele in Folge"
 
-#: ../blueprints/Achievements.py:34
+#: ../blueprints/Achievements.py:36
 msgid ""
 "You have achieved all your monthly goals for <span class=\"fw-bold"
 "\">{currentStreak}</span> months in a row!<br>(Best: <span class=\"fw-bold"
@@ -33,32 +33,32 @@ msgstr ""
 "\">{currentStreak}</span> Monate in Folge erreicht!<br>(Beste: <span class="
 "\"fw-bold\">{maxStreak}</span>)"
 
-#: ../blueprints/Achievements.py:41
+#: ../blueprints/Achievements.py:43
 msgid "Longest Track"
 msgstr "Längster Track"
 
-#: ../blueprints/Achievements.py:42
+#: ../blueprints/Achievements.py:44
 msgid ""
 "You completed <span class=\"fw-bold\">{longestTrack} km</span> in one trip!"
 msgstr ""
 "Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einer Fahrt "
 "zurückgelegt!"
 
-#: ../blueprints/Achievements.py:47
+#: ../blueprints/Achievements.py:49
 msgid "Total Distance"
 msgstr "Gesamtstrecke"
 
-#: ../blueprints/Achievements.py:48
+#: ../blueprints/Achievements.py:50
 msgid ""
 "You completed a total of <span class=\"fw-bold\">{totalDistance} km</span>!"
 msgstr ""
 "Du bist insgesamt <span class=\"fw-bold\">{totalDistance} km</span> gefahren!"
 
-#: ../blueprints/Achievements.py:54
+#: ../blueprints/Achievements.py:56
 msgid "Best Month"
 msgstr "Bester Monat"
 
-#: ../blueprints/Achievements.py:55
+#: ../blueprints/Achievements.py:57
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with <span "
 "class=\"fw-bold\">{bestMonthDistance} km</span>!"
@@ -66,23 +66,23 @@ msgstr ""
 "<span class=\"fw-bold\">{bestMonthName}</span> war dein bester Monat mit "
 "<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
 
-#: ../blueprints/Achievements.py:83 ../blueprints/Achievements.py:88
+#: ../blueprints/Achievements.py:85 ../blueprints/Achievements.py:90
 msgid "No month"
 msgstr "Kein Monat"
 
-#: ../blueprints/Charts.py:91
+#: ../blueprints/Charts.py:93
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: ../blueprints/MonthGoalsCount.py:70 ../blueprints/MonthGoalsDistance.py:70
+#: ../blueprints/MonthGoalsCount.py:73 ../blueprints/MonthGoalsDistance.py:73
 msgid "End Year must be greater or equal Start Year."
 msgstr "Das Endjahr muss größer oder gleich dem Anfangsjahr sein."
 
-#: ../blueprints/MonthGoalsCount.py:73 ../blueprints/MonthGoalsDistance.py:73
+#: ../blueprints/MonthGoalsCount.py:76 ../blueprints/MonthGoalsDistance.py:76
 msgid "End Month must be greater or equal Start Month."
 msgstr "Der Endmonat muss größer oder gleich dem Startmonat sein."
 
-#: ../logic/model/Models.py:54
+#: ../logic/model/Track.py:29
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:33
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:28
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:33
@@ -90,13 +90,36 @@ msgstr "Der Endmonat muss größer oder gleich dem Startmonat sein."
 msgid "Biking"
 msgstr "Fahrrad fahren"
 
-#: ../logic/model/Models.py:56
+#: ../logic/model/Track.py:31
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:34
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:29
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:34
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:29
 msgid "Running"
 msgstr "Laufen"
+
+#: ../logic/model/User.py:44
+msgid "Distance"
+msgstr "Strecke"
+
+#: ../logic/model/User.py:46 ../templates/tracks/trackBikingForm.jinja2:76
+#: ../templates/tracks/trackRunningForm.jinja2:64
+msgid "Duration"
+msgstr "Dauer"
+
+#: ../logic/model/User.py:48 ../templates/charts/chartAverageSpeed.jinja2:23
+#: ../templates/charts/chartChooser.jinja2:43
+msgid "Average Speed"
+msgstr "Durchschnittsgeschwindigkeit"
+
+#: ../logic/model/User.py:50 ../templates/tracks/trackBikingForm.jinja2:102
+#: ../templates/tracks/trackRunningForm.jinja2:88
+msgid "Average Heart Rate"
+msgstr "Durchschnittliche Herzfrequenz"
+
+#: ../logic/model/User.py:52
+msgid "Elevation Sum"
+msgstr "Summe Höhenmeter"
 
 #: ../templates/about.jinja2:6 ../templates/macros.jinja2:60
 msgid "About"
@@ -110,12 +133,12 @@ msgstr "Changelog"
 msgid "Achievements"
 msgstr "Errungenschaften"
 
-#: ../templates/login.jinja2:19 ../templates/users/userForm.jinja2:39
+#: ../templates/login.jinja2:19 ../templates/users/userForm.jinja2:41
 msgid "Username"
 msgstr "Benutzer"
 
 #: ../templates/login.jinja2:23 ../templates/settings/profile.jinja2:31
-#: ../templates/users/userForm.jinja2:45
+#: ../templates/users/userForm.jinja2:47
 msgid "Password"
 msgstr "Passwort"
 
@@ -123,7 +146,7 @@ msgstr "Passwort"
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../templates/macros.jinja2:44 ../templates/tracks/tracks.jinja2:140
+#: ../templates/macros.jinja2:44 ../templates/tracks/tracks.jinja2:170
 msgid "Tracks"
 msgstr "Tracks"
 
@@ -141,11 +164,6 @@ msgstr "Monatsziele"
 #: ../templates/charts/chartMacros.jinja2:20 ../templates/macros.jinja2:52
 msgid "Charts"
 msgstr "Diagramme"
-
-#: ../templates/charts/chartAverageSpeed.jinja2:23
-#: ../templates/charts/chartChooser.jinja2:43
-msgid "Average Speed"
-msgstr "Durchschnittsgeschwindigkeit"
 
 #: ../templates/charts/chartAverageSpeed.jinja2:36
 msgid "Speed in km/h"
@@ -233,7 +251,7 @@ msgstr "Neues Anzahlziel"
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:19
 #: ../templates/tracks/trackBikingForm.jinja2:21
 #: ../templates/tracks/trackRunningForm.jinja2:19
-#: ../templates/users/userForm.jinja2:20
+#: ../templates/users/userForm.jinja2:21
 msgid "Delete"
 msgstr "Löschen"
 
@@ -242,7 +260,7 @@ msgstr "Löschen"
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:31
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:26
 #: ../templates/settings/customFieldsForm.jinja2:41
-#: ../templates/settings/profile.jinja2:75
+#: ../templates/settings/profile.jinja2:82
 msgid "Type"
 msgstr "Typ"
 
@@ -272,10 +290,11 @@ msgstr "Ideale Anzahl an Tracks"
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:87
 #: ../templates/settings/customFieldsForm.jinja2:58
 #: ../templates/settings/profile.jinja2:36
-#: ../templates/settings/profile.jinja2:48
+#: ../templates/settings/profile.jinja2:53
+#: ../templates/settings/profile.jinja2:129
 #: ../templates/tracks/trackBikingForm.jinja2:120
 #: ../templates/tracks/trackRunningForm.jinja2:105
-#: ../templates/users/userForm.jinja2:54
+#: ../templates/users/userForm.jinja2:56
 msgid "Save"
 msgstr "Speichern"
 
@@ -343,7 +362,7 @@ msgid "New Custom Track Field"
 msgstr "Neues benutzerdefiniertes Feld"
 
 #: ../templates/settings/customFieldsForm.jinja2:35
-#: ../templates/settings/profile.jinja2:74
+#: ../templates/settings/profile.jinja2:81
 #: ../templates/tracks/trackBikingForm.jinja2:38
 #: ../templates/tracks/trackRunningForm.jinja2:34
 msgid "Name"
@@ -370,21 +389,25 @@ msgstr "Ist Pflichtfeld"
 msgid "Profile"
 msgstr "Profil"
 
-#: ../templates/settings/profile.jinja2:41
+#: ../templates/settings/profile.jinja2:42
 msgid "Language"
 msgstr "Sprache"
 
-#: ../templates/settings/profile.jinja2:55
+#: ../templates/settings/profile.jinja2:62
 msgid "Custom Track Fields"
 msgstr "Benutzerdefinierte Felder"
 
-#: ../templates/settings/profile.jinja2:76
+#: ../templates/settings/profile.jinja2:83
 msgid "Is Required"
 msgstr "Ist Pflichtfeld"
 
-#: ../templates/settings/profile.jinja2:77
+#: ../templates/settings/profile.jinja2:84
 msgid "Action"
 msgstr "Aktion"
+
+#: ../templates/settings/profile.jinja2:115
+msgid "Select Information to show for each track"
+msgstr "Informationen auswählen, die für jeden Track angezeigt werden"
 
 #: ../templates/tracks/trackBikingForm.jinja2:6
 #: ../templates/tracks/trackBikingForm.jinja2:19
@@ -412,11 +435,6 @@ msgstr "Startuhrzeit"
 msgid "Distance (in km)"
 msgstr "Strecke (in km)"
 
-#: ../templates/tracks/trackBikingForm.jinja2:76
-#: ../templates/tracks/trackRunningForm.jinja2:64
-msgid "Duration"
-msgstr "Dauer"
-
 #: ../templates/tracks/trackBikingForm.jinja2:79
 #: ../templates/tracks/trackRunningForm.jinja2:66
 msgid "Hours"
@@ -431,11 +449,6 @@ msgstr "Minuten"
 #: ../templates/tracks/trackRunningForm.jinja2:81
 msgid "Seconds"
 msgstr "Sekunden"
-
-#: ../templates/tracks/trackBikingForm.jinja2:102
-#: ../templates/tracks/trackRunningForm.jinja2:88
-msgid "Average Heart Rate"
-msgstr "Durchschnittliche Herzfrequenz"
 
 #: ../templates/tracks/trackBikingForm.jinja2:110
 #: ../templates/tracks/trackRunningForm.jinja2:95
@@ -462,7 +475,7 @@ msgstr "Lauf-Track bearbeiten"
 msgid "Edit User"
 msgstr "Nutzer bearbeiten"
 
-#: ../templates/users/userForm.jinja2:6 ../templates/users/userForm.jinja2:22
+#: ../templates/users/userForm.jinja2:6 ../templates/users/userForm.jinja2:24
 msgid "New User"
 msgstr "Neuer Nutzer"
 
