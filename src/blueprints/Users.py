@@ -55,6 +55,7 @@ class CustomTrackFieldFormModel(BaseModel):
 @dataclass
 class UserModel:
     username: str
+    isAdmin: bool
 
 
 MIN_PASSWORD_LENGTH = 3
@@ -112,7 +113,7 @@ def construct_blueprint():
         if user is None:
             abort(404)
 
-        userModel = UserModel(username=user.username)
+        userModel = UserModel(username=user.username, isAdmin=user.isAdmin)
 
         return render_template('users/userForm.jinja2', user=userModel, user_id=user_id)
 
@@ -212,6 +213,9 @@ def construct_blueprint():
 
         if user is None:
             abort(404)
+
+        if user.isAdmin:
+            abort(400)
 
         LOGGER.debug(f'Deleted user: {user.username}')
         db.session.delete(user)

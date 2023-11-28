@@ -16,8 +16,10 @@
                     <div class="col-12 mx-auto">
                         {% if user %}
                             <h1>{{ gettext('Edit User') }}</h1>
-                            <a href="{{ url_for('users.delete', user_id=user_id) }}"
-                               class="btn btn-danger mt-3">{{ gettext('Delete') }}</a>
+                            {% if not user.isAdmin %}
+                                <a href="{{ url_for('users.delete', user_id=user_id) }}"
+                                   class="btn btn-danger mt-3">{{ gettext('Delete') }}</a>
+                            {% endif %}
                         {% else %}
                             <h1>{{ gettext('New User') }}</h1>
                         {% endif %}
