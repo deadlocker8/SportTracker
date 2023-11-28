@@ -1,3 +1,8 @@
+# 1.5.0
+- add: values shown for each track in track list are now configurable in user settings
+- fix: sort case-insensitive
+- fix: prevent deletion of admin user
+
 # 1.4.2
 - fix: custom field form
 
