@@ -8,7 +8,9 @@ from pydantic import ValidationError, BaseModel
 from blueprints.MonthGoalsCount import MonthGoalCountFormModel
 from blueprints.MonthGoalsDistance import MonthGoalDistanceFormModel
 from logic import Constants
-from logic.model.Models import db, MonthGoalDistance, TrackType, MonthGoalCount, Track
+from logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
+from logic.model.Track import Track, TrackType
+from logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

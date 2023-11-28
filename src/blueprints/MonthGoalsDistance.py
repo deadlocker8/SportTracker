@@ -7,7 +7,10 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 
 from logic import Constants
-from logic.model.Models import TrackType, db, MonthGoal, User, MonthGoalDistance
+from logic.model.MonthGoal import MonthGoalDistance
+from logic.model.Track import TrackType
+from logic.model.User import User
+from logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -86,7 +89,8 @@ def construct_blueprint():
                 currentYear += 1
                 currentMonth = 1
 
-        LOGGER.debug(f'Saved {len(monthGoals)} new month goals of type "distance" from {form.start_year}-{form.start_month} to {form.end_year}-{form.end_month}')
+        LOGGER.debug(
+            f'Saved {len(monthGoals)} new month goals of type "distance" from {form.start_year}-{form.start_month} to {form.end_year}-{form.end_month}')
         db.session.add_all(monthGoals)
         db.session.commit()
 

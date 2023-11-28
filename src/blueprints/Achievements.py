@@ -7,8 +7,10 @@ from flask_login import login_required, current_user
 from sqlalchemy import func, asc
 
 from logic import Constants
-from logic.model.Models import db, get_distance_per_month_by_type, get_goal_summaries_by_year_and_month, Achievement, \
-    TrackType, Track
+from logic.model.Achievement import Achievement
+from logic.model.MonthGoal import get_goal_summaries_by_year_and_month
+from logic.model.Track import TrackType, Track, get_distance_per_month_by_type
+from logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

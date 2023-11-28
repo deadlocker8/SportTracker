@@ -9,7 +9,9 @@ from sqlalchemy import extract, func, String, asc
 
 from helpers.Helpers import format_duration
 from logic import Constants
-from logic.model.Models import get_distance_per_month_by_type, db, Track, TrackType, get_custom_fields_by_track_type
+from logic.model.CustomTrackField import get_custom_fields_by_track_type
+from logic.model.Track import TrackType, Track, get_distance_per_month_by_type
+from logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

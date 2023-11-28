@@ -7,7 +7,10 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 
 from logic import Constants
-from logic.model.Models import TrackType, db, User, MonthGoalCount
+from logic.model.MonthGoal import MonthGoalCount
+from logic.model.Track import TrackType
+from logic.model.User import User
+from logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

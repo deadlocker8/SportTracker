@@ -10,8 +10,10 @@ from sqlalchemy import asc, func
 
 from logic import Constants
 from logic.AdminWrapper import admin_role_required
-from logic.model.Models import db, User, Language, TrackType, CustomTrackField, CustomTrackFieldType, \
-    get_custom_fields_by_track_type
+from logic.model.CustomTrackField import get_custom_fields_by_track_type, CustomTrackField, CustomTrackFieldType
+from logic.model.Track import TrackType
+from logic.model.User import User, Language
+from logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

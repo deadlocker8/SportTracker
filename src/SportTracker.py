@@ -17,7 +17,10 @@ from blueprints import General, Authentication, Tracks, MonthGoals, Charts, User
     Api, Achievements
 from helpers import Helpers
 from logic import Constants
-from logic.model.Models import db, User, Track, TrackType, MonthGoalDistance, MonthGoalCount, Language
+from logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
+from logic.model.Track import Track, TrackType
+from logic.model.User import User, Language
+from logic.model.db import db
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
