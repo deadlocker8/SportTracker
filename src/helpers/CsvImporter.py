@@ -5,7 +5,7 @@ import click
 import requests
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 
-from logic.model.Models import TrackType
+from logic.model.Track import TrackType
 
 LOGGER = DefaultLogger().create_logger_if_not_exists('CsvParser')
 
