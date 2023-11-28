@@ -5,14 +5,14 @@ from flask import Blueprint, render_template, redirect, url_for, abort
 from flask_bcrypt import Bcrypt
 from flask_login import login_required, current_user
 from flask_pydantic import validate
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, ConfigDict
 from sqlalchemy import asc, func
 
 from logic import Constants
 from logic.AdminWrapper import admin_role_required
 from logic.model.CustomTrackField import get_custom_fields_by_track_type, CustomTrackField, CustomTrackFieldType
 from logic.model.Track import TrackType
-from logic.model.User import User, Language
+from logic.model.User import User, Language, create_user, TrackInfoItem, TrackInfoItemType
 from logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -35,6 +35,12 @@ class EditSelfUserFormModel(BaseModel):
 
 class EditSelfLanguageFormModel(BaseModel):
     language: str
+
+
+class EditSelfTrackInfoItemsModel(BaseModel):
+    model_config = ConfigDict(
+        extra='allow',
+    )
 
 
 class CustomTrackFieldFormModel(BaseModel):
@@ -96,11 +102,8 @@ def construct_blueprint():
             return render_template('users/userForm.jinja2',
                                    errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
 
-        user = User(username=username, password=Bcrypt().generate_password_hash(password).decode('utf-8'),
-                    isAdmin=False, language=Language.ENGLISH)
-        LOGGER.debug(f'Saved new user: {user.username}')
-        db.session.add(user)
-        db.session.commit()
+        create_user(username=username, password=password, isAdmin=False, language=Language.ENGLISH)
+        LOGGER.debug(f'Saved new user: {username}')
 
         return redirect(url_for('users.listUsers'))
 
@@ -155,9 +158,16 @@ def construct_blueprint():
     @users.route('/editSelf')
     @login_required
     def editSelf():
+        infoItems: list[TrackInfoItem] = (TrackInfoItem.query
+                                          .filter(TrackInfoItem.user_id == current_user.id)
+                                          .all())
+
+        infoItems.sort(key=lambda item: item.type.get_localized_name().lower())
+
         return render_template('settings/profile.jinja2',
                                userLanguage=current_user.language.name,
-                               customFieldsByTrackType=get_custom_fields_by_track_type())
+                               customFieldsByTrackType=get_custom_fields_by_track_type(),
+                               infoItems=infoItems)
 
     @users.route('/editSelfPost', methods=['POST'])
     @login_required
@@ -202,6 +212,34 @@ def construct_blueprint():
 
         LOGGER.debug(f'Updated language for user: {user.username} to {form.language}')
         db.session.commit()
+
+        return redirect(url_for('users.editSelf'))
+
+    @users.route('/editSelfTrackInfoItems', methods=['POST'])
+    @login_required
+    @validate()
+    def editSelfTrackInfoItems(form: EditSelfTrackInfoItemsModel):
+        user = User.query.filter(User.id == current_user.id).first()
+
+        if user is None:
+            abort(404)
+
+        for itemType in TrackInfoItemType:
+            trackInfoItem = (TrackInfoItem.query
+                             .filter(TrackInfoItem.user_id == current_user.id)
+                             .filter(TrackInfoItem.type == itemType)
+                             .first())
+
+            for itemName, itemValue in form.model_extra.items():
+                if itemType.name == itemName:
+                    trackInfoItem.is_activated = itemValue.strip().lower() == 'on'
+                    break
+            else:
+                trackInfoItem.is_activated = False
+
+        db.session.commit()
+
+        LOGGER.debug(f'Updated track info items for user: {user.username}')
 
         return redirect(url_for('users.editSelf'))
 

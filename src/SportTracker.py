@@ -19,7 +19,7 @@ from helpers import Helpers
 from logic import Constants
 from logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
 from logic.model.Track import Track, TrackType
-from logic.model.User import User, Language
+from logic.model.User import User, Language, create_user
 from logic.model.db import db
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
@@ -103,12 +103,7 @@ class SportTracker(FlaskBaseApp):
             LOGGER.info(f'Created default admin user with password: "{password}".'
                         f' CAUTION: password is only shown once. Save it now!')
 
-            user = User(username='admin',
-                        password=Bcrypt().generate_password_hash(password).decode('utf-8'),
-                        isAdmin=True,
-                        language=Language.ENGLISH)
-            database.session.add(user)
-            database.session.commit()
+            create_user(username='admin', password=password, isAdmin=True, language=Language.ENGLISH)
 
     def __generate_password(self) -> str:
         alphabet = string.ascii_letters + string.digits
@@ -118,12 +113,7 @@ class SportTracker(FlaskBaseApp):
         user = User.query.filter_by(username='demo').first()
         if user is None:
             LOGGER.debug(f'Creating demo user')
-            user = User(username='demo',
-                        password=Bcrypt().generate_password_hash('demo').decode('utf-8'),
-                        isAdmin=False,
-                        language=Language.ENGLISH)
-            database.session.add(user)
-            database.session.commit()
+            user = create_user(username='demo', password='demo', isAdmin=False, language=Language.ENGLISH)
 
         if Track.query.count() == 0:
             LOGGER.debug('Creating dummy data...')

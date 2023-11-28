@@ -36,12 +36,17 @@
                             <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
                         </form>
 
-                        <form role="form" action="{{ url_for('users.editSelfLanguagePost') }}" method="post" class="mt-5">
-                           <div class="mb-4">
+                        <form role="form" action="{{ url_for('users.editSelfLanguagePost') }}" method="post"
+                              class="mt-5">
+                            <div class="mb-4">
                                 <label for="user-language" class="form-label">{{ gettext('Language') }}</label>
                                 <select class="form-select" id="user-language" name="language" required="required">
-                                    <option value="ENGLISH" {% if userLanguage == 'ENGLISH'%}selected{% endif %}>English</option>
-                                    <option value="GERMAN" {% if userLanguage == 'GERMAN'%}selected{% endif %}>Deutsch</option>
+                                    <option value="ENGLISH" {% if userLanguage == 'ENGLISH' %}selected{% endif %}>
+                                        English
+                                    </option>
+                                    <option value="GERMAN" {% if userLanguage == 'GERMAN' %}selected{% endif %}>
+                                        Deutsch
+                                    </option>
                                 </select>
                             </div>
 
@@ -50,23 +55,25 @@
                     </div>
                 </div>
 
+                <hr class="mt-5"/>
+
                 <div class="row mt-5 text-start">
                     <div class="col-9 mx-auto">
                         <h3 class="text-center mb-5">{{ gettext('Custom Track Fields') }}</h3>
 
                         {% for trackType, customFields in customFieldsByTrackType.items() %}
-                             <div class="row mt-5 mb-3">
-                                 <div class="col-12 mx-auto">
-                                     <h3 class="d-flex align-items-center justify-content-center">
-                                         <span class="material-icons rounded-circle fs-2 p-2 text-dark {{ trackType.background_color }} me-3">{{ trackType.icon }}</span>
-                                         <span class="me-3">{{ trackType.get_localized_name() }}</span>
-                                         <a href="{{ url_for('users.customFieldsAdd', track_type=trackType.name)}}"
-                                            class="link-light text-decoration-none d-flex-inline align-items-center">
-                                             <span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span>
-                                         </a>
-                                     </h3>
-                                 </div>
-                             </div>
+                            <div class="row mt-5 mb-3">
+                                <div class="col-12 mx-auto">
+                                    <h3 class="d-flex align-items-center justify-content-center">
+                                        <span class="material-icons rounded-circle fs-2 p-2 text-dark {{ trackType.background_color }} me-3">{{ trackType.icon }}</span>
+                                        <span class="me-3">{{ trackType.get_localized_name() }}</span>
+                                        <a href="{{ url_for('users.customFieldsAdd', track_type=trackType.name) }}"
+                                           class="link-light text-decoration-none d-flex-inline align-items-center">
+                                            <span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span>
+                                        </a>
+                                    </h3>
+                                </div>
+                            </div>
 
                             <table class="table table-dark">
                                 <thead>
@@ -98,6 +105,29 @@
                                 </tbody>
                             </table>
                         {% endfor %}
+                    </div>
+                </div>
+
+                <hr class="mt-5"/>
+
+                <div class="row mt-5 text-start">
+                    <div class="col-6 mx-auto">
+                        <h3 class="text-center mb-5">{{ gettext('Select Information to show for each track') }}</h3>
+                        <form role="form" action="{{ url_for('users.editSelfTrackInfoItems') }}" method="post">
+                            {% for infoItem in infoItems %}
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                           {% if infoItem and infoItem.is_activated %}checked{% endif %}
+                                           id="infoItem-{{ infoItem.type.name }}"
+                                           name="{{ infoItem.type.name }}">
+                                    <label class="form-check-label" for="infoItem-{{ infoItem.type.name }}">
+                                        {{ infoItem.type.get_localized_name() }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+
+                            <button type="submit" class="btn btn-primary mt-4">{{ gettext('Save') }}</button>
+                        </form>
                     </div>
                 </div>
             </section>
