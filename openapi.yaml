@@ -71,5 +71,5 @@ components:
         elevationSum:
           type: integer
         customFields:
-          type: string
+          type: object
           example: {'bike': 'Cube'}
