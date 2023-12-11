@@ -1,4 +1,4 @@
-# 1.x.x
+# 1.5.1
 - fix: improved form input field size for durations
 - fix: allow month goals to be created before 2023
 
