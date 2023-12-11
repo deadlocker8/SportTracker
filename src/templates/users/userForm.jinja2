@@ -13,7 +13,7 @@
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row">
-                    <div class="col-12 mx-auto">
+                    <div class="col col-12 mx-auto">
                         {% if user %}
                             <h1>{{ gettext('Edit User') }}</h1>
                             {% if not user.isAdmin %}
@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="row mt-5 text-start">
-                    <div class="col-9 mx-auto">
+                    <div class="col col-9 mx-auto">
                         {% if errorMessage %}
                             <div class="alert alert-danger" role="alert">
                                 {{ errorMessage }}

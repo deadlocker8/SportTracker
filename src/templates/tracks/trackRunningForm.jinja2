@@ -13,7 +13,7 @@
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row">
-                    <div class="col-12 mx-auto">
+                    <div class="col col-12 mx-auto">
                         {% if track %}
                             <h1>{{ gettext('Edit Running Track') }}</h1>
                             <a href="{{ url_for('tracks.delete', track_id=track_id) }}" class="btn btn-danger mt-3">{{ gettext('Delete') }}</a>
@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="row mt-5 text-start">
-                    <div class="col-9 mx-auto">
+                    <div class="col col-9 mx-auto">
                         <form role="form" action="{% if track %}{{ url_for('tracks.editPost', track_id=track_id) }}{% else %}{{ url_for('tracks.addPost') }}{% endif %}"
                               method="post">
 
@@ -38,12 +38,12 @@
 
                             <div class="mb-3">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col col-6">
                                         <label for="track-date" class="form-label">{{ gettext('Date') }}</label>
                                         <input type="date" class="form-control" id="track-date" name="date"
                                                required="required" {% if track %}value="{{ track.date }}"{% endif %}>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col col-6">
                                         <label for="track-time" class="form-label">{{ gettext('Start Time') }}</label>
                                         <input type="time" class="form-control" id="track-time" name="time"
                                                required="required" {% if track %}value="{{ track.time }}"{% endif %}>
@@ -60,21 +60,21 @@
 
                             <div class="mb-3">
                                 <div class="row">
-                                    <div class="col-2">
+                                    <div class="col col-2">
                                         <label for="track-duration-hours" class="form-label">{{ gettext('Duration') }}</label>
                                         <input type="number" step="1" min="0" class="form-control"
                                                id="track-duration-hours" name="durationHours" placeholder="{{ gettext('Hours') }}"
                                                required="required"
                                                {% if track %}value="{{ track.durationHours }}"{% endif %}>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col col-2">
                                         <label for="track-duration-minutes" class="form-label">&nbsp;</label>
                                         <input type="number" step="1" min="0" max="59" class="form-control"
                                                id="track-duration-minutes" name="durationMinutes"
                                                placeholder="{{ gettext('Minutes') }}" required="required"
                                                {% if track %}value="{{ track.durationMinutes }}"{% endif %}>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col col-2">
                                         <label for="track-duration-seconds" class="form-label">&nbsp;</label>
                                         <input type="number" step="1" min="0" max="59" class="form-control"
                                                id="track-duration-seconds" name="durationSeconds"

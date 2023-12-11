@@ -13,13 +13,13 @@
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row">
-                    <div class="col-12 mx-auto">
+                    <div class="col col-12 mx-auto">
                         <h1>{{ gettext('Profile') }}</h1>
                     </div>
                 </div>
 
                 <div class="row mt-5 text-start">
-                    <div class="col-9 mx-auto">
+                    <div class="col col-9 mx-auto">
                         {% if errorMessage %}
                             <div class="alert alert-danger" role="alert">
                                 {{ errorMessage }}
@@ -58,12 +58,12 @@
                 <hr class="mt-5"/>
 
                 <div class="row mt-5 text-start">
-                    <div class="col-9 mx-auto">
+                    <div class="col col-9 mx-auto">
                         <h3 class="text-center mb-5">{{ gettext('Custom Track Fields') }}</h3>
 
                         {% for trackType, customFields in customFieldsByTrackType.items() %}
                             <div class="row mt-5 mb-3">
-                                <div class="col-12 mx-auto">
+                                <div class="col col-12 mx-auto">
                                     <h3 class="d-flex align-items-center justify-content-center">
                                         <span class="material-icons rounded-circle fs-2 p-2 text-dark {{ trackType.background_color }} me-3">{{ trackType.icon }}</span>
                                         <span class="me-3">{{ trackType.get_localized_name() }}</span>
@@ -111,7 +111,7 @@
                 <hr class="mt-5"/>
 
                 <div class="row mt-5 text-start">
-                    <div class="col-6 mx-auto">
+                    <div class="col col-6 mx-auto">
                         <h3 class="text-center mb-5">{{ gettext('Select Information to show for each track') }}</h3>
                         <form role="form" action="{{ url_for('users.editSelfTrackInfoItems') }}" method="post">
                             {% for infoItem in infoItems %}

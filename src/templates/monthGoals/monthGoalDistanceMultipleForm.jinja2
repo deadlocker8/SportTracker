@@ -13,13 +13,13 @@
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row">
-                    <div class="col-12 mx-auto">
+                    <div class="col col-12 mx-auto">
                         <h1>{{ gettext('Multiple New Distance Month Goals') }}</h1>
                     </div>
                 </div>
 
                 <div class="row mt-5 text-start">
-                    <div class="col-9 mx-auto">
+                    <div class="col col-9 mx-auto">
                         <form role="form" action="{{ url_for('monthGoalsDistance.addMultiplePost') }}"
                               method="post">
                             <div class="mb-3">
@@ -32,13 +32,13 @@
 
                             <div class="mb-3">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col col-6">
                                         <label for="month-goal-start-year" class="form-label">{{ gettext('Start Year') }}</label>
                                         <input type="number" step="1" min="2023" class="form-control"
                                                id="month-goal-start-year" name="start_year" placeholder="YYYY"
                                                required="required">
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col col-6">
                                         <label for="month-goal-start-month" class="form-label">{{ gettext('Start Month') }}</label>
                                         <input type="number" min="1" max="12" class="form-control" id="month-goal-start-month"
                                                name="start_month" placeholder="MM"
@@ -49,14 +49,14 @@
 
                             <div class="mb-3">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col col-6">
                                         <label for="month-goal-end-year"
                                                class="form-label">{{ gettext('End Year') }}</label>
                                         <input type="number" step="1" min="2023" class="form-control"
                                                id="month-goal-end-year" name="end_year" placeholder="YYYY"
                                                required="required">
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col col-6">
                                         <label for="month-goal-end-month"
                                                class="form-label">{{ gettext('End Month') }}</label>
                                         <input type="number" min="1" max="12" class="form-control"
@@ -69,13 +69,13 @@
 
                             <div class="mb-5">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col col-6">
                                         <label for="month-goal-minimum" class="form-label">{{ gettext('Minimum Distance (in km)') }}</label>
                                         <input type="number" step="0.01" min="0" class="form-control"
                                                id="month-goal-minimum" name="distance_minimum" required="required"
                                                {% if goal %}value="{{ goal.distance_minimum }}"{% endif %}>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col col-6">
                                         <label for="month-goal-perfect" class="form-label">{{ gettext('Perfect Distance (in km)') }}</label>
                                         <input type="number" step="0.01" min="0" class="form-control"
                                                id="month-goal-perfect" name="distance_perfect" required="required"

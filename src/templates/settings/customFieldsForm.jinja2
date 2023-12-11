@@ -14,7 +14,7 @@
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row">
-                    <div class="col-12 mx-auto">
+                    <div class="col col-12 mx-auto">
                         {% if field %}
                             <h1>{{ gettext('Edit Custom Track Field') }}</h1>
                         {% else %}
@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="row mt-5 text-start">
-                    <div class="col-9 mx-auto">
+                    <div class="col col-9 mx-auto">
                         <form role="form" action="
                                 {% if field %}{{ url_for('users.customFieldsEditPost', field_id=field_id) }}{% else %}{{ url_for('users.customFieldsAddPost') }}{% endif %}"
                               method="post">
