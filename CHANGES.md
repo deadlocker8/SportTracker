@@ -1,6 +1,6 @@
 # 1.x.x
 - fix: improved form input field size for durations
-
+- fix: allow month goals to be created before 2023
 
 # 1.5.0
 - add: values shown for each track in track list are now configurable in user settings
