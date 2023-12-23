@@ -1,4 +1,5 @@
 # 1.6.0
+- add: search for tracks by name
 - add: jump to month and year after editing/creating a track
 
 # 1.5.1
