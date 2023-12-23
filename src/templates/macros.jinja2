@@ -64,6 +64,10 @@
                 </ul>
 
                 {% if current_user.is_authenticated %}
+                    <form class="d-flex" role="search" action="{{ url_for('search.performSearch') }}">
+                        <input class="form-control me-2" type="search" placeholder="{{ gettext('Search') }}">
+                    </form>
+
                     <div class="d-flex align-items-center">
                         <div class="text-white mx-md-3 my-2 my-md-0">
                             <a href="{{ url_for('users.editSelf') }}"
