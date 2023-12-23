@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Search Results') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('search') }}
+
+        {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row mb-3">
+                    <div class="col col-12 mx-auto">
+                        <h1>{{ gettext('Search Results') }}</h1>
+                    </div>
+                </div>
+
+                {% for monthName, tracks in results.items() %}
+                    <h3 class="mt-4">{{ monthName }}</h3>
+                    {% for track in tracks %}
+                        {% if track.type.name == 'BIKING' %}
+                            {{ trackMacros.render_track_biking_card(track) }}
+                        {% elif track.type.name == 'RUNNING' %}
+                            {{ trackMacros.render_track_running_card(track) }}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>
