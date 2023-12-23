@@ -1,3 +1,6 @@
+# 1.6.0
+- add: jump to month and year after editing/creating a track
+
 # 1.5.1
 - fix: improved form input field size for durations
 - fix: allow month goals to be created before 2023

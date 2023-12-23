@@ -127,7 +127,7 @@ def construct_blueprint():
         db.session.add(track)
         db.session.commit()
 
-        return redirect(url_for('tracks.listTracks'))
+        return redirect(url_for('tracks.listTracks', year=track.startTime.year, month=track.startTime.month))
 
     @tracks.route('/edit/<int:track_id>')
     @login_required
@@ -188,7 +188,7 @@ def construct_blueprint():
         LOGGER.debug(f'Updated track: {track}')
         db.session.commit()
 
-        return redirect(url_for('tracks.listTracks'))
+        return redirect(url_for('tracks.listTracks', year=track.startTime.year, month=track.startTime.month))
 
     @tracks.route('/delete/<int:track_id>')
     @login_required
