@@ -17,11 +17,13 @@ def construct_blueprint():
 
     @authentication.route('/login', methods=['POST'])
     def login_post():
-        username = request.form.get('username').strip().lower()
-        password = request.form.get('password').strip()
+        username = request.form.get('username')
+        password = request.form.get('password')
 
         if username is None:
             return render_template('login.jinja2', message='Unbekannter Nutzer')
+
+        username = username.strip().lower()
 
         user = User.query.filter_by(username=username).first()
 
@@ -30,6 +32,8 @@ def construct_blueprint():
 
         if password is None:
             return render_template('login.jinja2', message='Error parameter "password"!')
+
+        password = password.strip()
 
         if not Bcrypt().check_password_hash(user.password, password):
             return render_template('login.jinja2', message='Falsches Passwort')
