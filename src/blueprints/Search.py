@@ -32,6 +32,9 @@ def construct_blueprint():
 
         results = {k: list(g) for k, g in groupby(tracks, key=lambda track: track.startTime.strftime('%B %Y'))}
 
-        return render_template('search.jinja2', results=results, searchText=searchText)
+        return render_template('search.jinja2',
+                               results=results,
+                               searchText=searchText,
+                               numberOfResults=len(tracks))
 
     return search
