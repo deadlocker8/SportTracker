@@ -65,7 +65,7 @@
 
                 {% if current_user.is_authenticated %}
                     <form class="d-flex" role="search" action="{{ url_for('search.performSearch') }}" method="POST">
-                        <input class="form-control me-2" type="search" placeholder="{{ gettext('Search') }}">
+                        <input class="form-control me-2" type="search" placeholder="{{ gettext('Search') }}" name="searchText" value="{% if searchText %}{{ searchText }}{% endif %}">
                     </form>
 
                     <div class="d-flex align-items-center">
