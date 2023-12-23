@@ -10,11 +10,10 @@ from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils import FlaskBaseApp
 from flask import Flask, request
 from flask_babel import Babel
-from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, current_user
 
 from blueprints import General, Authentication, Tracks, MonthGoals, Charts, Users, MonthGoalsDistance, MonthGoalsCount, \
-    Api, Achievements
+    Api, Achievements, Search
 from helpers import Helpers
 from logic import Constants
 from logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
@@ -174,6 +173,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Users.construct_blueprint())
         app.register_blueprint(Api.construct_blueprint(self._version))
         app.register_blueprint(Achievements.construct_blueprint())
+        app.register_blueprint(Search.construct_blueprint())
 
 
 @click.command()
