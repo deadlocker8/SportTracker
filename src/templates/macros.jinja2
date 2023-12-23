@@ -64,7 +64,7 @@
                 </ul>
 
                 {% if current_user.is_authenticated %}
-                    <form class="d-flex" role="search" action="{{ url_for('search.performSearch') }}">
+                    <form class="d-flex" role="search" action="{{ url_for('search.performSearch') }}" method="POST">
                         <input class="form-control me-2" type="search" placeholder="{{ gettext('Search') }}">
                     </form>
 
