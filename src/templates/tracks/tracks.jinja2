@@ -1,169 +1,4 @@
 <!DOCTYPE html>
-
-{% macro render_track_biking_speed(track) -%}
-    {% if track.duration is none %}
-        <div class="fs-4">--.- km/h</div>
-    {% else %}
-        <div class="fs-4">{{ (track.distance / track.duration * 3.6) | round(1) }} km/h
-        </div>
-    {% endif %}
-{%- endmacro %}
-
-{% macro render_track_running_speed(track) -%}
-    {% if track.duration is none %}
-        <div class="fs-4">--.-- min</div>
-    {% else %}
-        <div class="fs-4">{{ track | format_pace }} min
-        </div>
-    {% endif %}
-{%- endmacro %}
-
-{% macro render_track_distance(track) -%}
-    <div class="fs-4">{{ track.distance / 1000 }} km</div>
-{%- endmacro %}
-
-{% macro render_track_duration(track) -%}
-    <div class="fs-4">{{ track.duration | format_duration }} h</div>
-{%- endmacro %}
-
-{% macro render_track_average_heart_rate(track) -%}
-    {% if track.averageHeartRate is not none %}
-        <div class="fs-4">{{ track.averageHeartRate }} bpm</div>
-    {% endif %}
-{%- endmacro %}
-
-{% macro render_track_elevation(track) -%}
-    {% if track.elevationSum is not none %}
-        <div class="fs-4">{{ track.elevationSum }} m</div>
-    {% endif %}
-{%- endmacro %}
-
-{% macro render_track_start_time(track) -%}
-    <div class="fs-6 me-2 text-body-secondary">{{ track.startTime.strftime('%d.%m.%y') }}</div>
-{%- endmacro %}
-
-{% macro render_track_running_card(track) -%}
-    <div class="row py-2">
-        <div class="col col-12 mx-auto">
-            <a href="{{ url_for('tracks.edit', track_id=track.id) }}" class="text-decoration-none">
-                <div class="card">
-                    <div class="row g-0">
-                        <div class="col col-3 d-flex align-items-center justify-content-center">
-                            <span class="material-icons rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
-                        </div>
-                        <div class="col col-9">
-                            <div class="card-body">
-                                <h5 class="card-title text-truncate text-start">{{ track.name }}</h5>
-
-                                <div class="d-flex align-items-center justify-content-between">
-                                     {% if is_track_info_item_activated('DISTANCE') %}
-                                        {{ render_track_distance(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('DURATION') %}
-                                        {{ render_track_duration(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('SPEED') %}
-                                        {{ render_track_running_speed(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('AVERAGE_HEART_RATE') %}
-                                        {{ render_track_average_heart_rate(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('ELEVATION_SUM') %}
-                                        {{ render_track_elevation(track) }}
-                                    {% endif %}
-
-                                    {{ render_track_start_time(track) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-{%- endmacro %}
-
-{% macro render_track_biking_card(track) -%}
-    <div class="row py-2">
-        <div class="col col-12 mx-auto">
-            <a href="{{ url_for('tracks.edit', track_id=track.id) }}" class="text-decoration-none">
-                <div class="card">
-                    <div class="row g-0">
-                        <div class="col col-3 d-flex align-items-center justify-content-center">
-                            <span class="material-icons rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
-                        </div>
-                        <div class="col col-9">
-                            <div class="card-body">
-                                <h5 class="card-title text-truncate text-start">{{ track.name }}</h5>
-
-                                <div class="d-flex align-items-center justify-content-between">
-                                    {% if is_track_info_item_activated('DISTANCE') %}
-                                        {{ render_track_distance(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('DURATION') %}
-                                        {{ render_track_duration(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('SPEED') %}
-                                        {{ render_track_biking_speed(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('AVERAGE_HEART_RATE') %}
-                                        {{ render_track_average_heart_rate(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('ELEVATION_SUM') %}
-                                        {{ render_track_elevation(track) }}
-                                    {% endif %}
-
-                                    {{ render_track_start_time(track) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-{%- endmacro %}
-
-{% macro render_month(monthModel) -%}
-    <div class="px-xxl-5 px-xl-4 px-lg-3">
-        <h3 class="mt-4">{{ monthModel.name }}</h3>
-        <div class="py-2">
-            {% for goal in monthModel.goals %}
-                <div class="row">
-                    <div class="col col-12 mx-auto">
-                        <div class="row d-flex align-items-center">
-                            <div class="col col-12 d-flex align-items-center">
-                                <span class="material-icons fs-5 py-1 text-light">{{ goal.type.icon }}</span>
-                                <span class="me-3 text-end"
-                                      style="white-space: nowrap; width: 4.75rem;">{{ goal.get_actual_value_formatted() }}</span>
-                                <div class="d-inline-block" style="width: 100%; height: 100%;">
-                                    {{ monthGoalsMacros.render_month_goal_progress_bar(goal) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-
-        {% for track in monthModel.tracks %}
-            {% if track.type.name == 'BIKING' %}
-                {{ render_track_biking_card(track) }}
-            {% elif track.type.name == 'RUNNING' %}
-                {{ render_track_running_card(track) }}
-            {% endif %}
-        {% endfor %}
-    </div>
-{%- endmacro %}
-
 <html>
     <head>
         <meta charset="UTF-8">
@@ -175,6 +10,7 @@
         {{ macros.navbar('tracks') }}
 
         {% import 'monthGoals/monthGoalsMacros.jinja2' as monthGoalsMacros with context %}
+        {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
 
         <div id="main" class="center-align">
             <section class="p-5 text-center">
@@ -206,10 +42,10 @@
 
                 <div class="row p-xxl-5 p-xl-4 p-lg-3">
                     <div class="col col-lg-6 col-s-12 px-xxl-5 px-xl-4 px-lg-3">
-                        {{ render_month(monthLeftSide) }}
+                        {{ trackMacros.render_month(monthLeftSide) }}
                     </div>
                     <div class="col col-lg-6 col-s-12 px-xxl-5 px-xl-4 px-lg-3">
-                        {{ render_month(monthRightSide) }}
+                        {{ trackMacros.render_month(monthRightSide) }}
                     </div>
                 </div>
             </section>
