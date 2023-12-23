@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-28 22:49+0100\n"
+"POT-Creation-Date: 2023-12-23 16:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -138,7 +138,7 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: ../templates/macros.jinja2:44 ../templates/tracks/tracks.jinja2:170
+#: ../templates/macros.jinja2:44 ../templates/tracks/tracks.jinja2:5
 msgid "Tracks"
 msgstr ""
 
@@ -155,6 +155,14 @@ msgstr ""
 #: ../templates/charts/chartMacros.jinja2:7
 #: ../templates/charts/chartMacros.jinja2:20 ../templates/macros.jinja2:52
 msgid "Charts"
+msgstr ""
+
+#: ../templates/macros.jinja2:68
+msgid "Search"
+msgstr ""
+
+#: ../templates/search.jinja2:6 ../templates/search.jinja2:19
+msgid "Search Results"
 msgstr ""
 
 #: ../templates/charts/chartAverageSpeed.jinja2:36
