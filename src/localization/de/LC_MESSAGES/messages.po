@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 16:54+0100\n"
-"PO-Revision-Date: 2023-12-23 16:53+0100\n"
+"POT-Creation-Date: 2023-12-23 17:30+0100\n"
+"PO-Revision-Date: 2023-12-23 17:30+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.13.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: ../blueprints/Achievements.py:35
 msgid "Month Goal Streak"
@@ -24,13 +25,13 @@ msgstr "Monatsziele in Folge"
 
 #: ../blueprints/Achievements.py:36
 msgid ""
-"You have achieved all your monthly goals for <span class=\"fw-"
-"bold\">{currentStreak}</span> months in a row!<br>(Best: <span class"
-"=\"fw-bold\">{maxStreak}</span>)"
+"You have achieved all your monthly goals for <span class=\"fw-bold"
+"\">{currentStreak}</span> months in a row!<br>(Best: <span class=\"fw-bold"
+"\">{maxStreak}</span>)"
 msgstr ""
-"Du hast alle deine monatlichen Ziele für <span class=\"fw-"
-"bold\">{currentStreak}</span> Monate in Folge erreicht!<br>(Beste: <span "
-"class=\"fw-bold\">{maxStreak}</span>)"
+"Du hast alle deine monatlichen Ziele für <span class=\"fw-bold"
+"\">{currentStreak}</span> Monate in Folge erreicht!<br>(Beste: <span class="
+"\"fw-bold\">{maxStreak}</span>)"
 
 #: ../blueprints/Achievements.py:43
 msgid "Longest Track"
@@ -38,8 +39,7 @@ msgstr "Längster Track"
 
 #: ../blueprints/Achievements.py:44
 msgid ""
-"You completed <span class=\"fw-bold\">{longestTrack} km</span> in one "
-"trip!"
+"You completed <span class=\"fw-bold\">{longestTrack} km</span> in one trip!"
 msgstr ""
 "Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einer Fahrt "
 "zurückgelegt!"
@@ -50,11 +50,9 @@ msgstr "Gesamtstrecke"
 
 #: ../blueprints/Achievements.py:50
 msgid ""
-"You completed a total of <span class=\"fw-bold\">{totalDistance} "
-"km</span>!"
+"You completed a total of <span class=\"fw-bold\">{totalDistance} km</span>!"
 msgstr ""
-"Du bist insgesamt <span class=\"fw-bold\">{totalDistance} km</span> "
-"gefahren!"
+"Du bist insgesamt <span class=\"fw-bold\">{totalDistance} km</span> gefahren!"
 
 #: ../blueprints/Achievements.py:56
 msgid "Best Month"
@@ -62,8 +60,8 @@ msgstr "Bester Monat"
 
 #: ../blueprints/Achievements.py:57
 msgid ""
-"<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
-"<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
+"<span class=\"fw-bold\">{bestMonthName}</span> was your best month with <span "
+"class=\"fw-bold\">{bestMonthDistance} km</span>!"
 msgstr ""
 "<span class=\"fw-bold\">{bestMonthName}</span> war dein bester Monat mit "
 "<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
@@ -171,7 +169,11 @@ msgstr "Diagramme"
 msgid "Search"
 msgstr "Suche"
 
-#: ../templates/search.jinja2:6 ../templates/search.jinja2:19
+#: ../templates/search.jinja2:4
+msgid "of"
+msgstr "von"
+
+#: ../templates/search.jinja2:38 ../templates/search.jinja2:51
 msgid "Search Results"
 msgstr "Suchergebnisse"
 
@@ -498,14 +500,13 @@ msgstr "Administrator"
 
 #~ msgid "You ran <span class=\"fw-bold\">{longestTrack} km</span> in one trip!"
 #~ msgstr ""
-#~ "Du hast <span class=\"fw-bold\">{longestTrack}"
-#~ " km</span> in einem Lauf zurückgelegt!"
+#~ "Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einem Lauf "
+#~ "zurückgelegt!"
 
 #~ msgid "You ran a total of <span class=\"fw-bold\">{totalDistance} km</span>!"
 #~ msgstr ""
-#~ "Du bist insgesamt <span class=\"fw-"
-#~ "bold\">{totalDistance} km</span> gelaufen!"
+#~ "Du bist insgesamt <span class=\"fw-bold\">{totalDistance} km</span> "
+#~ "gelaufen!"
 
 #~ msgid "Bike"
 #~ msgstr "Fahrrad"
-

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 16:54+0100\n"
+"POT-Creation-Date: 2023-12-23 17:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -161,7 +161,11 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../templates/search.jinja2:6 ../templates/search.jinja2:19
+#: ../templates/search.jinja2:4
+msgid "of"
+msgstr ""
+
+#: ../templates/search.jinja2:38 ../templates/search.jinja2:51
 msgid "Search Results"
 msgstr ""
 

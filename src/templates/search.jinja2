@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 {% macro render_pagination(pagination) %}
-    <h4>{{ pagination.first }} - {{ pagination.last }} of {{ pagination.total }}</h4>
+    <h4>{{ pagination.first }} - {{ pagination.last }} {{ gettext('of') }} {{ pagination.total }}</h4>
 
     <nav>
         <ul class="pagination justify-content-center mt-3">
