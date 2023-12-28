@@ -114,7 +114,7 @@ def construct_blueprint():
         while year != currentYear or month != currentMonth:
             summaries = get_goal_summaries_by_year_and_month(year, month)
             completedGoals = [s for s in summaries if s.percentage >= 100.0]
-            if len(summaries) == len(completedGoals):
+            if summaries and len(summaries) == len(completedGoals):
                 currentStreak += 1
                 if currentStreak > highestStreak:
                     highestStreak = currentStreak
