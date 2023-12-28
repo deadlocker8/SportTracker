@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 17:30+0100\n"
-"PO-Revision-Date: 2023-12-23 17:30+0100\n"
+"POT-Creation-Date: 2023-12-28 22:55+0100\n"
+"PO-Revision-Date: 2023-12-28 22:55+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -41,7 +41,7 @@ msgstr "Längster Track"
 msgid ""
 "You completed <span class=\"fw-bold\">{longestTrack} km</span> in one trip!"
 msgstr ""
-"Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einer Fahrt "
+"Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einem Training "
 "zurückgelegt!"
 
 #: ../blueprints/Achievements.py:49
@@ -177,7 +177,7 @@ msgstr "von"
 msgid "Search Results"
 msgstr "Suchergebnisse"
 
-#: ../templates/charts/chartAverageSpeed.jinja2:36
+#: ../templates/charts/chartAverageSpeed.jinja2:35
 msgid "Speed in km/h"
 msgstr "Geschwindigkeit in km/h"
 

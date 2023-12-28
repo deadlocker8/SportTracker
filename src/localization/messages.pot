@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 17:30+0100\n"
+"POT-Creation-Date: 2023-12-28 22:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -169,7 +169,7 @@ msgstr ""
 msgid "Search Results"
 msgstr ""
 
-#: ../templates/charts/chartAverageSpeed.jinja2:36
+#: ../templates/charts/chartAverageSpeed.jinja2:35
 msgid "Speed in km/h"
 msgstr ""
 
