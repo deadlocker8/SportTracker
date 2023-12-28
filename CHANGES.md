@@ -1,3 +1,8 @@
+# 1.6.1
+- fix: overlapping data points in chart for average speed
+- fix: calculation of month goal streak achievement
+- fix: ordering of changelog entries
+
 # 1.6.0
 - add: search for tracks by name
 - add: jump to month and year after editing/creating a track
