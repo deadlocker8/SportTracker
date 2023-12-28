@@ -37,7 +37,7 @@ def construct_blueprint():
                 continue
 
             if line.startswith('#'):
-                changelog[line[2:]] = currentList
+                changelog[line[2:]] = reversed(currentList)
                 currentList = []
             if line.startswith('-'):
                 currentList.append(line[2:])
