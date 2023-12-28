@@ -122,7 +122,7 @@ def construct_blueprint():
                     if track.duration is None:
                         continue
 
-                    dates.append(track.startTime.strftime('%d.%m.%y'))
+                    dates.append(track.startTime.isoformat())
                     speedData.append(round(track.distance / track.duration * 3.6, 2))
 
                 chartDataAverageSpeed.append({
