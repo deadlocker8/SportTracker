@@ -45,44 +45,51 @@
 {% macro render_track_running_card(track) -%}
     <div class="row py-2">
         <div class="col col-12 mx-auto">
-            <a href="{{ url_for('tracks.edit', track_id=track.id) }}" class="text-decoration-none">
-                <div class="card">
-                    <div class="row g-0">
-                        <div class="col col-3 d-flex align-items-center justify-content-center">
-                            <span class="material-icons rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
-                        </div>
-                        <div class="col col-9">
-                            <div class="card-body">
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col col-3 d-flex align-items-center justify-content-center">
+                        <span class="material-icons rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
+                    </div>
+                    <div class="col col-9">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
                                 <h5 class="card-title text-truncate text-start">{{ track.name }}</h5>
 
-                                <div class="d-flex align-items-center justify-content-between">
-                                     {% if is_track_info_item_activated('DISTANCE') %}
-                                        {{ render_track_distance(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('DURATION') %}
-                                        {{ render_track_duration(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('SPEED') %}
-                                        {{ render_track_running_speed(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('AVERAGE_HEART_RATE') %}
-                                        {{ render_track_average_heart_rate(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('ELEVATION_SUM') %}
-                                        {{ render_track_elevation(track) }}
-                                    {% endif %}
-
-                                    {{ render_track_start_time(track) }}
-                                </div>
+                                <a href="{{ url_for('maps.showSingleTrack', track_id=track.id) }}"
+                                   class="text-decoration-none z-2">
+                                    <span class="material-icons fs-4 text-body">map</span>
+                                </a>
                             </div>
+
+                            <div class="d-flex align-items-center justify-content-between">
+                                {% if is_track_info_item_activated('DISTANCE') %}
+                                    {{ render_track_distance(track) }}
+                                {% endif %}
+
+                                {% if is_track_info_item_activated('DURATION') %}
+                                    {{ render_track_duration(track) }}
+                                {% endif %}
+
+                                {% if is_track_info_item_activated('SPEED') %}
+                                    {{ render_track_running_speed(track) }}
+                                {% endif %}
+
+                                {% if is_track_info_item_activated('AVERAGE_HEART_RATE') %}
+                                    {{ render_track_average_heart_rate(track) }}
+                                {% endif %}
+
+                                {% if is_track_info_item_activated('ELEVATION_SUM') %}
+                                    {{ render_track_elevation(track) }}
+                                {% endif %}
+
+                                {{ render_track_start_time(track) }}
+                            </div>
+
+                            <a href="{{ url_for('tracks.edit', track_id=track.id) }}" class="text-decoration-none stretched-link"></a>
                         </div>
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
     </div>
 {%- endmacro %}
@@ -90,44 +97,52 @@
 {% macro render_track_biking_card(track) -%}
     <div class="row py-2">
         <div class="col col-12 mx-auto">
-            <a href="{{ url_for('tracks.edit', track_id=track.id) }}" class="text-decoration-none">
-                <div class="card">
-                    <div class="row g-0">
-                        <div class="col col-3 d-flex align-items-center justify-content-center">
-                            <span class="material-icons rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
-                        </div>
-                        <div class="col col-9">
-                            <div class="card-body">
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col col-3 d-flex align-items-center justify-content-center">
+                        <span class="material-icons rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
+                    </div>
+                    <div class="col col-9">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
                                 <h5 class="card-title text-truncate text-start">{{ track.name }}</h5>
 
-                                <div class="d-flex align-items-center justify-content-between">
-                                    {% if is_track_info_item_activated('DISTANCE') %}
-                                        {{ render_track_distance(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('DURATION') %}
-                                        {{ render_track_duration(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('SPEED') %}
-                                        {{ render_track_biking_speed(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('AVERAGE_HEART_RATE') %}
-                                        {{ render_track_average_heart_rate(track) }}
-                                    {% endif %}
-
-                                    {% if is_track_info_item_activated('ELEVATION_SUM') %}
-                                        {{ render_track_elevation(track) }}
-                                    {% endif %}
-
-                                    {{ render_track_start_time(track) }}
-                                </div>
+                                <a href="{{ url_for('maps.showSingleTrack', track_id=track.id) }}"
+                                   class="text-decoration-none z-2">
+                                    <span class="material-icons fs-4 text-body">map</span>
+                                </a>
                             </div>
+
+                            <div class="d-flex align-items-center justify-content-between">
+                                {% if is_track_info_item_activated('DISTANCE') %}
+                                    {{ render_track_distance(track) }}
+                                {% endif %}
+
+                                {% if is_track_info_item_activated('DURATION') %}
+                                    {{ render_track_duration(track) }}
+                                {% endif %}
+
+                                {% if is_track_info_item_activated('SPEED') %}
+                                    {{ render_track_biking_speed(track) }}
+                                {% endif %}
+
+                                {% if is_track_info_item_activated('AVERAGE_HEART_RATE') %}
+                                    {{ render_track_average_heart_rate(track) }}
+                                {% endif %}
+
+                                {% if is_track_info_item_activated('ELEVATION_SUM') %}
+                                    {{ render_track_elevation(track) }}
+                                {% endif %}
+
+                                {{ render_track_start_time(track) }}
+                            </div>
+
+                            <a href="{{ url_for('tracks.edit', track_id=track.id) }}"
+                               class="text-decoration-none stretched-link"></a>
                         </div>
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
     </div>
 {%- endmacro %}
