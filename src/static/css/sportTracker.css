@@ -11,6 +11,10 @@ body {
   box-shadow: none;
 }
 
+#map {
+    height: 75vh;
+}
+
 .debug {
     outline: 1px solid red !important;
 }
