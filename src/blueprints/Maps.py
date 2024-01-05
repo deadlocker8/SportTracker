@@ -14,7 +14,7 @@ def createGpxInfo(track: Track) -> dict[str, str]:
     return {
         'gpxUrl': url_for('gpxTracks.downloadGpxTrack', track_id=track.id, _external=True),
         'trackUrl': url_for('tracks.edit', track_id=track.id, _external=True),
-        'trackName': track.name
+        'trackName': f'{track.startTime.strftime("%Y-%m-%d")} - {track.name}'
     }
 
 
