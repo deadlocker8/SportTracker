@@ -1,5 +1,4 @@
 import logging
-import os
 
 from flask import Blueprint, send_from_directory, abort
 from flask_login import login_required, current_user
@@ -11,13 +10,10 @@ from logic.model.User import User
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def construct_blueprint():
+def construct_blueprint(uploadFolder: str):
     gpxTracks = Blueprint('gpxTracks', __name__, static_folder='static')
-    currentDirectory = os.path.abspath(os.path.dirname(__file__))
-    rootDirectory = os.path.dirname(os.path.dirname(currentDirectory))
-    uploadFolder = os.path.join(rootDirectory, 'uploads')
 
-    @gpxTracks.route('/gpxTrack/<int:track_id>')
+    @gpxTracks.route('/<int:track_id>')
     @login_required
     def downloadGpxTrack(track_id: int):
         track: Track | None = (Track.query.join(User)

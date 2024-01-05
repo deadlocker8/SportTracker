@@ -96,6 +96,9 @@ class SportTracker(FlaskBaseApp):
         }
         app.config['BABEL_TRANSLATION_DIRECTORIES'] = os.path.join(currentDirectory, 'localization')
 
+        rootDirectory = os.path.dirname(currentDirectory)
+        app.config['UPLOAD_FOLDER'] = os.path.join(rootDirectory, 'uploads')
+
         def get_locale():
             if current_user.is_authenticated:
                 return current_user.language.shortCode
@@ -165,7 +168,7 @@ class SportTracker(FlaskBaseApp):
     def _register_blueprints(self, app):
         app.register_blueprint(Authentication.construct_blueprint())
         app.register_blueprint(General.construct_blueprint())
-        app.register_blueprint(Tracks.construct_blueprint())
+        app.register_blueprint(Tracks.construct_blueprint(app.config['UPLOAD_FOLDER']))
         app.register_blueprint(MonthGoals.construct_blueprint())
         app.register_blueprint(MonthGoalsDistance.construct_blueprint())
         app.register_blueprint(MonthGoalsCount.construct_blueprint())
@@ -174,7 +177,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Api.construct_blueprint(self._version))
         app.register_blueprint(Achievements.construct_blueprint())
         app.register_blueprint(Search.construct_blueprint())
-        app.register_blueprint(GpxTracks.construct_blueprint())
+        app.register_blueprint(GpxTracks.construct_blueprint(app.config['UPLOAD_FOLDER']))
         app.register_blueprint(Maps.construct_blueprint())
 
 
