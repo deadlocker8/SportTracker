@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2023 ORGANIZATION
+# Copyright (C) 2024 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-28 22:55+0100\n"
+"POT-Creation-Date: 2024-01-05 23:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,8 +94,8 @@ msgstr ""
 msgid "Distance"
 msgstr ""
 
-#: ../logic/model/User.py:46 ../templates/tracks/trackBikingForm.jinja2:76
-#: ../templates/tracks/trackRunningForm.jinja2:64
+#: ../logic/model/User.py:46 ../templates/tracks/trackBikingForm.jinja2:79
+#: ../templates/tracks/trackRunningForm.jinja2:66
 msgid "Duration"
 msgstr ""
 
@@ -104,8 +104,8 @@ msgstr ""
 msgid "Average Speed"
 msgstr ""
 
-#: ../logic/model/User.py:50 ../templates/tracks/trackBikingForm.jinja2:102
-#: ../templates/tracks/trackRunningForm.jinja2:88
+#: ../logic/model/User.py:50 ../templates/tracks/trackBikingForm.jinja2:105
+#: ../templates/tracks/trackRunningForm.jinja2:90
 msgid "Average Heart Rate"
 msgstr ""
 
@@ -113,7 +113,7 @@ msgstr ""
 msgid "Elevation Sum"
 msgstr ""
 
-#: ../templates/about.jinja2:6 ../templates/macros.jinja2:60
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:64
 msgid "About"
 msgstr ""
 
@@ -157,7 +157,11 @@ msgstr ""
 msgid "Charts"
 msgstr ""
 
-#: ../templates/macros.jinja2:68
+#: ../templates/macros.jinja2:60 ../templates/map.jinja2:6
+msgid "Map"
+msgstr ""
+
+#: ../templates/macros.jinja2:72
 msgid "Search"
 msgstr ""
 
@@ -253,8 +257,8 @@ msgstr ""
 
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:19
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:19
-#: ../templates/tracks/trackBikingForm.jinja2:21
-#: ../templates/tracks/trackRunningForm.jinja2:19
+#: ../templates/tracks/trackBikingForm.jinja2:23
+#: ../templates/tracks/trackRunningForm.jinja2:21
 #: ../templates/users/userForm.jinja2:21
 msgid "Delete"
 msgstr ""
@@ -296,8 +300,8 @@ msgstr ""
 #: ../templates/settings/profile.jinja2:36
 #: ../templates/settings/profile.jinja2:53
 #: ../templates/settings/profile.jinja2:129
-#: ../templates/tracks/trackBikingForm.jinja2:120
-#: ../templates/tracks/trackRunningForm.jinja2:105
+#: ../templates/tracks/trackBikingForm.jinja2:125
+#: ../templates/tracks/trackRunningForm.jinja2:109
 #: ../templates/users/userForm.jinja2:56
 msgid "Save"
 msgstr ""
@@ -367,8 +371,8 @@ msgstr ""
 
 #: ../templates/settings/customFieldsForm.jinja2:35
 #: ../templates/settings/profile.jinja2:81
-#: ../templates/tracks/trackBikingForm.jinja2:38
-#: ../templates/tracks/trackRunningForm.jinja2:34
+#: ../templates/tracks/trackBikingForm.jinja2:41
+#: ../templates/tracks/trackRunningForm.jinja2:36
 msgid "Name"
 msgstr ""
 
@@ -414,48 +418,48 @@ msgid "Select Information to show for each track"
 msgstr ""
 
 #: ../templates/tracks/trackBikingForm.jinja2:6
-#: ../templates/tracks/trackBikingForm.jinja2:19
+#: ../templates/tracks/trackBikingForm.jinja2:21
 msgid "Edit Biking Track"
 msgstr ""
 
 #: ../templates/tracks/trackBikingForm.jinja2:7
-#: ../templates/tracks/trackBikingForm.jinja2:23
+#: ../templates/tracks/trackBikingForm.jinja2:25
 #: ../templates/tracks/trackChooser.jinja2:26
 msgid "New Biking Track"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:53
-#: ../templates/tracks/trackRunningForm.jinja2:42
+#: ../templates/tracks/trackBikingForm.jinja2:56
+#: ../templates/tracks/trackRunningForm.jinja2:44
 msgid "Date"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:58
-#: ../templates/tracks/trackRunningForm.jinja2:47
+#: ../templates/tracks/trackBikingForm.jinja2:61
+#: ../templates/tracks/trackRunningForm.jinja2:49
 msgid "Start Time"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:66
-#: ../templates/tracks/trackRunningForm.jinja2:55
+#: ../templates/tracks/trackBikingForm.jinja2:69
+#: ../templates/tracks/trackRunningForm.jinja2:57
 msgid "Distance (in km)"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:79
-#: ../templates/tracks/trackRunningForm.jinja2:66
+#: ../templates/tracks/trackBikingForm.jinja2:82
+#: ../templates/tracks/trackRunningForm.jinja2:68
 msgid "Hours"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:87
-#: ../templates/tracks/trackRunningForm.jinja2:74
+#: ../templates/tracks/trackBikingForm.jinja2:90
+#: ../templates/tracks/trackRunningForm.jinja2:76
 msgid "Minutes"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:94
-#: ../templates/tracks/trackRunningForm.jinja2:81
+#: ../templates/tracks/trackBikingForm.jinja2:97
+#: ../templates/tracks/trackRunningForm.jinja2:83
 msgid "Seconds"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:110
-#: ../templates/tracks/trackRunningForm.jinja2:95
+#: ../templates/tracks/trackBikingForm.jinja2:113
+#: ../templates/tracks/trackRunningForm.jinja2:97
 msgid "Elevation Sum (in m)"
 msgstr ""
 
@@ -466,12 +470,24 @@ msgstr ""
 
 #: ../templates/tracks/trackChooser.jinja2:33
 #: ../templates/tracks/trackRunningForm.jinja2:6
-#: ../templates/tracks/trackRunningForm.jinja2:21
+#: ../templates/tracks/trackRunningForm.jinja2:23
 msgid "New Running Track"
 msgstr ""
 
+#: ../templates/tracks/trackMacros.jinja2:188
+msgid "GPX Track"
+msgstr ""
+
+#: ../templates/tracks/trackMacros.jinja2:191
+msgid "A GPX file is linked to this track"
+msgstr ""
+
+#: ../templates/tracks/trackMacros.jinja2:204
+msgid "No GPX file is linked to this track"
+msgstr ""
+
 #: ../templates/tracks/trackRunningForm.jinja2:6
-#: ../templates/tracks/trackRunningForm.jinja2:18
+#: ../templates/tracks/trackRunningForm.jinja2:20
 msgid "Edit Running Track"
 msgstr ""
 

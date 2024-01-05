@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-28 22:55+0100\n"
-"PO-Revision-Date: 2023-12-28 22:55+0100\n"
+"POT-Creation-Date: 2024-01-05 23:47+0100\n"
+"PO-Revision-Date: 2024-01-05 23:47+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -102,8 +102,8 @@ msgstr "Laufen"
 msgid "Distance"
 msgstr "Strecke"
 
-#: ../logic/model/User.py:46 ../templates/tracks/trackBikingForm.jinja2:76
-#: ../templates/tracks/trackRunningForm.jinja2:64
+#: ../logic/model/User.py:46 ../templates/tracks/trackBikingForm.jinja2:79
+#: ../templates/tracks/trackRunningForm.jinja2:66
 msgid "Duration"
 msgstr "Dauer"
 
@@ -112,8 +112,8 @@ msgstr "Dauer"
 msgid "Average Speed"
 msgstr "Durchschnittsgeschwindigkeit"
 
-#: ../logic/model/User.py:50 ../templates/tracks/trackBikingForm.jinja2:102
-#: ../templates/tracks/trackRunningForm.jinja2:88
+#: ../logic/model/User.py:50 ../templates/tracks/trackBikingForm.jinja2:105
+#: ../templates/tracks/trackRunningForm.jinja2:90
 msgid "Average Heart Rate"
 msgstr "Durchschnittliche Herzfrequenz"
 
@@ -121,7 +121,7 @@ msgstr "Durchschnittliche Herzfrequenz"
 msgid "Elevation Sum"
 msgstr "Summe Höhenmeter"
 
-#: ../templates/about.jinja2:6 ../templates/macros.jinja2:60
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:64
 msgid "About"
 msgstr "Über"
 
@@ -165,7 +165,11 @@ msgstr "Monatsziele"
 msgid "Charts"
 msgstr "Diagramme"
 
-#: ../templates/macros.jinja2:68
+#: ../templates/macros.jinja2:60 ../templates/map.jinja2:6
+msgid "Map"
+msgstr "Karte"
+
+#: ../templates/macros.jinja2:72
 msgid "Search"
 msgstr "Suche"
 
@@ -261,8 +265,8 @@ msgstr "Neues Anzahlziel"
 
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:19
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:19
-#: ../templates/tracks/trackBikingForm.jinja2:21
-#: ../templates/tracks/trackRunningForm.jinja2:19
+#: ../templates/tracks/trackBikingForm.jinja2:23
+#: ../templates/tracks/trackRunningForm.jinja2:21
 #: ../templates/users/userForm.jinja2:21
 msgid "Delete"
 msgstr "Löschen"
@@ -304,8 +308,8 @@ msgstr "Ideale Anzahl an Tracks"
 #: ../templates/settings/profile.jinja2:36
 #: ../templates/settings/profile.jinja2:53
 #: ../templates/settings/profile.jinja2:129
-#: ../templates/tracks/trackBikingForm.jinja2:120
-#: ../templates/tracks/trackRunningForm.jinja2:105
+#: ../templates/tracks/trackBikingForm.jinja2:125
+#: ../templates/tracks/trackRunningForm.jinja2:109
 #: ../templates/users/userForm.jinja2:56
 msgid "Save"
 msgstr "Speichern"
@@ -375,8 +379,8 @@ msgstr "Neues benutzerdefiniertes Feld"
 
 #: ../templates/settings/customFieldsForm.jinja2:35
 #: ../templates/settings/profile.jinja2:81
-#: ../templates/tracks/trackBikingForm.jinja2:38
-#: ../templates/tracks/trackRunningForm.jinja2:34
+#: ../templates/tracks/trackBikingForm.jinja2:41
+#: ../templates/tracks/trackRunningForm.jinja2:36
 msgid "Name"
 msgstr "Name"
 
@@ -422,48 +426,48 @@ msgid "Select Information to show for each track"
 msgstr "Informationen auswählen, die für jeden Track angezeigt werden"
 
 #: ../templates/tracks/trackBikingForm.jinja2:6
-#: ../templates/tracks/trackBikingForm.jinja2:19
+#: ../templates/tracks/trackBikingForm.jinja2:21
 msgid "Edit Biking Track"
 msgstr "Fahrrad-Track bearbeiten"
 
 #: ../templates/tracks/trackBikingForm.jinja2:7
-#: ../templates/tracks/trackBikingForm.jinja2:23
+#: ../templates/tracks/trackBikingForm.jinja2:25
 #: ../templates/tracks/trackChooser.jinja2:26
 msgid "New Biking Track"
 msgstr "Neuer Fahrrad-Track"
 
-#: ../templates/tracks/trackBikingForm.jinja2:53
-#: ../templates/tracks/trackRunningForm.jinja2:42
+#: ../templates/tracks/trackBikingForm.jinja2:56
+#: ../templates/tracks/trackRunningForm.jinja2:44
 msgid "Date"
 msgstr "Datum"
 
-#: ../templates/tracks/trackBikingForm.jinja2:58
-#: ../templates/tracks/trackRunningForm.jinja2:47
+#: ../templates/tracks/trackBikingForm.jinja2:61
+#: ../templates/tracks/trackRunningForm.jinja2:49
 msgid "Start Time"
 msgstr "Startuhrzeit"
 
-#: ../templates/tracks/trackBikingForm.jinja2:66
-#: ../templates/tracks/trackRunningForm.jinja2:55
+#: ../templates/tracks/trackBikingForm.jinja2:69
+#: ../templates/tracks/trackRunningForm.jinja2:57
 msgid "Distance (in km)"
 msgstr "Strecke (in km)"
 
-#: ../templates/tracks/trackBikingForm.jinja2:79
-#: ../templates/tracks/trackRunningForm.jinja2:66
+#: ../templates/tracks/trackBikingForm.jinja2:82
+#: ../templates/tracks/trackRunningForm.jinja2:68
 msgid "Hours"
 msgstr "Stunden"
 
-#: ../templates/tracks/trackBikingForm.jinja2:87
-#: ../templates/tracks/trackRunningForm.jinja2:74
+#: ../templates/tracks/trackBikingForm.jinja2:90
+#: ../templates/tracks/trackRunningForm.jinja2:76
 msgid "Minutes"
 msgstr "Minuten"
 
-#: ../templates/tracks/trackBikingForm.jinja2:94
-#: ../templates/tracks/trackRunningForm.jinja2:81
+#: ../templates/tracks/trackBikingForm.jinja2:97
+#: ../templates/tracks/trackRunningForm.jinja2:83
 msgid "Seconds"
 msgstr "Sekunden"
 
-#: ../templates/tracks/trackBikingForm.jinja2:110
-#: ../templates/tracks/trackRunningForm.jinja2:95
+#: ../templates/tracks/trackBikingForm.jinja2:113
+#: ../templates/tracks/trackRunningForm.jinja2:97
 msgid "Elevation Sum (in m)"
 msgstr "Summe Höhenmeter (in m)"
 
@@ -474,12 +478,24 @@ msgstr "Neuer Track"
 
 #: ../templates/tracks/trackChooser.jinja2:33
 #: ../templates/tracks/trackRunningForm.jinja2:6
-#: ../templates/tracks/trackRunningForm.jinja2:21
+#: ../templates/tracks/trackRunningForm.jinja2:23
 msgid "New Running Track"
 msgstr "Neuer Lauf-Track"
 
+#: ../templates/tracks/trackMacros.jinja2:188
+msgid "GPX Track"
+msgstr "GPX Track"
+
+#: ../templates/tracks/trackMacros.jinja2:191
+msgid "A GPX file is linked to this track"
+msgstr "Eine GPX-Datei ist mit diesem Track verknüpft"
+
+#: ../templates/tracks/trackMacros.jinja2:204
+msgid "No GPX file is linked to this track"
+msgstr "Mit diesem Track ist keine GPX-Datei verknüpft"
+
 #: ../templates/tracks/trackRunningForm.jinja2:6
-#: ../templates/tracks/trackRunningForm.jinja2:18
+#: ../templates/tracks/trackRunningForm.jinja2:20
 msgid "Edit Running Track"
 msgstr "Lauf-Track bearbeiten"
 
