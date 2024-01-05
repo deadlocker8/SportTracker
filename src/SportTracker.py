@@ -13,7 +13,7 @@ from flask_babel import Babel
 from flask_login import LoginManager, current_user
 
 from blueprints import General, Authentication, Tracks, MonthGoals, Charts, Users, MonthGoalsDistance, MonthGoalsCount, \
-    Api, Achievements, Search, Maps
+    Api, Achievements, Search, Maps, GpxTracks
 from helpers import Helpers
 from logic import Constants
 from logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
@@ -174,6 +174,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Api.construct_blueprint(self._version))
         app.register_blueprint(Achievements.construct_blueprint())
         app.register_blueprint(Search.construct_blueprint())
+        app.register_blueprint(GpxTracks.construct_blueprint())
         app.register_blueprint(Maps.construct_blueprint())
 
 
