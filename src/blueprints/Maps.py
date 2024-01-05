@@ -12,7 +12,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 def createGpxInfo(track: Track) -> dict[str, str]:
     return {
-        'gpxUrl': 'http://localhost:10022/static/gpx/2023-04-22_Nossen.gpx',
+        'gpxUrl': url_for('gpxTracks.downloadGpxTrack', track_id=track.id, _external=True),
         'trackUrl': url_for('tracks.edit', track_id=track.id, _external=True),
         'trackName': track.name
     }
@@ -46,9 +46,8 @@ def construct_blueprint():
         if track is None:
             abort(404)
 
-        # TODO: get gpx from track
         gpxInfo = []
-        if track.gpx:
+        if track.gpxFileName:
             gpxInfo = [createGpxInfo(track)]
 
         return render_template('map.jinja2', gpxInfo=gpxInfo)
