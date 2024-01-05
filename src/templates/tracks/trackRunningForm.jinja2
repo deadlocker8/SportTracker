@@ -10,6 +10,8 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('tracks') }}
 
+        {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row">
@@ -101,6 +103,8 @@
                             {% for field in customFields %}
                                 {{ macros.customFieldInput(field) }}
                             {% endfor %}
+
+                            {{ trackMacros.track_form_gpx(track, track_id) }}
 
                             <button type="submit" class="btn btn-primary mt-3">{{ gettext('Save') }}</button>
                         </form>
