@@ -24,16 +24,21 @@ def construct_blueprint():
     @maps.route('/map')
     @login_required
     def showAllTracksOnMap():
+        gpxInfo = []
 
         for trackType in TrackType:
             tracks = (Track.query
                       .filter(Track.user_id == current_user.id)
                       .filter(Track.type == trackType)
+                      .filter(Track.gpxFileName.isnot(None))
                       .order_by(Track.startTime.asc())
                       .all())
 
+            for track in tracks:
+                gpxInfo.append(createGpxInfo(track))
+
         # TODO: grop by TrackType
-        return render_template('map.jinja2', gpxInfo=[])
+        return render_template('map.jinja2', gpxInfo=gpxInfo)
 
     @maps.route('/map/<int:track_id>')
     @login_required
