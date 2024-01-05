@@ -29,7 +29,8 @@
                     <div class="col col-9 mx-auto">
                         <form role="form" action="
                                 {% if track %}{{ url_for('tracks.editPost', track_id=track_id) }}{% else %}{{ url_for('tracks.addPost') }}{% endif %}"
-                              method="post">
+                              method="post"
+                              enctype=multipart/form-data>
 
                             <input type="hidden" class="form-control" id="track-type" name="type" value="BIKING">
 
@@ -116,6 +117,21 @@
                             {% for field in customFields %}
                                 {{ macros.customFieldInput(field) }}
                             {% endfor %}
+
+                            <div class="mb-3">
+                                <label for="track-gpxFileName"
+                                       class="form-label">{{ gettext('GPX Track') }}</label>
+                                {% if track and track.gpxFileName is not none %}
+                                    <div>
+                                        <span class="mb-3 badge bg-success">{{ gettext('A GPX file is linked with this track') }}</span>
+                                    </div>
+                                {% else %}
+                                    <div>
+                                        <span class="mb-3 badge bg-warning text-dark">{{ gettext('No GPX file is linked with this track') }}</span>
+                                    </div>
+                                {% endif %}
+                                <input class="form-control" type="file" id="track-gpxFileName" name="gpxTrack">
+                            </div>
 
                             <button type="submit" class="btn btn-primary mt-3">{{ gettext('Save') }}</button>
                         </form>

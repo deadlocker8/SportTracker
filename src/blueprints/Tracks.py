@@ -1,9 +1,11 @@
 import logging
+import os
+import uuid
 from dataclasses import dataclass
 from datetime import datetime, date
 
 from dateutil.relativedelta import relativedelta
-from flask import Blueprint, render_template, abort, redirect, url_for
+from flask import Blueprint, render_template, abort, redirect, url_for, request
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel, ConfigDict, field_validator
@@ -36,6 +38,7 @@ class TrackFormModel(BaseModel):
     durationSeconds: int
     averageHeartRate: int | None = None
     elevationSum: int | None = None
+    gpxFileName: str | None = None
 
     model_config = ConfigDict(
         extra='allow',
@@ -56,7 +59,7 @@ class TrackFormModel(BaseModel):
         return value
 
 
-def construct_blueprint():
+def construct_blueprint(uploadFolder: str):
     tracks = Blueprint('tracks', __name__, static_folder='static', url_prefix='/tracks')
 
     @tracks.route('/', defaults={'year': None, 'month': None})
@@ -114,6 +117,8 @@ def construct_blueprint():
     @login_required
     @validate()
     def addPost(form: TrackFormModel):
+        gpxFileName = handleGpxTrack(request.files)
+
         track = Track(name=form.name,
                       type=TrackType(form.type),
                       startTime=form.calculate_start_time(),
@@ -121,6 +126,7 @@ def construct_blueprint():
                       distance=form.distance * 1000,
                       averageHeartRate=form.averageHeartRate,
                       elevationSum=form.elevationSum,
+                      gpxFileName=gpxFileName,
                       custom_fields=form.model_extra,
                       user_id=current_user.id)
         LOGGER.debug(f'Saved new track: {track}')
@@ -128,6 +134,27 @@ def construct_blueprint():
         db.session.commit()
 
         return redirect(url_for('tracks.listTracks', year=track.startTime.year, month=track.startTime.month))
+
+    def is_allowed_file(filename: str) -> bool:
+        if '.' not in filename:
+            return False
+
+        return filename.rsplit('.', 1)[1].lower() == 'gpx'
+
+    def handleGpxTrack(files) -> str | None:
+        if 'gpxTrack' not in files:
+            return None
+
+        file = files['gpxTrack']
+        if file.filename == '':
+            return None
+
+        if file and is_allowed_file(file.filename):
+            filename = f'{uuid.uuid4().hex}.gpx'
+            destinationPath = os.path.join(uploadFolder, filename)
+            file.save(destinationPath)
+            LOGGER.debug(f'Saved uploaded file {file.filename} to {destinationPath}')
+            return filename
 
     @tracks.route('/edit/<int:track_id>')
     @login_required
@@ -151,6 +178,7 @@ def construct_blueprint():
             durationSeconds=track.duration % 3600 % 60,
             averageHeartRate=track.averageHeartRate,
             elevationSum=track.elevationSum,
+            gpxFileName=track.gpxFileName,
             **track.custom_fields)
 
         customFields = (CustomTrackField.query
@@ -182,7 +210,14 @@ def construct_blueprint():
         track.duration = form.calculate_duration()
         track.averageHeartRate = form.averageHeartRate
         track.elevationSum = form.elevationSum
-        track.user_id = current_user.id
+
+        newGpxFileName = handleGpxTrack(request.files)
+        if track.gpxFileName is None:
+            track.gpxFileName = newGpxFileName
+        else:
+            if newGpxFileName is not None:
+                track.gpxFileName = newGpxFileName
+
         track.custom_fields = form.model_extra
 
         LOGGER.debug(f'Updated track: {track}')
