@@ -42,6 +42,7 @@ class Track(db.Model):
     distance: Mapped[int] = mapped_column(Integer, nullable=False)
     averageHeartRate: Mapped[int] = mapped_column(Integer, nullable=True)
     elevationSum: Mapped[int] = mapped_column(Integer, nullable=True)
+    gpxFileName: Mapped[str] = mapped_column(String, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     custom_fields = db.Column(JSON)
 
