@@ -37,7 +37,6 @@ def construct_blueprint():
             for track in tracks:
                 gpxInfo.append(createGpxInfo(track))
 
-        # TODO: grop by TrackType
         return render_template('map.jinja2', gpxInfo=gpxInfo)
 
     @maps.route('/map/<int:track_id>')
