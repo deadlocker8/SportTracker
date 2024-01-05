@@ -237,9 +237,9 @@ def construct_blueprint(uploadFolder: str):
             abort(404)
 
         if track.gpxFileName is not None:
-            LOGGER.debug(f'Deleted linked gpx file "{track.gpxFileName}" for track with id {track_id}')
             try:
                 os.remove(os.path.join(uploadFolder, track.gpxFileName))
+                LOGGER.debug(f'Deleted linked gpx file "{track.gpxFileName}" for track with id {track_id}')
             except OSError as e:
                 LOGGER.error(e)
 
