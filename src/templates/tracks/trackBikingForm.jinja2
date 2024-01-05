@@ -123,7 +123,7 @@
                                        class="form-label">{{ gettext('GPX Track') }}</label>
                                 {% if track and track.gpxFileName is not none %}
                                     <div class="d-flex mb-3">
-                                        <span class="badge bg-success rounded-pill d-flex align-items-center px-3">{{ gettext('A GPX file is linked with this track') }}</span>
+                                        <span class="badge bg-success rounded-pill d-flex align-items-center px-3">{{ gettext('A GPX file is linked to this track') }}</span>
                                         <a href="{{ url_for('maps.showSingleTrack', track_id=track_id) }}"
                                            class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
                                            target="_blank">
@@ -136,7 +136,7 @@
                                     </div>
                                 {% else %}
                                     <div>
-                                        <span class="mb-3 badge bg-secondary lh-lg rounded-pill px-3">{{ gettext('No GPX file is linked with this track') }}</span>
+                                        <span class="mb-3 badge bg-secondary lh-lg rounded-pill px-3">{{ gettext('No GPX file is linked to this track') }}</span>
                                     </div>
                                 {% endif %}
                                 <input class="form-control" type="file" id="track-gpxFileName" name="gpxTrack">
