@@ -19,3 +19,7 @@
     stroke-width: 2;
     stroke-opacity: 0.8;
 }
+
+.elevation-control .tooltip {
+  opacity: 1;
+}
