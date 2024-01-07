@@ -14,6 +14,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 def createGpxInfo(trackId: int, trackName: str, trackStartTime: datetime) -> dict[str, str]:
     return {
+        'trackId': trackId,
         'gpxUrl': url_for('gpxTracks.downloadGpxTrack', track_id=trackId, _external=True),
         'trackUrl': url_for('tracks.edit', track_id=trackId, _external=True),
         'trackName': f'{trackStartTime.strftime("%Y-%m-%d")} - {trackName}'

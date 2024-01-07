@@ -90,8 +90,27 @@ function initMap()
                     this.setSelection(route);
                     L.DomUtil.get('legend_' + route._leaflet_id).parentNode.previousSibling.click();
                 }
-            }
+            },
+            _loadGeoJSON: function(geojson, fallbackName)
+            {
+                if(geojson)
+                {
+                    const trackId = fallbackName;
+                    const gpxInfoForTrack = getGpxInfoById(trackId);
+
+                    geojson.name = '<a href="' + gpxInfoForTrack.trackUrl+ '">' + gpxInfoForTrack.trackName + '</a>'
+                    this._loadRoute(geojson);
+                }
+            },
         });
+
+        function getGpxInfoById(trackId)
+        {
+            return gpxInfo.find(info =>
+            {
+                return info.trackId === parseInt(trackId);
+            });
+        }
 
         let routes = L.gpxGroup(tracks, {
             points: [],
