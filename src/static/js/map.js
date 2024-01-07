@@ -78,6 +78,21 @@ function initMap()
 
     map.on('plugins_loaded', function(e)
     {
+        L.GpxGroup.include({
+            _onRouteMouseOver: function(route, polyline)
+            {
+            },
+            _onRouteClick: function(route, polyline)
+            {
+                this.highlight(route, polyline);
+                if(this.options.legend)
+                {
+                    this.setSelection(route);
+                    L.DomUtil.get('legend_' + route._leaflet_id).parentNode.previousSibling.click();
+                }
+            }
+        });
+
         let routes = L.gpxGroup(tracks, {
             points: [],
             point_options: {},
@@ -86,19 +101,6 @@ function initMap()
             legend: true,
             distanceMarkers: false
         });
-
-        routes._onRouteMouseOver = function(route, polyline)
-        {
-        };
-        routes._onRouteClick = function(route, polyline)
-        {
-            this.highlight(route, polyline);
-            if(this.options.legend)
-            {
-                this.setSelection(route);
-                L.DomUtil.get('legend_' + route._leaflet_id).parentNode.previousSibling.click();
-            }
-        };
 
         routes.addTo(map);
 
