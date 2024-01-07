@@ -194,6 +194,11 @@
                    target="_blank">
                     <span class="material-icons fs-4">map</span>
                 </a>
+                <a href="{{ url_for('gpxTracks.downloadGpxTrack', track_id=track_id) }}"
+                   class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
+                   target="_blank">
+                    <span class="material-icons fs-4">download</span>
+                </a>
                 <a href="{{ url_for('gpxTracks.deleteGpxTrack', track_id=track_id) }}"
                    class="btn btn-danger btn-sm ms-3 d-flex align-items-center">
                     <span class="material-icons fs-4">delete</span>
