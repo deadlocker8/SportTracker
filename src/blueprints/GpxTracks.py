@@ -1,7 +1,7 @@
 import logging
 import os
 
-from flask import Blueprint, send_from_directory, abort, redirect, url_for
+from flask import Blueprint, send_from_directory, abort, Response
 from flask_login import login_required, current_user
 
 from logic import Constants
@@ -45,7 +45,7 @@ def construct_blueprint(uploadFolder: str):
                                .first())
 
         if track is None:
-            return redirect(url_for('tracks.edit', track_id=track_id))
+            return Response(status=204)
 
         if track.gpxFileName is not None:
             track.gpxFileName = None
@@ -57,6 +57,6 @@ def construct_blueprint(uploadFolder: str):
             except OSError as e:
                 LOGGER.error(e)
 
-        return redirect(url_for('tracks.edit', track_id=track_id))
+        return Response(status=204)
 
     return gpxTracks
