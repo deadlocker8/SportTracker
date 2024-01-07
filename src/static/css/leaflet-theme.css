@@ -21,5 +21,19 @@
 }
 
 .elevation-control .tooltip {
-  opacity: 1;
+    opacity: 1;
+}
+
+.elevation-summary {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.elevation-summary .summarylabel {
+    font-weight: bold;
+}
+
+.elevation-summary .summaryvalue {
+    display: inline-block;
+    font-weight: normal !important;
 }
