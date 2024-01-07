@@ -19,7 +19,8 @@ function initElevationChartSettings()
         hotline: 'speed',
         distance: true,
         edgeScale: false,
-        height: document.documentElement.clientHeight * 0.22
+        height: document.documentElement.clientHeight * 0.22,
+        downloadLink: false
     }
 }
 
