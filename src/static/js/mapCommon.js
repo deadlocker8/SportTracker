@@ -16,7 +16,7 @@ function initElevationChartSettings()
         followMarker: false,
         almostOver: true,
         distanceMarkers: false,
-        hotline: false,
+        hotline: 'speed',
         distance: true,
         edgeScale: false,
         height: document.documentElement.clientHeight * 0.22
