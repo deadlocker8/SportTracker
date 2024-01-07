@@ -1,0 +1,21 @@
+.elevation-control .background {
+    background-color: var(--bs-white) !important;
+}
+
+.custom-theme.elevation-control .area path.altitude,
+.custom-theme .legend-altitude rect.area {
+    fill: var(--bs-warning);
+    fill-opacity: 0.8;
+    stroke: var(--bs-dark);
+    stroke-width: 2;
+    stroke-opacity: 0.8;
+}
+
+.custom-theme.elevation-control .area path.speed,
+.custom-theme .legend-speed rect.area {
+    fill: var(--bs-info);
+    fill-opacity: 1;
+    stroke: var(--bs-dark);
+    stroke-width: 2;
+    stroke-opacity: 0.8;
+}

@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function()
 function initElevationChartSettings()
 {
     return {
-        theme: 'steelblue-theme',
+        theme: 'custom-theme',
         detached: true,
         autofitBounds: true,
         summary: 'summary',
