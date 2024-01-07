@@ -48,8 +48,8 @@ function initMap()
         searchControl: true,
         disableDefaultUI: false,
         zoomControl: {
-			position: 'topright'
-		},
+            position: 'topright'
+        },
         plugins: [
             "d3@7.8.4/dist/d3.min.js",
             "@tmcw/togeojson@5.6.2/dist/togeojson.umd.js",
@@ -84,9 +84,29 @@ function initMap()
             elevation: true,
             elevation_options: initElevationChartSettings(),
             legend: true,
-            distanceMarkers: false,
+            distanceMarkers: false
         });
 
         routes.addTo(map);
+
+        let numberOfLoadedLayers = 0;
+        let legendItemAlreadyClicked = false;
+        map.on('layeradd', function(evt)
+        {
+            if(evt.layer._latlngs !== undefined)
+            {
+                numberOfLoadedLayers++;
+            }
+
+            if(numberOfLoadedLayers === tracks.length && !legendItemAlreadyClicked)
+            {
+                setTimeout(function(){
+                    let firstLegendItem = document.querySelector('.leaflet-right .leaflet-control-layers-base label');
+                    firstLegendItem.click();
+                    legendItemAlreadyClicked = true;
+                    map.fitBounds(routes.getBounds());
+                }, 500);
+            }
+        });
     });
 }
