@@ -43,7 +43,7 @@ def construct_blueprint():
                 trackId, trackName, trackStartTime = track
                 gpxInfo.append(createGpxInfo(trackId, trackName, trackStartTime))
 
-        return render_template('map.jinja2', gpxInfo=gpxInfo)
+        return render_template('mapMultipleTracks.jinja2', gpxInfo=gpxInfo)
 
     @maps.route('/map/<int:track_id>')
     @login_required
@@ -60,6 +60,6 @@ def construct_blueprint():
         if track.gpxFileName:
             gpxInfo = [createGpxInfo(track.id, track.name, track.startTime)]
 
-        return render_template('map.jinja2', gpxInfo=gpxInfo)
+        return render_template('mapSingleTrack.jinja2', gpxInfo=gpxInfo)
 
     return maps
