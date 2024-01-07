@@ -4,6 +4,7 @@
 - add: show an elevation chart for gpx tracks on map
 - add: show a speed chart for gpx tracks on map
 - add: a single gpx track on map will be shown with "hotline" feature (green to red gradient along the track showing the speed)
+- add: automatically join multiple track and segments in gpx files to allow them to be shown on map
 
 # 1.6.1
 - fix: overlapping data points in chart for average speed
