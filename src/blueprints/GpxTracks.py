@@ -46,13 +46,14 @@ def construct_blueprint(uploadFolder: str):
         if track is None:
             return Response(status=204)
 
-        if track.gpxFileName is not None:
+        gpxFileName = str(track.gpxFileName)
+        if gpxFileName is not None:
             track.gpxFileName = None
             db.session.commit()
 
             try:
-                os.remove(os.path.join(uploadFolder, str(track.gpxFileName)))
-                LOGGER.debug(f'Deleted linked gpx file "{track.gpxFileName}" for track with id {track_id}')
+                os.remove(os.path.join(uploadFolder, gpxFileName))
+                LOGGER.debug(f'Deleted linked gpx file "{gpxFileName}" for track with id {track_id}')
             except OSError as e:
                 LOGGER.error(e)
 
