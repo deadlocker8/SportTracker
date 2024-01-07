@@ -1,7 +1,9 @@
 import logging
+from datetime import datetime
 
 from flask import Blueprint, render_template, abort, url_for
 from flask_login import login_required, current_user
+from sqlalchemy import func
 
 from logic import Constants
 from logic.model.Track import Track, TrackType
@@ -10,11 +12,11 @@ from logic.model.User import User
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def createGpxInfo(track: Track) -> dict[str, str]:
+def createGpxInfo(trackId: int, trackName: str, trackStartTime: datetime) -> dict[str, str]:
     return {
-        'gpxUrl': url_for('gpxTracks.downloadGpxTrack', track_id=track.id, _external=True),
-        'trackUrl': url_for('tracks.edit', track_id=track.id, _external=True),
-        'trackName': f'{track.startTime.strftime("%Y-%m-%d")} - {track.name}'
+        'gpxUrl': url_for('gpxTracks.downloadGpxTrack', track_id=trackId, _external=True),
+        'trackUrl': url_for('tracks.edit', track_id=trackId, _external=True),
+        'trackName': f'{trackStartTime.strftime("%Y-%m-%d")} - {trackName}'
     }
 
 
@@ -26,16 +28,19 @@ def construct_blueprint():
     def showAllTracksOnMap():
         gpxInfo = []
 
+        funcStartTime = func.max(Track.startTime)
         for trackType in TrackType:
-            tracks = (Track.query
+            tracks = (Track.query.with_entities(func.max(Track.id), Track.name, funcStartTime)
                       .filter(Track.user_id == current_user.id)
                       .filter(Track.type == trackType)
                       .filter(Track.gpxFileName.isnot(None))
-                      .order_by(Track.startTime.asc())
+                      .group_by(Track.name)
+                      .order_by(funcStartTime.desc())
                       .all())
 
             for track in tracks:
-                gpxInfo.append(createGpxInfo(track))
+                trackId, trackName, trackStartTime = track
+                gpxInfo.append(createGpxInfo(trackId, trackName, trackStartTime))
 
         return render_template('map.jinja2', gpxInfo=gpxInfo)
 
