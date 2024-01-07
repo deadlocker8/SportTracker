@@ -1,3 +1,9 @@
+# 1.7.0
+- add: gpx files can be uploaded and attached to a track
+- add: gpx files can be viewed on an interactive map
+- add: show an elevation chart for gpx tracks on map
+- add: show a speed chart for gpx tracks on map
+
 # 1.6.1
 - fix: overlapping data points in chart for average speed
 - fix: calculation of month goal streak achievement
