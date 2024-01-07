@@ -12,7 +12,11 @@ body {
 }
 
 #map {
-    height: 75vh;
+    height: 65vh;
+}
+
+#map .leaflet-control-layers-inline .leaflet-control-layers-base span {
+    padding: 0.2rem;
 }
 
 .debug {

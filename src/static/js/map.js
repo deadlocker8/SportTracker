@@ -1,70 +1,92 @@
 document.addEventListener('DOMContentLoaded', function()
 {
-    initMap(false);
+    initMap(false, true);
 });
 
-function initMap(enableTiles)
+function initElevationChartSettings()
 {
-    const markerIcon = new L.Icon.Default;
+    return {
+        theme: 'steelblue-theme',
+        detached: true,
+        autofitBounds: true,
+        summary: 'summary',
+        imperial: false,
+        closeBtn: false,
+        altitude: true,
+        slope: false,
+        speed: 'disabled',
+        acceleration: false,
+        time: 'summary',
+        legend: true,
+        followMarker: false,
+        almostOver: true,
+        distanceMarkers: false,
+        hotline: false,
+        distance: true,
+        edgeScale: false,
+        height: document.documentElement.clientHeight * 0.22
+    }
+}
 
+function initMap()
+{
     let map = L.map('map', {
         attributionControl: false,
-        zoomControl: false,
         minZoom: 6,
         maxZoom: 16,
+        mapTypeId: 'streets',
+        mapTypeIds: ['streets', 'satellite'],
+        gestureHandling: false,
+        pegmanControl: false,
+        locateControl: false,
+        fullscreenControl: true,
+        layersControl: true,
+        minimapControl: false,
+        editInOSMControl: false,
+        loadingControl: false,
+        rotateControl: false,
+        searchControl: true,
+        disableDefaultUI: false,
+        zoomControl: {
+			position: 'topright'
+		},
+        plugins: [
+            "d3@7.8.4/dist/d3.min.js",
+            "@tmcw/togeojson@5.6.2/dist/togeojson.umd.js",
+            "leaflet-geometryutil@0.9.3/src/leaflet.geometryutil.js",
+            "leaflet-almostover@1.0.1/src/leaflet.almostover.js",
+            "@raruto/leaflet-elevation@2.5.1/dist/leaflet-elevation.min.css",
+            "@raruto/leaflet-elevation@2.5.1/dist/leaflet-elevation.min.js",
+            "@raruto/leaflet-elevation@2.5.1/libs/leaflet-gpxgroup.js",
+        ]
     }).setView([51, 13], 6);
 
-    L.control.zoom({position: 'topright'}).addTo(map);
-    L.control.scale({position: 'bottomright'}).addTo(map);
     let attributionControl = L.control.attribution({position: 'bottomleft'}).addTo(map);
     attributionControl.setPrefix('<a href="https://leafletjs.com/">Leaflet</a>');
-
-    if(enableTiles)
-    {
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 16,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
-    }
-
-    function createLayer(gpxUrl)
-    {
-        return new L.GPX(gpxUrl, {
-            async: true,
-            marker_options: {
-                startIcon: markerIcon,
-                endIcon: markerIcon,
-                wptIcons: {'': markerIcon},
-            },
-        });
-    }
 
     if(gpxInfo.length === 0)
     {
         return;
     }
 
-    let layers = [];
-    let overlays = {};
+    let tracks = [];
     for(let i = 0; i < gpxInfo.length; i++)
     {
         const info = gpxInfo[i];
-        const layer = createLayer(info['gpxUrl'])
-        layers.push(layer);
-        overlays['<a href="' + info['trackUrl'] + '">' + info['trackName'] + '</a>'] = layer;
+        tracks.push(info['gpxUrl'])
     }
 
-    let tracksLayer = L.featureGroup(layers);
-    tracksLayer.addTo(map);
-    layers[layers.length - 1].on('loaded', function()
+    map.on('plugins_loaded', function(e)
     {
-        map.fitBounds(tracksLayer.getBounds());
-
-        L.control.layers(null, overlays, {collapsed: false}).addTo(map);
-
-        map.on('overlayadd', function(event)
-        {
-            map.fitBounds(event.layer.getBounds());
+        let routes = L.gpxGroup(tracks, {
+            points: [],
+            point_options: {},
+            elevation: true,
+            elevation_options: initElevationChartSettings(),
+            legend: true,
+            distanceMarkers: false,
         });
+
+        routes.addTo(map);
     });
 }
