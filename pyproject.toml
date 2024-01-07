@@ -23,7 +23,6 @@ Flask-Bcrypt = "1.0.1"
 flask-babel = "4.0.0"
 python-dateutil = "2.8.2"
 psycopg2 = "2.9.9"
-gpxpy = "1.6.2"
 
 [tool.poetry.dev-dependencies]
 

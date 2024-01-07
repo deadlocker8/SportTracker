@@ -437,17 +437,6 @@ recommended = ["cffi (>=1.12.2)", "dnspython (>=1.16.0,<2.0)", "idna", "psutil (
 test = ["cffi (>=1.12.2)", "coverage (>=5.0)", "dnspython (>=1.16.0,<2.0)", "idna", "objgraph", "psutil (>=5.7.0)", "requests", "setuptools"]
 
 [[package]]
-name = "gpxpy"
-version = "1.6.2"
-description = "GPX file parser and GPS track manipulation library"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "gpxpy-1.6.2-py3-none-any.whl", hash = "sha256:289bc2d80f116c988d0a1e763fda22838f83005573ece2bbc6521817b26fb40a"},
-    {file = "gpxpy-1.6.2.tar.gz", hash = "sha256:a72c484b97ec42b80834353b029cc8ee1b79f0ffca1179b2210bb3baf26c01ae"},
-]
-
-[[package]]
 name = "greenlet"
 version = "3.0.3"
 description = "Lightweight in-process concurrent programming"
@@ -1179,4 +1168,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "c342e60d7c2942be1184cedfd714e6dc0b9cf6d3ed01b0b23e48b7b7b01cc918"
+content-hash = "0f1f92112b8e71c863b4a0b35bb973d145986dddd62f374cb263bbdf7af91fd6"
