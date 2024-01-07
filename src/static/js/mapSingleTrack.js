@@ -32,7 +32,7 @@ function initMap()
                                                                   let entry = this._data[i];
                                                                   speedData.push([entry.latlng.lat, entry.latlng.lng, entry.speed]);
                                                               }
-                                                             // END MODIFICATION: extract speed data for hotline
+                                                              // END MODIFICATION: extract speed data for hotline
 
                                                               let line = L.hotline(speedData, {
                                                                   min: isFinite(this.track_info[prop + '_min']) ? this.track_info[prop + '_min'] : 0,

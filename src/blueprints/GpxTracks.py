@@ -1,10 +1,11 @@
 import logging
 import os
 
-from flask import Blueprint, send_from_directory, abort, Response
+from flask import Blueprint, abort, Response
 from flask_login import login_required, current_user
 
 from logic import Constants
+from logic.GpxService import GpxService
 from logic.model.Track import Track
 from logic.model.User import User
 from logic.model.db import db
@@ -27,7 +28,10 @@ def construct_blueprint(uploadFolder: str):
             abort(404)
 
         if track.gpxFileName is not None:
-            return send_from_directory(uploadFolder, str(track.gpxFileName), as_attachment=True)
+            gpxTrackPath = os.path.join(uploadFolder, str(track.gpxFileName))
+            gpxService = GpxService(gpxTrackPath)
+            modifiedGpxXml = gpxService.join_tracks_and_segments()
+            return Response(modifiedGpxXml, mimetype='application/gpx')
 
         abort(404)
 
