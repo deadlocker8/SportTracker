@@ -1,3 +1,6 @@
+# 1.7.1
+- fix: CORS errors
+
 # 1.7.0
 - add: gpx files can be uploaded and attached to a track
 - add: gpx files can be viewed on an interactive map
