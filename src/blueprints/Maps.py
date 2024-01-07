@@ -57,7 +57,7 @@ def construct_blueprint():
 
         gpxInfo = []
         if track.gpxFileName:
-            gpxInfo = [createGpxInfo(track)]
+            gpxInfo = [createGpxInfo(track.id, track.name, track.startTime)]
 
         return render_template('map.jinja2', gpxInfo=gpxInfo)
 
