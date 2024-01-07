@@ -87,6 +87,19 @@ function initMap()
             distanceMarkers: false
         });
 
+        routes._onRouteMouseOver = function(route, polyline)
+        {
+        };
+        routes._onRouteClick = function(route, polyline)
+        {
+            this.highlight(route, polyline);
+            if(this.options.legend)
+            {
+                this.setSelection(route);
+                L.DomUtil.get('legend_' + route._leaflet_id).parentNode.previousSibling.click();
+            }
+        };
+
         routes.addTo(map);
 
         let numberOfLoadedLayers = 0;
@@ -100,7 +113,8 @@ function initMap()
 
             if(numberOfLoadedLayers === tracks.length && !legendItemAlreadyClicked)
             {
-                setTimeout(function(){
+                setTimeout(function()
+                {
                     let firstLegendItem = document.querySelector('.leaflet-right .leaflet-control-layers-base label');
                     firstLegendItem.click();
                     legendItemAlreadyClicked = true;
