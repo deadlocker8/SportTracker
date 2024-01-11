@@ -1,3 +1,6 @@
+# 1.7.2
+- fix: new track page not opening
+
 # 1.7.1
 - fix: CORS errors
 
