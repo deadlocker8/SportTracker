@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-05 23:47+0100\n"
+"POT-Creation-Date: 2024-01-14 21:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #: ../blueprints/Achievements.py:35
 msgid "Month Goal Streak"
@@ -60,6 +60,19 @@ msgstr ""
 
 #: ../blueprints/Achievements.py:85 ../blueprints/Achievements.py:90
 msgid "No month"
+msgstr ""
+
+#: ../blueprints/Authentication.py:25 ../blueprints/Authentication.py:32
+#: ../blueprints/Authentication.py:44
+msgid "Unbekannter Nutzer"
+msgstr ""
+
+#: ../blueprints/Authentication.py:35
+msgid "Passwort darf nicht leer sein"
+msgstr ""
+
+#: ../blueprints/Authentication.py:40
+msgid "Falsches Passwort"
 msgstr ""
 
 #: ../blueprints/Charts.py:93
@@ -157,7 +170,8 @@ msgstr ""
 msgid "Charts"
 msgstr ""
 
-#: ../templates/macros.jinja2:60 ../templates/map.jinja2:6
+#: ../templates/macros.jinja2:60 ../templates/mapMultipleTracks.jinja2:6
+#: ../templates/mapSingleTrack.jinja2:6
 msgid "Map"
 msgstr ""
 
@@ -478,11 +492,11 @@ msgstr ""
 msgid "GPX Track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:191
+#: ../templates/tracks/trackMacros.jinja2:193
 msgid "A GPX file is linked to this track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:204
+#: ../templates/tracks/trackMacros.jinja2:214
 msgid "No GPX file is linked to this track"
 msgstr ""
 

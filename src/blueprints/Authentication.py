@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request
+from flask_babel import gettext
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -21,26 +22,26 @@ def construct_blueprint():
         password = request.form.get('password')
 
         if username is None:
-            return render_template('login.jinja2', message='Unbekannter Nutzer')
+            return render_template('login.jinja2', message=gettext('Unbekannter Nutzer'))
 
         username = username.strip().lower()
 
         user = User.query.filter_by(username=username).first()
 
         if user is None:
-            return render_template('login.jinja2', message='Unbekannter Nutzer')
+            return render_template('login.jinja2', message=gettext('Unbekannter Nutzer'))
 
         if password is None:
-            return render_template('login.jinja2', message='Error parameter "password"!')
+            return render_template('login.jinja2', message=gettext('Passwort darf nicht leer sein'))
 
         password = password.strip()
 
         if not Bcrypt().check_password_hash(user.password, password):
-            return render_template('login.jinja2', message='Falsches Passwort')
+            return render_template('login.jinja2', message=gettext('Falsches Passwort'))
 
         user = User.query.filter_by(username=username).first()
         if user is None:
-            return render_template('login.jinja2', message='Unbekannter Nutzer')
+            return render_template('login.jinja2', message=gettext('Unbekannter Nutzer'))
 
         login_user(user, remember=True)
         return redirect(url_for('general.index'))

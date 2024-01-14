@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-05 23:47+0100\n"
-"PO-Revision-Date: 2024-01-05 23:47+0100\n"
+"POT-Creation-Date: 2024-01-14 21:48+0100\n"
+"PO-Revision-Date: 2024-01-14 21:49+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.14.0\n"
 "X-Generator: Poedit 2.4.2\n"
 
 #: ../blueprints/Achievements.py:35
@@ -69,6 +69,19 @@ msgstr ""
 #: ../blueprints/Achievements.py:85 ../blueprints/Achievements.py:90
 msgid "No month"
 msgstr "Kein Monat"
+
+#: ../blueprints/Authentication.py:25 ../blueprints/Authentication.py:32
+#: ../blueprints/Authentication.py:44
+msgid "Unbekannter Nutzer"
+msgstr "Unknown user"
+
+#: ../blueprints/Authentication.py:35
+msgid "Passwort darf nicht leer sein"
+msgstr "Password must not be empty"
+
+#: ../blueprints/Authentication.py:40
+msgid "Falsches Passwort"
+msgstr "Incorrect password"
 
 #: ../blueprints/Charts.py:93
 msgid "Unknown"
@@ -165,7 +178,8 @@ msgstr "Monatsziele"
 msgid "Charts"
 msgstr "Diagramme"
 
-#: ../templates/macros.jinja2:60 ../templates/map.jinja2:6
+#: ../templates/macros.jinja2:60 ../templates/mapMultipleTracks.jinja2:6
+#: ../templates/mapSingleTrack.jinja2:6
 msgid "Map"
 msgstr "Karte"
 
@@ -486,11 +500,11 @@ msgstr "Neuer Lauf-Track"
 msgid "GPX Track"
 msgstr "GPX Track"
 
-#: ../templates/tracks/trackMacros.jinja2:191
+#: ../templates/tracks/trackMacros.jinja2:193
 msgid "A GPX file is linked to this track"
 msgstr "Eine GPX-Datei ist mit diesem Track verknüpft"
 
-#: ../templates/tracks/trackMacros.jinja2:204
+#: ../templates/tracks/trackMacros.jinja2:214
 msgid "No GPX file is linked to this track"
 msgstr "Mit diesem Track ist keine GPX-Datei verknüpft"
 
