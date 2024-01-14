@@ -39,10 +39,6 @@ def construct_blueprint():
         if not Bcrypt().check_password_hash(user.password, password):
             return render_template('login.jinja2', message=gettext('Falsches Passwort'))
 
-        user = User.query.filter_by(username=username).first()
-        if user is None:
-            return render_template('login.jinja2', message=gettext('Unbekannter Nutzer'))
-
         login_user(user, remember=True)
         return redirect(url_for('general.index'))
 
