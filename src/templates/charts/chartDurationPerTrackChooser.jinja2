@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="row mt-3">
-                    <div class="col col-12 mx-auto">
+                    <div class="col col-12 col-md-10 col-lg-8 col-xl-8 mx-auto">
                         <h3>{{ gettext('Choose track name') }}</h3>
                         <p>{{ gettext('Note: Only names with at least two tracks are listed') }}</p>
 
@@ -33,11 +33,15 @@
                                 </div>
                             </div>
 
-                            {% for name in trackNames %}
-                                <a href="{{ url_for('charts.chartDurationPerTrack', track_type=trackType.name, name=name) }}" class="btn btn-primary mb-2">
-                                    <span class="fs-5 text-light">{{ name }}</span>
-                                </a>
-                            {% endfor %}
+                            <div class="list-group text-start">
+                                {% for name in trackNames %}
+                                    <a href="{{ url_for('charts.chartDurationPerTrack', track_type=trackType.name, name=name) }}"
+                                       class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
+                                        {{ name }}
+                                        <span class="material-icons text-primary">send</span>
+                                    </a>
+                                {% endfor %}
+                            </div>
                         {% endfor %}
                     </div>
                 </div>
