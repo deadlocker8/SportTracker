@@ -61,6 +61,8 @@ Python dependencies can be found in `pyproject.toml` and corresponding `poetry.l
 - Bootstrap https://getbootstrap.com/
 - Leaflet https://leafletjs.com/
 - Mousetrap https://craig.is/killing/mice
+- plotly.js https://github.com/plotly/plotly.js
+- jQuery https://jquery.com/
 
 ### Additional dependencies
 - Google Material Icons https://fonts.googleapis.com/icon?family=Material+Icons
