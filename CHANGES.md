@@ -1,3 +1,8 @@
+# 1.8.0
+- add: license, readme and screenshots
+- add: dummy data generator
+- add: improved chart and track chooser styling
+
 # 1.7.2
 - fix: new track page not opening
 
