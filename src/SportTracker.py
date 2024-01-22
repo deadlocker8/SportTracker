@@ -2,7 +2,6 @@ import logging
 import os
 import secrets
 import string
-from datetime import datetime
 from typing import Any
 
 import click
@@ -16,8 +15,8 @@ from blueprints import General, Authentication, Tracks, MonthGoals, Charts, User
     Api, Achievements, Search, Maps, GpxTracks
 from helpers import Helpers
 from logic import Constants
-from logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
-from logic.model.Track import Track, TrackType
+from logic.DummyDataGenerator import DummyDataGenerator
+from logic.model.Track import Track
 from logic.model.User import User, Language, create_user, TrackInfoItem, TrackInfoItemType
 from logic.model.db import db
 
@@ -49,10 +48,11 @@ class SportTracker(FlaskBaseApp):
 
         with app.app_context():
             db.create_all()
-            self.__create_admin_user(db)
+            self.__create_admin_user()
 
             if self._generateDummyData:
-                self.__create_dummy_data(db)
+                dummyDataGenerator = DummyDataGenerator()
+                dummyDataGenerator.generate()
 
         @app.context_processor
         def inject_version_name() -> dict[str, Any]:
@@ -109,7 +109,7 @@ class SportTracker(FlaskBaseApp):
 
         return app
 
-    def __create_admin_user(self, database):
+    def __create_admin_user(self):
         if User.query.filter_by(username='admin').first() is None:
             LOGGER.debug(f'Creating admin user')
             password = self.__generate_password()
@@ -118,52 +118,10 @@ class SportTracker(FlaskBaseApp):
 
             create_user(username='admin', password=password, isAdmin=True, language=Language.ENGLISH)
 
-    def __generate_password(self) -> str:
+    @staticmethod
+    def __generate_password() -> str:
         alphabet = string.ascii_letters + string.digits
         return ''.join(secrets.choice(alphabet) for i in range(20))
-
-    def __create_dummy_data(self, database):
-        user = User.query.filter_by(username='demo').first()
-        if user is None:
-            LOGGER.debug(f'Creating demo user')
-            user = create_user(username='demo', password='demo', isAdmin=False, language=Language.ENGLISH)
-
-        if Track.query.count() == 0:
-            LOGGER.debug('Creating dummy data...')
-
-            track = Track(type=TrackType.BIKING,
-                          name='Short after work',
-                          startTime=datetime(year=2023, month=11, day=3, hour=12, minute=15, second=48),
-                          duration=60 * 35, distance=1000 * 15, averageHeartRate=88, elevationSum=512,
-                          user_id=user.id, custom_fields={})
-            database.session.add(track)
-            track = Track(type=TrackType.BIKING,
-                          name='Normal One',
-                          startTime=datetime(year=2023, month=10, day=15, hour=18, minute=23, second=12),
-                          duration=60 * 67, distance=1000 * 31, averageHeartRate=122, elevationSum=16,
-                          user_id=user.id, custom_fields={})
-            database.session.add(track)
-            track = Track(type=TrackType.BIKING,
-                          name='Longest tour I\'ve ever made and was quite interesting',
-                          startTime=datetime(year=2023, month=10, day=28, hour=19, minute=30, second=41),
-                          duration=60 * 93, distance=1000 * 42.2, averageHeartRate=165, elevationSum=138,
-                          user_id=user.id, custom_fields={})
-            database.session.add(track)
-
-            monthGoal = MonthGoalDistance(type=TrackType.BIKING, year=2023, month=11, distance_minimum=100 * 1000,
-                                          distance_perfect=200 * 1000, user_id=user.id)
-            database.session.add(monthGoal)
-            monthGoal = MonthGoalDistance(type=TrackType.BIKING, year=2023, month=9, distance_minimum=100 * 1000,
-                                          distance_perfect=200 * 1000, user_id=user.id)
-            database.session.add(monthGoal)
-            monthGoal = MonthGoalDistance(type=TrackType.BIKING, year=2023, month=10, distance_minimum=50 * 1000,
-                                          distance_perfect=100 * 1000, user_id=user.id)
-            database.session.add(monthGoal)
-            monthGoal = MonthGoalCount(type=TrackType.BIKING, year=2023, month=10, count_minimum=2,
-                                       count_perfect=5, user_id=user.id)
-            database.session.add(monthGoal)
-
-            database.session.commit()
 
     def _register_blueprints(self, app):
         app.register_blueprint(Authentication.construct_blueprint())
