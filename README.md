@@ -18,12 +18,22 @@ Supported types of sports:
 
 You can fill in a lot of information for each training session. If the pre-defined inputs are not enough, it is possible to set custom fields for each type of sports.
 
+![](screenshots/tracks.png)
+
 ### Month goals
 Set custom month goals (either distance or number of tracks).
 The current status of each month goal is visualized via progress bars.
 
+![](screenshots/goals.png)
+
 ### GPX tracks / Map
 A GPX recoding can be attached to every single track. The GPX recordings can be viewed on a map.
+
+View all gpx tracks on a map:
+![](screenshots/map_all.png)
+
+View a single gpx track on a map, with additional information (e.g. track line is colored according to speed):
+![](screenshots/map_single.png)
 
 ### Charts
 Tracked data is visualized in charts, e.g.:
@@ -32,8 +42,13 @@ Tracked data is visualized in charts, e.g.:
 - Duration per Track
 - etc.
 
+![](screenshots/chart_duration_per_track.png)
+![](screenshots/chart_distance_per_month.png)
+
 ### Achievements
 The achievement page shows aggregated information about all your tracks.
+
+![](screenshots/achievements.png)
 
 ### Available languages
 - German
