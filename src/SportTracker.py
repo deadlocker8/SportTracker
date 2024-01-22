@@ -46,12 +46,15 @@ class SportTracker(FlaskBaseApp):
 
         db.init_app(app)
 
+        rootDirectory = os.path.dirname(currentDirectory)
+        app.config['UPLOAD_FOLDER'] = os.path.join(rootDirectory, 'uploads')
+
         with app.app_context():
             db.create_all()
             self.__create_admin_user()
 
             if self._generateDummyData:
-                dummyDataGenerator = DummyDataGenerator()
+                dummyDataGenerator = DummyDataGenerator(app.config['UPLOAD_FOLDER'])
                 dummyDataGenerator.generate()
 
         @app.context_processor
@@ -95,9 +98,6 @@ class SportTracker(FlaskBaseApp):
             Language.GERMAN.shortCode: Language.GERMAN.localizedName
         }
         app.config['BABEL_TRANSLATION_DIRECTORIES'] = os.path.join(currentDirectory, 'localization')
-
-        rootDirectory = os.path.dirname(currentDirectory)
-        app.config['UPLOAD_FOLDER'] = os.path.join(rootDirectory, 'uploads')
 
         def get_locale():
             if current_user.is_authenticated:

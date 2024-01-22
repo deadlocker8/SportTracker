@@ -1,5 +1,8 @@
 import logging
+import os
 import random
+import shutil
+import uuid
 from datetime import datetime, timedelta, date
 
 from dateutil.relativedelta import relativedelta
@@ -21,13 +24,15 @@ class DummyDataGenerator:
     AVERAGE_SPEED_IN_KMH_BIKING = 22
     AVERAGE_SPEED_IN_KMH_RUNNING = 10
     TRACK_NAMES = ['Short trip', 'Afterwork I', 'Afterwork II', 'Berlin + Potsdam', 'Megatour']
+    GPX_FILE_NAMES = ['gpxTrack_1.gpx', 'gpxTrack_2.gpx']
 
-    def __init__(self):
+    def __init__(self, uploadFolder: str):
         self._now = datetime.now().date()
         self._previousMonth = self._now - timedelta(days=30)
         self._previousPreviousMonth = self._previousMonth - timedelta(days=30)
+        self._uploadFolder = uploadFolder
 
-    def generate(self):
+    def generate(self) -> None:
         user = self.__generate_demo_user()
 
         if Track.query.count() == 0:
@@ -45,7 +50,7 @@ class DummyDataGenerator:
 
         return user
 
-    def __generate_demo_month_goals(self, user):
+    def __generate_demo_month_goals(self, user) -> None:
         db.session.add(MonthGoalDistance(type=TrackType.BIKING,
                                          year=self._now.year,
                                          month=self._now.month,
@@ -76,7 +81,7 @@ class DummyDataGenerator:
 
         db.session.commit()
 
-    def __generate_demo_tracks_biking(self, user):
+    def __generate_demo_tracks_biking(self, user) -> None:
         LOGGER.debug('Generate dummy tracks BIKING...')
 
         fake = Faker()
@@ -86,6 +91,8 @@ class DummyDataGenerator:
         for monthIndex in range(self.NUMBER_OF_MONTHS):
             firstDay = date(year=lastDayCurrentMonth.year, month=lastDayCurrentMonth.month, day=1)
 
+            indexesWithGpx = random.choices(range(self.NUMBER_OF_TRACKS_PER_MONTH_BIKING), k=2)
+
             for index in range(self.NUMBER_OF_TRACKS_PER_MONTH_BIKING):
                 fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
                 distance = round(random.uniform(15.00, 50.00), 2)
@@ -93,21 +100,37 @@ class DummyDataGenerator:
                 heartRate = random.randint(85, 160)
                 elevationSum = random.randint(17, 650)
 
-                db.session.add(Track(type=TrackType.BIKING,
-                                     name=random.choice(self.TRACK_NAMES),
-                                     startTime=fakeTime,
-                                     duration=duration,
-                                     distance=distance * 1000,
-                                     averageHeartRate=heartRate,
-                                     elevationSum=elevationSum,
-                                     user_id=user.id,
-                                     custom_fields={}))
+                track = Track(type=TrackType.BIKING,
+                              name=random.choice(self.TRACK_NAMES),
+                              startTime=fakeTime,
+                              duration=duration,
+                              distance=distance * 1000,
+                              averageHeartRate=heartRate,
+                              elevationSum=elevationSum,
+                              user_id=user.id,
+                              custom_fields={})
+
+                if index in indexesWithGpx:
+                    self.__append_gpx(track)
+
+                db.session.add(track)
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 
         db.session.commit()
 
-    def __generate_demo_tracks_running(self, user):
+    def __append_gpx(self, track: Track) -> None:
+        filename = f'{uuid.uuid4().hex}.gpx'
+        destinationPath = os.path.join(self._uploadFolder, filename)
+
+        currentDirectory = os.path.abspath(os.path.dirname(__file__))
+        dummyDataDirectory = os.path.join(os.path.dirname(currentDirectory), 'dummyData')
+        sourcePath = os.path.join(dummyDataDirectory, random.choice(self.GPX_FILE_NAMES))
+
+        shutil.copy2(sourcePath, destinationPath)
+        track.gpxFileName = filename
+
+    def __generate_demo_tracks_running(self, user) -> None:
         LOGGER.debug('Generate dummy tracks RUNNING...')
 
         fake = Faker()

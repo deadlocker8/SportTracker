@@ -9,6 +9,7 @@ from flask import Blueprint, render_template, abort, redirect, url_for, request
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel, ConfigDict, field_validator
+from werkzeug.datastructures.file_storage import FileStorage
 
 from logic import Constants
 from logic.model.CustomTrackField import CustomTrackField
@@ -141,7 +142,7 @@ def construct_blueprint(uploadFolder: str):
 
         return filename.rsplit('.', 1)[1].lower() == 'gpx'
 
-    def handleGpxTrack(files) -> str | None:
+    def handleGpxTrack(files: dict[str, FileStorage]) -> str | None:
         if 'gpxTrack' not in files:
             return None
 
