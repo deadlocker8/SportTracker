@@ -19,6 +19,18 @@ body {
     padding: 0.2rem;
 }
 
+.svg-inline--fa.fa-fw {
+    width: 1em;
+}
+
+.bg-green {
+    background-color: #619B8A;
+}
+
+.border-green {
+    border-color: #619B8A;
+}
+
 .calendar-container {
     max-width: 90%;
     margin: auto;

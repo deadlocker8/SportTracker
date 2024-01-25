@@ -82,6 +82,7 @@ Python dependencies can be found in `pyproject.toml` and corresponding `poetry.l
 
 ### Additional dependencies
 - Google Material Icons https://fonts.googleapis.com/icon?family=Material+Icons
+- Font Awesome Icons https://fontawesome.com/
 
 ### Icons / Images
 - bike icon by Google Material Icons https://fonts.google.com/icons?selected=Material%20Icons%3Adirections_bike%3A
