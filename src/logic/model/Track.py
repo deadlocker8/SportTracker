@@ -14,6 +14,7 @@ from logic.model.db import db
 class TrackType(enum.Enum):
     BIKING = 'BIKING', 'directions_bike', 'bg-warning', '#FFC107', 'border-warning'
     RUNNING = 'RUNNING', 'directions_run', 'bg-info', '#0DCAF0', 'border-info'
+    HIKING = 'HIKING', 'fa-person-hiking', 'bg-green', '#619B8A', 'border-green'
 
     def __new__(
         cls,
