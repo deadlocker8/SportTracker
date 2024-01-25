@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-14 21:48+0100\n"
+"POT-Creation-Date: 2024-01-25 22:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,53 +17,52 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: ../blueprints/Achievements.py:35
+#: ../blueprints/Achievements.py:36
 msgid "Month Goal Streak"
 msgstr ""
 
-#: ../blueprints/Achievements.py:36
+#: ../blueprints/Achievements.py:37
 msgid ""
 "You have achieved all your monthly goals for <span class=\"fw-"
 "bold\">{currentStreak}</span> months in a row!<br>(Best: <span class"
 "=\"fw-bold\">{maxStreak}</span>)"
 msgstr ""
 
-#: ../blueprints/Achievements.py:43
+#: ../blueprints/Achievements.py:44
 msgid "Longest Track"
 msgstr ""
 
-#: ../blueprints/Achievements.py:44
+#: ../blueprints/Achievements.py:45
 msgid ""
 "You completed <span class=\"fw-bold\">{longestTrack} km</span> in one "
 "trip!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:49
+#: ../blueprints/Achievements.py:51
 msgid "Total Distance"
 msgstr ""
 
-#: ../blueprints/Achievements.py:50
+#: ../blueprints/Achievements.py:52
 msgid ""
 "You completed a total of <span class=\"fw-bold\">{totalDistance} "
 "km</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:56
+#: ../blueprints/Achievements.py:59
 msgid "Best Month"
 msgstr ""
 
-#: ../blueprints/Achievements.py:57
+#: ../blueprints/Achievements.py:60
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
 "<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:85 ../blueprints/Achievements.py:90
+#: ../blueprints/Achievements.py:90 ../blueprints/Achievements.py:95
 msgid "No month"
 msgstr ""
 
 #: ../blueprints/Authentication.py:25 ../blueprints/Authentication.py:32
-#: ../blueprints/Authentication.py:44
 msgid "Unbekannter Nutzer"
 msgstr ""
 
@@ -107,8 +106,7 @@ msgstr ""
 msgid "Distance"
 msgstr ""
 
-#: ../logic/model/User.py:46 ../templates/tracks/trackBikingForm.jinja2:79
-#: ../templates/tracks/trackRunningForm.jinja2:66
+#: ../logic/model/User.py:46 ../templates/tracks/trackMacros.jinja2:233
 msgid "Duration"
 msgstr ""
 
@@ -117,8 +115,7 @@ msgstr ""
 msgid "Average Speed"
 msgstr ""
 
-#: ../logic/model/User.py:50 ../templates/tracks/trackBikingForm.jinja2:105
-#: ../templates/tracks/trackRunningForm.jinja2:90
+#: ../logic/model/User.py:50 ../templates/tracks/trackMacros.jinja2:261
 msgid "Average Heart Rate"
 msgstr ""
 
@@ -170,8 +167,8 @@ msgstr ""
 msgid "Charts"
 msgstr ""
 
-#: ../templates/macros.jinja2:60 ../templates/mapMultipleTracks.jinja2:6
-#: ../templates/mapSingleTrack.jinja2:6
+#: ../templates/macros.jinja2:60 ../templates/maps/mapMultipleTracks.jinja2:6
+#: ../templates/maps/mapSingleTrack.jinja2:6
 msgid "Map"
 msgstr ""
 
@@ -235,6 +232,114 @@ msgstr ""
 
 #: ../templates/charts/chartDurationPerTrackChooser.jinja2:24
 msgid "Note: Only names with at least two tracks are listed"
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:4
+msgid "Acceleration"
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:5
+msgid "Altitude"
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:6
+msgid "Slope"
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:7
+msgid "Speed"
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:8
+msgid "Total Length: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:9
+msgid "Max Elevation: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:10
+msgid "Min Elevation: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:11
+msgid "Avg Elevation: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:12
+msgid "Total Time: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:13
+msgid "Total Ascent: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:14
+msgid "Total Descent: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:15
+msgid "Min Slope: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:16
+msgid "Max Slope: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:17
+msgid "Avg Slope: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:18
+msgid "Min Speed: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:19
+msgid "Max Speed: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:20
+msgid "Avg Speed: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:21
+msgid "Min Acceleration: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:22
+msgid "Max Acceleration: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:23
+msgid "Avg Acceleration: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:24
+msgid "y: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:25
+msgid "x: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:26
+msgid "t: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:27
+msgid "T: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:28
+msgid "m: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:29
+msgid "v: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:30
+msgid "a: "
 msgstr ""
 
 #: ../templates/monthGoals/monthGoalChooser.jinja2:6
@@ -314,8 +419,8 @@ msgstr ""
 #: ../templates/settings/profile.jinja2:36
 #: ../templates/settings/profile.jinja2:53
 #: ../templates/settings/profile.jinja2:129
-#: ../templates/tracks/trackBikingForm.jinja2:125
-#: ../templates/tracks/trackRunningForm.jinja2:109
+#: ../templates/tracks/trackBikingForm.jinja2:57
+#: ../templates/tracks/trackRunningForm.jinja2:53
 #: ../templates/users/userForm.jinja2:56
 msgid "Save"
 msgstr ""
@@ -385,8 +490,7 @@ msgstr ""
 
 #: ../templates/settings/customFieldsForm.jinja2:35
 #: ../templates/settings/profile.jinja2:81
-#: ../templates/tracks/trackBikingForm.jinja2:41
-#: ../templates/tracks/trackRunningForm.jinja2:36
+#: ../templates/tracks/trackMacros.jinja2:189
 msgid "Name"
 msgstr ""
 
@@ -442,41 +546,6 @@ msgstr ""
 msgid "New Biking Track"
 msgstr ""
 
-#: ../templates/tracks/trackBikingForm.jinja2:56
-#: ../templates/tracks/trackRunningForm.jinja2:44
-msgid "Date"
-msgstr ""
-
-#: ../templates/tracks/trackBikingForm.jinja2:61
-#: ../templates/tracks/trackRunningForm.jinja2:49
-msgid "Start Time"
-msgstr ""
-
-#: ../templates/tracks/trackBikingForm.jinja2:69
-#: ../templates/tracks/trackRunningForm.jinja2:57
-msgid "Distance (in km)"
-msgstr ""
-
-#: ../templates/tracks/trackBikingForm.jinja2:82
-#: ../templates/tracks/trackRunningForm.jinja2:68
-msgid "Hours"
-msgstr ""
-
-#: ../templates/tracks/trackBikingForm.jinja2:90
-#: ../templates/tracks/trackRunningForm.jinja2:76
-msgid "Minutes"
-msgstr ""
-
-#: ../templates/tracks/trackBikingForm.jinja2:97
-#: ../templates/tracks/trackRunningForm.jinja2:83
-msgid "Seconds"
-msgstr ""
-
-#: ../templates/tracks/trackBikingForm.jinja2:113
-#: ../templates/tracks/trackRunningForm.jinja2:97
-msgid "Elevation Sum (in m)"
-msgstr ""
-
 #: ../templates/tracks/trackChooser.jinja2:6
 #: ../templates/tracks/trackChooser.jinja2:17
 msgid "New Track"
@@ -488,15 +557,43 @@ msgstr ""
 msgid "New Running Track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:188
+#: ../templates/tracks/trackMacros.jinja2:206
+msgid "Date"
+msgstr ""
+
+#: ../templates/tracks/trackMacros.jinja2:211
+msgid "Start Time"
+msgstr ""
+
+#: ../templates/tracks/trackMacros.jinja2:221
+msgid "Distance (in km)"
+msgstr ""
+
+#: ../templates/tracks/trackMacros.jinja2:236
+msgid "Hours"
+msgstr ""
+
+#: ../templates/tracks/trackMacros.jinja2:244
+msgid "Minutes"
+msgstr ""
+
+#: ../templates/tracks/trackMacros.jinja2:251
+msgid "Seconds"
+msgstr ""
+
+#: ../templates/tracks/trackMacros.jinja2:271
+msgid "Elevation Sum (in m)"
+msgstr ""
+
+#: ../templates/tracks/trackMacros.jinja2:280
 msgid "GPX Track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:193
+#: ../templates/tracks/trackMacros.jinja2:285
 msgid "A GPX file is linked to this track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:214
+#: ../templates/tracks/trackMacros.jinja2:306
 msgid "No GPX file is linked to this track"
 msgstr ""
 
