@@ -3,7 +3,7 @@ from datetime import date
 from typing import Any
 
 from flask import Blueprint, render_template
-from flask_babel import gettext
+from flask_babel import gettext, format_datetime
 from flask_login import login_required, current_user
 from sqlalchemy import extract, func, String, asc
 
@@ -171,7 +171,7 @@ def construct_blueprint():
             if track.duration is None:
                 continue
 
-            dates.append(track.startTime.strftime('%d.%m.%y'))
+            dates.append(format_datetime(track.startTime, format='short'))
             values.append(track.duration)
             texts.append(f'{format_duration(track.duration)} h')
 
@@ -194,7 +194,7 @@ def construct_blueprint():
 
         for monthDistanceSum in monthDistanceSums:
             monthDate = date(year=monthDistanceSum.year, month=monthDistanceSum.month, day=1)
-            monthNames.append(monthDate.strftime('%B %y'))
+            monthNames.append(format_datetime(monthDate, format='MMMM YYYY'))
             values.append(monthDistanceSum.distanceSum)
 
         return {

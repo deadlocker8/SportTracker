@@ -2,7 +2,7 @@ import logging
 from datetime import datetime, date
 
 from flask import Blueprint, render_template
-from flask_babel import gettext
+from flask_babel import gettext, format_datetime
 from flask_login import login_required, current_user
 from sqlalchemy import func, asc
 
@@ -96,7 +96,7 @@ def construct_blueprint():
 
         bestMonth = max(monthDistanceSums, key=lambda monthDistanceSum: monthDistanceSum.distanceSum)
         bestMonthDate = date(year=bestMonth.year, month=bestMonth.month, day=1)
-        return bestMonthDate.strftime('%B %Y'), bestMonth.distanceSum
+        return format_datetime(bestMonthDate, format='MMMM YYYY'), bestMonth.distanceSum
 
     def __get_streaks_by_type(trackType: TrackType) -> tuple[int, int]:
         firstTrack = (Track.query

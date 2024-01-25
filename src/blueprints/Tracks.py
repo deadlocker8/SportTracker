@@ -6,6 +6,7 @@ from datetime import datetime, date
 
 from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template, abort, redirect, url_for, request
+from flask_babel import format_datetime
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel, ConfigDict, field_validator
@@ -72,7 +73,7 @@ def construct_blueprint(uploadFolder: str):
         else:
             monthRightSideDate = date(year=year, month=month, day=1)
 
-        monthRightSide = MonthModel(monthRightSideDate.strftime('%B %Y'),
+        monthRightSide = MonthModel(format_datetime(monthRightSideDate, format='MMMM YYYY'),
                                     get_tracks_by_year_and_month_by_type(monthRightSideDate.year,
                                                                          monthRightSideDate.month,
                                                                          [t for t in TrackType]),
@@ -80,7 +81,7 @@ def construct_blueprint(uploadFolder: str):
                                                                          monthRightSideDate.month))
 
         monthLeftSideDate = monthRightSideDate - relativedelta(months=1)
-        monthLeftSide = MonthModel(monthLeftSideDate.strftime('%B %Y'),
+        monthLeftSide = MonthModel(format_datetime(monthLeftSideDate, format='MMMM YYYY'),
                                    get_tracks_by_year_and_month_by_type(monthLeftSideDate.year,
                                                                         monthLeftSideDate.month,
                                                                         [t.value for t in TrackType]),

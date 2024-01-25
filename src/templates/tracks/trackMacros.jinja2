@@ -39,7 +39,7 @@
 {%- endmacro %}
 
 {% macro render_track_start_time(track) -%}
-    <div class="fs-6 me-2 text-body-secondary">{{ track.startTime.strftime('%d.%m.%y') }}</div>
+    <div class="fs-6 me-2 text-body-secondary">{{ track.startTime | format_date }}</div>
 {%- endmacro %}
 
 {% macro render_track_running_card(track) -%}
