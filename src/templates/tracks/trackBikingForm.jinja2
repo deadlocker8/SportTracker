@@ -36,85 +36,17 @@
 
                             <input type="hidden" class="form-control" id="track-type" name="type" value="BIKING">
 
-                            <div class="mb-3">
-                                <div class="form-group">
-                                    <label for="track-name" class="form-label">{{ gettext('Name') }}</label>
-                                    <input type="text" class="form-control" id="track-name" name="name"
-                                       required="required" {% if track %}value="{{ track.name }}"{% endif %}
-                                        list="list-track-names">
-                                    <datalist id="list-track-names">
-                                        {% for trackName in trackNames %}
-                                            <option>{{ trackName }}</option>
-                                        {% endfor %}
-                                    </datalist>
-                                </div>
-                            </div>
+                            {{ trackMacros.track_form_name(track, trackNames) }}
 
-                            <div class="mb-3">
-                                <div class="row">
-                                    <div class="col col-6">
-                                        <label for="track-date" class="form-label">{{ gettext('Date') }}</label>
-                                        <input type="date" class="form-control" id="track-date" name="date"
-                                               required="required" {% if track %}value="{{ track.date }}"{% endif %}>
-                                    </div>
-                                    <div class="col col-6">
-                                        <label for="track-time" class="form-label">{{ gettext('Start Time') }}</label>
-                                        <input type="time" class="form-control" id="track-time" name="time"
-                                               required="required" {% if track %}value="{{ track.time }}"{% endif %}>
-                                    </div>
-                                </div>
-                            </div>
+                            {{ trackMacros.track_form_start_time(track) }}
 
-                            <div class="mb-3">
-                                <label for="track-distance" class="form-label">{{ gettext('Distance (in km)') }}</label>
-                                <input type="number" step="0.01" min="0" class="form-control" id="track-distance"
-                                       name="distance" required="required"
-                                       {% if track %}value="{{ track.distance }}"{% endif %}>
-                            </div>
+                            {{ trackMacros.track_form_distance(track) }}
 
-                            <div class="mb-3">
-                                <div class="row">
-                                    <div class="col col-lg-2 col-s-4">
-                                        <label for="track-duration-hours"
-                                               class="form-label">{{ gettext('Duration') }}</label>
-                                        <input type="number" step="1" min="0" class="form-control"
-                                               id="track-duration-hours" name="durationHours"
-                                               placeholder="{{ gettext('Hours') }}"
-                                               required="required"
-                                               {% if track %}value="{{ track.durationHours }}"{% endif %}>
-                                    </div>
-                                    <div class="col col-lg-2 col-s-4">
-                                        <label for="track-duration-minutes" class="form-label">&nbsp;</label>
-                                        <input type="number" step="1" min="0" max="59" class="form-control"
-                                               id="track-duration-minutes" name="durationMinutes"
-                                               placeholder="{{ gettext('Minutes') }}" required="required"
-                                               {% if track %}value="{{ track.durationMinutes }}"{% endif %}>
-                                    </div>
-                                    <div class="col col-lg-2 col-s-4">
-                                        <label for="track-duration-seconds" class="form-label">&nbsp;</label>
-                                        <input type="number" step="1" min="0" max="59" class="form-control"
-                                               id="track-duration-seconds" name="durationSeconds"
-                                               placeholder="{{ gettext('Seconds') }}" required="required"
-                                               {% if track %}value="{{ track.durationSeconds }}"{% endif %}>
-                                    </div>
-                                </div>
-                            </div>
+                            {{ trackMacros.track_form_duration(track) }}
 
-                            <div class="mb-3">
-                                <label for="track-averageHeartRate"
-                                       class="form-label">{{ gettext('Average Heart Rate') }}</label>
-                                <input type="number" step="1" min="0" class="form-control" id="track-averageHeartRate"
-                                       name="averageHeartRate"
-                                       {% if track and track.averageHeartRate is not none %}value="{{ track.averageHeartRate }}"{% endif %}>
-                            </div>
+                            {{ trackMacros.track_form_average_heart_rate(track) }}
 
-                            <div class="mb-3">
-                                <label for="track-elevationSum"
-                                       class="form-label">{{ gettext('Elevation Sum (in m)') }}</label>
-                                <input type="number" step="1" min="0" class="form-control" id="track-elevationSum"
-                                       name="elevationSum"
-                                       {% if track and track.elevationSum is not none %}value="{{ track.elevationSum }}"{% endif %}>
-                            </div>
+                            {{ trackMacros.track_form_elevation_sum(track) }}
 
                             {% for field in customFields %}
                                 {{ macros.customFieldInput(field) }}
