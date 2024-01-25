@@ -4,7 +4,7 @@
     {% if track.duration is none %}
         <div class="fs-4">--.- km/h</div>
     {% else %}
-        <div class="fs-4">{{ (track.distance / track.duration * 3.6) | round(1) }} km/h
+        <div class="fs-4">{{ (track.distance / track.duration * 3.6) | round(1) | format_decimal }} km/h
         </div>
     {% endif %}
 {%- endmacro %}
@@ -19,7 +19,7 @@
 {%- endmacro %}
 
 {% macro render_track_distance(track) -%}
-    <div class="fs-4">{{ track.distance / 1000 }} km</div>
+    <div class="fs-4">{{ (track.distance / 1000) | format_decimal(2) }} km</div>
 {%- endmacro %}
 
 {% macro render_track_duration(track) -%}
@@ -221,7 +221,7 @@
         <label for="track-distance" class="form-label">{{ gettext('Distance (in km)') }}</label>
         <input type="number" step="0.01" min="0" class="form-control" id="track-distance"
                name="distance" required="required"
-               {% if track %}value="{{ track.distance }}"{% endif %}>
+               {% if track %}value="{{ track.distance | format_decimal(2) }}"{% endif %}>
     </div>
 {%- endmacro %}
 

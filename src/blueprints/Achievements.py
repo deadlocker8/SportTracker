@@ -6,6 +6,7 @@ from flask_babel import gettext
 from flask_login import login_required, current_user
 from sqlalchemy import func, asc
 
+from helpers import Helpers
 from logic import Constants
 from logic.model.Achievement import Achievement
 from logic.model.MonthGoal import get_goal_summaries_by_year_and_month
@@ -43,13 +44,15 @@ def construct_blueprint():
                                                title=gettext('Longest Track'),
                                                description=gettext('You completed <span class="fw-bold">{longestTrack} '
                                                                    'km</span> in one trip!').format(
-                                                   longestTrack=__get_longest_distance_by_type(trackType) / 1000)))
+                                                   longestTrack=Helpers.format_decimal(
+                                                       __get_longest_distance_by_type(trackType), decimals=2))))
             achievementList.append(Achievement(icon='map',
                                                color=trackType.border_color,
                                                title=gettext('Total Distance'),
                                                description=gettext('You completed a total of <span class="fw-bold">'
                                                                    '{totalDistance} km</span>!').format(
-                                                   totalDistance=__get_total_distance_by_type(trackType) / 1000)))
+                                                   totalDistance=Helpers.format_decimal(
+                                                       __get_total_distance_by_type(trackType), decimals=2))))
             bestMonth = __get_best_month_by_type(trackType)
             achievementList.append(Achievement(icon='calendar_month',
                                                color=trackType.border_color,
@@ -58,21 +61,23 @@ def construct_blueprint():
                                                                    'your best month with <span class="fw-bold">'
                                                                    '{bestMonthDistance} km</span>!').format(
                                                    bestMonthName=bestMonth[0],
-                                                   bestMonthDistance=bestMonth[1])))
+                                                   bestMonthDistance=Helpers.format_decimal(bestMonth[1], decimals=2))))
             result[trackType] = achievementList
         return result
 
-    def __get_longest_distance_by_type(trackType: TrackType) -> int:
-        return (db.session.query(func.max(Track.distance))
-                .filter(Track.type == trackType)
-                .filter(Track.user_id == current_user.id)
-                .scalar() or 0)
+    def __get_longest_distance_by_type(trackType: TrackType) -> float:
+        value = (db.session.query(func.max(Track.distance))
+                 .filter(Track.type == trackType)
+                 .filter(Track.user_id == current_user.id)
+                 .scalar() or 0)
+        return value / 1000
 
-    def __get_total_distance_by_type(trackType: TrackType) -> int:
-        return (db.session.query(func.sum(Track.distance))
-                .filter(Track.type == trackType)
-                .filter(Track.user_id == current_user.id)
-                .scalar() or 0)
+    def __get_total_distance_by_type(trackType: TrackType) -> float:
+        value = (db.session.query(func.sum(Track.distance))
+                 .filter(Track.type == trackType)
+                 .filter(Track.user_id == current_user.id)
+                 .scalar() or 0)
+        return value / 1000
 
     def __get_best_month_by_type(trackType: TrackType) -> tuple[str, float]:
         minDate, maxDate = (

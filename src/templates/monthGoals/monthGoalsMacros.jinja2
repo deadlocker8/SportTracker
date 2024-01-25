@@ -5,7 +5,7 @@
 {%- endmacro %}
 
 {% macro render_month_goal_distance(goalSummary) -%}
-    <div class="fs-5">{{ goalSummary.actual_distance }}/{{ goalSummary.goal_distance_perfect }} km</div>
+    <div class="fs-5">{{ goalSummary.actual_distance | format_decimal }}/{{ goalSummary.goal_distance_perfect | format_decimal }} km</div>
 {%- endmacro %}
 
 {% macro render_month_goal_count(goalSummary) -%}

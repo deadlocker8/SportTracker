@@ -61,6 +61,9 @@ class SportTracker(FlaskBaseApp):
         def inject_version_name() -> dict[str, Any]:
             return {'versionName': self._version['name']}
 
+        def format_decimal(value: int | float | None, decimals: int = 1) -> str:
+            return Helpers.format_decimal(value, decimals)
+
         def format_duration(value: int | None) -> str:
             return Helpers.format_duration(value)
 
@@ -82,6 +85,7 @@ class SportTracker(FlaskBaseApp):
 
             return {'is_track_info_item_activated': is_track_info_item_activated}
 
+        app.add_template_filter(format_decimal)
         app.add_template_filter(format_duration)
         app.add_template_filter(format_pace)
 
