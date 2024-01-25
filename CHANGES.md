@@ -1,3 +1,7 @@
+# 1.9.0
+- add: localize dates, numbers and maps
+- chore: update dependencies
+
 # 1.8.0
 - add: license, readme and screenshots
 - add: dummy data generator
