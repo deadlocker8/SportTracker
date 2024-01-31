@@ -4,6 +4,7 @@
 - fix: achievement for month goal streak: current month should be added to streak if all goals are reached even if month is not over yet
 - fix: edit track: distance input not prefilled
 - fix: add missing grouping separator for large numbers
+- chore: update dependencies
 
 # 1.9.0
 - add: localize dates, numbers and maps
