@@ -58,7 +58,7 @@ class AchievementCalculator:
         highestStreak = 0
         currentStreak = 0
 
-        while year != currentYear or month != currentMonth:
+        while True:
             summaries = get_goal_summaries_by_year_and_month_and_types(year, month, [trackType])
             completedGoals = [s for s in summaries if s.percentage >= 100.0]
             if summaries and len(summaries) == len(completedGoals):
@@ -67,6 +67,9 @@ class AchievementCalculator:
                     highestStreak = currentStreak
             else:
                 currentStreak = 0
+
+            if year == currentYear and month == currentMonth:
+                break
 
             month += 1
             if month > 12:
