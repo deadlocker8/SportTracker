@@ -180,8 +180,8 @@ def construct_blueprint():
             'values': values,
             'texts': texts,
             'type': trackType,
-            'min': min(values) - 300,
-            'max': max(values) + 300
+            'min': min(values, default=0) - 300,
+            'max': max(values, default=0) + 300
         }
 
         return render_template('charts/chartDurationPerTrack.jinja2',

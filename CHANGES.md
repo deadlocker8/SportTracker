@@ -1,3 +1,6 @@
+# 1.9.2
+- fix: chart duration per track
+
 # 1.9.1
 - fix: wrong date localization at beginning of year
 - fix: achievement for month goal streak: fix calculation of streak
