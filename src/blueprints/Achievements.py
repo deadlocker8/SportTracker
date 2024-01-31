@@ -96,7 +96,7 @@ def construct_blueprint():
 
         bestMonth = max(monthDistanceSums, key=lambda monthDistanceSum: monthDistanceSum.distanceSum)
         bestMonthDate = date(year=bestMonth.year, month=bestMonth.month, day=1)
-        return format_datetime(bestMonthDate, format='MMMM YYYY'), bestMonth.distanceSum
+        return format_datetime(bestMonthDate, format='MMMM yyyy'), bestMonth.distanceSum
 
     def __get_streaks_by_type(trackType: TrackType) -> tuple[int, int]:
         firstTrack = (Track.query

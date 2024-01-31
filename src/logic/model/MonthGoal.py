@@ -84,7 +84,7 @@ class MonthGoalDistance(MonthGoal):
             actualDistance = sum([t.distance for t in tracks])
 
         color = self.__determine_color(actualDistance)
-        name = format_datetime(date(year=self.year, month=self.month, day=1), format='MMMM YYYY')
+        name = format_datetime(date(year=self.year, month=self.month, day=1), format='MMMM yyyy')
         percentage = actualDistance / self.distance_perfect * 100
         return MonthGoalDistanceSummary(id=self.id,
                                         type=self.type,
@@ -116,7 +116,7 @@ class MonthGoalCount(MonthGoal):
             actualCount = len(tracks)
 
         color = self.__determine_color(actualCount)
-        name = format_datetime(date(year=self.year, month=self.month, day=1), format='MMMM YYYY')
+        name = format_datetime(date(year=self.year, month=self.month, day=1), format='MMMM yyyy')
         percentage = actualCount / self.count_perfect * 100
         return MonthGoalCountSummary(id=self.id,
                                      type=self.type,

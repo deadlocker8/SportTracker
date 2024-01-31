@@ -194,7 +194,7 @@ def construct_blueprint():
 
         for monthDistanceSum in monthDistanceSums:
             monthDate = date(year=monthDistanceSum.year, month=monthDistanceSum.month, day=1)
-            monthNames.append(format_datetime(monthDate, format='MMMM YYYY'))
+            monthNames.append(format_datetime(monthDate, format='MMMM yyyy'))
             values.append(monthDistanceSum.distanceSum)
 
         return {

@@ -1,3 +1,6 @@
+# 1.9.1
+- fix: wrong date localization at beginning of year
+
 # 1.9.0
 - add: localize dates, numbers and maps
 - chore: update dependencies

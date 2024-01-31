@@ -73,7 +73,7 @@ def construct_blueprint(uploadFolder: str):
         else:
             monthRightSideDate = date(year=year, month=month, day=1)
 
-        monthRightSide = MonthModel(format_datetime(monthRightSideDate, format='MMMM YYYY'),
+        monthRightSide = MonthModel(format_datetime(monthRightSideDate, format='MMMM yyyy'),
                                     get_tracks_by_year_and_month_by_type(monthRightSideDate.year,
                                                                          monthRightSideDate.month,
                                                                          [t for t in TrackType]),
@@ -81,7 +81,7 @@ def construct_blueprint(uploadFolder: str):
                                                                          monthRightSideDate.month))
 
         monthLeftSideDate = monthRightSideDate - relativedelta(months=1)
-        monthLeftSide = MonthModel(format_datetime(monthLeftSideDate, format='MMMM YYYY'),
+        monthLeftSide = MonthModel(format_datetime(monthLeftSideDate, format='MMMM yyyy'),
                                    get_tracks_by_year_and_month_by_type(monthLeftSideDate.year,
                                                                         monthLeftSideDate.month,
                                                                         [t.value for t in TrackType]),
