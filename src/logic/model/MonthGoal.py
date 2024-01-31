@@ -136,16 +136,18 @@ class MonthGoalCount(MonthGoal):
         return 'bg-danger'
 
 
-def get_goal_summaries_by_year_and_month(year: int, month: int) -> list[MonthGoalSummary]:
+def get_goal_summaries_by_year_and_month_and_types(year: int, month: int, trackTypes: list[TrackType]) -> list[MonthGoalSummary]:
     goalsDistance = (MonthGoalDistance.query.join(User)
                      .filter(User.username == current_user.username)
                      .filter(MonthGoalDistance.year == year)
                      .filter(MonthGoalDistance.month == month)
+                     .filter(MonthGoalDistance.type.in_(trackTypes))
                      .all())
     goalsCount = (MonthGoalCount.query.join(User)
                   .filter(User.username == current_user.username)
                   .filter(MonthGoalCount.year == year)
                   .filter(MonthGoalCount.month == month)
+                  .filter(MonthGoalCount.type.in_(trackTypes))
                   .all())
 
     return [goal.get_summary() for goal in goalsDistance + goalsCount]

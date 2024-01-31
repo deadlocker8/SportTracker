@@ -14,7 +14,7 @@ from werkzeug.datastructures.file_storage import FileStorage
 
 from logic import Constants
 from logic.model.CustomTrackField import CustomTrackField
-from logic.model.MonthGoal import MonthGoalSummary, get_goal_summaries_by_year_and_month
+from logic.model.MonthGoal import MonthGoalSummary, get_goal_summaries_by_year_and_month_and_types
 from logic.model.Track import Track, get_tracks_by_year_and_month_by_type, TrackType, get_track_names_by_track_type
 from logic.model.User import User
 from logic.model.db import db
@@ -77,16 +77,19 @@ def construct_blueprint(uploadFolder: str):
                                     get_tracks_by_year_and_month_by_type(monthRightSideDate.year,
                                                                          monthRightSideDate.month,
                                                                          [t for t in TrackType]),
-                                    get_goal_summaries_by_year_and_month(monthRightSideDate.year,
-                                                                         monthRightSideDate.month))
+                                    get_goal_summaries_by_year_and_month_and_types(monthRightSideDate.year,
+                                                                                   monthRightSideDate.month,
+                                                                                   list(TrackType)))
 
         monthLeftSideDate = monthRightSideDate - relativedelta(months=1)
         monthLeftSide = MonthModel(format_datetime(monthLeftSideDate, format='MMMM yyyy'),
                                    get_tracks_by_year_and_month_by_type(monthLeftSideDate.year,
                                                                         monthLeftSideDate.month,
                                                                         [t.value for t in TrackType]),
-                                   get_goal_summaries_by_year_and_month(monthLeftSideDate.year,
-                                                                        monthLeftSideDate.month))
+                                   get_goal_summaries_by_year_and_month_and_types(monthLeftSideDate.year,
+                                                                                  monthLeftSideDate.month,
+                                                                                  list(TrackType)
+                                                                                  ))
 
         nextMonthDate = monthRightSideDate + relativedelta(months=1)
 

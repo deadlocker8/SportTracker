@@ -4,7 +4,7 @@ from flask_babel import format_datetime, gettext
 from flask_login import current_user
 from sqlalchemy import asc, func
 
-from logic.model.MonthGoal import get_goal_summaries_by_year_and_month
+from logic.model.MonthGoal import get_goal_summaries_by_year_and_month_and_types
 from logic.model.Track import get_distance_per_month_by_type, TrackType, Track
 from logic.model.db import db
 
@@ -59,7 +59,7 @@ class AchievementCalculator:
         currentStreak = 0
 
         while year != currentYear or month != currentMonth:
-            summaries = get_goal_summaries_by_year_and_month(year, month)
+            summaries = get_goal_summaries_by_year_and_month_and_types(year, month, [trackType])
             completedGoals = [s for s in summaries if s.percentage >= 100.0]
             if summaries and len(summaries) == len(completedGoals):
                 currentStreak += 1
