@@ -28,11 +28,7 @@ class AchievementCalculator:
 
     @staticmethod
     def get_best_month_by_type(trackType: TrackType) -> tuple[str, float]:
-        minDate, maxDate = (
-            db.session.query(func.min(Track.startTime), func.max(Track.startTime)
-                             .filter(Track.type == trackType)
-                             .filter(Track.user_id == current_user.id))
-            .first())
+        maxDate, minDate = AchievementCalculator._get_min_and_max_date(trackType)
 
         if minDate is None or maxDate is None:
             return gettext('No month'), 0
@@ -48,10 +44,7 @@ class AchievementCalculator:
 
     @staticmethod
     def get_streaks_by_type(trackType: TrackType) -> tuple[int, int]:
-        firstTrack = (Track.query
-                      .filter(Track.type == trackType)
-                      .filter(Track.user_id == current_user.id)
-                      .order_by(asc(Track.startTime)).first())
+        firstTrack = AchievementCalculator._get_first_track(trackType)
         if firstTrack is None:
             return 0, 0
 
@@ -81,3 +74,19 @@ class AchievementCalculator:
                 year += 1
 
         return highestStreak, currentStreak
+
+    @staticmethod
+    def _get_min_and_max_date(trackType: TrackType) -> tuple[datetime | None, datetime | None]:
+        minDate, maxDate = (
+            db.session.query(func.min(Track.startTime), func.max(Track.startTime)
+                             .filter(Track.type == trackType)
+                             .filter(Track.user_id == current_user.id))
+            .first())
+        return maxDate, minDate
+
+    @staticmethod
+    def _get_first_track(trackType: TrackType) -> Track | None:
+        return (Track.query
+                .filter(Track.type == trackType)
+                .filter(Track.user_id == current_user.id)
+                .order_by(asc(Track.startTime)).first())
