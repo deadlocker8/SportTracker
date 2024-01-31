@@ -2,6 +2,8 @@
 - fix: wrong date localization at beginning of year
 - fix: achievement for month goal streak: fix calculation of streak
 - fix: achievement for month goal streak: current month should be added to streak if all goals are reached even if month is not over yet
+- fix: edit track: distance input not prefilled
+- fix: add missing grouping separator for large numbers
 
 # 1.9.0
 - add: localize dates, numbers and maps
