@@ -12,5 +12,5 @@ def format_duration(value: int | None) -> str:
 
 
 def format_decimal(value: int | float | None, decimals: int = 1) -> str:
-    format_string = f'#.{"#" * (decimals - 1)}0'
+    format_string = f'#,##0.{"#" * (decimals - 1)}0'
     return flask_babel.format_decimal(value, format=format_string)
