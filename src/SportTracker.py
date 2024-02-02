@@ -13,8 +13,21 @@ from flask import Flask, request
 from flask_babel import Babel
 from flask_login import LoginManager, current_user
 
-from blueprints import General, Authentication, Tracks, MonthGoals, Charts, Users, MonthGoalsDistance, MonthGoalsCount, \
-    Api, Achievements, Search, Maps, GpxTracks
+from blueprints import (
+    General,
+    Authentication,
+    Tracks,
+    MonthGoals,
+    Charts,
+    Users,
+    MonthGoalsDistance,
+    MonthGoalsCount,
+    Api,
+    Achievements,
+    Search,
+    Maps,
+    GpxTracks,
+)
 from helpers import Helpers
 from logic import Constants
 from logic.DummyDataGenerator import DummyDataGenerator
@@ -26,7 +39,14 @@ LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
 
 class SportTracker(FlaskBaseApp):
-    def __init__(self, appName: str, rootDir: str, logger: logging.Logger, isDebug: bool, generateDummyData: bool):
+    def __init__(
+        self,
+        appName: str,
+        rootDir: str,
+        logger: logging.Logger,
+        isDebug: bool,
+        generateDummyData: bool,
+    ):
         super().__init__(appName, rootDir, logger, serveFavicon=True)
 
         self._isDebug = isDebug
@@ -34,17 +54,19 @@ class SportTracker(FlaskBaseApp):
 
         loggingSettings = self._settings['logging']
         if loggingSettings['enableRotatingLogFile']:
-            DefaultLogger.add_rotating_file_handler(LOGGER,
-                                                    fileName=loggingSettings['fileName'],
-                                                    maxBytes=loggingSettings['maxBytes'],
-                                                    backupCount=loggingSettings['numberOfBackups'])
+            DefaultLogger.add_rotating_file_handler(
+                LOGGER,
+                fileName=loggingSettings['fileName'],
+                maxBytes=loggingSettings['maxBytes'],
+                backupCount=loggingSettings['numberOfBackups'],
+            )
 
     def _create_flask_app(self):
         app = Flask(self._rootDir)
         app.debug = self._isDebug
 
         currentDirectory = os.path.abspath(os.path.dirname(__file__))
-        app.config["SQLALCHEMY_DATABASE_URI"] = self._settings['database']['uri']
+        app.config['SQLALCHEMY_DATABASE_URI'] = self._settings['database']['uri']
 
         db.init_app(app)
 
@@ -82,10 +104,11 @@ class SportTracker(FlaskBaseApp):
         @app.context_processor
         def utility_processor():
             def is_track_info_item_activated(name: str) -> bool:
-                trackInfoItem = (TrackInfoItem.query
-                                 .filter(TrackInfoItem.user_id == current_user.id)
-                                 .filter(TrackInfoItem.type == TrackInfoItemType(name))
-                                 .first())
+                trackInfoItem = (
+                    TrackInfoItem.query.filter(TrackInfoItem.user_id == current_user.id)
+                    .filter(TrackInfoItem.type == TrackInfoItemType(name))
+                    .first()
+                )
                 return trackInfoItem.is_activated
 
             return {'is_track_info_item_activated': is_track_info_item_activated}
@@ -105,7 +128,7 @@ class SportTracker(FlaskBaseApp):
 
         app.config['LANGUAGES'] = {
             Language.ENGLISH.shortCode: Language.ENGLISH.localizedName,
-            Language.GERMAN.shortCode: Language.GERMAN.localizedName
+            Language.GERMAN.shortCode: Language.GERMAN.localizedName,
         }
         app.config['BABEL_TRANSLATION_DIRECTORIES'] = os.path.join(currentDirectory, 'localization')
 
@@ -121,12 +144,16 @@ class SportTracker(FlaskBaseApp):
 
     def __create_admin_user(self):
         if User.query.filter_by(username='admin').first() is None:
-            LOGGER.debug(f'Creating admin user')
+            LOGGER.debug('Creating admin user')
             password = self.__generate_password()
-            LOGGER.info(f'Created default admin user with password: "{password}".'
-                        f' CAUTION: password is only shown once. Save it now!')
+            LOGGER.info(
+                f'Created default admin user with password: "{password}".'
+                f' CAUTION: password is only shown once. Save it now!'
+            )
 
-            create_user(username='admin', password=password, isAdmin=True, language=Language.ENGLISH)
+            create_user(
+                username='admin', password=password, isAdmin=True, language=Language.ENGLISH
+            )
 
     @staticmethod
     def __generate_password() -> str:
@@ -150,8 +177,8 @@ class SportTracker(FlaskBaseApp):
 
 
 @click.command()
-@click.option('--debug', '-d', is_flag=True, help="Enable debug mode")
-@click.option('--dummy', '-dummy', is_flag=True, help="Generate dummy tracks")
+@click.option('--debug', '-d', is_flag=True, help='Enable debug mode')
+@click.option('--dummy', '-dummy', is_flag=True, help='Generate dummy tracks')
 def start(debug, dummy):
     server = SportTracker(Constants.APP_NAME, os.path.dirname(__file__), LOGGER, debug, dummy)
     server.start_server()

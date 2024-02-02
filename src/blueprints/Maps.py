@@ -17,7 +17,7 @@ def createGpxInfo(trackId: int, trackName: str, trackStartTime: datetime) -> dic
         'trackId': trackId,
         'gpxUrl': url_for('gpxTracks.downloadGpxTrack', track_id=trackId),
         'trackUrl': url_for('tracks.edit', track_id=trackId),
-        'trackName': f'{trackStartTime.strftime("%Y-%m-%d")} - {trackName}'
+        'trackName': f'{trackStartTime.strftime("%Y-%m-%d")} - {trackName}',
     }
 
 
@@ -31,13 +31,15 @@ def construct_blueprint():
 
         funcStartTime = func.max(Track.startTime)
         for trackType in TrackType:
-            tracks = (Track.query.with_entities(func.max(Track.id), Track.name, funcStartTime)
-                      .filter(Track.user_id == current_user.id)
-                      .filter(Track.type == trackType)
-                      .filter(Track.gpxFileName.isnot(None))
-                      .group_by(Track.name)
-                      .order_by(funcStartTime.desc())
-                      .all())
+            tracks = (
+                Track.query.with_entities(func.max(Track.id), Track.name, funcStartTime)
+                .filter(Track.user_id == current_user.id)
+                .filter(Track.type == trackType)
+                .filter(Track.gpxFileName.isnot(None))
+                .group_by(Track.name)
+                .order_by(funcStartTime.desc())
+                .all()
+            )
 
             for track in tracks:
                 trackId, trackName, trackStartTime = track
@@ -48,10 +50,12 @@ def construct_blueprint():
     @maps.route('/map/<int:track_id>')
     @login_required
     def showSingleTrack(track_id: int):
-        track: Track | None = (Track.query.join(User)
-                               .filter(User.username == current_user.username)
-                               .filter(Track.id == track_id)
-                               .first())
+        track: Track | None = (
+            Track.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(Track.id == track_id)
+            .first()
+        )
 
         if track is None:
             abort(404)

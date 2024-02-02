@@ -86,14 +86,16 @@ class MonthGoalDistance(MonthGoal):
         color = self.__determine_color(actualDistance)
         name = format_datetime(date(year=self.year, month=self.month, day=1), format='MMMM yyyy')
         percentage = actualDistance / self.distance_perfect * 100
-        return MonthGoalDistanceSummary(id=self.id,
-                                        type=self.type,
-                                        name=name,
-                                        goal_distance_minimum=self.distance_minimum / 1000,
-                                        goal_distance_perfect=self.distance_perfect / 1000,
-                                        actual_distance=actualDistance / 1000,
-                                        percentage=percentage,
-                                        color=color)
+        return MonthGoalDistanceSummary(
+            id=self.id,
+            type=self.type,
+            name=name,
+            goal_distance_minimum=self.distance_minimum / 1000,
+            goal_distance_perfect=self.distance_perfect / 1000,
+            actual_distance=actualDistance / 1000,
+            percentage=percentage,
+            color=color,
+        )
 
     def __determine_color(self, actualDistance: float) -> str:
         if actualDistance >= self.distance_perfect:
@@ -118,14 +120,16 @@ class MonthGoalCount(MonthGoal):
         color = self.__determine_color(actualCount)
         name = format_datetime(date(year=self.year, month=self.month, day=1), format='MMMM yyyy')
         percentage = actualCount / self.count_perfect * 100
-        return MonthGoalCountSummary(id=self.id,
-                                     type=self.type,
-                                     name=name,
-                                     goal_count_minimum=self.count_minimum,
-                                     goal_count_perfect=self.count_perfect,
-                                     actual_count=actualCount,
-                                     percentage=percentage,
-                                     color=color)
+        return MonthGoalCountSummary(
+            id=self.id,
+            type=self.type,
+            name=name,
+            goal_count_minimum=self.count_minimum,
+            goal_count_perfect=self.count_perfect,
+            actual_count=actualCount,
+            percentage=percentage,
+            color=color,
+        )
 
     def __determine_color(self, actualCount: float) -> str:
         if actualCount >= self.count_perfect:
@@ -136,18 +140,24 @@ class MonthGoalCount(MonthGoal):
         return 'bg-danger'
 
 
-def get_goal_summaries_by_year_and_month_and_types(year: int, month: int, trackTypes: list[TrackType]) -> list[MonthGoalSummary]:
-    goalsDistance = (MonthGoalDistance.query.join(User)
-                     .filter(User.username == current_user.username)
-                     .filter(MonthGoalDistance.year == year)
-                     .filter(MonthGoalDistance.month == month)
-                     .filter(MonthGoalDistance.type.in_(trackTypes))
-                     .all())
-    goalsCount = (MonthGoalCount.query.join(User)
-                  .filter(User.username == current_user.username)
-                  .filter(MonthGoalCount.year == year)
-                  .filter(MonthGoalCount.month == month)
-                  .filter(MonthGoalCount.type.in_(trackTypes))
-                  .all())
+def get_goal_summaries_by_year_and_month_and_types(
+    year: int, month: int, trackTypes: list[TrackType]
+) -> list[MonthGoalSummary]:
+    goalsDistance = (
+        MonthGoalDistance.query.join(User)
+        .filter(User.username == current_user.username)
+        .filter(MonthGoalDistance.year == year)
+        .filter(MonthGoalDistance.month == month)
+        .filter(MonthGoalDistance.type.in_(trackTypes))
+        .all()
+    )
+    goalsCount = (
+        MonthGoalCount.query.join(User)
+        .filter(User.username == current_user.username)
+        .filter(MonthGoalCount.year == year)
+        .filter(MonthGoalCount.month == month)
+        .filter(MonthGoalCount.type.in_(trackTypes))
+        .all()
+    )
 
     return [goal.get_summary() for goal in goalsDistance + goalsCount]

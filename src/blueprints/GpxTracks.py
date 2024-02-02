@@ -19,10 +19,12 @@ def construct_blueprint(uploadFolder: str):
     @gpxTracks.route('/<int:track_id>')
     @login_required
     def downloadGpxTrack(track_id: int):
-        track: Track | None = (Track.query.join(User)
-                               .filter(User.username == current_user.username)
-                               .filter(Track.id == track_id)
-                               .first())
+        track: Track | None = (
+            Track.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(Track.id == track_id)
+            .first()
+        )
 
         if track is None:
             abort(404)
@@ -38,10 +40,12 @@ def construct_blueprint(uploadFolder: str):
     @gpxTracks.route('/delete/<int:track_id>')
     @login_required
     def deleteGpxTrack(track_id: int):
-        track: Track | None = (Track.query.join(User)
-                               .filter(User.username == current_user.username)
-                               .filter(Track.id == track_id)
-                               .first())
+        track: Track | None = (
+            Track.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(Track.id == track_id)
+            .first()
+        )
 
         if track is None:
             return Response(status=204)
@@ -53,7 +57,9 @@ def construct_blueprint(uploadFolder: str):
 
             try:
                 os.remove(os.path.join(uploadFolder, gpxFileName))
-                LOGGER.debug(f'Deleted linked gpx file "{gpxFileName}" for track with id {track_id}')
+                LOGGER.debug(
+                    f'Deleted linked gpx file "{gpxFileName}" for track with id {track_id}'
+                )
             except OSError as e:
                 LOGGER.error(e)
 

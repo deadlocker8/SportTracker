@@ -57,15 +57,17 @@ def construct_blueprint(version: dict):
         except ValidationError as e:
             return jsonify({'error': str(e)}), 400
 
-        track = Track(name=form.name,
-                      type=TrackType(form.type),
-                      startTime=form.calculate_start_time(),
-                      duration=form.calculate_duration(),
-                      distance=form.distance * 1000,
-                      averageHeartRate=form.averageHeartRate,
-                      elevationSum=form.elevationSum,
-                      user_id=current_user.id,
-                      custom_fields={} if form.customFields is None else form.customFields)
+        track = Track(
+            name=form.name,
+            type=TrackType(form.type),
+            startTime=form.calculate_start_time(),
+            duration=form.calculate_duration(),
+            distance=form.distance * 1000,
+            averageHeartRate=form.averageHeartRate,
+            elevationSum=form.elevationSum,
+            user_id=current_user.id,
+            custom_fields={} if form.customFields is None else form.customFields,
+        )
 
         LOGGER.debug(f'Saved new track of type {track.type} from api: {track}')
         db.session.add(track)
@@ -81,12 +83,14 @@ def construct_blueprint(version: dict):
         except ValidationError as e:
             return jsonify({'error': str(e)}), 400
 
-        monthGoal = MonthGoalDistance(type=TrackType(form.type),
-                                      year=form.year,
-                                      month=form.month,
-                                      distance_minimum=form.distance_minimum * 1000,
-                                      distance_perfect=form.distance_perfect * 1000,
-                                      user_id=current_user.id)
+        monthGoal = MonthGoalDistance(
+            type=TrackType(form.type),
+            year=form.year,
+            month=form.month,
+            distance_minimum=form.distance_minimum * 1000,
+            distance_perfect=form.distance_perfect * 1000,
+            user_id=current_user.id,
+        )
 
         LOGGER.debug(f'Saved new month goal of type "distance" from api: {monthGoal}')
         db.session.add(monthGoal)
@@ -102,12 +106,14 @@ def construct_blueprint(version: dict):
         except ValidationError as e:
             return jsonify({'error': str(e)}), 400
 
-        monthGoal = MonthGoalCount(type=TrackType(form.type),
-                                   year=form.year,
-                                   month=form.month,
-                                   count_minimum=form.count_minimum,
-                                   count_perfect=form.count_perfect,
-                                   user_id=current_user.id)
+        monthGoal = MonthGoalCount(
+            type=TrackType(form.type),
+            year=form.year,
+            month=form.month,
+            count_minimum=form.count_minimum,
+            count_perfect=form.count_perfect,
+            user_id=current_user.id,
+        )
         LOGGER.debug(f'Saved new month goal of type "count" from api: {monthGoal}')
         db.session.add(monthGoal)
         db.session.commit()

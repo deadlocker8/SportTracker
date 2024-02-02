@@ -46,9 +46,9 @@ class CsvParser:
                             'year': year,
                             'month': index + 1,
                             'distance_minimum': distance_minimum,
-                            'distance_perfect': distance_perfect
+                            'distance_perfect': distance_perfect,
                         }
-                        LOGGER.debug(f'Importing {data}')
+                        LOGGER.debug(f'Importing {goalData}')
                         response = session.post(f'{url}/api/addMonthGoalDistance', json=goalData)
                         LOGGER.debug(response.content)
                         if not response.ok:
@@ -67,7 +67,7 @@ class CsvParser:
                     'durationSeconds': seconds,
                     'distance': cls.__calculate_distance(row[4]),
                     'averageHeartRate': None,
-                    'customFields': {'Bike': row[9]}
+                    'customFields': {'Bike': row[9]},
                 }
                 LOGGER.debug(f'Importing {data}')
                 response = session.post(f'{url}/api/addTrack', json=data)

@@ -26,8 +26,9 @@ class CustomTrackField(db.Model):
 def get_custom_fields_by_track_type() -> dict[TrackType, list[CustomTrackField]]:
     customFieldsByTrackType = {}
     for trackType in TrackType:
-        customFieldsByTrackType[trackType] = (CustomTrackField.query
-                                              .filter(CustomTrackField.user_id == current_user.id)
-                                              .filter(CustomTrackField.track_type == trackType)
-                                              .all())
+        customFieldsByTrackType[trackType] = (
+            CustomTrackField.query.filter(CustomTrackField.user_id == current_user.id)
+            .filter(CustomTrackField.track_type == trackType)
+            .all()
+        )
     return customFieldsByTrackType

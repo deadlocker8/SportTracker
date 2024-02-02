@@ -62,10 +62,12 @@ class TrackInfoItem(db.Model):
 
 
 def create_user(username: str, password: str, isAdmin: bool, language: Language) -> User:
-    user = User(username=username,
-                password=Bcrypt().generate_password_hash(password).decode('utf-8'),
-                isAdmin=isAdmin,
-                language=language)
+    user = User(
+        username=username,
+        password=Bcrypt().generate_password_hash(password).decode('utf-8'),
+        isAdmin=isAdmin,
+        language=language,
+    )
     db.session.add(user)
     db.session.commit()
 
@@ -75,4 +77,3 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
     db.session.commit()
 
     return user
-

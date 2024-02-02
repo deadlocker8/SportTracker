@@ -34,7 +34,9 @@ class MonthGoalCountMultipleFormModel(BaseModel):
 
 
 def construct_blueprint():
-    monthGoalsCount = Blueprint('monthGoalsCount', __name__, static_folder='static', url_prefix='/goalsCount')
+    monthGoalsCount = Blueprint(
+        'monthGoalsCount', __name__, static_folder='static', url_prefix='/goalsCount'
+    )
 
     @monthGoalsCount.route('/add')
     @login_required
@@ -45,12 +47,14 @@ def construct_blueprint():
     @login_required
     @validate()
     def addPost(form: MonthGoalCountFormModel):
-        monthGoal = MonthGoalCount(type=TrackType(form.type),
-                                   year=form.year,
-                                   month=form.month,
-                                   count_minimum=form.count_minimum,
-                                   count_perfect=form.count_perfect,
-                                   user_id=current_user.id)
+        monthGoal = MonthGoalCount(
+            type=TrackType(form.type),
+            year=form.year,
+            month=form.month,
+            count_minimum=form.count_minimum,
+            count_perfect=form.count_perfect,
+            user_id=current_user.id,
+        )
         LOGGER.debug(f'Saved new month goal of type "count": {monthGoal}')
         db.session.add(monthGoal)
         db.session.commit()
@@ -77,12 +81,16 @@ def construct_blueprint():
 
         monthGoals = []
         while currentYear != form.end_year or currentMonth != form.end_month:
-            monthGoals.append(MonthGoalCount(type=TrackType(form.type),
-                                             year=currentYear,
-                                             month=currentMonth,
-                                             count_minimum=form.count_minimum,
-                                             count_perfect=form.count_perfect,
-                                             user_id=current_user.id))
+            monthGoals.append(
+                MonthGoalCount(
+                    type=TrackType(form.type),
+                    year=currentYear,
+                    month=currentMonth,
+                    count_minimum=form.count_minimum,
+                    count_perfect=form.count_perfect,
+                    user_id=current_user.id,
+                )
+            )
 
             currentMonth += 1
             if currentMonth > 12:
@@ -90,7 +98,8 @@ def construct_blueprint():
                 currentMonth = 1
 
         LOGGER.debug(
-            f'Saved {len(monthGoals)} new month goals of type "count" from {form.start_year}-{form.start_month} to {form.end_year}-{form.end_month}')
+            f'Saved {len(monthGoals)} new month goals of type "count" from {form.start_year}-{form.start_month} to {form.end_year}-{form.end_month}'
+        )
         db.session.add_all(monthGoals)
         db.session.commit()
 
@@ -99,30 +108,38 @@ def construct_blueprint():
     @monthGoalsCount.route('/edit/<int:goal_id>')
     @login_required
     def edit(goal_id: int):
-        monthGoal = (MonthGoalCount.query.join(User)
-                     .filter(User.username == current_user.username)
-                     .filter(MonthGoalCount.id == goal_id)
-                     .first())
+        monthGoal = (
+            MonthGoalCount.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(MonthGoalCount.id == goal_id)
+            .first()
+        )
 
         if monthGoal is None:
             abort(404)
 
-        goalModel = MonthGoalCountFormModel(type=monthGoal.type.name,
-                                            year=monthGoal.year,
-                                            month=monthGoal.month,
-                                            count_minimum=monthGoal.count_minimum,
-                                            count_perfect=monthGoal.count_perfect)
+        goalModel = MonthGoalCountFormModel(
+            type=monthGoal.type.name,
+            year=monthGoal.year,
+            month=monthGoal.month,
+            count_minimum=monthGoal.count_minimum,
+            count_perfect=monthGoal.count_perfect,
+        )
 
-        return render_template('monthGoals/monthGoalCountForm.jinja2', goal=goalModel, goal_id=goal_id)
+        return render_template(
+            'monthGoals/monthGoalCountForm.jinja2', goal=goalModel, goal_id=goal_id
+        )
 
     @monthGoalsCount.route('/edit/<int:goal_id>', methods=['POST'])
     @login_required
     @validate()
     def editPost(goal_id: int, form: MonthGoalCountFormModel):
-        monthGoal = (MonthGoalCount.query.join(User)
-                     .filter(User.username == current_user.username)
-                     .filter(MonthGoalCount.id == goal_id)
-                     .first())
+        monthGoal = (
+            MonthGoalCount.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(MonthGoalCount.id == goal_id)
+            .first()
+        )
 
         if monthGoal is None:
             abort(404)
@@ -142,10 +159,12 @@ def construct_blueprint():
     @monthGoalsCount.route('/delete/<int:goal_id>')
     @login_required
     def delete(goal_id: int):
-        monthGoal = (MonthGoalCount.query.join(User)
-                     .filter(User.username == current_user.username)
-                     .filter(MonthGoalCount.id == goal_id)
-                     .first())
+        monthGoal = (
+            MonthGoalCount.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(MonthGoalCount.id == goal_id)
+            .first()
+        )
 
         if monthGoal is None:
             abort(404)

@@ -34,19 +34,27 @@ def construct_blueprint():
         if pageNumber < 1:
             pageNumber = 1
 
-        pagination = db.paginate(Track.query.join(User)
-                                 .filter(User.username == current_user.username)
-                                 .filter(Track.name.icontains(searchText))
-                                 .order_by(Track.startTime.desc()),
-                                 per_page=10,
-                                 page=pageNumber)
+        pagination = db.paginate(
+            Track.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(Track.name.icontains(searchText))
+            .order_by(Track.startTime.desc()),
+            per_page=10,
+            page=pageNumber,
+        )
 
-        results = {k: list(g) for k, g in
-                   groupby(pagination.items, key=lambda track: track.startTime.strftime('%B %Y'))}
+        results = {
+            k: list(g)
+            for k, g in groupby(
+                pagination.items, key=lambda track: track.startTime.strftime('%B %Y')
+            )
+        }
 
-        return render_template('search.jinja2',
-                               results=results,
-                               pagination=pagination,
-                               searchText=searchText,)
+        return render_template(
+            'search.jinja2',
+            results=results,
+            pagination=pagination,
+            searchText=searchText,
+        )
 
     return search

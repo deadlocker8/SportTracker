@@ -12,18 +12,24 @@ from logic.model.db import db
 class AchievementCalculator:
     @staticmethod
     def get_longest_distance_by_type(trackType: TrackType) -> float:
-        value = (db.session.query(func.max(Track.distance))
-                 .filter(Track.type == trackType)
-                 .filter(Track.user_id == current_user.id)
-                 .scalar() or 0)
+        value = (
+            db.session.query(func.max(Track.distance))
+            .filter(Track.type == trackType)
+            .filter(Track.user_id == current_user.id)
+            .scalar()
+            or 0
+        )
         return value / 1000
 
     @staticmethod
     def get_total_distance_by_type(trackType: TrackType) -> float:
-        value = (db.session.query(func.sum(Track.distance))
-                 .filter(Track.type == trackType)
-                 .filter(Track.user_id == current_user.id)
-                 .scalar() or 0)
+        value = (
+            db.session.query(func.sum(Track.distance))
+            .filter(Track.type == trackType)
+            .filter(Track.user_id == current_user.id)
+            .scalar()
+            or 0
+        )
         return value / 1000
 
     @staticmethod
@@ -38,7 +44,9 @@ class AchievementCalculator:
         if not monthDistanceSums:
             return gettext('No month'), 0
 
-        bestMonth = max(monthDistanceSums, key=lambda monthDistanceSum: monthDistanceSum.distanceSum)
+        bestMonth = max(
+            monthDistanceSums, key=lambda monthDistanceSum: monthDistanceSum.distanceSum
+        )
         bestMonthDate = date(year=bestMonth.year, month=bestMonth.month, day=1)
         return format_datetime(bestMonthDate, format='MMMM yyyy'), bestMonth.distanceSum
 
@@ -80,16 +88,19 @@ class AchievementCalculator:
 
     @staticmethod
     def _get_min_and_max_date(trackType: TrackType) -> tuple[datetime | None, datetime | None]:
-        minDate, maxDate = (
-            db.session.query(func.min(Track.startTime), func.max(Track.startTime)
-                             .filter(Track.type == trackType)
-                             .filter(Track.user_id == current_user.id))
-            .first())
+        minDate, maxDate = db.session.query(
+            func.min(Track.startTime),
+            func.max(Track.startTime)
+            .filter(Track.type == trackType)
+            .filter(Track.user_id == current_user.id),
+        ).first()
         return maxDate, minDate
 
     @staticmethod
     def _get_first_track(trackType: TrackType) -> Track | None:
-        return (Track.query
-                .filter(Track.type == trackType)
-                .filter(Track.user_id == current_user.id)
-                .order_by(asc(Track.startTime)).first())
+        return (
+            Track.query.filter(Track.type == trackType)
+            .filter(Track.user_id == current_user.id)
+            .order_by(asc(Track.startTime))
+            .first()
+        )

@@ -15,7 +15,12 @@ from werkzeug.datastructures.file_storage import FileStorage
 from logic import Constants
 from logic.model.CustomTrackField import CustomTrackField
 from logic.model.MonthGoal import MonthGoalSummary, get_goal_summaries_by_year_and_month_and_types
-from logic.model.Track import Track, get_tracks_by_year_and_month_by_type, TrackType, get_track_names_by_track_type
+from logic.model.Track import (
+    Track,
+    get_tracks_by_year_and_month_by_type,
+    TrackType,
+    get_track_names_by_track_type,
+)
 from logic.model.User import User
 from logic.model.db import db
 
@@ -73,32 +78,37 @@ def construct_blueprint(uploadFolder: str):
         else:
             monthRightSideDate = date(year=year, month=month, day=1)
 
-        monthRightSide = MonthModel(format_datetime(monthRightSideDate, format='MMMM yyyy'),
-                                    get_tracks_by_year_and_month_by_type(monthRightSideDate.year,
-                                                                         monthRightSideDate.month,
-                                                                         [t for t in TrackType]),
-                                    get_goal_summaries_by_year_and_month_and_types(monthRightSideDate.year,
-                                                                                   monthRightSideDate.month,
-                                                                                   list(TrackType)))
+        monthRightSide = MonthModel(
+            format_datetime(monthRightSideDate, format='MMMM yyyy'),
+            get_tracks_by_year_and_month_by_type(
+                monthRightSideDate.year, monthRightSideDate.month, [t for t in TrackType]
+            ),
+            get_goal_summaries_by_year_and_month_and_types(
+                monthRightSideDate.year, monthRightSideDate.month, list(TrackType)
+            ),
+        )
 
         monthLeftSideDate = monthRightSideDate - relativedelta(months=1)
-        monthLeftSide = MonthModel(format_datetime(monthLeftSideDate, format='MMMM yyyy'),
-                                   get_tracks_by_year_and_month_by_type(monthLeftSideDate.year,
-                                                                        monthLeftSideDate.month,
-                                                                        [t.value for t in TrackType]),
-                                   get_goal_summaries_by_year_and_month_and_types(monthLeftSideDate.year,
-                                                                                  monthLeftSideDate.month,
-                                                                                  list(TrackType)
-                                                                                  ))
+        monthLeftSide = MonthModel(
+            format_datetime(monthLeftSideDate, format='MMMM yyyy'),
+            get_tracks_by_year_and_month_by_type(
+                monthLeftSideDate.year, monthLeftSideDate.month, [t.value for t in TrackType]
+            ),
+            get_goal_summaries_by_year_and_month_and_types(
+                monthLeftSideDate.year, monthLeftSideDate.month, list(TrackType)
+            ),
+        )
 
         nextMonthDate = monthRightSideDate + relativedelta(months=1)
 
-        return render_template('tracks/tracks.jinja2',
-                               monthLeftSide=monthLeftSide,
-                               monthRightSide=monthRightSide,
-                               previousMonthDate=monthLeftSideDate,
-                               nextMonthDate=nextMonthDate,
-                               currentMonthDate=datetime.now().date())
+        return render_template(
+            'tracks/tracks.jinja2',
+            monthLeftSide=monthLeftSide,
+            monthRightSide=monthRightSide,
+            previousMonthDate=monthLeftSideDate,
+            nextMonthDate=nextMonthDate,
+            currentMonthDate=datetime.now().date(),
+        )
 
     @tracks.route('/add')
     @login_required
@@ -110,13 +120,16 @@ def construct_blueprint(uploadFolder: str):
     def addType(track_type: str):
         trackType = TrackType(track_type)
 
-        customFields = (CustomTrackField.query
-                        .filter(CustomTrackField.user_id == current_user.id)
-                        .filter(CustomTrackField.track_type == trackType)
-                        .all())
-        return render_template(f'tracks/track{track_type.capitalize()}Form.jinja2',
-                               customFields=customFields,
-                               trackNames=get_track_names_by_track_type(trackType))
+        customFields = (
+            CustomTrackField.query.filter(CustomTrackField.user_id == current_user.id)
+            .filter(CustomTrackField.track_type == trackType)
+            .all()
+        )
+        return render_template(
+            f'tracks/track{track_type.capitalize()}Form.jinja2',
+            customFields=customFields,
+            trackNames=get_track_names_by_track_type(trackType),
+        )
 
     @tracks.route('/post', methods=['POST'])
     @login_required
@@ -124,21 +137,25 @@ def construct_blueprint(uploadFolder: str):
     def addPost(form: TrackFormModel):
         gpxFileName = handleGpxTrack(request.files)
 
-        track = Track(name=form.name,
-                      type=TrackType(form.type),
-                      startTime=form.calculate_start_time(),
-                      duration=form.calculate_duration(),
-                      distance=form.distance * 1000,
-                      averageHeartRate=form.averageHeartRate,
-                      elevationSum=form.elevationSum,
-                      gpxFileName=gpxFileName,
-                      custom_fields=form.model_extra,
-                      user_id=current_user.id)
+        track = Track(
+            name=form.name,
+            type=TrackType(form.type),
+            startTime=form.calculate_start_time(),
+            duration=form.calculate_duration(),
+            distance=form.distance * 1000,
+            averageHeartRate=form.averageHeartRate,
+            elevationSum=form.elevationSum,
+            gpxFileName=gpxFileName,
+            custom_fields=form.model_extra,
+            user_id=current_user.id,
+        )
         LOGGER.debug(f'Saved new track: {track}')
         db.session.add(track)
         db.session.commit()
 
-        return redirect(url_for('tracks.listTracks', year=track.startTime.year, month=track.startTime.month))
+        return redirect(
+            url_for('tracks.listTracks', year=track.startTime.year, month=track.startTime.month)
+        )
 
     def is_allowed_file(filename: str) -> bool:
         if '.' not in filename:
@@ -164,10 +181,12 @@ def construct_blueprint(uploadFolder: str):
     @tracks.route('/edit/<int:track_id>')
     @login_required
     def edit(track_id: int):
-        track: Track | None = (Track.query.join(User)
-                               .filter(User.username == current_user.username)
-                               .filter(Track.id == track_id)
-                               .first())
+        track: Track | None = (
+            Track.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(Track.id == track_id)
+            .first()
+        )
 
         if track is None:
             abort(404)
@@ -184,27 +203,33 @@ def construct_blueprint(uploadFolder: str):
             averageHeartRate=track.averageHeartRate,
             elevationSum=track.elevationSum,
             gpxFileName=track.gpxFileName,
-            **track.custom_fields)
+            **track.custom_fields,
+        )
 
-        customFields = (CustomTrackField.query
-                        .filter(CustomTrackField.user_id == current_user.id)
-                        .filter(CustomTrackField.track_type == track.type)
-                        .all())
+        customFields = (
+            CustomTrackField.query.filter(CustomTrackField.user_id == current_user.id)
+            .filter(CustomTrackField.track_type == track.type)
+            .all()
+        )
 
-        return render_template(f'tracks/track{track.type.name.capitalize()}Form.jinja2',
-                               track=trackModel,
-                               track_id=track_id,
-                               customFields=customFields,
-                               trackNames=get_track_names_by_track_type(track.type))
+        return render_template(
+            f'tracks/track{track.type.name.capitalize()}Form.jinja2',
+            track=trackModel,
+            track_id=track_id,
+            customFields=customFields,
+            trackNames=get_track_names_by_track_type(track.type),
+        )
 
     @tracks.route('/edit/<int:track_id>', methods=['POST'])
     @login_required
     @validate()
     def editPost(track_id: int, form: TrackFormModel):
-        track = (Track.query.join(User)
-                 .filter(User.username == current_user.username)
-                 .filter(Track.id == track_id)
-                 .first())
+        track = (
+            Track.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(Track.id == track_id)
+            .first()
+        )
 
         if track is None:
             abort(404)
@@ -228,15 +253,19 @@ def construct_blueprint(uploadFolder: str):
         LOGGER.debug(f'Updated track: {track}')
         db.session.commit()
 
-        return redirect(url_for('tracks.listTracks', year=track.startTime.year, month=track.startTime.month))
+        return redirect(
+            url_for('tracks.listTracks', year=track.startTime.year, month=track.startTime.month)
+        )
 
     @tracks.route('/delete/<int:track_id>')
     @login_required
     def delete(track_id: int):
-        track = (Track.query.join(User)
-                 .filter(User.username == current_user.username)
-                 .filter(Track.id == track_id)
-                 .first())
+        track = (
+            Track.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(Track.id == track_id)
+            .first()
+        )
 
         if track is None:
             abort(404)
@@ -244,7 +273,9 @@ def construct_blueprint(uploadFolder: str):
         if track.gpxFileName is not None:
             try:
                 os.remove(os.path.join(uploadFolder, track.gpxFileName))
-                LOGGER.debug(f'Deleted linked gpx file "{track.gpxFileName}" for track with id {track_id}')
+                LOGGER.debug(
+                    f'Deleted linked gpx file "{track.gpxFileName}" for track with id {track_id}'
+                )
             except OSError as e:
                 LOGGER.error(e)
 

@@ -34,7 +34,9 @@ class MonthGoalDistanceMultipleFormModel(BaseModel):
 
 
 def construct_blueprint():
-    monthGoalsDistance = Blueprint('monthGoalsDistance', __name__, static_folder='static', url_prefix='/goalsDistance')
+    monthGoalsDistance = Blueprint(
+        'monthGoalsDistance', __name__, static_folder='static', url_prefix='/goalsDistance'
+    )
 
     @monthGoalsDistance.route('/add')
     @login_required
@@ -45,12 +47,14 @@ def construct_blueprint():
     @login_required
     @validate()
     def addPost(form: MonthGoalDistanceFormModel):
-        monthGoal = MonthGoalDistance(type=TrackType(form.type),
-                                      year=form.year,
-                                      month=form.month,
-                                      distance_minimum=form.distance_minimum * 1000,
-                                      distance_perfect=form.distance_perfect * 1000,
-                                      user_id=current_user.id)
+        monthGoal = MonthGoalDistance(
+            type=TrackType(form.type),
+            year=form.year,
+            month=form.month,
+            distance_minimum=form.distance_minimum * 1000,
+            distance_perfect=form.distance_perfect * 1000,
+            user_id=current_user.id,
+        )
         LOGGER.debug(f'Saved new month goal of type "distance": {monthGoal}')
         db.session.add(monthGoal)
         db.session.commit()
@@ -77,12 +81,16 @@ def construct_blueprint():
 
         monthGoals = []
         while currentYear != form.end_year or currentMonth != form.end_month:
-            monthGoals.append(MonthGoalDistance(type=TrackType(form.type),
-                                                year=currentYear,
-                                                month=currentMonth,
-                                                distance_minimum=form.distance_minimum * 1000,
-                                                distance_perfect=form.distance_perfect * 1000,
-                                                user_id=current_user.id))
+            monthGoals.append(
+                MonthGoalDistance(
+                    type=TrackType(form.type),
+                    year=currentYear,
+                    month=currentMonth,
+                    distance_minimum=form.distance_minimum * 1000,
+                    distance_perfect=form.distance_perfect * 1000,
+                    user_id=current_user.id,
+                )
+            )
 
             currentMonth += 1
             if currentMonth > 12:
@@ -90,7 +98,8 @@ def construct_blueprint():
                 currentMonth = 1
 
         LOGGER.debug(
-            f'Saved {len(monthGoals)} new month goals of type "distance" from {form.start_year}-{form.start_month} to {form.end_year}-{form.end_month}')
+            f'Saved {len(monthGoals)} new month goals of type "distance" from {form.start_year}-{form.start_month} to {form.end_year}-{form.end_month}'
+        )
         db.session.add_all(monthGoals)
         db.session.commit()
 
@@ -99,30 +108,38 @@ def construct_blueprint():
     @monthGoalsDistance.route('/edit/<int:goal_id>')
     @login_required
     def edit(goal_id: int):
-        monthGoal = (MonthGoalDistance.query.join(User)
-                     .filter(User.username == current_user.username)
-                     .filter(MonthGoalDistance.id == goal_id)
-                     .first())
+        monthGoal = (
+            MonthGoalDistance.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(MonthGoalDistance.id == goal_id)
+            .first()
+        )
 
         if monthGoal is None:
             abort(404)
 
-        goalModel = MonthGoalDistanceFormModel(type=monthGoal.type.name,
-                                               year=monthGoal.year,
-                                               month=monthGoal.month,
-                                               distance_minimum=monthGoal.distance_minimum / 1000,
-                                               distance_perfect=monthGoal.distance_perfect / 1000)
+        goalModel = MonthGoalDistanceFormModel(
+            type=monthGoal.type.name,
+            year=monthGoal.year,
+            month=monthGoal.month,
+            distance_minimum=monthGoal.distance_minimum / 1000,
+            distance_perfect=monthGoal.distance_perfect / 1000,
+        )
 
-        return render_template('monthGoals/monthGoalDistanceForm.jinja2', goal=goalModel, goal_id=goal_id)
+        return render_template(
+            'monthGoals/monthGoalDistanceForm.jinja2', goal=goalModel, goal_id=goal_id
+        )
 
     @monthGoalsDistance.route('/edit/<int:goal_id>', methods=['POST'])
     @login_required
     @validate()
     def editPost(goal_id: int, form: MonthGoalDistanceFormModel):
-        monthGoal = (MonthGoalDistance.query.join(User)
-                     .filter(User.username == current_user.username)
-                     .filter(MonthGoalDistance.id == goal_id)
-                     .first())
+        monthGoal = (
+            MonthGoalDistance.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(MonthGoalDistance.id == goal_id)
+            .first()
+        )
 
         if monthGoal is None:
             abort(404)
@@ -142,10 +159,12 @@ def construct_blueprint():
     @monthGoalsDistance.route('/delete/<int:goal_id>')
     @login_required
     def delete(goal_id: int):
-        monthGoal = (MonthGoalDistance.query.join(User)
-                     .filter(User.username == current_user.username)
-                     .filter(MonthGoalDistance.id == goal_id)
-                     .first())
+        monthGoal = (
+            MonthGoalDistance.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(MonthGoalDistance.id == goal_id)
+            .first()
+        )
 
         if monthGoal is None:
             abort(404)

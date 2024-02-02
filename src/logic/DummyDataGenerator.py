@@ -45,39 +45,57 @@ class DummyDataGenerator:
         user = User.query.filter_by(username='demo').first()
 
         if user is None:
-            LOGGER.debug(f'Creating demo user')
-            user = create_user(username='demo', password='demo', isAdmin=False, language=Language.ENGLISH)
+            LOGGER.debug('Creating demo user')
+            user = create_user(
+                username='demo', password='demo', isAdmin=False, language=Language.ENGLISH
+            )
 
         return user
 
     def __generate_demo_month_goals(self, user) -> None:
-        db.session.add(MonthGoalDistance(type=TrackType.BIKING,
-                                         year=self._now.year,
-                                         month=self._now.month,
-                                         distance_minimum=100 * 1000,
-                                         distance_perfect=200 * 1000,
-                                         user_id=user.id))
+        db.session.add(
+            MonthGoalDistance(
+                type=TrackType.BIKING,
+                year=self._now.year,
+                month=self._now.month,
+                distance_minimum=100 * 1000,
+                distance_perfect=200 * 1000,
+                user_id=user.id,
+            )
+        )
 
-        db.session.add(MonthGoalDistance(type=TrackType.BIKING,
-                                         year=self._previousMonth.year,
-                                         month=self._previousMonth.month,
-                                         distance_minimum=200 * 1000,
-                                         distance_perfect=400 * 1000,
-                                         user_id=user.id))
+        db.session.add(
+            MonthGoalDistance(
+                type=TrackType.BIKING,
+                year=self._previousMonth.year,
+                month=self._previousMonth.month,
+                distance_minimum=200 * 1000,
+                distance_perfect=400 * 1000,
+                user_id=user.id,
+            )
+        )
 
-        db.session.add(MonthGoalDistance(type=TrackType.BIKING,
-                                         year=self._previousPreviousMonth.year,
-                                         month=self._previousPreviousMonth.month,
-                                         distance_minimum=400 * 1000,
-                                         distance_perfect=600 * 1000,
-                                         user_id=user.id))
+        db.session.add(
+            MonthGoalDistance(
+                type=TrackType.BIKING,
+                year=self._previousPreviousMonth.year,
+                month=self._previousPreviousMonth.month,
+                distance_minimum=400 * 1000,
+                distance_perfect=600 * 1000,
+                user_id=user.id,
+            )
+        )
 
-        db.session.add(MonthGoalCount(type=TrackType.RUNNING,
-                                      year=self._now.year,
-                                      month=self._now.month,
-                                      count_minimum=1,
-                                      count_perfect=4,
-                                      user_id=user.id))
+        db.session.add(
+            MonthGoalCount(
+                type=TrackType.RUNNING,
+                year=self._now.year,
+                month=self._now.month,
+                count_minimum=1,
+                count_perfect=4,
+                user_id=user.id,
+            )
+        )
 
         db.session.commit()
 
@@ -100,15 +118,17 @@ class DummyDataGenerator:
                 heartRate = random.randint(85, 160)
                 elevationSum = random.randint(17, 650)
 
-                track = Track(type=TrackType.BIKING,
-                              name=random.choice(self.TRACK_NAMES),
-                              startTime=fakeTime,
-                              duration=duration,
-                              distance=distance * 1000,
-                              averageHeartRate=heartRate,
-                              elevationSum=elevationSum,
-                              user_id=user.id,
-                              custom_fields={})
+                track = Track(
+                    type=TrackType.BIKING,
+                    name=random.choice(self.TRACK_NAMES),
+                    startTime=fakeTime,
+                    duration=duration,
+                    distance=distance * 1000,
+                    averageHeartRate=heartRate,
+                    elevationSum=elevationSum,
+                    user_id=user.id,
+                    custom_fields={},
+                )
 
                 if index in indexesWithGpx:
                     self.__append_gpx(track)
@@ -146,15 +166,19 @@ class DummyDataGenerator:
                 duration = distance / self.AVERAGE_SPEED_IN_KMH_RUNNING * 60 * 60
                 heartRate = random.randint(90, 180)
 
-                db.session.add(Track(type=TrackType.RUNNING,
-                                     name=random.choice(self.TRACK_NAMES),
-                                     startTime=fakeTime,
-                                     duration=duration,
-                                     distance=distance * 1000,
-                                     averageHeartRate=heartRate,
-                                     elevationSum=None,
-                                     user_id=user.id,
-                                     custom_fields={}))
+                db.session.add(
+                    Track(
+                        type=TrackType.RUNNING,
+                        name=random.choice(self.TRACK_NAMES),
+                        startTime=fakeTime,
+                        duration=duration,
+                        distance=distance * 1000,
+                        averageHeartRate=heartRate,
+                        elevationSum=None,
+                        user_id=user.id,
+                        custom_fields={},
+                    )
+                )
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 

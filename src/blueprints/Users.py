@@ -10,7 +10,11 @@ from sqlalchemy import asc, func
 
 from logic import Constants
 from logic.AdminWrapper import admin_role_required
-from logic.model.CustomTrackField import get_custom_fields_by_track_type, CustomTrackField, CustomTrackFieldType
+from logic.model.CustomTrackField import (
+    get_custom_fields_by_track_type,
+    CustomTrackField,
+    CustomTrackFieldType,
+)
 from logic.model.Track import TrackType
 from logic.model.User import User, Language, create_user, TrackInfoItem, TrackInfoItemType
 from logic.model.db import db
@@ -49,7 +53,12 @@ class CustomTrackFieldFormModel(BaseModel):
     track_type: str
     is_required: bool = False
 
-    @field_validator(*['is_required', ], mode='before')
+    @field_validator(
+        *[
+            'is_required',
+        ],
+        mode='before',
+    )
     def averageHeartRateCheck(cls, value: str, info) -> str | None:
         if isinstance(value, str):
             value = value.strip()
@@ -93,14 +102,20 @@ def construct_blueprint():
         password = form.password.strip()
 
         if __user_already_exists(username):
-            return render_template('users/userForm.jinja2', errorMessage=f'Username "{form.username}" already exists')
+            return render_template(
+                'users/userForm.jinja2', errorMessage=f'Username "{form.username}" already exists'
+            )
 
         if not password:
-            return render_template('users/userForm.jinja2', errorMessage=f'Password must not be empty')
+            return render_template(
+                'users/userForm.jinja2', errorMessage='Password must not be empty'
+            )
 
         if len(password) < MIN_PASSWORD_LENGTH:
-            return render_template('users/userForm.jinja2',
-                                   errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
+            return render_template(
+                'users/userForm.jinja2',
+                errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long',
+            )
 
         create_user(username=username, password=password, isAdmin=False, language=Language.ENGLISH)
         LOGGER.debug(f'Saved new user: {username}')
@@ -136,16 +151,28 @@ def construct_blueprint():
 
         if username != old_username:
             if __user_already_exists(username):
-                return render_template('users/userForm.jinja2', user=user, user_id=user_id,
-                                       errorMessage=f'Username "{form.username}" already exists')
+                return render_template(
+                    'users/userForm.jinja2',
+                    user=user,
+                    user_id=user_id,
+                    errorMessage=f'Username "{form.username}" already exists',
+                )
 
         if not password:
-            return render_template('users/userForm.jinja2', user=user, user_id=user_id,
-                                   errorMessage=f'Password must not be empty')
+            return render_template(
+                'users/userForm.jinja2',
+                user=user,
+                user_id=user_id,
+                errorMessage='Password must not be empty',
+            )
 
         if len(password) < MIN_PASSWORD_LENGTH:
-            return render_template('users/userForm.jinja2', user=user, user_id=user_id,
-                                   errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long')
+            return render_template(
+                'users/userForm.jinja2',
+                user=user,
+                user_id=user_id,
+                errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long',
+            )
 
         user.username = username
         user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
@@ -158,16 +185,18 @@ def construct_blueprint():
     @users.route('/editSelf')
     @login_required
     def editSelf():
-        infoItems: list[TrackInfoItem] = (TrackInfoItem.query
-                                          .filter(TrackInfoItem.user_id == current_user.id)
-                                          .all())
+        infoItems: list[TrackInfoItem] = TrackInfoItem.query.filter(
+            TrackInfoItem.user_id == current_user.id
+        ).all()
 
         infoItems.sort(key=lambda item: item.type.get_localized_name().lower())
 
-        return render_template('settings/profile.jinja2',
-                               userLanguage=current_user.language.name,
-                               customFieldsByTrackType=get_custom_fields_by_track_type(),
-                               infoItems=infoItems)
+        return render_template(
+            'settings/profile.jinja2',
+            userLanguage=current_user.language.name,
+            customFieldsByTrackType=get_custom_fields_by_track_type(),
+            infoItems=infoItems,
+        )
 
     @users.route('/editSelfPost', methods=['POST'])
     @login_required
@@ -181,16 +210,20 @@ def construct_blueprint():
         password = form.password.strip()
 
         if not password:
-            return render_template('settings/profile.jinja2',
-                                   errorMessage=f'Password must not be empty',
-                                   userLanguage=current_user.language.name,
-                                   customFieldsByTrackType=get_custom_fields_by_track_type())
+            return render_template(
+                'settings/profile.jinja2',
+                errorMessage='Password must not be empty',
+                userLanguage=current_user.language.name,
+                customFieldsByTrackType=get_custom_fields_by_track_type(),
+            )
 
         if len(password) < MIN_PASSWORD_LENGTH:
-            return render_template('settings/profile.jinja2',
-                                   errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long',
-                                   userLanguage=current_user.language.name,
-                                   customFieldsByTrackType=get_custom_fields_by_track_type())
+            return render_template(
+                'settings/profile.jinja2',
+                errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long',
+                userLanguage=current_user.language.name,
+                customFieldsByTrackType=get_custom_fields_by_track_type(),
+            )
 
         user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
 
@@ -225,10 +258,11 @@ def construct_blueprint():
             abort(404)
 
         for itemType in TrackInfoItemType:
-            trackInfoItem = (TrackInfoItem.query
-                             .filter(TrackInfoItem.user_id == current_user.id)
-                             .filter(TrackInfoItem.type == itemType)
-                             .first())
+            trackInfoItem = (
+                TrackInfoItem.query.filter(TrackInfoItem.user_id == current_user.id)
+                .filter(TrackInfoItem.type == itemType)
+                .first()
+            )
 
             for itemName, itemValue in form.model_extra.items():
                 if itemType.name == itemName:
@@ -271,11 +305,13 @@ def construct_blueprint():
     @login_required
     @validate()
     def customFieldsAddPost(form: CustomTrackFieldFormModel):
-        track = CustomTrackField(name=form.name,
-                                 type=CustomTrackFieldType(form.type),
-                                 track_type=TrackType(form.track_type),
-                                 is_required=form.is_required,
-                                 user_id=current_user.id)
+        track = CustomTrackField(
+            name=form.name,
+            type=CustomTrackFieldType(form.type),
+            track_type=TrackType(form.track_type),
+            is_required=form.is_required,
+            user_id=current_user.id,
+        )
         LOGGER.debug(f'Saved new custom field: {track}')
         db.session.add(track)
         db.session.commit()
@@ -285,10 +321,12 @@ def construct_blueprint():
     @users.route('/customFields/edit/<int:field_id>')
     @login_required
     def customFieldsEdit(field_id: int):
-        field: CustomTrackField | None = (CustomTrackField.query.join(User)
-                                          .filter(User.username == current_user.username)
-                                          .filter(CustomTrackField.id == field_id)
-                                          .first())
+        field: CustomTrackField | None = (
+            CustomTrackField.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(CustomTrackField.id == field_id)
+            .first()
+        )
 
         if field is None:
             abort(404)
@@ -297,18 +335,23 @@ def construct_blueprint():
             name=field.name,
             type=field.type,
             track_type=field.track_type.name,
-            is_required=field.is_required)
+            is_required=field.is_required,
+        )
 
-        return render_template(f'settings/customFieldsForm.jinja2', field=fieldModel, field_id=field_id)
+        return render_template(
+            'settings/customFieldsForm.jinja2', field=fieldModel, field_id=field_id
+        )
 
     @users.route('/customFields/edit/<int:field_id>', methods=['POST'])
     @login_required
     @validate()
     def customFieldsEditPost(field_id: int, form: CustomTrackFieldFormModel):
-        field: CustomTrackField | None = (CustomTrackField.query.join(User)
-                                          .filter(User.username == current_user.username)
-                                          .filter(CustomTrackField.id == field_id)
-                                          .first())
+        field: CustomTrackField | None = (
+            CustomTrackField.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(CustomTrackField.id == field_id)
+            .first()
+        )
 
         if field is None:
             abort(404)
@@ -326,10 +369,12 @@ def construct_blueprint():
     @users.route('/customFields/delete/<int:field_id>')
     @login_required
     def customFieldsDelete(field_id: int):
-        field: CustomTrackField | None = (CustomTrackField.query.join(User)
-                                          .filter(User.username == current_user.username)
-                                          .filter(CustomTrackField.id == field_id)
-                                          .first())
+        field: CustomTrackField | None = (
+            CustomTrackField.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(CustomTrackField.id == field_id)
+            .first()
+        )
 
         if field is None:
             abort(404)
