@@ -16,12 +16,12 @@ class Language(enum.Enum):
     def __new__(cls, name: str, shortCode: str, localizedName: str):
         member = object.__new__(cls)
         member._value_ = name
-        member.shortCode = shortCode
-        member.localizedName = localizedName
+        member.shortCode = shortCode  # type: ignore[attr-defined]
+        member.localizedName = localizedName  # type: ignore[attr-defined]
         return member
 
 
-class User(UserMixin, db.Model):
+class User(UserMixin, db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     username: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
@@ -54,7 +54,7 @@ class TrackInfoItemType(enum.Enum):
         raise ValueError(f'Could not get localized name for unsupported TrackInfoItemType: {self}')
 
 
-class TrackInfoItem(db.Model):
+class TrackInfoItem(db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     type = db.Column(db.Enum(TrackInfoItemType))
     is_activated: Mapped[bool] = mapped_column(Boolean, nullable=False)

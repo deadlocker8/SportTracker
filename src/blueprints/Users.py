@@ -241,7 +241,7 @@ def construct_blueprint():
         if user is None:
             abort(404)
 
-        user.language = Language(form.language)
+        user.language = Language(form.language)  # type: ignore[call-arg]
 
         LOGGER.debug(f'Updated language for user: {user.username} to {form.language}')
         db.session.commit()
@@ -263,6 +263,9 @@ def construct_blueprint():
                 .filter(TrackInfoItem.type == itemType)
                 .first()
             )
+
+            if form.model_extra is None:
+                abort(400)
 
             for itemName, itemValue in form.model_extra.items():
                 if itemType.name == itemName:
@@ -298,7 +301,7 @@ def construct_blueprint():
     @users.route('/customFields/add/<string:track_type>')
     @login_required
     def customFieldsAdd(track_type: str):
-        trackType = TrackType(track_type)
+        trackType = TrackType(track_type)  # type: ignore[call-arg]
         return render_template('settings/customFieldsForm.jinja2', trackType=trackType)
 
     @users.route('/customFields/post', methods=['POST'])
@@ -308,7 +311,7 @@ def construct_blueprint():
         track = CustomTrackField(
             name=form.name,
             type=CustomTrackFieldType(form.type),
-            track_type=TrackType(form.track_type),
+            track_type=TrackType(form.track_type),  # type: ignore[call-arg]
             is_required=form.is_required,
             user_id=current_user.id,
         )
@@ -332,7 +335,7 @@ def construct_blueprint():
             abort(404)
 
         fieldModel = CustomTrackFieldFormModel(
-            name=field.name,
+            name=field.name,  # type: ignore[arg-type]
             type=field.type,
             track_type=field.track_type.name,
             is_required=field.is_required,
@@ -356,7 +359,7 @@ def construct_blueprint():
         if field is None:
             abort(404)
 
-        field.name = form.name
+        field.name = form.name  # type: ignore[assignment]
         field.type = form.type
         field.track_type = form.track_type
         field.is_required = form.is_required

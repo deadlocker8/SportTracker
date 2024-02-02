@@ -25,10 +25,10 @@ class TrackType(enum.Enum):
     ):
         member = object.__new__(cls)
         member._value_ = name
-        member.icon = icon
-        member.background_color = background_color
-        member.background_color_hex = background_color_hex
-        member.border_color = border_color
+        member.icon = icon  # type: ignore[attr-defined]
+        member.background_color = background_color  # type: ignore[attr-defined]
+        member.background_color_hex = background_color_hex  # type: ignore[attr-defined]
+        member.border_color = border_color  # type: ignore[attr-defined]
         return member
 
     def get_localized_name(self) -> str:
@@ -40,7 +40,7 @@ class TrackType(enum.Enum):
         raise ValueError(f'Could not get localized name for unsupported TrackType: {self}')
 
 
-class Track(db.Model):
+class Track(db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     type = db.Column(db.Enum(TrackType))
     name: Mapped[String] = mapped_column(String, nullable=False)
@@ -112,15 +112,19 @@ def get_distance_per_month_by_type(
     )
 
     result = []
-    for year in range(minYear, maxYear + 1):
-        for month in range(1, 13):
+    for currentYear in range(minYear, maxYear + 1):
+        for currentMonth in range(1, 13):
             for row in rows:
-                if row.year == year and row.month == month:
+                if row.year == currentYear and row.month == currentMonth:
                     result.append(
-                        MonthDistanceSum(year=year, month=month, distanceSum=float(row.distanceSum))
+                        MonthDistanceSum(
+                            year=currentYear, month=currentMonth, distanceSum=float(row.distanceSum)
+                        )
                     )
                     break
             else:
-                result.append(MonthDistanceSum(year=year, month=month, distanceSum=0.0))
+                result.append(
+                    MonthDistanceSum(year=currentYear, month=currentMonth, distanceSum=0.0)
+                )
 
     return result

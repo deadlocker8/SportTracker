@@ -33,7 +33,7 @@ def construct_blueprint():
             achievementList.append(
                 Achievement(
                     icon='sports_score',
-                    color=trackType.border_color,
+                    color=trackType.border_color,  # type: ignore[attr-defined]
                     title=gettext('Month Goal Streak'),
                     description=gettext(
                         'You have achieved all your monthly goals for <span class="fw-bold">{currentStreak}</span> '
@@ -44,7 +44,7 @@ def construct_blueprint():
             achievementList.append(
                 Achievement(
                     icon='route',
-                    color=trackType.border_color,
+                    color=trackType.border_color,  # type: ignore[attr-defined]
                     title=gettext('Longest Track'),
                     description=gettext(
                         'You completed <span class="fw-bold">{longestTrack} km</span> in one trip!'
@@ -59,7 +59,7 @@ def construct_blueprint():
             achievementList.append(
                 Achievement(
                     icon='map',
-                    color=trackType.border_color,
+                    color=trackType.border_color,  # type: ignore[attr-defined]
                     title=gettext('Total Distance'),
                     description=gettext(
                         'You completed a total of <span class="fw-bold">{totalDistance} km</span>!'
@@ -74,7 +74,7 @@ def construct_blueprint():
             achievementList.append(
                 Achievement(
                     icon='calendar_month',
-                    color=trackType.border_color,
+                    color=trackType.border_color,  # type: ignore[attr-defined]
                     title=gettext('Best Month'),
                     description=gettext(
                         '<span class="fw-bold">{bestMonthName}</span> was your best month with <span class="fw-bold">'

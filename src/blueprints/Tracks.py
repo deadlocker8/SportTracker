@@ -118,7 +118,7 @@ def construct_blueprint(uploadFolder: str):
     @tracks.route('/add/<string:track_type>')
     @login_required
     def addType(track_type: str):
-        trackType = TrackType(track_type)
+        trackType = TrackType(track_type)  # type: ignore[call-arg]
 
         customFields = (
             CustomTrackField.query.filter(CustomTrackField.user_id == current_user.id)
@@ -139,7 +139,7 @@ def construct_blueprint(uploadFolder: str):
 
         track = Track(
             name=form.name,
-            type=TrackType(form.type),
+            type=TrackType(form.type),  # type: ignore[call-arg]
             startTime=form.calculate_start_time(),
             duration=form.calculate_duration(),
             distance=form.distance * 1000,
@@ -154,7 +154,7 @@ def construct_blueprint(uploadFolder: str):
         db.session.commit()
 
         return redirect(
-            url_for('tracks.listTracks', year=track.startTime.year, month=track.startTime.month)
+            url_for('tracks.listTracks', year=track.startTime.year, month=track.startTime.month)  # type: ignore[attr-defined]
         )
 
     def is_allowed_file(filename: str) -> bool:
@@ -168,7 +168,7 @@ def construct_blueprint(uploadFolder: str):
             return None
 
         file = files['gpxTrack']
-        if file.filename == '':
+        if file.filename == '' or file.filename is None:
             return None
 
         if file and is_allowed_file(file.filename):
@@ -177,6 +177,8 @@ def construct_blueprint(uploadFolder: str):
             file.save(destinationPath)
             LOGGER.debug(f'Saved uploaded file {file.filename} to {destinationPath}')
             return filename
+
+        return None
 
     @tracks.route('/edit/<int:track_id>')
     @login_required
@@ -192,10 +194,10 @@ def construct_blueprint(uploadFolder: str):
             abort(404)
 
         trackModel = TrackFormModel(
-            name=track.name,
+            name=track.name,  # type: ignore[arg-type]
             type=track.type,
-            date=track.startTime.strftime('%Y-%m-%d'),
-            time=track.startTime.strftime('%H:%M'),
+            date=track.startTime.strftime('%Y-%m-%d'),  # type: ignore[attr-defined]
+            time=track.startTime.strftime('%H:%M'),  # type: ignore[attr-defined]
             distance=track.distance / 1000,
             durationHours=track.duration // 3600,
             durationMinutes=track.duration % 3600 // 60,

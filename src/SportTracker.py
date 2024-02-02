@@ -127,8 +127,8 @@ class SportTracker(FlaskBaseApp):
             return User.query.get(int(user_id))
 
         app.config['LANGUAGES'] = {
-            Language.ENGLISH.shortCode: Language.ENGLISH.localizedName,
-            Language.GERMAN.shortCode: Language.GERMAN.localizedName,
+            Language.ENGLISH.shortCode: Language.ENGLISH.localizedName,  # type: ignore[attr-defined]
+            Language.GERMAN.shortCode: Language.GERMAN.localizedName,  # type: ignore[attr-defined]
         }
         app.config['BABEL_TRANSLATION_DIRECTORIES'] = os.path.join(currentDirectory, 'localization')
 

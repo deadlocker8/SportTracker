@@ -12,7 +12,7 @@ from logic.model.User import User
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def createGpxInfo(trackId: int, trackName: str, trackStartTime: datetime) -> dict[str, str]:
+def createGpxInfo(trackId: int, trackName: str, trackStartTime: datetime) -> dict[str, str | int]:
     return {
         'trackId': trackId,
         'gpxUrl': url_for('gpxTracks.downloadGpxTrack', track_id=trackId),
@@ -62,7 +62,7 @@ def construct_blueprint():
 
         gpxInfo = []
         if track.gpxFileName:
-            gpxInfo = [createGpxInfo(track.id, track.name, track.startTime)]
+            gpxInfo = [createGpxInfo(track.id, track.name, track.startTime)]  # type: ignore[arg-type]
 
         return render_template('maps/mapSingleTrack.jinja2', gpxInfo=gpxInfo)
 

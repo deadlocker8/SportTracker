@@ -29,7 +29,7 @@ def construct_blueprint():
     def chartDistancePerYear():
         minYear, maxYear = __get_min_and_max_year()
 
-        chartDataDistancePerYear = []
+        chartDataDistancePerYear: list[dict[str, Any]] = []
         if minYear is None or maxYear is None:
             return chartDataDistancePerYear
         else:
@@ -47,7 +47,7 @@ def construct_blueprint():
     def chartDistancePerMonth():
         minYear, maxYear = __get_min_and_max_year()
 
-        chartDataDistancePerMonth = []
+        chartDataDistancePerMonth: list[dict[str, Any]] = []
         if minYear is None or maxYear is None:
             return chartDataDistancePerMonth
         else:
@@ -62,11 +62,15 @@ def construct_blueprint():
         )
 
     def __get_min_and_max_year() -> tuple[int | None, int | None]:
-        minDate, maxDate = db.session.query(
+        result = db.session.query(
             func.min(Track.startTime),
             func.max(Track.startTime).filter(Track.user_id == current_user.id),
         ).first()
 
+        if result is None:
+            return None, None
+
+        minDate, maxDate = result
         if minDate is None or maxDate is None:
             return None, None
 
@@ -83,7 +87,7 @@ def construct_blueprint():
     @charts.route('/chartDistancePerCustomField/<string:track_type>/<string:name>')
     @login_required
     def chartDistancePerCustomField(track_type: str, name: str):
-        trackType = TrackType(track_type)
+        trackType = TrackType(track_type)  # type: ignore[call-arg]
 
         customField = Track.custom_fields[name].astext.cast(String)
 
@@ -119,7 +123,7 @@ def construct_blueprint():
     def chartAverageSpeed():
         minYear, maxYear = __get_min_and_max_year()
 
-        chartDataAverageSpeed = []
+        chartDataAverageSpeed: list[dict[str, list | TrackType]] = []
         if minYear is None or maxYear is None:
             return chartDataAverageSpeed
         else:
@@ -173,7 +177,7 @@ def construct_blueprint():
     @charts.route('/durationPerTrack/<string:track_type>/<string:name>')
     @login_required
     def chartDurationPerTrack(track_type: str, name: str):
-        trackType = TrackType(track_type)
+        trackType = TrackType(track_type)  # type: ignore[call-arg]
 
         tracks = (
             Track.query.filter(Track.user_id == current_user.id)
@@ -241,14 +245,14 @@ def construct_blueprint():
 
         yearNames = []
         values = []
-        for year in range(minYear, maxYear + 1):
+        for currentYear in range(minYear, maxYear + 1):
             for row in rows:
-                if row.year == year:
-                    yearNames.append(year)
+                if row.year == currentYear:
+                    yearNames.append(currentYear)
                     values.append(float(row.distanceSum))
                     break
             else:
-                yearNames.append(year)
+                yearNames.append(currentYear)
                 values.append(0.0)
 
         return {'yearNames': yearNames, 'values': values, 'type': trackType}

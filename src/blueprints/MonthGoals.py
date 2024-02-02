@@ -4,7 +4,7 @@ from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
 from logic import Constants
-from logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
+from logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalSummary
 from logic.model.User import User
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -39,7 +39,7 @@ def construct_blueprint():
 
         currentYear = None
         summariesByYear = {}
-        summaries = []
+        summaries: list[MonthGoalSummary] = []
         for goal in goals:
             if currentYear is None:
                 currentYear = goal.year

@@ -52,7 +52,7 @@ def construct_blueprint(uploadFolder: str):
 
         gpxFileName = str(track.gpxFileName)
         if gpxFileName is not None:
-            track.gpxFileName = None
+            track.gpxFileName = None  # type: ignore[assignment]
             db.session.commit()
 
             try:

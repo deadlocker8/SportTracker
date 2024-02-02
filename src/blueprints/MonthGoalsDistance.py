@@ -48,7 +48,7 @@ def construct_blueprint():
     @validate()
     def addPost(form: MonthGoalDistanceFormModel):
         monthGoal = MonthGoalDistance(
-            type=TrackType(form.type),
+            type=TrackType(form.type),  # type: ignore[call-arg]
             year=form.year,
             month=form.month,
             distance_minimum=form.distance_minimum * 1000,
@@ -83,7 +83,7 @@ def construct_blueprint():
         while currentYear != form.end_year or currentMonth != form.end_month:
             monthGoals.append(
                 MonthGoalDistance(
-                    type=TrackType(form.type),
+                    type=TrackType(form.type),  # type: ignore[call-arg]
                     year=currentYear,
                     month=currentMonth,
                     distance_minimum=form.distance_minimum * 1000,
@@ -144,7 +144,7 @@ def construct_blueprint():
         if monthGoal is None:
             abort(404)
 
-        monthGoal.type = TrackType(form.type)
+        monthGoal.type = TrackType(form.type)  # type: ignore[call-arg]
         monthGoal.year = form.year
         monthGoal.month = form.month
         monthGoal.distance_minimum = form.distance_minimum * 1000

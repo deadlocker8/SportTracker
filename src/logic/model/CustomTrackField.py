@@ -14,7 +14,7 @@ class CustomTrackFieldType(enum.Enum):
     FLOAT = 'FLOAT'
 
 
-class CustomTrackField(db.Model):
+class CustomTrackField(db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     type = db.Column(db.Enum(CustomTrackFieldType))
     track_type = db.Column(db.Enum(TrackType))

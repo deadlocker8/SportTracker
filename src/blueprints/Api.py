@@ -46,7 +46,7 @@ def construct_blueprint(version: dict):
 
     @api.route('/version')
     @login_required
-    def version():
+    def getVersion():
         return jsonify(version)
 
     @api.route('/addTrack', methods=['POST'])
@@ -59,7 +59,7 @@ def construct_blueprint(version: dict):
 
         track = Track(
             name=form.name,
-            type=TrackType(form.type),
+            type=TrackType(form.type),  # type: ignore[call-arg]
             startTime=form.calculate_start_time(),
             duration=form.calculate_duration(),
             distance=form.distance * 1000,
@@ -84,7 +84,7 @@ def construct_blueprint(version: dict):
             return jsonify({'error': str(e)}), 400
 
         monthGoal = MonthGoalDistance(
-            type=TrackType(form.type),
+            type=TrackType(form.type),  # type: ignore[call-arg]
             year=form.year,
             month=form.month,
             distance_minimum=form.distance_minimum * 1000,
@@ -107,7 +107,7 @@ def construct_blueprint(version: dict):
             return jsonify({'error': str(e)}), 400
 
         monthGoal = MonthGoalCount(
-            type=TrackType(form.type),
+            type=TrackType(form.type),  # type: ignore[call-arg]
             year=form.year,
             month=form.month,
             count_minimum=form.count_minimum,

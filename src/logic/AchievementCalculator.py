@@ -60,8 +60,8 @@ class AchievementCalculator:
         currentYear = now.year
         currentMonth = now.month
 
-        year = firstTrack.startTime.year
-        month = firstTrack.startTime.month
+        year = firstTrack.startTime.year  # type: ignore[attr-defined]
+        month = firstTrack.startTime.month  # type: ignore[attr-defined]
 
         highestStreak = 0
         currentStreak = 0
@@ -88,12 +88,16 @@ class AchievementCalculator:
 
     @staticmethod
     def _get_min_and_max_date(trackType: TrackType) -> tuple[datetime | None, datetime | None]:
-        minDate, maxDate = db.session.query(
+        result = db.session.query(
             func.min(Track.startTime),
             func.max(Track.startTime)
             .filter(Track.type == trackType)
             .filter(Track.user_id == current_user.id),
         ).first()
+        if result is None:
+            return None, None
+
+        minDate, maxDate = result
         return maxDate, minDate
 
     @staticmethod

@@ -32,7 +32,7 @@ def construct_blueprint():
             lines = f.readlines()
 
         changelog = OrderedDict()
-        currentList = []
+        currentList: list[str] = []
         for line in reversed(lines):
             line = line.strip()
             if not line:

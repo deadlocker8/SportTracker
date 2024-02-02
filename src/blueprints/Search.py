@@ -27,12 +27,12 @@ def construct_blueprint():
         searchText = searchText.strip()
 
         try:
-            pageNumber = int(pageNumber)
+            pageNumberValue = int(pageNumber)  # type: ignore[arg-type]
         except (TypeError, ValueError):
-            pageNumber = 1
+            pageNumberValue = 1
 
-        if pageNumber < 1:
-            pageNumber = 1
+        if pageNumberValue < 1:
+            pageNumberValue = 1
 
         pagination = db.paginate(
             Track.query.join(User)
@@ -40,7 +40,7 @@ def construct_blueprint():
             .filter(Track.name.icontains(searchText))
             .order_by(Track.startTime.desc()),
             per_page=10,
-            page=pageNumber,
+            page=pageNumberValue,
         )
 
         results = {

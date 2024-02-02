@@ -59,7 +59,7 @@ class MonthGoalCountSummary(MonthGoalSummary):
         return f'{self.actual_count} / {self.goal_count_perfect}'
 
 
-class MonthGoal(db.Model):
+class MonthGoal(db.Model):  # type: ignore[name-defined]
     __abstract__ = True
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     type = db.Column(db.Enum(TrackType))
