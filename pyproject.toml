@@ -28,7 +28,16 @@ gpxpy = "1.6.2"
 faker = "22.6.0"
 
 [tool.poetry.dev-dependencies]
+ruff = "0.2.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+
+[tool.ruff.format]
+quote-style = "single"
