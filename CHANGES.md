@@ -1,6 +1,8 @@
 # 1.9.2
 - fix: chart duration per track
 - fix: achievement for month goal streak: fix calculation of streak
+- ci: added code formatter and linter "ruff"
+- ci: added type checker "mypy"
 
 # 1.9.1
 - fix: wrong date localization at beginning of year
