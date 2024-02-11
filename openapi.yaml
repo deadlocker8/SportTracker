@@ -62,6 +62,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseId'
+  /api/addGpxFile/{track_id}:
+    post:
+      parameters:
+        - in: path
+          name: track_id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                gpxTrack:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: "Okay"
 
 components:
   schemas:

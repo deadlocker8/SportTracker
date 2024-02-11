@@ -1,6 +1,5 @@
 import logging
 import os
-import uuid
 from dataclasses import dataclass
 from datetime import datetime, date
 
@@ -10,8 +9,8 @@ from flask_babel import format_datetime
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel, ConfigDict, field_validator
-from werkzeug.datastructures.file_storage import FileStorage
 
+from blueprints.GpxTracks import handleGpxTrack
 from logic import Constants
 from logic.model.CustomTrackField import CustomTrackField
 from logic.model.MonthGoal import MonthGoalSummary, get_goal_summaries_by_year_and_month_and_types
@@ -135,7 +134,7 @@ def construct_blueprint(uploadFolder: str):
     @login_required
     @validate()
     def addPost(form: TrackFormModel):
-        gpxFileName = handleGpxTrack(request.files)
+        gpxFileName = handleGpxTrack(request.files, uploadFolder)
 
         track = Track(
             name=form.name,
@@ -154,31 +153,12 @@ def construct_blueprint(uploadFolder: str):
         db.session.commit()
 
         return redirect(
-            url_for('tracks.listTracks', year=track.startTime.year, month=track.startTime.month)  # type: ignore[attr-defined]
+            url_for(
+                'tracks.listTracks',
+                year=track.startTime.year,  # type: ignore[attr-defined]
+                month=track.startTime.month,  # type: ignore[attr-defined]
+            )
         )
-
-    def is_allowed_file(filename: str) -> bool:
-        if '.' not in filename:
-            return False
-
-        return filename.rsplit('.', 1)[1].lower() == 'gpx'
-
-    def handleGpxTrack(files: dict[str, FileStorage]) -> str | None:
-        if 'gpxTrack' not in files:
-            return None
-
-        file = files['gpxTrack']
-        if file.filename == '' or file.filename is None:
-            return None
-
-        if file and is_allowed_file(file.filename):
-            filename = f'{uuid.uuid4().hex}.gpx'
-            destinationPath = os.path.join(uploadFolder, filename)
-            file.save(destinationPath)
-            LOGGER.debug(f'Saved uploaded file {file.filename} to {destinationPath}')
-            return filename
-
-        return None
 
     @tracks.route('/edit/<int:track_id>')
     @login_required
@@ -243,7 +223,7 @@ def construct_blueprint(uploadFolder: str):
         track.averageHeartRate = form.averageHeartRate
         track.elevationSum = form.elevationSum
 
-        newGpxFileName = handleGpxTrack(request.files)
+        newGpxFileName = handleGpxTrack(request.files, uploadFolder)
         if track.gpxFileName is None:
             track.gpxFileName = newGpxFileName
         else:

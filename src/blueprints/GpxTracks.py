@@ -1,8 +1,10 @@
 import logging
 import os
+import uuid
 
 from flask import Blueprint, abort, Response
 from flask_login import login_required, current_user
+from werkzeug.datastructures.file_storage import FileStorage
 
 from logic import Constants
 from logic.GpxService import GpxService
@@ -66,3 +68,28 @@ def construct_blueprint(uploadFolder: str):
         return Response(status=204)
 
     return gpxTracks
+
+
+def __is_allowed_file(filename: str) -> bool:
+    if '.' not in filename:
+        return False
+
+    return filename.rsplit('.', 1)[1].lower() == 'gpx'
+
+
+def handleGpxTrack(files: dict[str, FileStorage], uploadFolder: str) -> str | None:
+    if 'gpxTrack' not in files:
+        return None
+
+    file = files['gpxTrack']
+    if file.filename == '' or file.filename is None:
+        return None
+
+    if file and __is_allowed_file(file.filename):
+        filename = f'{uuid.uuid4().hex}.gpx'
+        destinationPath = os.path.join(uploadFolder, filename)
+        file.save(destinationPath)
+        LOGGER.debug(f'Saved uploaded file {file.filename} to {destinationPath}')
+        return filename
+
+    return None

@@ -1,15 +1,17 @@
 import logging
 from datetime import datetime
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, abort
 from flask_login import login_required, current_user
 from pydantic import ValidationError, BaseModel
 
+from blueprints.GpxTracks import handleGpxTrack
 from blueprints.MonthGoalsCount import MonthGoalCountFormModel
 from blueprints.MonthGoalsDistance import MonthGoalDistanceFormModel
 from logic import Constants
 from logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
 from logic.model.Track import Track, TrackType
+from logic.model.User import User
 from logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -41,7 +43,7 @@ class TrackApiFormModel(BaseModel):
         return 3600 * self.durationHours + 60 * self.durationMinutes + self.durationSeconds
 
 
-def construct_blueprint(version: dict):
+def construct_blueprint(version: dict, uploadFolder: str):
     api = Blueprint('api', __name__, static_folder='static', url_prefix='/api')
 
     @api.route('/version')
@@ -119,5 +121,30 @@ def construct_blueprint(version: dict):
         db.session.commit()
 
         return {'id': monthGoal.id}, 200
+
+    @api.route('/addGpxTrack/<int:track_id>', methods=['POST'])
+    @login_required
+    def addGpxTrackTrack(track_id: int):
+        track = (
+            Track.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(Track.id == track_id)
+            .first()
+        )
+
+        if track is None:
+            abort(404)
+
+        newGpxFileName = handleGpxTrack(request.files, uploadFolder)
+        if newGpxFileName is None:
+            abort(400)
+
+        track.gpxFileName = newGpxFileName
+
+        LOGGER.debug(f'Added gpx track {newGpxFileName} to track {track.id}')
+        db.session.add(track)
+        db.session.commit()
+
+        return '', 200
 
     return api
