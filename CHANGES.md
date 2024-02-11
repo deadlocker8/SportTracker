@@ -1,3 +1,7 @@
+# x.x.x
+- add: api: return id of created track or month goal
+- add: new api route to upload a gpx track for an existing track
+
 # 1.9.2
 - fix: chart duration per track
 - fix: achievement for month goal streak: fix calculation of streak
