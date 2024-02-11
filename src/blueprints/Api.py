@@ -1,4 +1,5 @@
 import logging
+from dataclasses import dataclass
 from datetime import datetime
 
 from flask import Blueprint, jsonify, request, abort
@@ -41,6 +42,19 @@ class TrackApiFormModel(BaseModel):
         if self.durationSeconds is None:
             return None
         return 3600 * self.durationHours + 60 * self.durationMinutes + self.durationSeconds
+
+
+@dataclass
+class TrackModel:
+    name: str
+    type: str
+    startTime: str
+    distance: int
+    duration: int | None = None
+    averageHeartRate: int | None = None
+    elevationSum: int | None = None
+    gpxFileName: str | None = None
+    customFields: dict[str, str] | None = None
 
 
 def construct_blueprint(version: dict, uploadFolder: str):
@@ -146,5 +160,33 @@ def construct_blueprint(version: dict, uploadFolder: str):
         db.session.commit()
 
         return '', 200
+
+    @api.route('/tracks')
+    @login_required
+    def getTracks():
+        tracks = (
+            Track.query.join(User)
+            .filter(User.username == current_user.username)
+            .order_by(Track.startTime.desc())
+            .all()
+        )
+
+        result = []
+        for track in tracks:
+            result.append(
+                TrackModel(
+                    name=track.name,
+                    type=track.type.name,
+                    startTime=track.startTime.strftime('%Y-%m-%d %H:%M:%S'),
+                    distance=track.distance,
+                    duration=track.duration,
+                    averageHeartRate=track.averageHeartRate,
+                    elevationSum=track.elevationSum,
+                    gpxFileName=track.gpxFileName,
+                    customFields=track.custom_fields,
+                )
+            )
+
+        return result, 200
 
     return api

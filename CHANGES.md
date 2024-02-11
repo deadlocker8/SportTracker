@@ -2,6 +2,7 @@
 - add: new chart: year calendar
 - add: api: return id of created track or month goal
 - add: new api route to upload a gpx track for an existing track
+- add: new api route to fetch all existing tracks
 - chore: update dependencies
 
 # 1.9.2

@@ -82,6 +82,17 @@ paths:
       responses:
         200:
           description: "Okay"
+  /api/tracks:
+    get:
+      responses:
+        200:
+          description: "Okay"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrackModel'
 
 components:
   schemas:
@@ -182,4 +193,38 @@ components:
       properties:
         id:
           type: integer
+    TrackModel:
+      type: object
+      required:
+        - name
+        - type
+        - startTime
+        - distance
+        - duration
+        - averageHeartRate
+        - elevationSum
+        - customFields
+        - gpxFileName
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          example: BIKING or RUNNING
+        startTime:
+          type: string
+          example: 2024-01-30 10:00:00
+        distance:
+          type: integer
+        duration:
+          type: integer
+        averageHeartRate:
+          type: integer
+        elevationSum:
+          type: integer
+        gpxFileName:
+          type: string
+        customFields:
+          type: object
+          example: { 'bike': 'Cube' }
 
