@@ -28,7 +28,7 @@ gpxpy = "1.6.2"
 faker = "23.0.0"
 
 [tool.poetry.dev-dependencies]
-ruff = "0.2.0"
+ruff = "0.2.1"
 pre-commit = "3.6.1"
 mypy = "1.8.0"
 
