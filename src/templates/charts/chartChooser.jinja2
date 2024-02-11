@@ -60,6 +60,13 @@
                             <div class="fs-3 text-light">{{ gettext('Duration per Track') }}</div>
                         </a>
                     </div>
+                    <div class="col col-6">
+                        <a href="{{ url_for('charts.chartCalendar', year=currentYear) }}"
+                           class="btn btn-link text-decoration-none">
+                            <div class="material-icons rounded-circle fs-1 p-3 text-dark bg-primary-subtle mb-2">calendar_month</div>
+                            <div class="fs-3 text-light">{{ gettext('Calendar') }}</div>
+                        </a>
+                    </div>
                 </div>
             </section>
         </div>

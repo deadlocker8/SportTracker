@@ -19,6 +19,15 @@ body {
     padding: 0.2rem;
 }
 
+.calendar-container {
+    max-width: 90%;
+    margin: auto;
+}
+
+.calendar-cell {
+    width: 1.7rem;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

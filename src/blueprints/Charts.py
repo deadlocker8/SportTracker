@@ -1,7 +1,10 @@
+import calendar
 import logging
-from datetime import date
+from datetime import date, datetime
 from typing import Any
 
+import flask_babel
+from babel.dates import get_day_names
 from flask import Blueprint, render_template
 from flask_babel import gettext, format_datetime
 from flask_login import login_required, current_user
@@ -10,7 +13,12 @@ from sqlalchemy import extract, func, String, asc
 from helpers.Helpers import format_duration
 from logic import Constants
 from logic.model.CustomTrackField import get_custom_fields_by_track_type
-from logic.model.Track import TrackType, Track, get_distance_per_month_by_type
+from logic.model.Track import (
+    TrackType,
+    Track,
+    get_distance_per_month_by_type,
+    get_tracks_by_year_and_month_by_type,
+)
 from logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -22,7 +30,7 @@ def construct_blueprint():
     @charts.route('/')
     @login_required
     def chartChooser():
-        return render_template('charts/chartChooser.jinja2')
+        return render_template('charts/chartChooser.jinja2', currentYear=datetime.now().year)
 
     @charts.route('/distancePerYear')
     @login_required
@@ -212,6 +220,122 @@ def construct_blueprint():
             'charts/chartDurationPerTrack.jinja2',
             chartDataDurationPerTrack=chartDataDurationPerTrack,
         )
+
+    @charts.route('/calendar/<int:year>')
+    @login_required
+    def chartCalendar(year: int):
+        singleWeekDayPattern = __get_single_week_day_pattern()
+        calendarData = {
+            'weekDayPattern': singleWeekDayPattern * 5 + singleWeekDayPattern[:2],
+            'months': [],
+        }
+
+        months = []
+        for monthNumber in range(1, 13):
+            currentMonthDate = date(year=year, month=monthNumber, day=1)
+            __, numberOfDays = calendar.monthrange(year, monthNumber)
+
+            tracks = get_tracks_by_year_and_month_by_type(year, monthNumber, [t for t in TrackType])
+
+            days = []
+            for dayNumber in range(1, numberOfDays + 1):
+                numberOfTracksPerType = {}
+                colors = []
+                for trackType in TrackType:
+                    numberOfTracks = __get_number_of_tracks_per_day_by_type(
+                        tracks, trackType, year, monthNumber, dayNumber
+                    )
+                    numberOfTracksPerType[trackType] = numberOfTracks
+                    if numberOfTracks > 0:
+                        colors.append(trackType.background_color_hex)  # type: ignore[attr-defined]
+
+                gradient = __determine_gradient(colors)
+                isWeekend = date(year=year, month=monthNumber, day=dayNumber).weekday() in [5, 6]
+
+                days.append(
+                    {
+                        'number': dayNumber,
+                        'numberOfTracksPerType': numberOfTracksPerType,
+                        'gradient': gradient,
+                        'isWeekend': isWeekend,
+                    }
+                )
+
+            months.append(
+                {
+                    'number': monthNumber,
+                    'name': format_datetime(currentMonthDate, format='MMMM'),
+                    'days': days,
+                    'startIndex': currentMonthDate.weekday(),
+                }
+            )
+
+        calendarData['months'] = months
+
+        return render_template(
+            'charts/chartCalendar.jinja2',
+            calendarData=calendarData,
+            availableYears=__get_available_years(),
+            currentYear=year,
+        )
+
+    def __get_number_of_tracks_per_day_by_type(
+        tracks: list[Track], trackType: TrackType, year: int, month: int, day: int
+    ) -> int:
+        counter = 0
+        for track in tracks:
+            if track.type != trackType:
+                continue
+
+            if track.startTime.year != year:  # type: ignore[attr-defined]
+                continue
+
+            if track.startTime.month != month:  # type: ignore[attr-defined]
+                continue
+
+            if track.startTime.day != day:  # type: ignore[attr-defined]
+                continue
+
+            counter += 1
+
+        return counter
+
+    def __determine_gradient(colors: list[str]) -> str | None:
+        if not colors:
+            return None
+
+        colorStops = []
+        percentageStep = 100 / len(colors)
+        for index, color in enumerate(colors):
+            colorStops.append(f'{color} {index * percentageStep}%')
+            colorStops.append(f'{color} {(index + 1) * percentageStep}%')
+
+        return f'background-image: repeating-linear-gradient(45deg, {",".join(colorStops)})'
+
+    def __get_single_week_day_pattern() -> list[str]:
+        patternWithSundayAsFirstDay = list(
+            get_day_names(width='narrow', locale=flask_babel.get_locale()).values()
+        )
+        patternWithMondayAsFirstDay = (
+            patternWithSundayAsFirstDay[1:] + patternWithSundayAsFirstDay[0:1]
+        )
+        return patternWithMondayAsFirstDay
+
+    def __get_available_years() -> list[int]:
+        year = extract('year', Track.startTime)
+
+        rows = (
+            Track.query.with_entities(year.label('year'))
+            .filter(Track.user_id == current_user.id)
+            .group_by(year)
+            .order_by(year)
+            .all()
+        )
+
+        if rows is None:
+            return []
+
+        return [int(row.year) for row in rows]
 
     def __get_distance_per_month_by_type(
         trackType: TrackType, minYear: int, maxYear: int

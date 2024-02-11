@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Charts') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('charts') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center calendar-container">
+                <div class="row mb-3">
+                    <div class="col col-12 mx-auto">
+                        <h1>{{ gettext('Calendar') }} {{ currentYear }}</h1>
+                    </div>
+                </div>
+
+                 <div class="row mb-3">
+                    <div class="col col-12 mx-auto">
+                        {% for year in availableYears %}
+                            <a href="{{ url_for('charts.chartCalendar', year=year) }}" class="btn btn-primary btn-sm">
+                                <span class=" text-light">{{ year }}</span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column">
+                    <div class="row mb-3">
+                        <div class="col col-2 fs-4 text-end"></div>
+
+                        <div class="col col-10 d-flex flex-row align-center ps-5">
+                            {% for dayName in calendarData['weekDayPattern'] %}
+                                <div class="d-flex align-items-center justify-content-center badge mx-1 calendar-cell bg-transparent text-light fs-5">{{ dayName }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% for month in calendarData['months'] %}
+                        <div class="row mb-3">
+                            <div class="col col-2 fs-4 text-end">{{ month['name'] }}</div>
+
+                            <div class="col col-10 d-flex flex-row align-center ps-5">
+                                {% for index in range(month['startIndex']) %}
+                                    <div class="d-flex align-items-center justify-content-center badge mx-1 calendar-cell bg-transparent"></div>
+                                {% endfor %}
+
+                                {% for day in month['days'] %}
+                                    {% set weekendBorder = '' %}
+                                    {% if day['isWeekend'] %}
+                                        {% set weekendBorder = 'bg-secondary text-black' %}
+                                    {% endif %}
+
+                                    {% if day['gradient'] is none %}
+                                        <div class="d-flex align-items-center justify-content-center badge mx-1 calendar-cell text-secondary {{ weekendBorder }} border border-secondary">{{ day['number'] }}</div>
+                                    {% else %}
+                                        <div class="d-flex align-items-center justify-content-center badge mx-1 calendar-cell text-black {{ weekendBorder }}" style="{{ day['gradient'] }}">{{ day['number'] }}</div>
+                                    {% endif %}
+
+                                {% endfor %}
+
+                                {% for index in range(month['days'] | length + 1, 32) %}
+                                    <div class="d-flex align-items-center justify-content-center badge mx-1 calendar-cell bg-transparent"></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>
