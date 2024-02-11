@@ -30,6 +30,10 @@ paths:
       responses:
         200:
           description: "Okay"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseId'
   /api/addMonthGoalDistance:
     post:
       requestBody:
@@ -40,6 +44,10 @@ paths:
       responses:
         200:
           description: "Okay"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseId'
   /api/addMonthGoalCount:
     post:
       requestBody:
@@ -50,6 +58,10 @@ paths:
       responses:
         200:
           description: "Okay"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseId'
 
 components:
   schemas:
@@ -145,3 +157,9 @@ components:
         count_perfect:
           type: integer
           example: 5
+    ResponseId:
+      type: object
+      properties:
+        id:
+          type: integer
+

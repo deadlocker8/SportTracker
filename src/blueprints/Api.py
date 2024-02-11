@@ -73,7 +73,7 @@ def construct_blueprint(version: dict):
         db.session.add(track)
         db.session.commit()
 
-        return '', 200
+        return {'id': track.id}, 200
 
     @api.route('/addMonthGoalDistance', methods=['POST'])
     @login_required
@@ -96,7 +96,7 @@ def construct_blueprint(version: dict):
         db.session.add(monthGoal)
         db.session.commit()
 
-        return '', 200
+        return {'id': monthGoal.id}, 200
 
     @api.route('/addMonthGoalCount', methods=['POST'])
     @login_required
@@ -118,6 +118,6 @@ def construct_blueprint(version: dict):
         db.session.add(monthGoal)
         db.session.commit()
 
-        return '', 200
+        return {'id': monthGoal.id}, 200
 
     return api
