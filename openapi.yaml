@@ -30,6 +30,26 @@ paths:
       responses:
         200:
           description: "Okay"
+  /api/addMonthGoalDistance:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MonthGoalDistanceFormModel'
+      responses:
+        200:
+          description: "Okay"
+  /api/addMonthGoalCount:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MonthGoalDistanceFormModel'
+      responses:
+        200:
+          description: "Okay"
 
 components:
   schemas:
@@ -73,3 +93,55 @@ components:
         customFields:
           type: object
           example: {'bike': 'Cube'}
+
+    MonthGoalDistanceFormModel:
+      type: object
+      required:
+        - type
+        - year
+        - month
+        - distance_minimum
+        - distance_perfect
+      properties:
+        type:
+          type: string
+          example: BIKING or RUNNING
+        year:
+          type: integer
+          example: 2024
+        month:
+          type: integer
+          example: 1
+        distance_minimum:
+          type: number
+          format: float
+          example: 100.0
+        distance_perfect:
+          type: number
+          format: float
+          example: 200.0
+
+    MonthGoalCountFormModel:
+      type: object
+      required:
+        - type
+        - year
+        - month
+        - count_minimum
+        - count_perfect
+      properties:
+        type:
+          type: string
+          example: BIKING or RUNNING
+        year:
+          type: integer
+          example: 2024
+        month:
+          type: integer
+          example: 1
+        count_minimum:
+          type: integer
+          example: 3
+        count_perfect:
+          type: integer
+          example: 5
