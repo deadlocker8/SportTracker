@@ -46,11 +46,13 @@ class SportTracker(FlaskBaseApp):
         logger: logging.Logger,
         isDebug: bool,
         generateDummyData: bool,
+        prepareDatabase: bool
     ):
         super().__init__(appName, rootDir, logger, serveFavicon=True)
 
         self._isDebug = isDebug
         self._generateDummyData = generateDummyData
+        self._prepareDatabase = prepareDatabase
 
         loggingSettings = self._settings['logging']
         if loggingSettings['enableRotatingLogFile']:
@@ -74,13 +76,8 @@ class SportTracker(FlaskBaseApp):
         rootDirectory = os.path.dirname(currentDirectory)
         app.config['UPLOAD_FOLDER'] = os.path.join(rootDirectory, 'uploads')
 
-        with app.app_context():
-            db.create_all()
-            self.__create_admin_user()
-
-            if self._generateDummyData:
-                dummyDataGenerator = DummyDataGenerator(app.config['UPLOAD_FOLDER'])
-                dummyDataGenerator.generate()
+        if self._prepareDatabase:
+            self.__prepare_database(app)
 
         @app.context_processor
         def inject_version_name() -> dict[str, Any]:
@@ -176,9 +173,18 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(GpxTracks.construct_blueprint(app.config['UPLOAD_FOLDER']))
         app.register_blueprint(Maps.construct_blueprint())
 
+    def __prepare_database(self, app):
+        with app.app_context():
+            db.create_all()
+            self.__create_admin_user()
+
+            if self._generateDummyData:
+                dummyDataGenerator = DummyDataGenerator(app.config['UPLOAD_FOLDER'])
+                dummyDataGenerator.generate()
+
 
 def create_app():
-    server = SportTracker(Constants.APP_NAME, os.path.dirname(__file__), LOGGER, False, False)
+    server = SportTracker(Constants.APP_NAME, os.path.dirname(__file__), LOGGER, False, False, False)
     return server.init_app()
 
 
@@ -186,8 +192,8 @@ def create_app():
 @click.option('--debug', '-d', is_flag=True, help='Enable debug mode')
 @click.option('--dummy', '-dummy', is_flag=True, help='Generate dummy tracks')
 def start(debug, dummy):
-    server = SportTracker(Constants.APP_NAME, os.path.dirname(__file__), LOGGER, debug, dummy)
-    server.start_server()
+    sportTracker = SportTracker(Constants.APP_NAME, os.path.dirname(__file__), LOGGER, debug, dummy, True)
+    sportTracker.start_server()
 
 
 if __name__ == '__main__':
