@@ -35,7 +35,12 @@ def construct_blueprint(uploadFolder: str):
             gpxTrackPath = os.path.join(uploadFolder, str(track.gpxFileName))
             gpxService = GpxService(gpxTrackPath)
             modifiedGpxXml = gpxService.join_tracks_and_segments()
-            return Response(modifiedGpxXml, mimetype='application/gpx')
+            fileName = f'{track_id}.gpx'
+            return Response(
+                modifiedGpxXml,
+                mimetype='application/gpx',
+                headers={'content-disposition': f'attachment; filename={fileName}'},
+            )
 
         abort(404)
 
