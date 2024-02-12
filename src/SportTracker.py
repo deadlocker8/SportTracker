@@ -33,7 +33,7 @@ from logic import Constants
 from logic.DummyDataGenerator import DummyDataGenerator
 from logic.model.Track import Track
 from logic.model.User import User, Language, create_user, TrackInfoItem, TrackInfoItemType
-from logic.model.db import db
+from logic.model.db import db, migrate
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
@@ -69,6 +69,7 @@ class SportTracker(FlaskBaseApp):
         app.config['SQLALCHEMY_DATABASE_URI'] = self._settings['database']['uri']
 
         db.init_app(app)
+        migrate.init_app(app, db)
 
         rootDirectory = os.path.dirname(currentDirectory)
         app.config['UPLOAD_FOLDER'] = os.path.join(rootDirectory, 'uploads')
@@ -174,6 +175,11 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Search.construct_blueprint())
         app.register_blueprint(GpxTracks.construct_blueprint(app.config['UPLOAD_FOLDER']))
         app.register_blueprint(Maps.construct_blueprint())
+
+
+def create_app():
+    server = SportTracker(Constants.APP_NAME, os.path.dirname(__file__), LOGGER, False, False)
+    return server.init_app()
 
 
 @click.command()
