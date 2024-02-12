@@ -31,7 +31,7 @@ from blueprints import (
 from helpers import Helpers
 from logic import Constants
 from logic.DummyDataGenerator import DummyDataGenerator
-from logic.model.Track import Track
+from logic.model.Track import Track, TrackType
 from logic.model.User import User, Language, create_user, TrackInfoItem, TrackInfoItemType
 from logic.model.db import db, migrate
 
@@ -82,6 +82,10 @@ class SportTracker(FlaskBaseApp):
         @app.context_processor
         def inject_version_name() -> dict[str, Any]:
             return {'versionName': self._version['name']}
+
+        @app.context_processor
+        def inject_track_types() -> dict[str, Any]:
+            return {'trackTypes': [t for t in TrackType]}
 
         def format_decimal(value: int | float, decimals: int = 1) -> str:
             return Helpers.format_decimal(value, decimals)

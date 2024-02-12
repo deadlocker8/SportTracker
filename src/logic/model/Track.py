@@ -37,6 +37,8 @@ class TrackType(enum.Enum):
             return gettext('Biking')
         elif self == self.RUNNING:
             return gettext('Running')
+        elif self == self.HIKING:
+            return gettext('Hiking')
 
         raise ValueError(f'Could not get localized name for unsupported TrackType: {self}')
 
