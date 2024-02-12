@@ -12,14 +12,15 @@ from logic.model.db import db
 
 
 class TrackType(enum.Enum):
-    BIKING = 'BIKING', 'directions_bike', 'bg-warning', '#FFC107', 'border-warning'
-    RUNNING = 'RUNNING', 'directions_run', 'bg-info', '#0DCAF0', 'border-info'
-    HIKING = 'HIKING', 'fa-person-hiking', 'bg-green', '#619B8A', 'border-green'
+    BIKING = 'BIKING', 'directions_bike', False, 'bg-warning', '#FFC107', 'border-warning'
+    RUNNING = 'RUNNING', 'directions_run', False, 'bg-info', '#0DCAF0', 'border-info'
+    HIKING = 'HIKING', 'fa-person-hiking', True, 'bg-green', '#619B8A', 'border-green'
 
     def __new__(
         cls,
         name: str,
         icon: str,
+        is_font_awesome_icon: bool,
         background_color: str,
         background_color_hex: str,
         border_color: str,
@@ -27,6 +28,7 @@ class TrackType(enum.Enum):
         member = object.__new__(cls)
         member._value_ = name
         member.icon = icon  # type: ignore[attr-defined]
+        member.is_font_awesome_icon = is_font_awesome_icon  # type: ignore[attr-defined]
         member.background_color = background_color  # type: ignore[attr-defined]
         member.background_color_hex = background_color_hex  # type: ignore[attr-defined]
         member.border_color = border_color  # type: ignore[attr-defined]
