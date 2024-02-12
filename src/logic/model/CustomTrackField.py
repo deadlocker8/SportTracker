@@ -1,5 +1,6 @@
 import enum
 
+from flask_babel import gettext
 from flask_login import current_user
 from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
@@ -9,9 +10,18 @@ from logic.model.db import db
 
 
 class CustomTrackFieldType(enum.Enum):
-    STRING = 'STRING'
-    INTEGER = 'INTEGER'
-    FLOAT = 'FLOAT'
+    STRING = 'STRING', 'String'
+    INTEGER = 'INTEGER', 'Integer'
+    FLOAT = 'FLOAT', 'Float'
+
+    def __new__(cls, name: str, localizationKey: str):
+        member = object.__new__(cls)
+        member._value_ = name
+        member.localizationKey = localizationKey  # type: ignore[attr-defined]
+        return member
+
+    def get_localized_name(self) -> str:
+        return gettext(self.localizationKey)
 
 
 class CustomTrackField(db.Model):  # type: ignore[name-defined]

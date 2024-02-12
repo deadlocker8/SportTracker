@@ -40,9 +40,9 @@
                             <div class="mb-3">
                                 <label for="field-type" class="form-label">{{ gettext('Type') }}</label>
                                 <select class="form-select" id="field-type" name="type" required="required">
-                                    <option value="STRING" {% if field and field.type == 'STRING' %}selected{% endif %}>{{ gettext('String') }}</option>
-                                    <option value="INTEGER" {% if field and field.type == 'INTEGER' %}selected{% endif %}>{{ gettext('Integer') }}</option>
-                                    <option value="FLOAT" {% if field and field.type == 'FLOAT' %}selected{% endif %}>{{ gettext('Float') }}</option>
+                                    {% for fieldType in customTrackFieldTypes %}
+                                        <option value="{{ fieldType.name }}" {% if field and field.type == fieldType.name %}selected{% endif %}>{{ fieldType.get_localized_name() }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
 

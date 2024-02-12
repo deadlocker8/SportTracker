@@ -31,6 +31,7 @@ from blueprints import (
 from helpers import Helpers
 from logic import Constants
 from logic.DummyDataGenerator import DummyDataGenerator
+from logic.model.CustomTrackField import CustomTrackFieldType
 from logic.model.Track import Track, TrackType
 from logic.model.User import User, Language, create_user, TrackInfoItem, TrackInfoItemType
 from logic.model.db import db, migrate
@@ -40,13 +41,13 @@ LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
 class SportTracker(FlaskBaseApp):
     def __init__(
-        self,
-        appName: str,
-        rootDir: str,
-        logger: logging.Logger,
-        isDebug: bool,
-        generateDummyData: bool,
-        prepareDatabase: bool
+            self,
+            appName: str,
+            rootDir: str,
+            logger: logging.Logger,
+            isDebug: bool,
+            generateDummyData: bool,
+            prepareDatabase: bool
     ):
         super().__init__(appName, rootDir, logger, serveFavicon=True)
 
@@ -80,12 +81,12 @@ class SportTracker(FlaskBaseApp):
             self.__prepare_database(app)
 
         @app.context_processor
-        def inject_version_name() -> dict[str, Any]:
-            return {'versionName': self._version['name']}
-
-        @app.context_processor
-        def inject_track_types() -> dict[str, Any]:
-            return {'trackTypes': [t for t in TrackType]}
+        def inject_static_access() -> dict[str, Any]:
+            return {'versionName': self._version['name'],
+                    'trackTypes': [x for x in TrackType],
+                    'languages': [x for x in Language],
+                    'customTrackFieldTypes': [x for x in CustomTrackFieldType],
+                    }
 
         def format_decimal(value: int | float, decimals: int = 1) -> str:
             return Helpers.format_decimal(value, decimals)

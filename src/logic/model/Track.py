@@ -12,21 +12,23 @@ from logic.model.db import db
 
 
 class TrackType(enum.Enum):
-    BIKING = 'BIKING', 'directions_bike', False, 'bg-warning', '#FFC107', 'border-warning'
-    RUNNING = 'RUNNING', 'directions_run', False, 'bg-info', '#0DCAF0', 'border-info'
-    HIKING = 'HIKING', 'fa-person-hiking', True, 'bg-green', '#619B8A', 'border-green'
+    BIKING = 'BIKING', 'Biking', 'directions_bike', False, 'bg-warning', '#FFC107', 'border-warning'
+    RUNNING = 'RUNNING', 'Running', 'directions_run', False, 'bg-info', '#0DCAF0', 'border-info'
+    HIKING = 'HIKING', 'Hiking', 'fa-person-hiking', True, 'bg-green', '#619B8A', 'border-green'
 
     def __new__(
-        cls,
-        name: str,
-        icon: str,
-        is_font_awesome_icon: bool,
-        background_color: str,
-        background_color_hex: str,
-        border_color: str,
+            cls,
+            name: str,
+            localization_key: str,
+            icon: str,
+            is_font_awesome_icon: bool,
+            background_color: str,
+            background_color_hex: str,
+            border_color: str,
     ):
         member = object.__new__(cls)
         member._value_ = name
+        member.localization_key = localization_key  # type: ignore[attr-defined]
         member.icon = icon  # type: ignore[attr-defined]
         member.is_font_awesome_icon = is_font_awesome_icon  # type: ignore[attr-defined]
         member.background_color = background_color  # type: ignore[attr-defined]
@@ -35,14 +37,7 @@ class TrackType(enum.Enum):
         return member
 
     def get_localized_name(self) -> str:
-        if self == self.BIKING:
-            return gettext('Biking')
-        elif self == self.RUNNING:
-            return gettext('Running')
-        elif self == self.HIKING:
-            return gettext('Hiking')
-
-        raise ValueError(f'Could not get localized name for unsupported TrackType: {self}')
+        return gettext(self.localization_key)
 
 
 class Track(db.Model):  # type: ignore[name-defined]
@@ -77,7 +72,7 @@ def get_number_of_all_tracks() -> int:
 
 
 def get_tracks_by_year_and_month_by_type(
-    year: int, month: int, trackTypes: list[TrackType]
+        year: int, month: int, trackTypes: list[TrackType]
 ) -> list[Track]:
     return (
         Track.query.join(User)
@@ -98,7 +93,7 @@ class MonthDistanceSum:
 
 
 def get_distance_per_month_by_type(
-    trackType: TrackType, minYear: int, maxYear: int
+        trackType: TrackType, minYear: int, maxYear: int
 ) -> list[MonthDistanceSum]:
     year = extract('year', Track.startTime)
     month = extract('month', Track.startTime)
