@@ -13,11 +13,14 @@ class Language(enum.Enum):
     ENGLISH = 'ENGLISH', 'en', 'English'
     GERMAN = 'GERMAN', 'de', 'Deutsch'
 
-    def __new__(cls, name: str, shortCode: str, localizedName: str):
+    shortCode: str
+    localized_name: str
+
+    def __new__(cls, name: str, shortCode: str, localized_name: str):
         member = object.__new__(cls)
         member._value_ = name
-        member.shortCode = shortCode  # type: ignore[attr-defined]
-        member.localizedName = localizedName  # type: ignore[attr-defined]
+        member.shortCode = shortCode
+        member.localized_name = localized_name
         return member
 
 

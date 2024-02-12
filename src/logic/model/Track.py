@@ -16,6 +16,13 @@ class TrackType(enum.Enum):
     RUNNING = 'RUNNING', 'Running', 'directions_run', False, 'bg-info', '#0DCAF0', 'border-info'
     HIKING = 'HIKING', 'Hiking', 'fa-person-hiking', True, 'bg-green', '#619B8A', 'border-green'
 
+    localization_key: str
+    icon: str
+    is_font_awesome_icon: bool
+    background_color: str
+    background_color_hex: str
+    border_color: str
+
     def __new__(
         cls,
         name: str,
@@ -28,16 +35,16 @@ class TrackType(enum.Enum):
     ):
         member = object.__new__(cls)
         member._value_ = name
-        member.localization_key = localization_key  # type: ignore[attr-defined]
-        member.icon = icon  # type: ignore[attr-defined]
-        member.is_font_awesome_icon = is_font_awesome_icon  # type: ignore[attr-defined]
-        member.background_color = background_color  # type: ignore[attr-defined]
-        member.background_color_hex = background_color_hex  # type: ignore[attr-defined]
-        member.border_color = border_color  # type: ignore[attr-defined]
+        member.localization_key = localization_key
+        member.icon = icon
+        member.is_font_awesome_icon = is_font_awesome_icon
+        member.background_color = background_color
+        member.background_color_hex = background_color_hex
+        member.border_color = border_color
         return member
 
     def get_localized_name(self) -> str:
-        return gettext(self.localization_key)  # type: ignore[attr-defined]
+        return gettext(self.localization_key)
 
 
 class Track(db.Model):  # type: ignore[name-defined]

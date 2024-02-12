@@ -247,7 +247,7 @@ def construct_blueprint():
                     )
                     numberOfTracksPerType[trackType] = numberOfTracks
                     if numberOfTracks > 0:
-                        colors.append(trackType.background_color_hex)  # type: ignore[attr-defined]
+                        colors.append(trackType.background_color_hex)
 
                 gradient = __determine_gradient(colors)
                 isWeekend = date(year=year, month=monthNumber, day=dayNumber).weekday() in [5, 6]
