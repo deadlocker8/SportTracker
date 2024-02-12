@@ -28,7 +28,7 @@ body {
 }
 
 .border-green {
-    border-color: #619B8A;
+    border-color: #619B8A !important;
 }
 
 .calendar-container {
