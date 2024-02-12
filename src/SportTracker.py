@@ -41,13 +41,13 @@ LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 
 class SportTracker(FlaskBaseApp):
     def __init__(
-            self,
-            appName: str,
-            rootDir: str,
-            logger: logging.Logger,
-            isDebug: bool,
-            generateDummyData: bool,
-            prepareDatabase: bool
+        self,
+        appName: str,
+        rootDir: str,
+        logger: logging.Logger,
+        isDebug: bool,
+        generateDummyData: bool,
+        prepareDatabase: bool,
     ):
         super().__init__(appName, rootDir, logger, serveFavicon=True)
 
@@ -82,11 +82,12 @@ class SportTracker(FlaskBaseApp):
 
         @app.context_processor
         def inject_static_access() -> dict[str, Any]:
-            return {'versionName': self._version['name'],
-                    'trackTypes': [x for x in TrackType],
-                    'languages': [x for x in Language],
-                    'customTrackFieldTypes': [x for x in CustomTrackFieldType],
-                    }
+            return {
+                'versionName': self._version['name'],
+                'trackTypes': [x for x in TrackType],
+                'languages': [x for x in Language],
+                'customTrackFieldTypes': [x for x in CustomTrackFieldType],
+            }
 
         def format_decimal(value: int | float, decimals: int = 1) -> str:
             return Helpers.format_decimal(value, decimals)
@@ -189,7 +190,9 @@ class SportTracker(FlaskBaseApp):
 
 
 def create_app():
-    server = SportTracker(Constants.APP_NAME, os.path.dirname(__file__), LOGGER, False, False, False)
+    server = SportTracker(
+        Constants.APP_NAME, os.path.dirname(__file__), LOGGER, False, False, False
+    )
     return server.init_app()
 
 
@@ -197,7 +200,9 @@ def create_app():
 @click.option('--debug', '-d', is_flag=True, help='Enable debug mode')
 @click.option('--dummy', '-dummy', is_flag=True, help='Generate dummy tracks')
 def start(debug, dummy):
-    sportTracker = SportTracker(Constants.APP_NAME, os.path.dirname(__file__), LOGGER, debug, dummy, True)
+    sportTracker = SportTracker(
+        Constants.APP_NAME, os.path.dirname(__file__), LOGGER, debug, dummy, True
+    )
     sportTracker.start_server()
 
 

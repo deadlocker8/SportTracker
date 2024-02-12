@@ -6,7 +6,6 @@ Create Date: 2024-02-12 22:08:24.165857
 
 """
 from alembic import op
-import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
@@ -21,4 +20,4 @@ def upgrade():
 
 
 def downgrade():
-   pass
+    pass

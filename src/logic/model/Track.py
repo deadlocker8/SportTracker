@@ -17,14 +17,14 @@ class TrackType(enum.Enum):
     HIKING = 'HIKING', 'Hiking', 'fa-person-hiking', True, 'bg-green', '#619B8A', 'border-green'
 
     def __new__(
-            cls,
-            name: str,
-            localization_key: str,
-            icon: str,
-            is_font_awesome_icon: bool,
-            background_color: str,
-            background_color_hex: str,
-            border_color: str,
+        cls,
+        name: str,
+        localization_key: str,
+        icon: str,
+        is_font_awesome_icon: bool,
+        background_color: str,
+        background_color_hex: str,
+        border_color: str,
     ):
         member = object.__new__(cls)
         member._value_ = name
@@ -37,7 +37,7 @@ class TrackType(enum.Enum):
         return member
 
     def get_localized_name(self) -> str:
-        return gettext(self.localization_key)
+        return gettext(self.localization_key)  # type: ignore[attr-defined]
 
 
 class Track(db.Model):  # type: ignore[name-defined]
@@ -72,7 +72,7 @@ def get_number_of_all_tracks() -> int:
 
 
 def get_tracks_by_year_and_month_by_type(
-        year: int, month: int, trackTypes: list[TrackType]
+    year: int, month: int, trackTypes: list[TrackType]
 ) -> list[Track]:
     return (
         Track.query.join(User)
@@ -93,7 +93,7 @@ class MonthDistanceSum:
 
 
 def get_distance_per_month_by_type(
-        trackType: TrackType, minYear: int, maxYear: int
+    trackType: TrackType, minYear: int, maxYear: int
 ) -> list[MonthDistanceSum]:
     year = extract('year', Track.startTime)
     month = extract('month', Track.startTime)

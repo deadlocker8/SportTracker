@@ -310,7 +310,7 @@ def construct_blueprint():
     def customFieldsAddPost(form: CustomTrackFieldFormModel):
         track = CustomTrackField(
             name=form.name,
-            type=CustomTrackFieldType(form.type),
+            type=CustomTrackFieldType(form.type),  # type: ignore[call-arg]
             track_type=TrackType(form.track_type),  # type: ignore[call-arg]
             is_required=form.is_required,
             user_id=current_user.id,

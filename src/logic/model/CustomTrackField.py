@@ -14,14 +14,14 @@ class CustomTrackFieldType(enum.Enum):
     INTEGER = 'INTEGER', 'Integer'
     FLOAT = 'FLOAT', 'Float'
 
-    def __new__(cls, name: str, localizationKey: str):
+    def __new__(cls, name: str, localization_key: str):
         member = object.__new__(cls)
         member._value_ = name
-        member.localizationKey = localizationKey  # type: ignore[attr-defined]
+        member.localization_key = localization_key  # type: ignore[attr-defined]
         return member
 
     def get_localized_name(self) -> str:
-        return gettext(self.localizationKey)
+        return gettext(self.localization_key)  # type: ignore[attr-defined]
 
 
 class CustomTrackField(db.Model):  # type: ignore[name-defined]

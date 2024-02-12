@@ -57,6 +57,7 @@ module = [
     "flask_bcrypt.*",
     "flask_login.*",
     "flask_pydantic.*",
+    "flask_migrate.*",
     "TheCodeLabs_BaseUtils.*",
     "TheCodeLabs_FlaskUtils.*",
 ]
