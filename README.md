@@ -42,6 +42,7 @@ Tracked data is visualized in charts, e.g.:
 - Duration per Track
 - etc.
 
+![](screenshots/chart_calendar.png)
 ![](screenshots/chart_duration_per_track.png)
 ![](screenshots/chart_distance_per_month.png)
 
