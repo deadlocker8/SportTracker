@@ -1,3 +1,7 @@
+# 1.11.0
+- add: new track type "Hiking"
+- BREAKING CHANGE: database migration required for this release (see README.md)!
+
 # 1.10.0
 - add: new chart: year calendar
 - add: api: return id of created track or month goal
