@@ -27,7 +27,11 @@
                             <div class="row mt-5 mb-3">
                                 <div class="col col-12 mx-auto">
                                     <h3 class="d-flex align-items-center justify-content-center">
-                                        <span class="material-icons rounded-circle fs-2 p-2 text-dark {{ trackType.background_color }} me-3">{{ trackType.icon }}</span>
+                                        {% if trackType.is_font_awesome_icon %}
+                                            <i class="fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-2 p-2 text-dark {{ trackType.background_color }} me-3"></i>
+                                        {% else %}
+                                            <span class="material-icons rounded-circle fs-2 p-2 text-dark {{ trackType.background_color }} me-3">{{ trackType.icon }}</span>
+                                        {% endif %}
                                         <span class="me-3">{{ trackType.get_localized_name() }}</span>
                                     </h3>
                                 </div>
