@@ -40,11 +40,18 @@
                     </div>
                 </div>
 
+                <div class="row mt-2">
+                    <div class="col col-12 mx-auto d-flex align-items-center justify-content-center">
+                        <span class="material-icons fs-4 me-2">info_outline</span>
+                        <span>{{ gettext('Toggle months via arrow keys or press "0" for current month') }}</span>
+                    </div>
+                </div>
+
                 <div class="row p-xxl-5 p-xl-4 p-lg-3">
-                    <div class="col col-lg-6 col-s-12 px-xxl-5 px-xl-4 px-lg-3">
+                    <div class="col col-lg-6 col-sm-12 px-xxl-5 px-xl-4 px-lg-3">
                         {{ trackMacros.render_month(monthLeftSide) }}
                     </div>
-                    <div class="col col-lg-6 col-s-12 px-xxl-5 px-xl-4 px-lg-3">
+                    <div class="col col-lg-6 col-sm-12 px-xxl-5 px-xl-4 px-lg-3">
                         {{ trackMacros.render_month(monthRightSide) }}
                     </div>
                 </div>
