@@ -65,6 +65,8 @@
                             {{ trackMacros.render_track_biking_card(track) }}
                         {% elif track.type.name == 'RUNNING' %}
                             {{ trackMacros.render_track_running_card(track) }}
+                        {% elif track.type.name == 'HIKING' %}
+                            {{ trackMacros.render_track_hiking_card(track) }}
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
