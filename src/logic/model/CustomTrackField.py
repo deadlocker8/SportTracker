@@ -30,7 +30,9 @@ class CustomTrackFieldType(enum.Enum):
         elif self == self.FLOAT:
             return gettext('Float')
 
-        raise ValueError(f'Could not get localized name for unsupported CustomTrackFieldType: {self}')
+        raise ValueError(
+            f'Could not get localized name for unsupported CustomTrackFieldType: {self}'
+        )
 
 
 class CustomTrackField(db.Model):  # type: ignore[name-defined]
