@@ -12,11 +12,10 @@ from logic.model.db import db
 
 
 class TrackType(enum.Enum):
-    BIKING = 'BIKING', 'Biking', 'directions_bike', False, 'bg-warning', '#FFC107', 'border-warning'
-    RUNNING = 'RUNNING', 'Running', 'directions_run', False, 'bg-info', '#0DCAF0', 'border-info'
-    HIKING = 'HIKING', 'Hiking', 'fa-person-hiking', True, 'bg-green', '#619B8A', 'border-green'
+    BIKING = 'BIKING', 'directions_bike', False, 'bg-warning', '#FFC107', 'border-warning'
+    RUNNING = 'RUNNING', 'directions_run', False, 'bg-info', '#0DCAF0', 'border-info'
+    HIKING = 'HIKING', 'fa-person-hiking', True, 'bg-green', '#619B8A', 'border-green'
 
-    localization_key: str
     icon: str
     is_font_awesome_icon: bool
     background_color: str
@@ -26,7 +25,6 @@ class TrackType(enum.Enum):
     def __new__(
         cls,
         name: str,
-        localization_key: str,
         icon: str,
         is_font_awesome_icon: bool,
         background_color: str,
@@ -35,7 +33,6 @@ class TrackType(enum.Enum):
     ):
         member = object.__new__(cls)
         member._value_ = name
-        member.localization_key = localization_key
         member.icon = icon
         member.is_font_awesome_icon = is_font_awesome_icon
         member.background_color = background_color
@@ -44,7 +41,15 @@ class TrackType(enum.Enum):
         return member
 
     def get_localized_name(self) -> str:
-        return gettext(self.localization_key)
+        # must be done this way to include translations in *.po and *.mo file
+        if self == self.BIKING:
+            return gettext('Biking')
+        elif self == self.RUNNING:
+            return gettext('Running')
+        elif self == self.HIKING:
+            return gettext('Hiking')
+
+        raise ValueError(f'Could not get localized name for unsupported TrackType: {self}')
 
 
 class Track(db.Model):  # type: ignore[name-defined]

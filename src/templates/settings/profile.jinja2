@@ -42,7 +42,7 @@
                                 <label for="user-language" class="form-label">{{ gettext('Language') }}</label>
                                 <select class="form-select" id="user-language" name="language" required="required">
                                     {% for language in languages %}
-                                        <option value="{{ language.name }}" {% if userLanguage == language.name %}selected{% endif %}>{{ language.localizedName }}</option>
+                                        <option value="{{ language.name }}" {% if userLanguage == language.name %}selected{% endif %}>{{ language.localized_name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>

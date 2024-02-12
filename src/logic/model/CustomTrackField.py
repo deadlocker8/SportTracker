@@ -10,20 +10,27 @@ from logic.model.db import db
 
 
 class CustomTrackFieldType(enum.Enum):
-    STRING = 'STRING', 'String'
-    INTEGER = 'INTEGER', 'Integer'
-    FLOAT = 'FLOAT', 'Float'
+    STRING = 'STRING'
+    INTEGER = 'INTEGER'
+    FLOAT = 'FLOAT'
 
     localization_key: str
 
-    def __new__(cls, name: str, localization_key: str):
+    def __new__(cls, name: str):
         member = object.__new__(cls)
         member._value_ = name
-        member.localization_key = localization_key
         return member
 
     def get_localized_name(self) -> str:
-        return gettext(self.localization_key)
+        # must be done this way to include translations in *.po and *.mo file
+        if self == self.STRING:
+            return gettext('String')
+        elif self == self.INTEGER:
+            return gettext('Integer')
+        elif self == self.FLOAT:
+            return gettext('Float')
+
+        raise ValueError(f'Could not get localized name for unsupported CustomTrackFieldType: {self}')
 
 
 class CustomTrackField(db.Model):  # type: ignore[name-defined]
