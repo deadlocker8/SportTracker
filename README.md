@@ -15,6 +15,7 @@ Record the data of your training sessions after you have finished them.
 Supported types of sports:
 - Biking
 - Running
+- Hiking
 
 You can fill in a lot of information for each training session. If the pre-defined inputs are not enough, it is possible to set custom fields for each type of sports.
 
