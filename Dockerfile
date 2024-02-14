@@ -22,8 +22,8 @@ COPY src/ /opt/SportTracker/src
 COPY CHANGES.md /opt/SportTracker/CHANGES.md
 COPY --from=poetry /opt/SportTracker/myvenv /opt/SportTracker/myvenv
 
-RUN adduser -D sportracker && chown -R sportracker:sportracker /opt/SportTracker
-USER sportracker
+RUN adduser -D sporttracker && chown -R sporttracker:sporttracker /opt/SportTracker
+USER sporttracker
 
 WORKDIR /opt/SportTracker/src
 EXPOSE 8080
