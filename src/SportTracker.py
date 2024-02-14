@@ -9,9 +9,11 @@ import click
 import flask_babel
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils import FlaskBaseApp
+from alembic.runtime.migration import MigrationContext
 from flask import Flask, request
 from flask_babel import Babel
 from flask_login import LoginManager, current_user
+from flask_migrate import upgrade, stamp
 
 from blueprints import (
     General,
@@ -37,6 +39,8 @@ from logic.model.User import User, Language, create_user, TrackInfoItem, TrackIn
 from logic.model.db import db, migrate
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
+LOGGER.propagate = False
+DefaultLogger.configure_logger(logging.getLogger('root'))
 
 
 class SportTracker(FlaskBaseApp):
@@ -79,6 +83,18 @@ class SportTracker(FlaskBaseApp):
 
         if self._prepareDatabase:
             self.__prepare_database(app)
+
+        with app.app_context():
+            context = MigrationContext.configure(db.engine.connect())
+            currentDatabaseRevision = context.get_current_revision()
+            if currentDatabaseRevision is None:
+                stamp(revision=Constants.LATEST_DATABASE_REVISION)
+            elif currentDatabaseRevision == Constants.LATEST_DATABASE_REVISION:
+                LOGGER.info('No database upgrade needed')
+            else:
+                LOGGER.info('Upgrading database...')
+                upgrade()
+                LOGGER.info('Upgrading database DONE')
 
         @app.context_processor
         def inject_static_access() -> dict[str, Any]:
@@ -187,13 +203,6 @@ class SportTracker(FlaskBaseApp):
             if self._generateDummyData:
                 dummyDataGenerator = DummyDataGenerator(app.config['UPLOAD_FOLDER'])
                 dummyDataGenerator.generate()
-
-
-def create_app():
-    server = SportTracker(
-        Constants.APP_NAME, os.path.dirname(__file__), LOGGER, False, False, False
-    )
-    return server.init_app()
 
 
 @click.command()

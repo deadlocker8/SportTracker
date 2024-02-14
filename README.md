@@ -73,8 +73,7 @@ The achievement page shows aggregated information about all your tracks.
 Updating to the latest SportTracker release may require database migration.   
 This is only necessary if you already have a running SportTracker instance and a database filled with entries.  
 Whether a database migration is necessary will be stated in the release notes.  
-The migration can be performed by running the following command inside the `src` folder:
-`flask --app SportTracker db upgrade`
+The migration will be performed automatically upon start of SportTracker.
 
 
 ## This project uses 3rd-party components
