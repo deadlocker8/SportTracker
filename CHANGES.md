@@ -1,7 +1,8 @@
 # 1.11.0
 - add: new track type "Hiking"
 - add: show hint that arrow keys can be used to toggle between months
-- BREAKING CHANGE: database migration required for this release (see README.md)!
+- BREAKING CHANGE: (automatic) database migration required for this release (see README.md)!
+- chore: update dependencies
 
 # 1.10.0
 - add: new chart: year calendar
