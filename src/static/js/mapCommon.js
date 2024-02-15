@@ -61,7 +61,7 @@ function initMapBase()
     }).setView([51, 13], 6);
 
     let attributionControl = L.control.attribution({position: 'bottomleft'}).addTo(map);
-    attributionControl.setPrefix('<a href="https://leafletjs.com/" > Leaflet < /a>');
+    attributionControl.setPrefix('<a href="https://leafletjs.com/" > Leaflet </a>');
 
     return map;
 }
