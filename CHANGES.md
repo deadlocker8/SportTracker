@@ -1,5 +1,8 @@
-# 1.x.x
+# 1.12.0
+- add: map: added button to collapse/expand legend
 - fix: map: sort track legend by date
+- fix: map: allow to fully zoom out
+- chore: update dependencies
 
 # 1.11.0
 - add: new track type "Hiking"
