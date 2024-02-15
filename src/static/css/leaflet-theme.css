@@ -37,3 +37,11 @@
     display: inline-block;
     font-weight: normal !important;
 }
+
+.leaflet-control-layers-toggle {
+    display: none !important;
+}
+
+.easy-button-button i {
+    margin-top: 0.15rem;
+}

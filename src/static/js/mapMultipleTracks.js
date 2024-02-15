@@ -134,5 +134,31 @@ function initMap()
                 }, 500);
             }
         });
+
+        const stateChangingButton = L.easyButton({
+            position: 'topright',
+            states: [
+                {
+                    stateName: 'collapse-layers',
+                    icon: '<i class="material-icons">layers_clear</i>',
+                    title: map_locale['button_collapse_layers'],
+                    onClick: function(btn, map)
+                    {
+                        routes._legend.collapse();
+                        btn.state('expand-layers');
+                    }
+                },
+                {
+                    stateName: 'expand-layers',
+                    icon: '<i class="material-icons">layers</i>',
+                    title: map_locale['button_expand_layers'],
+                    onClick: function(btn, map)
+                    {
+                        routes._legend.expand();
+                        btn.state('collapse-layers');
+                    }
+                }]
+        });
+        stateChangingButton.addTo(map);
     });
 }

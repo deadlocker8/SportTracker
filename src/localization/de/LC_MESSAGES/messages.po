@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-15 21:09+0100\n"
-"PO-Revision-Date: 2024-02-15 21:10+0100\n"
+"POT-Creation-Date: 2024-02-15 23:48+0100\n"
+"PO-Revision-Date: 2024-02-15 23:48+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -366,6 +366,14 @@ msgstr "Geschwindigkeit: "
 #: ../templates/maps/mapMacros.jinja2:30
 msgid "a: "
 msgstr "Beschleunigung: "
+
+#: ../templates/maps/mapMacros.jinja2:31
+msgid "Expand Legend"
+msgstr "Legende einblenden"
+
+#: ../templates/maps/mapMacros.jinja2:32
+msgid "Collapse Legend"
+msgstr "Legende ausblenden"
 
 #: ../templates/monthGoals/monthGoalChooser.jinja2:6
 #: ../templates/monthGoals/monthGoalChooser.jinja2:17

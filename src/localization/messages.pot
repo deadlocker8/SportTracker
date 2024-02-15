@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-15 21:09+0100\n"
+"POT-Creation-Date: 2024-02-15 23:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -356,6 +356,14 @@ msgstr ""
 
 #: ../templates/maps/mapMacros.jinja2:30
 msgid "a: "
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:31
+msgid "Expand Legend"
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:32
+msgid "Collapse Legend"
 msgstr ""
 
 #: ../templates/monthGoals/monthGoalChooser.jinja2:6
