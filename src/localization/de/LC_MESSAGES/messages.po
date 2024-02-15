@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-12 23:34+0100\n"
-"PO-Revision-Date: 2024-02-12 23:34+0100\n"
+"POT-Creation-Date: 2024-02-15 21:09+0100\n"
+"PO-Revision-Date: 2024-02-15 21:10+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -52,7 +52,8 @@ msgstr "Gesamtstrecke"
 msgid ""
 "You completed a total of <span class=\"fw-bold\">{totalDistance} km</span>!"
 msgstr ""
-"Du bist insgesamt <span class=\"fw-bold\">{totalDistance} km</span> gefahren!"
+"Du hast insgesamt <span class=\"fw-bold\">{totalDistance} km</span> "
+"zurückgelegt!"
 
 #: ../blueprints/Achievements.py:78
 msgid "Best Month"
@@ -94,15 +95,15 @@ msgstr "Der Endmonat muss größer oder gleich dem Startmonat sein."
 msgid "No month"
 msgstr "Kein Monat"
 
-#: ../logic/model/CustomTrackField.py:28
+#: ../logic/model/CustomTrackField.py:27
 msgid "String"
 msgstr "Zeichenkette"
 
-#: ../logic/model/CustomTrackField.py:30
+#: ../logic/model/CustomTrackField.py:29
 msgid "Integer"
 msgstr "Ganzzahl"
 
-#: ../logic/model/CustomTrackField.py:32
+#: ../logic/model/CustomTrackField.py:31
 msgid "Float"
 msgstr "Kommazahl"
 
