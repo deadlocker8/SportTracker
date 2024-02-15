@@ -6,7 +6,7 @@ from flask_login import login_required, current_user
 from sqlalchemy import func
 
 from logic import Constants
-from logic.model.Track import Track, TrackType
+from logic.model.Track import Track
 from logic.model.User import User
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -30,20 +30,18 @@ def construct_blueprint():
         gpxInfo = []
 
         funcStartTime = func.max(Track.startTime)
-        for trackType in TrackType:
-            tracks = (
-                Track.query.with_entities(func.max(Track.id), Track.name, funcStartTime)
-                .filter(Track.user_id == current_user.id)
-                .filter(Track.type == trackType)
-                .filter(Track.gpxFileName.isnot(None))
-                .group_by(Track.name)
-                .order_by(funcStartTime.desc())
-                .all()
-            )
+        tracks = (
+            Track.query.with_entities(func.max(Track.id), Track.name, funcStartTime)
+            .filter(Track.user_id == current_user.id)
+            .filter(Track.gpxFileName.isnot(None))
+            .group_by(Track.name)
+            .order_by(funcStartTime.desc())
+            .all()
+        )
 
-            for track in tracks:
-                trackId, trackName, trackStartTime = track
-                gpxInfo.append(createGpxInfo(trackId, trackName, trackStartTime))
+        for track in tracks:
+            trackId, trackName, trackStartTime = track
+            gpxInfo.append(createGpxInfo(trackId, trackName, trackStartTime))
 
         return render_template('maps/mapMultipleTracks.jinja2', gpxInfo=gpxInfo)
 

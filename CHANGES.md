@@ -1,3 +1,6 @@
+# 1.x.x
+- fix: map: sort track legend by date
+
 # 1.11.0
 - add: new track type "Hiking"
 - add: show hint that arrow keys can be used to toggle between months
