@@ -31,7 +31,7 @@ function initMapBase()
 
     let map = L.map('map', {
         attributionControl: false,
-        minZoom: 6,
+        minZoom: 0,
         maxZoom: 16,
         mapTypeId: 'streets',
         mapTypeIds: ['streets', 'satellite'],
