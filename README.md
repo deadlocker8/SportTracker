@@ -2,7 +2,7 @@
 
 Self-hosted sport data tracking server.
 
-<img src="src/static/images/SportTracker.png" alt="drawing" width="150" height="150"/>
+<img src="sporttracker/static/images/SportTracker.png" alt="drawing" width="150" height="150"/>
 
 ## Key Features
 

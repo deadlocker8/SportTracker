@@ -18,7 +18,7 @@ RUN apk update && apk upgrade && \
     apk add postgresql-libs && \
     rm -rf /var/cache/apk
 
-COPY src/ /opt/SportTracker/src
+COPY sporttracker/ /opt/SportTracker/src
 COPY CHANGES.md /opt/SportTracker/CHANGES.md
 COPY --from=poetry /opt/SportTracker/myvenv /opt/SportTracker/myvenv
 
