@@ -6,7 +6,7 @@ from flask_login import UserMixin
 from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
-from logic.model.db import db
+from sporttracker.logic.model.db import db
 
 
 class Language(enum.Enum):

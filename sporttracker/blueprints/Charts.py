@@ -10,16 +10,16 @@ from flask_babel import gettext, format_datetime
 from flask_login import login_required, current_user
 from sqlalchemy import extract, func, String, asc
 
-from helpers.Helpers import format_duration
-from logic import Constants
-from logic.model.CustomTrackField import get_custom_fields_by_track_type
-from logic.model.Track import (
+from sporttracker.helpers.Helpers import format_duration
+from sporttracker.logic import Constants
+from sporttracker.logic.model.CustomTrackField import get_custom_fields_by_track_type
+from sporttracker.logic.model.Track import (
     TrackType,
     Track,
     get_distance_per_month_by_type,
     get_tracks_by_year_and_month_by_type,
 )
-from logic.model.db import db
+from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

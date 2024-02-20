@@ -1,9 +1,9 @@
 import pytest
 from flask import session
 
-from SportTracker import create_test_app
-from TestConstants import TEST_USERNAME, TEST_PASSWORD
-from logic.model.User import create_user, Language
+from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
+from sporttracker.SportTracker import create_test_app
+from sporttracker.logic.model.User import create_user, Language
 
 
 @pytest.fixture()

@@ -7,8 +7,8 @@ from sqlalchemy import Integer, String, DateTime, extract, func
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import mapped_column, Mapped
 
-from logic.model.User import User
-from logic.model.db import db
+from sporttracker.logic.model.User import User
+from sporttracker.logic.model.db import db
 
 
 class TrackType(enum.Enum):

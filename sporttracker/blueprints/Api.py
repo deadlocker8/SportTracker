@@ -6,14 +6,14 @@ from flask import Blueprint, jsonify, request, abort
 from flask_login import login_required, current_user
 from pydantic import ValidationError, BaseModel
 
-from blueprints.GpxTracks import handleGpxTrack
-from blueprints.MonthGoalsCount import MonthGoalCountFormModel
-from blueprints.MonthGoalsDistance import MonthGoalDistanceFormModel
-from logic import Constants
-from logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
-from logic.model.Track import Track, TrackType
-from logic.model.User import User
-from logic.model.db import db
+from sporttracker.blueprints.GpxTracks import handleGpxTrack
+from sporttracker.blueprints.MonthGoalsCount import MonthGoalCountFormModel
+from sporttracker.blueprints.MonthGoalsDistance import MonthGoalDistanceFormModel
+from sporttracker.logic import Constants
+from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
+from sporttracker.logic.model.Track import Track, TrackType
+from sporttracker.logic.model.User import User
+from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

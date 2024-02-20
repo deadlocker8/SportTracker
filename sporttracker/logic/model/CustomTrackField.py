@@ -5,8 +5,8 @@ from flask_login import current_user
 from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
-from logic.model.Track import TrackType
-from logic.model.db import db
+from sporttracker.logic.model.Track import TrackType
+from sporttracker.logic.model.db import db
 
 
 class CustomTrackFieldType(enum.Enum):

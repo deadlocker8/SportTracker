@@ -8,11 +8,11 @@ from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from faker import Faker
 
-from logic import Constants
-from logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
-from logic.model.Track import Track, TrackType
-from logic.model.User import User, create_user, Language
-from logic.model.db import db
+from sporttracker.logic import Constants
+from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
+from sporttracker.logic.model.Track import Track, TrackType
+from sporttracker.logic.model.User import User, create_user, Language
+from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

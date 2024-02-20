@@ -5,9 +5,9 @@ from flask import Blueprint, render_template, abort, url_for
 from flask_login import login_required, current_user
 from sqlalchemy import func
 
-from logic import Constants
-from logic.model.Track import Track
-from logic.model.User import User
+from sporttracker.logic import Constants
+from sporttracker.logic.model.Track import Track
+from sporttracker.logic.model.User import User
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

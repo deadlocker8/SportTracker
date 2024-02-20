@@ -6,11 +6,11 @@ from flask import Blueprint, abort, Response
 from flask_login import login_required, current_user
 from werkzeug.datastructures.file_storage import FileStorage
 
-from logic import Constants
-from logic.GpxService import GpxService
-from logic.model.Track import Track
-from logic.model.User import User
-from logic.model.db import db
+from sporttracker.logic import Constants
+from sporttracker.logic.GpxService import GpxService
+from sporttracker.logic.model.Track import Track
+from sporttracker.logic.model.User import User
+from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

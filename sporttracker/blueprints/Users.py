@@ -8,16 +8,16 @@ from flask_pydantic import validate
 from pydantic import BaseModel, field_validator, ConfigDict
 from sqlalchemy import asc, func
 
-from logic import Constants
-from logic.AdminWrapper import admin_role_required
-from logic.model.CustomTrackField import (
+from sporttracker.logic import Constants
+from sporttracker.logic.AdminWrapper import admin_role_required
+from sporttracker.logic.model.CustomTrackField import (
     get_custom_fields_by_track_type,
     CustomTrackField,
     CustomTrackFieldType,
 )
-from logic.model.Track import TrackType
-from logic.model.User import User, Language, create_user, TrackInfoItem, TrackInfoItemType
-from logic.model.db import db
+from sporttracker.logic.model.Track import TrackType
+from sporttracker.logic.model.User import User, Language, create_user, TrackInfoItem, TrackInfoItemType
+from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

@@ -10,18 +10,18 @@ from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel, ConfigDict, field_validator
 
-from blueprints.GpxTracks import handleGpxTrack
-from logic import Constants
-from logic.model.CustomTrackField import CustomTrackField
-from logic.model.MonthGoal import MonthGoalSummary, get_goal_summaries_by_year_and_month_and_types
-from logic.model.Track import (
+from sporttracker.blueprints.GpxTracks import handleGpxTrack
+from sporttracker.logic import Constants
+from sporttracker.logic.model.CustomTrackField import CustomTrackField
+from sporttracker.logic.model.MonthGoal import MonthGoalSummary, get_goal_summaries_by_year_and_month_and_types
+from sporttracker.logic.model.Track import (
     Track,
     get_tracks_by_year_and_month_by_type,
     TrackType,
     get_track_names_by_track_type,
 )
-from logic.model.User import User
-from logic.model.db import db
+from sporttracker.logic.model.User import User
+from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

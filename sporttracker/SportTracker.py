@@ -15,7 +15,7 @@ from flask_babel import Babel
 from flask_login import LoginManager, current_user
 from flask_migrate import upgrade, stamp
 
-from blueprints import (
+from sporttracker.blueprints import (
     General,
     Authentication,
     Tracks,
@@ -30,13 +30,13 @@ from blueprints import (
     Maps,
     GpxTracks,
 )
-from helpers import Helpers
-from logic import Constants
-from logic.DummyDataGenerator import DummyDataGenerator
-from logic.model.CustomTrackField import CustomTrackFieldType
-from logic.model.Track import Track, TrackType
-from logic.model.User import User, Language, create_user, TrackInfoItem, TrackInfoItemType
-from logic.model.db import db, migrate
+from sporttracker.helpers import Helpers
+from sporttracker.logic import Constants
+from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
+from sporttracker.logic.model.CustomTrackField import CustomTrackFieldType
+from sporttracker.logic.model.Track import Track, TrackType
+from sporttracker.logic.model.User import User, Language, create_user, TrackInfoItem, TrackInfoItemType
+from sporttracker.logic.model.db import db, migrate
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 LOGGER.propagate = False

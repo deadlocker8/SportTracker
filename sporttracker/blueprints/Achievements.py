@@ -4,11 +4,11 @@ from flask import Blueprint, render_template
 from flask_babel import gettext
 from flask_login import login_required
 
-from helpers import Helpers
-from logic import Constants
-from logic.AchievementCalculator import AchievementCalculator
-from logic.model.Achievement import Achievement
-from logic.model.Track import TrackType
+from sporttracker.helpers import Helpers
+from sporttracker.logic import Constants
+from sporttracker.logic.AchievementCalculator import AchievementCalculator
+from sporttracker.logic.model.Achievement import Achievement
+from sporttracker.logic.model.Track import TrackType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

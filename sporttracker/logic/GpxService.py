@@ -3,7 +3,7 @@ import logging
 import gpxpy
 from gpxpy.gpx import GPX, GPXTrack
 
-from logic import Constants
+from sporttracker.logic import Constants
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

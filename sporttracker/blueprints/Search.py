@@ -4,10 +4,10 @@ from itertools import groupby
 from flask import Blueprint, render_template, request
 from flask_login import login_required, current_user
 
-from logic import Constants
-from logic.model.Track import Track
-from logic.model.User import User
-from logic.model.db import db
+from sporttracker.logic import Constants
+from sporttracker.logic.model.Track import Track
+from sporttracker.logic.model.User import User
+from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

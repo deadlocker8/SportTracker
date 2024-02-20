@@ -3,9 +3,9 @@ import logging
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
-from logic import Constants
-from logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalSummary
-from logic.model.User import User
+from sporttracker.logic import Constants
+from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalSummary
+from sporttracker.logic.model.User import User
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

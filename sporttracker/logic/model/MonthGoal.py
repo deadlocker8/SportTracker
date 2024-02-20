@@ -8,9 +8,9 @@ from flask_login import current_user
 from sqlalchemy import Integer
 from sqlalchemy.orm import mapped_column, Mapped
 
-from logic.model.Track import TrackType, get_tracks_by_year_and_month_by_type
-from logic.model.User import User
-from logic.model.db import db
+from sporttracker.logic.model.Track import TrackType, get_tracks_by_year_and_month_by_type
+from sporttracker.logic.model.User import User
+from sporttracker.logic.model.db import db
 
 
 @dataclass
