@@ -16,7 +16,13 @@ from sporttracker.logic.model.CustomTrackField import (
     CustomTrackFieldType,
 )
 from sporttracker.logic.model.Track import TrackType
-from sporttracker.logic.model.User import User, Language, create_user, TrackInfoItem, TrackInfoItemType
+from sporttracker.logic.model.User import (
+    User,
+    Language,
+    create_user,
+    TrackInfoItem,
+    TrackInfoItemType,
+)
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

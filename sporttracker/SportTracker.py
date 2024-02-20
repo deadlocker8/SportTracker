@@ -35,7 +35,13 @@ from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
 from sporttracker.logic.model.CustomTrackField import CustomTrackFieldType
 from sporttracker.logic.model.Track import Track, TrackType
-from sporttracker.logic.model.User import User, Language, create_user, TrackInfoItem, TrackInfoItemType
+from sporttracker.logic.model.User import (
+    User,
+    Language,
+    create_user,
+    TrackInfoItem,
+    TrackInfoItemType,
+)
 from sporttracker.logic.model.db import db, migrate
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
@@ -45,14 +51,14 @@ DefaultLogger.configure_logger(logging.getLogger('root'))
 
 class SportTracker(FlaskBaseApp):
     def __init__(
-            self,
-            appName: str,
-            rootDir: str,
-            logger: logging.Logger,
-            isDebug: bool,
-            generateDummyData: bool,
-            prepareDatabase: bool,
-            settingsPath: str = '../settings.json'
+        self,
+        appName: str,
+        rootDir: str,
+        logger: logging.Logger,
+        isDebug: bool,
+        generateDummyData: bool,
+        prepareDatabase: bool,
+        settingsPath: str = '../settings.json',
     ):
         os.chdir(rootDir)
         super().__init__(appName, rootDir, logger, settingsPath=settingsPath, serveFavicon=True)
@@ -215,7 +221,7 @@ def create_test_app():
         False,
         False,
         True,
-        settingsPath='../settings-test.json'
+        settingsPath='../settings-test.json',
     )
     return server.init_app()
 

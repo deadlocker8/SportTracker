@@ -13,7 +13,10 @@ from pydantic import BaseModel, ConfigDict, field_validator
 from sporttracker.blueprints.GpxTracks import handleGpxTrack
 from sporttracker.logic import Constants
 from sporttracker.logic.model.CustomTrackField import CustomTrackField
-from sporttracker.logic.model.MonthGoal import MonthGoalSummary, get_goal_summaries_by_year_and_month_and_types
+from sporttracker.logic.model.MonthGoal import (
+    MonthGoalSummary,
+    get_goal_summaries_by_year_and_month_and_types,
+)
 from sporttracker.logic.model.Track import (
     Track,
     get_tracks_by_year_and_month_by_type,
