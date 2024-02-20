@@ -45,15 +45,17 @@ DefaultLogger.configure_logger(logging.getLogger('root'))
 
 class SportTracker(FlaskBaseApp):
     def __init__(
-        self,
-        appName: str,
-        rootDir: str,
-        logger: logging.Logger,
-        isDebug: bool,
-        generateDummyData: bool,
-        prepareDatabase: bool,
+            self,
+            appName: str,
+            rootDir: str,
+            logger: logging.Logger,
+            isDebug: bool,
+            generateDummyData: bool,
+            prepareDatabase: bool,
+            settingsPath: str = '../settings.json'
     ):
-        super().__init__(appName, rootDir, logger, serveFavicon=True)
+        os.chdir(rootDir)
+        super().__init__(appName, rootDir, logger, settingsPath=settingsPath, serveFavicon=True)
 
         self._isDebug = isDebug
         self._generateDummyData = generateDummyData
@@ -203,6 +205,19 @@ class SportTracker(FlaskBaseApp):
             if self._generateDummyData:
                 dummyDataGenerator = DummyDataGenerator(app.config['UPLOAD_FOLDER'])
                 dummyDataGenerator.generate()
+
+
+def create_test_app():
+    server = SportTracker(
+        Constants.APP_NAME,
+        os.path.dirname(__file__),
+        LOGGER,
+        False,
+        False,
+        True,
+        settingsPath='../settings-test.json'
+    )
+    return server.init_app()
 
 
 @click.command()

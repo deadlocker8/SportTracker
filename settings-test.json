@@ -1,0 +1,19 @@
+{
+    "server": {
+        "listen": "0.0.0.0",
+        "port": 10023,
+        "secret": "AZq1JCG1H05QGDmJrxdD8ETPYKdqz3vlxeHQ69-6",
+        "useSSL": false,
+        "keyfile": "",
+        "certfile": ""
+    },
+    "logging": {
+        "enableRotatingLogFile": false,
+        "fileName": "SportTracker.log",
+        "maxBytes": 2097152,
+        "numberOfBackups": 3
+    },
+    "database": {
+        "uri": "sqlite:///:memory:"
+    }
+}
