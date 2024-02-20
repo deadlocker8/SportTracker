@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-15 23:48+0100\n"
+"POT-Creation-Date: 2024-02-20 23:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,15 +59,15 @@ msgid ""
 msgstr ""
 
 #: ../blueprints/Authentication.py:25 ../blueprints/Authentication.py:32
-msgid "Unbekannter Nutzer"
+msgid "Unknown user"
 msgstr ""
 
 #: ../blueprints/Authentication.py:35
-msgid "Passwort darf nicht leer sein"
+msgid "Password must not be empty"
 msgstr ""
 
 #: ../blueprints/Authentication.py:40
-msgid "Falsches Passwort"
+msgid "Incorrect password"
 msgstr ""
 
 #: ../blueprints/Charts.py:117

@@ -22,22 +22,22 @@ def construct_blueprint():
         password = request.form.get('password')
 
         if username is None:
-            return render_template('login.jinja2', message=gettext('Unbekannter Nutzer'))
+            return render_template('login.jinja2', message=gettext('Unknown user'))
 
         username = username.strip().lower()
 
         user = User.query.filter_by(username=username).first()
 
         if user is None:
-            return render_template('login.jinja2', message=gettext('Unbekannter Nutzer'))
+            return render_template('login.jinja2', message=gettext('Unknown user'))
 
         if password is None:
-            return render_template('login.jinja2', message=gettext('Passwort darf nicht leer sein'))
+            return render_template('login.jinja2', message=gettext('Password must not be empty'))
 
         password = password.strip()
 
         if not Bcrypt().check_password_hash(user.password, password):
-            return render_template('login.jinja2', message=gettext('Falsches Passwort'))
+            return render_template('login.jinja2', message=gettext('Incorrect password'))
 
         login_user(user, remember=True)
         return redirect(url_for('general.index'))

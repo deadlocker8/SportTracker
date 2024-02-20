@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-15 23:48+0100\n"
-"PO-Revision-Date: 2024-02-15 23:48+0100\n"
+"POT-Creation-Date: 2024-02-20 23:16+0100\n"
+"PO-Revision-Date: 2024-02-20 23:17+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -68,16 +68,16 @@ msgstr ""
 "<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
 
 #: ../blueprints/Authentication.py:25 ../blueprints/Authentication.py:32
-msgid "Unbekannter Nutzer"
-msgstr "Unknown user"
+msgid "Unknown user"
+msgstr "Unbekannter Nutzer"
 
 #: ../blueprints/Authentication.py:35
-msgid "Passwort darf nicht leer sein"
-msgstr "Password must not be empty"
+msgid "Password must not be empty"
+msgstr "Passwort darf nicht leer sein"
 
 #: ../blueprints/Authentication.py:40
-msgid "Falsches Passwort"
-msgstr "Incorrect password"
+msgid "Incorrect password"
+msgstr "Ungültiges Passwort"
 
 #: ../blueprints/Charts.py:117
 msgid "Unknown"
@@ -676,3 +676,12 @@ msgstr "Administrator"
 
 #~ msgid "Bike"
 #~ msgstr "Fahrrad"
+
+#~ msgid "Unbekannter Nutzer"
+#~ msgstr "Unknown user"
+
+#~ msgid "Passwort darf nicht leer sein"
+#~ msgstr "Password must not be empty"
+
+#~ msgid "Falsches Passwort"
+#~ msgstr "Incorrect password"
