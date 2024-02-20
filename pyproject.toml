@@ -32,6 +32,7 @@ faker = "23.2.0"
 ruff = "0.2.1"
 pre-commit = "3.6.1"
 mypy = "1.8.0"
+pytest = "8.0.1"
 
 types-python-dateutil = "*"
 types-requests = "*"
