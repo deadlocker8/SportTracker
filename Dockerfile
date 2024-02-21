@@ -18,13 +18,13 @@ RUN apk update && apk upgrade && \
     apk add postgresql-libs && \
     rm -rf /var/cache/apk
 
-COPY sporttracker/ /opt/SportTracker/src
+COPY sporttracker/ /opt/SportTracker/sporttracker
 COPY CHANGES.md /opt/SportTracker/CHANGES.md
 COPY --from=poetry /opt/SportTracker/myvenv /opt/SportTracker/myvenv
 
 RUN adduser -D sporttracker && chown -R sporttracker:sporttracker /opt/SportTracker
 USER sporttracker
 
-WORKDIR /opt/SportTracker/src
+WORKDIR /opt/SportTracker/sporttracker
 EXPOSE 8080
-CMD [ "/opt/SportTracker/myvenv/bin/python", "/opt/SportTracker/src/SportTracker.py"]
+CMD [ "/opt/SportTracker/myvenv/bin/python", "/opt/SportTracker/sporttracker/SportTracker.py"]
