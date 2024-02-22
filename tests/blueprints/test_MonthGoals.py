@@ -7,7 +7,7 @@ from TestConstants import TEST_USERNAME, TEST_PASSWORD
 from sporttracker.logic.model.User import create_user, Language
 
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(autouse=True)
 def prepare_test_data(app):
     with app.app_context():
         create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH)

@@ -25,16 +25,16 @@ class ServerThread(threading.Thread):
         self.server.shutdown()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture
 def app():
-    app = create_test_app()
-    app.config.update(
+    appInstance = create_test_app()
+    appInstance.config.update(
         {
             'TESTING': True,
         }
     )
 
-    yield app
+    yield appInstance
 
 
 @pytest.fixture
