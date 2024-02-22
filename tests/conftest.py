@@ -5,8 +5,8 @@ import threading
 import pytest
 from werkzeug.serving import make_server
 
-from SportTracker import create_test_app
-from TestConstants import TEST_PORT
+from sporttracker.SportTracker import create_test_app
+from tests.TestConstants import TEST_PORT
 
 
 class ServerThread(threading.Thread):
