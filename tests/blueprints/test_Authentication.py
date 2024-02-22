@@ -1,34 +1,19 @@
 import pytest
 from flask import session
 
-from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
-from sporttracker.SportTracker import create_test_app
 from sporttracker.logic.model.User import create_user, Language
+from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
 
 
-@pytest.fixture()
-def app():
-    app = create_test_app()
-    app.config.update(
-        {
-            'TESTING': True,
-        }
-    )
-
+@pytest.fixture(scope='session', autouse=True)
+def prepare_test_data(app):
     with app.app_context():
         create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH)
-
-    yield app
 
 
 @pytest.fixture()
 def client(app):
     return app.test_client()
-
-
-@pytest.fixture()
-def runner(app):
-    return app.test_cli_runner()
 
 
 class TestAuthentication:
@@ -77,7 +62,7 @@ class TestAuthentication:
         assert 'Tracks' in responseData
 
     def test_login_post_correct_credentials_case_insensitive_username_should_redirect_to_index(
-        self, client
+            self, client
     ):
         response = client.post(
             '/login',
