@@ -58,7 +58,7 @@ The achievement page shows aggregated information about all your tracks.
 
 
 ## Run SportTracker
-1. Install dependencies via `poetry install --no-root`
+1. Install dependencies via `poetry install --no-root --without dev`
 2. Copy `settings-example.json` to `settings.json` and adjust to your configuration
 3. Run the server: `<path_to_python_executable_in_poetry_venv> src/SportTracker.py` 
 
