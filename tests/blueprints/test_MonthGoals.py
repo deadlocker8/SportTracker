@@ -30,13 +30,17 @@ class TestMonthGoalsDistance(SeleniumTestBaseClass):
         # open goal chooser
         selenium.find_element(By.TAG_NAME, 'h1').find_element(By.TAG_NAME, 'a').click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'New Month Goal'))
+            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'New Month Goal')
+        )
 
         # click button to create new distance goal
         buttons = selenium.find_elements(By.CSS_SELECTOR, 'section .btn')
         buttons[0].click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'New Distance Month Goal'))
+            expected_conditions.text_to_be_present_in_element(
+                (By.TAG_NAME, 'h1'), 'New Distance Month Goal'
+            )
+        )
 
     @staticmethod
     def __fill_and_submit_form(selenium, year, month, minimum, perfect):
@@ -51,7 +55,8 @@ class TestMonthGoalsDistance(SeleniumTestBaseClass):
         self.__fill_and_submit_form(selenium, 2024, 2, 100, 200)
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Month Goals'))
+            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Month Goals')
+        )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .progress')) == 1
 

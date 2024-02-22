@@ -62,7 +62,7 @@ class TestAuthentication:
         assert 'Tracks' in responseData
 
     def test_login_post_correct_credentials_case_insensitive_username_should_redirect_to_index(
-            self, client
+        self, client
     ):
         response = client.post(
             '/login',

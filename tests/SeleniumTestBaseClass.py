@@ -2,7 +2,7 @@ from abc import ABC
 
 from selenium.webdriver.common.by import By
 
-from TestConstants import TEST_PORT, TEST_USERNAME, TEST_PASSWORD
+from tests.TestConstants import TEST_PORT, TEST_USERNAME, TEST_PASSWORD
 
 
 class SeleniumTestBaseClass(ABC):
