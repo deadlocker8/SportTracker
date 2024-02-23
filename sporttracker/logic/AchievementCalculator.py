@@ -51,14 +51,13 @@ class AchievementCalculator:
         return format_datetime(bestMonthDate, format='MMMM yyyy'), bestMonth.distanceSum
 
     @staticmethod
-    def get_streaks_by_type(trackType: TrackType) -> tuple[int, int]:
+    def get_streaks_by_type(trackType: TrackType, currentDate: date) -> tuple[int, int]:
         firstTrack = AchievementCalculator._get_first_track(trackType)
         if firstTrack is None:
             return 0, 0
 
-        now = datetime.now()
-        currentYear = now.year
-        currentMonth = now.month
+        currentYear = currentDate.year
+        currentMonth = currentDate.month
 
         year = firstTrack.startTime.year  # type: ignore[attr-defined]
         month = firstTrack.startTime.month  # type: ignore[attr-defined]
@@ -79,7 +78,7 @@ class AchievementCalculator:
                 currentStreak += 1
                 if currentStreak > highestStreak:
                     highestStreak = currentStreak
-            else:
+            elif summaries:
                 if not isEndReached:
                     currentStreak = 0
 
