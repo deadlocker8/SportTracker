@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from flask import Blueprint, render_template
 from flask_babel import gettext
@@ -29,7 +30,7 @@ def construct_blueprint():
         for trackType in TrackType:
             achievementList = []
 
-            streak = AchievementCalculator.get_streaks_by_type(trackType)
+            streak = AchievementCalculator.get_streaks_by_type(trackType, datetime.now().date())
             achievementList.append(
                 Achievement(
                     icon='sports_score',
