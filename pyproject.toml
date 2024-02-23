@@ -65,3 +65,6 @@ module = [
     "TheCodeLabs_FlaskUtils.*",
 ]
 ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+pythonpath = "sporttracker"
