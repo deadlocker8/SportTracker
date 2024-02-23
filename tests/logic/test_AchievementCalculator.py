@@ -57,8 +57,89 @@ def create_count_goal(year, month, countMinimum=1):
     )
 
 
+class TestAchievementCalculatorGetLongestDistanceByType:
+    def test_get_longest_distance_by_type_no_tracks_should_return_0(self, app):
+        with app.test_request_context():
+            user = User.query.get(1)
+            login_user(user, remember=False)
+
+            result = AchievementCalculator.get_longest_distance_by_type(TrackType.BIKING)
+            assert 0 == result
+
+    def test_get_longest_distance_by_type_multiple_tracks_should_return_max_distance(self, app):
+        with app.test_request_context():
+            user = User.query.get(1)
+            login_user(user, remember=False)
+
+            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(datetime.date(2023, 2, 1), 50))
+            db.session.add(create_dummy_track(datetime.date(2023, 3, 1), 22))
+            db.session.commit()
+
+            result = AchievementCalculator.get_longest_distance_by_type(TrackType.BIKING)
+            assert 50 == result
+
+
+class TestAchievementCalculatorGeTotalDistanceByType:
+    def test_get_total_distance_by_type_no_tracks_should_return_0(self, app):
+        with app.test_request_context():
+            user = User.query.get(1)
+            login_user(user, remember=False)
+
+            result = AchievementCalculator.get_total_distance_by_type(TrackType.BIKING)
+            assert 0 == result
+
+    def test_get_total_distance_by_type_multiple_tracks_should_return_max_distance(self, app):
+        with app.test_request_context():
+            user = User.query.get(1)
+            login_user(user, remember=False)
+
+            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(datetime.date(2023, 2, 1), 50))
+            db.session.add(create_dummy_track(datetime.date(2023, 3, 1), 22))
+            db.session.commit()
+
+            result = AchievementCalculator.get_total_distance_by_type(TrackType.BIKING)
+            assert 102 == result
+
+
+class TestAchievementCalculatorGetBestMonthByType:
+    def test_get_best_month_by_type_no_tracks_should_return_0(self, app):
+        with app.test_request_context():
+            user = User.query.get(1)
+            login_user(user, remember=False)
+
+            result = AchievementCalculator.get_best_month_by_type(TrackType.BIKING)
+            assert ('No month', 0) == result
+
+    def test_get_best_month_by_type_single_months(self, app):
+        with app.test_request_context():
+            user = User.query.get(1)
+            login_user(user, remember=False)
+
+            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
+            db.session.commit()
+
+            result = AchievementCalculator.get_best_month_by_type(TrackType.BIKING)
+            assert ('January 2023', 30) == result
+
+    def test_get_best_month_by_type_multiple_months(self, app):
+        with app.test_request_context():
+            user = User.query.get(1)
+            login_user(user, remember=False)
+
+            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(datetime.date(2023, 2, 1), 22))
+            db.session.add(create_dummy_track(datetime.date(2023, 2, 5), 30))
+            db.session.add(create_dummy_track(datetime.date(2023, 3, 1), 22))
+            db.session.commit()
+
+            result = AchievementCalculator.get_best_month_by_type(TrackType.BIKING)
+            assert ('February 2023', 52) == result
+
+
 class TestAchievementCalculatorGetStreaksByType:
-    def test_get_streaks_by_type_no_data_should_return_no_month(self, app):
+    def test_get_streaks_by_type_no_tacks_and_goals_should_return_no_month(self, app):
         with app.test_request_context():
             user = User.query.get(1)
             login_user(user, remember=False)
