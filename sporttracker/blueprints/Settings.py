@@ -15,6 +15,7 @@ from sporttracker.logic.model.CustomTrackField import (
     CustomTrackFieldType,
     RESERVED_FIELD_NAMES,
 )
+from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.Track import TrackType
 from sporttracker.logic.model.User import (
     User,
@@ -61,6 +62,10 @@ class CustomTrackFieldFormModel(BaseModel):
         return value
 
 
+class ParticipantFormModel(BaseModel):
+    name: str
+
+
 def construct_blueprint():
     settings = Blueprint('settings', __name__, static_folder='static', url_prefix='/settings')
 
@@ -71,12 +76,15 @@ def construct_blueprint():
             TrackInfoItem.user_id == current_user.id
         ).all()
 
+        participants = Participant.query.filter(Participant.user_id == current_user.id).all()
+
         infoItems.sort(key=lambda item: item.type.get_localized_name().lower())
 
         return render_template(
             'settings/settings.jinja2',
             userLanguage=current_user.language.name,
             customFieldsByTrackType=get_custom_fields_by_track_type(),
+            participants=participants,
             infoItems=infoItems,
         )
 
@@ -172,7 +180,7 @@ def construct_blueprint():
     @login_required
     @validate()
     def customFieldsAddPost(form: CustomTrackFieldFormModel):
-        if not __is_allowed_name(form):
+        if not __is_allowed_custom_field_name(form):
             return redirect(url_for('settings.customFieldsAdd', track_type=form.track_type))
 
         track = CustomTrackField(
@@ -187,28 +195,6 @@ def construct_blueprint():
         db.session.commit()
 
         return redirect(url_for('settings.settingsShow'))
-
-    def __is_allowed_name(form: CustomTrackFieldFormModel):
-        if form.name.lower() in RESERVED_FIELD_NAMES:
-            flash(
-                gettext(
-                    'The specified field name "{0}" conflicts with a reserved field name and therefore can\'t '
-                    'be used as custom field name.'
-                ).format(form.name)
-            )
-            return False
-
-        existingCustomFields = (
-            CustomTrackField.query.filter(CustomTrackField.user_id == current_user.id)
-            .filter(CustomTrackField.track_type == form.track_type)
-            .all()
-        )
-        existingCustomFieldNames = [item.name.lower() for item in existingCustomFields]
-        if form.name.lower() in existingCustomFieldNames:
-            flash(gettext('The specified field name "{0}" already exists.').format(form.name))
-            return False
-
-        return True
 
     @settings.route('/customFields/edit/<int:field_id>')
     @login_required
@@ -249,7 +235,7 @@ def construct_blueprint():
             abort(404)
 
         if field.name != form.name:
-            if not __is_allowed_name(form):
+            if not __is_allowed_custom_field_name(form):
                 return redirect(url_for('settings.customFieldsEdit', field_id=field_id))
 
         field.name = form.name  # type: ignore[assignment]
@@ -280,5 +266,115 @@ def construct_blueprint():
         db.session.commit()
 
         return redirect(url_for('settings.settingsShow'))
+
+    @settings.route('/participants/add')
+    @login_required
+    def participantsAdd():
+        return render_template('settings/participantsForm.jinja2')
+
+    @settings.route('/participants/post', methods=['POST'])
+    @login_required
+    @validate()
+    def participantsAddPost(form: ParticipantFormModel):
+        participant = Participant(name=form.name, user_id=current_user.id)
+        LOGGER.debug(f'Saved new participant: {participant}')
+        db.session.add(participant)
+        db.session.commit()
+
+        return redirect(url_for('settings.settingsShow'))
+
+    @settings.route('/participants/edit/<int:participant_id>')
+    @login_required
+    def participantsEdit(participant_id: int):
+        participant: Participant | None = (
+            Participant.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(Participant.id == participant_id)
+            .first()
+        )
+
+        if participant is None:
+            abort(404)
+
+        participantModel = ParticipantFormModel(name=participant.name)  # type: ignore[arg-type]
+
+        return render_template(
+            'settings/participantsForm.jinja2', participant=participantModel, participant_id=participant_id
+        )
+
+    @settings.route('/participants/edit/<int:participant_id>', methods=['POST'])
+    @login_required
+    @validate()
+    def participantsEditPost(participant_id: int, form: ParticipantFormModel):
+        participant: Participant | None = (
+            Participant.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(Participant.id == participant_id)
+            .first()
+        )
+
+        if participant is None:
+            abort(404)
+
+        if participant.name != form.name:
+            if not __is_allowed_participant_name(form):
+                return redirect(url_for('settings.participantsForm', participant_id=participant_id))
+
+        participant.name = form.name  # type: ignore[assignment]
+
+        LOGGER.debug(f'Updated participant: {participant}')
+        db.session.commit()
+
+        return redirect(url_for('settings.settingsShow'))
+
+    @settings.route('/participants/delete/<int:participant_id>')
+    @login_required
+    def participantsDelete(participant_id: int):
+        participant: Participant | None = (
+            Participant.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(Participant.id == participant_id)
+            .first()
+        )
+
+        if participant is None:
+            abort(404)
+
+        LOGGER.debug(f'Deleted participant: {participant}')
+        db.session.delete(participant)
+        db.session.commit()
+
+        return redirect(url_for('settings.settingsShow'))
+
+    def __is_allowed_custom_field_name(form: CustomTrackFieldFormModel):
+        if form.name.lower() in RESERVED_FIELD_NAMES:
+            flash(
+                gettext(
+                    'The specified field name "{0}" conflicts with a reserved field name and therefore can\'t '
+                    'be used as custom field name.'
+                ).format(form.name)
+            )
+            return False
+
+        existingCustomFields = (
+            CustomTrackField.query.filter(CustomTrackField.user_id == current_user.id)
+            .filter(CustomTrackField.track_type == form.track_type)
+            .all()
+        )
+        existingCustomFieldNames = [item.name.lower() for item in existingCustomFields]
+        if form.name.lower() in existingCustomFieldNames:
+            flash(gettext('The specified field name "{0}" already exists.').format(form.name))
+            return False
+
+        return True
+
+    def __is_allowed_participant_name(form: ParticipantFormModel):
+        existingParticipants = Participant.query.filter(Participant.user_id == current_user.id).all()
+        existingParticipantNames = [item.name.lower() for item in existingParticipants]
+        if form.name.lower() in existingParticipantNames:
+            flash(gettext('The specified participant name "{0}" already exists.').format(form.name))
+            return False
+
+        return True
 
     return settings

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {% if participant %}{{ gettext('Edit Participant') }}{% else %}
+            {{ gettext('New Participant') }}{% endif %}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('settings') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        {% if participant %}
+                            <h1>{{ gettext('Edit Participant') }}</h1>
+                        {% else %}
+                            <h1>{{ gettext('New Participant') }}</h1>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-danger mt-3 d-inline-block" role="alert">
+                                <div class="d-flex align-items-center">
+                                    <i class="material-icons">warning</i>
+                                    <div class="ms-3">{{ message }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <div class="row mt-5 text-start">
+                    <div class="col col-11 col-md-9 mx-auto">
+                        <form role="form" action="
+                                {% if participant %}{{ url_for('settings.participantsEditPost', participant_id=participant_id) }}{% else %}{{ url_for('settings.participantsAddPost') }}{% endif %}"
+                              method="post">
+
+                            <div class="mb-3">
+                                <label for="participant-name" class="form-label">{{ gettext('Name') }}</label>
+                                <input type="text" class="form-control" id="participant-name" name="name"
+                                       required="required" {% if participant %}value="{{ participant.name }}"{% endif %}>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>

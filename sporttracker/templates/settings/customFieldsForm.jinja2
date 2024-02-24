@@ -3,13 +3,13 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {% if track %}{{ gettext('Edit Custom Track Field') }}{% else %}
+        <title>SportTracker - {% if field %}{{ gettext('Edit Custom Track Field') }}{% else %}
             {{ gettext('New Custom Track Field') }}{% endif %}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
     <body class="bg-dark text-light">
-        {{ macros.navbar('profile') }}
+        {{ macros.navbar('settings') }}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
