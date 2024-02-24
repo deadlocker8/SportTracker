@@ -1,8 +1,9 @@
 # 1.13.0
-- add: added tests
+- add: it is now possible to specify participants for each track
 - add: custom track fields: prevent usage of reserved or already used names
 - add: improved responsiveness for different screen sizes
 - add: track overview: only show current month and hide hotkey tip on small screens
+- add: added tests
 - chore: update dependencies
 
 # 1.12.0
