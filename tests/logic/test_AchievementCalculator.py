@@ -60,7 +60,7 @@ def create_count_goal(year, month, countMinimum=1):
 class TestAchievementCalculatorGetLongestDistanceByType:
     def test_get_longest_distance_by_type_no_tracks_should_return_0(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             result = AchievementCalculator.get_longest_distance_by_type(TrackType.BIKING)
@@ -68,7 +68,7 @@ class TestAchievementCalculatorGetLongestDistanceByType:
 
     def test_get_longest_distance_by_type_multiple_tracks_should_return_max_distance(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
@@ -83,7 +83,7 @@ class TestAchievementCalculatorGetLongestDistanceByType:
 class TestAchievementCalculatorGeTotalDistanceByType:
     def test_get_total_distance_by_type_no_tracks_should_return_0(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             result = AchievementCalculator.get_total_distance_by_type(TrackType.BIKING)
@@ -91,7 +91,7 @@ class TestAchievementCalculatorGeTotalDistanceByType:
 
     def test_get_total_distance_by_type_multiple_tracks_should_return_max_distance(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
@@ -106,7 +106,7 @@ class TestAchievementCalculatorGeTotalDistanceByType:
 class TestAchievementCalculatorGetBestMonthByType:
     def test_get_best_month_by_type_no_tracks_should_return_0(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             result = AchievementCalculator.get_best_month_by_type(TrackType.BIKING)
@@ -114,7 +114,7 @@ class TestAchievementCalculatorGetBestMonthByType:
 
     def test_get_best_month_by_type_single_months(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
@@ -125,7 +125,7 @@ class TestAchievementCalculatorGetBestMonthByType:
 
     def test_get_best_month_by_type_multiple_months(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
@@ -141,7 +141,7 @@ class TestAchievementCalculatorGetBestMonthByType:
 class TestAchievementCalculatorGetStreaksByType:
     def test_get_streaks_by_type_no_tacks_and_goals_should_return_no_month(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             result = AchievementCalculator.get_streaks_by_type(
@@ -151,7 +151,7 @@ class TestAchievementCalculatorGetStreaksByType:
 
     def test_get_streaks_by_type_single_month_should_return_month(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             db.session.add(create_distance_goal(2023, 1))
@@ -166,7 +166,7 @@ class TestAchievementCalculatorGetStreaksByType:
 
     def test_get_streaks_by_type_multiple_months_should_return_streak_of_two(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             db.session.add(create_distance_goal(2023, 1))
@@ -183,7 +183,7 @@ class TestAchievementCalculatorGetStreaksByType:
 
     def test_get_streaks_by_type_multiple_months_streak_broken_between(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             db.session.add(create_distance_goal(2023, 1))
@@ -204,7 +204,7 @@ class TestAchievementCalculatorGetStreaksByType:
 
     def test_get_streaks_by_type_multiple_months_with_year_overrun(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             db.session.add(create_distance_goal(2023, 11))
@@ -225,7 +225,7 @@ class TestAchievementCalculatorGetStreaksByType:
 
     def test_get_streaks_by_type_multiple_distance_goals_per_month_all_completed(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             db.session.add(create_distance_goal(2023, 1))
@@ -244,7 +244,7 @@ class TestAchievementCalculatorGetStreaksByType:
         self, app
     ):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             db.session.add(create_distance_goal(2023, 1))
@@ -261,7 +261,7 @@ class TestAchievementCalculatorGetStreaksByType:
 
     def test_get_streaks_by_type_current_month_already_completed_should_increase_streak(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             db.session.add(create_distance_goal(2023, 1))
@@ -280,7 +280,7 @@ class TestAchievementCalculatorGetStreaksByType:
 
     def test_get_streaks_by_type_current_month_not_yet_completed_should_not_break_streak(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             db.session.add(create_distance_goal(2023, 1))
@@ -298,7 +298,7 @@ class TestAchievementCalculatorGetStreaksByType:
 
     def test_get_streaks_by_type_only_check_goals_of_same_type(self, app):
         with app.test_request_context():
-            user = User.query.get(1)
+            user = db.session.get(User, 1)
             login_user(user, remember=False)
 
             db.session.add(create_distance_goal(2023, 1))
