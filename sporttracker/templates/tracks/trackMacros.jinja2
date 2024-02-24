@@ -53,12 +53,7 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <h5 class="card-title text-truncate text-start">{{ track.name }}</h5>
 
-                                {% if track.gpxFileName is not none %}
-                                    <a href="{{ url_for('maps.showSingleTrack', track_id=track.id) }}"
-                                       class="text-decoration-none z-2">
-                                        <span class="material-icons fs-4 text-body">map</span>
-                                    </a>
-                                {% endif %}
+                               {{ track_card_feature_icons(track) }}
                             </div>
 
                             <div class="d-flex align-items-center justify-content-between">
@@ -106,6 +101,20 @@
     </div>
 {%- endmacro %}
 
+{%  macro track_card_feature_icons(track) -%}
+    <div>
+        {% if track.participants %}
+            <span class="material-icons fs-4 text-body">group</span>
+        {% endif %}
+        {% if track.gpxFileName is not none %}
+            <a href="{{ url_for('maps.showSingleTrack', track_id=track.id) }}"
+               class="text-decoration-none z-2">
+                <span class="material-icons fs-4 text-body">map</span>
+            </a>
+        {% endif %}
+    </div>
+{%- endmacro %}
+
 {% macro render_track_biking_card(track) -%}
     <div class="row py-2">
         <div class="col col-12 mx-auto">
@@ -117,12 +126,7 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <h5 class="card-title text-truncate text-start">{{ track.name }}</h5>
 
-                                {% if track.gpxFileName is not none %}
-                                    <a href="{{ url_for('maps.showSingleTrack', track_id=track.id) }}"
-                                       class="text-decoration-none z-2">
-                                        <span class="material-icons fs-4 text-body">map</span>
-                                    </a>
-                                {% endif %}
+                                {{ track_card_feature_icons(track) }}
                             </div>
 
                             <div class="d-flex align-items-center justify-content-between">
@@ -170,12 +174,7 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <h5 class="card-title text-truncate text-start">{{ track.name }}</h5>
 
-                                {% if track.gpxFileName is not none %}
-                                    <a href="{{ url_for('maps.showSingleTrack', track_id=track.id) }}"
-                                       class="text-decoration-none z-2">
-                                        <span class="material-icons fs-4 text-body">map</span>
-                                    </a>
-                                {% endif %}
+                                {{ track_card_feature_icons(track) }}
                             </div>
 
                             <div class="d-flex align-items-center justify-content-between">
