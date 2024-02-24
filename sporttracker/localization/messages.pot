@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-20 23:16+0100\n"
+"POT-Creation-Date: 2024-02-24 22:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,42 +17,42 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: ../blueprints/Achievements.py:37
+#: ../blueprints/Achievements.py:38
 msgid "Month Goal Streak"
 msgstr ""
 
-#: ../blueprints/Achievements.py:38
+#: ../blueprints/Achievements.py:39
 msgid ""
 "You have achieved all your monthly goals for <span class=\"fw-"
 "bold\">{currentStreak}</span> months in a row!<br>(Best: <span class"
 "=\"fw-bold\">{maxStreak}</span>)"
 msgstr ""
 
-#: ../blueprints/Achievements.py:48
+#: ../blueprints/Achievements.py:49
 msgid "Longest Track"
 msgstr ""
 
-#: ../blueprints/Achievements.py:49
+#: ../blueprints/Achievements.py:50
 msgid ""
 "You completed <span class=\"fw-bold\">{longestTrack} km</span> in one "
 "trip!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:63
+#: ../blueprints/Achievements.py:64
 msgid "Total Distance"
 msgstr ""
 
-#: ../blueprints/Achievements.py:64
+#: ../blueprints/Achievements.py:65
 msgid ""
 "You completed a total of <span class=\"fw-bold\">{totalDistance} "
 "km</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:78
+#: ../blueprints/Achievements.py:79
 msgid "Best Month"
 msgstr ""
 
-#: ../blueprints/Achievements.py:79
+#: ../blueprints/Achievements.py:80
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
 "<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
@@ -80,6 +80,16 @@ msgstr ""
 
 #: ../blueprints/MonthGoalsCount.py:80 ../blueprints/MonthGoalsDistance.py:80
 msgid "End Month must be greater or equal Start Month."
+msgstr ""
+
+#: ../blueprints/Users.py:338
+msgid ""
+"The specified field name \"{0}\" conflicts with a reserved field name and"
+" therefore can't be used as custom field name."
+msgstr ""
+
+#: ../blueprints/Users.py:352
+msgid "The specified field name \"{0}\" already exists."
 msgstr ""
 
 #: ../logic/AchievementCalculator.py:40 ../logic/AchievementCalculator.py:45
@@ -114,18 +124,16 @@ msgstr ""
 msgid "Distance"
 msgstr ""
 
-#: ../logic/model/User.py:49 ../templates/tracks/trackHikingForm.jinja2:79
-#: ../templates/tracks/trackMacros.jinja2:295
+#: ../logic/model/User.py:49 ../templates/tracks/trackMacros.jinja2:301
 msgid "Duration"
 msgstr ""
 
 #: ../logic/model/User.py:51 ../templates/charts/chartAverageSpeed.jinja2:23
-#: ../templates/charts/chartChooser.jinja2:43
+#: ../templates/charts/chartChooser.jinja2:40
 msgid "Average Speed"
 msgstr ""
 
-#: ../logic/model/User.py:53 ../templates/tracks/trackHikingForm.jinja2:105
-#: ../templates/tracks/trackMacros.jinja2:323
+#: ../logic/model/User.py:53 ../templates/tracks/trackMacros.jinja2:329
 msgid "Average Heart Rate"
 msgstr ""
 
@@ -200,7 +208,7 @@ msgid "Speed in km/h"
 msgstr ""
 
 #: ../templates/charts/chartCalendar.jinja2:16
-#: ../templates/charts/chartChooser.jinja2:67
+#: ../templates/charts/chartChooser.jinja2:61
 msgid "Calendar"
 msgstr ""
 
@@ -214,11 +222,11 @@ msgstr ""
 msgid "Distance per Year"
 msgstr ""
 
-#: ../templates/charts/chartChooser.jinja2:50
+#: ../templates/charts/chartChooser.jinja2:47
 msgid "Distance per Custom Field"
 msgstr ""
 
-#: ../templates/charts/chartChooser.jinja2:60
+#: ../templates/charts/chartChooser.jinja2:54
 #: ../templates/charts/chartDurationPerTrack.jinja2:20
 msgid "Duration per Track"
 msgstr ""
@@ -376,14 +384,14 @@ msgid "New Distance Goal"
 msgstr ""
 
 #: ../templates/monthGoals/monthGoalChooser.jinja2:33
-msgid "New Count Goal"
-msgstr ""
-
-#: ../templates/monthGoals/monthGoalChooser.jinja2:42
 msgid "Multiple New Distance Goals"
 msgstr ""
 
-#: ../templates/monthGoals/monthGoalChooser.jinja2:49
+#: ../templates/monthGoals/monthGoalChooser.jinja2:40
+msgid "New Count Goal"
+msgstr ""
+
+#: ../templates/monthGoals/monthGoalChooser.jinja2:47
 msgid "Multiple New Count Goals"
 msgstr ""
 
@@ -411,7 +419,7 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:26
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:31
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:26
-#: ../templates/settings/customFieldsForm.jinja2:41
+#: ../templates/settings/customFieldsForm.jinja2:54
 #: ../templates/settings/profile.jinja2:83
 msgid "Type"
 msgstr ""
@@ -440,12 +448,12 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:88
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:73
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:88
-#: ../templates/settings/customFieldsForm.jinja2:58
+#: ../templates/settings/customFieldsForm.jinja2:71
 #: ../templates/settings/profile.jinja2:36
 #: ../templates/settings/profile.jinja2:50
 #: ../templates/settings/profile.jinja2:130
 #: ../templates/tracks/trackBikingForm.jinja2:57
-#: ../templates/tracks/trackHikingForm.jinja2:125
+#: ../templates/tracks/trackHikingForm.jinja2:57
 #: ../templates/tracks/trackRunningForm.jinja2:53
 #: ../templates/users/userForm.jinja2:56
 msgid "Save"
@@ -514,14 +522,13 @@ msgstr ""
 msgid "New Custom Track Field"
 msgstr ""
 
-#: ../templates/settings/customFieldsForm.jinja2:35
+#: ../templates/settings/customFieldsForm.jinja2:48
 #: ../templates/settings/profile.jinja2:82
-#: ../templates/tracks/trackHikingForm.jinja2:41
-#: ../templates/tracks/trackMacros.jinja2:251
+#: ../templates/tracks/trackMacros.jinja2:257
 msgid "Name"
 msgstr ""
 
-#: ../templates/settings/customFieldsForm.jinja2:53
+#: ../templates/settings/customFieldsForm.jinja2:66
 msgid "Is required"
 msgstr ""
 
@@ -583,50 +590,43 @@ msgstr ""
 msgid "Edit Hiking Track"
 msgstr ""
 
-#: ../templates/tracks/trackHikingForm.jinja2:56
-#: ../templates/tracks/trackMacros.jinja2:268
+#: ../templates/tracks/trackMacros.jinja2:274
 msgid "Date"
 msgstr ""
 
-#: ../templates/tracks/trackHikingForm.jinja2:61
-#: ../templates/tracks/trackMacros.jinja2:273
+#: ../templates/tracks/trackMacros.jinja2:279
 msgid "Start Time"
 msgstr ""
 
-#: ../templates/tracks/trackHikingForm.jinja2:69
-#: ../templates/tracks/trackMacros.jinja2:283
+#: ../templates/tracks/trackMacros.jinja2:289
 msgid "Distance (in km)"
 msgstr ""
 
-#: ../templates/tracks/trackHikingForm.jinja2:82
-#: ../templates/tracks/trackMacros.jinja2:298
+#: ../templates/tracks/trackMacros.jinja2:304
 msgid "Hours"
 msgstr ""
 
-#: ../templates/tracks/trackHikingForm.jinja2:90
-#: ../templates/tracks/trackMacros.jinja2:306
+#: ../templates/tracks/trackMacros.jinja2:312
 msgid "Minutes"
 msgstr ""
 
-#: ../templates/tracks/trackHikingForm.jinja2:97
-#: ../templates/tracks/trackMacros.jinja2:313
+#: ../templates/tracks/trackMacros.jinja2:319
 msgid "Seconds"
 msgstr ""
 
-#: ../templates/tracks/trackHikingForm.jinja2:113
-#: ../templates/tracks/trackMacros.jinja2:333
+#: ../templates/tracks/trackMacros.jinja2:339
 msgid "Elevation Sum (in m)"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:342
+#: ../templates/tracks/trackMacros.jinja2:348
 msgid "GPX Track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:347
+#: ../templates/tracks/trackMacros.jinja2:353
 msgid "A GPX file is linked to this track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:368
+#: ../templates/tracks/trackMacros.jinja2:374
 msgid "No GPX file is linked to this track"
 msgstr ""
 
