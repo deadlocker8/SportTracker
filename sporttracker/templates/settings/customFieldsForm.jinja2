@@ -23,6 +23,19 @@
                     </div>
                 </div>
 
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-danger mt-3 d-inline-block" role="alert">
+                                <div class="d-flex align-items-center">
+                                    <i class="material-icons">warning</i>
+                                    <div class="ms-3">{{ message }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
                 <div class="row mt-5 text-start">
                     <div class="col col-9 mx-auto">
                         <form role="form" action="

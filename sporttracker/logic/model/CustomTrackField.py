@@ -53,3 +53,17 @@ def get_custom_fields_by_track_type() -> dict[TrackType, list[CustomTrackField]]
             .all()
         )
     return customFieldsByTrackType
+
+
+RESERVED_FIELD_NAMES = [
+    'name',
+    'date',
+    'time',
+    'distance',
+    'duration-hours',
+    'duration-minutes',
+    'duration-seconds',
+    'averageHeartRate',
+    'elevationSum',
+    'gpxFileName',
+]

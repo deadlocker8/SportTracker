@@ -1,5 +1,6 @@
 # 1.13.0
 - add: added tests
+- add: custom track fields: prevent usage of reserved or already used names
 - chore: update dependencies
 
 # 1.12.0

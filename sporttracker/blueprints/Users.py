@@ -1,7 +1,8 @@
 import logging
 from dataclasses import dataclass
+from gettext import gettext
 
-from flask import Blueprint, render_template, redirect, url_for, abort
+from flask import Blueprint, render_template, redirect, url_for, abort, flash
 from flask_bcrypt import Bcrypt
 from flask_login import login_required, current_user
 from flask_pydantic import validate
@@ -14,6 +15,7 @@ from sporttracker.logic.model.CustomTrackField import (
     get_custom_fields_by_track_type,
     CustomTrackField,
     CustomTrackFieldType,
+    RESERVED_FIELD_NAMES,
 )
 from sporttracker.logic.model.Track import TrackType
 from sporttracker.logic.model.User import (
@@ -314,6 +316,9 @@ def construct_blueprint():
     @login_required
     @validate()
     def customFieldsAddPost(form: CustomTrackFieldFormModel):
+        if not __is_allowed_name(form):
+            return redirect(url_for('users.customFieldsAdd', track_type=form.track_type))
+
         track = CustomTrackField(
             name=form.name,
             type=CustomTrackFieldType(form.type),  # type: ignore[call-arg]
@@ -326,6 +331,28 @@ def construct_blueprint():
         db.session.commit()
 
         return redirect(url_for('users.editSelf'))
+
+    def __is_allowed_name(form: CustomTrackFieldFormModel):
+        if form.name.lower() in RESERVED_FIELD_NAMES:
+            flash(
+                gettext(
+                    'The specified field name "{0}" conflicts with a reserved field name and therefore can\'t '
+                    'be used as custom field name.'
+                ).format(form.name)
+            )
+            return False
+
+        existingCustomFields = (
+            CustomTrackField.query.filter(CustomTrackField.user_id == current_user.id)
+            .filter(CustomTrackField.track_type == form.track_type)
+            .all()
+        )
+        existingCustomFieldNames = [item.name.lower() for item in existingCustomFields]
+        if form.name.lower() in existingCustomFieldNames:
+            flash(gettext('The specified field name "{0}" already exists.').format(form.name))
+            return False
+
+        return True
 
     @users.route('/customFields/edit/<int:field_id>')
     @login_required
@@ -364,6 +391,10 @@ def construct_blueprint():
 
         if field is None:
             abort(404)
+
+        if field.name != form.name:
+            if not __is_allowed_name(form):
+                return redirect(url_for('users.customFieldsEdit', field_id=field_id))
 
         field.name = form.name  # type: ignore[assignment]
         field.type = form.type
