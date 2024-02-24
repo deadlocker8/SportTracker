@@ -13,6 +13,7 @@ from sqlalchemy import extract, func, String, asc
 from sporttracker.helpers.Helpers import format_duration
 from sporttracker.logic import Constants
 from sporttracker.logic.model.CustomTrackField import get_custom_fields_by_track_type
+from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.Track import (
     TrackType,
     Track,
@@ -124,6 +125,39 @@ def construct_blueprint():
             'charts/chartDistancePerCustomField.jinja2',
             chartDistancePerCustomFieldData=chartDistancePerCustomFieldData,
             customFieldName=name,
+        )
+
+    @charts.route('/chartDistancePerParticipantChooser')
+    @login_required
+    def chartDistancePerParticipantChooser():
+        return render_template('charts/chartDistancePerParticipantChooser.jinja2')
+
+    @charts.route('/chartDistancePerParticipantChooser/<string:track_type>')
+    @login_required
+    def chartDistancePerParticipant(track_type: str):
+        keys = []
+        values = []
+
+        participants = Participant.query.filter(Participant.user_id == current_user.id).all()
+        for participant in participants:
+            keys.append(participant.name)
+
+            distance = (
+                Track.query.with_entities(func.sum(Track.distance) / 1000)
+                .filter(Track.user_id == current_user.id)
+                .filter(Track.type == track_type)
+                .filter(Track.participants.any(id=participant.id))
+                .scalar()
+                or 0
+            )
+            values.append(float(distance))
+
+        chartDistancePerParticipantData = {'keys': keys, 'values': values}
+
+        return render_template(
+            'charts/chartDistancePerParticipant.jinja2',
+            chartDistancePerParticipantData=chartDistancePerParticipantData,
+            track_type=track_type,
         )
 
     @charts.route('/chartAverageSpeed')

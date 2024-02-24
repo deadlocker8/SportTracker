@@ -1,0 +1,46 @@
+{% import 'charts/chartMacros.jinja2' as chartMacros with context %}
+{% call chartMacros.chart() %}
+     const data = [
+        {
+            labels: {{ chartDistancePerParticipantData['keys'] }},
+            values: {{ chartDistancePerParticipantData['values'] }},
+            type: 'pie',
+            text: {{ chartDistancePerParticipantData['values'] }}
+        },
+    ];
+
+    const plotlyLayout = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        title: {
+            text: '{{ gettext('Distance per participant for track type "%(track_type)s"', track_type=track_type) }}',
+            font: {
+                color: '#FFFFFF'
+            }
+        },
+        xaxis: {
+            type: 'category',
+            color: '#FFFFFF'
+        },
+        yaxis: {
+            title: '{{ gettext('Distance in km') }}',
+            rangemode: 'tozero',
+            tickformat: '.0f',
+            showline: true,
+            color: '#FFFFFF'
+        },
+        barmode: 'group',
+        legend: {
+            font: {
+                color: '#FFFFFF'
+            }
+        }
+    }
+
+    const plotlyConfig = {
+        responsive: true,
+        displayModeBar: false
+    };
+
+    Plotly.newPlot('chartContainer', data, plotlyLayout, plotlyConfig);
+{% endcall %}

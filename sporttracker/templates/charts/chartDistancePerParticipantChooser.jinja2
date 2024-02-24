@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Charts') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('charts') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        <h1>{{ gettext('Charts') }}</h1>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col col-12 mx-auto">
+                        <h3>{{ gettext('Choose track type') }}</h3>
+
+                        {% for trackType in trackTypes %}
+                            <div class="row mt-5 mb-3">
+                                <div class="col col-12 mx-auto">
+                                    <h3 class="d-flex align-items-center justify-content-center">
+                                        {% if trackType.is_font_awesome_icon %}
+                                            <i class="fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-2 p-2 text-dark {{ trackType.background_color }} me-3"></i>
+                                        {% else %}
+                                            <span class="material-icons rounded-circle fs-2 p-2 text-dark {{ trackType.background_color }} me-3">{{ trackType.icon }}</span>
+                                        {% endif %}
+                                        <span class="me-3">{{ trackType.get_localized_name() }}</span>
+
+                                        <a href="{{ url_for('charts.chartDistancePerParticipant', track_type=trackType.name) }}"
+                                           class="btn btn-sm btn-primary">
+                                            <span class="fs-5 text-light">{{ gettext('Select') }}</span>
+                                        </a>
+                                    </h3>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>
