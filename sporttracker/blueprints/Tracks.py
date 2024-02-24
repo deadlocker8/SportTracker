@@ -17,6 +17,7 @@ from sporttracker.logic.model.MonthGoal import (
     MonthGoalSummary,
     get_goal_summaries_by_year_and_month_and_types,
 )
+from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.Track import (
     Track,
     get_tracks_by_year_and_month_by_type,
@@ -48,6 +49,7 @@ class TrackFormModel(BaseModel):
     averageHeartRate: int | None = None
     elevationSum: int | None = None
     gpxFileName: str | None = None
+    participants: list[str] | str | None = None
 
     model_config = ConfigDict(
         extra='allow',
@@ -127,9 +129,11 @@ def construct_blueprint(uploadFolder: str):
             .filter(CustomTrackField.track_type == trackType)
             .all()
         )
+
         return render_template(
             f'tracks/track{track_type.capitalize()}Form.jinja2',
             customFields=customFields,
+            participants=Participant.query.filter(Participant.user_id == current_user.id).all(),
             trackNames=get_track_names_by_track_type(trackType),
         )
 
@@ -138,6 +142,8 @@ def construct_blueprint(uploadFolder: str):
     @validate()
     def addPost(form: TrackFormModel):
         gpxFileName = handleGpxTrack(request.files, uploadFolder)
+
+        participants = __get_participants()
 
         track = Track(
             name=form.name,
@@ -150,6 +156,7 @@ def construct_blueprint(uploadFolder: str):
             gpxFileName=gpxFileName,
             custom_fields=form.model_extra,
             user_id=current_user.id,
+            participants=participants,
         )
         LOGGER.debug(f'Saved new track: {track}')
         db.session.add(track)
@@ -188,6 +195,7 @@ def construct_blueprint(uploadFolder: str):
             averageHeartRate=track.averageHeartRate,
             elevationSum=track.elevationSum,
             gpxFileName=track.gpxFileName,
+            participants=[str(item.id) for item in track.participants],
             **track.custom_fields,
         )
 
@@ -202,6 +210,7 @@ def construct_blueprint(uploadFolder: str):
             track=trackModel,
             track_id=track_id,
             customFields=customFields,
+            participants=Participant.query.filter(Participant.user_id == current_user.id).all(),
             trackNames=get_track_names_by_track_type(track.type),
         )
 
@@ -225,6 +234,7 @@ def construct_blueprint(uploadFolder: str):
         track.duration = form.calculate_duration()
         track.averageHeartRate = form.averageHeartRate
         track.elevationSum = form.elevationSum
+        track.participants = __get_participants()
 
         newGpxFileName = handleGpxTrack(request.files, uploadFolder)
         if track.gpxFileName is None:
@@ -269,5 +279,14 @@ def construct_blueprint(uploadFolder: str):
         db.session.commit()
 
         return redirect(url_for('tracks.listTracks'))
+
+    def __get_participants() -> list[Participant]:
+        participantIds = [int(item) for item in request.form.getlist('participants')]
+        participants = (
+            Participant.query.filter(Participant.user_id == current_user.id)
+            .filter(Participant.id.in_(participantIds))
+            .all()
+        )
+        return participants
 
     return tracks

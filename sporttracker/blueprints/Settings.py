@@ -299,7 +299,9 @@ def construct_blueprint():
         participantModel = ParticipantFormModel(name=participant.name)  # type: ignore[arg-type]
 
         return render_template(
-            'settings/participantsForm.jinja2', participant=participantModel, participant_id=participant_id
+            'settings/participantsForm.jinja2',
+            participant=participantModel,
+            participant_id=participant_id,
         )
 
     @settings.route('/participants/edit/<int:participant_id>', methods=['POST'])
@@ -369,7 +371,9 @@ def construct_blueprint():
         return True
 
     def __is_allowed_participant_name(form: ParticipantFormModel):
-        existingParticipants = Participant.query.filter(Participant.user_id == current_user.id).all()
+        existingParticipants = Participant.query.filter(
+            Participant.user_id == current_user.id
+        ).all()
         existingParticipantNames = [item.name.lower() for item in existingParticipants]
         if form.name.lower() in existingParticipantNames:
             flash(gettext('The specified participant name "{0}" already exists.').format(form.name))

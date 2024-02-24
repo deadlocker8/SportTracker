@@ -28,7 +28,8 @@ from sporttracker.blueprints import (
     Achievements,
     Search,
     Maps,
-    GpxTracks, Settings,
+    GpxTracks,
+    Settings,
 )
 from sporttracker.helpers import Helpers
 from sporttracker.logic import Constants

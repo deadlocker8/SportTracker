@@ -376,3 +376,17 @@
         <input class="form-control" type="file" id="track-gpxFileName" name="gpxTrack">
     </div>
 {%- endmacro %}
+
+{% macro track_form_participants(track, participants) -%}
+    <div class="mb-3">
+        <label for="track-participants" class="form-label">{{ gettext('Participants') }}</label>
+        {% for participant in participants %}
+            <div class="form-check">
+                <input class="form-check-input participant-checkbox" type="checkbox" {% if track and participant.id|string in track.participants %}checked{% endif %} id="participant-{{ participant.id }}" name="participants" value="{{ participant.id }}">
+                <label class="form-check-label" for="participant-{{ participant.id }}">
+                    {{ participant.name }}
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+{%- endmacro %}

@@ -52,6 +52,8 @@
                                 {{ macros.customFieldInput(field) }}
                             {% endfor %}
 
+                            {{ trackMacros.track_form_participants(track, participants) }}
+
                             {{ trackMacros.track_form_gpx(track, track_id) }}
 
                             <button type="submit" class="btn btn-primary mt-3">{{ gettext('Save') }}</button>

@@ -66,4 +66,5 @@ RESERVED_FIELD_NAMES = [
     'averageHeartRate',
     'elevationSum',
     'gpxFileName',
+    'participants',
 ]

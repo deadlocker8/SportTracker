@@ -5,8 +5,9 @@ from flask_babel import gettext
 from flask_login import current_user
 from sqlalchemy import Integer, String, DateTime, extract, func
 from sqlalchemy.dialects.postgresql import JSON
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import mapped_column, Mapped, relationship
 
+from sporttracker.logic.model.Participant import Participant, track_participant_association
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 
@@ -64,6 +65,7 @@ class Track(db.Model):  # type: ignore[name-defined]
     gpxFileName: Mapped[str] = mapped_column(String, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     custom_fields = db.Column(JSON)
+    participants: Mapped[list[Participant]] = relationship(secondary=track_participant_association)
 
 
 def get_track_names_by_track_type(trackType: TrackType) -> list[str]:
