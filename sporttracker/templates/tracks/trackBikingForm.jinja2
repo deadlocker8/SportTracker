@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="row mt-5 text-start">
-                    <div class="col col-9 mx-auto">
+                    <div class="col col-11 col-md-9 mx-auto">
                         <form role="form" action="
                                 {% if track %}{{ url_for('tracks.editPost', track_id=track_id) }}{% else %}{{ url_for('tracks.addPost') }}{% endif %}"
                               method="post"

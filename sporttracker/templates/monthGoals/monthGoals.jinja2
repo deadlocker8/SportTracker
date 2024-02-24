@@ -29,9 +29,11 @@
                     {% for goalSummary in summaries %}
 
                         {% if goalSummary.type_name == 'DISTANCE' %}
-                            {{ monthGoalsMacros.render_month_goal_distance_summary_card(goalSummary) }}
+                            {{ monthGoalsMacros.render_month_goal_distance_summary_card_large(goalSummary) }}
+                            {{ monthGoalsMacros.render_month_goal_distance_summary_card_small(goalSummary) }}
                         {% elif goalSummary.type_name == 'COUNT' %}
-                            {{ monthGoalsMacros.render_month_goal_count_summary_card(goalSummary) }}
+                            {{ monthGoalsMacros.render_month_goal_count_summary_card_large(goalSummary) }}
+                            {{ monthGoalsMacros.render_month_goal_count_summary_card_small(goalSummary) }}
                         {% endif %}
                     {% endfor %}
                 {% endfor %}

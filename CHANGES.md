@@ -1,6 +1,8 @@
 # 1.13.0
 - add: added tests
 - add: custom track fields: prevent usage of reserved or already used names
+- add: improved responsiveness for different screen sizes
+- add: track overview: only show current month and hide hotkey tip on small screens
 - chore: update dependencies
 
 # 1.12.0

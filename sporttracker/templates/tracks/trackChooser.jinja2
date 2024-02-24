@@ -19,21 +19,21 @@
                 </div>
 
                 <div class="row mt-5">
-                    <div class="col col-6  mb-5">
+                    <div class="col col-12 col-md-6 mb-5">
                         <a href="{{ url_for('tracks.addType', track_type='BIKING') }}"
                            class="btn btn-link text-decoration-none">
                             <div class="material-icons rounded-circle fs-1 p-3 text-dark bg-warning mb-3">directions_bike</div>
                             <div class="fs-3 text-light">{{ gettext('New Biking Track') }}</div>
                         </a>
                     </div>
-                    <div class="col col-6 mb-5">
+                    <div class="col col-12 col-md-6 mb-5">
                         <a href="{{ url_for('tracks.addType', track_type='RUNNING') }}"
                            class="btn btn-link text-decoration-none">
                             <div class="material-icons rounded-circle fs-1 p-3 text-dark bg-info mb-3">directions_run</div>
                             <div class="fs-3 text-light">{{ gettext('New Running Track') }}</div>
                         </a>
                     </div>
-                    <div class="col col-6 mb-5">
+                    <div class="col col-12 col-md-6 mb-5">
                         <a href="{{ url_for('tracks.addType', track_type='HIKING') }}"
                            class="btn btn-link text-decoration-none">
                             <i class="fa-solid fa-person-hiking fa-fw rounded-circle fs-1 p-3 text-dark mb-3 fa-person-hiking bg-green"></i>

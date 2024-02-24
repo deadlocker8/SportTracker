@@ -19,30 +19,28 @@
                 </div>
 
                 <div class="row mt-5">
-                    <div class="col col-6">
+                    <div class="col col-12 col-md-6 mb-5">
                         <a href="{{ url_for('monthGoalsDistance.add') }}"
                            class="btn btn-link text-decoration-none">
                             <div class="material-icons rounded-circle fs-1 p-3 text-light bg-secondary mb-3">route</div>
                             <div class="fs-3 text-light">{{ gettext('New Distance Goal') }}</div>
                         </a>
                     </div>
-                    <div class="col col-6">
-                        <a href="{{ url_for('monthGoalsCount.add') }}"
-                           class="btn btn-link text-decoration-none">
-                            <div class="material-icons rounded-circle fs-1 p-3 text-dark bg-primary-subtle mb-3">format_list_numbered</div>
-                            <div class="fs-3 text-light">{{ gettext('New Count Goal') }}</div>
-                        </a>
-                    </div>
-                </div>
-                <div class="row mt-5">
-                    <div class="col col-6">
+                    <div class="col col-12 col-md-6 mb-5">
                         <a href="{{ url_for('monthGoalsDistance.addMultiple') }}"
                            class="btn btn-link text-decoration-none">
                             <div class="material-icons rounded-circle fs-1 p-3 text-light bg-secondary mb-3">route</div>
                             <div class="fs-3 text-light">{{ gettext('Multiple New Distance Goals') }}</div>
                         </a>
                     </div>
-                    <div class="col col-6">
+                    <div class="col col-12 col-md-6 mb-5">
+                        <a href="{{ url_for('monthGoalsCount.add') }}"
+                           class="btn btn-link text-decoration-none">
+                            <div class="material-icons rounded-circle fs-1 p-3 text-dark bg-primary-subtle mb-3">format_list_numbered</div>
+                            <div class="fs-3 text-light">{{ gettext('New Count Goal') }}</div>
+                        </a>
+                    </div>
+                   <div class="col col-12 col-md-6 mb-5">
                         <a href="{{ url_for('monthGoalsCount.addMultiple') }}"
                            class="btn btn-link text-decoration-none">
                             <div class="material-icons rounded-circle fs-1 p-3 text-dark bg-primary-subtle mb-3">format_list_numbered</div>

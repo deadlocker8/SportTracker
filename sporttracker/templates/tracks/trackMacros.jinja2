@@ -47,9 +47,7 @@
         <div class="col col-12 mx-auto">
             <div class="card">
                 <div class="row g-0">
-                    <div class="col col-3 d-flex align-items-center justify-content-center">
-                        <span class="material-icons rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
-                    </div>
+                    {{ track_type_icon(track.type) }}
                     <div class="col col-9">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between">
@@ -96,16 +94,26 @@
     </div>
 {%- endmacro %}
 
+{%  macro track_type_icon(track_type) -%}
+    <div class="col col-2 col-md-3 d-flex align-items-center justify-content-center">
+        {% if track_type.is_font_awesome_icon %}
+            <i class="d-none d-lg-block fa-solid {{ track_type.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ track_type.background_color }}"></i>
+            <i class="d-lg-none fa-solid {{ track_type.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ track_type.background_color }}"></i>
+        {% else %}
+            <span class="d-none d-lg-block material-icons rounded-circle fs-1 p-3 text-dark {{ track_type.background_color }}">{{ track_type.icon }}</span>
+            <span class="d-lg-none material-icons rounded-circle fs-3 p-2 text-dark {{ track_type.background_color }}">{{ track_type.icon }}</span>
+        {% endif %}
+    </div>
+{%- endmacro %}
+
 {% macro render_track_biking_card(track) -%}
     <div class="row py-2">
         <div class="col col-12 mx-auto">
             <div class="card">
                 <div class="row g-0">
-                    <div class="col col-3 d-flex align-items-center justify-content-center">
-                        <span class="material-icons rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
-                    </div>
-                    <div class="col col-9">
-                        <div class="card-body">
+                    {{ track_type_icon(track.type) }}
+                    <div class="col col-10 col-md-9">
+                        <div class="card-body ps-1 ps-md-3">
                             <div class="d-flex align-items-center justify-content-between">
                                 <h5 class="card-title text-truncate text-start">{{ track.name }}</h5>
 
@@ -156,9 +164,7 @@
         <div class="col col-12 mx-auto">
             <div class="card">
                 <div class="row g-0">
-                    <div class="col col-3 d-flex align-items-center justify-content-center">
-                        <i class="fa-solid {{ track.type.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}"></i>
-                    </div>
+                    {{ track_type_icon(track.type) }}
                     <div class="col col-9">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between">

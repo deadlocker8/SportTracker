@@ -74,8 +74,8 @@
                         <input class="form-control me-2" type="search" placeholder="{{ gettext('Search') }}" name="searchText" value="{% if searchText %}{{ searchText }}{% endif %}">
                     </form>
 
-                    <div class="d-flex align-items-center">
-                        <div class="text-white mx-md-3 my-2 my-md-0">
+                    <div class="d-flex align-items-center justify-content-between mt-3 mt-sm-0">
+                        <div class="text-white mx-md-3 me-3 my-2 my-md-0">
                             <a href="{{ url_for('users.editSelf') }}"
                                class="link-light text-decoration-none d-flex align-items-center"><span
                                     class="material-icons">person</span> {{ current_user.username|capitalize }}</a>

@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="row mt-5 text-start">
-                    <div class="col col-9 mx-auto">
+                    <div class="col col-11 col-md-9 mx-auto">
                         {% if errorMessage %}
                             <div class="alert alert-danger" role="alert">
                                 {{ errorMessage }}
@@ -55,7 +55,7 @@
                 <hr class="mt-5"/>
 
                 <div class="row mt-5 text-start">
-                    <div class="col col-9 mx-auto">
+                    <div class="col col-11 col-md-9 mx-auto">
                         <h3 class="text-center mb-5">{{ gettext('Custom Track Fields') }}</h3>
 
                         {% for trackType, customFields in customFieldsByTrackType.items() %}

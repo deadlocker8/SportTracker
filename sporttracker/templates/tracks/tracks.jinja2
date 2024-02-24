@@ -13,7 +13,7 @@
         {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
 
         <div id="main" class="center-align">
-            <section class="p-5 text-center">
+            <section class="pt-5 px-4 px-sm-5 text-center">
                 <div class="row">
                     <div class="col col-12 mx-auto">
                         <div class="d-flex align-items-center justify-content-center">
@@ -40,7 +40,7 @@
                     </div>
                 </div>
 
-                <div class="row mt-2">
+                <div class="row mt-2 d-none d-lg-block">
                     <div class="col col-12 mx-auto d-flex align-items-center justify-content-center">
                         <span class="material-icons fs-4 me-2">info_outline</span>
                         <span>{{ gettext('Toggle months via arrow keys or press "0" for current month') }}</span>
@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="row p-xxl-5 p-xl-4 p-lg-3">
-                    <div class="col col-lg-6 col-sm-12 px-xxl-5 px-xl-4 px-lg-3">
+                    <div class="col col-lg-6 col-sm-12 px-xxl-5 px-xl-4 px-lg-3 d-none d-lg-block">
                         {{ trackMacros.render_month(monthLeftSide) }}
                     </div>
                     <div class="col col-lg-6 col-sm-12 px-xxl-5 px-xl-4 px-lg-3">
