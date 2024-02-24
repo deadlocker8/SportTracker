@@ -200,7 +200,7 @@ def construct_blueprint():
         infoItems.sort(key=lambda item: item.type.get_localized_name().lower())
 
         return render_template(
-            'settings/profile.jinja2',
+            'settings/settings.jinja2',
             userLanguage=current_user.language.name,
             customFieldsByTrackType=get_custom_fields_by_track_type(),
             infoItems=infoItems,
@@ -219,7 +219,7 @@ def construct_blueprint():
 
         if not password:
             return render_template(
-                'settings/profile.jinja2',
+                'settings/settings.jinja2',
                 errorMessage='Password must not be empty',
                 userLanguage=current_user.language.name,
                 customFieldsByTrackType=get_custom_fields_by_track_type(),
@@ -227,7 +227,7 @@ def construct_blueprint():
 
         if len(password) < MIN_PASSWORD_LENGTH:
             return render_template(
-                'settings/profile.jinja2',
+                'settings/settings.jinja2',
                 errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long',
                 userLanguage=current_user.language.name,
                 customFieldsByTrackType=get_custom_fields_by_track_type(),
