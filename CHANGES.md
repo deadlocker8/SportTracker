@@ -1,3 +1,7 @@
+# 1.13.0
+- add: added tests
+- chore: update dependencies
+
 # 1.12.0
 - add: map: added button to collapse/expand legend
 - fix: map: sort track legend by date
