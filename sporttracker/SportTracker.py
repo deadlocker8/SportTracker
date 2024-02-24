@@ -28,7 +28,7 @@ from sporttracker.blueprints import (
     Achievements,
     Search,
     Maps,
-    GpxTracks,
+    GpxTracks, Settings,
 )
 from sporttracker.helpers import Helpers
 from sporttracker.logic import Constants
@@ -197,6 +197,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(MonthGoalsCount.construct_blueprint())
         app.register_blueprint(Charts.construct_blueprint())
         app.register_blueprint(Users.construct_blueprint())
+        app.register_blueprint(Settings.construct_blueprint())
         app.register_blueprint(Api.construct_blueprint(self._version, app.config['UPLOAD_FOLDER']))
         app.register_blueprint(Achievements.construct_blueprint())
         app.register_blueprint(Search.construct_blueprint())

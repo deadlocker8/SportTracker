@@ -39,7 +39,7 @@
                 <div class="row mt-5 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
                         <form role="form" action="
-                                {% if field %}{{ url_for('users.customFieldsEditPost', field_id=field_id) }}{% else %}{{ url_for('users.customFieldsAddPost') }}{% endif %}"
+                                {% if field %}{{ url_for('settings.customFieldsEditPost', field_id=field_id) }}{% else %}{{ url_for('settings.customFieldsAddPost') }}{% endif %}"
                               method="post">
 
                             <input type="hidden" class="form-control" id="field-track-type" name="track_type" value="{% if field %}{{ field.track_type }}{% else %}{{ trackType.name }}{% endif %}">

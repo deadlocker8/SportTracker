@@ -26,7 +26,7 @@
                             </div>
                         {% endif %}
 
-                        <form role="form" action="{{ url_for('users.editSelfPost') }}" method="post">
+                        <form role="form" action="{{ url_for('settings.editSelfPost') }}" method="post">
                             <div class="mb-4">
                                 <label for="user-password" class="form-label">{{ gettext('Password') }}</label>
                                 <input type="password" class="form-control" id="user-password"
@@ -36,7 +36,7 @@
                             <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
                         </form>
 
-                        <form role="form" action="{{ url_for('users.editSelfLanguagePost') }}" method="post"
+                        <form role="form" action="{{ url_for('settings.editSelfLanguagePost') }}" method="post"
                               class="mt-5">
                             <div class="mb-4">
                                 <label for="user-language" class="form-label">{{ gettext('Language') }}</label>
@@ -68,7 +68,7 @@
                                             <span class="material-icons rounded-circle fs-2 p-2 text-dark {{ trackType.background_color }} me-3">{{ trackType.icon }}</span>
                                         {% endif %}
                                         <span class="me-3">{{ trackType.get_localized_name() }}</span>
-                                        <a href="{{ url_for('users.customFieldsAdd', track_type=trackType.name) }}"
+                                        <a href="{{ url_for('settings.customFieldsAdd', track_type=trackType.name) }}"
                                            class="link-light text-decoration-none d-flex-inline align-items-center">
                                             <span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span>
                                         </a>
@@ -92,11 +92,11 @@
                                             <td>{{ field.type.name }}</td>
                                             <td>{{ field.is_required }}</td>
                                             <td>
-                                                <a href="{{ url_for('users.customFieldsEdit', field_id=field.id) }}"
+                                                <a href="{{ url_for('settings.customFieldsEdit', field_id=field.id) }}"
                                                    class="link-light text-decoration-none">
                                                     <span class="p-1 fs-5 material-icons">edit</span>
                                                 </a>
-                                                <a href="{{ url_for('users.customFieldsDelete', field_id=field.id) }}"
+                                                <a href="{{ url_for('settings.customFieldsDelete', field_id=field.id) }}"
                                                    class="link-light text-decoration-none">
                                                     <span class="p-1 fs-5 material-icons">delete</span>
                                                 </a>
@@ -114,7 +114,7 @@
                 <div class="row mt-5 text-start">
                     <div class="col col-6 mx-auto">
                         <h3 class="text-center mb-5">{{ gettext('Select Information to show for each track') }}</h3>
-                        <form role="form" action="{{ url_for('users.editSelfTrackInfoItems') }}" method="post">
+                        <form role="form" action="{{ url_for('settings.editSelfTrackInfoItems') }}" method="post">
                             {% for infoItem in infoItems %}
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch"
