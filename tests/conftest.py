@@ -38,7 +38,9 @@ def app():
 
 
 @pytest.fixture
-def server(app):
+def server(app, driver):
+    driver.set_window_size(1920, 1080)
+
     serverThread = ServerThread(app)
     serverThread.start()
     yield serverThread
