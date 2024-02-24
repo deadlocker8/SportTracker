@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-24 22:26+0100\n"
-"PO-Revision-Date: 2024-02-24 22:27+0100\n"
+"POT-Creation-Date: 2024-02-25 00:50+0100\n"
+"PO-Revision-Date: 2024-02-25 00:53+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -79,7 +79,7 @@ msgstr "Passwort darf nicht leer sein"
 msgid "Incorrect password"
 msgstr "Ungültiges Passwort"
 
-#: ../blueprints/Charts.py:117
+#: ../blueprints/Charts.py:118
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -91,7 +91,7 @@ msgstr "Das Endjahr muss größer oder gleich dem Anfangsjahr sein."
 msgid "End Month must be greater or equal Start Month."
 msgstr "Der Endmonat muss größer oder gleich dem Startmonat sein."
 
-#: ../blueprints/Users.py:338
+#: ../blueprints/Settings.py:354
 msgid ""
 "The specified field name \"{0}\" conflicts with a reserved field name and "
 "therefore can't be used as custom field name."
@@ -99,9 +99,13 @@ msgstr ""
 "Der angegebene Name \"{0}\" kollidiert mit einem reservierten Namen und kann "
 "daher nicht als Name für ein benutzerdefiniertes Feld verwendet werden."
 
-#: ../blueprints/Users.py:352
+#: ../blueprints/Settings.py:368
 msgid "The specified field name \"{0}\" already exists."
 msgstr "Der angegebene Name \"{0}\" existiert bereits."
+
+#: ../blueprints/Settings.py:379
+msgid "The specified participant name \"{0}\" already exists."
+msgstr "Ein Teilnehmer mit dem Namen \"{0}\" existiert bereits."
 
 #: ../logic/AchievementCalculator.py:40 ../logic/AchievementCalculator.py:45
 msgid "No month"
@@ -119,15 +123,15 @@ msgstr "Ganzzahl"
 msgid "Float"
 msgstr "Kommazahl"
 
-#: ../logic/model/Track.py:46
+#: ../logic/model/Track.py:47
 msgid "Biking"
 msgstr "Fahrrad fahren"
 
-#: ../logic/model/Track.py:48
+#: ../logic/model/Track.py:49
 msgid "Running"
 msgstr "Laufen"
 
-#: ../logic/model/Track.py:50
+#: ../logic/model/Track.py:51
 msgid "Hiking"
 msgstr "Wandern"
 
@@ -135,7 +139,7 @@ msgstr "Wandern"
 msgid "Distance"
 msgstr "Strecke"
 
-#: ../logic/model/User.py:49 ../templates/tracks/trackMacros.jinja2:301
+#: ../logic/model/User.py:49 ../templates/tracks/trackMacros.jinja2:300
 msgid "Duration"
 msgstr "Dauer"
 
@@ -144,7 +148,7 @@ msgstr "Dauer"
 msgid "Average Speed"
 msgstr "Durchschnittsgeschwindigkeit"
 
-#: ../logic/model/User.py:53 ../templates/tracks/trackMacros.jinja2:329
+#: ../logic/model/User.py:53 ../templates/tracks/trackMacros.jinja2:328
 msgid "Average Heart Rate"
 msgstr "Durchschnittliche Herzfrequenz"
 
@@ -168,7 +172,7 @@ msgstr "Errungenschaften"
 msgid "Username"
 msgstr "Benutzer"
 
-#: ../templates/login.jinja2:23 ../templates/settings/profile.jinja2:31
+#: ../templates/login.jinja2:23 ../templates/settings/settings.jinja2:31
 #: ../templates/users/userForm.jinja2:47
 msgid "Password"
 msgstr "Passwort"
@@ -190,6 +194,8 @@ msgstr "Monatsziele"
 #: ../templates/charts/chartChooser.jinja2:17
 #: ../templates/charts/chartDistancePerCustomFieldChooser.jinja2:6
 #: ../templates/charts/chartDistancePerCustomFieldChooser.jinja2:17
+#: ../templates/charts/chartDistancePerParticipantChooser.jinja2:6
+#: ../templates/charts/chartDistancePerParticipantChooser.jinja2:17
 #: ../templates/charts/chartDurationPerTrackChooser.jinja2:6
 #: ../templates/charts/chartDurationPerTrackChooser.jinja2:17
 #: ../templates/charts/chartMacros.jinja2:7
@@ -219,7 +225,7 @@ msgid "Speed in km/h"
 msgstr "Geschwindigkeit in km/h"
 
 #: ../templates/charts/chartCalendar.jinja2:16
-#: ../templates/charts/chartChooser.jinja2:61
+#: ../templates/charts/chartChooser.jinja2:68
 msgid "Calendar"
 msgstr "Kalender"
 
@@ -238,6 +244,10 @@ msgid "Distance per Custom Field"
 msgstr "Strecke pro benutzerdefiniertem Feld"
 
 #: ../templates/charts/chartChooser.jinja2:54
+msgid "Distance per Participant"
+msgstr "Strecke pro Teilnehmer"
+
+#: ../templates/charts/chartChooser.jinja2:61
 #: ../templates/charts/chartDurationPerTrack.jinja2:20
 msgid "Duration per Track"
 msgstr "Dauer pro Track"
@@ -249,6 +259,7 @@ msgstr "Strecke pro benutzerdefiniertem Feld \"%(name)s\""
 
 #: ../templates/charts/chartDistancePerCustomField.jinja2:26
 #: ../templates/charts/chartDistancePerMonth.jinja2:32
+#: ../templates/charts/chartDistancePerParticipant.jinja2:26
 #: ../templates/charts/chartDistancePerYear.jinja2:32
 msgid "Distance in km"
 msgstr "Strecke in km"
@@ -256,6 +267,19 @@ msgstr "Strecke in km"
 #: ../templates/charts/chartDistancePerCustomFieldChooser.jinja2:23
 msgid "Choose custom field"
 msgstr "Benutzerdefiniertes Feld auswählen"
+
+#: ../templates/charts/chartDistancePerParticipant.jinja2:16
+#, python-format
+msgid "Distance per participant for track type \"%(track_type)s\""
+msgstr "Strecke pro Teilnehmer für Tracktyp \"%(track_type)s\""
+
+#: ../templates/charts/chartDistancePerParticipantChooser.jinja2:23
+msgid "Choose track type"
+msgstr "Track Typ auswählen"
+
+#: ../templates/charts/chartDistancePerParticipantChooser.jinja2:38
+msgid "Select"
+msgstr "Auswählen"
 
 #: ../templates/charts/chartDurationPerTrack.jinja2:31
 msgid "Duration in s"
@@ -431,7 +455,7 @@ msgstr "Löschen"
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:31
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:26
 #: ../templates/settings/customFieldsForm.jinja2:54
-#: ../templates/settings/profile.jinja2:83
+#: ../templates/settings/settings.jinja2:83
 msgid "Type"
 msgstr "Typ"
 
@@ -460,12 +484,13 @@ msgstr "Ideale Anzahl an Tracks"
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:73
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:88
 #: ../templates/settings/customFieldsForm.jinja2:71
-#: ../templates/settings/profile.jinja2:36
-#: ../templates/settings/profile.jinja2:50
-#: ../templates/settings/profile.jinja2:130
-#: ../templates/tracks/trackBikingForm.jinja2:57
-#: ../templates/tracks/trackHikingForm.jinja2:57
-#: ../templates/tracks/trackRunningForm.jinja2:53
+#: ../templates/settings/participantsForm.jinja2:51
+#: ../templates/settings/settings.jinja2:36
+#: ../templates/settings/settings.jinja2:50
+#: ../templates/settings/settings.jinja2:175
+#: ../templates/tracks/trackBikingForm.jinja2:59
+#: ../templates/tracks/trackHikingForm.jinja2:59
+#: ../templates/tracks/trackRunningForm.jinja2:55
 #: ../templates/users/userForm.jinja2:56
 msgid "Save"
 msgstr "Speichern"
@@ -534,8 +559,10 @@ msgid "New Custom Track Field"
 msgstr "Neues benutzerdefiniertes Feld"
 
 #: ../templates/settings/customFieldsForm.jinja2:48
-#: ../templates/settings/profile.jinja2:82
-#: ../templates/tracks/trackMacros.jinja2:257
+#: ../templates/settings/participantsForm.jinja2:46
+#: ../templates/settings/settings.jinja2:82
+#: ../templates/settings/settings.jinja2:132
+#: ../templates/tracks/trackMacros.jinja2:256
 msgid "Name"
 msgstr "Name"
 
@@ -543,28 +570,44 @@ msgstr "Name"
 msgid "Is required"
 msgstr "Ist Pflichtfeld"
 
-#: ../templates/settings/profile.jinja2:6
-#: ../templates/settings/profile.jinja2:17
-msgid "Profile"
-msgstr "Profil"
+#: ../templates/settings/participantsForm.jinja2:6
+#: ../templates/settings/participantsForm.jinja2:19
+msgid "Edit Participant"
+msgstr "Teilnehmner bearbeiten"
 
-#: ../templates/settings/profile.jinja2:42
+#: ../templates/settings/participantsForm.jinja2:7
+#: ../templates/settings/participantsForm.jinja2:21
+msgid "New Participant"
+msgstr "Neuer Teilnehmer"
+
+#: ../templates/settings/settings.jinja2:6
+#: ../templates/settings/settings.jinja2:17
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: ../templates/settings/settings.jinja2:42
 msgid "Language"
 msgstr "Sprache"
 
-#: ../templates/settings/profile.jinja2:59
+#: ../templates/settings/settings.jinja2:59
 msgid "Custom Track Fields"
 msgstr "Benutzerdefinierte Felder"
 
-#: ../templates/settings/profile.jinja2:84
+#: ../templates/settings/settings.jinja2:84
 msgid "Is Required"
 msgstr "Ist Pflichtfeld"
 
-#: ../templates/settings/profile.jinja2:85
+#: ../templates/settings/settings.jinja2:85
+#: ../templates/settings/settings.jinja2:133
 msgid "Action"
 msgstr "Aktion"
 
-#: ../templates/settings/profile.jinja2:116
+#: ../templates/settings/settings.jinja2:120
+#: ../templates/tracks/trackMacros.jinja2:381
+msgid "Participants"
+msgstr "Teilnehmer"
+
+#: ../templates/settings/settings.jinja2:161
 msgid "Select Information to show for each track"
 msgstr "Informationen auswählen, die für jeden Track angezeigt werden"
 
@@ -601,43 +644,43 @@ msgstr "Neuer Wander-Track"
 msgid "Edit Hiking Track"
 msgstr "Wander-Track bearbeiten"
 
-#: ../templates/tracks/trackMacros.jinja2:274
+#: ../templates/tracks/trackMacros.jinja2:273
 msgid "Date"
 msgstr "Datum"
 
-#: ../templates/tracks/trackMacros.jinja2:279
+#: ../templates/tracks/trackMacros.jinja2:278
 msgid "Start Time"
 msgstr "Startuhrzeit"
 
-#: ../templates/tracks/trackMacros.jinja2:289
+#: ../templates/tracks/trackMacros.jinja2:288
 msgid "Distance (in km)"
 msgstr "Strecke (in km)"
 
-#: ../templates/tracks/trackMacros.jinja2:304
+#: ../templates/tracks/trackMacros.jinja2:303
 msgid "Hours"
 msgstr "Stunden"
 
-#: ../templates/tracks/trackMacros.jinja2:312
+#: ../templates/tracks/trackMacros.jinja2:311
 msgid "Minutes"
 msgstr "Minuten"
 
-#: ../templates/tracks/trackMacros.jinja2:319
+#: ../templates/tracks/trackMacros.jinja2:318
 msgid "Seconds"
 msgstr "Sekunden"
 
-#: ../templates/tracks/trackMacros.jinja2:339
+#: ../templates/tracks/trackMacros.jinja2:338
 msgid "Elevation Sum (in m)"
 msgstr "Summe Höhenmeter (in m)"
 
-#: ../templates/tracks/trackMacros.jinja2:348
+#: ../templates/tracks/trackMacros.jinja2:347
 msgid "GPX Track"
 msgstr "GPX Track"
 
-#: ../templates/tracks/trackMacros.jinja2:353
+#: ../templates/tracks/trackMacros.jinja2:352
 msgid "A GPX file is linked to this track"
 msgstr "Eine GPX-Datei ist mit diesem Track verknüpft"
 
-#: ../templates/tracks/trackMacros.jinja2:374
+#: ../templates/tracks/trackMacros.jinja2:373
 msgid "No GPX file is linked to this track"
 msgstr "Mit diesem Track ist keine GPX-Datei verknüpft"
 
@@ -687,3 +730,6 @@ msgstr "Administrator"
 
 #~ msgid "Falsches Passwort"
 #~ msgstr "Incorrect password"
+
+#~ msgid "Profile"
+#~ msgstr "Profil"
