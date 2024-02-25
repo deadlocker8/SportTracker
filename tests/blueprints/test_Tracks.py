@@ -1,3 +1,5 @@
+import time
+
 import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
@@ -60,6 +62,12 @@ class TestTracks(SeleniumTestBaseClass):
         selenium.find_element(By.ID, 'track-averageHeartRate').send_keys(averageHeartRate)
         selenium.find_element(By.ID, 'track-elevationSum').send_keys(elevationSum)
 
+    def __click_submit_button(self, selenium):
+        button = selenium.find_element(By.CSS_SELECTOR, 'section form button')
+        selenium.execute_script('arguments[0].scrollIntoView();', button)
+        time.sleep(1)
+        button.click()
+
     def test_add_track_valid(self, server, selenium: WebDriver):
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
@@ -94,7 +102,7 @@ class TestTracks(SeleniumTestBaseClass):
 
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
-        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+        self.__click_submit_button(selenium)
 
         assert selenium.current_url.endswith('/tracks/add/BIKING')
 
@@ -115,7 +123,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         selenium.find_element(By.ID, 'track-my_custom_field').send_keys(15)
-        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+        self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Tracks')
@@ -141,7 +149,7 @@ class TestTracks(SeleniumTestBaseClass):
 
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
-        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+        self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Tracks')
