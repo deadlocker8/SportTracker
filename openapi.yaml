@@ -62,7 +62,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseId'
-  /api/addGpxFile/{track_id}:
+  /api/addGpxTrack/{track_id}:
     post:
       parameters:
         - in: path
