@@ -25,7 +25,7 @@ def prepare_test_data(app):
 class TestCustomFieldTypes(SeleniumTestBaseClass):
     def __open_add_form(self, selenium):
         self.login(selenium)
-        selenium.get(self.build_url('/users/customFields/add/BIKING'))
+        selenium.get(self.build_url('/settings/customFields/add/BIKING'))
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -35,7 +35,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
 
     def __open_edit_form(self, selenium):
         self.login(selenium)
-        selenium.get(self.build_url('/users/customFields/edit/1'))
+        selenium.get(self.build_url('/settings/customFields/edit/1'))
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -63,7 +63,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Profile')
+            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Settings')
         )
 
         assert len(selenium.find_elements(By.XPATH, '//td[text()="STRING"]')) == 1
@@ -74,7 +74,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
         selenium.find_element(By.ID, 'field-name').send_keys(RESERVED_FIELD_NAMES[0])
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
-        assert selenium.current_url.endswith('/users/customFields/add/BIKING')
+        assert selenium.current_url.endswith('/settings/customFields/add/BIKING')
         assert selenium.find_element(By.CLASS_NAME, 'alert-danger') is not None
 
     def test_add_custom_track_field_name_already_used(self, server, selenium: WebDriver, app):
@@ -84,7 +84,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
         selenium.find_element(By.ID, 'field-name').send_keys('my_custom_field')
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
-        assert selenium.current_url.endswith('/users/customFields/add/BIKING')
+        assert selenium.current_url.endswith('/settings/customFields/add/BIKING')
         assert selenium.find_element(By.CLASS_NAME, 'alert-danger') is not None
 
     def test_edit_custom_track_field_valid(self, server, selenium: WebDriver, app):
@@ -96,7 +96,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Profile')
+            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Settings')
         )
 
         assert len(selenium.find_elements(By.XPATH, '//td[text()="True"]')) == 1
@@ -109,7 +109,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
         selenium.find_element(By.ID, 'field-name').send_keys(RESERVED_FIELD_NAMES[0])
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
-        assert selenium.current_url.endswith('/users/customFields/edit/1')
+        assert selenium.current_url.endswith('/settings/customFields/edit/1')
         assert selenium.find_element(By.CLASS_NAME, 'alert-danger') is not None
 
     def test_edit_custom_track_field_name_already_used(self, server, selenium: WebDriver, app):
@@ -121,5 +121,5 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
         selenium.find_element(By.ID, 'field-name').send_keys('abc')
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
-        assert selenium.current_url.endswith('/users/customFields/edit/1')
+        assert selenium.current_url.endswith('/settings/customFields/edit/1')
         assert selenium.find_element(By.CLASS_NAME, 'alert-danger') is not None

@@ -68,7 +68,7 @@ class TestMonthGoalsDistance(SeleniumTestBaseClass):
             expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Month Goals')
         )
 
-        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .progress')) == 1
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 1
 
     def test_add_distance_goal_all_empty(self, server, selenium: WebDriver):
         self.__open_form(selenium, 0, 'New Distance Month Goal')
@@ -76,17 +76,17 @@ class TestMonthGoalsDistance(SeleniumTestBaseClass):
         assert selenium.current_url.endswith('/goalsDistance/add')
 
     def test_add_multiple_distance_goals_valid(self, server, selenium: WebDriver):
-        self.__open_form(selenium, 2, 'Multiple New Distance Month Goals')
+        self.__open_form(selenium, 1, 'Multiple New Distance Month Goals')
         self.__fill_and_submit_multiple_form(selenium, 2023, 11, 2024, 2, 100, 200)
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Month Goals')
         )
 
-        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .progress')) == 3
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 3
 
     def test_add_multiple_distance_goals_all_empty(self, server, selenium: WebDriver):
-        self.__open_form(selenium, 2, 'Multiple New Distance Month Goals')
+        self.__open_form(selenium, 1, 'Multiple New Distance Month Goals')
         self.__fill_and_submit_multiple_form(selenium, '', '', '', '', '', '')
         assert selenium.current_url.endswith('/goalsDistance/addMultiple')
 
@@ -130,17 +130,17 @@ class TestMonthGoalsCount(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
     def test_add_distance_goal_valid(self, server, selenium: WebDriver):
-        self.__open_form(selenium, 1, 'New Count Month Goal')
+        self.__open_form(selenium, 2, 'New Count Month Goal')
         self.__fill_and_submit_form(selenium, 2024, 2, 100, 200)
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Month Goals')
         )
 
-        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .progress')) == 1
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 1
 
     def test_add_distance_goal_all_empty(self, server, selenium: WebDriver):
-        self.__open_form(selenium, 1, 'New Count Month Goal')
+        self.__open_form(selenium, 2, 'New Count Month Goal')
         self.__fill_and_submit_form(selenium, '', '', '', '')
         assert selenium.current_url.endswith('/goalsCount/add')
 
@@ -152,7 +152,7 @@ class TestMonthGoalsCount(SeleniumTestBaseClass):
             expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Month Goals')
         )
 
-        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .progress')) == 3
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 3
 
     def test_add_multiple_distance_goals_all_empty(self, server, selenium: WebDriver):
         self.__open_form(selenium, 3, 'Multiple New Count Month Goals')
