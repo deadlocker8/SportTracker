@@ -204,7 +204,6 @@ components:
         - averageHeartRate
         - elevationSum
         - customFields
-        - gpxFileName
       properties:
         name:
           type: string
