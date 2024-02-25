@@ -201,9 +201,6 @@ components:
         - startTime
         - distance
         - duration
-        - averageHeartRate
-        - elevationSum
-        - customFields
       properties:
         name:
           type: string
