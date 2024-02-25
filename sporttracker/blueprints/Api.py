@@ -46,6 +46,7 @@ class TrackApiFormModel(BaseModel):
 
 @dataclass
 class TrackModel:
+    id: int
     name: str
     type: str
     startTime: str
@@ -175,6 +176,7 @@ def construct_blueprint(version: dict, uploadFolder: str):
         for track in tracks:
             result.append(
                 TrackModel(
+                    id=track.id,
                     name=track.name,
                     type=track.type.name,
                     startTime=track.startTime.strftime('%Y-%m-%d %H:%M:%S'),

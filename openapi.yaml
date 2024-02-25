@@ -196,12 +196,15 @@ components:
     TrackModel:
       type: object
       required:
+        - id
         - name
         - type
         - startTime
         - distance
         - duration
       properties:
+        id:
+          type: integer
         name:
           type: string
         type:
