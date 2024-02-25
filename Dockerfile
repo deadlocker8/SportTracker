@@ -7,9 +7,10 @@ RUN curl https://install.python-poetry.org | python -
 
 COPY pyproject.toml /opt/SportTracker/pyproject.toml
 COPY poetry.lock /opt/SportTracker/poetry.lock
+COPY sporttracker/ /opt/SportTracker/sporttracker
 
 WORKDIR /opt/SportTracker
-RUN /root/.local/bin/poetry install --no-root
+RUN /root/.local/bin/poetry install
 RUN ln -s $($HOME/.local/share/pypoetry/venv/bin/poetry env info -p) /opt/SportTracker/myvenv
 
 FROM python:3.11-alpine
