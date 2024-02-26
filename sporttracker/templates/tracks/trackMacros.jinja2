@@ -387,5 +387,16 @@
                 </label>
             </div>
         {% endfor %}
+
+        {% if not participants %}
+            <div class="d-flex align-items-center ms-3">
+                <span class="material-icons fs-4 me-2">info_outline</span>
+                <span>{{ gettext('Add participants in the ') }}
+                    <a href="{{ url_for('settings.settingsShow') }}#headline-participants">
+                        {{ gettext('Settings') }}
+                       </a>
+                </span>
+            </div>
+        {% endif %}
     </div>
 {%- endmacro %}
