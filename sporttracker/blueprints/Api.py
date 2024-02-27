@@ -61,6 +61,12 @@ class TrackModel:
     customFields: dict[str, str] | None = None
 
 
+@dataclass
+class ParticipantModel:
+    id: int
+    name: str
+
+
 def construct_blueprint(version: dict, uploadFolder: str):
     api = Blueprint('api', __name__, static_folder='static', url_prefix='/api')
 
@@ -196,6 +202,17 @@ def construct_blueprint(version: dict, uploadFolder: str):
                     customFields=track.custom_fields,
                 )
             )
+
+        return result, 200
+
+    @api.route('/participants')
+    @login_required
+    def getParticipants():
+        participants = Participant.query.join(User).filter(User.id == current_user.id).all()
+
+        result = []
+        for participant in participants:
+            result.append(ParticipantModel(id=participant.id, name=participant.name))
 
         return result, 200
 

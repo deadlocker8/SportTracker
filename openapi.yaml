@@ -93,6 +93,17 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/TrackModel'
+  /api/participants:
+    get:
+      responses:
+        200:
+          description: "Okay"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Participant'
 
 components:
   schemas:
@@ -238,4 +249,13 @@ components:
         customFields:
           type: object
           example: { 'bike': 'Cube' }
-
+    Participant:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
