@@ -17,7 +17,7 @@ from sporttracker.logic.model.MonthGoal import (
     MonthGoalSummary,
     get_goal_summaries_by_year_and_month_and_types,
 )
-from sporttracker.logic.model.Participant import Participant
+from sporttracker.logic.model.Participant import Participant, get_participants_by_ids
 from sporttracker.logic.model.Track import (
     Track,
     get_tracks_by_year_and_month_by_type,
@@ -143,7 +143,8 @@ def construct_blueprint(uploadFolder: str):
     def addPost(form: TrackFormModel):
         gpxFileName = handleGpxTrack(request.files, uploadFolder)
 
-        participants = __get_participants()
+        participantIds = [int(item) for item in request.form.getlist('participants')]
+        participants = get_participants_by_ids(participantIds)
 
         track = Track(
             name=form.name,
@@ -234,7 +235,8 @@ def construct_blueprint(uploadFolder: str):
         track.duration = form.calculate_duration()
         track.averageHeartRate = form.averageHeartRate
         track.elevationSum = form.elevationSum
-        track.participants = __get_participants()
+        participantIds = [int(item) for item in request.form.getlist('participants')]
+        track.participants = get_participants_by_ids(participantIds)
 
         newGpxFileName = handleGpxTrack(request.files, uploadFolder)
         if track.gpxFileName is None:
@@ -279,14 +281,5 @@ def construct_blueprint(uploadFolder: str):
         db.session.commit()
 
         return redirect(url_for('tracks.listTracks'))
-
-    def __get_participants() -> list[Participant]:
-        participantIds = [int(item) for item in request.form.getlist('participants')]
-        participants = (
-            Participant.query.filter(Participant.user_id == current_user.id)
-            .filter(Participant.id.in_(participantIds))
-            .all()
-        )
-        return participants
 
     return tracks
