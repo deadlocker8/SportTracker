@@ -11,6 +11,7 @@ from sporttracker.blueprints.MonthGoalsCount import MonthGoalCountFormModel
 from sporttracker.blueprints.MonthGoalsDistance import MonthGoalDistanceFormModel
 from sporttracker.logic import Constants
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
+from sporttracker.logic.model.Participant import get_participants_by_ids, Participant
 from sporttracker.logic.model.Track import Track, TrackType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
@@ -29,6 +30,7 @@ class TrackApiFormModel(BaseModel):
     durationSeconds: int | None = None
     averageHeartRate: int | None = None
     elevationSum: int | None = None
+    participants: list[str] | str | None = None
     customFields: dict[str, str] | None = None
 
     def calculate_start_time(self) -> datetime:
@@ -55,6 +57,7 @@ class TrackModel:
     averageHeartRate: int | None = None
     elevationSum: int | None = None
     gpxFileName: str | None = None
+    participants: list[str] | None = None
     customFields: dict[str, str] | None = None
 
 
@@ -74,6 +77,9 @@ def construct_blueprint(version: dict, uploadFolder: str):
         except ValidationError as e:
             return jsonify({'error': str(e)}), 400
 
+        participantIds = [int(item) for item in request.form.getlist('participants')]
+        participants = get_participants_by_ids(participantIds)
+
         track = Track(
             name=form.name,
             type=TrackType(form.type),  # type: ignore[call-arg]
@@ -83,6 +89,7 @@ def construct_blueprint(version: dict, uploadFolder: str):
             averageHeartRate=form.averageHeartRate,
             elevationSum=form.elevationSum,
             user_id=current_user.id,
+            participants=participants,
             custom_fields={} if form.customFields is None else form.customFields,
         )
 
@@ -185,6 +192,7 @@ def construct_blueprint(version: dict, uploadFolder: str):
                     averageHeartRate=track.averageHeartRate,
                     elevationSum=track.elevationSum,
                     gpxFileName=track.gpxFileName,
+                    participants=[p.id for p in track.participants],
                     customFields=track.custom_fields,
                 )
             )

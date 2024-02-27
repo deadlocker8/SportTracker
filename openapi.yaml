@@ -133,6 +133,12 @@ components:
           type: integer
         elevationSum:
           type: integer
+        participants:
+          type: array
+          description: participant ids
+          items:
+            type: integer
+          example: []
         customFields:
           type: object
           example: {'bike': 'Cube'}
@@ -221,6 +227,12 @@ components:
           type: integer
         elevationSum:
           type: integer
+        participants:
+          type: array
+          description: participant ids
+          items:
+            type: integer
+          example: []
         gpxFileName:
           type: string
         customFields:
