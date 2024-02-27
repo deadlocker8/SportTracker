@@ -276,6 +276,9 @@ def construct_blueprint():
     @login_required
     @validate()
     def participantsAddPost(form: ParticipantFormModel):
+        if not __is_allowed_participant_name(form):
+            return redirect(url_for('settings.participantsAdd'))
+
         participant = Participant(name=form.name, user_id=current_user.id)
         LOGGER.debug(f'Saved new participant: {participant}')
         db.session.add(participant)
@@ -320,7 +323,7 @@ def construct_blueprint():
 
         if participant.name != form.name:
             if not __is_allowed_participant_name(form):
-                return redirect(url_for('settings.participantsForm', participant_id=participant_id))
+                return redirect(url_for('settings.participantsEdit', participant_id=participant_id))
 
         participant.name = form.name  # type: ignore[assignment]
 

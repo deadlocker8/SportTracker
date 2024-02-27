@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
 from sporttracker.logic.model.CustomTrackField import CustomTrackField, CustomTrackFieldType
+from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.Track import TrackType
 from sporttracker.logic.model.User import create_user, Language, User
 from sporttracker.logic.model.db import db
@@ -156,3 +157,59 @@ class TestTracks(SeleniumTestBaseClass):
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
+
+    def test_add_track_one_participant_selected(self, server, selenium: WebDriver, app):
+        user = User.query.filter(User.username == TEST_USERNAME).first()
+
+        with app.app_context():
+            participant = Participant(
+                name='John Doe',
+                user_id=user.id,
+            )
+            db.session.add(participant)
+            db.session.commit()
+
+        self.__open_form(selenium)
+        self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
+        selenium.find_element(By.XPATH, '//label[@for="participant-1"]').click()
+        self.__click_submit_button(selenium)
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Tracks')
+        )
+
+        cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')
+        assert len(cards) == 1
+        # check participants icon is displayed
+        assert cards[0].find_element(By.XPATH, '//span[text()="group"]')
+
+    def test_add_track_multiple_participant_selected(self, server, selenium: WebDriver, app):
+        user = User.query.filter(User.username == TEST_USERNAME).first()
+
+        with app.app_context():
+            participant = Participant(
+                name='John Doe',
+                user_id=user.id,
+            )
+            db.session.add(participant)
+            participant = Participant(
+                name='Jane',
+                user_id=user.id,
+            )
+            db.session.add(participant)
+            db.session.commit()
+
+        self.__open_form(selenium)
+        self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
+        selenium.find_element(By.XPATH, '//label[@for="participant-1"]').click()
+        selenium.find_element(By.XPATH, '//label[@for="participant-2"]').click()
+        self.__click_submit_button(selenium)
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Tracks')
+        )
+
+        cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')
+        assert len(cards) == 1
+        # check participants icon is displayed
+        assert cards[0].find_element(By.XPATH, '//span[text()="group"]')

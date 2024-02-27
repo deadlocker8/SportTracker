@@ -91,7 +91,8 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
         self.__create_custom_field(app, 'my_custom_field')
         self.__open_edit_form(selenium)
 
-        selenium.find_element(By.ID, 'field-name').send_keys('my_custom_field')
+        selenium.find_element(By.ID, 'participant-name').clear()
+        selenium.find_element(By.ID, 'field-name').send_keys('abc')
         selenium.find_element(By.ID, 'field-is-required').click()
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
