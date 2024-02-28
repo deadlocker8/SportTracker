@@ -15,7 +15,7 @@ from sporttracker.logic.model.CustomTrackField import (
     CustomTrackFieldType,
     RESERVED_FIELD_NAMES,
 )
-from sporttracker.logic.model.Participant import Participant
+from sporttracker.logic.model.Participant import Participant, get_participants
 from sporttracker.logic.model.Track import TrackType
 from sporttracker.logic.model.User import (
     User,
@@ -76,15 +76,13 @@ def construct_blueprint():
             TrackInfoItem.user_id == current_user.id
         ).all()
 
-        participants = Participant.query.filter(Participant.user_id == current_user.id).all()
-
         infoItems.sort(key=lambda item: item.type.get_localized_name().lower())
 
         return render_template(
             'settings/settings.jinja2',
             userLanguage=current_user.language.name,
             customFieldsByTrackType=get_custom_fields_by_track_type(),
-            participants=participants,
+            participants=get_participants(),
             infoItems=infoItems,
         )
 

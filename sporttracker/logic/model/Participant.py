@@ -26,3 +26,11 @@ def get_participants_by_ids(ids: list[int]) -> list[Participant]:
         .all()
     )
     return participants
+
+
+def get_participants() -> list[Participant]:
+    return (
+        Participant.query.filter(Participant.user_id == current_user.id)
+        .order_by(Participant.name.asc())
+        .all()
+    )

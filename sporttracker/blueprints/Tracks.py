@@ -17,7 +17,7 @@ from sporttracker.logic.model.MonthGoal import (
     MonthGoalSummary,
     get_goal_summaries_by_year_and_month_and_types,
 )
-from sporttracker.logic.model.Participant import Participant, get_participants_by_ids
+from sporttracker.logic.model.Participant import get_participants_by_ids, get_participants
 from sporttracker.logic.model.Track import (
     Track,
     get_tracks_by_year_and_month_by_type,
@@ -133,7 +133,7 @@ def construct_blueprint(uploadFolder: str):
         return render_template(
             f'tracks/track{track_type.capitalize()}Form.jinja2',
             customFields=customFields,
-            participants=Participant.query.filter(Participant.user_id == current_user.id).all(),
+            participants=get_participants(),
             trackNames=get_track_names_by_track_type(trackType),
         )
 
@@ -211,7 +211,7 @@ def construct_blueprint(uploadFolder: str):
             track=trackModel,
             track_id=track_id,
             customFields=customFields,
-            participants=Participant.query.filter(Participant.user_id == current_user.id).all(),
+            participants=get_participants(),
             trackNames=get_track_names_by_track_type(track.type),
         )
 
