@@ -228,6 +228,14 @@ def create_test_app():
     return server.init_app()
 
 
+# needed for creation of database revisions
+def create_app():
+    server = SportTracker(
+        Constants.APP_NAME, os.path.dirname(__file__), LOGGER, False, False, False
+    )
+    return server.init_app()
+
+
 @click.command()
 @click.option('--debug', '-d', is_flag=True, help='Enable debug mode')
 @click.option('--dummy', '-dummy', is_flag=True, help='Generate dummy tracks')
