@@ -10,7 +10,7 @@ COPY poetry.lock /opt/SportTracker/poetry.lock
 COPY sporttracker/ /opt/SportTracker/sporttracker
 
 WORKDIR /opt/SportTracker
-RUN /root/.local/bin/poetry install
+RUN /root/.local/bin/poetry install --without dev
 RUN ln -s $($HOME/.local/share/pypoetry/venv/bin/poetry env info -p) /opt/SportTracker/myvenv
 
 FROM python:3.11-alpine
