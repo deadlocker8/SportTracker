@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-25 00:50+0100\n"
+"POT-Creation-Date: 2024-02-28 23:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,17 +82,17 @@ msgstr ""
 msgid "End Month must be greater or equal Start Month."
 msgstr ""
 
-#: ../blueprints/Settings.py:354
+#: ../blueprints/Settings.py:357
 msgid ""
 "The specified field name \"{0}\" conflicts with a reserved field name and"
 " therefore can't be used as custom field name."
 msgstr ""
 
-#: ../blueprints/Settings.py:368
+#: ../blueprints/Settings.py:371
 msgid "The specified field name \"{0}\" already exists."
 msgstr ""
 
-#: ../blueprints/Settings.py:379
+#: ../blueprints/Settings.py:382
 msgid "The specified participant name \"{0}\" already exists."
 msgstr ""
 
@@ -571,6 +571,7 @@ msgstr ""
 
 #: ../templates/settings/settings.jinja2:6
 #: ../templates/settings/settings.jinja2:17
+#: ../templates/tracks/trackMacros.jinja2:396
 msgid "Settings"
 msgstr ""
 
@@ -671,6 +672,10 @@ msgstr ""
 
 #: ../templates/tracks/trackMacros.jinja2:373
 msgid "No GPX file is linked to this track"
+msgstr ""
+
+#: ../templates/tracks/trackMacros.jinja2:394
+msgid "Add participants in the "
 msgstr ""
 
 #: ../templates/tracks/trackRunningForm.jinja2:6

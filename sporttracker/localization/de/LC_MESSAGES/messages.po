@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-25 00:50+0100\n"
-"PO-Revision-Date: 2024-02-25 00:53+0100\n"
+"POT-Creation-Date: 2024-02-28 23:29+0100\n"
+"PO-Revision-Date: 2024-02-28 23:29+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -91,7 +91,7 @@ msgstr "Das Endjahr muss größer oder gleich dem Anfangsjahr sein."
 msgid "End Month must be greater or equal Start Month."
 msgstr "Der Endmonat muss größer oder gleich dem Startmonat sein."
 
-#: ../blueprints/Settings.py:354
+#: ../blueprints/Settings.py:357
 msgid ""
 "The specified field name \"{0}\" conflicts with a reserved field name and "
 "therefore can't be used as custom field name."
@@ -99,11 +99,11 @@ msgstr ""
 "Der angegebene Name \"{0}\" kollidiert mit einem reservierten Namen und kann "
 "daher nicht als Name für ein benutzerdefiniertes Feld verwendet werden."
 
-#: ../blueprints/Settings.py:368
+#: ../blueprints/Settings.py:371
 msgid "The specified field name \"{0}\" already exists."
 msgstr "Der angegebene Name \"{0}\" existiert bereits."
 
-#: ../blueprints/Settings.py:379
+#: ../blueprints/Settings.py:382
 msgid "The specified participant name \"{0}\" already exists."
 msgstr "Ein Teilnehmer mit dem Namen \"{0}\" existiert bereits."
 
@@ -582,6 +582,7 @@ msgstr "Neuer Teilnehmer"
 
 #: ../templates/settings/settings.jinja2:6
 #: ../templates/settings/settings.jinja2:17
+#: ../templates/tracks/trackMacros.jinja2:396
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -683,6 +684,10 @@ msgstr "Eine GPX-Datei ist mit diesem Track verknüpft"
 #: ../templates/tracks/trackMacros.jinja2:373
 msgid "No GPX file is linked to this track"
 msgstr "Mit diesem Track ist keine GPX-Datei verknüpft"
+
+#: ../templates/tracks/trackMacros.jinja2:394
+msgid "Add participants in the "
+msgstr "Hinzufügen von Teilnehmern in den "
 
 #: ../templates/tracks/trackRunningForm.jinja2:6
 #: ../templates/tracks/trackRunningForm.jinja2:20
