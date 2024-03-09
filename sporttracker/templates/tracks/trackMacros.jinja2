@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 
+{% macro render_track_unit(unit) -%}
+       <div class="fs-6 d-lg-none">{{ unit }}</div>
+       <span class="d-none d-lg-inline">{{ unit }}</span>
+{%- endmacro %}
+
 {% macro render_track_speed_kmh(track) -%}
     <div class="d-flex flex-column">
         <span class="material-icons fs-3 text-secondary">speed</span>
         {% if track.duration is none %}
             <div class="fs-5">--.- km/h</div>
         {% else %}
-            <div class="fs-5">{{ (track.distance / track.duration * 3.6) | round(1) | format_decimal }} km/h
-            </div>
+            <div class="fs-5 text-center">{{ (track.distance / track.duration * 3.6) | round(1) | format_decimal }} {{ render_track_unit('km/h') }}</div>
         {% endif %}
     </div>
 {%- endmacro %}
@@ -18,8 +22,7 @@
         {% if track.duration is none %}
             <div class="fs-5">--.-- min</div>
         {% else %}
-            <div class="fs-5">{{ track | format_pace }} min
-            </div>
+            <div class="fs-5 text-center">{{ track | format_pace }} {{ render_track_unit('min') }}</div>
         {% endif %}
     </div>
 {%- endmacro %}
@@ -27,14 +30,14 @@
 {% macro render_track_distance(track) -%}
      <div class="d-flex flex-column">
         <span class="material-icons fs-3 text-secondary">route</span>
-        <div class="fs-5">{{ (track.distance / 1000) | format_decimal(2) }} km</div>
+        <div class="fs-5 text-center">{{ (track.distance / 1000) | format_decimal(2) }} {{ render_track_unit('km') }}</div>
      </div>
 {%- endmacro %}
 
 {% macro render_track_duration(track) -%}
     <div class="d-flex flex-column">
         <span class="material-icons-outlined fs-3 text-secondary">timer</span>
-        <div class="fs-5">{{ track.duration | format_duration }} h</div>
+        <div class="fs-5 text-center">{{ track.duration | format_duration }} {{ render_track_unit('h') }}</div>
     </div>
 {%- endmacro %}
 
@@ -42,7 +45,7 @@
     {% if track.averageHeartRate is not none %}
         <div class="d-flex flex-column">
             <span class="material-icons-outlined fs-3 text-secondary">favorite_border</span>
-            <div class="fs-5">{{ track.averageHeartRate }} bpm</div>
+            <div class="fs-5 text-center">{{ track.averageHeartRate }} {{ render_track_unit('bpm') }}</div>
         </div>
     {% endif %}
 {%- endmacro %}
@@ -51,23 +54,19 @@
     {% if track.elevationSum is not none %}
         <div class="d-flex flex-column">
             <span class="material-icons-outlined fs-3 text-secondary">expand</span>
-            <div class="fs-5">{{ track.elevationSum }} m</div>
+            <div class="fs-5 text-center">{{ track.elevationSum }} {{ render_track_unit('m') }}</div>
         </div>
     {% endif %}
 {%- endmacro %}
 
 {%  macro track_type_icon(track) -%}
-    <div class="col col-2 col-md-3 d-flex flex-column align-items-center justify-content-center my-3">
-        {% if track.type.is_font_awesome_icon %}
-            <i class="d-none d-lg-block fa-solid {{ track.type.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}"></i>
-            <i class="d-lg-none fa-solid {{ track.type.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ track.type.background_color }}"></i>
-        {% else %}
-            <span class="d-none d-lg-block material-icons rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
-            <span class="d-lg-none material-icons rounded-circle fs-3 p-2 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
-        {% endif %}
-
-         <div class="fs-5 text-body text-start mt-2">{{ track.startTime | format_date }}</div>
-    </div>
+    {% if track.type.is_font_awesome_icon %}
+        <i class="d-none d-lg-block fa-solid {{ track.type.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}"></i>
+        <i class="d-lg-none fa-solid {{ track.type.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ track.type.background_color }}"></i>
+    {% else %}
+        <span class="d-none d-lg-block material-icons rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
+        <span class="d-lg-none material-icons rounded-circle fs-3 p-2 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
+    {% endif %}
 {%- endmacro %}
 
 {%  macro track_card_feature_icons(track) -%}
@@ -89,8 +88,13 @@
         <div class="col col-12 mx-auto">
             <div class="card">
                 <div class="row g-0">
-                    {{ track_type_icon(track) }}
-                    <div class="col col-10 col-md-9">
+                    <div class="col col-3 col-md-3 d-flex flex-column align-items-center justify-content-center my-3 ps-1">
+                        {{ track_type_icon(track) }}
+                        <div class="fs-6 text-body text-start mt-2 d-lg-none">{{ track.startTime | format_date }}</div>
+                        <div class="fs-5 text-body text-start mt-2 d-none d-lg-block">{{ track.startTime | format_date }}</div>
+                    </div>
+
+                    <div class="col col-9 col-md-9">
                         <div class="card-body ps-1 ps-md-3 d-flex flex-column justify-content-between h-100">
                             <div class="d-flex align-items-center justify-content-between">
                                 <h4 class="card-title text-truncate text-start">{{ track.name }}</h4>
@@ -98,7 +102,7 @@
                                 {{ track_card_feature_icons(track) }}
                             </div>
 
-                            <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center justify-content-around me-1 me-md-3">
                                 {% if is_track_info_item_activated('DISTANCE') %}
                                     {{ render_track_distance(track) }}
                                 {% endif %}
