@@ -1,3 +1,6 @@
+# ?.?.?
+- fix: track overview: map link is clickable again
+
 # 1.13.0
 - add: it is now possible to specify participants for each track
 - add: custom track fields: prevent usage of reserved or already used names
