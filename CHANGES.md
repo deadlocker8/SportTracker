@@ -1,4 +1,5 @@
 # ?.?.?
+- add: track overview: toggle months by swiping left or right
 - fix: track overview: map link is clickable again
 
 # 1.13.0
