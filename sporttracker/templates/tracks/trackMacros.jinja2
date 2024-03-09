@@ -70,13 +70,13 @@
 {%- endmacro %}
 
 {%  macro track_card_feature_icons(track) -%}
-    <div class="z-2">
+    <div class="z-2 d-flex">
         {% if track.participants %}
             <span class="material-icons fs-4 text-body">group</span>
         {% endif %}
         {% if track.gpxFileName is not none %}
             <a href="{{ url_for('maps.showSingleTrack', track_id=track.id) }}"
-               class="text-decoration-none">
+               class="text-decoration-none ms-2">
                 <span class="material-icons fs-4 text-body">map</span>
             </a>
         {% endif %}
