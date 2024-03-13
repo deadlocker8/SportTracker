@@ -89,7 +89,7 @@
                                     {% for field in customFields %}
                                         <tr>
                                             <td>{{ field.name }}</td>
-                                            <td>{{ field.type.name }}</td>
+                                            <td>{{ field.type.get_localized_name() }}</td>
                                             <td>{{ field.is_required }}</td>
                                             <td>
                                                 <a href="{{ url_for('settings.customFieldsEdit', field_id=field.id) }}"
