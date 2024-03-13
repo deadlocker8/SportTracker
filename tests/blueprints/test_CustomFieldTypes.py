@@ -66,7 +66,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
             expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Settings')
         )
 
-        assert len(selenium.find_elements(By.XPATH, '//td[text()="STRING"]')) == 1
+        assert len(selenium.find_elements(By.XPATH, '//td[text()="String"]')) == 1
 
     def test_add_custom_track_field_reserved_name(self, server, selenium: WebDriver):
         self.__open_add_form(selenium)
