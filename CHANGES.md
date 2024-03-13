@@ -1,3 +1,6 @@
+# ?.?.?
+- fix: broken search page and improve responsiveness
+
 # 1.14.0
 - add: track overview: toggle months by swiping left or right
 - add: improve track overview (added icons, re-organize cards, improve text and icons on mobile devices)

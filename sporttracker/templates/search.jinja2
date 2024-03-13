@@ -61,13 +61,12 @@
                 {% for monthName, tracks in results.items() %}
                     <h3 class="mt-4">{{ monthName }}</h3>
                     {% for track in tracks %}
-                        {% if track.type.name == 'BIKING' %}
-                            {{ trackMacros.render_track_biking_card(track) }}
-                        {% elif track.type.name == 'RUNNING' %}
-                            {{ trackMacros.render_track_running_card(track) }}
-                        {% elif track.type.name == 'HIKING' %}
-                            {{ trackMacros.render_track_hiking_card(track) }}
-                        {% endif %}
+                        <div class="d-none d-lg-block">
+                            {{ trackMacros.render_track_card(track, renderAsRow=true, useSmallIcon=true) }}
+                        </div>
+                        <div class="d-lg-none">
+                            {{ trackMacros.render_track_card(track, renderAsRow=false, useSmallIcon=true) }}
+                        </div>
                     {% endfor %}
                 {% endfor %}
             </section>
