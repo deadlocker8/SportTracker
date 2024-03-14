@@ -40,6 +40,10 @@ body {
     width: 1.7rem;
 }
 
+.no-margin-bottom {
+    margin-bottom: 0 !important;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

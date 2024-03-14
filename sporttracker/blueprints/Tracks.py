@@ -12,6 +12,7 @@ from pydantic import BaseModel, ConfigDict, field_validator
 
 from sporttracker.blueprints.GpxTracks import handleGpxTrack
 from sporttracker.logic import Constants
+from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.CustomTrackField import CustomTrackField
 from sporttracker.logic.model.MonthGoal import (
     MonthGoalSummary,
@@ -82,13 +83,19 @@ def construct_blueprint(uploadFolder: str):
         else:
             monthRightSideDate = date(year=year, month=month, day=1)
 
+        quickFilterState = get_quick_filter_state_from_session()
+
         monthRightSide = MonthModel(
             format_datetime(monthRightSideDate, format='MMMM yyyy'),
             get_tracks_by_year_and_month_by_type(
-                monthRightSideDate.year, monthRightSideDate.month, [t for t in TrackType]
+                monthRightSideDate.year,
+                monthRightSideDate.month,
+                quickFilterState.get_active_types(),
             ),
             get_goal_summaries_by_year_and_month_and_types(
-                monthRightSideDate.year, monthRightSideDate.month, list(TrackType)
+                monthRightSideDate.year,
+                monthRightSideDate.month,
+                quickFilterState.get_active_types(),
             ),
         )
 
@@ -96,10 +103,10 @@ def construct_blueprint(uploadFolder: str):
         monthLeftSide = MonthModel(
             format_datetime(monthLeftSideDate, format='MMMM yyyy'),
             get_tracks_by_year_and_month_by_type(
-                monthLeftSideDate.year, monthLeftSideDate.month, [t.value for t in TrackType]
+                monthLeftSideDate.year, monthLeftSideDate.month, quickFilterState.get_active_types()
             ),
             get_goal_summaries_by_year_and_month_and_types(
-                monthLeftSideDate.year, monthLeftSideDate.month, list(TrackType)
+                monthLeftSideDate.year, monthLeftSideDate.month, quickFilterState.get_active_types()
             ),
         )
 
@@ -112,6 +119,7 @@ def construct_blueprint(uploadFolder: str):
             previousMonthDate=monthLeftSideDate,
             nextMonthDate=nextMonthDate,
             currentMonthDate=datetime.now().date(),
+            quickFilterState=quickFilterState,
         )
 
     @tracks.route('/add')

@@ -4,6 +4,7 @@ from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
 from sporttracker.logic import Constants
+from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalSummary
 from sporttracker.logic.model.User import User
 
@@ -16,9 +17,12 @@ def construct_blueprint():
     @monthGoals.route('/')
     @login_required
     def listMonthGoals():
+        quickFilterState = get_quick_filter_state_from_session()
+
         goalsDistance: list[MonthGoalDistance] = (
             MonthGoalDistance.query.join(User)
             .filter(User.username == current_user.username)
+            .filter(MonthGoalDistance.type.in_(quickFilterState.get_active_types()))
             .order_by(MonthGoalDistance.year.desc())
             .order_by(MonthGoalDistance.month.desc())
             .all()
@@ -27,6 +31,7 @@ def construct_blueprint():
         goalsCount: list[MonthGoalCount] = (
             MonthGoalCount.query.join(User)
             .filter(User.username == current_user.username)
+            .filter(MonthGoalCount.type.in_(quickFilterState.get_active_types()))
             .order_by(MonthGoalCount.year.desc())
             .order_by(MonthGoalCount.month.desc())
             .all()
@@ -55,7 +60,9 @@ def construct_blueprint():
             summariesByYear[currentYear] = summaries
 
         return render_template(
-            'monthGoals/monthGoals.jinja2', monthGoalSummariesByYear=summariesByYear
+            'monthGoals/monthGoals.jinja2',
+            monthGoalSummariesByYear=summariesByYear,
+            quickFilterState=quickFilterState,
         )
 
     @monthGoals.route('/add')

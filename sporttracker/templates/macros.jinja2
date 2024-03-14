@@ -123,3 +123,27 @@
     </div>
 {%- endmacro %}
 
+{% macro track_type_quick_filter(redirectUrl) -%}
+    <div class="d-flex flex-row align-items-center justify-content-center">
+        {% for trackType, isActive in quickFilterState.get_states().items() %}
+            <a href="{{ url_for('quickFilter.toggleQuickFilter', trackType=trackType.name, redirectUrl=redirectUrl) }}" class="{% if not loop.last %}me-3{% endif %}">
+                {{ track_type_quick_filter_button(trackType, isActive) }}
+            </a>
+        {% endfor %}
+    </div>
+{%- endmacro %}
+
+{% macro track_type_quick_filter_button(trackType, isActive) -%}
+    {% if isActive %}
+        {% set backgroundColor=trackType.background_color %}
+    {% else %}
+        {% set backgroundColor='bg-secondary' %}
+    {% endif %}
+
+    {% if trackType.is_font_awesome_icon %}
+        <i class="fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-4 p-2 text-dark {{ backgroundColor }}"></i>
+    {% else %}
+        <span class="material-icons rounded-circle fs-4 p-2 text-dark {{ backgroundColor }}">{{ trackType.icon }}</span>
+    {% endif %}
+{%- endmacro %}
+

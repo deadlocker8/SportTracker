@@ -1,4 +1,5 @@
 # ?.?.?
+- add: add quick filter buttons for track types on track and month goal page
 - add: new chart "speed per track"
 - fix: broken search page and improve responsiveness
 - fix: custom fields: show display name for type instead of enum name on settings page

@@ -47,7 +47,11 @@
                     </div>
                 </div>
 
-                <div class="row p-xxl-5 p-xl-4 p-lg-3">
+                <div class="mt-3">
+                    {{ macros.track_type_quick_filter(url_for('tracks.listTracks')) }}
+                </div>
+
+                <div class="row px-xxl-5 px-xl-4 px-lg-3">
                     <div class="col col-lg-6 col-sm-12 px-xxl-5 px-xl-4 px-lg-3 d-none d-lg-block">
                         {{ trackMacros.render_month(monthLeftSide) }}
                     </div>

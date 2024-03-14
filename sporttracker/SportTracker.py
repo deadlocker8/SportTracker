@@ -30,6 +30,7 @@ from sporttracker.blueprints import (
     Maps,
     GpxTracks,
     Settings,
+    QuickFilter,
 )
 from sporttracker.helpers import Helpers
 from sporttracker.logic import Constants
@@ -204,6 +205,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Search.construct_blueprint())
         app.register_blueprint(GpxTracks.construct_blueprint(app.config['UPLOAD_FOLDER']))
         app.register_blueprint(Maps.construct_blueprint())
+        app.register_blueprint(QuickFilter.construct_blueprint())
 
     def __prepare_database(self, app):
         with app.app_context():

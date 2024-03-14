@@ -13,9 +13,9 @@ from sporttracker.logic.model.db import db
 
 
 class TrackType(enum.Enum):
-    BIKING = 'BIKING', 'directions_bike', False, 'bg-warning', '#FFC107', 'border-warning', True
-    RUNNING = 'RUNNING', 'directions_run', False, 'bg-info', '#0DCAF0', 'border-info', False
-    HIKING = 'HIKING', 'fa-person-hiking', True, 'bg-green', '#619B8A', 'border-green', True
+    BIKING = 'BIKING', 'directions_bike', False, 'bg-warning', '#FFC107', 'border-warning', True, 0
+    RUNNING = 'RUNNING', 'directions_run', False, 'bg-info', '#0DCAF0', 'border-info', False, 1
+    HIKING = 'HIKING', 'fa-person-hiking', True, 'bg-green', '#619B8A', 'border-green', True, 2
 
     icon: str
     is_font_awesome_icon: bool
@@ -23,6 +23,7 @@ class TrackType(enum.Enum):
     background_color_hex: str
     border_color: str
     render_speed_in_kph: bool
+    order: int
 
     def __new__(
         cls,
@@ -33,6 +34,7 @@ class TrackType(enum.Enum):
         background_color_hex: str,
         border_color: str,
         render_speed_in_kph: bool,
+        order: int,
     ):
         member = object.__new__(cls)
         member._value_ = name
@@ -42,6 +44,7 @@ class TrackType(enum.Enum):
         member.background_color_hex = background_color_hex
         member.border_color = border_color
         member.render_speed_in_kph = render_speed_in_kph
+        member.order = order
         return member
 
     def get_localized_name(self) -> str:
