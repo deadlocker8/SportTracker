@@ -39,7 +39,7 @@
 
                             <div class="list-group text-start">
                                 {% for name in trackNames %}
-                                    <a href="{{ url_for('charts.chartDurationPerTrack', track_type=trackType.name, name=name) }}"
+                                    <a href="{{ url_for('charts.chartSpeedPerTrack', track_type=trackType.name, name=name) }}"
                                        class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
                                         {{ name }}
                                         <span class="material-icons text-primary">send</span>

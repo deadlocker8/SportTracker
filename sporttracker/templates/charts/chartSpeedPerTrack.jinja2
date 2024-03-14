@@ -1,0 +1,52 @@
+{% import 'charts/chartMacros.jinja2' as chartMacros with context %}
+{% call chartMacros.chart() %}
+     const data = [
+        {
+            x: {{ chartDataSpeedPerTrack['dates'] }},
+            y: {{ chartDataSpeedPerTrack['values'] }},
+            type: 'bar',
+            marker: {
+                color: '{{ chartDataSpeedPerTrack.type.background_color_hex }}'
+            },
+            name: '{{ chartDataSpeedPerTrack.type.name | capitalize }}',
+            text: {{ chartDataSpeedPerTrack['texts'] }}
+        },
+    ];
+
+    const plotlyLayout = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        title: {
+            text: '{{ gettext('Speed per Track') }}',
+            font: {
+                color: '#FFFFFF'
+            }
+        },
+        xaxis: {
+            type: 'category',
+            color: '#FFFFFF',
+            automargin: true
+        },
+        yaxis: {
+            title: '{{ gettext('Speed in km/h') }}',
+            rangemode: 'tozero',
+            tickformat: '.0f',
+            showline: true,
+            color: '#FFFFFF',
+            range: [{{ chartDataSpeedPerTrack.min }}, {{ chartDataSpeedPerTrack.max }}]
+        },
+        barmode: 'group',
+        legend: {
+            font: {
+                color: '#FFFFFF'
+            }
+        }
+    }
+
+    const plotlyConfig = {
+        responsive: true,
+        displayModeBar: false
+    };
+
+    Plotly.newPlot('chartContainer', data, plotlyLayout, plotlyConfig);
+{% endcall %}

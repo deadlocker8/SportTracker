@@ -197,23 +197,9 @@ def construct_blueprint():
     @charts.route('/durationPerTrackChooser')
     @login_required
     def chartDurationPerTrackChooser():
-        trackNamesByTrackType = {}
-        for trackType in TrackType:
-            rows = (
-                Track.query.with_entities(Track.name)
-                .filter(Track.user_id == current_user.id)
-                .filter(Track.type == trackType)
-                .group_by(Track.name)
-                .having(func.count(Track.name) > 2)
-                .order_by(asc(func.lower(Track.name)))
-                .all()
-            )
-
-            trackNamesByTrackType[trackType] = [row[0] for row in rows]
-
         return render_template(
             'charts/chartDurationPerTrackChooser.jinja2',
-            trackNamesByTrackType=trackNamesByTrackType,
+            trackNamesByTrackType=__get_track_names_by_type(),
         )
 
     @charts.route('/durationPerTrack/<string:track_type>/<string:name>')
@@ -253,6 +239,70 @@ def construct_blueprint():
         return render_template(
             'charts/chartDurationPerTrack.jinja2',
             chartDataDurationPerTrack=chartDataDurationPerTrack,
+        )
+
+    @charts.route('/speedPerTrackChooser')
+    @login_required
+    def chartSpeedPerTrackChooser():
+        return render_template(
+            'charts/chartSpeedPerTrackChooser.jinja2',
+            trackNamesByTrackType=__get_track_names_by_type(),
+        )
+
+    def __get_track_names_by_type():
+        trackNamesByTrackType = {}
+        for trackType in TrackType:
+            rows = (
+                Track.query.with_entities(Track.name)
+                .filter(Track.user_id == current_user.id)
+                .filter(Track.type == trackType)
+                .group_by(Track.name)
+                .having(func.count(Track.name) > 2)
+                .order_by(asc(func.lower(Track.name)))
+                .all()
+            )
+
+            trackNamesByTrackType[trackType] = [row[0] for row in rows]
+        return trackNamesByTrackType
+
+    @charts.route('/speedPerTrack/<string:track_type>/<string:name>')
+    @login_required
+    def chartSpeedPerTrack(track_type: str, name: str):
+        trackType = TrackType(track_type)  # type: ignore[call-arg]
+
+        tracks = (
+            Track.query.filter(Track.user_id == current_user.id)
+            .filter(Track.type == trackType)
+            .filter(Track.name == name)
+            .filter(Track.duration.is_not(None))
+            .order_by(Track.startTime.asc())
+            .all()
+        )
+
+        dates = []
+        values = []
+        texts = []
+        for track in tracks:
+            if track.duration is None:
+                continue
+
+            dates.append(format_datetime(track.startTime, format='short'))
+            speed = round(track.distance / track.duration * 3.6, 2)
+            values.append(speed)
+            texts.append(f'{speed} km/h')
+
+        chartDataSpeedPerTrack = {
+            'dates': dates,
+            'values': values,
+            'texts': texts,
+            'type': trackType,
+            'min': 0,
+            'max': max(values, default=0) + 5,
+        }
+
+        return render_template(
+            'charts/chartSpeedPerTrack.jinja2',
+            chartDataSpeedPerTrack=chartDataSpeedPerTrack,
         )
 
     @charts.route('/calendar/<int:year>')
