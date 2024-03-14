@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-28 23:29+0100\n"
+"POT-Creation-Date: 2024-03-14 22:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,17 +82,17 @@ msgstr ""
 msgid "End Month must be greater or equal Start Month."
 msgstr ""
 
-#: ../blueprints/Settings.py:357
+#: ../blueprints/Settings.py:355
 msgid ""
 "The specified field name \"{0}\" conflicts with a reserved field name and"
 " therefore can't be used as custom field name."
 msgstr ""
 
-#: ../blueprints/Settings.py:371
+#: ../blueprints/Settings.py:369
 msgid "The specified field name \"{0}\" already exists."
 msgstr ""
 
-#: ../blueprints/Settings.py:382
+#: ../blueprints/Settings.py:380
 msgid "The specified participant name \"{0}\" already exists."
 msgstr ""
 
@@ -112,15 +112,15 @@ msgstr ""
 msgid "Float"
 msgstr ""
 
-#: ../logic/model/Track.py:47
+#: ../logic/model/Track.py:50
 msgid "Biking"
 msgstr ""
 
-#: ../logic/model/Track.py:49
+#: ../logic/model/Track.py:52
 msgid "Running"
 msgstr ""
 
-#: ../logic/model/Track.py:51
+#: ../logic/model/Track.py:54
 msgid "Hiking"
 msgstr ""
 
@@ -128,7 +128,7 @@ msgstr ""
 msgid "Distance"
 msgstr ""
 
-#: ../logic/model/User.py:49 ../templates/tracks/trackMacros.jinja2:300
+#: ../logic/model/User.py:49 ../templates/tracks/trackMacros.jinja2:231
 msgid "Duration"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgstr ""
 msgid "Average Speed"
 msgstr ""
 
-#: ../logic/model/User.py:53 ../templates/tracks/trackMacros.jinja2:328
+#: ../logic/model/User.py:53 ../templates/tracks/trackMacros.jinja2:259
 msgid "Average Heart Rate"
 msgstr ""
 
@@ -188,7 +188,10 @@ msgstr ""
 #: ../templates/charts/chartDurationPerTrackChooser.jinja2:6
 #: ../templates/charts/chartDurationPerTrackChooser.jinja2:17
 #: ../templates/charts/chartMacros.jinja2:7
-#: ../templates/charts/chartMacros.jinja2:20 ../templates/macros.jinja2:54
+#: ../templates/charts/chartMacros.jinja2:20
+#: ../templates/charts/chartSpeedPerTrackChooser.jinja2:6
+#: ../templates/charts/chartSpeedPerTrackChooser.jinja2:17
+#: ../templates/macros.jinja2:54
 msgid "Charts"
 msgstr ""
 
@@ -210,11 +213,12 @@ msgid "Search Results"
 msgstr ""
 
 #: ../templates/charts/chartAverageSpeed.jinja2:35
+#: ../templates/charts/chartSpeedPerTrack.jinja2:31
 msgid "Speed in km/h"
 msgstr ""
 
 #: ../templates/charts/chartCalendar.jinja2:16
-#: ../templates/charts/chartChooser.jinja2:68
+#: ../templates/charts/chartChooser.jinja2:61
 msgid "Calendar"
 msgstr ""
 
@@ -236,9 +240,14 @@ msgstr ""
 msgid "Distance per Participant"
 msgstr ""
 
-#: ../templates/charts/chartChooser.jinja2:61
+#: ../templates/charts/chartChooser.jinja2:68
 #: ../templates/charts/chartDurationPerTrack.jinja2:20
 msgid "Duration per Track"
+msgstr ""
+
+#: ../templates/charts/chartChooser.jinja2:75
+#: ../templates/charts/chartSpeedPerTrack.jinja2:20
+msgid "Speed per Track"
 msgstr ""
 
 #: ../templates/charts/chartDistancePerCustomField.jinja2:16
@@ -275,10 +284,12 @@ msgid "Duration in s"
 msgstr ""
 
 #: ../templates/charts/chartDurationPerTrackChooser.jinja2:23
-msgid "Choose track name"
+#: ../templates/charts/chartSpeedPerTrackChooser.jinja2:23
+msgid "Choose track by name"
 msgstr ""
 
 #: ../templates/charts/chartDurationPerTrackChooser.jinja2:24
+#: ../templates/charts/chartSpeedPerTrackChooser.jinja2:24
 msgid "Note: Only names with at least two tracks are listed"
 msgstr ""
 
@@ -551,7 +562,7 @@ msgstr ""
 #: ../templates/settings/participantsForm.jinja2:46
 #: ../templates/settings/settings.jinja2:82
 #: ../templates/settings/settings.jinja2:132
-#: ../templates/tracks/trackMacros.jinja2:256
+#: ../templates/tracks/trackMacros.jinja2:187
 msgid "Name"
 msgstr ""
 
@@ -571,7 +582,7 @@ msgstr ""
 
 #: ../templates/settings/settings.jinja2:6
 #: ../templates/settings/settings.jinja2:17
-#: ../templates/tracks/trackMacros.jinja2:396
+#: ../templates/tracks/trackMacros.jinja2:327
 msgid "Settings"
 msgstr ""
 
@@ -593,7 +604,7 @@ msgid "Action"
 msgstr ""
 
 #: ../templates/settings/settings.jinja2:120
-#: ../templates/tracks/trackMacros.jinja2:381
+#: ../templates/tracks/trackMacros.jinja2:312
 msgid "Participants"
 msgstr ""
 
@@ -634,47 +645,47 @@ msgstr ""
 msgid "Edit Hiking Track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:273
+#: ../templates/tracks/trackMacros.jinja2:204
 msgid "Date"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:278
+#: ../templates/tracks/trackMacros.jinja2:209
 msgid "Start Time"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:288
+#: ../templates/tracks/trackMacros.jinja2:219
 msgid "Distance (in km)"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:303
+#: ../templates/tracks/trackMacros.jinja2:234
 msgid "Hours"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:311
+#: ../templates/tracks/trackMacros.jinja2:242
 msgid "Minutes"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:318
+#: ../templates/tracks/trackMacros.jinja2:249
 msgid "Seconds"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:338
+#: ../templates/tracks/trackMacros.jinja2:269
 msgid "Elevation Sum (in m)"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:347
+#: ../templates/tracks/trackMacros.jinja2:278
 msgid "GPX Track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:352
+#: ../templates/tracks/trackMacros.jinja2:283
 msgid "A GPX file is linked to this track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:373
+#: ../templates/tracks/trackMacros.jinja2:304
 msgid "No GPX file is linked to this track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:394
+#: ../templates/tracks/trackMacros.jinja2:325
 msgid "Add participants in the "
 msgstr ""
 
