@@ -1,6 +1,7 @@
 # ?.?.?
 - fix: broken search page and improve responsiveness
 - fix: custom fields: show display name for type instead of enum name on settings page
+- fix: month goal distance: inputs not prefilled if german is activated
 
 # 1.14.0
 - add: track overview: toggle months by swiping left or right
