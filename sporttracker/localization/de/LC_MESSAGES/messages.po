@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-14 22:14+0100\n"
-"PO-Revision-Date: 2024-03-14 22:14+0100\n"
+"POT-Creation-Date: 2024-03-16 18:14+0100\n"
+"PO-Revision-Date: 2024-03-16 18:16+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -79,7 +79,7 @@ msgstr "Passwort darf nicht leer sein"
 msgid "Incorrect password"
 msgstr "Ungültiges Passwort"
 
-#: ../blueprints/Charts.py:118
+#: ../blueprints/Charts.py:119
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -123,15 +123,15 @@ msgstr "Ganzzahl"
 msgid "Float"
 msgstr "Kommazahl"
 
-#: ../logic/model/Track.py:50
+#: ../logic/model/Track.py:53
 msgid "Biking"
 msgstr "Fahrrad fahren"
 
-#: ../logic/model/Track.py:52
+#: ../logic/model/Track.py:55
 msgid "Running"
 msgstr "Laufen"
 
-#: ../logic/model/Track.py:54
+#: ../logic/model/Track.py:57
 msgid "Hiking"
 msgstr "Wandern"
 
@@ -214,6 +214,10 @@ msgstr "Karte"
 #: ../templates/macros.jinja2:74
 msgid "Search"
 msgstr "Suche"
+
+#: ../templates/macros.jinja2:162
+msgid "Cancel"
+msgstr "Abbrechen"
 
 #: ../templates/search.jinja2:4
 msgid "of"
@@ -447,61 +451,77 @@ msgid "Edit Count Month Goal"
 msgstr "Anzahlziel bearbeiten"
 
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:6
-#: ../templates/monthGoals/monthGoalCountForm.jinja2:21
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:27
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:6
 msgid "New Count Month Goal"
 msgstr "Neues Anzahlziel"
 
-#: ../templates/monthGoals/monthGoalCountForm.jinja2:19
-#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:19
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:20
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:24
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:20
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:24
+#: ../templates/settings/settings.jinja2:106
+#: ../templates/settings/settings.jinja2:156
 #: ../templates/tracks/trackBikingForm.jinja2:23
+#: ../templates/tracks/trackBikingForm.jinja2:27
 #: ../templates/tracks/trackHikingForm.jinja2:23
-#: ../templates/tracks/trackRunningForm.jinja2:21
+#: ../templates/tracks/trackHikingForm.jinja2:27
+#: ../templates/tracks/trackMacros.jinja2:302
+#: ../templates/tracks/trackRunningForm.jinja2:22
+#: ../templates/tracks/trackRunningForm.jinja2:26
 #: ../templates/users/userForm.jinja2:21
 msgid "Delete"
 msgstr "Löschen"
 
-#: ../templates/monthGoals/monthGoalCountForm.jinja2:31
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:23
+msgid "Delete Count Month Goal?"
+msgstr "Anzahlziel löschen?"
+
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:23
+msgid "Do you really want to delete this count month goal?"
+msgstr "Willst du dieses Anzahlziel wirklich löschen?"
+
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:37
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:26
-#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:31
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:37
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:26
 #: ../templates/settings/customFieldsForm.jinja2:54
 #: ../templates/settings/settings.jinja2:83
 msgid "Type"
 msgstr "Typ"
 
-#: ../templates/monthGoals/monthGoalCountForm.jinja2:42
-#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:42
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:48
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:48
 msgid "Year"
 msgstr "Jahr"
 
-#: ../templates/monthGoals/monthGoalCountForm.jinja2:48
-#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:48
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:54
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:54
 msgid "Month"
 msgstr "Monat"
 
-#: ../templates/monthGoals/monthGoalCountForm.jinja2:59
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:65
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:75
 msgid "Minimum number of tracks"
 msgstr "Minimale Anzahl an Tracks"
 
-#: ../templates/monthGoals/monthGoalCountForm.jinja2:65
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:71
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:81
 msgid "Perfect number of tracks"
 msgstr "Ideale Anzahl an Tracks"
 
-#: ../templates/monthGoals/monthGoalCountForm.jinja2:73
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:79
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:88
-#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:73
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:79
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:88
 #: ../templates/settings/customFieldsForm.jinja2:71
 #: ../templates/settings/participantsForm.jinja2:51
 #: ../templates/settings/settings.jinja2:36
 #: ../templates/settings/settings.jinja2:50
-#: ../templates/settings/settings.jinja2:175
-#: ../templates/tracks/trackBikingForm.jinja2:59
-#: ../templates/tracks/trackHikingForm.jinja2:59
-#: ../templates/tracks/trackRunningForm.jinja2:55
+#: ../templates/settings/settings.jinja2:184
+#: ../templates/tracks/trackBikingForm.jinja2:64
+#: ../templates/tracks/trackHikingForm.jinja2:64
+#: ../templates/tracks/trackRunningForm.jinja2:60
 #: ../templates/users/userForm.jinja2:56
 msgid "Save"
 msgstr "Speichern"
@@ -536,16 +556,24 @@ msgstr "Endmonat"
 msgid "Edit Distance Month Goal"
 msgstr "Streckenziel bearbeiten"
 
-#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:21
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:23
+msgid "Delete Distance Month Goal?"
+msgstr "Streckenziel löschen?"
+
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:23
+msgid "Do you really want to delete this distance month goal?"
+msgstr "Willst du dieses Streckenziel wirklich löschen?"
+
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:27
 msgid "New Distance Month Goal"
 msgstr "Neues Streckenziel"
 
-#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:59
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:65
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:74
 msgid "Minimum Distance (in km)"
 msgstr "Minimale Strecke (in km)"
 
-#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:65
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:71
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:80
 msgid "Perfect Distance (in km)"
 msgstr "Ideale Strecke (in km)"
@@ -572,7 +600,7 @@ msgstr "Neues benutzerdefiniertes Feld"
 #: ../templates/settings/customFieldsForm.jinja2:48
 #: ../templates/settings/participantsForm.jinja2:46
 #: ../templates/settings/settings.jinja2:82
-#: ../templates/settings/settings.jinja2:132
+#: ../templates/settings/settings.jinja2:137
 #: ../templates/tracks/trackMacros.jinja2:187
 msgid "Name"
 msgstr "Name"
@@ -593,7 +621,7 @@ msgstr "Neuer Teilnehmer"
 
 #: ../templates/settings/settings.jinja2:6
 #: ../templates/settings/settings.jinja2:17
-#: ../templates/tracks/trackMacros.jinja2:327
+#: ../templates/tracks/trackMacros.jinja2:331
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -610,16 +638,34 @@ msgid "Is Required"
 msgstr "Ist Pflichtfeld"
 
 #: ../templates/settings/settings.jinja2:85
-#: ../templates/settings/settings.jinja2:133
+#: ../templates/settings/settings.jinja2:138
 msgid "Action"
 msgstr "Aktion"
 
-#: ../templates/settings/settings.jinja2:120
-#: ../templates/tracks/trackMacros.jinja2:312
+#: ../templates/settings/settings.jinja2:105
+msgid "Delete Custom Field?"
+msgstr "Benutzerdefiniertes Feld löschen?"
+
+#: ../templates/settings/settings.jinja2:105
+#, python-format
+msgid "Do you really want to delete the custom field \"%(name)s\"?"
+msgstr "Willst du das benutzerdefinierte Feld \"%(name)s\" wirklich löschen?"
+
+#: ../templates/settings/settings.jinja2:125
+#: ../templates/tracks/trackMacros.jinja2:316
 msgid "Participants"
 msgstr "Teilnehmer"
 
-#: ../templates/settings/settings.jinja2:161
+#: ../templates/settings/settings.jinja2:155
+msgid "Delete Participant?"
+msgstr "Teilnehmner löschen?"
+
+#: ../templates/settings/settings.jinja2:155
+#, python-format
+msgid "Do you really want to delete the participant \"%(name)s\"?"
+msgstr "Willst du den Teilnehmer \"%(name)s\" wirklich löschen?"
+
+#: ../templates/settings/settings.jinja2:170
 msgid "Select Information to show for each track"
 msgstr "Informationen auswählen, die für jeden Track angezeigt werden"
 
@@ -629,10 +675,23 @@ msgid "Edit Biking Track"
 msgstr "Fahrrad-Track bearbeiten"
 
 #: ../templates/tracks/trackBikingForm.jinja2:7
-#: ../templates/tracks/trackBikingForm.jinja2:25
+#: ../templates/tracks/trackBikingForm.jinja2:30
 #: ../templates/tracks/trackChooser.jinja2:26
 msgid "New Biking Track"
 msgstr "Neuer Fahrrad-Track"
+
+#: ../templates/tracks/trackBikingForm.jinja2:26
+#: ../templates/tracks/trackHikingForm.jinja2:26
+#: ../templates/tracks/trackRunningForm.jinja2:25
+msgid "Delete Track?"
+msgstr "Trakc löschen?"
+
+#: ../templates/tracks/trackBikingForm.jinja2:26
+#: ../templates/tracks/trackHikingForm.jinja2:26
+#: ../templates/tracks/trackRunningForm.jinja2:25
+#, python-format
+msgid "Do you really want to delete the track \"%(name)s\" (ID: %(id)d)"
+msgstr "Willst du den Track \"%(name)s\" (ID: %(id)d) wirklich löschen?"
 
 #: ../templates/tracks/trackChooser.jinja2:6
 #: ../templates/tracks/trackChooser.jinja2:17
@@ -641,13 +700,13 @@ msgstr "Neuer Track"
 
 #: ../templates/tracks/trackChooser.jinja2:33
 #: ../templates/tracks/trackRunningForm.jinja2:6
-#: ../templates/tracks/trackRunningForm.jinja2:23
+#: ../templates/tracks/trackRunningForm.jinja2:28
 msgid "New Running Track"
 msgstr "Neuer Lauf-Track"
 
 #: ../templates/tracks/trackChooser.jinja2:40
 #: ../templates/tracks/trackHikingForm.jinja2:7
-#: ../templates/tracks/trackHikingForm.jinja2:25
+#: ../templates/tracks/trackHikingForm.jinja2:30
 msgid "New Hiking Track"
 msgstr "Neuer Wander-Track"
 
@@ -692,11 +751,20 @@ msgstr "GPX Track"
 msgid "A GPX file is linked to this track"
 msgstr "Eine GPX-Datei ist mit diesem Track verknüpft"
 
-#: ../templates/tracks/trackMacros.jinja2:304
+#: ../templates/tracks/trackMacros.jinja2:301
+msgid "Delete GPX Track?"
+msgstr "GPX Track löschen?"
+
+#: ../templates/tracks/trackMacros.jinja2:301
+msgid "Do you really want to delete the GPX file associated with this track?"
+msgstr ""
+"Willst du die GPX-Datei, die mit diesem Track verknüpft ist, wirklich löschen?"
+
+#: ../templates/tracks/trackMacros.jinja2:308
 msgid "No GPX file is linked to this track"
 msgstr "Mit diesem Track ist keine GPX-Datei verknüpft"
 
-#: ../templates/tracks/trackMacros.jinja2:325
+#: ../templates/tracks/trackMacros.jinja2:329
 msgid "Add participants in the "
 msgstr "Hinzufügen von Teilnehmern in den "
 
