@@ -120,6 +120,8 @@ def construct_blueprint(uploadFolder: str):
             nextMonthDate=nextMonthDate,
             currentMonthDate=datetime.now().date(),
             quickFilterState=quickFilterState,
+            year=year,
+            month=month,
         )
 
     @tracks.route('/add')
