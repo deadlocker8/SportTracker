@@ -5,6 +5,7 @@ from flask import Blueprint, render_template, request
 from flask_login import login_required, current_user
 
 from sporttracker.logic import Constants
+from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.Track import Track
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
@@ -21,8 +22,14 @@ def construct_blueprint():
         searchText = request.args.get('searchText')
         pageNumber = request.args.get('pageNumber')
 
+        quickFilterState = get_quick_filter_state_from_session()
+
         if searchText is None:
-            return render_template('search.jinja2', results={})
+            return render_template(
+                'search.jinja2',
+                results={},
+                quickFilterState=quickFilterState,
+            )
 
         searchText = searchText.strip()
 
@@ -38,6 +45,7 @@ def construct_blueprint():
             Track.query.join(User)
             .filter(User.username == current_user.username)
             .filter(Track.name.icontains(searchText))
+            .filter(Track.type.in_(quickFilterState.get_active_types()))
             .order_by(Track.startTime.desc()),
             per_page=10,
             page=pageNumberValue,
@@ -55,6 +63,7 @@ def construct_blueprint():
             results=results,
             pagination=pagination,
             searchText=searchText,
+            quickFilterState=quickFilterState,
         )
 
     return search
