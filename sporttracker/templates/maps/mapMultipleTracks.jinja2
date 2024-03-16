@@ -16,8 +16,22 @@
 
 
          <div class="row my-3">
-            <div class="col col-12 mx-auto">
+            <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center ">
                 {{ macros.track_type_quick_filter(url_for('maps.showAllTracksOnMap')) }}
+
+                <div class="ms-5">
+                    {% for availableYear in availableYears %}
+                        {% if availableYear in yearFilterState %}
+                            {% set backgroundColor='btn-primary' %}
+                        {% else %}
+                            {% set backgroundColor='btn-secondary' %}
+                        {% endif %}
+
+                        <a href="{{ url_for('maps.toggleYearFilter', year=availableYear) }}" class="btn btn-sm {{ backgroundColor }} {% if not loop.last %}me-2{% endif %} my-1">
+                            <span class=" text-light">{{ availableYear }}</span>
+                        </a>
+                    {% endfor %}
+                </div>
             </div>
         </div>
 

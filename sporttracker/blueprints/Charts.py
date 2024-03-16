@@ -19,6 +19,7 @@ from sporttracker.logic.model.Track import (
     Track,
     get_distance_per_month_by_type,
     get_tracks_by_year_and_month_by_type,
+    get_available_years,
 )
 from sporttracker.logic.model.db import db
 
@@ -359,7 +360,7 @@ def construct_blueprint():
         return render_template(
             'charts/chartCalendar.jinja2',
             calendarData=calendarData,
-            availableYears=__get_available_years(),
+            availableYears=get_available_years(),
             currentYear=year,
         )
 
@@ -404,22 +405,6 @@ def construct_blueprint():
             patternWithSundayAsFirstDay[1:] + patternWithSundayAsFirstDay[0:1]
         )
         return patternWithMondayAsFirstDay
-
-    def __get_available_years() -> list[int]:
-        year = extract('year', Track.startTime)
-
-        rows = (
-            Track.query.with_entities(year.label('year'))
-            .filter(Track.user_id == current_user.id)
-            .group_by(year)
-            .order_by(year)
-            .all()
-        )
-
-        if rows is None:
-            return []
-
-        return [int(row.year) for row in rows]
 
     def __get_distance_per_month_by_type(
         trackType: TrackType, minYear: int, maxYear: int

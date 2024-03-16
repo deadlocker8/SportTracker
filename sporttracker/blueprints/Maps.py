@@ -1,13 +1,13 @@
 import logging
 from datetime import datetime
 
-from flask import Blueprint, render_template, abort, url_for
+from flask import Blueprint, render_template, abort, url_for, session, redirect
 from flask_login import login_required, current_user
-from sqlalchemy import func
+from sqlalchemy import func, extract
 
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.Track import Track
+from sporttracker.logic.model.Track import Track, get_available_years
 from sporttracker.logic.model.User import User
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -29,6 +29,8 @@ def construct_blueprint():
     @login_required
     def showAllTracksOnMap():
         quickFilterState = get_quick_filter_state_from_session()
+        availableYears = get_available_years()
+        yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         gpxInfo = []
 
@@ -38,6 +40,7 @@ def construct_blueprint():
             .filter(Track.user_id == current_user.id)
             .filter(Track.gpxFileName.isnot(None))
             .filter(Track.type.in_(quickFilterState.get_active_types()))
+            .filter(extract('year', Track.startTime).in_(yearFilterState))
             .group_by(Track.name)
             .order_by(funcStartTime.desc())
             .all()
@@ -48,7 +51,11 @@ def construct_blueprint():
             gpxInfo.append(createGpxInfo(trackId, trackName, trackStartTime))
 
         return render_template(
-            'maps/mapMultipleTracks.jinja2', gpxInfo=gpxInfo, quickFilterState=quickFilterState
+            'maps/mapMultipleTracks.jinja2',
+            gpxInfo=gpxInfo,
+            quickFilterState=quickFilterState,
+            yearFilterState=yearFilterState,
+            availableYears=availableYears,
         )
 
     @maps.route('/map/<int:track_id>')
@@ -70,4 +77,25 @@ def construct_blueprint():
 
         return render_template('maps/mapSingleTrack.jinja2', gpxInfo=gpxInfo)
 
+    @maps.route('/toggleYear/<int:year>')
+    @login_required
+    def toggleYearFilter(year: int):
+        availableYears = get_available_years()
+        yearFilterState = __get_map_year_filter_state_from_session(availableYears)
+        if year in yearFilterState:
+            yearFilterState.remove(year)
+        else:
+            yearFilterState.append(year)
+
+        session['mapYearFilterState'] = yearFilterState
+
+        return redirect(url_for('maps.showAllTracksOnMap'))
+
     return maps
+
+
+def __get_map_year_filter_state_from_session(availableYears: list[int]) -> list[int]:
+    if 'mapYearFilterState' not in session:
+        session['mapYearFilterState'] = availableYears
+
+    return sorted(session['mapYearFilterState'])
