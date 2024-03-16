@@ -6,6 +6,7 @@ from flask_login import login_required, current_user
 from sqlalchemy import func
 
 from sporttracker.logic import Constants
+from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.Track import Track
 from sporttracker.logic.model.User import User
 
@@ -27,6 +28,8 @@ def construct_blueprint():
     @maps.route('/map')
     @login_required
     def showAllTracksOnMap():
+        quickFilterState = get_quick_filter_state_from_session()
+
         gpxInfo = []
 
         funcStartTime = func.max(Track.startTime)
@@ -34,6 +37,7 @@ def construct_blueprint():
             Track.query.with_entities(func.max(Track.id), Track.name, funcStartTime)
             .filter(Track.user_id == current_user.id)
             .filter(Track.gpxFileName.isnot(None))
+            .filter(Track.type.in_(quickFilterState.get_active_types()))
             .group_by(Track.name)
             .order_by(funcStartTime.desc())
             .all()
@@ -43,7 +47,9 @@ def construct_blueprint():
             trackId, trackName, trackStartTime = track
             gpxInfo.append(createGpxInfo(trackId, trackName, trackStartTime))
 
-        return render_template('maps/mapMultipleTracks.jinja2', gpxInfo=gpxInfo)
+        return render_template(
+            'maps/mapMultipleTracks.jinja2', gpxInfo=gpxInfo, quickFilterState=quickFilterState
+        )
 
     @maps.route('/map/<int:track_id>')
     @login_required

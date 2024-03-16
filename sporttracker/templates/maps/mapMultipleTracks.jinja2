@@ -14,6 +14,13 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('map') }}
 
+
+         <div class="row my-3">
+            <div class="col col-12 mx-auto">
+                {{ macros.track_type_quick_filter(url_for('maps.showAllTracksOnMap')) }}
+            </div>
+        </div>
+
         <div id="map" class="leaflet-map w-100 text-dark"></div>
 
         <script>
