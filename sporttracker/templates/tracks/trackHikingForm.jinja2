@@ -3,8 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {% if track %}{{ gettext('Edit Hiking Track') }}{% else %}
-            {{ gettext('New Hiking Track') }}{% endif %}</title>
+        <title>SportTracker - {% if track %}{{ gettext('Edit Hiking Track') }}{% else %}{{ gettext('New Hiking Track') }}{% endif %}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -34,8 +33,7 @@
 
                 <div class="row mt-5 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
-                        <form role="form" action="
-                                {% if track %}{{ url_for('tracks.editPost', track_id=track_id) }}{% else %}{{ url_for('tracks.addPost') }}{% endif %}"
+                        <form role="form" action="{% if track %}{{ url_for('tracks.editPost', track_id=track_id) }}{% else %}{{ url_for('tracks.addPost') }}{% endif %}"
                               method="post"
                               enctype=multipart/form-data>
 

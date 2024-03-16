@@ -24,7 +24,8 @@
 
                             {% call macros.deleteModal(gettext('Delete Track?'), gettext('Do you really want to delete the track "%(name)s" (ID: %(id)d)', name=track.name, id=track_id)) %}
                                 <a href="{{ url_for('tracks.delete', track_id=track_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
-                            {% endcall %}                        {% else %}
+                            {% endcall %}
+                        {% else %}
                             <h1>{{ gettext('New Running Track') }}</h1>
                         {% endif %}
                     </div>
@@ -33,7 +34,8 @@
                 <div class="row mt-5 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
                         <form role="form" action="{% if track %}{{ url_for('tracks.editPost', track_id=track_id) }}{% else %}{{ url_for('tracks.addPost') }}{% endif %}"
-                              method="post">
+                              method="post"
+                              enctype=multipart/form-data>
 
                             <input type="hidden" class="form-control" id="track-type" name="type" value="RUNNING">
 
@@ -65,5 +67,10 @@
         </div>
 
         {{ macros.scripts() }}
+        <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/libs/bootstrap-autocomplete.min.js') }}" type="text/javascript"></script>
+        <script>
+             $('#track-name').autocomplete()
+        </script>
     </body>
 </html>
