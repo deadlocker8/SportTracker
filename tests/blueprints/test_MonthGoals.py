@@ -129,7 +129,7 @@ class TestMonthGoalsCount(SeleniumTestBaseClass):
         selenium.find_element(By.ID, 'month-goal-perfect').send_keys(perfect)
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
-    def test_add_distance_goal_valid(self, server, selenium: WebDriver):
+    def test_add_count_goal_valid(self, server, selenium: WebDriver):
         self.__open_form(selenium, 2, 'New Count Month Goal')
         self.__fill_and_submit_form(selenium, 2024, 2, 100, 200)
 
@@ -139,12 +139,12 @@ class TestMonthGoalsCount(SeleniumTestBaseClass):
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 1
 
-    def test_add_distance_goal_all_empty(self, server, selenium: WebDriver):
+    def test_add_count_goal_all_empty(self, server, selenium: WebDriver):
         self.__open_form(selenium, 2, 'New Count Month Goal')
         self.__fill_and_submit_form(selenium, '', '', '', '')
         assert selenium.current_url.endswith('/goalsCount/add')
 
-    def test_add_multiple_distance_goals_valid(self, server, selenium: WebDriver):
+    def test_add_count_distance_goals_valid(self, server, selenium: WebDriver):
         self.__open_form(selenium, 3, 'Multiple New Count Month Goals')
         self.__fill_and_submit_multiple_form(selenium, 2023, 11, 2024, 2, 100, 200)
 
@@ -154,7 +154,7 @@ class TestMonthGoalsCount(SeleniumTestBaseClass):
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 3
 
-    def test_add_multiple_distance_goals_all_empty(self, server, selenium: WebDriver):
+    def test_add_multiple_count_goals_all_empty(self, server, selenium: WebDriver):
         self.__open_form(selenium, 3, 'Multiple New Count Month Goals')
         self.__fill_and_submit_multiple_form(selenium, '', '', '', '', '', '')
         assert selenium.current_url.endswith('/goalsCount/addMultiple')
