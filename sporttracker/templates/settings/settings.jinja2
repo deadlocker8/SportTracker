@@ -96,10 +96,15 @@
                                                    class="link-light text-decoration-none">
                                                     <span class="p-1 fs-5 material-icons">edit</span>
                                                 </a>
-                                                <a href="{{ url_for('settings.customFieldsDelete', field_id=field.id) }}"
-                                                   class="link-light text-decoration-none">
+                                                <a href=""
+                                                   class="link-light text-decoration-none"
+                                                   data-bs-toggle="modal" data-bs-target="#delete-modal-{{ field.id }}">
                                                     <span class="p-1 fs-5 material-icons">delete</span>
                                                 </a>
+
+                                                {% call macros.deleteModal(gettext('Delete Custom Field?'), gettext('Do you really want to delete the custom field "%(name)s"?', name=field.name), field.id) %}
+                                                    <a href="{{ url_for('settings.customFieldsDelete', field_id=field.id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                                                {% endcall %}
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -142,10 +147,14 @@
                                                class="link-light text-decoration-none">
                                                 <span class="p-1 fs-5 material-icons">edit</span>
                                             </a>
-                                            <a href="{{ url_for('settings.participantsDelete', participant_id=participant.id) }}"
-                                               class="link-light text-decoration-none">
+                                            <a href="" class="link-light text-decoration-none"
+                                               data-bs-toggle="modal" data-bs-target="#delete-modal-participant-{{ participant.id }}">
                                                 <span class="p-1 fs-5 material-icons">delete</span>
                                             </a>
+
+                                            {% call macros.deleteModal(gettext('Delete Participant?'), gettext('Do you really want to delete the participant "%(name)s"?', name=participant.name), 'participant-' + participant.id|string) %}
+                                                <a href="{{ url_for('settings.participantsDelete', participant_id=participant.id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                                            {% endcall %}
                                         </td>
                                     </tr>
                                 {% endfor %}

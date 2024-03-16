@@ -293,10 +293,14 @@
                        target="_blank">
                         <span class="material-icons fs-4">download</span>
                     </a>
-                    <a data-url="{{ url_for('gpxTracks.deleteGpxTrack', track_id=track_id) }}"
-                       class="btn btn-danger btn-sm ms-3 d-flex align-items-center" id="buttonGpxTrackDelete">
+
+                    <button type="button" class="btn btn-danger btn-sm ms-3 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete-modal-gpx">
                         <span class="material-icons fs-4">delete</span>
-                    </a>
+                    </button>
+
+                    {% call macros.deleteModal(gettext('Delete GPX Track?'), gettext('Do you really want to delete the GPX file associated with this track?'), 'gpx') %}
+                        <a data-url="{{ url_for('gpxTracks.deleteGpxTrack', track_id=track_id) }}" class="btn btn-danger" id="buttonGpxTrackDelete" data-bs-dismiss="modal">{{ gettext('Delete') }}</a>
+                    {% endcall %}
                 </div>
             </div>
         {% endif %}

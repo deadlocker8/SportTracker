@@ -4,6 +4,7 @@
 - add: add quick filter buttons for track types on month search page
 - add: add quick filter buttons for track types and years on map page
 - add: new chart "speed per track"
+- add: show confirmation dialogs on deletion of tracks, gpx files, month goals, custom fields and participants
 - fix: broken search page and improve responsiveness
 - fix: custom fields: show display name for type instead of enum name on settings page
 - fix: month goal distance: inputs not prefilled if german is activated

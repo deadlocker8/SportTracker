@@ -147,3 +147,21 @@
     {% endif %}
 {%- endmacro %}
 
+{% macro deleteModal(title, text, idSuffix='0') -%}
+    <div class="modal fade" tabindex="-1" id="delete-modal-{{ idSuffix }}">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title }}</h5>
+                </div>
+                <div class="modal-body">
+                    <p>{{ text }}</p>
+                </div>
+                <div class="modal-footer">
+                    {{ caller() }}
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ gettext('Cancel') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
