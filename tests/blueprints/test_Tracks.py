@@ -22,8 +22,7 @@ def prepare_test_data(app):
 
 
 class TestTracks(SeleniumTestBaseClass):
-    def __open_form(self, selenium):
-        self.login(selenium)
+    def __open_form(self, selenium, buttonIndex=0, expectedHeadline='New Biking Track'):
         selenium.get(self.build_url('/tracks'))
 
         # open goal chooser
@@ -33,11 +32,9 @@ class TestTracks(SeleniumTestBaseClass):
         )
 
         buttons = selenium.find_elements(By.CSS_SELECTOR, 'section .btn')
-        buttons[0].click()
+        buttons[buttonIndex].click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.TAG_NAME, 'h1'), 'New Biking Track'
-            )
+            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), expectedHeadline)
         )
 
     @staticmethod
@@ -70,6 +67,7 @@ class TestTracks(SeleniumTestBaseClass):
         button.click()
 
     def test_add_track_valid(self, server, selenium: WebDriver):
+        self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
@@ -81,6 +79,7 @@ class TestTracks(SeleniumTestBaseClass):
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
 
     def test_add_dtrack_all_empty(self, server, selenium: WebDriver):
+        self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, '', '', '', '', '', '', '', '', '')
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
@@ -101,6 +100,7 @@ class TestTracks(SeleniumTestBaseClass):
             db.session.add(customTrackField)
             db.session.commit()
 
+        self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         self.__click_submit_button(selenium)
@@ -121,6 +121,7 @@ class TestTracks(SeleniumTestBaseClass):
             db.session.add(customTrackField)
             db.session.commit()
 
+        self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         selenium.find_element(By.ID, 'track-my_custom_field').send_keys(15)
@@ -148,6 +149,7 @@ class TestTracks(SeleniumTestBaseClass):
             db.session.add(customTrackField)
             db.session.commit()
 
+        self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         self.__click_submit_button(selenium)
@@ -169,6 +171,7 @@ class TestTracks(SeleniumTestBaseClass):
             db.session.add(participant)
             db.session.commit()
 
+        self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         selenium.find_element(By.XPATH, '//label[@for="participant-1"]').click()
@@ -199,6 +202,7 @@ class TestTracks(SeleniumTestBaseClass):
             db.session.add(participant)
             db.session.commit()
 
+        self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         selenium.find_element(By.XPATH, '//label[@for="participant-1"]').click()
@@ -213,3 +217,35 @@ class TestTracks(SeleniumTestBaseClass):
         assert len(cards) == 1
         # check participants icon is displayed
         assert cards[0].find_element(By.XPATH, '//span[text()="group"]')
+
+    def test_quick_filter_only_show_activated_track_types(self, server, selenium: WebDriver):
+        self.login(selenium)
+        self.__open_form(selenium)
+        self.__fill_form(
+            selenium, 'My Biking Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
+        )
+        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Tracks')
+        )
+
+        self.__open_form(selenium, buttonIndex=1, expectedHeadline='New Running Track')
+        self.__fill_form(
+            selenium, 'My Running Track', '2023-02-01', '16:30', 5.5, 0, 20, 12, 188, 15
+        )
+        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Tracks')
+        )
+
+        selenium.find_elements(By.CLASS_NAME, 'quick-filter')[0].click()
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.invisibility_of_element_located(
+                (By.XPATH, '//h4[text()="New Biking Track"]')
+            )
+        )
+
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
