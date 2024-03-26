@@ -26,7 +26,7 @@ flask-babel = "4.0.0"
 python-dateutil = "2.9.0.post0"
 psycopg2 = "2.9.9"
 gpxpy = "1.6.2"
-faker = "24.2.0"
+faker = "24.4.0"
 
 [tool.poetry.dev-dependencies]
 ruff = "0.3.4"
