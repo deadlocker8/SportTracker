@@ -33,7 +33,9 @@
                             </a>
                             <a href="{{ url_for('tracks.listTracks', year=currentMonthDate.year, month=currentMonthDate.month) }}"
                                class="text-decoration-none text-light ms-2"
-                               id="month-select-current">
+                               id="month-select"
+                               data-bs-toggle="modal"
+                               data-bs-target="#modalYearSelect">
                                 <i class="fa-solid fa-calendar-days fs-3"></i>
                             </a>
                             <a href="{{ url_for('tracks.listTracks', year=currentMonthDate.year, month=currentMonthDate.month) }}"
@@ -66,6 +68,51 @@
                 </div>
             </section>
         </div>
+
+        <div class="modal fade" id="modalYearSelect" tabindex="-1" data-url="{{ url_for('tracks.listTracks') }}">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content bg-dark">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="headline-years">{{ gettext('Choose year') }}</h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" id="years">
+                            {% for availableYear in availableYears %}
+                                <div class="col col-4 text-center py-4 btn btn-dark btn-select-year" data-year="{{ availableYear }}" data-bs-toggle="modal" data-bs-target="#modalMonthSelect">
+                                    <h3 class="mb-0">{{ availableYear }}</h3>
+                                </div>
+                            {%  endfor %}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalMonthSelect" tabindex="-1" data-url="{{ url_for('tracks.listTracks') }}">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content bg-dark">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="headline-months">{{ gettext('Choose month') }}</h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" id="months">
+                            {% for monthName in monthNames %}
+                                <div class="col col-4 text-center py-4 btn btn-dark btn-select-month" data-month="{{ loop.index }}">
+                                    <h4 class="mb-0">{{ monthName }}</h4>
+                                </div>
+                            {%  endfor %}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         {{ macros.scripts() }}
         <script defer src="{{ url_for('static', filename='js/monthSelect.js') }}" type="text/javascript"></script>

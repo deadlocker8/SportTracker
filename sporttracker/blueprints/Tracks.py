@@ -3,6 +3,8 @@ import os
 from dataclasses import dataclass
 from datetime import datetime, date
 
+import flask_babel
+from babel.dates import get_month_names
 from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template, abort, redirect, url_for, request
 from flask_babel import format_datetime
@@ -24,6 +26,7 @@ from sporttracker.logic.model.Track import (
     get_tracks_by_year_and_month_by_type,
     TrackType,
     get_track_names_by_track_type,
+    get_available_years,
 )
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
@@ -123,6 +126,10 @@ def construct_blueprint(uploadFolder: str):
             quickFilterState=quickFilterState,
             year=year,
             month=month,
+            availableYears=get_available_years(),
+            monthNames=list(
+                get_month_names(width='wide', locale=flask_babel.get_locale()).values()
+            ),
         )
 
     @tracks.route('/add')
