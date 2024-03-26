@@ -32,9 +32,14 @@
                                 <span class="material-icons fs-1">chevron_right</span>
                             </a>
                             <a href="{{ url_for('tracks.listTracks', year=currentMonthDate.year, month=currentMonthDate.month) }}"
-                               class="text-decoration-none text-light"
+                               class="text-decoration-none text-light ms-2"
                                id="month-select-current">
-                                <span class="material-icons fs-2">today</span>
+                                <i class="fa-solid fa-calendar-days fs-3"></i>
+                            </a>
+                            <a href="{{ url_for('tracks.listTracks', year=currentMonthDate.year, month=currentMonthDate.month) }}"
+                               class="text-decoration-none text-light ms-3"
+                               id="month-select-current">
+                                <i class="fa-solid fa-calendar-day fs-3"></i>
                             </a>
                         </div>
                     </div>
