@@ -5,7 +5,7 @@
 # 1.15.0
 - add: add quick filter buttons for track types on track page
 - add: add quick filter buttons for track types on month goal page
-- add: add quick filter buttons for track types on month search page
+- add: add quick filter buttons for track types on search page
 - add: add quick filter buttons for track types and years on map page
 - add: new chart "speed per track"
 - add: show confirmation dialogs on deletion of tracks, gpx files, month goals, custom fields and participants
