@@ -1,3 +1,6 @@
+# 1.16.0
+- add: map: improve year filter options (do not reload page after single year is selected)
+
 # 1.15.1
 - fix: track delete button does not work
 - fix: month goal delete button does not work

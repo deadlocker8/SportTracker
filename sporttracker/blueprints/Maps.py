@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime
 
-from flask import Blueprint, render_template, abort, url_for, session, redirect
+from flask import Blueprint, render_template, abort, url_for, session, redirect, request
 from flask_login import login_required, current_user
 from sqlalchemy import func, extract
 
@@ -77,17 +77,12 @@ def construct_blueprint():
 
         return render_template('maps/mapSingleTrack.jinja2', gpxInfo=gpxInfo)
 
-    @maps.route('/toggleYear/<int:year>')
+    @maps.route('/toggleYears', methods=['POST'])
     @login_required
-    def toggleYearFilter(year: int):
-        availableYears = get_available_years()
-        yearFilterState = __get_map_year_filter_state_from_session(availableYears)
-        if year in yearFilterState:
-            yearFilterState.remove(year)
-        else:
-            yearFilterState.append(year)
+    def toggleYears():
+        activeYears = [int(item) for item in request.form.getlist('activeYears')]
 
-        session['mapYearFilterState'] = yearFilterState
+        session['mapYearFilterState'] = activeYears
 
         return redirect(url_for('maps.showAllTracksOnMap'))
 

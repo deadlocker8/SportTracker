@@ -40,6 +40,19 @@ body {
     width: 1.7rem;
 }
 
+.btn-available-year {
+  color: white !important;
+  background-color: transparent !important;
+  border-color: var(--bs-secondary) !important;
+}
+
+
+.btn-check:checked + .btn-available-year {
+  color: white !important;
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+}
+
 .no-margin-bottom {
     margin-bottom: 0 !important;
 }
