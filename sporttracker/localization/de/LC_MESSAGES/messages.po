@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-16 18:14+0100\n"
-"PO-Revision-Date: 2024-03-16 18:16+0100\n"
+"POT-Creation-Date: 2024-03-26 23:14+0100\n"
+"PO-Revision-Date: 2024-03-26 23:14+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -424,6 +424,10 @@ msgstr "Legende einblenden"
 msgid "Collapse Legend"
 msgstr "Legende ausblenden"
 
+#: ../templates/maps/mapMultipleTracks.jinja2:37
+msgid "Apply"
+msgstr "Übernehmen"
+
 #: ../templates/monthGoals/monthGoalChooser.jinja2:6
 #: ../templates/monthGoals/monthGoalChooser.jinja2:17
 msgid "New Month Goal"
@@ -462,10 +466,10 @@ msgstr "Neues Anzahlziel"
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:24
 #: ../templates/settings/settings.jinja2:106
 #: ../templates/settings/settings.jinja2:156
-#: ../templates/tracks/trackBikingForm.jinja2:23
-#: ../templates/tracks/trackBikingForm.jinja2:27
-#: ../templates/tracks/trackHikingForm.jinja2:23
-#: ../templates/tracks/trackHikingForm.jinja2:27
+#: ../templates/tracks/trackBikingForm.jinja2:22
+#: ../templates/tracks/trackBikingForm.jinja2:26
+#: ../templates/tracks/trackHikingForm.jinja2:22
+#: ../templates/tracks/trackHikingForm.jinja2:26
 #: ../templates/tracks/trackMacros.jinja2:302
 #: ../templates/tracks/trackRunningForm.jinja2:22
 #: ../templates/tracks/trackRunningForm.jinja2:26
@@ -519,9 +523,9 @@ msgstr "Ideale Anzahl an Tracks"
 #: ../templates/settings/settings.jinja2:36
 #: ../templates/settings/settings.jinja2:50
 #: ../templates/settings/settings.jinja2:184
-#: ../templates/tracks/trackBikingForm.jinja2:64
-#: ../templates/tracks/trackHikingForm.jinja2:64
-#: ../templates/tracks/trackRunningForm.jinja2:60
+#: ../templates/tracks/trackBikingForm.jinja2:62
+#: ../templates/tracks/trackHikingForm.jinja2:62
+#: ../templates/tracks/trackRunningForm.jinja2:62
 #: ../templates/users/userForm.jinja2:56
 msgid "Save"
 msgstr "Speichern"
@@ -670,24 +674,24 @@ msgid "Select Information to show for each track"
 msgstr "Informationen auswählen, die für jeden Track angezeigt werden"
 
 #: ../templates/tracks/trackBikingForm.jinja2:6
-#: ../templates/tracks/trackBikingForm.jinja2:21
+#: ../templates/tracks/trackBikingForm.jinja2:20
 msgid "Edit Biking Track"
 msgstr "Fahrrad-Track bearbeiten"
 
-#: ../templates/tracks/trackBikingForm.jinja2:7
-#: ../templates/tracks/trackBikingForm.jinja2:30
+#: ../templates/tracks/trackBikingForm.jinja2:6
+#: ../templates/tracks/trackBikingForm.jinja2:29
 #: ../templates/tracks/trackChooser.jinja2:26
 msgid "New Biking Track"
 msgstr "Neuer Fahrrad-Track"
 
-#: ../templates/tracks/trackBikingForm.jinja2:26
-#: ../templates/tracks/trackHikingForm.jinja2:26
+#: ../templates/tracks/trackBikingForm.jinja2:25
+#: ../templates/tracks/trackHikingForm.jinja2:25
 #: ../templates/tracks/trackRunningForm.jinja2:25
 msgid "Delete Track?"
 msgstr "Trakc löschen?"
 
-#: ../templates/tracks/trackBikingForm.jinja2:26
-#: ../templates/tracks/trackHikingForm.jinja2:26
+#: ../templates/tracks/trackBikingForm.jinja2:25
+#: ../templates/tracks/trackHikingForm.jinja2:25
 #: ../templates/tracks/trackRunningForm.jinja2:25
 #, python-format
 msgid "Do you really want to delete the track \"%(name)s\" (ID: %(id)d)"
@@ -700,18 +704,18 @@ msgstr "Neuer Track"
 
 #: ../templates/tracks/trackChooser.jinja2:33
 #: ../templates/tracks/trackRunningForm.jinja2:6
-#: ../templates/tracks/trackRunningForm.jinja2:28
+#: ../templates/tracks/trackRunningForm.jinja2:29
 msgid "New Running Track"
 msgstr "Neuer Lauf-Track"
 
 #: ../templates/tracks/trackChooser.jinja2:40
-#: ../templates/tracks/trackHikingForm.jinja2:7
-#: ../templates/tracks/trackHikingForm.jinja2:30
+#: ../templates/tracks/trackHikingForm.jinja2:6
+#: ../templates/tracks/trackHikingForm.jinja2:29
 msgid "New Hiking Track"
 msgstr "Neuer Wander-Track"
 
 #: ../templates/tracks/trackHikingForm.jinja2:6
-#: ../templates/tracks/trackHikingForm.jinja2:21
+#: ../templates/tracks/trackHikingForm.jinja2:20
 msgid "Edit Hiking Track"
 msgstr "Wander-Track bearbeiten"
 
@@ -773,10 +777,18 @@ msgstr "Hinzufügen von Teilnehmern in den "
 msgid "Edit Running Track"
 msgstr "Lauf-Track bearbeiten"
 
-#: ../templates/tracks/tracks.jinja2:46
+#: ../templates/tracks/tracks.jinja2:53
 msgid "Toggle months via arrow keys or press \"0\" for current month"
 msgstr ""
 "Monate mit Pfeiltasten umschalten oder \"0\" für den aktuellen Monat drücken"
+
+#: ../templates/tracks/tracks.jinja2:76
+msgid "Choose year"
+msgstr "Jahr wählen"
+
+#: ../templates/tracks/tracks.jinja2:98
+msgid "Choose month"
+msgstr "Monat wählen"
 
 #: ../templates/users/userForm.jinja2:6 ../templates/users/userForm.jinja2:18
 msgid "Edit User"
