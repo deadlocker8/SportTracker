@@ -126,7 +126,7 @@ def construct_blueprint(uploadFolder: str):
             quickFilterState=quickFilterState,
             year=year,
             month=month,
-            availableYears=get_available_years(),
+            availableYears=get_available_years() or [datetime.now().year],
             monthNames=list(
                 get_month_names(width='wide', locale=flask_babel.get_locale()).values()
             ),
