@@ -1,4 +1,5 @@
 # 1.16.0
+- add: year and month select on tracks page
 - add: map: improve year filter options (do not reload page after single year is selected)
 
 # 1.15.1
