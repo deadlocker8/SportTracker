@@ -249,3 +249,26 @@ class TestTracks(SeleniumTestBaseClass):
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
+
+    def test_month_select(self, server, selenium: WebDriver):
+        self.login(selenium)
+
+        selenium.find_element(By.CSS_SELECTOR, '#month-select').click()
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.visibility_of_element_located((By.ID, 'headline-years'))
+        )
+
+        yearButton = selenium.find_elements(By.CLASS_NAME, 'btn-select-year')[0]
+        year = yearButton.get_attribute('data-year')
+        yearButton.click()
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.visibility_of_element_located((By.ID, 'headline-months'))
+        )
+
+        monthIndex = 4
+        selenium.find_elements(By.CLASS_NAME, 'btn-select-month')[monthIndex].click()
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.invisibility_of_element_located((By.ID, 'headline-months'))
+        )
+
+        assert selenium.current_url.endswith(f'/tracks/{year}/{monthIndex + 1}')
