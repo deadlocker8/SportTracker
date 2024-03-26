@@ -1,4 +1,5 @@
 from abc import ABC
+from datetime import datetime
 
 from selenium.webdriver.common.by import By
 
@@ -22,4 +23,5 @@ class SeleniumTestBaseClass(ABC):
         selenium.find_element(By.ID, 'password').send_keys(TEST_PASSWORD)
         selenium.find_elements(By.TAG_NAME, 'button')[1].click()
 
-        assert selenium.current_url.endswith('/tracks/')
+        now = datetime.now()
+        assert selenium.current_url.endswith(f'/tracks/{now.year}/{now.month}')
