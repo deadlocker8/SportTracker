@@ -79,7 +79,8 @@ def construct_blueprint(uploadFolder: str):
     @login_required
     def listTracks(year: int, month: int):
         if year is None or month is None:
-            monthRightSideDate = datetime.now().date()
+            now = datetime.now().date()
+            return redirect(url_for('tracks.listTracks', year=now.year, month=now.month))
         else:
             monthRightSideDate = date(year=year, month=month, day=1)
 
