@@ -1,5 +1,6 @@
 # 1.16.1
 - fix: year/month select: improve usability on mobile devices
+- fix: map: overflowing buttons
 
 # 1.16.0
 - add: year and month select on tracks page

@@ -21,20 +21,23 @@
 
                 <div class="ms-5">
                     <form role="form" action="{{ url_for('maps.toggleYears') }}" method="post" class="d-flex flex-row align-items-center justify-content-center">
-                        {% for availableYear in availableYears %}
-                            <div class="form-check mb-0 ps-2">
-                                <input class="btn-check" type="checkbox" role="switch"
-                                       {% if availableYear in yearFilterState %}checked{% endif %}
-                                       id="availableYear-{{ loop.index }}"
-                                       name="activeYears"
-                                       value="{{ availableYear }}">
-                                <label class="btn btn-sm btn-available-year" for="availableYear-{{ loop.index }}">
-                                    {{ availableYear }}
-                                </label>
+                        <div class="row row-cols-auto">
+                            {% for availableYear in availableYears %}
+                                <div class="col my-1">
+                                    <input class="btn-check" type="checkbox" role="switch"
+                                           {% if availableYear in yearFilterState %}checked{% endif %}
+                                           id="availableYear-{{ loop.index }}"
+                                           name="activeYears"
+                                           value="{{ availableYear }}">
+                                    <label class="btn btn-sm btn-available-year" for="availableYear-{{ loop.index }}">
+                                        {{ availableYear }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                            <div class="col my-1">
+                                <button type="submit" class="btn btn-sm btn-success">{{ gettext('Apply') }}</button>
                             </div>
-                        {% endfor %}
-
-                        <button type="submit" class="btn btn-sm btn-success ms-3">{{ gettext('Apply') }}</button>
+                        </div>
                     </form>
                 </div>
             </div>
