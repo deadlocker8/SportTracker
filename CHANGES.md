@@ -1,3 +1,6 @@
+# 1.16.1
+- fix: year/month select: improve usability on mobile devices
+
 # 1.16.0
 - add: year and month select on tracks page
 - add: map: improve year filter options (do not reload page after single year is selected)
