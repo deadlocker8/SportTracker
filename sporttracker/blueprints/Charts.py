@@ -258,7 +258,7 @@ def construct_blueprint():
                 .filter(Track.user_id == current_user.id)
                 .filter(Track.type == trackType)
                 .group_by(Track.name)
-                .having(func.count(Track.name) > 2)
+                .having(func.count(Track.name) >= 2)
                 .order_by(asc(func.lower(Track.name)))
                 .all()
             )

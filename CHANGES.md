@@ -1,6 +1,7 @@
 # 1.16.1
 - fix: year/month select: improve usability on mobile devices
 - fix: map: overflowing buttons
+- fix: chart "duration per track" and chart "speed per track": some track names were not shown even if two tracks existed
 
 # 1.16.0
 - add: year and month select on tracks page
