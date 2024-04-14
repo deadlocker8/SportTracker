@@ -14,7 +14,10 @@
             <section class="py-5 text-center container">
                 <div class="row mb-3">
                     <div class="col col-12 mx-auto">
-                        <h1>{{ gettext('Maintenance') }}
+                        <h1>{{ gettext('Maintenance') }} <a href="{{ url_for('maintenanceEvents.add') }}"
+                                                            class="link-light text-decoration-none d-flex-inline align-items-center">
+                            <span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span>
+                        </a>
                         </h1>
                     </div>
                 </div>
@@ -26,7 +29,7 @@
                 {% for maintenanceEvent in maintenanceEvents %}
                     <div class="row py-3">
                         <div class="col col-xxl-8 col-lg-10 col-sm-12 mx-auto px-xxl-5 px-xl-4 px-lg-3">
-                            <a href="{{ url_for('monthGoalsCount.edit', goal_id=1) }}"
+                            <a href="{{ url_for('maintenanceEvents.edit', event_id=maintenanceEvent.id) }}"
                                class="text-decoration-none">
                                 <div class="card">
                                     <div class="row g-0 d-flex align-items-center p-2">

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {% if maintenanceEvent %}{{ gettext('Edit Maintenance Event') }}{% else %}{{ gettext('New Maintenance Event') }}{% endif %}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('maintenanceEvents') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        {% if maintenanceEvent %}
+                            <h1>{{ gettext('Edit Maintenance Event') }}</h1>
+                            <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                                {{ gettext('Delete') }}
+                            </button>
+
+                            {% call macros.deleteModal(gettext('Delete Maintenance Event?'), gettext('Do you really want to delete this maintenance event?')) %}
+                                <a href="{{ url_for('maintenanceEvents.delete', event_id=event_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                            {% endcall %}
+                        {% else %}
+                            <h1>{{ gettext('New Maintenance Event') }}</h1>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row mt-5 text-start">
+                    <div class="col col-11 col-md-9 mx-auto">
+                        <form role="form" action="{% if maintenanceEvent %}{{ url_for('maintenanceEvents.editPost', event_id=event_id) }}{% else %}{{ url_for('maintenanceEvents.addPost') }}{% endif %}"
+                              method="post">
+                            <div class="mb-3">
+                                <label for="maintenance-event-type" class="form-label">{{ gettext('Type') }}</label>
+                                <select class="form-select" id="maintenance-event-type" name="type" required="required">
+                                    {% for trackType in trackTypes %}
+                                        <option value="{{ trackType.name }}"
+                                                {% if maintenanceEvent and maintenanceEvent.type == trackType.name %}selected{% endif %}>{{ trackType.get_localized_name() }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col col-6">
+                                        <label for="maintenance-event-date" class="form-label">{{ gettext('Date') }}</label>
+                                        <input type="date" class="form-control" id="maintenance-event-date" name="date"
+                                               required="required" {% if maintenanceEvent %}value="{{ maintenanceEvent.date }}"{% endif %}>
+                                    </div>
+                                    <div class="col col-6">
+                                        <label for="maintenance-event-time" class="form-label">{{ gettext('Time') }}</label>
+                                        <input type="time" class="form-control" id="maintenance-event-time" name="time"
+                                               required="required" {% if maintenanceEvent %}value="{{ maintenanceEvent.time }}"{% endif %}>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-5">
+                                <div class="form-group">
+                                    <label for="maintenance-event-description"
+                                           class="form-label">{{ gettext('Description') }}</label>
+                                    <input type="text" class="form-control" id="maintenance-event-description"
+                                           name="description" required="required"
+                                           {% if maintenanceEvent %}value="{{ maintenanceEvent.description }}"{% endif %}>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>

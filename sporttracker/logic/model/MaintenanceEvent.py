@@ -1,3 +1,4 @@
+
 from sqlalchemy import Integer, DateTime, String
 from sqlalchemy.orm import mapped_column, Mapped
 
@@ -11,3 +12,9 @@ class MaintenanceEvent(db.Model):  # type: ignore[name-defined]
     event_date: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     description: Mapped[String] = mapped_column(String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def get_date(self) -> str:
+        return self.event_date.strftime('%Y-%m-%d')
+
+    def get_time(self) -> str:
+        return self.event_date.strftime('%H:%M')
