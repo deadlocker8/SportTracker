@@ -9,8 +9,10 @@ from dateutil.relativedelta import relativedelta
 from faker import Faker
 
 from sporttracker.logic import Constants
+from sporttracker.logic.model.CustomTrackField import CustomTrackField, CustomTrackFieldType
 from sporttracker.logic.model.MaintenanceEvent import MaintenanceEvent
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
+from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.Track import Track, TrackType
 from sporttracker.logic.model.User import User, create_user, Language
 from sporttracker.logic.model.db import db
@@ -40,11 +42,16 @@ class DummyDataGenerator:
         user = self.__generate_demo_user()
 
         if Track.query.count() == 0:
+            self.__generate_demo_participants(user)
+
+            self.__generate_demo_custom_field(user)
+
             self.__generate_demo_tracks(
                 user=user,
                 trackType=TrackType.BIKING,
                 numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_BIKING,
                 numberOfTracksWithGpx=2,
+                numberOfTracksWithParticipants=2,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_BIKING,
                 distanceMin=15.0,
                 distanceMax=50.0,
@@ -55,6 +62,7 @@ class DummyDataGenerator:
                 trackType=TrackType.RUNNING,
                 numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_RUNNING,
                 numberOfTracksWithGpx=2,
+                numberOfTracksWithParticipants=0,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_RUNNING,
                 distanceMin=2.0,
                 distanceMax=6.0,
@@ -65,6 +73,7 @@ class DummyDataGenerator:
                 trackType=TrackType.HIKING,
                 numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_HIKING,
                 numberOfTracksWithGpx=1,
+                numberOfTracksWithParticipants=1,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_HIKING,
                 distanceMin=6.0,
                 distanceMax=18.0,
@@ -139,6 +148,7 @@ class DummyDataGenerator:
         trackType: TrackType,
         numberOfTracksPerMonth: int,
         numberOfTracksWithGpx: int,
+        numberOfTracksWithParticipants: int,
         averageSpeed: int,
         distanceMin: float,
         distanceMax: float,
@@ -153,6 +163,9 @@ class DummyDataGenerator:
             firstDay = date(year=lastDayCurrentMonth.year, month=lastDayCurrentMonth.month, day=1)
 
             indexesWithGpx = random.choices(range(numberOfTracksPerMonth), k=numberOfTracksWithGpx)
+            indexesWithParticipants = random.choices(
+                range(numberOfTracksPerMonth), k=numberOfTracksWithParticipants
+            )
 
             for index in range(numberOfTracksPerMonth):
                 fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
@@ -175,6 +188,9 @@ class DummyDataGenerator:
 
                 if index in indexesWithGpx:
                     self.__append_gpx(track)
+
+                if index in indexesWithParticipants:
+                    track.participants = [self.__get_participant()]
 
                 db.session.add(track)
 
@@ -213,4 +229,24 @@ class DummyDataGenerator:
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 
+        db.session.commit()
+
+    def __generate_demo_participants(self, user) -> None:
+        db.session.add(Participant(name='John Doe', user_id=user.id))
+        db.session.add(Participant(name='Jane', user_id=user.id))
+        db.session.commit()
+
+    def __get_participant(self) -> Participant:
+        return Participant.query.first()
+
+    def __generate_demo_custom_field(self, user) -> None:
+        db.session.add(
+            CustomTrackField(
+                type=CustomTrackFieldType.STRING,
+                track_type=TrackType.BIKING,
+                name='Bike',
+                is_required=False,
+                user_id=user.id,
+            )
+        )
         db.session.commit()
