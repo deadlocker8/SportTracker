@@ -19,6 +19,10 @@
                     </div>
                 </div>
 
+                <div class="mb-4">
+                    {{ macros.track_type_quick_filter(url_for('maintenanceEvents.listMaintenanceEvents')) }}
+                </div>
+
                 {% for maintenanceEvent in maintenanceEvents %}
                     <div class="row py-3">
                         <div class="col col-xxl-8 col-lg-10 col-sm-12 mx-auto px-xxl-5 px-xl-4 px-lg-3">
