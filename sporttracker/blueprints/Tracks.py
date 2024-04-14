@@ -14,8 +14,15 @@ from pydantic import BaseModel, ConfigDict, field_validator
 
 from sporttracker.blueprints.GpxTracks import handleGpxTrack
 from sporttracker.logic import Constants
-from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
+from sporttracker.logic.QuickFilterState import (
+    get_quick_filter_state_from_session,
+    QuickFilterState,
+)
 from sporttracker.logic.model.CustomTrackField import CustomTrackField
+from sporttracker.logic.model.MaintenanceEvent import (
+    MaintenanceEvent,
+    get_maintenance_events_by_year_and_month_by_type,
+)
 from sporttracker.logic.model.MonthGoal import (
     MonthGoalSummary,
     get_goal_summaries_by_year_and_month_and_types,
@@ -37,7 +44,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 @dataclass
 class MonthModel:
     name: str
-    tracks: list[Track]
+    entries: list[Track | MaintenanceEvent]
     goals: list[MonthGoalSummary]
 
 
@@ -89,30 +96,10 @@ def construct_blueprint(uploadFolder: str):
 
         quickFilterState = get_quick_filter_state_from_session()
 
-        monthRightSide = MonthModel(
-            format_datetime(monthRightSideDate, format='MMMM yyyy'),
-            get_tracks_by_year_and_month_by_type(
-                monthRightSideDate.year,
-                monthRightSideDate.month,
-                quickFilterState.get_active_types(),
-            ),
-            get_goal_summaries_by_year_and_month_and_types(
-                monthRightSideDate.year,
-                monthRightSideDate.month,
-                quickFilterState.get_active_types(),
-            ),
-        )
+        monthRightSide = __get_month_model(monthRightSideDate, quickFilterState)
 
         monthLeftSideDate = monthRightSideDate - relativedelta(months=1)
-        monthLeftSide = MonthModel(
-            format_datetime(monthLeftSideDate, format='MMMM yyyy'),
-            get_tracks_by_year_and_month_by_type(
-                monthLeftSideDate.year, monthLeftSideDate.month, quickFilterState.get_active_types()
-            ),
-            get_goal_summaries_by_year_and_month_and_types(
-                monthLeftSideDate.year, monthLeftSideDate.month, quickFilterState.get_active_types()
-            ),
-        )
+        monthLeftSide = __get_month_model(monthLeftSideDate, quickFilterState)
 
         nextMonthDate = monthRightSideDate + relativedelta(months=1)
 
@@ -301,3 +288,30 @@ def construct_blueprint(uploadFolder: str):
         return redirect(url_for('tracks.listTracks'))
 
     return tracks
+
+
+def __get_month_model(monthDate: date, quickFilterState: QuickFilterState) -> MonthModel:
+    tracks = get_tracks_by_year_and_month_by_type(
+        monthDate.year,
+        monthDate.month,
+        quickFilterState.get_active_types(),
+    )
+
+    maintenanceEvents = get_maintenance_events_by_year_and_month_by_type(
+        monthDate.year, monthDate.month, quickFilterState.get_active_types()
+    )
+
+    entries = tracks + maintenanceEvents
+    entries.sort(
+        key=lambda entry: entry.startTime if isinstance(entry, Track) else entry.event_date  # type: ignore[arg-type, return-value]
+    )
+
+    return MonthModel(
+        format_datetime(monthDate, format='MMMM yyyy'),
+        entries,
+        get_goal_summaries_by_year_and_month_and_types(
+            monthDate.year,
+            monthDate.month,
+            quickFilterState.get_active_types(),
+        ),
+    )

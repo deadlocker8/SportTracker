@@ -1,4 +1,5 @@
-from sqlalchemy import Integer, DateTime, String
+from flask_login import current_user
+from sqlalchemy import Integer, DateTime, String, extract
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.model.Track import TrackType
@@ -17,3 +18,15 @@ class MaintenanceEvent(db.Model):  # type: ignore[name-defined]
 
     def get_time(self) -> str:
         return self.event_date.strftime('%H:%M')  # type: ignore[attr-defined]
+
+
+def get_maintenance_events_by_year_and_month_by_type(
+    year: int, month: int, trackTypes: list[TrackType]
+) -> list[MaintenanceEvent]:
+    return (
+        MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
+        .filter(MaintenanceEvent.type.in_(trackTypes))
+        .filter(extract('year', MaintenanceEvent.event_date) == year)
+        .filter(extract('month', MaintenanceEvent.event_date) == month)
+        .all()
+    )

@@ -59,21 +59,21 @@
     {% endif %}
 {%- endmacro %}
 
-{%  macro track_type_icon(track) -%}
-    {% if track.type.is_font_awesome_icon %}
-        <i class="d-none d-lg-block fa-solid {{ track.type.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}"></i>
-        <i class="d-lg-none fa-solid {{ track.type.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ track.type.background_color }}"></i>
+{%  macro track_type_icon(trackType) -%}
+    {% if trackType.is_font_awesome_icon %}
+        <i class="d-none d-lg-block fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }}"></i>
+        <i class="d-lg-none fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ trackType.background_color }}"></i>
     {% else %}
-        <span class="d-none d-lg-block material-icons rounded-circle fs-1 p-3 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
-        <span class="d-lg-none material-icons rounded-circle fs-3 p-2 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
+        <span class="d-none d-lg-block material-icons rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }}">{{ trackType.icon }}</span>
+        <span class="d-lg-none material-icons rounded-circle fs-3 p-2 text-dark {{ trackType.background_color }}">{{ trackType.icon }}</span>
     {% endif %}
 {%- endmacro %}
 
-{%  macro track_type_icon_small(track) -%}
-    {% if track.type.is_font_awesome_icon %}
-        <i class="fa-solid {{ track.type.icon }} fa-fw rounded-circle fs-2 p-2 text-dark {{ track.type.background_color }}"></i>
+{%  macro track_type_icon_small(trackType, fontSize='fs-2') -%}
+    {% if trackType.is_font_awesome_icon %}
+        <i class="fa-solid {{ trackType.icon }} fa-fw rounded-circle {{ fontSize }} p-2 text-dark {{ trackType.background_color }}"></i>
     {% else %}
-        <span class="material-icons rounded-circle fs-2 p-2 text-dark {{ track.type.background_color }}">{{ track.type.icon }}</span>
+        <span class="material-icons rounded-circle {{ fontSize }} p-2 text-dark {{ trackType.background_color }}">{{ trackType.icon }}</span>
     {% endif %}
 {%- endmacro %}
 
@@ -98,9 +98,9 @@
                 <div class="row g-0">
                     <div class="col col-3 col-md-3 d-flex flex-column align-items-center justify-content-center my-3 ps-1">
                         {% if useSmallIcon %}
-                            {{ track_type_icon_small(track) }}
+                            {{ track_type_icon_small(track.type) }}
                         {% else %}
-                            {{ track_type_icon(track) }}
+                            {{ track_type_icon(track.type) }}
                         {% endif %}
                         <div class="fs-6 text-body text-start mt-2 d-lg-none">{{ track.startTime | format_date }}</div>
                         <div class="fs-5 text-body text-start mt-2 d-none d-lg-block">{{ track.startTime | format_date }}</div>
@@ -175,8 +175,12 @@
             {% endfor %}
         </div>
 
-        {% for track in monthModel.tracks %}
-            {{ render_track_card(track) }}
+        {% for entry in monthModel.entries %}
+            {% if entry.__class__.__name__ == 'Track' %}
+                {{ render_track_card(entry) }}
+            {% elif entry.__class__.__name__ == 'MaintenanceEvent' %}
+                {{ render_maintenance_event_card(entry) }}
+            {% endif %}
         {% endfor %}
     </div>
 {%- endmacro %}
@@ -333,5 +337,33 @@
                 </span>
             </div>
         {% endif %}
+    </div>
+{%- endmacro %}
+
+{% macro render_maintenance_event_card(event) -%}
+    <div class="row py-2">
+        <div class="col col-12 mx-auto">
+            <div class="card text-bg-secondary ">
+                <div class="row g-0">
+                    <div class="col col-3 d-flex flex-row align-items-center justify-content-center my-3 ps-3">
+                        <i class="fa-solid fa-wrench fa-fw fs-3 p-2 text-white me-2"></i>
+                        {{ track_type_icon_small(event.type, 'fs-3') }}
+                    </div>
+
+                    <div class="col col-9">
+                        <div class="card-body ps-1 ps-md-3 d-flex flex-column justify-content-between h-100">
+                            <div class="d-flex align-items-center h-100">
+                                <div class="card-title text-start mb-0 fs-6 me-3 d-lg-none">{{ event.event_date | format_date }}</div>
+                                <div class="card-title text-start mb-0 fs-5 me-5 d-none d-lg-block">{{ event.event_date | format_date }}</div>
+                                <div class="text-truncate fs-6 d-lg-none">{{ event.description }}</div>
+                                <div class="text-truncate fs-5 d-none d-lg-block">{{ event.description }}</div>
+                            </div>
+                        </div>
+
+                        <a href="{{ url_for('maintenanceEvents.edit', event_id=event.id) }}" class="text-decoration-none stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {%- endmacro %}

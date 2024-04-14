@@ -52,7 +52,7 @@ def construct_blueprint():
             .all()
         )
 
-        maintenanceEventList = []
+        maintenanceEventList: list[MaintenanceEventModel] = []
         for event in events:
             maintenanceEventList.append(
                 MaintenanceEventModel(
@@ -68,16 +68,16 @@ def construct_blueprint():
         currentYear = None
         maintenanceEventsByYear = {}
         eventsCurrentYear: list[MaintenanceEventModel] = []
-        for event in maintenanceEventList:
+        for eventModel in maintenanceEventList:
             if currentYear is None:
-                currentYear = event.eventDate.year
+                currentYear = eventModel.eventDate.year
 
-            if event.eventDate.year != currentYear:
+            if eventModel.eventDate.year != currentYear:
                 maintenanceEventsByYear[currentYear] = eventsCurrentYear
-                currentYear = event.eventDate.year
+                currentYear = eventModel.eventDate.year
                 eventsCurrentYear = []
 
-            eventsCurrentYear.append(event)
+            eventsCurrentYear.append(eventModel)
 
         if currentYear is not None:
             maintenanceEventsByYear[currentYear] = eventsCurrentYear
