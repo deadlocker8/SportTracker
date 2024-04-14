@@ -65,9 +65,26 @@ def construct_blueprint():
                 )
             )
 
+        currentYear = None
+        maintenanceEventsByYear = {}
+        eventsCurrentYear: list[MaintenanceEventModel] = []
+        for event in maintenanceEventList:
+            if currentYear is None:
+                currentYear = event.eventDate.year
+
+            if event.eventDate.year != currentYear:
+                maintenanceEventsByYear[currentYear] = eventsCurrentYear
+                currentYear = event.eventDate.year
+                eventsCurrentYear = []
+
+            eventsCurrentYear.append(event)
+
+        if currentYear is not None:
+            maintenanceEventsByYear[currentYear] = eventsCurrentYear
+
         return render_template(
             'maintenanceEvents/maintenanceEvents.jinja2',
-            maintenanceEvents=maintenanceEventList,
+            maintenanceEventsByYear=maintenanceEventsByYear,
             quickFilterState=quickFilterState,
         )
 
