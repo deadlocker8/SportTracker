@@ -49,6 +49,7 @@ def construct_blueprint():
         events: list[MaintenanceEvent] = (
             MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
             .filter(MaintenanceEvent.type.in_(quickFilterState.get_active_types()))
+            .order_by(MaintenanceEvent.event_date.desc())
             .all()
         )
 
