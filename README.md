@@ -52,6 +52,11 @@ The achievement page shows aggregated information about all your tracks.
 
 ![](screenshots/achievements.png)
 
+### Maintenance Events
+Record your maintenance events for each sport type.
+
+![](screenshots/maintenance.png)
+
 ### Available languages
 - German
 - English

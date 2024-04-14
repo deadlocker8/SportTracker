@@ -1,3 +1,6 @@
+# 1.17.0
+- add: it is now possible to track maintenance events for each sport type
+
 # 1.16.1
 - fix: year/month select: improve usability on mobile devices
 - fix: map: overflowing buttons
