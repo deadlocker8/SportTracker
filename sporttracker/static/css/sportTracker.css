@@ -57,6 +57,14 @@ body {
     margin-bottom: 0 !important;
 }
 
+.border-10 {
+    border-width: 10px !important;
+}
+
+.margin-maintenance {
+    margin-left: -10px;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

@@ -343,21 +343,21 @@
 {% macro render_maintenance_event_card(event) -%}
     <div class="row py-2">
         <div class="col col-12 mx-auto">
-            <div class="card text-bg-secondary ">
-                <div class="row g-0">
-                    <div class="col col-3 d-flex flex-row align-items-center justify-content-center my-3 ps-3">
-                        <i class="fa-solid fa-wrench fa-fw fs-3 p-2 text-white me-2"></i>
+            <div class="card border-0">
+                <div class="row g-0 border-start border-danger border-10 rounded-start">
+                    <div class="col col-3 d-flex flex-row align-items-center justify-content-center margin-maintenance">
                         {{ track_type_icon_small(event.type, 'fs-3') }}
                     </div>
 
                     <div class="col col-9">
-                        <div class="card-body ps-1 ps-md-3 d-flex flex-column justify-content-between h-100">
-                            <div class="d-flex align-items-center h-100">
+                        <div class="card-body ps-1 ps-md-3 d-flex justify-content-between">
+                            <div class="d-flex align-items-center text-truncate">
                                 <div class="card-title text-start mb-0 fs-6 me-3 d-lg-none">{{ event.event_date | format_date }}</div>
                                 <div class="card-title text-start mb-0 fs-5 me-5 d-none d-lg-block">{{ event.event_date | format_date }}</div>
                                 <div class="text-truncate fs-6 d-lg-none">{{ event.description }}</div>
                                 <div class="text-truncate fs-5 d-none d-lg-block">{{ event.description }}</div>
                             </div>
+                            <i class="fa-solid fa-wrench fa-fw fs-3 text-secondary"></i>
                         </div>
 
                         <a href="{{ url_for('maintenanceEvents.edit', event_id=event.id) }}" class="text-decoration-none stretched-link"></a>
