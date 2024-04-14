@@ -21,8 +21,10 @@ class DummyDataGenerator:
     NUMBER_OF_MONTHS = 12
     NUMBER_OF_TRACKS_PER_MONTH_BIKING = 7
     NUMBER_OF_TRACKS_PER_MONTH_RUNNING = 2
+    NUMBER_OF_TRACKS_PER_MONTH_HIKING = 1
     AVERAGE_SPEED_IN_KMH_BIKING = 22
     AVERAGE_SPEED_IN_KMH_RUNNING = 10
+    AVERAGE_SPEED_IN_KMH_HIKING = 4
     TRACK_NAMES = ['Short trip', 'Afterwork I', 'Afterwork II', 'Berlin + Potsdam', 'Megatour']
     GPX_FILE_NAMES = ['gpxTrack_1.gpx', 'gpxTrack_2.gpx']
 
@@ -52,6 +54,15 @@ class DummyDataGenerator:
                                         averageSpeed=self.AVERAGE_SPEED_IN_KMH_RUNNING,
                                         distanceMin=2.0,
                                         distanceMax=6.0
+                                        )
+
+            self.__generate_demo_tracks(user=user,
+                                        trackType=TrackType.HIKING,
+                                        numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_HIKING,
+                                        numberOfTracksWithGpx=1,
+                                        averageSpeed=self.AVERAGE_SPEED_IN_KMH_HIKING,
+                                        distanceMin=6.0,
+                                        distanceMax=18.0
                                         )
 
             self.__generate_demo_month_goals(user)
