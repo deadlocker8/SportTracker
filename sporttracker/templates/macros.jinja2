@@ -62,6 +62,10 @@
                                    href="{{ url_for('maps.showAllTracksOnMap') }}">{{ gettext('Map') }}</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link {% if activeLink == 'maintenanceEvents' %}active {% endif %}"
+                                   href="{{ url_for('maintenanceEvents.listMaintenanceEvents') }}">{{ gettext('Maintenance') }}</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link {% if activeLink == 'about' %}active {% endif %}"
                                    href="{{ url_for('general.about') }}">{{ gettext('About') }}</a>
                             </li>
