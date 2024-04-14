@@ -1,5 +1,6 @@
 import enum
 from dataclasses import dataclass
+from datetime import datetime
 
 from flask_babel import gettext
 from flask_login import current_user
@@ -7,6 +8,7 @@ from sqlalchemy import Integer, String, DateTime, extract, func
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
+from sporttracker.logic.DateTimeAccess import DateTimeAccess
 from sporttracker.logic.model.Participant import Participant, track_participant_association
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
@@ -59,7 +61,7 @@ class TrackType(enum.Enum):
         raise ValueError(f'Could not get localized name for unsupported TrackType: {self}')
 
 
-class Track(db.Model):  # type: ignore[name-defined]
+class Track(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     type = db.Column(db.Enum(TrackType))
     name: Mapped[String] = mapped_column(String, nullable=False)
@@ -72,6 +74,9 @@ class Track(db.Model):  # type: ignore[name-defined]
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     custom_fields = db.Column(JSON)
     participants: Mapped[list[Participant]] = relationship(secondary=track_participant_association)
+
+    def get_date_time(self) -> datetime:
+        return self.startTime  # type: ignore[return-value]
 
 
 def get_track_names_by_track_type(trackType: TrackType) -> list[str]:
