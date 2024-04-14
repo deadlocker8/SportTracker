@@ -30,7 +30,8 @@ from sporttracker.blueprints import (
     Maps,
     GpxTracks,
     Settings,
-    QuickFilter, MaintenanceEvents,
+    QuickFilter,
+    MaintenanceEvents,
 )
 from sporttracker.helpers import Helpers
 from sporttracker.logic import Constants

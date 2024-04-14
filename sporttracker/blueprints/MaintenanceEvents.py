@@ -37,8 +37,9 @@ class MaintenanceEventFormModel(BaseModel):
 
 
 def construct_blueprint():
-    maintenanceEvents = Blueprint('maintenanceEvents', __name__, static_folder='static',
-                                  url_prefix='/maintenanceEvents')
+    maintenanceEvents = Blueprint(
+        'maintenanceEvents', __name__, static_folder='static', url_prefix='/maintenanceEvents'
+    )
 
     @maintenanceEvents.route('/')
     @login_required
@@ -46,20 +47,29 @@ def construct_blueprint():
         quickFilterState = get_quick_filter_state_from_session()
 
         events: list[MaintenanceEvent] = (
-            MaintenanceEvent.query
-            .filter(MaintenanceEvent.user_id == current_user.id)
+            MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
             .filter(MaintenanceEvent.type.in_(quickFilterState.get_active_types()))
-            .all())
+            .all()
+        )
 
         maintenanceEventList = []
         for event in events:
             maintenanceEventList.append(
-                MaintenanceEventModel(event.id, event.event_date, event.get_date(), event.get_time(), event.type,
-                                      event.description))
+                MaintenanceEventModel(
+                    event.id,
+                    event.event_date,  # type: ignore[arg-type]
+                    event.get_date(),
+                    event.get_time(),
+                    event.type,
+                    event.description,  # type: ignore[arg-type]
+                )
+            )
 
-        return render_template('maintenanceEvents/maintenanceEvents.jinja2',
-                               maintenanceEvents=maintenanceEventList,
-                               quickFilterState=quickFilterState)
+        return render_template(
+            'maintenanceEvents/maintenanceEvents.jinja2',
+            maintenanceEvents=maintenanceEventList,
+            quickFilterState=quickFilterState,
+        )
 
     @maintenanceEvents.route('/add')
     @login_required
@@ -74,7 +84,7 @@ def construct_blueprint():
             event_date=form.calculate_event_date(),
             type=TrackType(form.type),  # type: ignore[call-arg]
             description=form.description,
-            user_id=current_user.id
+            user_id=current_user.id,
         )
 
         LOGGER.debug(f'Saved new maintenance event: {maintenanceEvent}')
@@ -87,8 +97,7 @@ def construct_blueprint():
     @login_required
     def edit(event_id: int):
         maintenanceEvent = (
-            MaintenanceEvent.query
-            .filter(MaintenanceEvent.user_id == current_user.id)
+            MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
             .filter(MaintenanceEvent.id == event_id)
             .first()
         )
@@ -106,7 +115,9 @@ def construct_blueprint():
         )
 
         return render_template(
-            'maintenanceEvents/maintenanceEventForm.jinja2', maintenanceEvent=eventModel, event_id=event_id
+            'maintenanceEvents/maintenanceEventForm.jinja2',
+            maintenanceEvent=eventModel,
+            event_id=event_id,
         )
 
     @maintenanceEvents.route('/edit/<int:event_id>', methods=['POST'])
@@ -114,8 +125,7 @@ def construct_blueprint():
     @validate()
     def editPost(event_id: int, form: MaintenanceEventFormModel):
         maintenanceEvent = (
-            MaintenanceEvent.query
-            .filter(MaintenanceEvent.user_id == current_user.id)
+            MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
             .filter(MaintenanceEvent.id == event_id)
             .first()
         )
@@ -137,8 +147,7 @@ def construct_blueprint():
     @login_required
     def delete(event_id: int):
         maintenanceEvent = (
-            MaintenanceEvent.query
-            .filter(MaintenanceEvent.user_id == current_user.id)
+            MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
             .filter(MaintenanceEvent.id == event_id)
             .first()
         )
