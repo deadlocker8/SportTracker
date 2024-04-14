@@ -302,7 +302,7 @@ def __get_month_model(monthDate: date, quickFilterState: QuickFilterState) -> Mo
     )
 
     entries = tracks + maintenanceEvents
-    entries.sort(key=lambda entry: entry.get_date_time())
+    entries.sort(key=lambda entry: entry.get_date_time(), reverse=True)
 
     return MonthModel(
         format_datetime(monthDate, format='MMMM yyyy'),
