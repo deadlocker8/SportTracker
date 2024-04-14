@@ -25,7 +25,6 @@ class TestTracks(SeleniumTestBaseClass):
     def __open_form(self, selenium, buttonIndex=0, expectedHeadline='New Biking Track'):
         selenium.get(self.build_url('/tracks'))
 
-        # open goal chooser
         selenium.find_element(By.TAG_NAME, 'h1').find_element(By.TAG_NAME, 'a').click()
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'New Track')
@@ -78,7 +77,7 @@ class TestTracks(SeleniumTestBaseClass):
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
 
-    def test_add_dtrack_all_empty(self, server, selenium: WebDriver):
+    def test_add_track_all_empty(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, '', '', '', '', '', '', '', '', '')
@@ -124,7 +123,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
-        selenium.find_element(By.ID, 'track-my_custom_field').send_keys(15)
+        selenium.find_element(By.ID, 'track-my_custom_field').send_keys('15')
         self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
