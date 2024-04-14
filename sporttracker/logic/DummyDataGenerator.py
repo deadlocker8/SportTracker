@@ -36,8 +36,24 @@ class DummyDataGenerator:
         user = self.__generate_demo_user()
 
         if Track.query.count() == 0:
-            self.__generate_demo_tracks_biking(user)
-            self.__generate_demo_tracks_running(user)
+            self.__generate_demo_tracks(user=user,
+                                        trackType=TrackType.BIKING,
+                                        numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_BIKING,
+                                        numberOfTracksWithGpx=2,
+                                        averageSpeed=self.AVERAGE_SPEED_IN_KMH_BIKING,
+                                        distanceMin=15.0,
+                                        distanceMax=50.0
+                                        )
+
+            self.__generate_demo_tracks(user=user,
+                                        trackType=TrackType.RUNNING,
+                                        numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_RUNNING,
+                                        numberOfTracksWithGpx=2,
+                                        averageSpeed=self.AVERAGE_SPEED_IN_KMH_RUNNING,
+                                        distanceMin=2.0,
+                                        distanceMax=6.0
+                                        )
+
             self.__generate_demo_month_goals(user)
 
     @staticmethod
@@ -99,8 +115,16 @@ class DummyDataGenerator:
 
         db.session.commit()
 
-    def __generate_demo_tracks_biking(self, user) -> None:
-        LOGGER.debug('Generate dummy tracks BIKING...')
+    def __generate_demo_tracks(self,
+                               user: User,
+                               trackType: TrackType,
+                               numberOfTracksPerMonth: int,
+                               numberOfTracksWithGpx: int,
+                               averageSpeed: int,
+                               distanceMin: float,
+                               distanceMax: float
+                               ) -> None:
+        LOGGER.debug(f'Generate dummy tracks {trackType.name}...')
 
         fake = Faker()
 
@@ -109,17 +133,17 @@ class DummyDataGenerator:
         for monthIndex in range(self.NUMBER_OF_MONTHS):
             firstDay = date(year=lastDayCurrentMonth.year, month=lastDayCurrentMonth.month, day=1)
 
-            indexesWithGpx = random.choices(range(self.NUMBER_OF_TRACKS_PER_MONTH_BIKING), k=2)
+            indexesWithGpx = random.choices(range(numberOfTracksPerMonth), k=numberOfTracksWithGpx)
 
-            for index in range(self.NUMBER_OF_TRACKS_PER_MONTH_BIKING):
+            for index in range(numberOfTracksPerMonth):
                 fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
-                distance = round(random.uniform(15.00, 50.00), 2)
-                duration = distance / self.AVERAGE_SPEED_IN_KMH_BIKING * 60 * 60
+                distance = round(random.uniform(distanceMin, distanceMax), 2)
+                duration = distance / averageSpeed * 60 * 60
                 heartRate = random.randint(85, 160)
                 elevationSum = random.randint(17, 650)
 
                 track = Track(
-                    type=TrackType.BIKING,
+                    type=trackType,
                     name=random.choice(self.TRACK_NAMES),
                     startTime=fakeTime,
                     duration=duration,
@@ -149,37 +173,3 @@ class DummyDataGenerator:
 
         shutil.copy2(sourcePath, destinationPath)
         track.gpxFileName = filename
-
-    def __generate_demo_tracks_running(self, user) -> None:
-        LOGGER.debug('Generate dummy tracks RUNNING...')
-
-        fake = Faker()
-
-        lastDayCurrentMonth = datetime.now().date() + relativedelta(day=31)
-
-        for monthIndex in range(self.NUMBER_OF_MONTHS):
-            firstDay = date(year=lastDayCurrentMonth.year, month=lastDayCurrentMonth.month, day=1)
-
-            for index in range(self.NUMBER_OF_TRACKS_PER_MONTH_RUNNING):
-                fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
-                distance = round(random.uniform(2.00, 5.00), 2)
-                duration = distance / self.AVERAGE_SPEED_IN_KMH_RUNNING * 60 * 60
-                heartRate = random.randint(90, 180)
-
-                db.session.add(
-                    Track(
-                        type=TrackType.RUNNING,
-                        name=random.choice(self.TRACK_NAMES),
-                        startTime=fakeTime,
-                        duration=duration,
-                        distance=distance * 1000,
-                        averageHeartRate=heartRate,
-                        elevationSum=None,
-                        user_id=user.id,
-                        custom_fields={},
-                    )
-                )
-
-            lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
-
-        db.session.commit()
