@@ -2,6 +2,7 @@
 - add: it is now possible to track maintenance events for each sport type
 - add: extended dummy data generator
 - fix: month names on search results page are now localized
+- chore: update dependencies
 
 # 1.16.1
 - fix: year/month select: improve usability on mobile devices
