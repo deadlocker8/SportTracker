@@ -2,6 +2,7 @@ import logging
 from itertools import groupby
 
 from flask import Blueprint, render_template, request
+from flask_babel import format_datetime
 from flask_login import login_required, current_user
 
 from sporttracker.logic import Constants
@@ -54,7 +55,8 @@ def construct_blueprint():
         results = {
             k: list(g)
             for k, g in groupby(
-                pagination.items, key=lambda track: track.startTime.strftime('%B %Y')
+                pagination.items,
+                key=lambda track: format_datetime(track.startTime, format='MMMM yyyy'),
             )
         }
 
