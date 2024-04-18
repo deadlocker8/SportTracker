@@ -66,6 +66,10 @@
                                    href="{{ url_for('maintenanceEvents.listMaintenanceEvents') }}">{{ gettext('Maintenance') }}</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link {% if activeLink == 'plannedTours' %}active {% endif %}"
+                                   href="{{ url_for('plannedTours.listPlannedTours') }}">{{ gettext('Planned Tours') }}</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link {% if activeLink == 'about' %}active {% endif %}"
                                    href="{{ url_for('general.about') }}">{{ gettext('About') }}</a>
                             </li>

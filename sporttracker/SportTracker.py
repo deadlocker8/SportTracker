@@ -32,6 +32,7 @@ from sporttracker.blueprints import (
     Settings,
     QuickFilter,
     MaintenanceEvents,
+    PlannedTours,
 )
 from sporttracker.helpers import Helpers
 from sporttracker.logic import Constants
@@ -208,6 +209,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Maps.construct_blueprint())
         app.register_blueprint(QuickFilter.construct_blueprint())
         app.register_blueprint(MaintenanceEvents.construct_blueprint())
+        app.register_blueprint(PlannedTours.construct_blueprint())
 
     def __prepare_database(self, app):
         with app.app_context():
