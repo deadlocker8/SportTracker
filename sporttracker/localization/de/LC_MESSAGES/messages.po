@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-14 18:57+0200\n"
-"PO-Revision-Date: 2024-04-14 18:59+0200\n"
+"POT-Creation-Date: 2024-04-19 00:09+0200\n"
+"PO-Revision-Date: 2024-04-19 00:12+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -123,15 +123,15 @@ msgstr "Ganzzahl"
 msgid "Float"
 msgstr "Kommazahl"
 
-#: ../logic/model/Track.py:53
+#: ../logic/model/Track.py:55
 msgid "Biking"
 msgstr "Fahrrad fahren"
 
-#: ../logic/model/Track.py:55
+#: ../logic/model/Track.py:57
 msgid "Running"
 msgstr "Laufen"
 
-#: ../logic/model/Track.py:57
+#: ../logic/model/Track.py:59
 msgid "Hiking"
 msgstr "Wandern"
 
@@ -156,7 +156,7 @@ msgstr "Durchschnittliche Herzfrequenz"
 msgid "Elevation Sum"
 msgstr "Summe Höhenmeter"
 
-#: ../templates/about.jinja2:6 ../templates/macros.jinja2:70
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:74
 msgid "About"
 msgstr "Über"
 
@@ -207,6 +207,7 @@ msgid "Charts"
 msgstr "Diagramme"
 
 #: ../templates/macros.jinja2:62 ../templates/maps/mapMultipleTracks.jinja2:6
+#: ../templates/maps/mapPlannedTour.jinja2:6
 #: ../templates/maps/mapSingleTrack.jinja2:6
 msgid "Map"
 msgstr "Karte"
@@ -217,11 +218,16 @@ msgstr "Karte"
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: ../templates/macros.jinja2:78
+#: ../templates/macros.jinja2:70 ../templates/plannedTours/plannedTours.jinja2:6
+#: ../templates/plannedTours/plannedTours.jinja2:17
+msgid "Planned Tours"
+msgstr "Geplante Touren"
+
+#: ../templates/macros.jinja2:82
 msgid "Search"
 msgstr "Suche"
 
-#: ../templates/macros.jinja2:166 ../templates/tracks/tracks.jinja2:88
+#: ../templates/macros.jinja2:170 ../templates/tracks/tracks.jinja2:88
 #: ../templates/tracks/tracks.jinja2:110
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -331,13 +337,15 @@ msgstr "Neues Wartungsereignis"
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:24
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:20
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:24
+#: ../templates/plannedTours/plannedTourForm.jinja2:22
+#: ../templates/plannedTours/plannedTourForm.jinja2:26
 #: ../templates/settings/settings.jinja2:106
 #: ../templates/settings/settings.jinja2:156
 #: ../templates/tracks/trackBikingForm.jinja2:22
 #: ../templates/tracks/trackBikingForm.jinja2:26
 #: ../templates/tracks/trackHikingForm.jinja2:22
 #: ../templates/tracks/trackHikingForm.jinja2:26
-#: ../templates/tracks/trackMacros.jinja2:306
+#: ../templates/tracks/trackMacros.jinja2:310
 #: ../templates/tracks/trackRunningForm.jinja2:22
 #: ../templates/tracks/trackRunningForm.jinja2:26
 #: ../templates/users/userForm.jinja2:21
@@ -357,6 +365,7 @@ msgstr "Willst du dieses Wartungsereignis wirklich löschen?"
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:26
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:37
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:26
+#: ../templates/plannedTours/plannedTourForm.jinja2:40
 #: ../templates/settings/customFieldsForm.jinja2:54
 #: ../templates/settings/settings.jinja2:83
 msgid "Type"
@@ -380,6 +389,7 @@ msgstr "Beschreibung"
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:88
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:79
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:88
+#: ../templates/plannedTours/plannedTourForm.jinja2:61
 #: ../templates/settings/customFieldsForm.jinja2:71
 #: ../templates/settings/participantsForm.jinja2:51
 #: ../templates/settings/settings.jinja2:36
@@ -391,6 +401,10 @@ msgstr "Beschreibung"
 #: ../templates/users/userForm.jinja2:56
 msgid "Save"
 msgstr "Speichern"
+
+#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:59
+msgid "since event"
+msgstr "seit Ereignis"
 
 #: ../templates/maps/mapMacros.jinja2:4
 msgid "Acceleration"
@@ -633,6 +647,45 @@ msgstr "Mehrere neue Streckenziele"
 msgid "Month Goals"
 msgstr "Monatsziele"
 
+#: ../templates/plannedTours/plannedTourForm.jinja2:6
+#: ../templates/plannedTours/plannedTourForm.jinja2:20
+msgid "Edit Planned Tour"
+msgstr "Geplante Tour bearbeiten"
+
+#: ../templates/plannedTours/plannedTourForm.jinja2:6
+#: ../templates/plannedTours/plannedTourForm.jinja2:29
+msgid "New Planned Tour"
+msgstr "Neue Geplante Tour"
+
+#: ../templates/plannedTours/plannedTourForm.jinja2:25
+msgid "Delete Planned Tour?"
+msgstr "Geplante Tour löschen?"
+
+#: ../templates/plannedTours/plannedTourForm.jinja2:25
+msgid "Do you really want to delete this planned tour?"
+msgstr "Willst du dieses geplante Tour wirklich löschen?"
+
+#: ../templates/plannedTours/plannedTourForm.jinja2:52
+#: ../templates/settings/customFieldsForm.jinja2:48
+#: ../templates/settings/participantsForm.jinja2:46
+#: ../templates/settings/settings.jinja2:82
+#: ../templates/settings/settings.jinja2:137
+#: ../templates/tracks/trackMacros.jinja2:191
+msgid "Name"
+msgstr "Name"
+
+#: ../templates/plannedTours/plannedTourForm.jinja2:59
+msgid "No GPX file is linked to this planned tour"
+msgstr "Mit dieser geplanten Tour ist keine GPX-Datei verknüpft"
+
+#: ../templates/plannedTours/plannedTourForm.jinja2:59
+msgid "A GPX file is linked to this planned tour"
+msgstr "Eine GPX-Datei ist mit dieser geplanten Tour verknüpft"
+
+#: ../templates/plannedTours/plannedTours.jinja2:52
+msgid "last edited"
+msgstr "bearbeitet"
+
 #: ../templates/settings/customFieldsForm.jinja2:6
 #: ../templates/settings/customFieldsForm.jinja2:19
 msgid "Edit Custom Track Field"
@@ -642,14 +695,6 @@ msgstr "Benutzerdefiniertes Feld bearbeiten"
 #: ../templates/settings/customFieldsForm.jinja2:21
 msgid "New Custom Track Field"
 msgstr "Neues benutzerdefiniertes Feld"
-
-#: ../templates/settings/customFieldsForm.jinja2:48
-#: ../templates/settings/participantsForm.jinja2:46
-#: ../templates/settings/settings.jinja2:82
-#: ../templates/settings/settings.jinja2:137
-#: ../templates/tracks/trackMacros.jinja2:191
-msgid "Name"
-msgstr "Name"
 
 #: ../templates/settings/customFieldsForm.jinja2:66
 msgid "Is required"
@@ -667,7 +712,7 @@ msgstr "Neuer Teilnehmer"
 
 #: ../templates/settings/settings.jinja2:6
 #: ../templates/settings/settings.jinja2:17
-#: ../templates/tracks/trackMacros.jinja2:335
+#: ../templates/tracks/trackMacros.jinja2:339
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -698,7 +743,7 @@ msgid "Do you really want to delete the custom field \"%(name)s\"?"
 msgstr "Willst du das benutzerdefinierte Feld \"%(name)s\" wirklich löschen?"
 
 #: ../templates/settings/settings.jinja2:125
-#: ../templates/tracks/trackMacros.jinja2:320
+#: ../templates/tracks/trackMacros.jinja2:324
 msgid "Participants"
 msgstr "Teilnehmer"
 
@@ -785,28 +830,27 @@ msgstr "Sekunden"
 msgid "Elevation Sum (in m)"
 msgstr "Summe Höhenmeter (in m)"
 
-#: ../templates/tracks/trackMacros.jinja2:282
-msgid "GPX Track"
-msgstr "GPX Track"
-
-#: ../templates/tracks/trackMacros.jinja2:287
-msgid "A GPX file is linked to this track"
-msgstr "Eine GPX-Datei ist mit diesem Track verknüpft"
-
-#: ../templates/tracks/trackMacros.jinja2:305
-msgid "Delete GPX Track?"
-msgstr "GPX Track löschen?"
-
-#: ../templates/tracks/trackMacros.jinja2:305
-msgid "Do you really want to delete the GPX file associated with this track?"
-msgstr ""
-"Willst du die GPX-Datei, die mit diesem Track verknüpft ist, wirklich löschen?"
-
-#: ../templates/tracks/trackMacros.jinja2:312
+#: ../templates/tracks/trackMacros.jinja2:281
 msgid "No GPX file is linked to this track"
 msgstr "Mit diesem Track ist keine GPX-Datei verknüpft"
 
-#: ../templates/tracks/trackMacros.jinja2:333
+#: ../templates/tracks/trackMacros.jinja2:281
+msgid "A GPX file is linked to this track"
+msgstr "Eine GPX-Datei ist mit diesem Track verknüpft"
+
+#: ../templates/tracks/trackMacros.jinja2:286
+msgid "GPX Track"
+msgstr "GPX Track"
+
+#: ../templates/tracks/trackMacros.jinja2:309
+msgid "Delete GPX Track?"
+msgstr "GPX Track löschen?"
+
+#: ../templates/tracks/trackMacros.jinja2:309
+msgid "Do you really want to delete this associated GPX file?"
+msgstr "Willst du die verknüpfte GPX-Datei wirklich löschen?"
+
+#: ../templates/tracks/trackMacros.jinja2:337
 msgid "Add participants in the "
 msgstr "Hinzufügen von Teilnehmern in den "
 
@@ -867,3 +911,8 @@ msgstr "Administrator"
 
 #~ msgid "Profile"
 #~ msgstr "Profil"
+
+#~ msgid "Do you really want to delete the GPX file associated with this track?"
+#~ msgstr ""
+#~ "Willst du die GPX-Datei, die mit diesem Track verknüpft ist, wirklich "
+#~ "löschen?"
