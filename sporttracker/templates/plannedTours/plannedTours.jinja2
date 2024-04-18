@@ -33,10 +33,15 @@
                                    class="text-decoration-none">
                                     <div class="card">
                                         <div class="row g-0 d-flex align-items-center p-2">
-                                            <div class="col col-2 col-md-1 d-flex align-items-center">
+                                            <div class="col col-4 col-md-2 d-flex align-items-center">
                                                 <i class="fa-solid fa-route fa-fw fs-3 p-2 text-secondary me-3"></i>
+                                                {% if plannedTour.type.is_font_awesome_icon %}
+                                                    <i class="fa-solid {{ plannedTour.type.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ plannedTour.type.background_color }}"></i>
+                                                {% else %}
+                                                    <span class="material-icons rounded-circle fs-3 p-2 text-dark {{ plannedTour.type.background_color }}">{{ plannedTour.type.icon }}</span>
+                                                {% endif %}
                                             </div>
-                                            <div class="col col-6 col-md-7 text-start fs-5 text-truncate planned-tour-name">
+                                            <div class="col col-4 col-md-6 text-start fs-5 text-truncate planned-tour-name">
                                                 {{ plannedTour.name }}
                                             </div>
                                             <div class="col col-2 text-start fs-5 text-center">

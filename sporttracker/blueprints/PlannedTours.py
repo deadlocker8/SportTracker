@@ -65,7 +65,7 @@ def construct_blueprint(uploadFolder: str):
                     id=tour.id,
                     name=tour.name,  # type: ignore[arg-type]
                     lastEditDate=tour.last_edit_date,  # type: ignore[arg-type]
-                    type=tour.type.name,
+                    type=tour.type,
                     gpxFileName=tour.gpxFileName,
                     distance=distance,
                 )
@@ -118,7 +118,7 @@ def construct_blueprint(uploadFolder: str):
             id=plannedTour.id,
             name=plannedTour.name,
             lastEditDate=plannedTour.last_edit_date,
-            type=plannedTour.type.name,
+            type=plannedTour.type,
             gpxFileName=plannedTour.gpxFileName,
             distance=None,
         )
