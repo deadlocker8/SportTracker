@@ -1,3 +1,6 @@
+# 1.18.0
+- add: maintenance events: show distance since event
+
 # 1.17.0
 - add: it is now possible to track maintenance events for each sport type
 - add: extended dummy data generator

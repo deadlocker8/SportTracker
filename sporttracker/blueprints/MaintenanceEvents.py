@@ -11,7 +11,7 @@ from pydantic import BaseModel
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.MaintenanceEvent import MaintenanceEvent
-from sporttracker.logic.model.Track import TrackType
+from sporttracker.logic.model.Track import TrackType, get_distance_since_date
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -25,6 +25,7 @@ class MaintenanceEventModel:
     time: str
     type: TrackType
     description: str
+    distanceSinceEvent: int
 
 
 class MaintenanceEventFormModel(BaseModel):
@@ -56,6 +57,8 @@ def construct_blueprint():
 
         maintenanceEventList: list[MaintenanceEventModel] = []
         for event in events:
+            distanceSinceEvent = get_distance_since_date(event.event_date, [event.type])
+
             maintenanceEventList.append(
                 MaintenanceEventModel(
                     event.id,
@@ -64,6 +67,7 @@ def construct_blueprint():
                     event.get_time(),
                     event.type,
                     event.description,  # type: ignore[arg-type]
+                    distanceSinceEvent,
                 )
             )
 
@@ -121,6 +125,7 @@ def construct_blueprint():
             time=maintenanceEvent.get_time(),
             type=maintenanceEvent.type.name,
             description=maintenanceEvent.description,
+            distanceSinceEvent=0,
         )
 
         return render_template(
