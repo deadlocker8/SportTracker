@@ -7,6 +7,7 @@ from sqlalchemy import func, extract
 
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
+from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.Track import Track, get_available_years
 from sporttracker.logic.model.User import User
 
@@ -16,7 +17,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 def createGpxInfo(trackId: int, trackName: str, trackStartTime: datetime) -> dict[str, str | int]:
     return {
         'trackId': trackId,
-        'gpxUrl': url_for('gpxTracks.downloadGpxTrack', track_id=trackId),
+        'gpxUrl': url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=trackId),
         'trackUrl': url_for('tracks.edit', track_id=trackId),
         'trackName': f'{trackStartTime.strftime("%Y-%m-%d")} - {trackName}',
     }
@@ -76,6 +77,23 @@ def construct_blueprint():
             gpxInfo = [createGpxInfo(track.id, track.name, track.startTime)]  # type: ignore[arg-type]
 
         return render_template('maps/mapSingleTrack.jinja2', gpxInfo=gpxInfo)
+
+    @maps.route('/map/plannedTour/<int:tour_id>')
+    @login_required
+    def showPlannedTour(tour_id: int):
+        plannedTour = (
+            PlannedTour.query.filter(PlannedTour.user_id == current_user.id)
+            .filter(PlannedTour.id == tour_id)
+            .first()
+        )
+
+        if plannedTour is None:
+            abort(404)
+
+        return render_template(
+            'maps/mapPlannedTour.jinja2',
+            gpxUrl=url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id),
+        )
 
     @maps.route('/toggleYears', methods=['POST'])
     @login_required

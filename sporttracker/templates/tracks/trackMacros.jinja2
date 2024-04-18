@@ -278,20 +278,24 @@
 {%- endmacro %}
 
 {% macro track_form_gpx(track, track_id) -%}
+    {{ form_gpx(track, url_for('maps.showSingleTrack', track_id=track_id or -1 ), url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id  or -1), url_for('gpxTracks.deleteGpxTrackByTrackId', track_id=track_id or -1), gettext('No GPX file is linked to this track'), gettext('A GPX file is linked to this track') ) }}
+{%- endmacro %}
+
+{% macro form_gpx(item, mapUrl, downloadUrl, deleteUrl, placeholderText, gpxFileLinkedText) -%}
     <div class="mb-3">
         <label for="track-gpxFileName" class="form-label">{{ gettext('GPX Track') }}</label>
-        {% set hasGpxTrack = track and track.gpxFileName is not none %}
+        {% set hasGpxTrack = item and item.gpxFileName is not none %}
 
-        {% if track is defined %}
+        {% if item is defined %}
             <div class="d-flex mb-3 {% if not hasGpxTrack %}hidden{% endif %}" id="gpxControlsEnabled">
-                <span class="badge bg-success lh-lg rounded-pill d-flex align-items-center px-3">{{ gettext('A GPX file is linked to this track') }}</span>
+                <span class="badge bg-success lh-lg rounded-pill d-flex align-items-center px-3">{{ gpxFileLinkedText }}</span>
                 <div id="gpxButtons" class="d-flex">
-                    <a href="{{ url_for('maps.showSingleTrack', track_id=track_id) }}"
+                    <a href="{{ mapUrl }}"
                        class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
                        target="_blank">
                         <span class="material-icons fs-4">map</span>
                     </a>
-                    <a href="{{ url_for('gpxTracks.downloadGpxTrack', track_id=track_id) }}"
+                    <a href="{{ downloadUrl }}"
                        class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
                        id="buttonGpxTrackDownload"
                        target="_blank">
@@ -302,14 +306,14 @@
                         <span class="material-icons fs-4">delete</span>
                     </button>
 
-                    {% call macros.deleteModal(gettext('Delete GPX Track?'), gettext('Do you really want to delete the GPX file associated with this track?'), 'gpx') %}
-                        <a data-url="{{ url_for('gpxTracks.deleteGpxTrack', track_id=track_id) }}" class="btn btn-danger" id="buttonGpxTrackDelete" data-bs-dismiss="modal">{{ gettext('Delete') }}</a>
+                    {% call macros.deleteModal(gettext('Delete GPX Track?'), gettext('Do you really want to delete this associated GPX file?'), 'gpx') %}
+                        <a data-url="{{ deleteUrl }}" class="btn btn-danger" id="buttonGpxTrackDelete" data-bs-dismiss="modal">{{ gettext('Delete') }}</a>
                     {% endcall %}
                 </div>
             </div>
         {% endif %}
         <div class="{% if hasGpxTrack %}hidden{% endif %}" id="gpxControlsDisabled">
-            <span class="mb-3 badge bg-secondary lh-lg rounded-pill px-3">{{ gettext('No GPX file is linked to this track') }}</span>
+            <span class="mb-3 badge bg-secondary lh-lg rounded-pill px-3">{{ placeholderText }}</span>
         </div>
         <input class="form-control" type="file" id="track-gpxFileName" name="gpxTrack">
     </div>

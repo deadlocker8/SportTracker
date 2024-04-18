@@ -11,4 +11,5 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     type = db.Column(db.Enum(TrackType))
     name: Mapped[String] = mapped_column(String, nullable=False)
     last_edit_date: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    gpxFileName: Mapped[str] = mapped_column(String, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

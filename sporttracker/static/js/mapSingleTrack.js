@@ -62,7 +62,7 @@ function initMap()
             }
         });
 
-        let controlElevation = L.control.elevation(initElevationChartSettings()).addTo(map);
+        let controlElevation = L.control.elevation(initElevationChartSettings('speed', 'disabled')).addTo(map);
         controlElevation.load(gpxInfo[0].gpxUrl);
     });
 

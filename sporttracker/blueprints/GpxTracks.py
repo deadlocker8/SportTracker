@@ -8,6 +8,7 @@ from werkzeug.datastructures.file_storage import FileStorage
 
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
+from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.Track import Track
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
@@ -18,9 +19,9 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 def construct_blueprint(uploadFolder: str):
     gpxTracks = Blueprint('gpxTracks', __name__, static_folder='static', url_prefix='/gpxTracks')
 
-    @gpxTracks.route('/<int:track_id>')
+    @gpxTracks.route('/track/<int:track_id>')
     @login_required
-    def downloadGpxTrack(track_id: int):
+    def downloadGpxTrackByTrackId(track_id: int):
         track: Track | None = (
             Track.query.join(User)
             .filter(User.username == current_user.username)
@@ -31,22 +32,34 @@ def construct_blueprint(uploadFolder: str):
         if track is None:
             abort(404)
 
-        if track.gpxFileName is not None:
-            gpxTrackPath = os.path.join(uploadFolder, str(track.gpxFileName))
-            gpxService = GpxService(gpxTrackPath)
-            modifiedGpxXml = gpxService.join_tracks_and_segments()
-            fileName = f'{track_id}.gpx'
-            return Response(
-                modifiedGpxXml,
-                mimetype='application/gpx',
-                headers={'content-disposition': f'attachment; filename={fileName}'},
-            )
+        response = __downloadGpxTrack(uploadFolder, track, str(track.id))
+        if response is not None:
+            return response
 
         abort(404)
 
-    @gpxTracks.route('/delete/<int:track_id>')
+    @gpxTracks.route('/plannedTour<int:tour_id>')
     @login_required
-    def deleteGpxTrack(track_id: int):
+    def downloadGpxTrackByPlannedTourId(tour_id: int):
+        plannedTour: PlannedTour | None = (
+            PlannedTour.query.filter(PlannedTour.user_id == current_user.id)
+            .filter(PlannedTour.id == tour_id)
+            .first()
+        )
+
+        if plannedTour is None:
+            abort(404)
+
+        response = __downloadGpxTrack(uploadFolder, plannedTour, str(plannedTour.name))
+        # TODO: escape file name
+        if response is not None:
+            return response
+
+        abort(404)
+
+    @gpxTracks.route('/delete/track/<int:track_id>')
+    @login_required
+    def deleteGpxTrackByTrackId(track_id: int):
         track: Track | None = (
             Track.query.join(User)
             .filter(User.username == current_user.username)
@@ -57,20 +70,21 @@ def construct_blueprint(uploadFolder: str):
         if track is None:
             return Response(status=204)
 
-        gpxFileName = str(track.gpxFileName)
-        if gpxFileName is not None:
-            track.gpxFileName = None  # type: ignore[assignment]
-            db.session.commit()
+        return __deleteGpxTrack(uploadFolder, track)
 
-            try:
-                os.remove(os.path.join(uploadFolder, gpxFileName))
-                LOGGER.debug(
-                    f'Deleted linked gpx file "{gpxFileName}" for track with id {track_id}'
-                )
-            except OSError as e:
-                LOGGER.error(e)
+    @gpxTracks.route('/delete/plannedTour/<int:tour_id>')
+    @login_required
+    def deleteGpxTrackByPlannedTourId(tour_id: int):
+        plannedTour: PlannedTour | None = (
+            PlannedTour.query.filter(PlannedTour.user_id == current_user.id)
+            .filter(PlannedTour.id == tour_id)
+            .first()
+        )
 
-        return Response(status=204)
+        if plannedTour is None:
+            return Response(status=204)
+
+        return __deleteGpxTrack(uploadFolder, plannedTour)
 
     return gpxTracks
 
@@ -98,3 +112,35 @@ def handleGpxTrack(files: dict[str, FileStorage], uploadFolder: str) -> str | No
         return filename
 
     return None
+
+
+def __downloadGpxTrack(uploadFolder: str, item, downloadName: str) -> Response | None:
+    if item.gpxFileName is not None:
+        gpxTrackPath = os.path.join(uploadFolder, str(item.gpxFileName))
+        gpxService = GpxService(gpxTrackPath)
+        modifiedGpxXml = gpxService.join_tracks_and_segments()
+        fileName = f'{downloadName}.gpx'
+        return Response(
+            modifiedGpxXml,
+            mimetype='application/gpx',
+            headers={'content-disposition': f'attachment; filename={fileName}'},
+        )
+
+    return None
+
+
+def __deleteGpxTrack(uploadFolder: str, item) -> Response:
+    gpxFileName = str(item.gpxFileName)
+    if gpxFileName is not None:
+        item.gpxFileName = None  # type: ignore[assignment]
+        db.session.commit()
+
+        try:
+            os.remove(os.path.join(uploadFolder, gpxFileName))
+            LOGGER.debug(
+                f'Deleted linked gpx file "{gpxFileName}" for {item.__class__.__name__} id {item.id}'
+            )
+        except OSError as e:
+            LOGGER.error(e)
+
+    return Response(status=204)

@@ -91,7 +91,7 @@ function initMap()
             points: [],
             point_options: {},
             elevation: true,
-            elevation_options: initElevationChartSettings(),
+            elevation_options: initElevationChartSettings(false, 'disabled'),
             legend: true,
             distanceMarkers: false
         });

@@ -45,3 +45,7 @@
 .easy-button-button i {
     margin-top: 0.15rem;
 }
+
+.custom-theme.elevation-polyline {
+    stroke: var(--bs-primary);
+}

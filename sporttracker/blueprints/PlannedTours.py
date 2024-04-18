@@ -1,12 +1,14 @@
 import logging
+import os
 from dataclasses import dataclass
 from datetime import datetime
 
-from flask import Blueprint, render_template, redirect, url_for, abort
+from flask import Blueprint, render_template, redirect, url_for, abort, request
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel
 
+from sporttracker.blueprints.GpxTracks import handleGpxTrack
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.PlannedTour import PlannedTour
@@ -22,6 +24,7 @@ class PlannedTourModel:
     name: str
     lastEditDate: datetime
     type: TrackType
+    gpxFileName: str
 
 
 class PlannedTourFormModel(BaseModel):
@@ -29,7 +32,7 @@ class PlannedTourFormModel(BaseModel):
     type: str
 
 
-def construct_blueprint():
+def construct_blueprint(uploadFolder: str):
     plannedTours = Blueprint(
         'plannedTours', __name__, static_folder='static', url_prefix='/plannedTours'
     )
@@ -51,9 +54,10 @@ def construct_blueprint():
             plannedTourList.append(
                 PlannedTourModel(
                     id=tour.id,
-                    name=tour.name,
-                    lastEditDate=tour.last_edit_date,
+                    name=tour.name,  # type: ignore[arg-type]
+                    lastEditDate=tour.last_edit_date,  # type: ignore[arg-type]
                     type=tour.type.name,
+                    gpxFileName=tour.gpxFileName,
                 )
             )
 
@@ -72,11 +76,14 @@ def construct_blueprint():
     @login_required
     @validate()
     def addPost(form: PlannedTourFormModel):
+        gpxFileName = handleGpxTrack(request.files, uploadFolder)
+
         plannedTour = PlannedTour(
             name=form.name,
             type=TrackType(form.type),  # type: ignore[call-arg]
             user_id=current_user.id,
             last_edit_date=datetime.now(),
+            gpxFileName=gpxFileName,
         )
 
         LOGGER.debug(f'Saved new planned tour: {plannedTour}')
@@ -102,6 +109,7 @@ def construct_blueprint():
             name=plannedTour.name,
             lastEditDate=plannedTour.last_edit_date,
             type=plannedTour.type.name,
+            gpxFileName=plannedTour.gpxFileName,
         )
 
         return render_template(
@@ -128,6 +136,13 @@ def construct_blueprint():
         plannedTour.user_id = current_user.id
         plannedTour.last_edit_date = datetime.now()
 
+        newGpxFileName = handleGpxTrack(request.files, uploadFolder)
+        if plannedTour.gpxFileName is None:
+            plannedTour.gpxFileName = newGpxFileName
+        else:
+            if newGpxFileName is not None:
+                plannedTour.gpxFileName = newGpxFileName
+
         LOGGER.debug(f'Updated planned tour: {plannedTour}')
         db.session.commit()
 
@@ -144,6 +159,15 @@ def construct_blueprint():
 
         if plannedTour is None:
             abort(404)
+
+        if plannedTour.gpxFileName is not None:
+            try:
+                os.remove(os.path.join(uploadFolder, plannedTour.gpxFileName))
+                LOGGER.debug(
+                    f'Deleted linked gpx file "{plannedTour.gpxFileName}" for planned tour with id {tour_id}'
+                )
+            except OSError as e:
+                LOGGER.error(e)
 
         LOGGER.debug(f'Deleted planned tour: {plannedTour}')
         db.session.delete(plannedTour)

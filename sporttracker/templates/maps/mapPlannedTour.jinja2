@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Map') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+        <link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css"/>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/leaflet-theme.css") }}"/>
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('map') }}
+
+        <div id="map" class="leaflet-map w-100 text-dark"></div>
+
+        <script>
+            gpxUrl = '{{ gpxUrl }}';
+        </script>
+
+        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+        {{ mapMacros.mapLocale() }}
+
+        {{ macros.scripts() }}
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet-ui@0.6.0/dist/leaflet-ui.js"></script>
+        <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
+        <script defer src="{{ url_for('static', filename='js/mapCommon.js') }}" type="text/javascript"></script>
+        <script defer src="{{ url_for('static', filename='js/mapPlannedTour.js') }}" type="text/javascript"></script>
+    </body>
+</html>

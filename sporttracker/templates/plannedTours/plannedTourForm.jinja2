@@ -10,6 +10,8 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('plannedTours') }}
 
+        {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row">
@@ -32,7 +34,8 @@
                 <div class="row mt-5 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
                         <form role="form" action="{% if plannedTour %}{{ url_for('plannedTours.editPost', tour_id=tour_id) }}{% else %}{{ url_for('plannedTours.addPost') }}{% endif %}"
-                              method="post">
+                              method="post"
+                              enctype=multipart/form-data>
                             <div class="mb-3">
                                 <label for="planned-tour-type" class="form-label">{{ gettext('Type') }}</label>
                                 <select class="form-select" id="planned-tour-type" name="type" required="required">
@@ -43,7 +46,7 @@
                                 </select>
                             </div>
 
-                            <div class="mb-5">
+                            <div class="mb-3">
                                 <div class="form-group">
                                     <label for="planned-tour-name"
                                            class="form-label">{{ gettext('Name') }}</label>
@@ -53,7 +56,9 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
+                            {{ trackMacros.form_gpx(plannedTour, url_for('maps.showPlannedTour', tour_id=tour_id or -1), url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id or -1), url_for('gpxTracks.deleteGpxTrackByPlannedTourId', tour_id=tour_id or -1), gettext('No GPX file is linked to this planned tour'), gettext('A GPX file is linked to this planned tour') ) }}
+
+                            <button type="submit" class="btn btn-primary mt-3">{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

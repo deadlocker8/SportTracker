@@ -1,4 +1,4 @@
-function initElevationChartSettings()
+function initElevationChartSettings(hotlineMode, speedMode)
 {
     return {
         theme: 'custom-theme',
@@ -9,14 +9,14 @@ function initElevationChartSettings()
         closeBtn: false,
         altitude: true,
         slope: false,
-        speed: 'disabled',
+        speed: speedMode,
         acceleration: false,
         time: 'summary',
         legend: true,
         followMarker: false,
         almostOver: true,
         distanceMarkers: false,
-        hotline: 'speed',
+        hotline: hotlineMode,
         distance: true,
         edgeScale: false,
         height: document.documentElement.clientHeight * 0.22,
