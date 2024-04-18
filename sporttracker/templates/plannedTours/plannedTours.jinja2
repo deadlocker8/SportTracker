@@ -14,10 +14,21 @@
             <section class="py-5 text-center container">
                 <div class="row mb-3">
                     <div class="col col-12 mx-auto">
-                        <h1>{{ gettext('Planned Tours') }}
+                        <h1>{{ gettext('Planned Tours') }} <a href="{{ url_for('plannedTours.add') }}"
+                                                            class="link-light text-decoration-none d-flex-inline align-items-center">
+                            <span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span>
+                        </a>
                         </h1>
                     </div>
                 </div>
+
+                <div class="mb-4">
+                    {{ macros.track_type_quick_filter(url_for('plannedTours.listPlannedTours')) }}
+                </div>
+
+                {% for plannedTour in plannedTours %}
+                    <div>{{ plannedTour.name }}</div>
+                {% endfor %}
             </section>
         </div>
 
