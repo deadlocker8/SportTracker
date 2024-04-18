@@ -1,6 +1,7 @@
 import logging
 from dataclasses import dataclass
 from datetime import datetime
+from itertools import groupby
 
 from flask import Blueprint, render_template, redirect, url_for, abort
 from flask_login import login_required, current_user
@@ -66,22 +67,12 @@ def construct_blueprint():
                 )
             )
 
-        currentYear = None
-        maintenanceEventsByYear = {}
-        eventsCurrentYear: list[MaintenanceEventModel] = []
-        for eventModel in maintenanceEventList:
-            if currentYear is None:
-                currentYear = eventModel.eventDate.year
-
-            if eventModel.eventDate.year != currentYear:
-                maintenanceEventsByYear[currentYear] = eventsCurrentYear
-                currentYear = eventModel.eventDate.year
-                eventsCurrentYear = []
-
-            eventsCurrentYear.append(eventModel)
-
-        if currentYear is not None:
-            maintenanceEventsByYear[currentYear] = eventsCurrentYear
+        maintenanceEventsByYear = {
+            k: list(g)
+            for k, g in groupby(
+                maintenanceEventList, key=lambda eventModel: eventModel.eventDate.year
+            )
+        }
 
         return render_template(
             'maintenanceEvents/maintenanceEvents.jinja2',

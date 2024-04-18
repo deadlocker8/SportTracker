@@ -1,11 +1,12 @@
 import logging
+from itertools import groupby
 
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalSummary
+from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
 from sporttracker.logic.model.User import User
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -42,26 +43,11 @@ def construct_blueprint():
             key=lambda summary: f'{summary.year}_{str(summary.month).zfill(2)}', reverse=True
         )
 
-        currentYear = None
-        summariesByYear = {}
-        summaries: list[MonthGoalSummary] = []
-        for goal in goals:
-            if currentYear is None:
-                currentYear = goal.year
-
-            if goal.year != currentYear:
-                summariesByYear[currentYear] = summaries
-                currentYear = goal.year
-                summaries = []
-
-            summaries.append(goal.get_summary())
-
-        if currentYear is not None:
-            summariesByYear[currentYear] = summaries
+        goalsByYear = {k: list(g) for k, g in groupby(goals, key=lambda goal: goal.year)}
 
         return render_template(
             'monthGoals/monthGoals.jinja2',
-            monthGoalSummariesByYear=summariesByYear,
+            goalsByYear=goalsByYear,
             quickFilterState=quickFilterState,
         )
 
