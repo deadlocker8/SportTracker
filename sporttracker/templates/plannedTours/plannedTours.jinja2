@@ -40,7 +40,7 @@
                                                 {{ plannedTour.name }}
                                             </div>
                                             <div class="col col-2 text-start fs-5 text-center">
-                                                135,2 km
+                                                {{ (plannedTour.distance / 1000) | format_decimal(2) }} km
                                             </div>
                                             <div class="col col-2 text-start fs-6 text-center">
                                                 {{ plannedTour.lastEditDate | format_date() }}

@@ -23,6 +23,9 @@ class GpxService:
         self.__join_tracks(self._gpx)
         return self._gpx.to_xml(prettyprint=False)
 
+    def get_length(self) -> float:
+        return self._gpx.length_2d()
+
     @staticmethod
     def __join_tracks(gpx: GPX) -> None:
         joinedTrack = gpxpy.gpx.GPXTrack()

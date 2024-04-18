@@ -10,6 +10,7 @@ from pydantic import BaseModel
 
 from sporttracker.blueprints.GpxTracks import handleGpxTrack
 from sporttracker.logic import Constants
+from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.Track import TrackType
@@ -25,6 +26,7 @@ class PlannedTourModel:
     lastEditDate: datetime
     type: TrackType
     gpxFileName: str
+    distance: float | None
 
 
 class PlannedTourFormModel(BaseModel):
@@ -51,6 +53,13 @@ def construct_blueprint(uploadFolder: str):
 
         plannedTourList: list[PlannedTourModel] = []
         for tour in tours:
+            if tour.gpxFileName is None:
+                distance = None
+            else:
+                gpxTrackPath = os.path.join(uploadFolder, str(tour.gpxFileName))
+                gpxService = GpxService(gpxTrackPath)
+                distance = gpxService.get_length()
+
             plannedTourList.append(
                 PlannedTourModel(
                     id=tour.id,
@@ -58,6 +67,7 @@ def construct_blueprint(uploadFolder: str):
                     lastEditDate=tour.last_edit_date,  # type: ignore[arg-type]
                     type=tour.type.name,
                     gpxFileName=tour.gpxFileName,
+                    distance=distance,
                 )
             )
 
@@ -110,6 +120,7 @@ def construct_blueprint(uploadFolder: str):
             lastEditDate=plannedTour.last_edit_date,
             type=plannedTour.type.name,
             gpxFileName=plannedTour.gpxFileName,
+            distance=None,
         )
 
         return render_template(
