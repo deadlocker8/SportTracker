@@ -12,7 +12,7 @@ from sporttracker.blueprints.GpxTracks import handleGpxTrack
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.PlannedTour import PlannedTour
+from sporttracker.logic.model.PlannedTour import PlannedTour, get_planned_tour_by_id
 from sporttracker.logic.model.Track import TrackType
 from sporttracker.logic.model.db import db
 
@@ -105,19 +105,15 @@ def construct_blueprint(uploadFolder: str):
     @plannedTours.route('/edit/<int:tour_id>')
     @login_required
     def edit(tour_id: int):
-        plannedTour = (
-            PlannedTour.query.filter(PlannedTour.user_id == current_user.id)
-            .filter(PlannedTour.id == tour_id)
-            .first()
-        )
+        plannedTour = get_planned_tour_by_id(tour_id)
 
         if plannedTour is None:
             abort(404)
 
         tourModel = PlannedTourModel(
             id=plannedTour.id,
-            name=plannedTour.name,
-            lastEditDate=plannedTour.last_edit_date,
+            name=plannedTour.name,  # type: ignore[arg-type]
+            lastEditDate=plannedTour.last_edit_date,  # type: ignore[arg-type]
             type=plannedTour.type,
             gpxFileName=plannedTour.gpxFileName,
             distance=None,
@@ -133,19 +129,15 @@ def construct_blueprint(uploadFolder: str):
     @login_required
     @validate()
     def editPost(tour_id: int, form: PlannedTourFormModel):
-        plannedTour = (
-            PlannedTour.query.filter(PlannedTour.user_id == current_user.id)
-            .filter(PlannedTour.id == tour_id)
-            .first()
-        )
+        plannedTour = get_planned_tour_by_id(tour_id)
 
         if plannedTour is None:
             abort(404)
 
         plannedTour.type = TrackType(form.type)  # type: ignore[call-arg]
-        plannedTour.name = form.name
+        plannedTour.name = form.name  # type: ignore[assignment]
         plannedTour.user_id = current_user.id
-        plannedTour.last_edit_date = datetime.now()
+        plannedTour.last_edit_date = datetime.now()  # type: ignore[assignment]
 
         newGpxFileName = handleGpxTrack(request.files, uploadFolder)
         if plannedTour.gpxFileName is None:
@@ -162,11 +154,7 @@ def construct_blueprint(uploadFolder: str):
     @plannedTours.route('/delete/<int:tour_id>')
     @login_required
     def delete(tour_id: int):
-        plannedTour = (
-            PlannedTour.query.filter(PlannedTour.user_id == current_user.id)
-            .filter(PlannedTour.id == tour_id)
-            .first()
-        )
+        plannedTour = get_planned_tour_by_id(tour_id)
 
         if plannedTour is None:
             abort(404)

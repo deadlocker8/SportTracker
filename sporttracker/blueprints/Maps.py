@@ -7,9 +7,8 @@ from sqlalchemy import func, extract
 
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.PlannedTour import PlannedTour
-from sporttracker.logic.model.Track import Track, get_available_years
-from sporttracker.logic.model.User import User
+from sporttracker.logic.model.PlannedTour import get_planned_tour_by_id
+from sporttracker.logic.model.Track import Track, get_available_years, get_track_by_id
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -62,12 +61,7 @@ def construct_blueprint():
     @maps.route('/map/<int:track_id>')
     @login_required
     def showSingleTrack(track_id: int):
-        track: Track | None = (
-            Track.query.join(User)
-            .filter(User.username == current_user.username)
-            .filter(Track.id == track_id)
-            .first()
-        )
+        track = get_track_by_id(track_id)
 
         if track is None:
             abort(404)
@@ -81,11 +75,7 @@ def construct_blueprint():
     @maps.route('/map/plannedTour/<int:tour_id>')
     @login_required
     def showPlannedTour(tour_id: int):
-        plannedTour = (
-            PlannedTour.query.filter(PlannedTour.user_id == current_user.id)
-            .filter(PlannedTour.id == tour_id)
-            .first()
-        )
+        plannedTour = get_planned_tour_by_id(tour_id)
 
         if plannedTour is None:
             abort(404)

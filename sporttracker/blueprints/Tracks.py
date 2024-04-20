@@ -34,8 +34,8 @@ from sporttracker.logic.model.Track import (
     TrackType,
     get_track_names_by_track_type,
     get_available_years,
+    get_track_by_id,
 )
-from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -179,12 +179,7 @@ def construct_blueprint(uploadFolder: str):
     @tracks.route('/edit/<int:track_id>')
     @login_required
     def edit(track_id: int):
-        track: Track | None = (
-            Track.query.join(User)
-            .filter(User.username == current_user.username)
-            .filter(Track.id == track_id)
-            .first()
-        )
+        track = get_track_by_id(track_id)
 
         if track is None:
             abort(404)
@@ -224,22 +219,17 @@ def construct_blueprint(uploadFolder: str):
     @login_required
     @validate()
     def editPost(track_id: int, form: TrackFormModel):
-        track = (
-            Track.query.join(User)
-            .filter(User.username == current_user.username)
-            .filter(Track.id == track_id)
-            .first()
-        )
+        track = get_track_by_id(track_id)
 
         if track is None:
             abort(404)
 
-        track.name = form.name
-        track.startTime = form.calculate_start_time()
-        track.distance = form.distance * 1000
-        track.duration = form.calculate_duration()
-        track.averageHeartRate = form.averageHeartRate
-        track.elevationSum = form.elevationSum
+        track.name = form.name  # type: ignore[assignment]
+        track.startTime = form.calculate_start_time()  # type: ignore[assignment]
+        track.distance = form.distance * 1000  # type: ignore[assignment]
+        track.duration = form.calculate_duration()  # type: ignore[assignment]
+        track.averageHeartRate = form.averageHeartRate  # type: ignore[assignment]
+        track.elevationSum = form.elevationSum  # type: ignore[assignment]
         participantIds = [int(item) for item in request.form.getlist('participants')]
         track.participants = get_participants_by_ids(participantIds)
 
@@ -256,18 +246,17 @@ def construct_blueprint(uploadFolder: str):
         db.session.commit()
 
         return redirect(
-            url_for('tracks.listTracks', year=track.startTime.year, month=track.startTime.month)
+            url_for(
+                'tracks.listTracks',
+                year=track.startTime.year,  # type: ignore[attr-defined]
+                month=track.startTime.month,  # type: ignore[attr-defined]
+            )
         )
 
     @tracks.route('/delete/<int:track_id>')
     @login_required
     def delete(track_id: int):
-        track = (
-            Track.query.join(User)
-            .filter(User.username == current_user.username)
-            .filter(Track.id == track_id)
-            .first()
-        )
+        track = get_track_by_id(track_id)
 
         if track is None:
             abort(404)

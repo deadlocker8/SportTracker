@@ -185,3 +185,21 @@ def get_goal_summaries_by_year_and_month_and_types(
     )
 
     return [goal.get_summary() for goal in goalsDistance + goalsCount]
+
+
+def get_month_goal_count_by_id(goal_id: int) -> MonthGoalCount | None:
+    return (
+        MonthGoalCount.query.join(User)
+        .filter(User.username == current_user.username)
+        .filter(MonthGoalCount.id == goal_id)
+        .first()
+    )
+
+
+def get_month_goal_distance_by_id(goal_id: int) -> MonthGoalDistance | None:
+    return (
+        MonthGoalDistance.query.join(User)
+        .filter(User.username == current_user.username)
+        .filter(MonthGoalDistance.id == goal_id)
+        .first()
+    )

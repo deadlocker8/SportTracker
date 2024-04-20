@@ -1,3 +1,4 @@
+from flask_login import current_user
 from sqlalchemy import Integer, DateTime, String
 from sqlalchemy.orm import mapped_column, Mapped
 
@@ -24,3 +25,11 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
             f'gpxFileName: {self.gpxFileName}, '
             f'user_id: {self.user_id})'
         )
+
+
+def get_planned_tour_by_id(tour_id: int) -> PlannedTour | None:
+    return (
+        PlannedTour.query.filter(PlannedTour.user_id == current_user.id)
+        .filter(PlannedTour.id == tour_id)
+        .first()
+    )

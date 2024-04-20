@@ -198,3 +198,7 @@ def get_distance_since_date(date: datetime | DateTime, trackTypes: list[TrackTyp
         .scalar()
         or 0
     )
+
+
+def get_track_by_id(track_id: int) -> Track | None:
+    return Track.query.filter(Track.user_id == current_user.id).filter(Track.id == track_id).first()

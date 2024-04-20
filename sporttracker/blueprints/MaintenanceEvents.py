@@ -10,7 +10,7 @@ from pydantic import BaseModel
 
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.MaintenanceEvent import MaintenanceEvent
+from sporttracker.logic.model.MaintenanceEvent import MaintenanceEvent, get_maintenance_event_by_id
 from sporttracker.logic.model.Track import TrackType, get_distance_since_date
 from sporttracker.logic.model.db import db
 
@@ -109,22 +109,18 @@ def construct_blueprint():
     @maintenanceEvents.route('/edit/<int:event_id>')
     @login_required
     def edit(event_id: int):
-        maintenanceEvent = (
-            MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
-            .filter(MaintenanceEvent.id == event_id)
-            .first()
-        )
+        maintenanceEvent = get_maintenance_event_by_id(event_id)
 
         if maintenanceEvent is None:
             abort(404)
 
         eventModel = MaintenanceEventModel(
             id=maintenanceEvent.id,
-            eventDate=maintenanceEvent.event_date,
+            eventDate=maintenanceEvent.event_date,  # type: ignore[arg-type]
             date=maintenanceEvent.get_date(),
             time=maintenanceEvent.get_time(),
             type=maintenanceEvent.type.name,
-            description=maintenanceEvent.description,
+            description=maintenanceEvent.description,  # type: ignore[arg-type]
             distanceSinceEvent=0,
         )
 
@@ -138,18 +134,14 @@ def construct_blueprint():
     @login_required
     @validate()
     def editPost(event_id: int, form: MaintenanceEventFormModel):
-        maintenanceEvent = (
-            MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
-            .filter(MaintenanceEvent.id == event_id)
-            .first()
-        )
+        maintenanceEvent = get_maintenance_event_by_id(event_id)
 
         if maintenanceEvent is None:
             abort(404)
 
         maintenanceEvent.type = TrackType(form.type)  # type: ignore[call-arg]
-        maintenanceEvent.event_date = form.calculate_event_date()
-        maintenanceEvent.description = form.description
+        maintenanceEvent.event_date = form.calculate_event_date()  # type: ignore[assignment]
+        maintenanceEvent.description = form.description  # type: ignore[assignment]
         maintenanceEvent.user_id = current_user.id
 
         LOGGER.debug(f'Updated maintenance event: {maintenanceEvent}')
@@ -160,11 +152,7 @@ def construct_blueprint():
     @maintenanceEvents.route('/delete/<int:event_id>')
     @login_required
     def delete(event_id: int):
-        maintenanceEvent = (
-            MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
-            .filter(MaintenanceEvent.id == event_id)
-            .first()
-        )
+        maintenanceEvent = get_maintenance_event_by_id(event_id)
 
         if maintenanceEvent is None:
             abort(404)

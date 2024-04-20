@@ -7,9 +7,8 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 
 from sporttracker.logic import Constants
-from sporttracker.logic.model.MonthGoal import MonthGoalDistance
+from sporttracker.logic.model.MonthGoal import MonthGoalDistance, get_month_goal_distance_by_id
 from sporttracker.logic.model.Track import TrackType
-from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -108,12 +107,7 @@ def construct_blueprint():
     @monthGoalsDistance.route('/edit/<int:goal_id>')
     @login_required
     def edit(goal_id: int):
-        monthGoal = (
-            MonthGoalDistance.query.join(User)
-            .filter(User.username == current_user.username)
-            .filter(MonthGoalDistance.id == goal_id)
-            .first()
-        )
+        monthGoal = get_month_goal_distance_by_id(goal_id)
 
         if monthGoal is None:
             abort(404)
@@ -134,12 +128,7 @@ def construct_blueprint():
     @login_required
     @validate()
     def editPost(goal_id: int, form: MonthGoalDistanceFormModel):
-        monthGoal = (
-            MonthGoalDistance.query.join(User)
-            .filter(User.username == current_user.username)
-            .filter(MonthGoalDistance.id == goal_id)
-            .first()
-        )
+        monthGoal = get_month_goal_distance_by_id(goal_id)
 
         if monthGoal is None:
             abort(404)
@@ -147,8 +136,8 @@ def construct_blueprint():
         monthGoal.type = TrackType(form.type)  # type: ignore[call-arg]
         monthGoal.year = form.year
         monthGoal.month = form.month
-        monthGoal.distance_minimum = form.distance_minimum * 1000
-        monthGoal.distance_perfect = form.distance_perfect * 1000
+        monthGoal.distance_minimum = form.distance_minimum * 1000  # type: ignore[assignment]
+        monthGoal.distance_perfect = form.distance_perfect * 1000  # type: ignore[assignment]
         monthGoal.user_id = current_user.id
 
         LOGGER.debug(f'Updated month goal of type "distance": {monthGoal}')
@@ -159,12 +148,7 @@ def construct_blueprint():
     @monthGoalsDistance.route('/delete/<int:goal_id>')
     @login_required
     def delete(goal_id: int):
-        monthGoal = (
-            MonthGoalDistance.query.join(User)
-            .filter(User.username == current_user.username)
-            .filter(MonthGoalDistance.id == goal_id)
-            .first()
-        )
+        monthGoal = get_month_goal_distance_by_id(goal_id)
 
         if monthGoal is None:
             abort(404)

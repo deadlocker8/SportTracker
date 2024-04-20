@@ -7,9 +7,8 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 
 from sporttracker.logic import Constants
-from sporttracker.logic.model.MonthGoal import MonthGoalCount
+from sporttracker.logic.model.MonthGoal import MonthGoalCount, get_month_goal_count_by_id
 from sporttracker.logic.model.Track import TrackType
-from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -108,12 +107,7 @@ def construct_blueprint():
     @monthGoalsCount.route('/edit/<int:goal_id>')
     @login_required
     def edit(goal_id: int):
-        monthGoal = (
-            MonthGoalCount.query.join(User)
-            .filter(User.username == current_user.username)
-            .filter(MonthGoalCount.id == goal_id)
-            .first()
-        )
+        monthGoal = get_month_goal_count_by_id(goal_id)
 
         if monthGoal is None:
             abort(404)
@@ -134,12 +128,7 @@ def construct_blueprint():
     @login_required
     @validate()
     def editPost(goal_id: int, form: MonthGoalCountFormModel):
-        monthGoal = (
-            MonthGoalCount.query.join(User)
-            .filter(User.username == current_user.username)
-            .filter(MonthGoalCount.id == goal_id)
-            .first()
-        )
+        monthGoal = get_month_goal_count_by_id(goal_id)
 
         if monthGoal is None:
             abort(404)
@@ -159,12 +148,7 @@ def construct_blueprint():
     @monthGoalsCount.route('/delete/<int:goal_id>')
     @login_required
     def delete(goal_id: int):
-        monthGoal = (
-            MonthGoalCount.query.join(User)
-            .filter(User.username == current_user.username)
-            .filter(MonthGoalCount.id == goal_id)
-            .first()
-        )
+        monthGoal = get_month_goal_count_by_id(goal_id)
 
         if monthGoal is None:
             abort(404)

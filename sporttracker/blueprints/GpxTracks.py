@@ -3,14 +3,13 @@ import os
 import uuid
 
 from flask import Blueprint, abort, Response
-from flask_login import login_required, current_user
+from flask_login import login_required
 from werkzeug.datastructures.file_storage import FileStorage
 
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.model.PlannedTour import PlannedTour
-from sporttracker.logic.model.Track import Track
-from sporttracker.logic.model.User import User
+from sporttracker.logic.model.PlannedTour import get_planned_tour_by_id
+from sporttracker.logic.model.Track import get_track_by_id
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -22,12 +21,7 @@ def construct_blueprint(uploadFolder: str):
     @gpxTracks.route('/track/<int:track_id>')
     @login_required
     def downloadGpxTrackByTrackId(track_id: int):
-        track: Track | None = (
-            Track.query.join(User)
-            .filter(User.username == current_user.username)
-            .filter(Track.id == track_id)
-            .first()
-        )
+        track = get_track_by_id(track_id)
 
         if track is None:
             abort(404)
@@ -41,11 +35,7 @@ def construct_blueprint(uploadFolder: str):
     @gpxTracks.route('/plannedTour<int:tour_id>')
     @login_required
     def downloadGpxTrackByPlannedTourId(tour_id: int):
-        plannedTour: PlannedTour | None = (
-            PlannedTour.query.filter(PlannedTour.user_id == current_user.id)
-            .filter(PlannedTour.id == tour_id)
-            .first()
-        )
+        plannedTour = get_planned_tour_by_id(tour_id)
 
         if plannedTour is None:
             abort(404)
@@ -60,12 +50,7 @@ def construct_blueprint(uploadFolder: str):
     @gpxTracks.route('/delete/track/<int:track_id>')
     @login_required
     def deleteGpxTrackByTrackId(track_id: int):
-        track: Track | None = (
-            Track.query.join(User)
-            .filter(User.username == current_user.username)
-            .filter(Track.id == track_id)
-            .first()
-        )
+        track = get_track_by_id(track_id)
 
         if track is None:
             return Response(status=204)
@@ -75,11 +60,7 @@ def construct_blueprint(uploadFolder: str):
     @gpxTracks.route('/delete/plannedTour/<int:tour_id>')
     @login_required
     def deleteGpxTrackByPlannedTourId(tour_id: int):
-        plannedTour: PlannedTour | None = (
-            PlannedTour.query.filter(PlannedTour.user_id == current_user.id)
-            .filter(PlannedTour.id == tour_id)
-            .first()
-        )
+        plannedTour = get_planned_tour_by_id(tour_id)
 
         if plannedTour is None:
             return Response(status=204)

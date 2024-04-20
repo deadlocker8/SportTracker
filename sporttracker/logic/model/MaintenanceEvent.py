@@ -45,3 +45,11 @@ def get_maintenance_events_by_year_and_month_by_type(
         .filter(extract('month', MaintenanceEvent.event_date) == month)
         .all()
     )
+
+
+def get_maintenance_event_by_id(event_id: int) -> MaintenanceEvent | None:
+    return (
+        MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
+        .filter(MaintenanceEvent.id == event_id)
+        .first()
+    )
