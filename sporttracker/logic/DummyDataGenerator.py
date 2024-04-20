@@ -13,6 +13,7 @@ from sporttracker.logic.model.CustomTrackField import CustomTrackField, CustomTr
 from sporttracker.logic.model.MaintenanceEvent import MaintenanceEvent
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
 from sporttracker.logic.model.Participant import Participant
+from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.Track import Track, TrackType
 from sporttracker.logic.model.User import User, create_user, Language
 from sporttracker.logic.model.db import db
@@ -82,6 +83,8 @@ class DummyDataGenerator:
             self.__generate_demo_month_goals(user)
 
             self.__generate_demo_maintenance_events(user)
+
+            self.__generate_demo_planned_tours(user)
 
     @staticmethod
     def __generate_demo_user() -> User:
@@ -198,7 +201,7 @@ class DummyDataGenerator:
 
         db.session.commit()
 
-    def __append_gpx(self, track: Track) -> None:
+    def __append_gpx(self, item: Track | PlannedTour) -> None:
         filename = f'{uuid.uuid4().hex}.gpx'
         destinationPath = os.path.join(self._uploadFolder, filename)
 
@@ -207,7 +210,7 @@ class DummyDataGenerator:
         sourcePath = os.path.join(dummyDataDirectory, random.choice(self.GPX_FILE_NAMES))
 
         shutil.copy2(sourcePath, destinationPath)
-        track.gpxFileName = filename
+        item.gpxFileName = filename
 
     def __generate_demo_maintenance_events(self, user) -> None:
         lastDayCurrentMonth = datetime.now().date() + relativedelta(day=31)
@@ -249,4 +252,24 @@ class DummyDataGenerator:
                 user_id=user.id,
             )
         )
+        db.session.commit()
+
+    def __generate_demo_planned_tours(self, user) -> None:
+        fake = Faker()
+
+        for index in range(2):
+            fakeTime = fake.date_time_between_dates(
+                datetime.now() - timedelta(days=90), datetime.now()
+            )
+
+            plannedTour = PlannedTour(
+                type=TrackType.BIKING,
+                last_edit_date=fakeTime,
+                name=random.choice(self.TRACK_NAMES),
+                user_id=user.id,
+            )
+
+            self.__append_gpx(plannedTour)
+            db.session.add(plannedTour)
+
         db.session.commit()
