@@ -73,6 +73,11 @@ body {
     justify-content: center;
 }
 
+.headline-icon {
+    width: 3rem !important;
+    height: 3rem !important;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

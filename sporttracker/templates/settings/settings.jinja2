@@ -14,7 +14,9 @@
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col col-12 mx-auto">
-                        <h1>{{ gettext('Settings') }}</h1>
+                         {% call macros.headline(gettext('Settings')) %}
+                            <span class="material-icons fs-1">settings</span>
+                        {% endcall %}
                     </div>
                 </div>
 
@@ -120,14 +122,9 @@
                     <div class="col col-11 col-md-9 mx-auto">
                         <div class="row mb-3">
                             <div class="col col-12 mx-auto">
-                                <h3 class="d-flex align-items-center justify-content-center" id="headline-participants">
-                                    <span class="material-icons fs-2 p-2 ">group</span>
-                                    <span class="me-3">{{ gettext('Participants') }}</span>
-                                    <a href="{{ url_for('settings.participantsAdd') }}"
-                                       class="link-light text-decoration-none d-flex-inline align-items-center">
-                                        <span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span>
-                                    </a>
-                                </h3>
+                                {% call macros.headline(gettext('Participants'), url_for('settings.participantsAdd'), 'fs-3') %}
+                                    <span class="material-icons fs-2">group</span>
+                                {% endcall %}
                             </div>
                         </div>
 

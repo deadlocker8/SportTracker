@@ -14,7 +14,9 @@
             <section class="py-5 text-center container">
               <div class="row mb-3">
                     <div class="col col-12 mx-auto">
-                        {{ macros.headline_with_add_button(gettext('Maintenance'), url_for('maintenanceEvents.add')) }}
+                        {% call macros.headline(gettext('Maintenance'), url_for('maintenanceEvents.add')) %}
+                            <i class="fa-solid fa-wrench fa-fw fs-2"></i>
+                        {% endcall %}
                     </div>
                 </div>
 

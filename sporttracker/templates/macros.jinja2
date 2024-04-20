@@ -174,10 +174,16 @@
     </div>
 {%- endmacro %}
 
-{% macro headline_with_add_button(headline, addUrl) -%}
-    <h1>{{ headline }} <a href="{{ addUrl }}"
-                          class="link-light text-decoration-none d-flex-inline align-items-center">
-        <span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span>
-    </a>
-    </h1>
+{% macro headline(headline, addUrl='', size='fs-1') -%}
+    <div class="{{ size }} mb-2 d-flex align-items-center justify-content-center">
+        <span class="headline-icon d-flex align-items-center justify-content-center">
+            {{ caller() }}
+        </span>
+        <span class="ms-1 me-3">{{ headline }}</span>
+        {% if addUrl %}
+            <a href="{{ addUrl }}" class="link-light text-decoration-none d-flex-inline align-items-center">
+                <span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span>
+            </a>
+        {% endif %}
+    </div>
 {%- endmacro %}

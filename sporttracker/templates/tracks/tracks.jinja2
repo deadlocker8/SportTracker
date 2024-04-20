@@ -18,15 +18,15 @@
                     <div class="col col-12 mx-auto">
                         <div class="d-flex align-items-center justify-content-center">
                             <a href="{{ url_for('tracks.listTracks', year=previousMonthDate.year, month=previousMonthDate.month) }}"
-                               class="text-decoration-none text-light"
+                               class="text-decoration-none text-light me-3"
                                id="month-select-previous">
                                 <span class="material-icons fs-1">chevron_left</span>
                             </a>
-                            <h1 class="px-3">Tracks <a href="{{ url_for('tracks.add') }}"
-                                                       class="link-light text-decoration-none d-flex-inline align-items-center"><span
-                                    class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span></a></h1>
+                            {% call macros.headline(gettext('Tracks'), url_for('tracks.add')) %}
+                                <i class="fa-solid fa-route fa-fw fs-2"></i>
+                            {% endcall %}
                             <a href="{{ url_for('tracks.listTracks', year=nextMonthDate.year, month=nextMonthDate.month) }}"
-                               class="text-decoration-none text-light"
+                               class="text-decoration-none text-light ms-3"
                                id="month-select-next">
 
                                 <span class="material-icons fs-1">chevron_right</span>
