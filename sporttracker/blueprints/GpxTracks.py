@@ -50,7 +50,7 @@ def construct_blueprint(uploadFolder: str):
         if plannedTour is None:
             abort(404)
 
-        downloadFileName = ''.join([c if c.isalnum() else '_' for c in plannedTour.name])
+        downloadFileName = ''.join([c if c.isalnum() else '_' for c in str(plannedTour.name)])
         response = __downloadGpxTrack(uploadFolder, plannedTour, downloadFileName)
         if response is not None:
             return response
