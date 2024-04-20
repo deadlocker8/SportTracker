@@ -1,6 +1,7 @@
 # 1.18.0
 - add: maintenance events: show distance since event
 - add: show icon for each navbar entry and headline
+- add: split username and settings in navbar
 - fix: debug log messages for all CRUD methods
 
 # 1.17.0

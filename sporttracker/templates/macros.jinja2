@@ -33,63 +33,96 @@
                     aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    {% if current_user.is_authenticated %}
-                        {% if current_user.isAdmin %}
+                {% if current_user.is_authenticated %}
+                    {% if current_user.isAdmin %}
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link {% if activeLink == 'users' %}active {% endif %}"
-                                   href="{{ url_for('users.listUsers') }}">{{ gettext('Users') }}</a>
+                                <a class="nav-link d-flex align-items-center {% if activeLink == 'users' %}active {% endif %}"
+                                   href="{{ url_for('users.listUsers') }}"><span class="navbar-icon"><span
+                                        class="material-icons fs-5">groups</span></span>&nbsp;{{ gettext('Users') }}
+                                </a>
                             </li>
-                        {% else %}
+                        </ul>
+                        <div class="d-flex align-items-center justify-content-between mt-3 mt-sm-0">
+                            <div class="text-white mx-md-3 me-3 my-2 my-md-0">
+                                <div class="d-flex align-items-center">
+                                    <span class="navbar-icon"><span class="material-icons fs-4">person</span></span>&nbsp;{{ current_user.username|capitalize }}
+                                </div>
+                            </div>
+                            <a href="{{ url_for('authentication.logout') }}" class="btn btn-danger">Logout</a>
+                        </div>
+                    {% else %}
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center {% if activeLink == 'tracks' %}active {% endif %}"
-                                   href="/"><span class="navbar-icon"><i class="fa-solid fa-route fa-fw fs-6"></i></span>&nbsp;{{ gettext('Tracks') }}</a>
+                                   href="/"><span class="navbar-icon"><i
+                                        class="fa-solid fa-route fa-fw fs-6"></i></span>&nbsp;{{ gettext('Tracks') }}
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center {% if activeLink == 'monthGoals' %}active {% endif %}"
-                                   href="{{ url_for('monthGoals.listMonthGoals') }}"><span class="navbar-icon"><span class="material-icons fs-5">flag</span></span>&nbsp;{{ gettext('Goals') }}</a>
+                                   href="{{ url_for('monthGoals.listMonthGoals') }}"><span class="navbar-icon"><span
+                                        class="material-icons fs-5">flag</span></span>&nbsp;{{ gettext('Goals') }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center {% if activeLink == 'charts' %}active {% endif %}"
-                                   href="{{ url_for('charts.chartChooser') }}"><span class="navbar-icon"><span class="material-icons fs-5">leaderboard</span></span>&nbsp;{{ gettext('Charts') }}</a>
+                                   href="{{ url_for('charts.chartChooser') }}"><span class="navbar-icon"><span
+                                        class="material-icons fs-5">leaderboard</span></span>&nbsp;{{ gettext('Charts') }}
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center {% if activeLink == 'achievements' %}active {% endif %}"
-                                   href="{{ url_for('achievements.showAchievements') }}"><span class="navbar-icon"><span class="material-icons fs-5">emoji_events</span></span>&nbsp;{{ gettext('Achievements') }}</a>
+                                   href="{{ url_for('achievements.showAchievements') }}"><span class="navbar-icon"><span
+                                        class="material-icons fs-5">emoji_events</span></span>&nbsp;{{ gettext('Achievements') }}
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center {% if activeLink == 'map' %}active {% endif %}"
-                                   href="{{ url_for('maps.showAllTracksOnMap') }}"><span class="navbar-icon"><span class="material-icons fs-5">map</span></span>&nbsp;{{ gettext('Map') }}</a>
+                                   href="{{ url_for('maps.showAllTracksOnMap') }}"><span class="navbar-icon"><span
+                                        class="material-icons fs-5">map</span></span>&nbsp;{{ gettext('Map') }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center {% if activeLink == 'maintenanceEvents' %}active {% endif %}"
-                                   href="{{ url_for('maintenanceEvents.listMaintenanceEvents') }}"><span class="navbar-icon"><i class="fa-solid fa-wrench fa-fw fs-6"></i></span>&nbsp;{{ gettext('Maintenance') }}</a>
+                                   href="{{ url_for('maintenanceEvents.listMaintenanceEvents') }}"><span
+                                        class="navbar-icon"><i
+                                        class="fa-solid fa-wrench fa-fw fs-6"></i></span>&nbsp;{{ gettext('Maintenance') }}
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center {% if activeLink == 'plannedTours' %}active {% endif %}"
-                                   href="{{ url_for('plannedTours.listPlannedTours') }}"><span class="navbar-icon"><i class="fa-solid fa-lightbulb fa-fw fs-6"></i></span>&nbsp;{{ gettext('Planned Tours') }}</a>
+                                   href="{{ url_for('plannedTours.listPlannedTours') }}"><span class="navbar-icon"><i
+                                        class="fa-solid fa-lightbulb fa-fw fs-6"></i></span>&nbsp;{{ gettext('Planned Tours') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center {% if activeLink == 'settings' %}active {% endif %}"
+                                   href="{{ url_for('settings.settingsShow') }}"><span class="navbar-icon"><span
+                                        class="material-icons fs-5">settings</span></span>&nbsp;{{ gettext('Settings') }}
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center {% if activeLink == 'about' %}active {% endif %}"
-                                   href="{{ url_for('general.about') }}"><span class="navbar-icon"><span class="material-icons fs-5">info_outline</span></span>&nbsp;{{ gettext('About') }}</a>
+                                   href="{{ url_for('general.about') }}"><span class="navbar-icon"><span
+                                        class="material-icons fs-5">info_outline</span></span>&nbsp;{{ gettext('About') }}
+                                </a>
                             </li>
-                        {% endif %}
-                    {% endif %}
-                </ul>
+                        </ul>
 
-                {% if current_user.is_authenticated %}
-                    <form class="d-flex" role="search" action="{{ url_for('search.performSearch') }}" method="GET">
-                        <input class="form-control me-2" type="search" placeholder="{{ gettext('Search') }}" name="searchText" value="{% if searchText %}{{ searchText }}{% endif %}">
-                    </form>
+                        <form class="d-flex" role="search" action="{{ url_for('search.performSearch') }}"
+                              method="GET">
+                            <input class="form-control me-2" type="search" placeholder="{{ gettext('Search') }}"
+                                   name="searchText" value="{% if searchText %}{{ searchText }}{% endif %}">
+                        </form>
 
-                    <div class="d-flex align-items-center justify-content-between mt-3 mt-sm-0">
-                        <div class="text-white mx-md-3 me-3 my-2 my-md-0">
-                            <a href="{{ url_for('settings.settingsShow') }}"
-                               class="link-light text-decoration-none d-flex align-items-center">
-                                <span class="navbar-icon"><span class="material-icons fs-4">person</span></span>&nbsp;{{ current_user.username|capitalize }}</a>
+                        <div class="d-flex align-items-center justify-content-between mt-3 mt-sm-0">
+                            <div class="text-white mx-md-3 me-3 my-2 my-md-0">
+                                <div class="d-flex align-items-center">
+                                    <span class="navbar-icon"><span class="material-icons fs-4">person</span></span>&nbsp;{{ current_user.username|capitalize }}
+                                </div>
+                            </div>
+                            <a href="{{ url_for('authentication.logout') }}" class="btn btn-danger">Logout</a>
                         </div>
-                        <a href="{{ url_for('authentication.logout') }}" class="btn btn-danger">Logout</a>
-                    </div>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
