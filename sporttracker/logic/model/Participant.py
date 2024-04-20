@@ -10,6 +10,9 @@ class Participant(db.Model):  # type: ignore[name-defined]
     name: Mapped[String] = mapped_column(String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+    def __repr__(self):
+        return f'Participant(' f'id: {self.id}, ' f'name: {self.name}, ' f'user_id: {self.user_id})'
+
 
 track_participant_association = Table(
     'track_participant_association',

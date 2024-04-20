@@ -43,6 +43,17 @@ class CustomTrackField(db.Model):  # type: ignore[name-defined]
     is_required: Mapped[bool] = mapped_column(Boolean, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+    def __repr__(self):
+        return (
+            f'CustomTrackField('
+            f'id: {self.id}, '
+            f'type: {self.type}, '
+            f'track_type: {self.track_type}, '
+            f'name: {self.name}, '
+            f'is_required: {self.is_required}, '
+            f'user_id: {self.user_id})'
+        )
+
 
 def get_custom_fields_by_track_type() -> dict[TrackType, list[CustomTrackField]]:
     customFieldsByTrackType = {}

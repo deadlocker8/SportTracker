@@ -78,6 +78,23 @@ class Track(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     def get_date_time(self) -> datetime:
         return self.startTime  # type: ignore[return-value]
 
+    def __repr__(self):
+        return (
+            f'Track('
+            f'id: {self.id}, '
+            f'type: {self.type}, '
+            f'name: {self.name}, '
+            f'startTime: {self.startTime}, '
+            f'duration: {self.duration}, '
+            f'distance: {self.distance}, '
+            f'averageHeartRate: {self.averageHeartRate}, '
+            f'elevationSum: {self.elevationSum}, '
+            f'gpxFileName: {self.gpxFileName}, '
+            f'custom_fields: {self.custom_fields}, '
+            f'participants: {self.participants}, '
+            f'user_id: {self.user_id})'
+        )
+
 
 def get_track_names_by_track_type(trackType: TrackType) -> list[str]:
     rows = (

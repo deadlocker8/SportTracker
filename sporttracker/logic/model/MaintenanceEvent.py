@@ -25,6 +25,15 @@ class MaintenanceEvent(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     def get_date_time(self) -> datetime:
         return self.event_date  # type: ignore[return-value]
 
+    def __repr__(self):
+        return (
+            f'MaintenanceEvent('
+            f'id: {self.id}, '
+            f'type: {self.type}, '
+            f'description: {self.description}, '
+            f'user_id: {self.user_id})'
+        )
+
 
 def get_maintenance_events_by_year_and_month_by_type(
     year: int, month: int, trackTypes: list[TrackType]

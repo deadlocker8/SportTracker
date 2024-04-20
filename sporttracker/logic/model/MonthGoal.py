@@ -105,6 +105,18 @@ class MonthGoalDistance(MonthGoal):
 
         return 'bg-danger'
 
+    def __repr__(self):
+        return (
+            f'MonthGoalDistance('
+            f'id: {self.id}, '
+            f'type: {self.type}, '
+            f'year: {self.year}, '
+            f'month: {self.month}, '
+            f'distance_minimum: {self.distance_minimum}, '
+            f'distance_perfect: {self.distance_perfect}, '
+            f'user_id: {self.user_id})'
+        )
+
 
 class MonthGoalCount(MonthGoal):
     count_minimum: Mapped[int] = mapped_column(Integer, nullable=False)
@@ -138,6 +150,18 @@ class MonthGoalCount(MonthGoal):
             return 'bg-warning'
 
         return 'bg-danger'
+
+    def __repr__(self):
+        return (
+            f'MonthGoalDistance('
+            f'id: {self.id}, '
+            f'type: {self.type}, '
+            f'year: {self.year}, '
+            f'month: {self.month}, '
+            f'count_minimum: {self.count_minimum}, '
+            f'count_perfect: {self.count_perfect}, '
+            f'user_id: {self.user_id})'
+        )
 
 
 def get_goal_summaries_by_year_and_month_and_types(

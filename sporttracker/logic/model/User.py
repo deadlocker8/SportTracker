@@ -34,6 +34,16 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     customFields = db.relationship('CustomTrackField', backref='user', lazy=True, cascade='delete')
     trackInfoItems = db.relationship('TrackInfoItem', backref='user', lazy=True, cascade='delete')
 
+    def __repr__(self):
+        return (
+            f'User('
+            f'id: {self.id}, '
+            f'username: {self.username}, '
+            f'isAdmin: {self.isAdmin}, '
+            f'language: {self.language}, '
+            f'user_id: {self.user_id})'
+        )
+
 
 class TrackInfoItemType(enum.Enum):
     DISTANCE = 'DISTANCE'

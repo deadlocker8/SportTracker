@@ -1,5 +1,6 @@
 # 1.18.0
 - add: maintenance events: show distance since event
+- fix: debug log messages for all CRUD methods
 
 # 1.17.0
 - add: it is now possible to track maintenance events for each sport type
