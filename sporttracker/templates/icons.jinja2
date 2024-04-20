@@ -1,5 +1,28 @@
 <!DOCTYPE html>
 
+{% macro materialize_icon(name, iconName, outlined=false) -%}
+    <tr data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{{ iconName }}">
+        <td class="pe-5 fs-5">{{ name }}</td>
+        <td class="fs-4"><span class="material-icons{% if outlined %}-outlined{% endif %}">{{ iconName }}</span></td>
+    </tr>
+{%- endmacro %}
+
+{% macro fontawesome_icon(name, iconName) -%}
+    <tr data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{{ iconName }}">
+        <td class="pe-5 fs-5 text-primary">{{ name }}</td>
+        <td class="fs-4"><i class="fa-solid {{ iconName }} fa-fw"></i></td>
+    </tr>
+{%- endmacro %}
+
+{% macro group(name) -%}
+    <div class="mb-5">
+        <h2>{{ name }}</h2>
+        <table>
+            {{ caller() }}
+        </table>
+    </div>
+{%- endmacro %}
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -10,358 +33,146 @@
             td {
                 padding-bottom: 0.5rem;
             }
+
+            td:hover {
+                cursor: pointer;
+            }
         </style>
     </head>
     <body class="bg-dark text-light">
         <div id="main" class="center-align">
             <section class="py-5 d-flex justify-content-around">
                 <div class="d-flex flex-column justify-content-between">
-                    <div class="mb-5">
-                        <h2>track types</h2>
-                        <table>
-                            <tr>
-                                <td class="pe-5 fs-5">biking</td>
-                                <td class="fs-4"><span class="material-icons">directions_bike</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">running</td>
-                                <td class="fs-4"><span class="material-icons">directions_run</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">hiking</td>
-                                <td class="fs-4"><i class="fa-solid fa-person-hiking fa-fw"></i></td>
-                            </tr>
-                        </table>
-                    </div>
+                    {% call group('track types') %}
+                        {{ materialize_icon('biking', 'directions_bike') }}
+                        {{ materialize_icon('running', 'directions_run') }}
+                        {{ fontawesome_icon('running', 'fa-person-hiking') }}
+                    {% endcall %}
 
-                    <div class="mb-5">
-                        <h2>track properties</h2>
-                        <table>
-                            <tr>
-                                <td class="pe-5 fs-5">distance</td>
-                                <td class="fs-4"><span class="material-icons">route</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">duration</td>
-                                <td class="fs-4"><span class="material-icons-outlined">timer</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">speed</td>
-                                <td class="fs-4"><span class="material-icons">speed</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">average heart rate</td>
-                                <td class="fs-4"><span class="material-icons">favorite_border</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">elevation sum</td>
-                                <td class="fs-4"><span class="material-icons">expand</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">participants</td>
-                                <td class="fs-4"><span class="material-icons">group</span></td>
-                            </tr>
-                        </table>
-                    </div>
+                    {% call group('track properties') %}
+                        {{ materialize_icon('distance', 'route') }}
+                        {{ materialize_icon('duration', 'timer', true) }}
+                        {{ materialize_icon('speed', 'speed') }}
+                        {{ materialize_icon('average heart rate', 'favorite_border') }}
+                        {{ materialize_icon('elevation sum', 'expand') }}
+                        {{ materialize_icon('participants', 'group') }}
+                    {% endcall %}
 
-                    <div class="mb-5">
-                        <h2>track form</h2>
-                        <table>
-                            <tr>
-                                <td class="pe-5 fs-5">name</td>
-                                <td class="fs-4"><span class="material-icons">edit</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">date</td>
-                                <td class="fs-4"><span class="material-icons-outlined">event</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">start time</td>
-                                <td class="fs-4"><span class="material-icons">schedule</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">distance</td>
-                                <td class="fs-4"><span class="material-icons">route</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">duration</td>
-                                <td class="fs-4"><span class="material-icons-outlined">timer</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">average heart rate</td>
-                                <td class="fs-4"><span class="material-icons">favorite_border</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">elevation sum</td>
-                                <td class="fs-4"><span class="material-icons">expand</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">custom field</td>
-                                <td class="fs-4"><span class="material-icons">drive_file_rename_outline</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">participants</td>
-                                <td class="fs-4"><span class="material-icons">group</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">gpx tracks</td>
-                                <td class="fs-4"><span class="material-icons">location_on</span></td>
-                            </tr>
-                        </table>
-                    </div>
+                    {% call group('track form') %}
+                        {{ materialize_icon('name', 'edit') }}
+                        {{ materialize_icon('date', 'event') }}
+                        {{ materialize_icon('start time', 'schedule') }}
+                        {{ materialize_icon('distance', 'route') }}
+                        {{ materialize_icon('duration', 'timer', true) }}
+                        {{ materialize_icon('average heart rate', 'favorite_border') }}
+                        {{ materialize_icon('elevation sum', 'expand') }}
+                        {{ materialize_icon('custom field', 'drive_file_rename_outline') }}
+                        {{ materialize_icon('participants', 'group') }}
+                        {{ materialize_icon('gpx track', 'location_on') }}
+                    {% endcall %}
                 </div>
 
                 <div class="d-flex flex-column justify-content-between">
-                    <div class="mb-5">
-                        <h2>gpx tracks</h2>
-                        <table>
-                            <tr>
-                                <td class="pe-5 fs-5">open map</td>
-                                <td class="fs-4"><span class="material-icons">map</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">download map</td>
-                                <td class="fs-4"><span class="material-icons">download</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">delete</td>
-                                <td class="fs-4"><span class="material-icons">delete</span></td>
-                            </tr>
-                        </table>
-                    </div>
+                    {% call group('gpx tracks') %}
+                        {{ materialize_icon('open map', 'map') }}
+                        {{ materialize_icon('download map', 'download') }}
+                        {{ materialize_icon('delete', 'delete') }}
+                    {% endcall %}
 
-                    <div class="mb-5">
-                        <h2>month goals</h2>
-                        <table>
-                            <tr>
-                                <td class="pe-5 fs-5">month goal distance</td>
-                                <td class="fs-4"><span class="material-icons">route</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">month goal count</td>
-                                <td class="fs-4"><span class="material-icons">format_list_numbered</span></td>
-                            </tr>
-                        </table>
-                    </div>
+                    {% call group('month goals') %}
+                        {{ materialize_icon('month goal distance', 'route') }}
+                        {{ materialize_icon('month goal count', 'format_list_numbered') }}
+                    {% endcall %}
 
-                    <div class="mb-5">
-                        <h2>month goal form</h2>
-                        <table>
-                            <tr>
-                                <td class="pe-5 fs-5">track type</td>
-                                <td class="fs-4"><span class="material-icons">stars</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">year</td>
-                                <td class="fs-4"><span class="material-icons">calendar_today</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">month</td>
-                                <td class="fs-4"><span class="material-icons">calendar_month</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">minimum distance</td>
-                                <td class="fs-4"><span class="material-icons">route</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">perfect distance</td>
-                                <td class="fs-4"><span class="material-icons">route</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">minimum number</td>
-                                <td class="fs-4"><span class="material-icons">format_list_numbered</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">perfect number</td>
-                                <td class="fs-4"><span class="material-icons">format_list_numbered</span></td>
-                            </tr>
-                        </table>
-                    </div>
+                    {% call group('month goal form') %}
+                        {{ materialize_icon('track type', 'stars') }}
+                        {{ materialize_icon('year', 'calendar_today') }}
+                        {{ materialize_icon('minimum distance', 'route') }}
+                        {{ materialize_icon('perfect distance', 'route') }}
+                        {{ materialize_icon('minimum number', 'format_list_numbered') }}
+                        {{ materialize_icon('perfect number', 'format_list_numbered') }}
+                    {% endcall %}
 
-                    <div class="mb-5">
-                        <h2>charts</h2>
-                        <table>
-                            <tr>
-                                <td class="pe-5 fs-5">bar chart</td>
-                                <td class="fs-4"><span class="material-icons">bar_chart</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">pie chart</td>
-                                <td class="fs-4"><span class="material-icons">pie_chart</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">calendar chart</td>
-                                <td class="fs-4"><span class="material-icons">calendar_month</span></td>
-                            </tr>
-                        </table>
-                    </div>
+                    {% call group('charts') %}
+                        {{ materialize_icon('bar chart', 'bar_chart') }}
+                        {{ materialize_icon('pie chart', 'pie_chart') }}
+                        {{ materialize_icon('calendar chart', 'calendar_month') }}
+                    {% endcall %}
                 </div>
 
                 <div class="d-flex flex-column justify-content-between">
-                    <div class="mb-5">
-                        <h2>maintenance form</h2>
-                        <table>
-                            <tr>
-                                <td class="pe-5 fs-5">maintenance</td>
-                                <td class="fs-4"><i class="fa-solid fa-wrench fa-fw"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">track type</td>
-                                <td class="fs-4"><span class="material-icons">stars</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">date</td>
-                                <td class="fs-4"><span class="material-icons">event</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">time</td>
-                                <td class="fs-4"><span class="material-icons">schedule</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">description</td>
-                                <td class="fs-4"><span class="material-icons">article</span></td>
-                            </tr>
-                        </table>
-                    </div>
+                    {% call group('maintenance form') %}
+                        {{ fontawesome_icon('maintenance', 'fa-wrench') }}
+                        {{ materialize_icon('track type', 'stars') }}
+                        {{ materialize_icon('date', 'event') }}
+                        {{ materialize_icon('time', 'schedule') }}
+                        {{ materialize_icon('description', 'article') }}
+                    {% endcall %}
 
-                    <div class="mb-5">
-                        <h2>planned tours</h2>
-                        <table>
-                            <tr>
-                                <td class="pe-5 fs-5">planned tours</td>
-                                <td class="fs-4"><i class="fa-solid fa-lightbulb fa-fw"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">track type</td>
-                                <td class="fs-4"><span class="material-icons">stars</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">name</td>
-                                <td class="fs-4"><span class="material-icons">edit</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">gpx tracks</td>
-                                <td class="fs-4"><span class="material-icons">location_on</span></td>
-                            </tr>
-                        </table>
-                    </div>
+                    {% call group('planned tour form') %}
+                        {{ fontawesome_icon('planned tours', 'fa-lightbulb') }}
+                        {{ materialize_icon('track type', 'stars') }}
+                        {{ materialize_icon('name', 'edit') }}
+                        {{ materialize_icon('gpx track', 'location_on') }}
+                    {% endcall %}
 
-                    <div class="mb-5">
-                        <h2>achievements</h2>
-                        <table>
-                            <tr>
-                                <td class="pe-5 fs-5">achievement streak</td>
-                                <td class="fs-4"><span class="material-icons">sports_score</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">achievement longest track</td>
-                                <td class="fs-4"><span class="material-icons">route</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">achievement total distance</td>
-                                <td class="fs-4"><span class="material-icons">map</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">achievement best month</td>
-                                <td class="fs-4"><span class="material-icons">calendar_month</span></td>
-                            </tr>
-                        </table>
-                    </div>
+                    {% call group('custom field form') %}
+                        {{ materialize_icon('name', 'edit') }}
+                        {{ materialize_icon('type', 'list') }}
+                        {{ materialize_icon('is required', 'question_mark') }}
+                    {% endcall %}
+
+                    {% call group('participant form') %}
+                        {{ materialize_icon('name', 'edit') }}
+                    {% endcall %}
+
+                    {% call group('achievements') %}
+                        {{ materialize_icon('achievement streak', 'sports_score') }}
+                        {{ materialize_icon('achievement longest track', 'route') }}
+                        {{ materialize_icon('achievement total distance', 'map') }}
+                        {{ materialize_icon('achievement best month', 'calendar_month') }}
+                    {% endcall %}
                 </div>
+
                 <div class="d-flex flex-column justify-content-between">
-                    <div class="mb-5">
-                        <h2>navbar/headlines</h2>
-                        <table>
-                            <tr>
-                                <td class="pe-5 fs-5">tracks</td>
-                                <td class="fs-4"><i class="fa-solid fa-route fa-fw"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">goals</td>
-                                <td class="fs-4"><span class="material-icons">flag</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">charts</td>
-                                <td class="fs-4"><span class="material-icons">leaderboard</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">achievements</td>
-                                <td class="fs-4"><span class="material-icons">emoji_events</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">map</td>
-                                <td class="fs-4"><span class="material-icons">map</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">maintenance</td>
-                                <td class="fs-4"><i class="fa-solid fa-wrench fa-fw"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">planned tours</td>
-                                <td class="fs-4"><i class="fa-solid fa-lightbulb fa-fw"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">about</td>
-                                <td class="fs-4"><span class="material-icons">info_outline</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">profile</td>
-                                <td class="fs-4"><span class="material-icons">person</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">settings</td>
-                                <td class="fs-4"><span class="material-icons">settings</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">users</td>
-                                <td class="fs-4"><span class="material-icons">groups</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">custom fields</td>
-                                <td class="fs-4"><span class="material-icons">drive_file_rename_outline</span></td>
-                            </tr>
-                        </table>
-                    </div>
+                    {% call group('settings') %}
+                        {{ materialize_icon('settings', 'settings') }}
+                        {{ materialize_icon('password', 'vpn_key') }}
+                        {{ materialize_icon('language', 'translate') }}
+                    {% endcall %}
 
+                    {% call group('misc') %}
+                        {{ fontawesome_icon('button today', 'fa-calendar-day') }}
+                        {{ fontawesome_icon('button year/month chooser', 'fa-calendar-days') }}
+                        {{ fontawesome_icon('search', 'fa-magnifying-glass') }}
+                    {% endcall %}
 
-                    <div class="mb-5">
-                        <h2>settings</h2>
-                        <table>
-                            <tr>
-                                <td class="pe-5 fs-5">settings</td>
-                                <td class="fs-4"><span class="material-icons">settings</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">password</td>
-                                <td class="fs-4"><span class="material-icons">vpn_key</span></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">language</td>
-                                <td class="fs-4"><span class="material-icons">translate</span></td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div class="mb-5">
-                        <h2>misc</h2>
-                        <table>
-                            <tr>
-                                <td class="pe-5 fs-5">button today</td>
-                                <td class="fs-4"><i class="fa-solid fa-calendar-day fa-fw"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">button year/month chooser</td>
-                                <td class="fs-4"><i class="fa-solid fa-calendar-days fa-fw"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">search</td>
-                                <td class="fs-4"><i class="fa-solid fa-magnifying-glass fa-fw"></i></td>
-                            </tr>
-                        </table>
-                    </div>
+                    {% call group('navbar/headlines') %}
+                        {{ fontawesome_icon('tracks', 'fa-route') }}
+                        {{ materialize_icon('goals', 'flag') }}
+                        {{ materialize_icon('charts', 'leaderboard') }}
+                        {{ materialize_icon('achievements', 'emoji_events') }}
+                        {{ materialize_icon('map', 'map') }}
+                        {{ materialize_icon('map', 'map') }}
+                        {{ fontawesome_icon('maintenance', 'fa-wrench') }}
+                        {{ fontawesome_icon('planned tours', 'fa-lightbulb') }}
+                        {{ materialize_icon('about', 'info_outline') }}
+                        {{ materialize_icon('profile', 'person') }}
+                        {{ materialize_icon('settings', 'settings') }}
+                        {{ materialize_icon('users', 'groups') }}
+                        {{ materialize_icon('custom fields', 'drive_file_rename_outline') }}
+                    {% endcall %}
                 </div>
             </section>
         </div>
         {{ macros.scripts() }}
+
+        <script>
+            const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+            const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl, {
+                container: 'body'
+            }))
+        </script>
     </body>
 </html>
+
