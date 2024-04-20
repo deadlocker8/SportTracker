@@ -15,7 +15,9 @@
                 <div class="row">
                     <div class="col col-12 mx-auto">
                         {% if maintenanceEvent %}
-                            <h1>{{ gettext('Edit Maintenance Event') }}</h1>
+                            {% call macros.headline(gettext('Edit Maintenance Event')) %}
+                                <i class="fa-solid fa-wrench fa-fw fs-2"></i>
+                            {% endcall %}
                             <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
                                 {{ gettext('Delete') }}
                             </button>
@@ -24,7 +26,9 @@
                                 <a href="{{ url_for('maintenanceEvents.delete', event_id=event_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
                             {% endcall %}
                         {% else %}
-                            <h1>{{ gettext('New Maintenance Event') }}</h1>
+                            {% call macros.headline(gettext('New Maintenance Event')) %}
+                                <i class="fa-solid fa-wrench fa-fw fs-2"></i>
+                            {% endcall %}
                         {% endif %}
                     </div>
                 </div>

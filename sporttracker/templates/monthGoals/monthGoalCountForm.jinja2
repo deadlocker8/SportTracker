@@ -15,7 +15,9 @@
                 <div class="row">
                     <div class="col col-12 mx-auto">
                         {% if goal %}
-                            <h1>{{ gettext('Edit Count Month Goal') }}</h1>
+                            {% call macros.headline(gettext('Edit Count Month Goal')) %}
+                                <span class="material-icons fs-1">format_list_numbered</span>
+                            {% endcall %}
                             <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
                                 {{ gettext('Delete') }}
                             </button>
@@ -24,7 +26,9 @@
                                 <a href="{{ url_for('monthGoalsCount.delete', goal_id=goal_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
                             {% endcall %}
                         {% else %}
-                            <h1>{{ gettext('New Count Month Goal') }}</h1>
+                            {% call macros.headline(gettext('New Count Month Goal')) %}
+                                <span class="material-icons fs-1">format_list_numbered</span>
+                            {% endcall %}
                         {% endif %}
                     </div>
                 </div>

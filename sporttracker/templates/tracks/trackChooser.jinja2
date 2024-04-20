@@ -14,7 +14,9 @@
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col col-12 mx-auto">
-                        <h1>{{ gettext('New Track') }}</h1>
+                        {% call macros.headline(gettext('New Track')) %}
+                            <i class="fa-solid fa-route fa-fw fs-2"></i>
+                        {% endcall %}
                     </div>
                 </div>
 

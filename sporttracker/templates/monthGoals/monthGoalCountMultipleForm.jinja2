@@ -14,7 +14,9 @@
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col col-12 mx-auto">
-                        <h1>{{ gettext('Multiple New Count Month Goals') }}</h1>
+                        {% call macros.headline(gettext('Multiple New Count Month Goals')) %}
+                                <span class="material-icons fs-1">format_list_numbered</span>
+                        {% endcall %}
                     </div>
                 </div>
 

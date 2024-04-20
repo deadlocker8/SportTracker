@@ -16,9 +16,13 @@
                 <div class="row">
                     <div class="col col-12 mx-auto">
                         {% if participant %}
-                            <h1>{{ gettext('Edit Participant') }}</h1>
+                            {% call macros.headline(gettext('Edit Participant')) %}
+                                <span class="material-icons fs-1">group</span>
+                            {% endcall %}
                         {% else %}
-                            <h1>{{ gettext('New Participant') }}</h1>
+                            {% call macros.headline(gettext('New Participant')) %}
+                                <span class="material-icons fs-1">group</span>
+                            {% endcall %}
                         {% endif %}
                     </div>
                 </div>

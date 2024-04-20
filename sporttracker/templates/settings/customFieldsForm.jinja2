@@ -16,9 +16,13 @@
                 <div class="row">
                     <div class="col col-12 mx-auto">
                         {% if field %}
-                            <h1>{{ gettext('Edit Custom Track Field') }}</h1>
+                            {% call macros.headline(gettext('Edit Custom Track Field')) %}
+                                <span class="material-icons fs-1">drive_file_rename_outline</span>
+                            {% endcall %}
                         {% else %}
-                            <h1>{{ gettext('New Custom Track Field') }}</h1>
+                            {% call macros.headline(gettext('New Custom Track Field')) %}
+                                <span class="material-icons fs-1">drive_file_rename_outline</span>
+                            {% endcall %}
                         {% endif %}
                     </div>
                 </div>

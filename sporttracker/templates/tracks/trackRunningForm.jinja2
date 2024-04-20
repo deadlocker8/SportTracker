@@ -17,7 +17,9 @@
                 <div class="row">
                     <div class="col col-12 mx-auto">
                         {% if track %}
-                            <h1>{{ gettext('Edit Running Track') }}</h1>
+                            {% call macros.headline(gettext('Edit Running Track')) %}
+                                <span class="material-icons fs-1">directions_run</span>
+                            {% endcall %}
                             <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
                                 {{ gettext('Delete') }}
                             </button>
@@ -26,7 +28,9 @@
                                 <a href="{{ url_for('tracks.delete', track_id=track_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
                             {% endcall %}
                         {% else %}
-                            <h1>{{ gettext('New Running Track') }}</h1>
+                            {% call macros.headline(gettext('New Running Track')) %}
+                                <span class="material-icons fs-1">directions_run</span>
+                            {% endcall %}
                         {% endif %}
                     </div>
                 </div>

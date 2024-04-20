@@ -14,9 +14,9 @@
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col col-12 mx-auto">
-                        <h1>Users <a href="{{ url_for('users.add') }}"
-                                     class="link-light text-decoration-none d-flex-inline align-items-center"><span
-                                class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span></a></h1>
+                        {% call macros.headline(gettext('Users'), url_for('users.add')) %}
+                            <span class="material-icons fs-1">groups</span>
+                        {% endcall %}
                     </div>
                 </div>
 
