@@ -1,5 +1,6 @@
 # 1.18.0
 - add: maintenance events: show distance since event
+- add: show icon for each navbar entry and headline
 - fix: debug log messages for all CRUD methods
 
 # 1.17.0
