@@ -43,12 +43,15 @@
                               method="post">
 
                             <div class="mb-3">
-                                <label for="participant-name" class="form-label">{{ gettext('Name') }}</label>
-                                <input type="text" class="form-control" id="participant-name" name="name"
-                                       required="required" {% if participant %}value="{{ participant.name }}"{% endif %}>
+                                <label for="participant-name" class="form-label input-field-margin">{{ gettext('Name') }}</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="material-icons me-3">edit</span>
+                                    <input type="text" class="form-control" id="participant-name" name="name"
+                                           required="required" {% if participant %}value="{{ participant.name }}"{% endif %}>
+                                </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary input-field-margin">{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

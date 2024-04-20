@@ -14,7 +14,9 @@
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col col-12 mx-auto">
-                        <h1>{{ gettext('New Month Goal') }}</h1>
+                        {% call macros.headline(gettext('New Month Goal')) %}
+                            <span class="material-icons fs-1">flag</span>
+                        {% endcall %}
                     </div>
                 </div>
 

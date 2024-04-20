@@ -129,41 +129,6 @@
     </nav>
 {%- endmacro %}
 
-{% macro customFieldInput(field) -%}
-    <div class="mb-3">
-        <label for="track-{{ field.name }}" class="form-label">{{ field.name }}</label>
-        {% if field.type.name == 'STRING' %}
-            <input type="text"
-                   class="form-control"
-                   id="track-{{ field.name }}"
-                   name="{{ field.name }}"
-                   {% if track and track.model_extra[field.name] is not none %}value="{{ track.model_extra[field.name] }}"{% endif %}
-                    {% if field.is_required %} required="required"{% endif %}
-            >
-        {% elif field.type.name == 'INTEGER' %}
-            <input type="number"
-                   step="1"
-                   min="0"
-                   class="form-control"
-                   id="track-{{ field.name }}"
-                   name="{{ field.name }}"
-                   {% if track and track.model_extra[field.name] is not none %}value="{{ track.model_extra[field.name] }}"{% endif %}
-                    {% if field.is_required %} required="required"{% endif %}
-            >
-        {% elif field.type.name == 'FLOAT' %}
-            <input type="number"
-                   step="0.01"
-                   min="0"
-                   class="form-control"
-                   id="track-{{ field.name }}"
-                   name="{{ field.name }}"
-                   {% if track and track.model_extra[field.name] is not none %}value="{{ track.model_extra[field.name] }}"{% endif %}
-                    {% if field.is_required %} required="required"{% endif %}
-            >
-        {% endif %}
-    </div>
-{%- endmacro %}
-
 {% macro track_type_quick_filter(redirectUrl) -%}
     <div class="d-flex flex-row align-items-center justify-content-center">
         {% for trackType, isActive in quickFilterState.get_states().items() %}

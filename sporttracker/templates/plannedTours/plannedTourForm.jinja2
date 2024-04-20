@@ -37,28 +37,33 @@
                               method="post"
                               enctype=multipart/form-data>
                             <div class="mb-3">
-                                <label for="planned-tour-type" class="form-label">{{ gettext('Type') }}</label>
-                                <select class="form-select" id="planned-tour-type" name="type" required="required">
-                                    {% for trackType in trackTypes %}
-                                        <option value="{{ trackType.name }}"
-                                                {% if plannedTour and plannedTour.type == trackType.name %}selected{% endif %}>{{ trackType.get_localized_name() }}</option>
-                                    {% endfor %}
-                                </select>
+                                <label for="planned-tour-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="material-icons me-3">stars</span>
+                                    <select class="form-select" id="planned-tour-type" name="type" required="required">
+                                        {% for trackType in trackTypes %}
+                                            <option value="{{ trackType.name }}"
+                                                    {% if plannedTour and plannedTour.type == trackType.name %}selected{% endif %}>{{ trackType.get_localized_name() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="mb-3">
                                 <div class="form-group">
-                                    <label for="planned-tour-name"
-                                           class="form-label">{{ gettext('Name') }}</label>
-                                    <input type="text" class="form-control" id="planned-tour-name"
-                                           name="name" required="required"
-                                           {% if plannedTour %}value="{{ plannedTour.name }}"{% endif %}>
+                                    <label for="planned-tour-name" class="form-label input-field-margin">{{ gettext('Name') }}</label>
+                                    <div class="d-flex align-items-center">
+                                        <span class="material-icons me-3">edit</span>
+                                        <input type="text" class="form-control" id="planned-tour-name"
+                                               name="name" required="required"
+                                               {% if plannedTour %}value="{{ plannedTour.name }}"{% endif %}>
+                                    </div>
                                 </div>
                             </div>
 
                             {{ trackMacros.form_gpx(plannedTour, url_for('maps.showPlannedTour', tour_id=tour_id or -1), url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id or -1), url_for('gpxTracks.deleteGpxTrackByPlannedTourId', tour_id=tour_id or -1), gettext('No GPX file is linked to this planned tour'), gettext('A GPX file is linked to this planned tour') ) }}
 
-                            <button type="submit" class="btn btn-primary mt-3">{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary mt-3 input-field-margin">{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

@@ -30,26 +30,32 @@
 
                         <form role="form" action="{{ url_for('settings.editSelfPost') }}" method="post">
                             <div class="mb-4">
-                                <label for="user-password" class="form-label">{{ gettext('Password') }}</label>
-                                <input type="password" class="form-control" id="user-password"
-                                       name="password" required="required">
+                                <label for="user-password" class="form-label input-field-margin">{{ gettext('Password') }}</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="material-icons me-3">vpn_key</span>
+                                    <input type="password" class="form-control" id="user-password"
+                                           name="password" required="required">
+                                </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary input-field-margin">{{ gettext('Save') }}</button>
                         </form>
 
                         <form role="form" action="{{ url_for('settings.editSelfLanguagePost') }}" method="post"
                               class="mt-5">
                             <div class="mb-4">
-                                <label for="user-language" class="form-label">{{ gettext('Language') }}</label>
-                                <select class="form-select" id="user-language" name="language" required="required">
-                                    {% for language in languages %}
-                                        <option value="{{ language.name }}" {% if userLanguage == language.name %}selected{% endif %}>{{ language.localized_name }}</option>
-                                    {% endfor %}
-                                </select>
+                                <label for="user-language" class="form-label input-field-margin">{{ gettext('Language') }}</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="material-icons me-3">translate</span>
+                                    <select class="form-select" id="user-language" name="language" required="required">
+                                        {% for language in languages %}
+                                            <option value="{{ language.name }}" {% if userLanguage == language.name %}selected{% endif %}>{{ language.localized_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary input-field-margin">{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>
@@ -58,7 +64,9 @@
 
                 <div class="row mt-5 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
-                        <h3 class="text-center mb-5">{{ gettext('Custom Track Fields') }}</h3>
+                        {% call macros.headline(gettext('Custom Track Fields'), '', 'fs-3') %}
+                            <span class="material-icons fs-2">drive_file_rename_outline</span>
+                        {% endcall %}
 
                         {% for trackType, customFields in customFieldsByTrackType.items() %}
                             <div class="row mt-5 mb-3">

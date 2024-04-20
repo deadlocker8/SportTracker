@@ -34,27 +34,36 @@
                         <form role="form" action="{% if goal %}{{ url_for('monthGoalsCount.editPost', goal_id=goal_id) }}{% else %}{{ url_for('monthGoalsCount.addPost') }}{% endif %}"
                               method="post">
                             <div class="mb-3">
-                                <label for="month-goal-type" class="form-label">{{ gettext('Type') }}</label>
-                                <select class="form-select" id="month-goal-type" name="type" required="required">
-                                    {% for trackType in trackTypes %}
-                                        <option value="{{ trackType.name }}" {% if goal and goal.type == trackType.name %}selected{% endif %}>{{ trackType.get_localized_name() }}</option>
-                                    {% endfor %}
-                                </select>
+                                <label for="month-goal-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="material-icons me-3">stars</span>
+                                    <select class="form-select" id="month-goal-type" name="type" required="required">
+                                        {% for trackType in trackTypes %}
+                                            <option value="{{ trackType.name }}" {% if goal and goal.type == trackType.name %}selected{% endif %}>{{ trackType.get_localized_name() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col col-6">
-                                        <label for="month-goal-year" class="form-label">{{ gettext('Year') }}</label>
-                                        <input type="number" step="1" min="2000" class="form-control"
-                                               id="month-goal-year" name="year" placeholder="YYYY"
-                                               required="required" {% if goal %}value="{{ goal.year }}"{% endif %}>
+                                        <label for="month-goal-year" class="form-label input-field-margin">{{ gettext('Year') }}</label>
+                                        <div class="d-flex align-items-center">
+                                            <span class="material-icons me-3">calendar_today</span>
+                                            <input type="number" step="1" min="2000" class="form-control"
+                                                   id="month-goal-year" name="year" placeholder="YYYY"
+                                                   required="required" {% if goal %}value="{{ goal.year }}"{% endif %}>
+                                        </div>
                                     </div>
                                     <div class="col col-6">
-                                        <label for="month-goal-month" class="form-label">{{ gettext('Month') }}</label>
-                                        <input type="number" min="1" max="12" class="form-control" id="month-goal-month"
-                                               name="month" placeholder="MM"
-                                               required="required" {% if goal %}value="{{ goal.month }}"{% endif %}>
+                                        <label for="month-goal-month" class="form-label input-field-margin">{{ gettext('Month') }}</label>
+                                        <div class="d-flex align-items-center">
+                                            <span class="material-icons me-3">calendar_month</span>
+                                            <input type="number" min="1" max="12" class="form-control" id="month-goal-month"
+                                                   name="month" placeholder="MM"
+                                                   required="required" {% if goal %}value="{{ goal.month }}"{% endif %}>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -62,21 +71,27 @@
                             <div class="mb-5">
                                 <div class="row">
                                     <div class="col col-6">
-                                        <label for="month-goal-minimum" class="form-label">{{ gettext('Minimum number of tracks') }}</label>
-                                        <input type="number" step="1" min="0" class="form-control"
-                                               id="month-goal-minimum" name="count_minimum" required="required"
-                                               {% if goal %}value="{{ goal.count_minimum }}"{% endif %}>
+                                        <label for="month-goal-minimum" class="form-label input-field-margin">{{ gettext('Minimum number of tracks') }}</label>
+                                        <div class="d-flex align-items-center">
+                                            <span class="material-icons me-3">format_list_numbered</span>
+                                            <input type="number" step="1" min="0" class="form-control"
+                                                   id="month-goal-minimum" name="count_minimum" required="required"
+                                                   {% if goal %}value="{{ goal.count_minimum }}"{% endif %}>
+                                        </div>
                                     </div>
                                     <div class="col col-6">
-                                        <label for="month-goal-perfect" class="form-label">{{ gettext('Perfect number of tracks') }}</label>
-                                        <input type="number" step="1" min="0" class="form-control"
-                                               id="month-goal-perfect" name="count_perfect" required="required"
-                                               {% if goal %}value="{{ goal.count_perfect }}"{% endif %}>
+                                        <label for="month-goal-perfect" class="form-label input-field-margin">{{ gettext('Perfect number of tracks') }}</label>
+                                        <div class="d-flex align-items-center">
+                                            <span class="material-icons me-3">format_list_numbered</span>
+                                            <input type="number" step="1" min="0" class="form-control"
+                                                   id="month-goal-perfect" name="count_perfect" required="required"
+                                                   {% if goal %}value="{{ goal.count_perfect }}"{% endif %}>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary input-field-margin">{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

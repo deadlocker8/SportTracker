@@ -52,14 +52,14 @@
                             {{ trackMacros.track_form_elevation_sum(track) }}
 
                             {% for field in customFields %}
-                                {{ macros.customFieldInput(field) }}
+                                {{ trackMacros.track_form_custom_field_input(field) }}
                             {% endfor %}
 
                             {{ trackMacros.track_form_participants(track, participants) }}
 
                             {{ trackMacros.track_form_gpx(track, track_id) }}
 
-                            <button type="submit" class="btn btn-primary mt-3">{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary mt-3 input-field-margin">{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

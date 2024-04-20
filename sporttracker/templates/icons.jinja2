@@ -7,16 +7,16 @@
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
         <style>
-            td{
+            td {
                 padding-bottom: 0.5rem;
             }
         </style>
     </head>
     <body class="bg-dark text-light">
         <div id="main" class="center-align">
-            <section class="py-5 container d-flex justify-content-around vh-100">
+            <section class="py-5 d-flex justify-content-around">
                 <div class="d-flex flex-column justify-content-between">
-                    <div>
+                    <div class="mb-5">
                         <h2>track types</h2>
                         <table>
                             <tr>
@@ -34,7 +34,7 @@
                         </table>
                     </div>
 
-                    <div>
+                    <div class="mb-5">
                         <h2>track properties</h2>
                         <table>
                             <tr>
@@ -43,7 +43,7 @@
                             </tr>
                             <tr>
                                 <td class="pe-5 fs-5">duration</td>
-                                <td class="fs-4"><span class="material-icons">timer</span></td>
+                                <td class="fs-4"><span class="material-icons-outlined">timer</span></td>
                             </tr>
                             <tr>
                                 <td class="pe-5 fs-5">speed</td>
@@ -64,8 +64,55 @@
                         </table>
                     </div>
 
-                    <div>
+                    <div class="mb-5">
+                        <h2>track form</h2>
+                        <table>
+                            <tr>
+                                <td class="pe-5 fs-5">name</td>
+                                <td class="fs-4"><span class="material-icons">edit</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">date</td>
+                                <td class="fs-4"><span class="material-icons-outlined">event</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">start time</td>
+                                <td class="fs-4"><span class="material-icons">schedule</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">distance</td>
+                                <td class="fs-4"><span class="material-icons">route</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">duration</td>
+                                <td class="fs-4"><span class="material-icons-outlined">timer</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">average heart rate</td>
+                                <td class="fs-4"><span class="material-icons">favorite_border</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">elevation sum</td>
+                                <td class="fs-4"><span class="material-icons">expand</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">custom field</td>
+                                <td class="fs-4"><span class="material-icons">drive_file_rename_outline</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">participants</td>
+                                <td class="fs-4"><span class="material-icons">group</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">gpx tracks</td>
+                                <td class="fs-4"><span class="material-icons">location_on</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
 
+                <div class="d-flex flex-column justify-content-between">
+                    <div class="mb-5">
                         <h2>gpx tracks</h2>
                         <table>
                             <tr>
@@ -83,24 +130,55 @@
                         </table>
                     </div>
 
-                    <div>
-
+                    <div class="mb-5">
                         <h2>month goals</h2>
                         <table>
                             <tr>
-                                <td class="pe-5 fs-5">moth goal distance</td>
+                                <td class="pe-5 fs-5">month goal distance</td>
                                 <td class="fs-4"><span class="material-icons">route</span></td>
                             </tr>
                             <tr>
-                                <td class="pe-5 fs-5">moth goal count</td>
+                                <td class="pe-5 fs-5">month goal count</td>
                                 <td class="fs-4"><span class="material-icons">format_list_numbered</span></td>
                             </tr>
-
                         </table>
                     </div>
-                </div>
-                <div class="d-flex flex-column justify-content-between">
-                    <div>
+
+                    <div class="mb-5">
+                        <h2>month goal form</h2>
+                        <table>
+                            <tr>
+                                <td class="pe-5 fs-5">track type</td>
+                                <td class="fs-4"><span class="material-icons">stars</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">year</td>
+                                <td class="fs-4"><span class="material-icons">calendar_today</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">month</td>
+                                <td class="fs-4"><span class="material-icons">calendar_month</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">minimum distance</td>
+                                <td class="fs-4"><span class="material-icons">route</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">perfect distance</td>
+                                <td class="fs-4"><span class="material-icons">route</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">minimum number</td>
+                                <td class="fs-4"><span class="material-icons">format_list_numbered</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">perfect number</td>
+                                <td class="fs-4"><span class="material-icons">format_list_numbered</span></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="mb-5">
                         <h2>charts</h2>
                         <table>
                             <tr>
@@ -117,8 +195,58 @@
                             </tr>
                         </table>
                     </div>
+                </div>
 
-                    <div>
+                <div class="d-flex flex-column justify-content-between">
+                    <div class="mb-5">
+                        <h2>maintenance form</h2>
+                        <table>
+                            <tr>
+                                <td class="pe-5 fs-5">maintenance</td>
+                                <td class="fs-4"><i class="fa-solid fa-wrench fa-fw"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">track type</td>
+                                <td class="fs-4"><span class="material-icons">stars</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">date</td>
+                                <td class="fs-4"><span class="material-icons">event</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">time</td>
+                                <td class="fs-4"><span class="material-icons">schedule</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">description</td>
+                                <td class="fs-4"><span class="material-icons">article</span></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="mb-5">
+                        <h2>planned tours</h2>
+                        <table>
+                            <tr>
+                                <td class="pe-5 fs-5">planned tours</td>
+                                <td class="fs-4"><i class="fa-solid fa-lightbulb fa-fw"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">track type</td>
+                                <td class="fs-4"><span class="material-icons">stars</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">name</td>
+                                <td class="fs-4"><span class="material-icons">edit</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">gpx tracks</td>
+                                <td class="fs-4"><span class="material-icons">location_on</span></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="mb-5">
                         <h2>achievements</h2>
                         <table>
                             <tr>
@@ -139,36 +267,9 @@
                             </tr>
                         </table>
                     </div>
-
-                    <div>
-                        <h2>misc</h2>
-                        <table>
-                            <tr>
-                                <td class="pe-5 fs-5">maintenance</td>
-                                <td class="fs-4"><i class="fa-solid fa-wrench fa-fw"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">planned tours</td>
-                                <td class="fs-4"><i class="fa-solid fa-route fa-fw"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">button today</td>
-                                <td class="fs-4"><i class="fa-solid fa-calendar-day fa-fw"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">button year/month chooser</td>
-                                <td class="fs-4"><i class="fa-solid fa-calendar-days fa-fw"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="pe-5 fs-5">search</td>
-                                <td class="fs-4"><i class="fa-solid fa-magnifying-glass fa-fw"></i></td>
-                            </tr>
-                        </table>
-                    </div>
-
                 </div>
                 <div class="d-flex flex-column justify-content-between">
-                    <div>
+                    <div class="mb-5">
                         <h2>navbar/headlines</h2>
                         <table>
                             <tr>
@@ -214,6 +315,47 @@
                             <tr>
                                 <td class="pe-5 fs-5">users</td>
                                 <td class="fs-4"><span class="material-icons">groups</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">custom fields</td>
+                                <td class="fs-4"><span class="material-icons">drive_file_rename_outline</span></td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+                    <div class="mb-5">
+                        <h2>settings</h2>
+                        <table>
+                            <tr>
+                                <td class="pe-5 fs-5">settings</td>
+                                <td class="fs-4"><span class="material-icons">settings</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">password</td>
+                                <td class="fs-4"><span class="material-icons">vpn_key</span></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">language</td>
+                                <td class="fs-4"><span class="material-icons">translate</span></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="mb-5">
+                        <h2>misc</h2>
+                        <table>
+                            <tr>
+                                <td class="pe-5 fs-5">button today</td>
+                                <td class="fs-4"><i class="fa-solid fa-calendar-day fa-fw"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">button year/month chooser</td>
+                                <td class="fs-4"><i class="fa-solid fa-calendar-days fa-fw"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="pe-5 fs-5">search</td>
+                                <td class="fs-4"><i class="fa-solid fa-magnifying-glass fa-fw"></i></td>
                             </tr>
                         </table>
                     </div>

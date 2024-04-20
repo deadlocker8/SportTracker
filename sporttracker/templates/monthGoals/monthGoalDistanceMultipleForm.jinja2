@@ -22,28 +22,37 @@
                     <div class="col col-11 col-md-9 mx-auto">
                         <form role="form" action="{{ url_for('monthGoalsDistance.addMultiplePost') }}"
                               method="post">
-                            <div class="mb-3">
-                                <label for="month-goal-type" class="form-label">{{ gettext('Type') }}</label>
-                                <select class="form-select" id="month-goal-type" name="type" required="required">
-                                    {% for trackType in trackTypes %}
-                                        <option value="{{ trackType.name }}" {% if goal and goal.type == trackType.name %}selected{% endif %}>{{ trackType.get_localized_name() }}</option>
-                                    {% endfor %}
-                                </select>
+                           <div class="mb-3">
+                                <label for="month-goal-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="material-icons me-3">stars</span>
+                                    <select class="form-select" id="month-goal-type" name="type" required="required">
+                                         {% for trackType in trackTypes %}
+                                            <option value="{{ trackType.name }}" {% if goal and goal.type == trackType.name %}selected{% endif %}>{{ trackType.get_localized_name() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col col-6">
-                                        <label for="month-goal-start-year" class="form-label">{{ gettext('Start Year') }}</label>
-                                        <input type="number" step="1" min="2000" class="form-control"
-                                               id="month-goal-start-year" name="start_year" placeholder="YYYY"
-                                               required="required">
+                                        <label for="month-goal-start-year" class="form-label input-field-margin">{{ gettext('Start Year') }}</label>
+                                         <div class="d-flex align-items-center">
+                                            <span class="material-icons me-3">calendar_today</span>
+                                            <input type="number" step="1" min="2000" class="form-control"
+                                                   id="month-goal-start-year" name="start_year" placeholder="YYYY"
+                                                   required="required">
+                                         </div>
                                     </div>
                                     <div class="col col-6">
-                                        <label for="month-goal-start-month" class="form-label">{{ gettext('Start Month') }}</label>
-                                        <input type="number" min="1" max="12" class="form-control" id="month-goal-start-month"
-                                               name="start_month" placeholder="MM"
-                                               required="required" >
+                                        <label for="month-goal-start-month" class="form-label input-field-margin">{{ gettext('Start Month') }}</label>
+                                         <div class="d-flex align-items-center">
+                                            <span class="material-icons me-3">calendar_month</span>
+                                            <input type="number" min="1" max="12" class="form-control" id="month-goal-start-month"
+                                                   name="start_month" placeholder="MM"
+                                                   required="required" >
+                                         </div>
                                     </div>
                                 </div>
                             </div>
@@ -51,19 +60,23 @@
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col col-6">
-                                        <label for="month-goal-end-year"
-                                               class="form-label">{{ gettext('End Year') }}</label>
-                                        <input type="number" step="1" min="2000" class="form-control"
-                                               id="month-goal-end-year" name="end_year" placeholder="YYYY"
-                                               required="required">
+                                        <label for="month-goal-end-year" class="form-label input-field-margin">{{ gettext('End Year') }}</label>
+                                        <div class="d-flex align-items-center">
+                                            <span class="material-icons me-3">calendar_today</span>
+                                            <input type="number" step="1" min="2000" class="form-control"
+                                                   id="month-goal-end-year" name="end_year" placeholder="YYYY"
+                                                   required="required">
+                                        </div>
                                     </div>
                                     <div class="col col-6">
-                                        <label for="month-goal-end-month"
-                                               class="form-label">{{ gettext('End Month') }}</label>
-                                        <input type="number" min="1" max="12" class="form-control"
-                                               id="month-goal-end-month"
-                                               name="end_month" placeholder="MM"
-                                               required="required">
+                                        <label for="month-goal-end-month" class="form-label input-field-margin">{{ gettext('End Month') }}</label>
+                                        <div class="d-flex align-items-center">
+                                            <span class="material-icons me-3">calendar_month</span>
+                                            <input type="number" min="1" max="12" class="form-control"
+                                                   id="month-goal-end-month"
+                                                   name="end_month" placeholder="MM"
+                                                   required="required">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -71,21 +84,27 @@
                             <div class="mb-5">
                                 <div class="row">
                                     <div class="col col-6">
-                                        <label for="month-goal-minimum" class="form-label">{{ gettext('Minimum Distance (in km)') }}</label>
-                                        <input type="number" step="0.01" min="0" class="form-control"
-                                               id="month-goal-minimum" name="distance_minimum" required="required"
-                                               {% if goal %}value="{{ goal.distance_minimum | round(1) }}"{% endif %}>
+                                        <label for="month-goal-minimum" class="form-label input-field-margin">{{ gettext('Minimum Distance (in km)') }}</label>
+                                        <div class="d-flex align-items-center">
+                                            <span class="material-icons me-3">route</span>
+                                            <input type="number" step="0.01" min="0" class="form-control"
+                                                   id="month-goal-minimum" name="distance_minimum" required="required"
+                                                   {% if goal %}value="{{ goal.distance_minimum | round(1) }}"{% endif %}>
+                                        </div>
                                     </div>
                                     <div class="col col-6">
-                                        <label for="month-goal-perfect" class="form-label">{{ gettext('Perfect Distance (in km)') }}</label>
-                                        <input type="number" step="0.01" min="0" class="form-control"
-                                               id="month-goal-perfect" name="distance_perfect" required="required"
-                                               {% if goal %}value="{{ goal.distance_perfect | round(1) }}"{% endif %}>
+                                        <label for="month-goal-perfect" class="form-label input-field-margin">{{ gettext('Perfect Distance (in km)') }}</label>
+                                        <div class="d-flex align-items-center">
+                                            <span class="material-icons me-3">route</span>
+                                            <input type="number" step="0.01" min="0" class="form-control"
+                                                   id="month-goal-perfect" name="distance_perfect" required="required"
+                                                   {% if goal %}value="{{ goal.distance_perfect | round(1) }}"{% endif %}>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary input-field-margin">{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

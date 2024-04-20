@@ -13,7 +13,9 @@
             <section class="py-5 text-center calendar-container">
                 <div class="row mb-3">
                     <div class="col col-12 mx-auto">
-                        <h1>{{ gettext('Calendar') }} {{ currentYear }}</h1>
+                        {% call macros.headline(gettext('Calendar') + ' ' + currentYear | string) %}
+                            <span class="material-icons fs-1">leaderboard</span>
+                        {% endcall %}
                     </div>
                 </div>
 

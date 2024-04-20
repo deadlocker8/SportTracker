@@ -188,15 +188,18 @@
 {% macro track_form_name(track, trackNames) -%}
     <div class="mb-3">
         <div class="form-group">
-            <label for="track-name" class="form-label">{{ gettext('Name') }}</label>
-            <input type="text" class="form-control" id="track-name" name="name"
-                   required="required" {% if track %}value="{{ track.name }}"{% endif %}
-                   list="list-track-names">
-            <datalist id="list-track-names">
-                {% for trackName in trackNames %}
-                    <option>{{ trackName }}</option>
-                {% endfor %}
-            </datalist>
+            <label for="track-name" class="form-label input-field-margin">{{ gettext('Name') }}</label>
+            <div class="d-flex align-items-center">
+                <span class="material-icons me-3">edit</span>
+                <input type="text" class="form-control" id="track-name" name="name"
+                       required="required" {% if track %}value="{{ track.name }}"{% endif %}
+                       list="list-track-names">
+                <datalist id="list-track-names">
+                    {% for trackName in trackNames %}
+                        <option>{{ trackName }}</option>
+                    {% endfor %}
+                </datalist>
+            </div>
         </div>
     </div>
 {%- endmacro %}
@@ -205,14 +208,20 @@
     <div class="mb-3">
         <div class="row">
             <div class="col col-6">
-                <label for="track-date" class="form-label">{{ gettext('Date') }}</label>
-                <input type="date" class="form-control" id="track-date" name="date"
-                       required="required" {% if track %}value="{{ track.date }}"{% endif %}>
+                <label for="track-date" class="form-label input-field-margin">{{ gettext('Date') }}</label>
+                <div class="d-flex align-items-center">
+                    <span class="material-icons me-3">event</span>
+                    <input type="date" class="form-control" id="track-date" name="date"
+                           required="required" {% if track %}value="{{ track.date }}"{% endif %}>
+                </div>
             </div>
             <div class="col col-6">
-                <label for="track-time" class="form-label">{{ gettext('Start Time') }}</label>
-                <input type="time" class="form-control" id="track-time" name="time"
-                       required="required" {% if track %}value="{{ track.time }}"{% endif %}>
+                <label for="track-time" class="form-label input-field-margin">{{ gettext('Start Time') }}</label>
+                <div class="d-flex align-items-center">
+                    <span class="material-icons me-3">schedule</span>
+                    <input type="time" class="form-control" id="track-time" name="time"
+                           required="required" {% if track %}value="{{ track.time }}"{% endif %}>
+                </div>
             </div>
         </div>
     </div>
@@ -220,60 +229,62 @@
 
 {% macro track_form_distance(track) -%}
     <div class="mb-3">
-        <label for="track-distance" class="form-label">{{ gettext('Distance (in km)') }}</label>
-        <input type="number" step="0.01" min="0" class="form-control" id="track-distance"
-               name="distance" required="required"
-               {% if track %}value="{{ track.distance | round(2) }}"{% endif %}>
+        <label for="track-distance" class="form-label input-field-margin">{{ gettext('Distance (in km)') }}</label>
+        <div class="d-flex align-items-center">
+            <span class="material-icons me-3">route</span>
+            <input type="number" step="0.01" min="0" class="form-control" id="track-distance"
+                   name="distance" required="required"
+                   {% if track %}value="{{ track.distance | round(2) }}"{% endif %}>
+        </div>
     </div>
 {%- endmacro %}
 
 {% macro track_form_duration(track) -%}
-    <div class="mb-3">
-        <div class="row">
-            <div class="col col-lg-2 col-sm-4">
-                <label for="track-duration-hours"
-                       class="form-label">{{ gettext('Duration') }}</label>
-                <input type="number" step="1" min="0" class="form-control"
-                       id="track-duration-hours" name="durationHours"
-                       placeholder="{{ gettext('Hours') }}"
-                       required="required"
-                       {% if track %}value="{{ track.durationHours }}"{% endif %}>
-            </div>
-            <div class="col col-lg-2 col-sm-4">
-                <label for="track-duration-minutes" class="form-label">&nbsp;</label>
-                <input type="number" step="1" min="0" max="59" class="form-control"
-                       id="track-duration-minutes" name="durationMinutes"
-                       placeholder="{{ gettext('Minutes') }}" required="required"
-                       {% if track %}value="{{ track.durationMinutes }}"{% endif %}>
-            </div>
-            <div class="col col-lg-2 col-sm-4">
-                <label for="track-duration-seconds" class="form-label">&nbsp;</label>
-                <input type="number" step="1" min="0" max="59" class="form-control"
-                       id="track-duration-seconds" name="durationSeconds"
-                       placeholder="{{ gettext('Seconds') }}" required="required"
-                       {% if track %}value="{{ track.durationSeconds }}"{% endif %}>
-            </div>
-        </div>
+    <label for="track-duration-hours" class="form-label input-field-margin">{{ gettext('Duration') }}</label>
+    <div class="mb-3 d-flex align-items-center">
+        <span class="material-icons-outlined me-3">timer</span>
+
+        <input type="number" step="1" min="0" class="form-control me-3"
+               id="track-duration-hours" name="durationHours"
+               placeholder="{{ gettext('Hours') }}"
+               required="required"
+               {% if track %}value="{{ track.durationHours }}"{% endif %}>
+
+        <label for="track-duration-minutes" class="form-label">&nbsp;</label>
+        <input type="number" step="1" min="0" max="59" class="form-control me-3"
+               id="track-duration-minutes" name="durationMinutes"
+               placeholder="{{ gettext('Minutes') }}" required="required"
+               {% if track %}value="{{ track.durationMinutes }}"{% endif %}>
+
+        <label for="track-duration-seconds" class="form-label">&nbsp;</label>
+        <input type="number" step="1" min="0" max="59" class="form-control"
+               id="track-duration-seconds" name="durationSeconds"
+               placeholder="{{ gettext('Seconds') }}" required="required"
+               {% if track %}value="{{ track.durationSeconds }}"{% endif %}>
     </div>
 {%- endmacro %}
 
 {% macro track_form_average_heart_rate(track) -%}
     <div class="mb-3">
-        <label for="track-averageHeartRate"
-               class="form-label">{{ gettext('Average Heart Rate') }}</label>
-        <input type="number" step="1" min="0" class="form-control" id="track-averageHeartRate"
-               name="averageHeartRate"
-               {% if track and track.averageHeartRate is not none %}value="{{ track.averageHeartRate }}"{% endif %}>
+        <label for="track-averageHeartRate" class="form-label input-field-margin">{{ gettext('Average Heart Rate') }}</label>
+        <div class="d-flex align-items-center">
+            <span class="material-icons me-3">favorite_border</span>
+            <input type="number" step="1" min="0" class="form-control" id="track-averageHeartRate"
+                   name="averageHeartRate"
+                   {% if track and track.averageHeartRate is not none %}value="{{ track.averageHeartRate }}"{% endif %}>
+        </div>
     </div>
 {%- endmacro %}
 
 {% macro track_form_elevation_sum(track) -%}
     <div class="mb-3">
-        <label for="track-elevationSum"
-               class="form-label">{{ gettext('Elevation Sum (in m)') }}</label>
-        <input type="number" step="1" min="0" class="form-control" id="track-elevationSum"
-               name="elevationSum"
-               {% if track and track.elevationSum is not none %}value="{{ track.elevationSum }}"{% endif %}>
+        <label for="track-elevationSum" class="form-label input-field-margin">{{ gettext('Elevation Sum (in m)') }}</label>
+        <div class="d-flex align-items-center">
+            <span class="material-icons me-3">expand</span>
+            <input type="number" step="1" min="0" class="form-control" id="track-elevationSum"
+                   name="elevationSum"
+                   {% if track and track.elevationSum is not none %}value="{{ track.elevationSum }}"{% endif %}>
+        </div>
     </div>
 {%- endmacro %}
 
@@ -283,47 +294,60 @@
 
 {% macro form_gpx(item, mapUrl, downloadUrl, deleteUrl, placeholderText, gpxFileLinkedText) -%}
     <div class="mb-3">
-        <label for="track-gpxFileName" class="form-label">{{ gettext('GPX Track') }}</label>
+        <label for="track-gpxFileName" class="form-label">
+            <div class="d-flex align-items-center">
+                <span class="material-icons me-3">location_on</span>
+                <span>{{ gettext('GPX Track') }}</span>
+            </div>
+        </label>
+
         {% set hasGpxTrack = item and item.gpxFileName is not none %}
 
-        {% if item is defined %}
-            <div class="d-flex mb-3 {% if not hasGpxTrack %}hidden{% endif %}" id="gpxControlsEnabled">
-                <span class="badge bg-success lh-lg rounded-pill d-flex align-items-center px-3">{{ gpxFileLinkedText }}</span>
-                <div id="gpxButtons" class="d-flex">
-                    <a href="{{ mapUrl }}"
-                       class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
-                       target="_blank">
-                        <span class="material-icons fs-4">map</span>
-                    </a>
-                    <a href="{{ downloadUrl }}"
-                       class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
-                       id="buttonGpxTrackDownload"
-                       target="_blank">
-                        <span class="material-icons fs-4">download</span>
-                    </a>
+        <div class="input-field-margin">
+            {% if item is defined %}
+                <div class="d-flex mb-3 {% if not hasGpxTrack %}hidden{% endif %}" id="gpxControlsEnabled">
+                    <span class="badge bg-success lh-lg rounded-pill d-flex align-items-center px-3">{{ gpxFileLinkedText }}</span>
+                    <div id="gpxButtons" class="d-flex">
+                        <a href="{{ mapUrl }}"
+                           class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
+                           target="_blank">
+                            <span class="material-icons fs-4">map</span>
+                        </a>
+                        <a href="{{ downloadUrl }}"
+                           class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
+                           id="buttonGpxTrackDownload"
+                           target="_blank">
+                            <span class="material-icons fs-4">download</span>
+                        </a>
 
-                    <button type="button" class="btn btn-danger btn-sm ms-3 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete-modal-gpx">
-                        <span class="material-icons fs-4">delete</span>
-                    </button>
+                        <button type="button" class="btn btn-danger btn-sm ms-3 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete-modal-gpx">
+                            <span class="material-icons fs-4">delete</span>
+                        </button>
 
-                    {% call macros.deleteModal(gettext('Delete GPX Track?'), gettext('Do you really want to delete this associated GPX file?'), 'gpx') %}
-                        <a data-url="{{ deleteUrl }}" class="btn btn-danger" id="buttonGpxTrackDelete" data-bs-dismiss="modal">{{ gettext('Delete') }}</a>
-                    {% endcall %}
+                        {% call macros.deleteModal(gettext('Delete GPX Track?'), gettext('Do you really want to delete this associated GPX file?'), 'gpx') %}
+                            <a data-url="{{ deleteUrl }}" class="btn btn-danger" id="buttonGpxTrackDelete" data-bs-dismiss="modal">{{ gettext('Delete') }}</a>
+                        {% endcall %}
+                    </div>
                 </div>
+            {% endif %}
+            <div class="{% if hasGpxTrack %}hidden{% endif %}" id="gpxControlsDisabled">
+                <span class="mb-3 badge bg-secondary lh-lg rounded-pill px-3">{{ placeholderText }}</span>
             </div>
-        {% endif %}
-        <div class="{% if hasGpxTrack %}hidden{% endif %}" id="gpxControlsDisabled">
-            <span class="mb-3 badge bg-secondary lh-lg rounded-pill px-3">{{ placeholderText }}</span>
+            <input class="form-control" type="file" id="track-gpxFileName" name="gpxTrack">
         </div>
-        <input class="form-control" type="file" id="track-gpxFileName" name="gpxTrack">
     </div>
 {%- endmacro %}
 
 {% macro track_form_participants(track, participants) -%}
     <div class="mb-3">
-        <label for="track-participants" class="form-label">{{ gettext('Participants') }}</label>
+        <label for="track-participants" class="form-label">
+            <div class="d-flex align-items-center">
+                <span class="material-icons me-3">group</span>
+                <span>{{ gettext('Participants') }}</span>
+            </div>
+        </label>
         {% for participant in participants %}
-            <div class="form-check">
+            <div class="form-check input-field-margin">
                 <input class="form-check-input participant-checkbox" type="checkbox" {% if track and participant.id|string in track.participants %}checked{% endif %} id="participant-{{ participant.id }}" name="participants" value="{{ participant.id }}">
                 <label class="form-check-label" for="participant-{{ participant.id }}">
                     {{ participant.name }}
@@ -341,6 +365,45 @@
                 </span>
             </div>
         {% endif %}
+    </div>
+{%- endmacro %}
+
+{% macro track_form_custom_field_input(field) -%}
+    <div class="mb-3">
+        <label for="track-{{ field.name }}" class="form-label input-field-margin">{{ field.name }}</label>
+        <div class="d-flex align-items-center">
+            <span class="material-icons me-3">drive_file_rename_outline</span>
+
+            {% if field.type.name == 'STRING' %}
+                <input type="text"
+                       class="form-control"
+                       id="track-{{ field.name }}"
+                       name="{{ field.name }}"
+                       {% if track and track.model_extra[field.name] is not none %}value="{{ track.model_extra[field.name] }}"{% endif %}
+                        {% if field.is_required %} required="required"{% endif %}
+                >
+            {% elif field.type.name == 'INTEGER' %}
+                <input type="number"
+                       step="1"
+                       min="0"
+                       class="form-control"
+                       id="track-{{ field.name }}"
+                       name="{{ field.name }}"
+                       {% if track and track.model_extra[field.name] is not none %}value="{{ track.model_extra[field.name] }}"{% endif %}
+                        {% if field.is_required %} required="required"{% endif %}
+                >
+            {% elif field.type.name == 'FLOAT' %}
+                <input type="number"
+                       step="0.01"
+                       min="0"
+                       class="form-control"
+                       id="track-{{ field.name }}"
+                       name="{{ field.name }}"
+                       {% if track and track.model_extra[field.name] is not none %}value="{{ track.model_extra[field.name] }}"{% endif %}
+                        {% if field.is_required %} required="required"{% endif %}
+                >
+            {% endif %}
+        </div>
     </div>
 {%- endmacro %}
 

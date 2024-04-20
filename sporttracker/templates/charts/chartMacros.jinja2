@@ -17,7 +17,9 @@
                 <section class="py-5 text-center container">
                     <div class="row">
                         <div class="col col-12 mx-auto">
-                            <h1>{{ gettext('Charts') }}</h1>
+                            {% call macros.headline(gettext('Charts')) %}
+    <span class="material-icons fs-1">leaderboard</span>
+{% endcall %}
                         </div>
                     </div>
 

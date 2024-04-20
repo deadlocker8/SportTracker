@@ -52,7 +52,7 @@
                             {{ trackMacros.track_form_elevation_sum(track) }}
 
                             {% for field in customFields %}
-                                {{ macros.customFieldInput(field) }}
+                                {{ trackMacros.track_form_custom_field_input(field) }}
                             {% endfor %}
 
                             {{ trackMacros.track_form_participants(track, participants) }}

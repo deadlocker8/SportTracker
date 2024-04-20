@@ -78,6 +78,10 @@ body {
     height: 3rem !important;
 }
 
+.input-field-margin {
+    margin-left: 2.5rem;
+}
+
 .debug {
     outline: 1px solid red !important;
 }
