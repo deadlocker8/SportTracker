@@ -24,7 +24,7 @@
                                 <span class="material-icons text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                             </button>
 
-                            {% call macros.deleteModal(gettext('Delete Track?'), gettext('Do you really want to delete the track "%(name)s" (ID: %(id)d)', name=track.name, id=track_id)) %}
+                            {% call macros.deleteModal(gettext('Delete Track?'), gettext('Do you really want to delete the track "%(name)s" (ID: %(id)d)?', name=track.name, id=track_id)) %}
                                 <a href="{{ url_for('tracks.delete', track_id=track_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
                             {% endcall %}
                         {% else %}
