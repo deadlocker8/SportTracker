@@ -23,10 +23,10 @@ class TestPlannedTours(SeleniumTestBaseClass):
     def __open_form(self, selenium):
         selenium.get(self.build_url('/plannedTours'))
 
-        selenium.find_element(By.TAG_NAME, 'h1').find_element(By.TAG_NAME, 'a').click()
+        selenium.find_element(By.CLASS_NAME, 'headline').find_element(By.TAG_NAME, 'a').click()
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.TAG_NAME, 'h1'), 'New Planned Tour'
+                (By.CLASS_NAME, 'headline-text'), 'New Planned Tour'
             )
         )
 
@@ -35,7 +35,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.TAG_NAME, 'h1'), 'Edit Planned Tour'
+                (By.CLASS_NAME, 'headline-text'), 'Edit Planned Tour'
             )
         )
 
@@ -61,7 +61,9 @@ class TestPlannedTours(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Planned Tours')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card')) == 1
@@ -81,7 +83,9 @@ class TestPlannedTours(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Planned Tours')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
         )
 
         self.__open_form(selenium)
@@ -89,7 +93,9 @@ class TestPlannedTours(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Planned Tours')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
         )
 
         selenium.find_elements(By.CLASS_NAME, 'quick-filter')[0].click()
@@ -109,7 +115,9 @@ class TestPlannedTours(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Planned Tours')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
         )
 
         self.__open_edit_form(selenium)
@@ -123,7 +131,9 @@ class TestPlannedTours(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button[type="submit"]').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Planned Tours')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
         )
 
         assert len(selenium.find_elements(By.CLASS_NAME, 'planned-tour-name')) == 1

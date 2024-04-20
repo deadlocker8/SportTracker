@@ -25,15 +25,19 @@ class TestTracks(SeleniumTestBaseClass):
     def __open_form(self, selenium, buttonIndex=0, expectedHeadline='New Biking Track'):
         selenium.get(self.build_url('/tracks'))
 
-        selenium.find_element(By.TAG_NAME, 'h1').find_element(By.TAG_NAME, 'a').click()
+        selenium.find_element(By.CLASS_NAME, 'headline').find_element(By.TAG_NAME, 'a').click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'New Track')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'New Track'
+            )
         )
 
         buttons = selenium.find_elements(By.CSS_SELECTOR, 'section .btn')
         buttons[buttonIndex].click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), expectedHeadline)
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), expectedHeadline
+            )
         )
 
     @staticmethod
@@ -72,7 +76,9 @@ class TestTracks(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Tracks')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+            )
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
@@ -127,7 +133,9 @@ class TestTracks(SeleniumTestBaseClass):
         self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Tracks')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+            )
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
@@ -154,7 +162,9 @@ class TestTracks(SeleniumTestBaseClass):
         self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Tracks')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+            )
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
@@ -177,7 +187,9 @@ class TestTracks(SeleniumTestBaseClass):
         self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Tracks')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+            )
         )
 
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')
@@ -209,7 +221,9 @@ class TestTracks(SeleniumTestBaseClass):
         self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Tracks')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+            )
         )
 
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')
@@ -226,7 +240,9 @@ class TestTracks(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Tracks')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+            )
         )
 
         self.__open_form(selenium, buttonIndex=1, expectedHeadline='New Running Track')
@@ -236,7 +252,9 @@ class TestTracks(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Tracks')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+            )
         )
 
         selenium.find_elements(By.CLASS_NAME, 'quick-filter')[0].click()

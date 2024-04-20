@@ -173,11 +173,11 @@
 {%- endmacro %}
 
 {% macro headline(headline, addUrl='', size='fs-1') -%}
-    <div class="{{ size }} mb-2 d-flex align-items-center justify-content-center">
+    <div class="{{ size }} mb-2 d-flex align-items-center justify-content-center headline">
         <span class="headline-icon d-flex align-items-center justify-content-center">
             {{ caller() }}
         </span>
-        <span class="ms-1 me-3">{{ headline }}</span>
+        <span class="ms-1 me-3 headline-text">{{ headline }}</span>
         {% if addUrl %}
             <a href="{{ addUrl }}" class="link-light text-decoration-none d-flex-inline align-items-center">
                 <span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span>

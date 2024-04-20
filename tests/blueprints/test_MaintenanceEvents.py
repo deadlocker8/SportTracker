@@ -23,10 +23,10 @@ class TestMaintenanceEvents(SeleniumTestBaseClass):
     def __open_form(self, selenium):
         selenium.get(self.build_url('/maintenanceEvents'))
 
-        selenium.find_element(By.TAG_NAME, 'h1').find_element(By.TAG_NAME, 'a').click()
+        selenium.find_element(By.CLASS_NAME, 'headline').find_element(By.TAG_NAME, 'a').click()
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.TAG_NAME, 'h1'), 'New Maintenance Event'
+                (By.CLASS_NAME, 'headline-text'), 'New Maintenance Event'
             )
         )
 
@@ -35,7 +35,7 @@ class TestMaintenanceEvents(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.TAG_NAME, 'h1'), 'Edit Maintenance Event'
+                (By.CLASS_NAME, 'headline-text'), 'Edit Maintenance Event'
             )
         )
 
@@ -68,7 +68,9 @@ class TestMaintenanceEvents(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Maintenance')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Maintenance'
+            )
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card')) == 1
@@ -88,7 +90,9 @@ class TestMaintenanceEvents(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Maintenance')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Maintenance'
+            )
         )
 
         self.__open_form(selenium)
@@ -96,7 +100,9 @@ class TestMaintenanceEvents(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Maintenance')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Maintenance'
+            )
         )
 
         selenium.find_elements(By.CLASS_NAME, 'quick-filter')[0].click()
@@ -116,7 +122,9 @@ class TestMaintenanceEvents(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Maintenance')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Maintenance'
+            )
         )
 
         self.__open_edit_form(selenium)
@@ -137,7 +145,9 @@ class TestMaintenanceEvents(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button[type="submit"]').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Maintenance')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Maintenance'
+            )
         )
 
         assert len(selenium.find_elements(By.CLASS_NAME, 'maintenance-event-description')) == 1

@@ -29,7 +29,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.TAG_NAME, 'h1'), 'New Custom Track Field'
+                (By.CLASS_NAME, 'headline-text'), 'New Custom Track Field'
             )
         )
 
@@ -39,7 +39,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.TAG_NAME, 'h1'), 'Edit Custom Track Field'
+                (By.CLASS_NAME, 'headline-text'), 'Edit Custom Track Field'
             )
         )
 
@@ -63,7 +63,9 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Settings')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Settings'
+            )
         )
 
         assert len(selenium.find_elements(By.XPATH, '//td[text()="String"]')) == 1
@@ -97,7 +99,9 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Settings')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Settings'
+            )
         )
 
         assert len(selenium.find_elements(By.XPATH, '//td[text()="True"]')) == 1

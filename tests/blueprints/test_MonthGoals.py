@@ -19,7 +19,7 @@ class TestMonthGoals(SeleniumTestBaseClass):
     def test_month_goals_no_goals(self, server, selenium: WebDriver):
         self.login(selenium)
         selenium.get(self.build_url('/goals'))
-        assert 'Month Goals' in selenium.find_element(By.TAG_NAME, 'h1').text
+        assert 'Month Goals' in selenium.find_element(By.CLASS_NAME, 'headline-text').text
 
 
 class TestMonthGoalsDistance(SeleniumTestBaseClass):
@@ -28,16 +28,20 @@ class TestMonthGoalsDistance(SeleniumTestBaseClass):
         selenium.get(self.build_url('/goals'))
 
         # open goal chooser
-        selenium.find_element(By.TAG_NAME, 'h1').find_element(By.TAG_NAME, 'a').click()
+        selenium.find_element(By.CLASS_NAME, 'headline').find_element(By.TAG_NAME, 'a').click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'New Month Goal')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'New Month Goal'
+            )
         )
 
         # click button to create new goal
         buttons = selenium.find_elements(By.CSS_SELECTOR, 'section .btn')
         buttons[index].click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), expectedTitle)
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), expectedTitle
+            )
         )
 
     @staticmethod
@@ -65,7 +69,9 @@ class TestMonthGoalsDistance(SeleniumTestBaseClass):
         self.__fill_and_submit_form(selenium, 2024, 2, 100, 200)
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Month Goals')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Month Goals'
+            )
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 1
@@ -80,7 +86,9 @@ class TestMonthGoalsDistance(SeleniumTestBaseClass):
         self.__fill_and_submit_multiple_form(selenium, 2023, 11, 2024, 2, 100, 200)
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Month Goals')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Month Goals'
+            )
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 3
@@ -97,16 +105,20 @@ class TestMonthGoalsCount(SeleniumTestBaseClass):
         selenium.get(self.build_url('/goals'))
 
         # open goal chooser
-        selenium.find_element(By.TAG_NAME, 'h1').find_element(By.TAG_NAME, 'a').click()
+        selenium.find_element(By.CLASS_NAME, 'headline').find_element(By.TAG_NAME, 'a').click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'New Month Goal')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'New Month Goal'
+            )
         )
 
         # click button to create new goal
         buttons = selenium.find_elements(By.CSS_SELECTOR, 'section .btn')
         buttons[index].click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), expectedTitle)
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), expectedTitle
+            )
         )
 
     @staticmethod
@@ -134,7 +146,9 @@ class TestMonthGoalsCount(SeleniumTestBaseClass):
         self.__fill_and_submit_form(selenium, 2024, 2, 100, 200)
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Month Goals')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Month Goals'
+            )
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 1
@@ -149,7 +163,9 @@ class TestMonthGoalsCount(SeleniumTestBaseClass):
         self.__fill_and_submit_multiple_form(selenium, 2023, 11, 2024, 2, 100, 200)
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Month Goals')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Month Goals'
+            )
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 3

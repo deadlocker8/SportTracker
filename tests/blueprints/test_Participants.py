@@ -24,7 +24,7 @@ class TestParticipants(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.TAG_NAME, 'h1'), 'New Participant'
+                (By.CLASS_NAME, 'headline-text'), 'New Participant'
             )
         )
 
@@ -34,7 +34,7 @@ class TestParticipants(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.TAG_NAME, 'h1'), 'Edit Participant'
+                (By.CLASS_NAME, 'headline-text'), 'Edit Participant'
             )
         )
 
@@ -52,7 +52,9 @@ class TestParticipants(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Settings')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Settings'
+            )
         )
 
         assert len(selenium.find_elements(By.XPATH, '//td[text()="John Doe"]')) == 1
@@ -76,7 +78,9 @@ class TestParticipants(SeleniumTestBaseClass):
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Settings')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Settings'
+            )
         )
 
         assert len(selenium.find_elements(By.XPATH, '//td[text()="Jane"]')) == 1
