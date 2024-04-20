@@ -48,4 +48,9 @@ def construct_blueprint():
             'about.jinja2', changelog=OrderedDict(reversed(list(changelog.items())))
         )
 
+    @general.route('/icons')
+    @login_required
+    def icons():
+        return render_template('icons.jinja2')
+
     return general
