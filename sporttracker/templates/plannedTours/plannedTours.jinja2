@@ -45,7 +45,9 @@
                                                 {{ plannedTour.name }}
                                             </div>
                                             <div class="col col-2 text-start fs-5 text-center">
-                                                {{ (plannedTour.distance / 1000) | format_decimal(2) }} km
+                                                {% if plannedTour.distance is not none %}
+                                                    {{ (plannedTour.distance / 1000) | format_decimal(2) }} km
+                                                {% endif %}
                                             </div>
                                             <div class="col col-2 text-start fs-6 text-center">
                                                 {{ plannedTour.lastEditDate | format_date() }}
