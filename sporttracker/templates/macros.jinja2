@@ -42,36 +42,36 @@
                             </li>
                         {% else %}
                             <li class="nav-item">
-                                <a class="nav-link {% if activeLink == 'tracks' %}active {% endif %}"
-                                   href="/">{{ gettext('Tracks') }}</a>
+                                <a class="nav-link d-flex align-items-center {% if activeLink == 'tracks' %}active {% endif %}"
+                                   href="/"><span class="navbar-icon"><i class="fa-solid fa-route fa-fw fs-6"></i></span>&nbsp;{{ gettext('Tracks') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {% if activeLink == 'monthGoals' %}active {% endif %}"
-                                   href="{{ url_for('monthGoals.listMonthGoals') }}">{{ gettext('Goals') }}</a>
+                                <a class="nav-link d-flex align-items-center {% if activeLink == 'monthGoals' %}active {% endif %}"
+                                   href="{{ url_for('monthGoals.listMonthGoals') }}"><span class="navbar-icon"><span class="material-icons fs-5">flag</span></span>&nbsp;{{ gettext('Goals') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {% if activeLink == 'charts' %}active {% endif %}"
-                                   href="{{ url_for('charts.chartChooser') }}">{{ gettext('Charts') }}</a>
+                                <a class="nav-link d-flex align-items-center {% if activeLink == 'charts' %}active {% endif %}"
+                                   href="{{ url_for('charts.chartChooser') }}"><span class="navbar-icon"><span class="material-icons fs-5">leaderboard</span></span>&nbsp;{{ gettext('Charts') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {% if activeLink == 'achievements' %}active {% endif %}"
-                                   href="{{ url_for('achievements.showAchievements') }}">{{ gettext('Achievements') }}</a>
+                                <a class="nav-link d-flex align-items-center {% if activeLink == 'achievements' %}active {% endif %}"
+                                   href="{{ url_for('achievements.showAchievements') }}"><span class="navbar-icon"><span class="material-icons fs-5">emoji_events</span></span>&nbsp;{{ gettext('Achievements') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {% if activeLink == 'map' %}active {% endif %}"
-                                   href="{{ url_for('maps.showAllTracksOnMap') }}">{{ gettext('Map') }}</a>
+                                <a class="nav-link d-flex align-items-center {% if activeLink == 'map' %}active {% endif %}"
+                                   href="{{ url_for('maps.showAllTracksOnMap') }}"><span class="navbar-icon"><span class="material-icons fs-5">map</span></span>&nbsp;{{ gettext('Map') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {% if activeLink == 'maintenanceEvents' %}active {% endif %}"
-                                   href="{{ url_for('maintenanceEvents.listMaintenanceEvents') }}">{{ gettext('Maintenance') }}</a>
+                                <a class="nav-link d-flex align-items-center {% if activeLink == 'maintenanceEvents' %}active {% endif %}"
+                                   href="{{ url_for('maintenanceEvents.listMaintenanceEvents') }}"><span class="navbar-icon"><i class="fa-solid fa-wrench fa-fw fs-6"></i></span>&nbsp;{{ gettext('Maintenance') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {% if activeLink == 'plannedTours' %}active {% endif %}"
-                                   href="{{ url_for('plannedTours.listPlannedTours') }}">{{ gettext('Planned Tours') }}</a>
+                                <a class="nav-link d-flex align-items-center {% if activeLink == 'plannedTours' %}active {% endif %}"
+                                   href="{{ url_for('plannedTours.listPlannedTours') }}"><span class="navbar-icon"><i class="fa-solid fa-lightbulb fa-fw fs-6"></i></span>&nbsp;{{ gettext('Planned Tours') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {% if activeLink == 'about' %}active {% endif %}"
-                                   href="{{ url_for('general.about') }}">{{ gettext('About') }}</a>
+                                <a class="nav-link d-flex align-items-center {% if activeLink == 'about' %}active {% endif %}"
+                                   href="{{ url_for('general.about') }}"><span class="navbar-icon"><span class="material-icons fs-5">info_outline</span></span>&nbsp;{{ gettext('About') }}</a>
                             </li>
                         {% endif %}
                     {% endif %}
@@ -85,8 +85,8 @@
                     <div class="d-flex align-items-center justify-content-between mt-3 mt-sm-0">
                         <div class="text-white mx-md-3 me-3 my-2 my-md-0">
                             <a href="{{ url_for('settings.settingsShow') }}"
-                               class="link-light text-decoration-none d-flex align-items-center"><span
-                                    class="material-icons">person</span> {{ current_user.username|capitalize }}</a>
+                               class="link-light text-decoration-none d-flex align-items-center">
+                                <span class="navbar-icon"><span class="material-icons fs-4">person</span></span>&nbsp;{{ current_user.username|capitalize }}</a>
                         </div>
                         <a href="{{ url_for('authentication.logout') }}" class="btn btn-danger">Logout</a>
                     </div>

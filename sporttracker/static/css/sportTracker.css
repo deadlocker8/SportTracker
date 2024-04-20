@@ -65,6 +65,14 @@ body {
     margin-left: -10px;
 }
 
+.navbar-icon {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .debug {
     outline: 1px solid red !important;
 }
