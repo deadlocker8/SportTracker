@@ -20,8 +20,8 @@
                             {% call macros.headline(gettext('Edit Biking Track')) %}
                                 <span class="material-icons fs-1">directions_bike</span>
                             {% endcall %}
-                            <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
-                                {{ gettext('Delete') }}
+                            <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                                <span class="material-icons text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                             </button>
 
                             {% call macros.deleteModal(gettext('Delete Track?'), gettext('Do you really want to delete the track "%(name)s" (ID: %(id)d)', name=track.name, id=track_id)) %}
@@ -63,7 +63,7 @@
 
                             {{ trackMacros.track_form_gpx(track, track_id) }}
 
-                            <button type="submit" class="btn btn-primary mt-3 input-field-margin">{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

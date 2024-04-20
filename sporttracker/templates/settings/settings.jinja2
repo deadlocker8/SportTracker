@@ -20,7 +20,7 @@
                     </div>
                 </div>
 
-                <div class="row mt-5 text-start">
+                <div class="row mt-3 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
                         {% if errorMessage %}
                             <div class="alert alert-danger" role="alert">
@@ -38,7 +38,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary input-field-margin">{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
 
                         <form role="form" action="{{ url_for('settings.editSelfLanguagePost') }}" method="post"
@@ -55,7 +55,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary input-field-margin">{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>
@@ -186,7 +186,7 @@
                                 </div>
                             {% endfor %}
 
-                            <button type="submit" class="btn btn-primary mt-4">{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary mt-4 d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

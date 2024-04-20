@@ -18,8 +18,8 @@
                             {% call macros.headline(gettext('Edit Maintenance Event')) %}
                                 <i class="fa-solid fa-wrench fa-fw fs-2"></i>
                             {% endcall %}
-                            <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
-                                {{ gettext('Delete') }}
+                            <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                                <span class="material-icons text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                             </button>
 
                             {% call macros.deleteModal(gettext('Delete Maintenance Event?'), gettext('Do you really want to delete this maintenance event?')) %}
@@ -71,7 +71,7 @@
                                 </div>
                             </div>
 
-                            <div class="mb-5">
+                            <div class="mb-3">
                                 <div class="form-group">
                                     <label for="maintenance-event-description" class="form-label input-field-margin">{{ gettext('Description') }}</label>
                                     <div class="d-flex align-items-center">
@@ -83,7 +83,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary input-field-margin">{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>
