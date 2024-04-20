@@ -5,6 +5,7 @@
 - add: add icon for each input field
 - add: add icon for each button
 - fix: debug log messages for all CRUD methods
+- chore: update dependencies
 
 # 1.17.0
 - add: it is now possible to track maintenance events for each sport type
