@@ -369,15 +369,16 @@
 {%- endmacro %}
 
 {% macro track_form_custom_field_input(field) -%}
+    {% set escapedName=field.get_escaped_name() %}
     <div class="mb-3">
-        <label for="track-{{ field.name }}" class="form-label input-field-margin">{{ field.name }}</label>
+        <label for="track-{{ escapedName }}" class="form-label input-field-margin">{{ field.name }}</label>
         <div class="d-flex align-items-center">
             <span class="material-icons me-3">drive_file_rename_outline</span>
 
             {% if field.type.name == 'STRING' %}
                 <input type="text"
                        class="form-control"
-                       id="track-{{ field.name }}"
+                       id="track-{{ escapedName }}"
                        name="{{ field.name }}"
                        {% if track and track.model_extra[field.name] is not none %}value="{{ track.model_extra[field.name] }}"{% endif %}
                         {% if field.is_required %} required="required"{% endif %}
@@ -387,7 +388,7 @@
                        step="1"
                        min="0"
                        class="form-control"
-                       id="track-{{ field.name }}"
+                       id="track-{{ escapedName }}"
                        name="{{ field.name }}"
                        {% if track and track.model_extra[field.name] is not none %}value="{{ track.model_extra[field.name] }}"{% endif %}
                         {% if field.is_required %} required="required"{% endif %}
@@ -397,7 +398,7 @@
                        step="0.01"
                        min="0"
                        class="form-control"
-                       id="track-{{ field.name }}"
+                       id="track-{{ escapedName }}"
                        name="{{ field.name }}"
                        {% if track and track.model_extra[field.name] is not none %}value="{{ track.model_extra[field.name] }}"{% endif %}
                         {% if field.is_required %} required="required"{% endif %}

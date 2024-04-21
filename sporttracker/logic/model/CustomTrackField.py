@@ -43,6 +43,9 @@ class CustomTrackField(db.Model):  # type: ignore[name-defined]
     is_required: Mapped[bool] = mapped_column(Boolean, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+    def get_escaped_name(self):
+        return ''.join([c if c.isalnum() else '_' for c in str(self.name)])
+
     def __repr__(self):
         return (
             f'CustomTrackField('
