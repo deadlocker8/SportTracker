@@ -3,14 +3,20 @@
 {% macro materialize_icon(name, iconName, outlined=false) -%}
     <tr data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{{ iconName }}">
         <td class="pe-5 fs-5">{{ name }}</td>
-        <td class="fs-4"><span class="material-icons{% if outlined %}-outlined{% endif %}">{{ iconName }}</span></td>
+        <td class="fs-4 icon d-flex align-items-center" data-icon="{{ iconName }}">
+            <span class="material-icons{% if outlined %}-outlined{% endif %}">{{ iconName }}</span>
+            <span class="count fs-5 ms-2">&nbsp;&nbsp;</span>
+        </td>
     </tr>
 {%- endmacro %}
 
 {% macro fontawesome_icon(name, iconName) -%}
     <tr data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{{ iconName }}">
         <td class="pe-5 fs-5 text-primary">{{ name }}</td>
-        <td class="fs-4"><i class="fa-solid {{ iconName }} fa-fw"></i></td>
+        <td class="fs-4 icon d-flex align-items-center" data-icon="{{ iconName }}">
+            <i class="fa-solid {{ iconName }} fa-fw"></i>
+            <span class="count fs-5 ms-2">&nbsp;&nbsp;</span>
+        </td>
     </tr>
 {%- endmacro %}
 
@@ -150,6 +156,8 @@
                         {{ fontawesome_icon('button today', 'fa-calendar-day') }}
                         {{ fontawesome_icon('button year/month chooser', 'fa-calendar-days') }}
                         {{ fontawesome_icon('search', 'fa-magnifying-glass') }}
+                        {{ materialize_icon('save', 'save') }}
+                        {{ materialize_icon('delete', 'delete') }}
                     {% endcall %}
 
                     {% call group('navbar/headlines') %}
@@ -176,7 +184,32 @@
             const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
             const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl, {
                 container: 'body'
-            }))
+            }));
+
+            const icons = document.querySelectorAll('.icon');
+            for(let i = 0; i < icons.length; i++)
+            {
+                let icon = icons[i];
+                icon.addEventListener('mouseover', function()
+                {
+                    let iconName = icon.dataset.icon;
+                    let matchingIcons = document.querySelectorAll('.icon[data-icon="' + iconName + '"');
+                    icon.querySelector('.count').innerHTML = '' + matchingIcons.length + 'x';
+
+                    for(let j = 0; j < matchingIcons.length; j++)
+                    {
+                        matchingIcons[j].classList.toggle('text-danger', true)
+                    }
+                });
+                icon.addEventListener('mouseout', function()
+                {
+                    for(let j = 0; j < icons.length; j++)
+                    {
+                        icons[j].classList.toggle('text-danger', false)
+                        icons[j].querySelector('.count').innerHTML = '&nbsp;&nbsp;';
+                    }
+                });
+            }
         </script>
     </body>
 </html>
