@@ -43,6 +43,7 @@ Tracked data is visualized in charts, e.g.:
 - Duration per Track
 - etc.
 
+Example charts:
 ![](screenshots/chart_calendar.png)
 ![](screenshots/chart_duration_per_track.png)
 ![](screenshots/chart_distance_per_month.png)
@@ -56,6 +57,12 @@ The achievement page shows aggregated information about all your tracks.
 Record your maintenance events for each sport type.
 
 ![](screenshots/maintenance.png)
+
+### Planned Tours
+Save your planned tours for each sport type and view them on a map.
+
+
+![](screenshots/planned_tours.png)
 
 ### Available languages
 - German
