@@ -59,21 +59,29 @@
     {% endif %}
 {%- endmacro %}
 
-{%  macro track_type_icon(trackType) -%}
+{%  macro track_type_icon_non_responsive(trackType, classes='') -%}
     {% if trackType.is_font_awesome_icon %}
-        <i class="d-none d-lg-block fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }}"></i>
-        <i class="d-lg-none fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ trackType.background_color }}"></i>
+        <i class="d-inline-block fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}"></i>
     {% else %}
-        <span class="d-none d-lg-block material-icons rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }}">{{ trackType.icon }}</span>
-        <span class="d-lg-none material-icons rounded-circle fs-3 p-2 text-dark {{ trackType.background_color }}">{{ trackType.icon }}</span>
+        <span class="d-inline-block material-icons rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}">{{ trackType.icon }}</span>
     {% endif %}
 {%- endmacro %}
 
-{%  macro track_type_icon_small(trackType, fontSize='fs-2') -%}
+{%  macro track_type_icon(trackType, classes='') -%}
     {% if trackType.is_font_awesome_icon %}
-        <i class="fa-solid {{ trackType.icon }} fa-fw rounded-circle {{ fontSize }} p-2 text-dark {{ trackType.background_color }}"></i>
+        <i class="d-none d-lg-inline-block fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}"></i>
+        <i class="d-lg-none fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ trackType.background_color }} {{ classes }}"></i>
     {% else %}
-        <span class="material-icons rounded-circle {{ fontSize }} p-2 text-dark {{ trackType.background_color }}">{{ trackType.icon }}</span>
+        <span class="d-none d-lg-inline-block material-icons rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}">{{ trackType.icon }}</span>
+        <span class="d-lg-none material-icons rounded-circle fs-3 p-2 text-dark {{ trackType.background_color }} {{ classes }}">{{ trackType.icon }}</span>
+    {% endif %}
+{%- endmacro %}
+
+{%  macro track_type_icon_small(trackType, fontSize='fs-2', classes='', backgroundColorOverride='') -%}
+    {% if trackType.is_font_awesome_icon %}
+        <i class="fa-solid {{ trackType.icon }} fa-fw rounded-circle {{ fontSize }} p-2 text-dark {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} {{ classes }}"></i>
+    {% else %}
+        <span class="material-icons rounded-circle {{ fontSize }} p-2 text-dark {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} {{ classes }}">{{ trackType.icon }}</span>
     {% endif %}
 {%- endmacro %}
 

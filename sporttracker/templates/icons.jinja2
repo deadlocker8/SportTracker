@@ -20,6 +20,16 @@
     </tr>
 {%- endmacro %}
 
+{% macro easter_egg_icon(name, iconName) -%}
+    <tr data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{{ iconName }}">
+        <td class="pe-5 fs-5">{{ name }}</td>
+        <td class="fs-4 icon d-flex align-items-center" data-icon="{{ iconName }}">
+            <img src="{{ url_for('static', filename="images/easterEggs/" + iconName + ".svg") }}" style="height: 1.4rem; widht: 1.4rem; filter: invert()"/>
+            <span class="count fs-5 ms-2">&nbsp;&nbsp;</span>
+        </td>
+    </tr>
+{%- endmacro %}
+
 {% macro group(name) -%}
     <div class="mb-5">
         <h2>{{ name }}</h2>
@@ -53,6 +63,9 @@
                         {{ materialize_icon('biking', 'directions_bike') }}
                         {{ materialize_icon('running', 'directions_run') }}
                         {{ materialize_icon('hiking', 'hiking') }}
+                        {{ easter_egg_icon('biking easter egg', 'biking_easter_egg') }}
+                        {{ easter_egg_icon('running easter egg', 'running_easter_egg') }}
+                        {{ easter_egg_icon('hiking easter egg', 'hiking_easter_egg') }}
                     {% endcall %}
 
                     {% call group('track properties') %}

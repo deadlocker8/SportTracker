@@ -113,6 +113,7 @@ class SportTracker(FlaskBaseApp):
             return {
                 'versionName': self._version['name'],
                 'trackTypes': [x for x in TrackType],
+                'trackTypesByName': {x.name: x for x in TrackType},
                 'languages': [x for x in Language],
                 'customTrackFieldTypes': [x for x in CustomTrackFieldType],
             }

@@ -13,6 +13,8 @@
 {%- endmacro %}
 
 {% macro render_month_goal_distance_summary_card_large(goalSummary) -%}
+    {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+
     <div class="row py-3 d-none d-lg-block">
         <div class="col col-xxl-8 col-lg-10 col-sm-12 mx-auto px-xxl-5 px-xl-4 px-lg-3">
             <a href="{{ url_for('monthGoalsDistance.edit', goal_id=goalSummary.id) }}" class="text-decoration-none">
@@ -20,11 +22,7 @@
                     <div class="row g-0 d-flex align-items-center p-2">
                         <div class="col col-2 d-flex align-items-center justify-content-center">
                             <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
-                            {% if goalSummary.type.is_font_awesome_icon %}
-                                <i class="fa-solid {{ goalSummary.type.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ goalSummary.type.background_color }}"></i>
-                            {% else %}
-                                <span class="material-icons rounded-circle fs-3 p-2 text-dark {{ goalSummary.type.background_color }}">{{ goalSummary.type.icon }}</span>
-                            {% endif %}
+                            {{ trackMacros.track_type_icon_small(goalSummary.type, fontSize='fs-3') }}
                         </div>
                         <div class="col col-3 text-start fs-4">
                             {{ goalSummary.name }}
@@ -76,6 +74,8 @@
 {%- endmacro %}
 
 {% macro render_month_goal_count_summary_card_large(goalSummary) -%}
+    {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+
     <div class="row py-3 d-none d-lg-block">
         <div class="col col-xxl-8 col-lg-10 col-sm-12 mx-auto px-xxl-5 px-xl-4 px-lg-3">
             <a href="{{ url_for('monthGoalsCount.edit', goal_id=goalSummary.id) }}" class="text-decoration-none">
@@ -83,11 +83,7 @@
                     <div class="row g-0 d-flex align-items-center p-2">
                         <div class="col col-2 d-flex align-items-center justify-content-center">
                             <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
-                            {% if goalSummary.type.is_font_awesome_icon %}
-                                <i class="fa-solid {{ goalSummary.type.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ goalSummary.type.background_color }}"></i>
-                            {% else %}
-                                <span class="material-icons rounded-circle fs-3 p-2 text-dark {{ goalSummary.type.background_color }}">{{ goalSummary.type.icon }}</span>
-                            {% endif %}
+                           {{ trackMacros.track_type_icon_small(goalSummary.type, fontSize='fs-3') }}
                         </div>
                         <div class="col col-3 text-start fs-4">
                             {{ goalSummary.name }}

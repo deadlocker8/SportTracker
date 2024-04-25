@@ -9,6 +9,7 @@
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('charts') }}
+        {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
@@ -28,11 +29,7 @@
                             <div class="row mt-5 mb-3">
                                 <div class="col col-12 mx-auto">
                                     <h3 class="d-flex align-items-center justify-content-center">
-                                        {% if trackType.is_font_awesome_icon %}
-                                            <i class="fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-2 p-2 text-dark {{ trackType.background_color }} me-3"></i>
-                                        {% else %}
-                                            <span class="material-icons rounded-circle fs-2 p-2 text-dark {{ trackType.background_color }} me-3">{{ trackType.icon }}</span>
-                                        {% endif %}
+                                        {{ trackMacros.track_type_icon_small(trackType, classes='me-3') }}
                                         <span class="me-3">{{ trackType.get_localized_name() }}</span>
                                     </h3>
                                 </div>

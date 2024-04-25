@@ -9,6 +9,7 @@
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('plannedTours') }}
+        {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
@@ -33,11 +34,7 @@
                                         <div class="row g-0 d-flex align-items-center p-2">
                                             <div class="col col-4 col-md-2 d-flex align-items-center">
                                                 <i class="fa-solid fa-lightbulb fa-fw fs-3 p-2 text-secondary me-3"></i>
-                                                {% if plannedTour.type.is_font_awesome_icon %}
-                                                    <i class="fa-solid {{ plannedTour.type.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ plannedTour.type.background_color }}"></i>
-                                                {% else %}
-                                                    <span class="material-icons rounded-circle fs-3 p-2 text-dark {{ plannedTour.type.background_color }}">{{ plannedTour.type.icon }}</span>
-                                                {% endif %}
+                                                {{ trackMacros.track_type_icon_small(plannedTour.type, fontSize='fs-3') }}
                                             </div>
                                             <div class="col col-4 col-md-6 text-start fs-5 text-truncate planned-tour-name">
                                                 {{ plannedTour.name }}

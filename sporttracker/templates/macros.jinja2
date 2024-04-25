@@ -146,11 +146,8 @@
         {% set backgroundColor='bg-secondary' %}
     {% endif %}
 
-    {% if trackType.is_font_awesome_icon %}
-        <i class="fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-4 p-2 text-dark {{ backgroundColor }}"></i>
-    {% else %}
-        <span class="material-icons rounded-circle fs-4 p-2 text-dark {{ backgroundColor }}">{{ trackType.icon }}</span>
-    {% endif %}
+    {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+    {{ trackMacros.track_type_icon_small(trackType, fontSize='fs-4', backgroundColorOverride=backgroundColor) }}
 {%- endmacro %}
 
 {% macro deleteModal(title, text, idSuffix='0') -%}

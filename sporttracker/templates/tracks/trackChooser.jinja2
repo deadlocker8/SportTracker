@@ -9,6 +9,7 @@
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('tracks') }}
+        {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
@@ -24,21 +25,21 @@
                     <div class="col col-12 col-md-6 mb-5">
                         <a href="{{ url_for('tracks.addType', track_type='BIKING') }}"
                            class="btn btn-link text-decoration-none">
-                            <div class="material-icons rounded-circle fs-1 p-3 text-dark bg-warning mb-3">directions_bike</div>
+                            {{ trackMacros.track_type_icon_non_responsive(trackTypesByName['BIKING'], classes='mb-3') }}
                             <div class="fs-3 text-light">{{ gettext('New Biking Track') }}</div>
                         </a>
                     </div>
                     <div class="col col-12 col-md-6 mb-5">
                         <a href="{{ url_for('tracks.addType', track_type='RUNNING') }}"
                            class="btn btn-link text-decoration-none">
-                            <div class="material-icons rounded-circle fs-1 p-3 text-dark bg-info mb-3">directions_run</div>
+                            {{ trackMacros.track_type_icon_non_responsive(trackTypesByName['RUNNING'], classes='mb-3') }}
                             <div class="fs-3 text-light">{{ gettext('New Running Track') }}</div>
                         </a>
                     </div>
                     <div class="col col-12 col-md-6 mb-5">
                         <a href="{{ url_for('tracks.addType', track_type='HIKING') }}"
                            class="btn btn-link text-decoration-none">
-                            <i class="fa-solid fa-person-hiking fa-fw rounded-circle fs-1 p-3 text-dark mb-3 fa-person-hiking bg-green"></i>
+                            {{ trackMacros.track_type_icon_non_responsive(trackTypesByName['HIKING'], classes='mb-3') }}
                             <div class="fs-3 text-light">{{ gettext('New Hiking Track') }}</div>
                         </a>
                     </div>
