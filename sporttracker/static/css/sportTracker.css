@@ -6,9 +6,9 @@ body {
 }
 
 .progress {
-  background-color: #AAAAAA;
-  -webkit-box-shadow: none;
-  box-shadow: none;
+    background-color: #AAAAAA;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 
 #map {
@@ -41,16 +41,16 @@ body {
 }
 
 .btn-available-year {
-  color: white !important;
-  background-color: transparent !important;
-  border-color: var(--bs-secondary) !important;
+    color: white !important;
+    background-color: transparent !important;
+    border-color: var(--bs-secondary) !important;
 }
 
 
 .btn-check:checked + .btn-available-year {
-  color: white !important;
-  background-color: var(--bs-primary) !important;
-  border-color: var(--bs-primary) !important;
+    color: white !important;
+    background-color: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
 }
 
 .no-margin-bottom {
