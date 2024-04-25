@@ -82,6 +82,26 @@ body {
     margin-left: 2.5rem;
 }
 
+.track-type-icon-easter-egg.fs-1 {
+    height: 2.5rem;
+    width: 2.5rem;
+}
+
+.track-type-icon-easter-egg.fs-2 {
+    height: 2rem;
+    width: 2rem;
+}
+
+.track-type-icon-easter-egg.fs-3 {
+    height: 1.75rem;
+    width: 1.75rem;
+}
+
+.track-type-icon-easter-egg.fs-4 {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

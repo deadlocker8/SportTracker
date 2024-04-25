@@ -60,7 +60,11 @@
 {%- endmacro %}
 
 {%  macro track_type_icon_non_responsive(trackType, classes='') -%}
-    {% if trackType.is_font_awesome_icon %}
+    {% if trackType.is_easter_egg_activated() %}
+        <div class="d-inline-block rounded-circle p-3 {{ trackType.background_color }} {{ classes }}">
+            <img class="track-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + trackType.name.lower() + "_easter_egg.svg") }}"/>
+        </div>
+    {% elif trackType.is_font_awesome_icon %}
         <i class="d-inline-block fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}"></i>
     {% else %}
         <span class="d-inline-block material-icons rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}">{{ trackType.icon }}</span>
@@ -68,7 +72,14 @@
 {%- endmacro %}
 
 {%  macro track_type_icon(trackType, classes='') -%}
-    {% if trackType.is_font_awesome_icon %}
+    {% if trackType.is_easter_egg_activated() %}
+        <div class="d-none d-lg-inline-block rounded-circle p-3 {{ trackType.background_color }} {{ classes }}">
+            <img class="track-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + trackType.name.lower() + "_easter_egg.svg") }}"/>
+        </div>
+        <div class="d-lg-none d-inline-block rounded-circle p-2 {{ trackType.background_color }} {{ classes }}">
+            <img class="track-type-icon-easter-egg fs-2" src="{{ url_for('static', filename="images/easterEggs/" + trackType.name.lower() + "_easter_egg.svg") }}"/>
+        </div>
+    {% elif trackType.is_font_awesome_icon %}
         <i class="d-none d-lg-inline-block fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}"></i>
         <i class="d-lg-none fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ trackType.background_color }} {{ classes }}"></i>
     {% else %}
@@ -78,7 +89,11 @@
 {%- endmacro %}
 
 {%  macro track_type_icon_small(trackType, fontSize='fs-2', classes='', backgroundColorOverride='') -%}
-    {% if trackType.is_font_awesome_icon %}
+    {% if trackType.is_easter_egg_activated() %}
+        <div class="rounded-circle p-2 {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} d-flex align-items-center {{ classes }}">
+            <img class="track-type-icon-easter-egg {{ fontSize }}" src="{{ url_for('static', filename="images/easterEggs/" + trackType.name.lower() + "_easter_egg.svg") }}"/>
+        </div>
+    {% elif trackType.is_font_awesome_icon %}
         <i class="fa-solid {{ trackType.icon }} fa-fw rounded-circle {{ fontSize }} p-2 text-dark {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} {{ classes }}"></i>
     {% else %}
         <span class="material-icons rounded-circle {{ fontSize }} p-2 text-dark {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} {{ classes }}">{{ trackType.icon }}</span>

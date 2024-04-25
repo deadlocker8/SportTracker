@@ -60,6 +60,10 @@ class TrackType(enum.Enum):
 
         raise ValueError(f'Could not get localized name for unsupported TrackType: {self}')
 
+    def is_easter_egg_activated(self) -> bool:
+        now = datetime.now()
+        return now.month == 4 and now.day == 1
+
 
 class Track(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
