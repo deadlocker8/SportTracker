@@ -17,7 +17,7 @@ from sporttracker.logic.model.db import db
 class TrackType(enum.Enum):
     BIKING = 'BIKING', 'directions_bike', False, 'bg-warning', '#FFC107', 'border-warning', True, 0
     RUNNING = 'RUNNING', 'directions_run', False, 'bg-info', '#0DCAF0', 'border-info', False, 1
-    HIKING = 'HIKING', 'fa-person-hiking', True, 'bg-green', '#619B8A', 'border-green', True, 2
+    HIKING = 'HIKING', 'hiking', False, 'bg-green', '#619B8A', 'border-green', True, 2
 
     icon: str
     is_font_awesome_icon: bool
