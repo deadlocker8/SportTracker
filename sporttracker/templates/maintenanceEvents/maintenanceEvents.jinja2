@@ -39,17 +39,14 @@
                                                 <i class="fa-solid fa-wrench fa-fw fs-3 p-2 text-secondary me-3"></i>
                                                 {{ trackMacros.track_type_icon_small(maintenanceEvent.type, fontSize='fs-3') }}
                                             </div>
-                                            <div class="col col-6 col-md-3 col-lg-2 text-start fs-5">
-                                                {{ maintenanceEvent.eventDate | format_date() }}
+                                            <div class="col col-6 col-md-2 text-start fs-5 d-flex flex-column">
+                                                <div>{{ maintenanceEvent.eventDate | format_date() }}</div>
+                                                <div class="text-truncate maintenance-event-description d-md-none">{{ maintenanceEvent.description }}</div>
                                             </div>
-                                            <div class="col col-2 col-md-2 col-lg-2 text-start fs-6 text-center d-md-none">
-                                                {{ (maintenanceEvent.distanceSinceEvent // 1000) }} km
-                                                <div class="fw-light">since event</div>
-                                            </div>
-                                            <div class="col col-12 col-md-5 col-lg-6 text-start fs-5 text-truncate maintenance-event-description">
+                                            <div class="col col-md-6 text-start fs-5 text-truncate maintenance-event-description d-none d-md-block">
                                                 {{ maintenanceEvent.description }}
                                             </div>
-                                            <div class="col col-2 col-md-2 col-lg-2 text-start fs-6 text-center d-none d-md-inline">
+                                            <div class="col col-2 col-md-2 text-start fs-6 text-center">
                                                 {{ (maintenanceEvent.distanceSinceEvent // 1000) }} km
                                                 <div class="fw-light">{{ gettext('since event') }}</div>
                                             </div>
