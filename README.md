@@ -31,10 +31,10 @@ The current status of each month goal is visualized via progress bars.
 A GPX recoding can be attached to every single track. The GPX recordings can be viewed on a map.
 
 View all gpx tracks on a map:
-![](screenshots/map_all.png)
+![](screenshots/map_all.jpg)
 
 View a single gpx track on a map, with additional information (e.g. track line is colored according to speed):
-![](screenshots/map_single.png)
+![](screenshots/map_single.jpg)
 
 ### Charts
 Tracked data is visualized in charts, e.g.:
