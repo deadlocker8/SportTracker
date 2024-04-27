@@ -43,14 +43,8 @@
                                 </a>
                             </li>
                         </ul>
-                        <div class="d-flex align-items-center justify-content-between mt-3 mt-sm-0">
-                            <div class="text-white mx-md-3 me-3 my-2 my-md-0">
-                                <div class="d-flex align-items-center">
-                                    <span class="navbar-icon"><span class="material-icons fs-4">person</span></span>&nbsp;{{ current_user.username|capitalize }}
-                                </div>
-                            </div>
-                            <a href="{{ url_for('authentication.logout') }}" class="btn btn-danger d-flex align-items-center mx-auto"><span class="material-icons text-light fs-5">logout</span>&nbsp;{{ gettext('Logout') }}</a>
-                        </div>
+
+                        {{ navbar_user(false) }}
                     {% else %}
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
@@ -95,12 +89,6 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center {% if activeLink == 'settings' %}active {% endif %}"
-                                   href="{{ url_for('settings.settingsShow') }}"><span class="navbar-icon"><span
-                                        class="material-icons fs-5">settings</span></span>&nbsp;{{ gettext('Settings') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center {% if activeLink == 'about' %}active {% endif %}"
                                    href="{{ url_for('general.about') }}"><span class="navbar-icon"><span
                                         class="material-icons fs-5">info_outline</span></span>&nbsp;{{ gettext('About') }}
@@ -114,19 +102,46 @@
                                    name="searchText" value="{% if searchText %}{{ searchText }}{% endif %}">
                         </form>
 
-                        <div class="d-flex align-items-center justify-content-between mt-3 mt-sm-0">
-                            <div class="text-white mx-md-3 me-3 my-2 my-md-0">
-                                <div class="d-flex align-items-center">
-                                    <span class="navbar-icon"><span class="material-icons fs-4">person</span></span>&nbsp;{{ current_user.username|capitalize }}
-                                </div>
-                            </div>
-                            <a href="{{ url_for('authentication.logout') }}" class="btn btn-danger d-flex align-items-center mx-auto"><span class="material-icons text-light fs-5">logout</span>&nbsp;{{ gettext('Logout') }}</a>
-                        </div>
+                        {{ navbar_user() }}
                     {% endif %}
                 {% endif %}
             </div>
         </div>
     </nav>
+{%- endmacro %}
+
+{% macro navbar_user(showSettings=true) -%}
+    <div class="dropdown" data-bs-theme="dark">
+        <a class="nav-link dropdown-toggle d-flex align-items-center justify-content-start text-white mx-md-3 me-3 mt-3 mb-2 my-md-0"
+           href="#" role="button" data-bs-toggle="dropdown">
+            <div class="d-flex align-items-center">
+                <span class="navbar-icon">
+                    <span class="material-icons fs-4">person</span>
+                </span>&nbsp;{{ current_user.username|capitalize }}
+            </div>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+            {% if showSettings %}
+                <li>
+                    <a class="dropdown-item  d-flex align-items-center justify-content-center"
+                       href="{{ url_for('settings.settingsShow') }}">
+                        <span class="navbar-icon">
+                            <span class="material-icons fs-5">settings</span>
+                        </span>&nbsp;{{ gettext('Settings') }}
+                    </a>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+            {% endif %}
+            <li>
+                <div class="dropdown-item">
+                    <a href="{{ url_for('authentication.logout') }}" class="btn btn-danger d-flex align-items-center">
+                        <span class="material-icons text-light fs-5">logout</span>&nbsp;{{ gettext('Logout') }}
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
 {%- endmacro %}
 
 {% macro track_type_quick_filter(redirectUrl) -%}
