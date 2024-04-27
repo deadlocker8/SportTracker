@@ -356,7 +356,7 @@
             <div class="{% if hasGpxTrack %}hidden{% endif %}" id="gpxControlsDisabled">
                 <span class="mb-3 badge bg-secondary lh-lg rounded-pill px-3">{{ placeholderText }}</span>
             </div>
-            <input class="form-control" type="file" id="track-gpxFileName" name="gpxTrack">
+            <input class="form-control" type="file" id="track-gpxFileName" name="gpxTrack" accept=".gpx">
         </div>
     </div>
 {%- endmacro %}
