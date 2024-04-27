@@ -2,7 +2,7 @@ import enum
 
 from flask_babel import gettext
 from flask_bcrypt import Bcrypt
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
@@ -40,8 +40,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
             f'id: {self.id}, '
             f'username: {self.username}, '
             f'isAdmin: {self.isAdmin}, '
-            f'language: {self.language}, '
-            f'user_id: {self.user_id})'
+            f'language: {self.language})'
         )
 
 
@@ -90,3 +89,14 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
     db.session.commit()
 
     return user
+
+
+def get_users_by_ids(ids: list[int]) -> list[User]:
+    return User.query.filter(User.id.in_(ids)).all()
+
+
+def get_all_users_except_self_and_admin() -> list[User]:
+    return (User.query
+            .filter(User.id != current_user.id)
+            .filter(User.isAdmin.is_(False))
+            .all())
