@@ -6,6 +6,7 @@
 - fix: responsiveness for maintenance events page
 - fix: responsiveness for track form page
 - fix: responsiveness for gpx form
+- fix: truncate long usernames
 
 # 1.18.0
 - add: maintenance events: show distance since event

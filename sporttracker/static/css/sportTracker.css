@@ -102,6 +102,10 @@ body {
     width: 1.5rem;
 }
 
+.user-name-max-width {
+    max-width: 20ch;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

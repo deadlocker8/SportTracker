@@ -152,7 +152,7 @@
             <div class="d-flex align-items-center">
                 <span class="navbar-icon">
                     <span class="material-icons fs-4">person</span>
-                </span>&nbsp;{{ current_user.username|capitalize }}
+                </span>&nbsp;<span class="user-name-max-width text-truncate">{{ current_user.username|capitalize }}</span>
             </div>
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
