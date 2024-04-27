@@ -1,4 +1,5 @@
 # 1.19.0
+- add: grouped navbar entries
 - add: update icon for hiking
 - add: easter eggs
 - fix: only allow gpx files to be uploade for tracks and planned tours
