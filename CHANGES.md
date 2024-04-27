@@ -1,3 +1,6 @@
+# 1.20.0
+- add: planned tours can be shared with other users
+
 # 1.19.0
 - add: grouped navbar entries
 - add: update icon for hiking
