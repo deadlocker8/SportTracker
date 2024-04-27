@@ -1,3 +1,8 @@
+# 1.19.0
+- add: update icon for hiking
+- add: easter eggs
+- fix: only allow gpx files to be uploade for tracks and planned tours
+
 # 1.18.0
 - add: maintenance events: show distance since event
 - add: show icon for each navbar entry and headline
