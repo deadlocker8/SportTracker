@@ -14,7 +14,11 @@ from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.PlannedTour import PlannedTour, get_planned_tour_by_id
 from sporttracker.logic.model.Track import TrackType
-from sporttracker.logic.model.User import get_users_by_ids, User, get_all_users_except_self_and_admin
+from sporttracker.logic.model.User import (
+    get_users_by_ids,
+    User,
+    get_all_users_except_self_and_admin,
+)
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -77,7 +81,7 @@ def construct_blueprint(uploadFolder: str):
                     type=tour.type,
                     gpxFileName=tour.gpxFileName,
                     distance=distance,
-                    sharedUsers=[str(user.id) for user in tour.shared_users]
+                    sharedUsers=[str(user.id) for user in tour.shared_users],
                 )
             )
 
@@ -92,7 +96,7 @@ def construct_blueprint(uploadFolder: str):
     def add():
         return render_template(
             'plannedTours/plannedTourForm.jinja2',
-            users=__get_user_models(get_all_users_except_self_and_admin())
+            users=__get_user_models(get_all_users_except_self_and_admin()),
         )
 
     @plannedTours.route('/post', methods=['POST'])
@@ -110,7 +114,7 @@ def construct_blueprint(uploadFolder: str):
             user_id=current_user.id,
             last_edit_date=datetime.now(),
             gpxFileName=gpxFileName,
-            shared_users=sharedUsers
+            shared_users=sharedUsers,
         )
 
         LOGGER.debug(f'Saved new planned tour: {plannedTour}')
@@ -134,14 +138,14 @@ def construct_blueprint(uploadFolder: str):
             type=plannedTour.type,
             gpxFileName=plannedTour.gpxFileName,
             distance=None,
-            sharedUsers=[str(user.id) for user in plannedTour.shared_users]
+            sharedUsers=[str(user.id) for user in plannedTour.shared_users],
         )
 
         return render_template(
             'plannedTours/plannedTourForm.jinja2',
             plannedTour=tourModel,
             tour_id=tour_id,
-            users=__get_user_models(get_all_users_except_self_and_admin())
+            users=__get_user_models(get_all_users_except_self_and_admin()),
         )
 
     @plannedTours.route('/edit/<int:tour_id>', methods=['POST'])
