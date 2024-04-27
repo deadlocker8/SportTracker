@@ -2,6 +2,8 @@
 - add: update icon for hiking
 - add: easter eggs
 - fix: only allow gpx files to be uploade for tracks and planned tours
+- fix: responsiveness for maintenance events page
+- fix: responsiveness for track form page
 
 # 1.18.0
 - add: maintenance events: show distance since event
