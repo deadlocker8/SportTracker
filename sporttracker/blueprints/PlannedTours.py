@@ -14,9 +14,16 @@ from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.PlannedTour import PlannedTour, get_planned_tour_by_id
 from sporttracker.logic.model.Track import TrackType
+from sporttracker.logic.model.User import get_users_by_ids, User, get_all_users_except_self_and_admin
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
+
+
+@dataclass
+class SharedUserModel:
+    id: int
+    name: str
 
 
 @dataclass
@@ -27,11 +34,13 @@ class PlannedTourModel:
     type: TrackType
     gpxFileName: str
     distance: float | None
+    sharedUsers: list[str]
 
 
 class PlannedTourFormModel(BaseModel):
     name: str
     type: str
+    sharedUsers: list[str] | str | None = None
 
 
 def construct_blueprint(uploadFolder: str):
@@ -68,6 +77,7 @@ def construct_blueprint(uploadFolder: str):
                     type=tour.type,
                     gpxFileName=tour.gpxFileName,
                     distance=distance,
+                    sharedUsers=[str(user.id) for user in tour.shared_users]
                 )
             )
 
@@ -80,7 +90,10 @@ def construct_blueprint(uploadFolder: str):
     @plannedTours.route('/add')
     @login_required
     def add():
-        return render_template('plannedTours/plannedTourForm.jinja2')
+        return render_template(
+            'plannedTours/plannedTourForm.jinja2',
+            users=__get_user_models(get_all_users_except_self_and_admin())
+        )
 
     @plannedTours.route('/post', methods=['POST'])
     @login_required
@@ -88,12 +101,16 @@ def construct_blueprint(uploadFolder: str):
     def addPost(form: PlannedTourFormModel):
         gpxFileName = handleGpxTrack(request.files, uploadFolder)
 
+        sharedUserIds = [int(item) for item in request.form.getlist('participants')]
+        sharedUsers = get_users_by_ids(sharedUserIds)
+
         plannedTour = PlannedTour(
             name=form.name,
             type=TrackType(form.type),  # type: ignore[call-arg]
             user_id=current_user.id,
             last_edit_date=datetime.now(),
             gpxFileName=gpxFileName,
+            shared_users=sharedUsers
         )
 
         LOGGER.debug(f'Saved new planned tour: {plannedTour}')
@@ -117,12 +134,14 @@ def construct_blueprint(uploadFolder: str):
             type=plannedTour.type,
             gpxFileName=plannedTour.gpxFileName,
             distance=None,
+            sharedUsers=[str(user.id) for user in plannedTour.shared_users]
         )
 
         return render_template(
             'plannedTours/plannedTourForm.jinja2',
             plannedTour=tourModel,
             tour_id=tour_id,
+            users=__get_user_models(get_all_users_except_self_and_admin())
         )
 
     @plannedTours.route('/edit/<int:tour_id>', methods=['POST'])
@@ -145,6 +164,10 @@ def construct_blueprint(uploadFolder: str):
         else:
             if newGpxFileName is not None:
                 plannedTour.gpxFileName = newGpxFileName
+
+        sharedUserIds = [int(item) for item in request.form.getlist('sharedUsers')]
+        sharedUsers = get_users_by_ids(sharedUserIds)
+        plannedTour.shared_users = sharedUsers
 
         LOGGER.debug(f'Updated planned tour: {plannedTour}')
         db.session.commit()
@@ -175,3 +198,10 @@ def construct_blueprint(uploadFolder: str):
         return redirect(url_for('plannedTours.listPlannedTours'))
 
     return plannedTours
+
+
+def __get_user_models(users: list[User]) -> list[SharedUserModel]:
+    sharedUserModels = []
+    for user in users:
+        sharedUserModels.append(SharedUserModel(user.id, user.username))
+    return sharedUserModels
