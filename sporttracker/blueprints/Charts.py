@@ -310,7 +310,7 @@ def construct_blueprint():
     @login_required
     def chartCalendar(year: int):
         singleWeekDayPattern = __get_single_week_day_pattern()
-        calendarData = {
+        calendarData: dict[str, list[dict[str, Any]] | list[str]] = {
             'weekDayPattern': singleWeekDayPattern * 5 + singleWeekDayPattern[:2],
             'months': [],
         }
