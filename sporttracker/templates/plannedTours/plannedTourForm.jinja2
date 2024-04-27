@@ -22,7 +22,7 @@
                                 <i class="fa-solid fa-lightbulb fa-fw fs-2"></i>
                             {% endcall %}
                             {% if current_user.id|string == plannedTour.ownerId %}
-                                <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                                <button id="button-delete" type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
                                     <span class="material-icons text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                                 </button>
                             {% endif %}

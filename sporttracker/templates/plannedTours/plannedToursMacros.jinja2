@@ -17,7 +17,7 @@
             </div>
         {% endfor %}
 
-        {% if current_user.id|string != plannedTour.ownerId %}
+        {% if plannedTour and current_user.id|string != plannedTour.ownerId %}
             <div class="form-check input-field-margin">
                 <input class="form-check-input participant-checkbox" type="checkbox" checked id="sharedUser-{{ current_user.id }}" name="sharedUsers" value="{{ current_user.id }}">
                 <label class="form-check-label" for="sharedUser-{{ current_user.id }}">

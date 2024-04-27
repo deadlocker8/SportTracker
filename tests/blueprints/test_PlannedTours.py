@@ -1,6 +1,7 @@
 import time
 
 import pytest
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions
@@ -13,10 +14,15 @@ from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
 
 
+TEST_USERNAME_2 = 'test_user_2'
+TEST_PASSWORD_2 = 'abcdef'
+
+
 @pytest.fixture(autouse=True)
 def prepare_test_data(app):
     with app.app_context():
         create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH)
+        create_user(TEST_USERNAME_2, TEST_PASSWORD_2, False, Language.ENGLISH)
 
 
 class TestPlannedTours(SeleniumTestBaseClass):
@@ -128,6 +134,62 @@ class TestPlannedTours(SeleniumTestBaseClass):
         )
 
         self.__fill_form(selenium, TrackType.BIKING, 'Better Tour')
+        selenium.find_element(By.CSS_SELECTOR, 'section form button[type="submit"]').click()
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
+        )
+
+        assert len(selenium.find_elements(By.CLASS_NAME, 'planned-tour-name')) == 1
+
+    def test_new_tour_share_with_user(self, server, selenium: WebDriver):
+        self.login(selenium)
+        self.__open_form(selenium)
+        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour')
+
+        selenium.find_element(By.XPATH, '//label[@for="sharedUser-3"]').click()
+
+        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
+        )
+
+        cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
+        assert len(cards) == 1
+        # check share icon is displayed
+        assert cards[0].find_element(By.XPATH, '//span[text()="share"]')
+
+        # check other user can see planned tour
+        self.logout(selenium)
+        self.login(selenium, username=TEST_USERNAME_2, password=TEST_PASSWORD_2)
+        selenium.get(self.build_url('/plannedTours'))
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
+        )
+        cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
+        assert len(cards) == 1
+        # check share icon is displayed
+        assert cards[0].find_element(By.XPATH, '//span[text()="share"]')
+
+        # check other user can not delete planned tour
+        self.__open_edit_form(selenium)
+        with pytest.raises(NoSuchElementException):
+            selenium.find_element(By.ID, 'button-delete')
+
+        # check other user can not uncheck owner as shared user
+        sharedUsers = selenium.find_elements(By.CLASS_NAME, 'form-check-input')
+        assert not sharedUsers[0].is_enabled()
+        assert sharedUsers[1].is_enabled()
+
+        # check other user can edit planned tour
+        self.__fill_form(selenium, TrackType.BIKING, 'Mega Tour')
         selenium.find_element(By.CSS_SELECTOR, 'section form button[type="submit"]').click()
 
         WebDriverWait(selenium, 5).until(

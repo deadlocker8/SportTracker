@@ -113,7 +113,7 @@ def construct_blueprint(uploadFolder: str):
     def addPost(form: PlannedTourFormModel):
         gpxFileName = handleGpxTrack(request.files, uploadFolder)
 
-        sharedUserIds = [int(item) for item in request.form.getlist('participants')]
+        sharedUserIds = [int(item) for item in request.form.getlist('sharedUsers')]
         sharedUsers = get_users_by_ids(sharedUserIds)
 
         plannedTour = PlannedTour(

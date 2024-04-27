@@ -170,7 +170,7 @@
             {% endif %}
             <li>
                 <div class="dropdown-item">
-                    <a href="{{ url_for('authentication.logout') }}" class="btn btn-danger d-flex align-items-center">
+                    <a href="{{ url_for('authentication.logout') }}" class="btn btn-danger d-flex align-items-center" id="button-logout">
                         <span class="material-icons text-light fs-5">logout</span>&nbsp;{{ gettext('Logout') }}
                     </a>
                 </div>
