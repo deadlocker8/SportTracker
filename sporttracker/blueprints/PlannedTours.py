@@ -7,6 +7,7 @@ from flask import Blueprint, render_template, redirect, url_for, abort, request
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel
+from sqlalchemy.sql import or_
 
 from sporttracker.blueprints.GpxTracks import handleGpxTrack
 from sporttracker.logic import Constants
@@ -39,6 +40,7 @@ class PlannedTourModel:
     gpxFileName: str
     distance: float | None
     sharedUsers: list[str]
+    ownerId: str
 
 
 class PlannedTourFormModel(BaseModel):
@@ -58,7 +60,12 @@ def construct_blueprint(uploadFolder: str):
         quickFilterState = get_quick_filter_state_from_session()
 
         tours: list[PlannedTour] = (
-            PlannedTour.query.filter(PlannedTour.user_id == current_user.id)
+            PlannedTour.query.filter(
+                or_(
+                    PlannedTour.user_id == current_user.id,
+                    PlannedTour.shared_users.any(id=current_user.id),
+                )
+            )
             .filter(PlannedTour.type.in_(quickFilterState.get_active_types()))
             .order_by(PlannedTour.name.desc())
             .all()
@@ -82,6 +89,7 @@ def construct_blueprint(uploadFolder: str):
                     gpxFileName=tour.gpxFileName,
                     distance=distance,
                     sharedUsers=[str(user.id) for user in tour.shared_users],
+                    ownerId=str(tour.user_id),
                 )
             )
 
@@ -139,6 +147,7 @@ def construct_blueprint(uploadFolder: str):
             gpxFileName=plannedTour.gpxFileName,
             distance=None,
             sharedUsers=[str(user.id) for user in plannedTour.shared_users],
+            ownerId=str(plannedTour.user_id),
         )
 
         return render_template(
@@ -159,7 +168,6 @@ def construct_blueprint(uploadFolder: str):
 
         plannedTour.type = TrackType(form.type)  # type: ignore[call-arg]
         plannedTour.name = form.name  # type: ignore[assignment]
-        plannedTour.user_id = current_user.id
         plannedTour.last_edit_date = datetime.now()  # type: ignore[assignment]
 
         newGpxFileName = handleGpxTrack(request.files, uploadFolder)
@@ -185,6 +193,9 @@ def construct_blueprint(uploadFolder: str):
 
         if plannedTour is None:
             abort(404)
+
+        if current_user.id != plannedTour.user_id:
+            abort(403)
 
         if plannedTour.gpxFileName is not None:
             try:

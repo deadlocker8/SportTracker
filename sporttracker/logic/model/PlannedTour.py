@@ -1,6 +1,7 @@
 from flask_login import current_user
 from sqlalchemy import Integer, DateTime, String, Table, Column, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
+from sqlalchemy.sql import or_
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
 from sporttracker.logic.model.Track import TrackType
@@ -39,7 +40,12 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
 
 def get_planned_tour_by_id(tour_id: int) -> PlannedTour | None:
     return (
-        PlannedTour.query.filter(PlannedTour.user_id == current_user.id)
+        PlannedTour.query.filter(
+            or_(
+                PlannedTour.user_id == current_user.id,
+                PlannedTour.shared_users.any(id=current_user.id),
+            )
+        )
         .filter(PlannedTour.id == tour_id)
         .first()
     )

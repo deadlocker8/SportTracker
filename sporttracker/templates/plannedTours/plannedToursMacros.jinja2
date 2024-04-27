@@ -7,13 +7,24 @@
             </div>
         </label>
         {% for user in users %}
+            {% set isOwner=plannedTour and user.id|string == plannedTour.ownerId %}
+
             <div class="form-check input-field-margin">
-                <input class="form-check-input participant-checkbox" type="checkbox" {% if plannedTour and user.id|string in plannedTour.sharedUsers %}checked{% endif %} id="sharedUser-{{ user.id }}" name="sharedUsers" value="{{ user.id }}">
+                <input class="form-check-input participant-checkbox" type="checkbox" {% if plannedTour and (user.id|string in plannedTour.sharedUsers) or isOwner %}checked{% endif %} id="sharedUser-{{ user.id }}" name="sharedUsers" value="{{ user.id }}" {% if plannedTour and user.id|string == plannedTour.ownerId %}disabled{% endif %}>
                 <label class="form-check-label" for="sharedUser-{{ user.id }}">
-                    {{ user.name }}
+                    {{ user.name }} {% if isOwner %}({{ gettext('Owner') }}){% endif %}
                 </label>
             </div>
         {% endfor %}
+
+        {% if current_user.id|string != plannedTour.ownerId %}
+            <div class="form-check input-field-margin">
+                <input class="form-check-input participant-checkbox" type="checkbox" checked id="sharedUser-{{ current_user.id }}" name="sharedUsers" value="{{ current_user.id }}">
+                <label class="form-check-label" for="sharedUser-{{ current_user.id }}">
+                    {{ current_user.username }}
+                </label>
+            </div>
+        {% endif %}
 
         {% if not users %}
             <div class="d-flex align-items-center input-field-margin">
