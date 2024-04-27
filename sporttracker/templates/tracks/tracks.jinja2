@@ -54,6 +54,13 @@
                     </div>
                 </div>
 
+                <div class="row mt-2 d-lg-none">
+                    <div class="col col-12 mx-auto d-flex align-items-center justify-content-center">
+                        <span class="material-icons fs-4 me-2">info_outline</span>
+                        <span>{{ gettext('Toggle months by swiping left or right') }}</span>
+                    </div>
+                </div>
+
                 <div class="mt-3">
                     {{ macros.track_type_quick_filter(url_for('tracks.listTracks', year=year, month=month)) }}
                 </div>

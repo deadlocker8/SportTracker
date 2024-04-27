@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-27 19:40+0200\n"
+"POT-Creation-Date: 2024-04-27 19:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -241,8 +241,8 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: ../templates/macros.jinja2:215 ../templates/tracks/tracks.jinja2:88
-#: ../templates/tracks/tracks.jinja2:110
+#: ../templates/macros.jinja2:215 ../templates/tracks/tracks.jinja2:95
+#: ../templates/tracks/tracks.jinja2:117
 msgid "Cancel"
 msgstr ""
 
@@ -871,11 +871,15 @@ msgstr ""
 msgid "Toggle months via arrow keys or press \"0\" for current month"
 msgstr ""
 
-#: ../templates/tracks/tracks.jinja2:76
+#: ../templates/tracks/tracks.jinja2:60
+msgid "Toggle months by swiping left or right"
+msgstr ""
+
+#: ../templates/tracks/tracks.jinja2:83
 msgid "Choose year"
 msgstr ""
 
-#: ../templates/tracks/tracks.jinja2:98
+#: ../templates/tracks/tracks.jinja2:105
 msgid "Choose month"
 msgstr ""
 

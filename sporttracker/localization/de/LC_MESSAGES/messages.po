@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-27 19:40+0200\n"
-"PO-Revision-Date: 2024-04-27 19:40+0200\n"
+"POT-Creation-Date: 2024-04-27 19:46+0200\n"
+"PO-Revision-Date: 2024-04-27 19:46+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -252,8 +252,8 @@ msgstr "Einstellungen"
 msgid "Logout"
 msgstr "Logout"
 
-#: ../templates/macros.jinja2:215 ../templates/tracks/tracks.jinja2:88
-#: ../templates/tracks/tracks.jinja2:110
+#: ../templates/macros.jinja2:215 ../templates/tracks/tracks.jinja2:95
+#: ../templates/tracks/tracks.jinja2:117
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -883,11 +883,15 @@ msgid "Toggle months via arrow keys or press \"0\" for current month"
 msgstr ""
 "Monate mit Pfeiltasten umschalten oder \"0\" für den aktuellen Monat drücken"
 
-#: ../templates/tracks/tracks.jinja2:76
+#: ../templates/tracks/tracks.jinja2:60
+msgid "Toggle months by swiping left or right"
+msgstr "Nach links oder rechts wischen um Monate umzuschalten"
+
+#: ../templates/tracks/tracks.jinja2:83
 msgid "Choose year"
 msgstr "Jahr wählen"
 
-#: ../templates/tracks/tracks.jinja2:98
+#: ../templates/tracks/tracks.jinja2:105
 msgid "Choose month"
 msgstr "Monat wählen"
 
