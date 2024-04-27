@@ -5,6 +5,7 @@
 - fix: only allow gpx files to be uploade for tracks and planned tours
 - fix: responsiveness for maintenance events page
 - fix: responsiveness for track form page
+- fix: responsiveness for gpx form
 
 # 1.18.0
 - add: maintenance events: show distance since event
