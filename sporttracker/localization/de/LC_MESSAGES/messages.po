@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-27 19:46+0200\n"
-"PO-Revision-Date: 2024-04-27 19:46+0200\n"
+"POT-Creation-Date: 2024-04-27 23:34+0200\n"
+"PO-Revision-Date: 2024-04-27 23:34+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -135,24 +135,24 @@ msgstr "Laufen"
 msgid "Hiking"
 msgstr "Wandern"
 
-#: ../logic/model/User.py:57
+#: ../logic/model/User.py:56
 msgid "Distance"
 msgstr "Strecke"
 
-#: ../logic/model/User.py:59 ../templates/tracks/trackMacros.jinja2:266
+#: ../logic/model/User.py:58 ../templates/tracks/trackMacros.jinja2:266
 msgid "Duration"
 msgstr "Dauer"
 
-#: ../logic/model/User.py:61 ../templates/charts/chartAverageSpeed.jinja2:23
+#: ../logic/model/User.py:60 ../templates/charts/chartAverageSpeed.jinja2:23
 #: ../templates/charts/chartChooser.jinja2:42
 msgid "Average Speed"
 msgstr "Durchschnittsgeschwindigkeit"
 
-#: ../logic/model/User.py:63 ../templates/tracks/trackMacros.jinja2:292
+#: ../logic/model/User.py:62 ../templates/tracks/trackMacros.jinja2:292
 msgid "Average Heart Rate"
 msgstr "Durchschnittliche Herzfrequenz"
 
-#: ../logic/model/User.py:65
+#: ../logic/model/User.py:64
 msgid "Elevation Sum"
 msgstr "Summe Höhenmeter"
 
@@ -362,8 +362,8 @@ msgstr "Neues Wartungsereignis"
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:26
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:22
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:26
-#: ../templates/plannedTours/plannedTourForm.jinja2:24
-#: ../templates/plannedTours/plannedTourForm.jinja2:28
+#: ../templates/plannedTours/plannedTourForm.jinja2:26
+#: ../templates/plannedTours/plannedTourForm.jinja2:31
 #: ../templates/settings/settings.jinja2:113
 #: ../templates/settings/settings.jinja2:158
 #: ../templates/tracks/trackBikingForm.jinja2:24
@@ -390,7 +390,7 @@ msgstr "Willst du dieses Wartungsereignis wirklich löschen?"
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:28
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:41
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:28
-#: ../templates/plannedTours/plannedTourForm.jinja2:44
+#: ../templates/plannedTours/plannedTourForm.jinja2:47
 #: ../templates/settings/customFieldsForm.jinja2:61
 #: ../templates/settings/settings.jinja2:90
 msgid "Type"
@@ -414,7 +414,7 @@ msgstr "Beschreibung"
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:107
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:98
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:109
-#: ../templates/plannedTours/plannedTourForm.jinja2:70
+#: ../templates/plannedTours/plannedTourForm.jinja2:75
 #: ../templates/settings/customFieldsForm.jinja2:84
 #: ../templates/settings/participantsForm.jinja2:58
 #: ../templates/settings/settings.jinja2:42
@@ -673,24 +673,24 @@ msgid "Month Goals"
 msgstr "Monatsziele"
 
 #: ../templates/plannedTours/plannedTourForm.jinja2:6
-#: ../templates/plannedTours/plannedTourForm.jinja2:20
+#: ../templates/plannedTours/plannedTourForm.jinja2:21
 msgid "Edit Planned Tour"
 msgstr "Geplante Tour bearbeiten"
 
 #: ../templates/plannedTours/plannedTourForm.jinja2:6
-#: ../templates/plannedTours/plannedTourForm.jinja2:31
+#: ../templates/plannedTours/plannedTourForm.jinja2:34
 msgid "New Planned Tour"
 msgstr "Neue Geplante Tour"
 
-#: ../templates/plannedTours/plannedTourForm.jinja2:27
+#: ../templates/plannedTours/plannedTourForm.jinja2:30
 msgid "Delete Planned Tour?"
 msgstr "Geplante Tour löschen?"
 
-#: ../templates/plannedTours/plannedTourForm.jinja2:27
+#: ../templates/plannedTours/plannedTourForm.jinja2:30
 msgid "Do you really want to delete this planned tour?"
 msgstr "Willst du diese geplante Tour wirklich löschen?"
 
-#: ../templates/plannedTours/plannedTourForm.jinja2:58
+#: ../templates/plannedTours/plannedTourForm.jinja2:61
 #: ../templates/settings/customFieldsForm.jinja2:52
 #: ../templates/settings/participantsForm.jinja2:50
 #: ../templates/settings/settings.jinja2:89
@@ -699,17 +699,29 @@ msgstr "Willst du diese geplante Tour wirklich löschen?"
 msgid "Name"
 msgstr "Name"
 
-#: ../templates/plannedTours/plannedTourForm.jinja2:68
+#: ../templates/plannedTours/plannedTourForm.jinja2:71
 msgid "No GPX file is linked to this planned tour"
 msgstr "Mit dieser geplanten Tour ist keine GPX-Datei verknüpft"
 
-#: ../templates/plannedTours/plannedTourForm.jinja2:68
+#: ../templates/plannedTours/plannedTourForm.jinja2:71
 msgid "A GPX file is linked to this planned tour"
 msgstr "Eine GPX-Datei ist mit dieser geplanten Tour verknüpft"
 
-#: ../templates/plannedTours/plannedTours.jinja2:49
+#: ../templates/plannedTours/plannedTours.jinja2:54
 msgid "last edited"
 msgstr "bearbeitet"
+
+#: ../templates/plannedTours/plannedToursMacros.jinja2:6
+msgid "Share this tour with"
+msgstr "Diese Tour teilen mit"
+
+#: ../templates/plannedTours/plannedToursMacros.jinja2:15
+msgid "Owner"
+msgstr "Besitzer"
+
+#: ../templates/plannedTours/plannedToursMacros.jinja2:32
+msgid "No other users available"
+msgstr "Keine anderen Benutzer verfügbar"
 
 #: ../templates/settings/customFieldsForm.jinja2:6
 #: ../templates/settings/customFieldsForm.jinja2:19
