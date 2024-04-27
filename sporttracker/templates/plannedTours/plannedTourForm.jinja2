@@ -21,9 +21,11 @@
                             {% call macros.headline(gettext('Edit Planned Tour')) %}
                                 <i class="fa-solid fa-lightbulb fa-fw fs-2"></i>
                             {% endcall %}
-                            <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
-                                <span class="material-icons text-light">delete</span>&nbsp;{{ gettext('Delete') }}
-                            </button>
+                            {% if current_user.id|string == plannedTour.ownerId %}
+                                <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                                    <span class="material-icons text-light">delete</span>&nbsp;{{ gettext('Delete') }}
+                                </button>
+                            {% endif %}
 
                             {% call macros.deleteModal(gettext('Delete Planned Tour?'), gettext('Do you really want to delete this planned tour?')) %}
                                 <a href="{{ url_for('plannedTours.delete', tour_id=tour_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
