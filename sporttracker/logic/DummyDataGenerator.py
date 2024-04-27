@@ -40,7 +40,8 @@ class DummyDataGenerator:
         self._uploadFolder = uploadFolder
 
     def generate(self) -> None:
-        user = self.__generate_demo_user()
+        user = self.__generate_demo_user('demo', 'demo')
+        user2 = self.__generate_demo_user('john', '123')
 
         if Track.query.count() == 0:
             self.__generate_demo_participants(user)
@@ -84,16 +85,16 @@ class DummyDataGenerator:
 
             self.__generate_demo_maintenance_events(user)
 
-            self.__generate_demo_planned_tours(user)
+            self.__generate_demo_planned_tours(user, user2)
 
     @staticmethod
-    def __generate_demo_user() -> User:
-        user = User.query.filter_by(username='demo').first()
+    def __generate_demo_user(name: str, password: str) -> User:
+        user = User.query.filter_by(username=name).first()
 
         if user is None:
             LOGGER.debug('Creating demo user')
             user = create_user(
-                username='demo', password='demo', isAdmin=False, language=Language.ENGLISH
+                username=name, password=password, isAdmin=False, language=Language.ENGLISH
             )
 
         return user
@@ -254,7 +255,7 @@ class DummyDataGenerator:
         )
         db.session.commit()
 
-    def __generate_demo_planned_tours(self, user) -> None:
+    def __generate_demo_planned_tours(self, user, user2) -> None:
         fake = Faker()
 
         for index in range(2):
@@ -262,11 +263,16 @@ class DummyDataGenerator:
                 datetime.now() - timedelta(days=90), datetime.now()
             )
 
+            shared_users = []
+            if index == 1:
+                shared_users = [user2]
+
             plannedTour = PlannedTour(
                 type=TrackType.BIKING,
                 last_edit_date=fakeTime,
                 name=random.choice(self.TRACK_NAMES),
                 user_id=user.id,
+                shared_users=shared_users,
             )
 
             self.__append_gpx(plannedTour)
