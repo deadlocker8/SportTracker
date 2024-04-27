@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-26 21:08+0200\n"
+"POT-Creation-Date: 2024-04-27 19:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -145,7 +145,7 @@ msgstr ""
 msgid "Elevation Sum"
 msgstr ""
 
-#: ../templates/about.jinja2:6 ../templates/macros.jinja2:106
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:127
 msgid "About"
 msgstr ""
 
@@ -153,7 +153,7 @@ msgstr ""
 msgid "Changelog"
 msgstr ""
 
-#: ../templates/achievements.jinja2:24 ../templates/macros.jinja2:76
+#: ../templates/achievements.jinja2:24 ../templates/macros.jinja2:86
 msgid "Achievements"
 msgstr ""
 
@@ -175,17 +175,17 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: ../templates/macros.jinja2:52 ../templates/macros.jinja2:123
-msgid "Logout"
-msgstr ""
-
-#: ../templates/macros.jinja2:59 ../templates/tracks/tracks.jinja2:5
+#: ../templates/macros.jinja2:55 ../templates/tracks/tracks.jinja2:5
 #: ../templates/tracks/tracks.jinja2:25
 msgid "Tracks"
 msgstr ""
 
-#: ../templates/macros.jinja2:65 ../templates/monthGoals/monthGoals.jinja2:6
+#: ../templates/macros.jinja2:63 ../templates/monthGoals/monthGoals.jinja2:6
 msgid "Goals"
+msgstr ""
+
+#: ../templates/macros.jinja2:70
+msgid "Analytics"
 msgstr ""
 
 #: ../templates/charts/chartCalendar.jinja2:5
@@ -201,39 +201,47 @@ msgstr ""
 #: ../templates/charts/chartMacros.jinja2:20
 #: ../templates/charts/chartSpeedPerTrackChooser.jinja2:6
 #: ../templates/charts/chartSpeedPerTrackChooser.jinja2:18
-#: ../templates/macros.jinja2:70
+#: ../templates/macros.jinja2:78
 msgid "Charts"
 msgstr ""
 
-#: ../templates/macros.jinja2:82 ../templates/maps/mapMultipleTracks.jinja2:6
+#: ../templates/macros.jinja2:96 ../templates/maps/mapMultipleTracks.jinja2:6
 #: ../templates/maps/mapPlannedTour.jinja2:6
 #: ../templates/maps/mapSingleTrack.jinja2:6
 msgid "Map"
 msgstr ""
 
-#: ../templates/macros.jinja2:88
+#: ../templates/macros.jinja2:103
+msgid "More"
+msgstr ""
+
+#: ../templates/macros.jinja2:111
 #: ../templates/maintenanceEvents/maintenanceEvents.jinja2:6
 #: ../templates/maintenanceEvents/maintenanceEvents.jinja2:18
 msgid "Maintenance"
 msgstr ""
 
-#: ../templates/macros.jinja2:94
+#: ../templates/macros.jinja2:119
 #: ../templates/plannedTours/plannedTours.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:18
 msgid "Planned Tours"
 msgstr ""
 
-#: ../templates/macros.jinja2:100 ../templates/settings/settings.jinja2:6
+#: ../templates/macros.jinja2:136
+msgid "Search"
+msgstr ""
+
+#: ../templates/macros.jinja2:165 ../templates/settings/settings.jinja2:6
 #: ../templates/settings/settings.jinja2:18
 #: ../templates/tracks/trackMacros.jinja2:386
 msgid "Settings"
 msgstr ""
 
-#: ../templates/macros.jinja2:113
-msgid "Search"
+#: ../templates/macros.jinja2:174
+msgid "Logout"
 msgstr ""
 
-#: ../templates/macros.jinja2:165 ../templates/tracks/tracks.jinja2:88
+#: ../templates/macros.jinja2:215 ../templates/tracks/tracks.jinja2:88
 #: ../templates/tracks/tracks.jinja2:110
 msgid "Cancel"
 msgstr ""
@@ -408,7 +416,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:54
+#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:51
 msgid "since event"
 msgstr ""
 
