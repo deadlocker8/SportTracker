@@ -60,7 +60,8 @@ class TrackType(enum.Enum):
 
         raise ValueError(f'Could not get localized name for unsupported TrackType: {self}')
 
-    def is_easter_egg_activated(self) -> bool:
+    @staticmethod
+    def is_easter_egg_activated() -> bool:
         now = datetime.now()
         return now.month == 4 and now.day == 1
 
