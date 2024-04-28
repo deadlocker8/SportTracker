@@ -67,7 +67,7 @@ def construct_blueprint(uploadFolder: str):
                 )
             )
             .filter(PlannedTour.type.in_(quickFilterState.get_active_types()))
-            .order_by(PlannedTour.name.desc())
+            .order_by(PlannedTour.name.asc())
             .all()
         )
 

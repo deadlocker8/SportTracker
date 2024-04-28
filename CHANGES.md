@@ -1,3 +1,6 @@
+# ?.??.?
+- fix: sort planned tours by name ascending
+
 # 1.20.0
 - add: planned tours can be shared with other users
 
