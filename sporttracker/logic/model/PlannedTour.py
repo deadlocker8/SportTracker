@@ -35,11 +35,11 @@ class TravelType(enum.Enum):
     def get_localized_name(self) -> str:
         # must be done this way to include translations in *.po and *.mo file
         if self == self.NONE:
-            return gettext('None')
+            return gettext('none')
         elif self == self.CAR:
-            return gettext('By Car')
+            return gettext('Car')
         elif self == self.TRAIN:
-            return gettext('By Train')
+            return gettext('Train')
 
         raise ValueError(f'Could not get localized name for unsupported TravelType: {self}')
 

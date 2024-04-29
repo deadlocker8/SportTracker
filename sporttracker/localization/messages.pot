@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-27 23:34+0200\n"
+"POT-Creation-Date: 2024-04-30 00:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -110,6 +110,18 @@ msgstr ""
 
 #: ../logic/model/CustomTrackField.py:31
 msgid "Float"
+msgstr ""
+
+#: ../logic/model/PlannedTour.py:38
+msgid "none"
+msgstr ""
+
+#: ../logic/model/PlannedTour.py:40
+msgid "Car"
+msgstr ""
+
+#: ../logic/model/PlannedTour.py:42
+msgid "Train"
 msgstr ""
 
 #: ../logic/model/Track.py:55
@@ -403,7 +415,7 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:107
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:98
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:109
-#: ../templates/plannedTours/plannedTourForm.jinja2:75
+#: ../templates/plannedTours/plannedTourForm.jinja2:86
 #: ../templates/settings/customFieldsForm.jinja2:84
 #: ../templates/settings/participantsForm.jinja2:58
 #: ../templates/settings/settings.jinja2:42
@@ -688,16 +700,40 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTourForm.jinja2:71
+#: ../templates/plannedTours/plannedTourForm.jinja2:74
+msgid "Arrival method"
+msgstr ""
+
+#: ../templates/plannedTours/plannedTourForm.jinja2:80
+msgid "Departure method"
+msgstr ""
+
+#: ../templates/plannedTours/plannedTourForm.jinja2:82
 msgid "No GPX file is linked to this planned tour"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTourForm.jinja2:71
+#: ../templates/plannedTours/plannedTourForm.jinja2:82
 msgid "A GPX file is linked to this planned tour"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:54
+#: ../templates/plannedTours/plannedTours.jinja2:57
+msgid "Arrival"
+msgstr ""
+
+#: ../templates/plannedTours/plannedTours.jinja2:61
+msgid "Departure"
+msgstr ""
+
+#: ../templates/plannedTours/plannedTours.jinja2:70
+msgid "shared"
+msgstr ""
+
+#: ../templates/plannedTours/plannedTours.jinja2:74
 msgid "last edited"
+msgstr ""
+
+#: ../templates/plannedTours/plannedTours.jinja2:77
+msgid "Edit"
 msgstr ""
 
 #: ../templates/plannedTours/plannedToursMacros.jinja2:6
