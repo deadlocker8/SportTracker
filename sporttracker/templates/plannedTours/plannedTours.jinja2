@@ -41,7 +41,7 @@
                                 <img class="card-img-top img-fluid" src="" alt="">
 
                                 <div class="card-body">
-                                    <div class="row row-cols-2 row-cols-lg-3 gy-3">
+                                    <div class="row row-cols-2 row-cols-lg-4 gy-3">
                                         <div class="col d-flex flex-column align-items-center justify-content-between">
                                             <div class="fs-5">
                                                 {% if plannedTour.distance is not none %}
@@ -59,6 +59,10 @@
                                         <div class="col d-flex flex-column align-items-center justify-content-between">
                                             <div class="material-icons text-secondary fs-4">{{ plannedTour.departureMethod.icon }}</div>
                                             <div class="fs-6">{{ gettext('Departure') }}</div>
+                                        </div>
+                                        <div class="col d-flex flex-column align-items-center justify-content-between">
+                                            <div class="material-icons text-secondary fs-4">{{ plannedTour.direction.icon }}</div>
+                                            <div class="fs-6">{{ plannedTour.direction.get_localized_name() }}</div>
                                         </div>
                                     </div>
                                 </div>
