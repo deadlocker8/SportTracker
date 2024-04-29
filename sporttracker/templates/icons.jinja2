@@ -133,18 +133,18 @@
                         {{ materialize_icon('description', 'article') }}
                     {% endcall %}
 
-                    {% call group('planned tour form') %}
+                    {% call group('planned tour types') %}
+                        {{ materialize_icon('none', 'home') }}
+                        {{ materialize_icon('by car', 'directions_car') }}
+                        {{ materialize_icon('by train', 'train') }}
+                    {% endcall %}
+
+                     {% call group('planned tour form') %}
                         {{ fontawesome_icon('planned tours', 'fa-lightbulb') }}
                         {{ materialize_icon('track type', 'stars') }}
                         {{ materialize_icon('name', 'edit') }}
                         {{ materialize_icon('gpx track', 'location_on') }}
                         {{ materialize_icon('share', 'share') }}
-                    {% endcall %}
-
-                    {% call group('custom field form') %}
-                        {{ materialize_icon('name', 'edit') }}
-                        {{ materialize_icon('type', 'list') }}
-                        {{ materialize_icon('is required', 'question_mark') }}
                     {% endcall %}
 
                     {% call group('participant form') %}
@@ -164,6 +164,12 @@
                         {{ materialize_icon('settings', 'settings') }}
                         {{ materialize_icon('password', 'vpn_key') }}
                         {{ materialize_icon('language', 'translate') }}
+                    {% endcall %}
+
+                    {% call group('custom field form') %}
+                        {{ materialize_icon('name', 'edit') }}
+                        {{ materialize_icon('type', 'list') }}
+                        {{ materialize_icon('is required', 'question_mark') }}
                     {% endcall %}
 
                     {% call group('misc') %}
