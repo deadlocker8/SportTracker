@@ -44,6 +44,38 @@ class TravelType(enum.Enum):
         raise ValueError(f'Could not get localized name for unsupported TravelType: {self}')
 
 
+class TravelDirection(enum.Enum):
+    SINGLE = 'SINGLE', 'turn_sharp_right', 0
+    RETURN = 'RETURN', 'sync_alt', 1
+    ROUNDTRIP = 'ROUNDTRIP', 'refresh', 2
+
+    icon: str
+    order: int
+
+    def __new__(
+        cls,
+        name: str,
+        icon: str,
+        order: int,
+    ):
+        member = object.__new__(cls)
+        member._value_ = name
+        member.icon = icon
+        member.order = order
+        return member
+
+    def get_localized_name(self) -> str:
+        # must be done this way to include translations in *.po and *.mo file
+        if self == self.SINGLE:
+            return gettext('Single')
+        elif self == self.RETURN:
+            return gettext('Return')
+        elif self == self.ROUNDTRIP:
+            return gettext('Roundtrip')
+
+        raise ValueError(f'Could not get localized name for unsupported TravelDirection: {self}')
+
+
 planned_tour_user_association = Table(
     'planned_tour_user_association',
     db.Model.metadata,
@@ -62,6 +94,7 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     shared_users: Mapped[list[User]] = relationship(secondary=planned_tour_user_association)
     arrival_method = db.Column(db.Enum(TravelType))
     departure_method = db.Column(db.Enum(TravelType))
+    direction = db.Column(db.Enum(TravelDirection))
 
     def __repr__(self):
         return (
@@ -72,9 +105,10 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
             f'last_edit_date: {self.last_edit_date}, '
             f'gpxFileName: {self.gpxFileName}, '
             f'user_id: {self.user_id}, '
-            f'shared_users: {[user.id for user in self.shared_users]})'
-            f'arrival_method: {self.arrival_method})'
-            f'departure_method: {self.departure_method})'
+            f'shared_users: {[user.id for user in self.shared_users]}, '
+            f'arrival_method: {self.arrival_method}, '
+            f'departure_method: {self.departure_method}, '
+            f'direction: {self.direction})'
         )
 
 

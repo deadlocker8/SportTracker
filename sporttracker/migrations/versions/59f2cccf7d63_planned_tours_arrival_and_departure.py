@@ -45,8 +45,8 @@ def upgrade():
             ),
         )
 
-    op.execute('UPDATE planned_tour SET arrival_method=\'NONE\' WHERE arrival_method IS NULL;')
-    op.execute('UPDATE planned_tour SET departure_method=\'NONE\' WHERE departure_method IS NULL;')
+    op.execute("UPDATE planned_tour SET arrival_method='NONE' WHERE arrival_method IS NULL;")
+    op.execute("UPDATE planned_tour SET departure_method='NONE' WHERE departure_method IS NULL;")
 
 
 def downgrade():
