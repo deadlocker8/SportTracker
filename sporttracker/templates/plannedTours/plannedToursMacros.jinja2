@@ -34,3 +34,26 @@
         {% endif %}
     </div>
 {%- endmacro %}
+
+
+{% macro travel_type_select(name, icon, identifier, inputName, selectedValue=none) -%}
+    <div class="mb-3">
+        <div class="form-label input-field-margin">{{ name }}</div>
+        <div class="d-flex align-items-center">
+            <span class="material-icons me-3">{{ icon }}</span>
+            <div class="btn-group" role="group" id="planned-tour-{{ identifier }}">
+                {% for travelType in travelTypes %}
+                    <input type="radio" class="btn-check" name="{{ inputName }}" id="{{ identifier }}-{{ loop.index }}"
+                           autocomplete="off"
+                           {% if selectedValue == travelType.name or travelType.name == 'NONE' %}checked{% endif %}
+                    value="{{ travelType.name }}">
+                    <label class="btn btn-outline-light d-flex align-items-center"
+                           for="{{ identifier }}-{{ loop.index }}">
+                        <span class="material-icons me-3">{{ travelType.icon }}</span>
+                        {{ travelType.get_localized_name() }}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{%- endmacro %}

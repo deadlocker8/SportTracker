@@ -38,6 +38,7 @@ from sporttracker.helpers import Helpers
 from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
 from sporttracker.logic.model.CustomTrackField import CustomTrackFieldType
+from sporttracker.logic.model.PlannedTour import TravelType
 from sporttracker.logic.model.Track import Track, TrackType
 from sporttracker.logic.model.User import (
     User,
@@ -116,6 +117,7 @@ class SportTracker(FlaskBaseApp):
                 'trackTypesByName': {x.name: x for x in TrackType},
                 'languages': [x for x in Language],
                 'customTrackFieldTypes': [x for x in CustomTrackFieldType],
+                'travelTypes': [x for x in TravelType],
             }
 
         def format_decimal(value: int | float, decimals: int = 1) -> str:
