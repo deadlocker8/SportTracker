@@ -7,7 +7,7 @@
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
-    <body class="bg-dark text-light">
+    <body class="bg-dark text-light" style="font-family: sans-serif">
         {{ macros.navbar('plannedTours') }}
         {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
 
@@ -25,40 +25,62 @@
                     {{ macros.track_type_quick_filter(url_for('plannedTours.listPlannedTours')) }}
                 </div>
 
-                {% for plannedTour in plannedTours %}
-                     <div class="row py-3">
-                            <div class="col col-xxl-8 col-lg-10 col-sm-12 mx-auto px-xxl-5 px-xl-4 px-lg-3">
-                                <a href="{{ url_for('plannedTours.edit', tour_id=plannedTour.id) }}"
-                                   class="text-decoration-none">
-                                    <div class="card">
-                                        <div class="row g-0 d-flex align-items-center p-2">
-                                            <div class="col col-4 col-md-2 d-flex align-items-center">
-                                                <i class="fa-solid fa-lightbulb fa-fw fs-3 p-2 text-secondary me-3"></i>
-                                                {{ trackMacros.track_type_icon_small(plannedTour.type, fontSize='fs-3') }}
-                                            </div>
-                                            <div class="col col-3 col-md-5 text-start fs-5 text-truncate planned-tour-name">
-                                                {{ plannedTour.name }}
-                                            </div>
-                                            <div class="col col-2 fs-5 text-center">
-                                                {% if plannedTour.distance is not none %}
-                                                    {{ (plannedTour.distance / 1000) | format_decimal(2) }} km
-                                                {% endif %}
-                                            </div>
-                                            <div class="col col-1 d-flex align-item-center justify-content-center">
-                                                {% if plannedTour.sharedUsers %}
-                                                    <span class="material-icons">share</span>
-                                                {% endif %}
-                                            </div>
-                                            <div class="col col-2 fs-6 text-center">
-                                                {{ plannedTour.lastEditDate | format_date() }}
-                                                <div class="fw-light">{{ gettext('last edited') }}</div>
-                                            </div>
+                <div class="row py-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
+                    {% for plannedTour in plannedTours %}
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <div class="card-header mb-0">
+                                    <div class="d-flex align-items-center">
+                                        {{ trackMacros.track_type_icon_small(plannedTour.type, fontSize='fs-3') }}
+                                        <div class="fs-5 text-truncate planned-tour-name ms-3">
+                                            {{ plannedTour.name }}
                                         </div>
                                     </div>
-                                </a>
+                                </div>
+
+                                <img class="card-img-top img-fluid" src="" alt="">
+
+                                <div class="card-body">
+                                    <div class="row row-cols-2 row-cols-lg-3 gy-3">
+                                        <div class="col d-flex flex-column align-items-center justify-content-between">
+                                            <div class="fs-5">
+                                                {% if plannedTour.distance is not none %}
+                                                    {{ (plannedTour.distance / 1000) | format_decimal(2) }}
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </div>
+                                            <div class="fs-6">km</div>
+                                        </div>
+                                        <div class="col d-flex flex-column align-items-center justify-content-between">
+                                            <div class="material-icons text-secondary fs-4">{{ plannedTour.arrivalMethod.icon }}</div>
+                                            <div class="fs-6">{{ gettext('Arrival') }}</div>
+                                        </div>
+                                        <div class="col d-flex flex-column align-items-center justify-content-between">
+                                            <div class="material-icons text-secondary fs-4">{{ plannedTour.departureMethod.icon }}</div>
+                                            <div class="fs-6">{{ gettext('Departure') }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-footer text-body-secondary d-flex align-items-center justify-content-between">
+                                     {% if plannedTour.sharedUsers %}
+                                        <div class="badge rounded-pill text-bg-success d-flex align-items-center">
+                                            <div class="material-icons fs-4">share</div>
+                                            <div class="fs-6 fw-normal">&nbsp;{{ gettext('Shared') }}</div>
+                                        </div>
+                                    {% endif %}
+
+                                    {{ gettext('last edited') }}: {{ plannedTour.lastEditDate | format_date() }}
+
+                                     <a href="{{ url_for('plannedTours.edit', tour_id=plannedTour.id) }}" class="btn btn-primary d-inline-flex align-items-center" id="button-logout">
+                                         <span class="material-icons text-light fs-5">edit</span>&nbsp;{{ gettext('Edit') }}
+                                     </a>
+                                </div>
                             </div>
                         </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </section>
         </div>
 
