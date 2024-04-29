@@ -122,6 +122,10 @@
                         {{ materialize_icon('pie chart', 'pie_chart') }}
                         {{ materialize_icon('calendar chart', 'calendar_month') }}
                     {% endcall %}
+
+                   {% call group('participant form') %}
+                        {{ materialize_icon('name', 'edit') }}
+                    {% endcall %}
                 </div>
 
                 <div class="d-flex flex-column justify-content-between">
@@ -133,10 +137,16 @@
                         {{ materialize_icon('description', 'article') }}
                     {% endcall %}
 
-                    {% call group('planned tour types') %}
+                    {% call group('planned tour travel types') %}
                         {{ materialize_icon('none', 'home') }}
                         {{ materialize_icon('by car', 'directions_car') }}
                         {{ materialize_icon('by train', 'train') }}
+                    {% endcall %}
+
+                    {% call group('planned tour direction types') %}
+                        {{ materialize_icon('roundtrip', 'refresh') }}
+                        {{ materialize_icon('single', 'turn_sharp_right') }}
+                        {{ materialize_icon('return', 'sync_alt') }}
                     {% endcall %}
 
                      {% call group('planned tour form') %}
@@ -147,10 +157,7 @@
                         {{ materialize_icon('share', 'share') }}
                         {{ materialize_icon('arrival method', 'arrow_forward') }}
                         {{ materialize_icon('departure method', 'arrow_back') }}
-                    {% endcall %}
-
-                    {% call group('participant form') %}
-                        {{ materialize_icon('name', 'edit') }}
+                        {{ materialize_icon('direction', 'directions') }}
                     {% endcall %}
 
                     {% call group('achievements') %}

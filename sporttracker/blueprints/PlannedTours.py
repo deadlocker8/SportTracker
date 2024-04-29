@@ -13,7 +13,7 @@ from sporttracker.blueprints.GpxTracks import handleGpxTrack
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.PlannedTour import PlannedTour, get_planned_tour_by_id, TravelType
+from sporttracker.logic.model.PlannedTour import PlannedTour, get_planned_tour_by_id, TravelType, TravelDirection
 from sporttracker.logic.model.Track import TrackType
 from sporttracker.logic.model.User import (
     get_users_by_ids,
@@ -43,6 +43,7 @@ class PlannedTourModel:
     ownerId: str
     arrivalMethod: TravelType
     departureMethod: TravelType
+    direction: TravelDirection
 
 
 class PlannedTourFormModel(BaseModel):
@@ -50,6 +51,7 @@ class PlannedTourFormModel(BaseModel):
     type: str
     arrivalMethod: str
     departureMethod: str
+    direction: str
     sharedUsers: list[str] | str | None = None
 
 
@@ -96,6 +98,7 @@ def construct_blueprint(uploadFolder: str):
                     ownerId=str(tour.user_id),
                     arrivalMethod=tour.arrival_method,
                     departureMethod=tour.departure_method,
+                    direction=tour.direction
                 )
             )
 
@@ -131,6 +134,7 @@ def construct_blueprint(uploadFolder: str):
             shared_users=sharedUsers,
             arrival_method=TravelType(form.arrivalMethod),  # type: ignore[call-arg]
             departure_method=TravelType(form.departureMethod),  # type: ignore[call-arg]
+            direction=TravelDirection(form.direction),  # type: ignore[call-arg]
         )
 
         LOGGER.debug(f'Saved new planned tour: {plannedTour}')
@@ -158,6 +162,7 @@ def construct_blueprint(uploadFolder: str):
             ownerId=str(plannedTour.user_id),
             arrivalMethod=plannedTour.arrival_method,
             departureMethod=plannedTour.departure_method,
+            direction=plannedTour.direction,
         )
 
         return render_template(
@@ -181,6 +186,7 @@ def construct_blueprint(uploadFolder: str):
         plannedTour.last_edit_date = datetime.now()  # type: ignore[assignment]
         plannedTour.arrival_method = TravelType(form.arrivalMethod)  # type: ignore[call-arg]
         plannedTour.departure_method = TravelType(form.departureMethod)  # type: ignore[call-arg]
+        plannedTour.direction = TravelDirection(form.direction)  # type: ignore[call-arg]
 
         newGpxFileName = handleGpxTrack(request.files, uploadFolder)
         if plannedTour.gpxFileName is None:
