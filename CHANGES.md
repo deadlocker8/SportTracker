@@ -1,4 +1,6 @@
-# ?.??.?
+# 1.21.0
+- add: planned tours now allow to specify their arrival and departure method (e.g. by car, by train, ...)
+- add: planned tours now allow to specify their direction (e.g. single, roundtrip, ...)
 - fix: sort planned tours by name ascending
 
 # 1.20.0
