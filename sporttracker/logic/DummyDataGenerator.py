@@ -13,7 +13,7 @@ from sporttracker.logic.model.CustomTrackField import CustomTrackField, CustomTr
 from sporttracker.logic.model.MaintenanceEvent import MaintenanceEvent
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
 from sporttracker.logic.model.Participant import Participant
-from sporttracker.logic.model.PlannedTour import PlannedTour
+from sporttracker.logic.model.PlannedTour import PlannedTour, TravelType
 from sporttracker.logic.model.Track import Track, TrackType
 from sporttracker.logic.model.User import User, create_user, Language
 from sporttracker.logic.model.db import db
@@ -269,10 +269,13 @@ class DummyDataGenerator:
 
             plannedTour = PlannedTour(
                 type=TrackType.BIKING,
+                creation_date=fakeTime,
                 last_edit_date=fakeTime,
                 name=random.choice(self.TRACK_NAMES),
                 user_id=user.id,
                 shared_users=shared_users,
+                arrival_method=TravelType.TRAIN,
+                departure_method=TravelType.NONE
             )
 
             self.__append_gpx(plannedTour)
