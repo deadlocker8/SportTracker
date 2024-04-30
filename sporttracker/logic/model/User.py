@@ -3,7 +3,7 @@ import enum
 from flask_babel import gettext
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin, current_user
-from sqlalchemy import Integer, String, Boolean
+from sqlalchemy import Integer, String, Boolean, DateTime
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.model.db import db
@@ -33,6 +33,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     tracks = db.relationship('Track', backref='user', lazy=True, cascade='delete')
     customFields = db.relationship('CustomTrackField', backref='user', lazy=True, cascade='delete')
     trackInfoItems = db.relationship('TrackInfoItem', backref='user', lazy=True, cascade='delete')
+    planned_tours_last_viewed_date: Mapped[DateTime] = mapped_column(DateTime)
 
     def __repr__(self):
         return (
@@ -40,7 +41,8 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
             f'id: {self.id}, '
             f'username: {self.username}, '
             f'isAdmin: {self.isAdmin}, '
-            f'language: {self.language})'
+            f'language: {self.language}, '
+            f'planned_tours_last_viewed_date: {self.planned_tours_last_viewed_date})'
         )
 
 

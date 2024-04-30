@@ -109,6 +109,14 @@ class SportTracker(FlaskBaseApp):
                 upgrade()
                 LOGGER.info('Upgrading database DONE')
 
+        if self._prepareDatabase:
+            with app.app_context():
+                self.__create_admin_user()
+
+                if self._generateDummyData:
+                    dummyDataGenerator = DummyDataGenerator(app.config['UPLOAD_FOLDER'])
+                    dummyDataGenerator.generate()
+
         @app.context_processor
         def inject_static_access() -> dict[str, Any]:
             return {
@@ -218,11 +226,6 @@ class SportTracker(FlaskBaseApp):
     def __prepare_database(self, app):
         with app.app_context():
             db.create_all()
-            self.__create_admin_user()
-
-            if self._generateDummyData:
-                dummyDataGenerator = DummyDataGenerator(app.config['UPLOAD_FOLDER'])
-                dummyDataGenerator.generate()
 
 
 def create_test_app():
