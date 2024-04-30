@@ -277,7 +277,7 @@ class DummyDataGenerator:
                 shared_users=shared_users,
                 arrival_method=TravelType.TRAIN,
                 departure_method=TravelType.NONE,
-                direction=TravelDirection.SINGLE
+                direction=TravelDirection.SINGLE,
             )
 
             self.__append_gpx(plannedTour)

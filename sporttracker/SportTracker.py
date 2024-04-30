@@ -38,8 +38,12 @@ from sporttracker.helpers import Helpers
 from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
 from sporttracker.logic.model.CustomTrackField import CustomTrackFieldType
-from sporttracker.logic.model.PlannedTour import TravelType, TravelDirection, get_new_planned_tour_ids, \
-    get_updated_planned_tour_ids
+from sporttracker.logic.model.PlannedTour import (
+    TravelType,
+    TravelDirection,
+    get_new_planned_tour_ids,
+    get_updated_planned_tour_ids,
+)
 from sporttracker.logic.model.Track import Track, TrackType
 from sporttracker.logic.model.User import (
     User,

@@ -5,6 +5,7 @@ Revises: 772f84a6f268
 Create Date: 2024-04-30 18:48:32.266967
 
 """
+
 from datetime import datetime
 
 import sqlalchemy as sa
@@ -30,7 +31,8 @@ def upgrade():
         )
 
     op.execute(
-        f'UPDATE "user" SET planned_tours_last_viewed_date=\'{datetime.now().isoformat()}\' WHERE planned_tours_last_viewed_date IS NULL;')
+        f'UPDATE "user" SET planned_tours_last_viewed_date=\'{datetime.now().isoformat()}\' WHERE planned_tours_last_viewed_date IS NULL;'
+    )
 
 
 def downgrade():

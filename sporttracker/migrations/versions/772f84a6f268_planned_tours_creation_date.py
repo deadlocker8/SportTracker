@@ -5,10 +5,10 @@ Revises: 7cac13f41c7e
 Create Date: 2024-04-30 17:52:10.638148
 
 """
+
 from alembic import op
 import sqlalchemy as sa
 from sqlalchemy import Inspector
-from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = '772f84a6f268'
@@ -28,7 +28,7 @@ def upgrade():
             sa.Column('creation_date', sa.DateTime(), nullable=True),
         )
 
-    op.execute("UPDATE planned_tour SET creation_date=last_edit_date WHERE creation_date IS NULL;")
+    op.execute('UPDATE planned_tour SET creation_date=last_edit_date WHERE creation_date IS NULL;')
 
     if 'last_edit_user_id' not in columnNames:
         op.add_column(
@@ -36,7 +36,7 @@ def upgrade():
             sa.Column('last_edit_user_id', sa.Integer(), nullable=True),
         )
 
-    op.execute("UPDATE planned_tour SET last_edit_user_id=user_id WHERE last_edit_user_id IS NULL;")
+    op.execute('UPDATE planned_tour SET last_edit_user_id=user_id WHERE last_edit_user_id IS NULL;')
 
 
 def downgrade():

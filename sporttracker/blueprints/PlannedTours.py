@@ -13,7 +13,12 @@ from sporttracker.blueprints.GpxTracks import handleGpxTrack
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.PlannedTour import PlannedTour, get_planned_tour_by_id, TravelType, TravelDirection
+from sporttracker.logic.model.PlannedTour import (
+    PlannedTour,
+    get_planned_tour_by_id,
+    TravelType,
+    TravelDirection,
+)
 from sporttracker.logic.model.Track import TrackType
 from sporttracker.logic.model.User import (
     get_users_by_ids,
@@ -100,7 +105,7 @@ def construct_blueprint(uploadFolder: str):
                     ownerId=str(tour.user_id),
                     arrivalMethod=tour.arrival_method,
                     departureMethod=tour.departure_method,
-                    direction=tour.direction
+                    direction=tour.direction,
                 )
             )
 
