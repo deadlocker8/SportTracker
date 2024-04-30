@@ -1,4 +1,5 @@
 import enum
+from datetime import datetime
 
 from flask_babel import gettext
 from flask_bcrypt import Bcrypt
@@ -81,6 +82,7 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
         password=Bcrypt().generate_password_hash(password).decode('utf-8'),
         isAdmin=isAdmin,
         language=language,
+        planned_tours_last_viewed_date=datetime.now(),
     )
     db.session.add(user)
     db.session.commit()
