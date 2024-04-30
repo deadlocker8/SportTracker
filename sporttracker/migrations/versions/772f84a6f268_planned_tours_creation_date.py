@@ -30,6 +30,14 @@ def upgrade():
 
     op.execute("UPDATE planned_tour SET creation_date=last_edit_date WHERE creation_date IS NULL;")
 
+    if 'last_edit_user_id' not in columnNames:
+        op.add_column(
+            'planned_tour',
+            sa.Column('last_edit_user_id', sa.Integer(), nullable=True),
+        )
+
+    op.execute("UPDATE planned_tour SET last_edit_user_id=user_id WHERE last_edit_user_id IS NULL;")
+
 
 def downgrade():
     inspector = Inspector.from_engine(op.get_bind().engine)
@@ -37,3 +45,6 @@ def downgrade():
 
     if 'creation_date' in columnNames:
         op.drop_column('planned_tour', 'creation_date')
+
+    if 'last_edit_user_id' in columnNames:
+        op.drop_column('planned_tour', 'last_edit_user_id')

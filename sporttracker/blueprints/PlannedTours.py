@@ -133,6 +133,7 @@ def construct_blueprint(uploadFolder: str):
             user_id=current_user.id,
             creation_date=datetime.now(),
             last_edit_date=datetime.now(),
+            last_edit_user_id=current_user.id,
             gpxFileName=gpxFileName,
             shared_users=sharedUsers,
             arrival_method=TravelType(form.arrivalMethod),  # type: ignore[call-arg]
@@ -188,6 +189,7 @@ def construct_blueprint(uploadFolder: str):
         plannedTour.type = TrackType(form.type)  # type: ignore[call-arg]
         plannedTour.name = form.name  # type: ignore[assignment]
         plannedTour.last_edit_date = datetime.now()  # type: ignore[assignment]
+        plannedTour.last_edit_user_id = current_user.id
         plannedTour.arrival_method = TravelType(form.arrivalMethod)  # type: ignore[call-arg]
         plannedTour.departure_method = TravelType(form.departureMethod)  # type: ignore[call-arg]
         plannedTour.direction = TravelDirection(form.direction)  # type: ignore[call-arg]

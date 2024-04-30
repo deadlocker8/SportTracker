@@ -271,6 +271,7 @@ class DummyDataGenerator:
                 type=TrackType.BIKING,
                 creation_date=fakeTime,
                 last_edit_date=fakeTime,
+                last_edit_user_id=user.id,
                 name=random.choice(self.TRACK_NAMES),
                 user_id=user.id,
                 shared_users=shared_users,

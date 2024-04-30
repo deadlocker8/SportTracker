@@ -90,6 +90,7 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     name: Mapped[String] = mapped_column(String, nullable=False)
     creation_date: Mapped[DateTime] = mapped_column(DateTime)
     last_edit_date: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    last_edit_user_id: Mapped[int] = mapped_column(Integer, nullable=True)
     gpxFileName: Mapped[str] = mapped_column(String, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     shared_users: Mapped[list[User]] = relationship(secondary=planned_tour_user_association)
@@ -105,6 +106,7 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
             f'name: {self.name}, '
             f'creation_date: {self.creation_date}, '
             f'last_edit_date: {self.last_edit_date}, '
+            f'last_edit_user_id: {self.last_edit_user_id}, '
             f'gpxFileName: {self.gpxFileName}, '
             f'user_id: {self.user_id}, '
             f'shared_users: {[user.id for user in self.shared_users]}, '
@@ -153,8 +155,13 @@ def get_updated_planned_tour_ids() -> list[int]:
     rows = (
         PlannedTour.query
         .with_entities(PlannedTour.id)
-        .filter(PlannedTour.shared_users.any(id=current_user.id))
+        .filter(
+            or_(
+                PlannedTour.user_id == current_user.id,
+                PlannedTour.shared_users.any(id=current_user.id),
+            ))
         .filter(PlannedTour.creation_date != PlannedTour.last_edit_date)
+        .filter(PlannedTour.last_edit_user_id != current_user.id)
         .filter(PlannedTour.last_edit_date > last_viewed_date)
         .all()
     )
