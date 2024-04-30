@@ -35,6 +35,7 @@ class SharedUserModel:
 class PlannedTourModel:
     id: int
     name: str
+    creationDate: datetime
     lastEditDate: datetime
     type: TrackType
     gpxFileName: str
@@ -90,6 +91,7 @@ def construct_blueprint(uploadFolder: str):
                 PlannedTourModel(
                     id=tour.id,
                     name=tour.name,  # type: ignore[arg-type]
+                    creationDate=tour.creation_date,  # type: ignore[arg-type]
                     lastEditDate=tour.last_edit_date,  # type: ignore[arg-type]
                     type=tour.type,
                     gpxFileName=tour.gpxFileName,
@@ -129,6 +131,7 @@ def construct_blueprint(uploadFolder: str):
             name=form.name,
             type=TrackType(form.type),  # type: ignore[call-arg]
             user_id=current_user.id,
+            creation_date=datetime.now(),
             last_edit_date=datetime.now(),
             gpxFileName=gpxFileName,
             shared_users=sharedUsers,
@@ -154,6 +157,7 @@ def construct_blueprint(uploadFolder: str):
         tourModel = PlannedTourModel(
             id=plannedTour.id,
             name=plannedTour.name,  # type: ignore[arg-type]
+            creationDate=plannedTour.creation_date,  # type: ignore[arg-type]
             lastEditDate=plannedTour.last_edit_date,  # type: ignore[arg-type]
             type=plannedTour.type,
             gpxFileName=plannedTour.gpxFileName,
