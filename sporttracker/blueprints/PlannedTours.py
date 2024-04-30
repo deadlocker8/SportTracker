@@ -3,7 +3,7 @@ import os
 from dataclasses import dataclass
 from datetime import datetime
 
-from flask import Blueprint, render_template, redirect, url_for, abort, request
+from flask import Blueprint, render_template, redirect, url_for, abort, request, Response
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel
@@ -233,6 +233,15 @@ def construct_blueprint(uploadFolder: str):
         db.session.commit()
 
         return redirect(url_for('plannedTours.listPlannedTours'))
+
+    @plannedTours.route('/setLastViewedDate')
+    @login_required
+    def set_last_viewed_date():
+        user = User.query.filter(User.id == current_user.id).first()
+        user.planned_tours_last_viewed_date = datetime.now()
+        db.session.commit()
+
+        return Response(status=204)
 
     return plannedTours
 
