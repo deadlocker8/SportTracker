@@ -125,3 +125,38 @@ def get_planned_tour_by_id(tour_id: int) -> PlannedTour | None:
         .filter(PlannedTour.id == tour_id)
         .first()
     )
+
+
+def get_new_planned_tour_ids() -> list[int]:
+    if not current_user.is_authenticated:
+        return []
+
+    last_viewed_date = User.query.filter(User.id == current_user.id).first().planned_tours_last_viewed_date
+
+    rows = (
+        PlannedTour.query
+        .with_entities(PlannedTour.id)
+        .filter(PlannedTour.shared_users.any(id=current_user.id))
+        .filter(PlannedTour.creation_date > last_viewed_date)
+        .all()
+    )
+
+    return [int(row[0]) for row in rows]
+
+
+def get_updated_planned_tour_ids() -> list[int]:
+    if not current_user.is_authenticated:
+        return []
+
+    last_viewed_date = User.query.filter(User.id == current_user.id).first().planned_tours_last_viewed_date
+
+    rows = (
+        PlannedTour.query
+        .with_entities(PlannedTour.id)
+        .filter(PlannedTour.shared_users.any(id=current_user.id))
+        .filter(PlannedTour.creation_date != PlannedTour.last_edit_date)
+        .filter(PlannedTour.last_edit_date > last_viewed_date)
+        .all()
+    )
+
+    return [int(row[0]) for row in rows]

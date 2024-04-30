@@ -101,6 +101,12 @@
                                     <span class="navbar-icon">
                                         <span class="material-icons fs-5">format_list_bulleted</span>
                                     </span>&nbsp;{{ gettext('More') }}
+                                    {% set numberOfUpdatedPlannedTours = newPlannedTourIds|length + updatedPlannedTourIds|length %}
+                                    {% if numberOfUpdatedPlannedTours > 0 %}
+                                        <span class="badge rounded-pill bg-danger ms-1">
+                                            {{ numberOfUpdatedPlannedTours }}
+                                        </span>
+                                    {% endif %}
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
@@ -117,9 +123,15 @@
                                             <span class="navbar-icon">
                                                 <i class="fa-solid fa-lightbulb fa-fw fs-6"></i>
                                             </span>&nbsp;{{ gettext('Planned Tours') }}
+                                            {% set numberOfUpdatedPlannedTours = newPlannedTourIds|length + updatedPlannedTourIds|length %}
+                                            {% if numberOfUpdatedPlannedTours > 0 %}
+                                                <span class="badge rounded-pill bg-danger ms-1">
+                                                    {{ numberOfUpdatedPlannedTours }}
+                                                </span>
+                                            {% endif %}
                                         </a>
                                     </li>
-                                     <li>
+                                    <li>
                                         <a class="dropdown-item d-flex align-items-center {% if activeLink == 'about' %}active {% endif %}"
                                            href="{{ url_for('general.about') }}">
                                             <span class="navbar-icon">
