@@ -45,7 +45,7 @@
                 {% for availableType in availableTypes %}
                     <input type="radio" class="btn-check" name="{{ inputName }}" id="{{ identifier }}-{{ loop.index }}"
                            autocomplete="off"
-                           {% if selectedValue == availableType.name or availableType.name == 'NONE' %}checked{% endif %}
+                           {% if selectedValue == availableType.name or (selectedValue is none and loop.index == 1) %}checked{% endif %}
                     value="{{ availableType.name }}">
                     <label class="btn btn-outline-light d-flex align-items-center"
                            for="{{ identifier }}-{{ loop.index }}">
