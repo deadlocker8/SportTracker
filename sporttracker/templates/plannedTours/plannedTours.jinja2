@@ -30,11 +30,18 @@
                         <div class="col mb-5">
                             <div class="card h-100">
                                 <div class="card-header mb-0">
-                                    <div class="d-flex align-items-center">
-                                        {{ trackMacros.track_type_icon_small(plannedTour.type, fontSize='fs-3') }}
-                                        <div class="fs-5 text-truncate planned-tour-name ms-3">
-                                            {{ plannedTour.name }}
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            {{ trackMacros.track_type_icon_small(plannedTour.type, fontSize='fs-3') }}
+                                            <div class="fs-5 text-truncate planned-tour-name ms-3">
+                                                {{ plannedTour.name }}
+                                            </div>
                                         </div>
+                                        {% if plannedTour.id in newPlannedTourIds %}
+                                            <span class="badge text-bg-danger">{{ gettext('new') }}</span>
+                                        {% elif plannedTour.id in updatedPlannedTourIds %}
+                                            <span class="badge text-bg-danger">{{ gettext('updated') }}</span>
+                                        {% endif %}
                                     </div>
                                 </div>
 
