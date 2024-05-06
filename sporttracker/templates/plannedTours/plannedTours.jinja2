@@ -33,7 +33,7 @@
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div class="d-flex align-items-center">
                                             {{ trackMacros.track_type_icon_small(plannedTour.type, fontSize='fs-3') }}
-                                            <div class="fs-5 text-truncate planned-tour-name ms-3">
+                                            <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">
                                                 {{ plannedTour.name }}
                                             </div>
                                         </div>
@@ -75,14 +75,16 @@
                                 </div>
 
                                 <div class="card-footer text-body-secondary d-flex align-items-center justify-content-between">
-                                     {% if plannedTour.sharedUsers %}
-                                        <div class="badge rounded-pill text-bg-success d-flex align-items-center">
-                                            <div class="material-icons fs-4">share</div>
-                                            <div class="fs-6 fw-normal">&nbsp;{{ gettext('shared') }}</div>
-                                        </div>
-                                    {% endif %}
+                                    <div class="d-flex align-items-center">
+                                        {% if plannedTour.sharedUsers %}
+                                            <div class="badge rounded-pill text-bg-success d-flex align-items-center me-2">
+                                                <div class="material-icons fs-4">share</div>
+                                                <div class="fs-6 fw-normal">&nbsp;{{ gettext('shared') }}</div>
+                                            </div>
+                                        {% endif %}
 
-                                    {{ gettext('last edited') }}: {{ plannedTour.lastEditDate | format_date() }}
+                                        {{ gettext('last edited') }}: {{ plannedTour.lastEditDate | format_date() }}
+                                    </div>
 
                                      <a href="{{ url_for('plannedTours.edit', tour_id=plannedTour.id) }}" class="btn btn-primary d-inline-flex align-items-center" id="button-logout">
                                          <span class="material-icons text-light fs-5">edit</span>&nbsp;{{ gettext('Edit') }}
