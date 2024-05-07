@@ -46,7 +46,14 @@ class TestPlannedTours(SeleniumTestBaseClass):
         )
 
     @staticmethod
-    def __fill_form(selenium, trackType, name, arrivalMethod: str | None, departureMethod: str | None, direction: str | None):
+    def __fill_form(
+        selenium,
+        trackType,
+        name,
+        arrivalMethod: str | None,
+        departureMethod: str | None,
+        direction: str | None,
+    ):
         select = Select(selenium.find_element(By.ID, 'planned-tour-type'))
         select.select_by_visible_text(trackType.name.capitalize())
 
@@ -72,7 +79,14 @@ class TestPlannedTours(SeleniumTestBaseClass):
     def test_add_tour_valid(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', 'arrival-method-2', 'departure-method-2', 'direction-2')
+        self.__fill_form(
+            selenium,
+            TrackType.BIKING,
+            'Awesome Tour',
+            'arrival-method-2',
+            'departure-method-2',
+            'direction-2',
+        )
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
@@ -126,7 +140,14 @@ class TestPlannedTours(SeleniumTestBaseClass):
     def test_edit_tour_valid(self, server, selenium: WebDriver, app):
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', 'arrival-method-2', 'departure-method-2', 'direction-2')
+        self.__fill_form(
+            selenium,
+            TrackType.BIKING,
+            'Awesome Tour',
+            'arrival-method-2',
+            'departure-method-2',
+            'direction-2',
+        )
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
@@ -146,7 +167,14 @@ class TestPlannedTours(SeleniumTestBaseClass):
         assert selenium.find_element(By.ID, 'departure-method-2').is_selected()
         assert selenium.find_element(By.ID, 'direction-2').is_selected()
 
-        self.__fill_form(selenium, TrackType.BIKING, 'Better Tour', 'arrival-method-3', 'departure-method-3', 'direction-3')
+        self.__fill_form(
+            selenium,
+            TrackType.BIKING,
+            'Better Tour',
+            'arrival-method-3',
+            'departure-method-3',
+            'direction-3',
+        )
         selenium.find_element(By.CSS_SELECTOR, 'section form button[type="submit"]').click()
 
         WebDriverWait(selenium, 5).until(
@@ -190,7 +218,9 @@ class TestPlannedTours(SeleniumTestBaseClass):
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
         assert len(cards) == 1
         # check share icon is displayed
-        assert cards[0].find_element(By.XPATH,  '//div[contains(text(), "shared")]')
+        assert cards[0].find_element(By.XPATH, '//div[contains(text(), "shared")]')
+        # check notification "new" is shown
+        assert cards[0].find_element(By.XPATH, '//span[contains(text(), "new")]')
 
         # check other user can not delete planned tour
         self.__open_edit_form(selenium)
@@ -213,3 +243,16 @@ class TestPlannedTours(SeleniumTestBaseClass):
         )
 
         assert len(selenium.find_elements(By.CLASS_NAME, 'planned-tour-name')) == 1
+
+        # check notification "updated" is shown
+        self.logout(selenium)
+        self.login(selenium)
+        selenium.get(self.build_url('/plannedTours'))
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
+        )
+        cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
+        assert len(cards) == 1
+        assert cards[0].find_element(By.XPATH, '//span[contains(text(), "updated")]')
