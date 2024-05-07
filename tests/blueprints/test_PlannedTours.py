@@ -46,13 +46,22 @@ class TestPlannedTours(SeleniumTestBaseClass):
         )
 
     @staticmethod
-    def __fill_form(selenium, trackType, name):
+    def __fill_form(selenium, trackType, name, arrivalMethod: str | None, departureMethod: str | None, direction: str | None):
         select = Select(selenium.find_element(By.ID, 'planned-tour-type'))
         select.select_by_visible_text(trackType.name.capitalize())
 
         nameInput = selenium.find_element(By.ID, 'planned-tour-name')
         nameInput.clear()
         nameInput.send_keys(name)
+
+        if arrivalMethod is not None:
+            selenium.find_element(By.XPATH, f'//label[@for="{arrivalMethod}"]').click()
+
+        if departureMethod is not None:
+            selenium.find_element(By.XPATH, f'//label[@for="{departureMethod}"]').click()
+
+        if direction is not None:
+            selenium.find_element(By.XPATH, f'//label[@for="{direction}"]').click()
 
     def __click_submit_button(self, selenium):
         button = selenium.find_element(By.CSS_SELECTOR, 'section form button')
@@ -63,7 +72,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
     def test_add_tour_valid(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour')
+        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', 'arrival-method-2', 'departure-method-2', 'direction-2')
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
@@ -77,7 +86,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
     def test_add_tour_all_empty(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, TrackType.BIKING, '')
+        self.__fill_form(selenium, TrackType.BIKING, '', None, None, None)
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         assert selenium.current_url.endswith('/plannedTours/add')
@@ -85,7 +94,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
     def test_quick_filter_only_show_activated_track_types(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour')
+        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', None, None, None)
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
@@ -95,7 +104,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         )
 
         self.__open_form(selenium)
-        self.__fill_form(selenium, TrackType.RUNNING, 'Run away')
+        self.__fill_form(selenium, TrackType.RUNNING, 'Run away', None, None, None)
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
@@ -117,7 +126,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
     def test_edit_tour_valid(self, server, selenium: WebDriver, app):
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour')
+        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', 'arrival-method-2', 'departure-method-2', 'direction-2')
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
@@ -133,7 +142,11 @@ class TestPlannedTours(SeleniumTestBaseClass):
             == 'Awesome Tour'
         )
 
-        self.__fill_form(selenium, TrackType.BIKING, 'Better Tour')
+        assert selenium.find_element(By.ID, 'arrival-method-2').is_selected()
+        assert selenium.find_element(By.ID, 'departure-method-2').is_selected()
+        assert selenium.find_element(By.ID, 'direction-2').is_selected()
+
+        self.__fill_form(selenium, TrackType.BIKING, 'Better Tour', 'arrival-method-3', 'departure-method-3', 'direction-3')
         selenium.find_element(By.CSS_SELECTOR, 'section form button[type="submit"]').click()
 
         WebDriverWait(selenium, 5).until(
@@ -147,7 +160,8 @@ class TestPlannedTours(SeleniumTestBaseClass):
     def test_new_tour_share_with_user(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour')
+
+        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', None, None, None)
 
         selenium.find_element(By.XPATH, '//label[@for="sharedUser-3"]').click()
 
@@ -162,7 +176,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
         assert len(cards) == 1
         # check share icon is displayed
-        assert cards[0].find_element(By.XPATH, '//div[text()=" shared"]')
+        assert cards[0].find_element(By.XPATH, '//div[contains(text(), "shared")]')
 
         # check other user can see planned tour
         self.logout(selenium)
@@ -176,7 +190,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
         assert len(cards) == 1
         # check share icon is displayed
-        assert cards[0].find_element(By.XPATH, '//span[text()="share"]')
+        assert cards[0].find_element(By.XPATH,  '//div[contains(text(), "shared")]')
 
         # check other user can not delete planned tour
         self.__open_edit_form(selenium)
@@ -189,7 +203,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         assert sharedUsers[1].is_enabled()
 
         # check other user can edit planned tour
-        self.__fill_form(selenium, TrackType.BIKING, 'Mega Tour')
+        self.__fill_form(selenium, TrackType.BIKING, 'Mega Tour', None, None, None)
         selenium.find_element(By.CSS_SELECTOR, 'section form button[type="submit"]').click()
 
         WebDriverWait(selenium, 5).until(
