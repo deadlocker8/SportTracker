@@ -3,6 +3,7 @@
 - add: planned tours now allow to specify their direction (e.g. single, roundtrip, ...)
 - add: if a new planned tour is shared with you or an existing shared planned tour is modified, they will be marked with a notification
 - fix: sort planned tours by name ascending
+- chore: update dependencies
 
 # 1.20.0
 - add: planned tours can be shared with other users
