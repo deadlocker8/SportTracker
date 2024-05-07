@@ -162,7 +162,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
         assert len(cards) == 1
         # check share icon is displayed
-        assert cards[0].find_element(By.XPATH, '//span[text()="share"]')
+        assert cards[0].find_element(By.XPATH, '//div[text()=" shared"]')
 
         # check other user can see planned tour
         self.logout(selenium)
