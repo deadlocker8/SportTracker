@@ -32,7 +32,7 @@ faker = "24.14.0"
 ruff = "0.4.3"
 pre-commit = "3.7.0"
 mypy = "1.10.0"
-pytest = "8.1.2"
+pytest = "8.2.0"
 pytest-selenium = "4.1.0"
 selenium = "4.20.0"
 
