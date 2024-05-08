@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-01 00:34+0200\n"
+"POT-Creation-Date: 2024-05-08 22:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: ../blueprints/Achievements.py:38
 msgid "Month Goal Streak"
@@ -748,15 +748,15 @@ msgstr ""
 msgid "Departure"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:81
+#: ../templates/plannedTours/plannedTours.jinja2:82
 msgid "shared"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:85
+#: ../templates/plannedTours/plannedTours.jinja2:86
 msgid "last edited"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:88
+#: ../templates/plannedTours/plannedTours.jinja2:90
 msgid "Edit"
 msgstr ""
 
