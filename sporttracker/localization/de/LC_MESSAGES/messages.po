@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-08 22:45+0200\n"
-"PO-Revision-Date: 2024-05-08 22:45+0200\n"
+"POT-Creation-Date: 2024-05-09 00:33+0200\n"
+"PO-Revision-Date: 2024-05-09 00:34+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Generated-By: Babel 2.15.0\n"
 "X-Generator: Poedit 2.4.2\n"
 
-#: ../blueprints/Achievements.py:38
+#: ../blueprints/Achievements.py:39
 msgid "Month Goal Streak"
 msgstr "Monatsziele in Folge"
 
-#: ../blueprints/Achievements.py:39
+#: ../blueprints/Achievements.py:40
 msgid ""
 "You have achieved all your monthly goals for <span class=\"fw-bold"
 "\">{currentStreak}</span> months in a row!<br>(Best: <span class=\"fw-bold"
@@ -33,39 +33,53 @@ msgstr ""
 "\">{currentStreak}</span> Monate in Folge erreicht!<br>(Beste: <span class="
 "\"fw-bold\">{maxStreak}</span>)"
 
-#: ../blueprints/Achievements.py:49
+#: ../blueprints/Achievements.py:51 ../blueprints/AnnualAchievements.py:93
 msgid "Longest Track"
 msgstr "Längster Track"
 
-#: ../blueprints/Achievements.py:50
+#: ../blueprints/Achievements.py:52
 msgid ""
 "You completed <span class=\"fw-bold\">{longestTrack} km</span> in one trip!"
 msgstr ""
 "Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einem Training "
 "zurückgelegt!"
 
-#: ../blueprints/Achievements.py:64
+#: ../blueprints/Achievements.py:67 ../blueprints/AnnualAchievements.py:49
 msgid "Total Distance"
 msgstr "Gesamtstrecke"
 
-#: ../blueprints/Achievements.py:65
+#: ../blueprints/Achievements.py:68
 msgid ""
 "You completed a total of <span class=\"fw-bold\">{totalDistance} km</span>!"
 msgstr ""
 "Du hast insgesamt <span class=\"fw-bold\">{totalDistance} km</span> "
 "zurückgelegt!"
 
-#: ../blueprints/Achievements.py:79
+#: ../blueprints/Achievements.py:83
 msgid "Best Month"
 msgstr "Bester Monat"
 
-#: ../blueprints/Achievements.py:80
+#: ../blueprints/Achievements.py:84
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with <span "
 "class=\"fw-bold\">{bestMonthDistance} km</span>!"
 msgstr ""
 "<span class=\"fw-bold\">{bestMonthName}</span> war dein bester Monat mit "
 "<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
+
+#: ../blueprints/AnnualAchievements.py:65
+msgid "Total Duration"
+msgstr "Gesamtdauer"
+
+#: ../blueprints/AnnualAchievements.py:80
+msgid "Number Of Tracks"
+msgstr "Anzahl Tracks"
+
+#: ../blueprints/AnnualAchievements.py:109 ../logic/model/User.py:63
+#: ../templates/charts/chartAverageSpeed.jinja2:23
+#: ../templates/charts/chartChooser.jinja2:42
+msgid "Average Speed"
+msgstr "Durchschnittsgeschwindigkeit"
 
 #: ../blueprints/Authentication.py:25 ../blueprints/Authentication.py:32
 msgid "Unknown user"
@@ -107,7 +121,7 @@ msgstr "Der angegebene Name \"{0}\" existiert bereits."
 msgid "The specified participant name \"{0}\" already exists."
 msgstr "Ein Teilnehmer mit dem Namen \"{0}\" existiert bereits."
 
-#: ../logic/AchievementCalculator.py:40 ../logic/AchievementCalculator.py:45
+#: ../logic/AchievementCalculator.py:64 ../logic/AchievementCalculator.py:69
 msgid "No month"
 msgstr "Kein Monat"
 
@@ -167,11 +181,6 @@ msgstr "Strecke"
 msgid "Duration"
 msgstr "Dauer"
 
-#: ../logic/model/User.py:63 ../templates/charts/chartAverageSpeed.jinja2:23
-#: ../templates/charts/chartChooser.jinja2:42
-msgid "Average Speed"
-msgstr "Durchschnittsgeschwindigkeit"
-
 #: ../logic/model/User.py:65 ../templates/tracks/trackMacros.jinja2:292
 msgid "Average Heart Rate"
 msgstr "Durchschnittliche Herzfrequenz"
@@ -180,7 +189,7 @@ msgstr "Durchschnittliche Herzfrequenz"
 msgid "Elevation Sum"
 msgstr "Summe Höhenmeter"
 
-#: ../templates/about.jinja2:6 ../templates/macros.jinja2:139
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:147
 msgid "About"
 msgstr "Über"
 
@@ -188,7 +197,8 @@ msgstr "Über"
 msgid "Changelog"
 msgstr "Changelog"
 
-#: ../templates/achievements.jinja2:24 ../templates/macros.jinja2:86
+#: ../templates/achievements.jinja2:24 ../templates/annualAchievements.jinja2:28
+#: ../templates/macros.jinja2:86
 msgid "Achievements"
 msgstr "Errungenschaften"
 
@@ -240,43 +250,47 @@ msgstr "Auswertung"
 msgid "Charts"
 msgstr "Diagramme"
 
-#: ../templates/macros.jinja2:96 ../templates/maps/mapMultipleTracks.jinja2:6
+#: ../templates/macros.jinja2:94
+msgid "Annual Statistics"
+msgstr "Jahresstatistik"
+
+#: ../templates/macros.jinja2:104 ../templates/maps/mapMultipleTracks.jinja2:6
 #: ../templates/maps/mapPlannedTour.jinja2:6
 #: ../templates/maps/mapSingleTrack.jinja2:6
 msgid "Map"
 msgstr "Karte"
 
-#: ../templates/macros.jinja2:103
+#: ../templates/macros.jinja2:111
 msgid "More"
 msgstr "Mehr"
 
-#: ../templates/macros.jinja2:117
+#: ../templates/macros.jinja2:125
 #: ../templates/maintenanceEvents/maintenanceEvents.jinja2:6
 #: ../templates/maintenanceEvents/maintenanceEvents.jinja2:18
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: ../templates/macros.jinja2:125
+#: ../templates/macros.jinja2:133
 #: ../templates/plannedTours/plannedTours.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:18
 msgid "Planned Tours"
 msgstr "Geplante Touren"
 
-#: ../templates/macros.jinja2:148
+#: ../templates/macros.jinja2:156
 msgid "Search"
 msgstr "Suche"
 
-#: ../templates/macros.jinja2:177 ../templates/settings/settings.jinja2:6
+#: ../templates/macros.jinja2:185 ../templates/settings/settings.jinja2:6
 #: ../templates/settings/settings.jinja2:18
 #: ../templates/tracks/trackMacros.jinja2:386
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../templates/macros.jinja2:186
+#: ../templates/macros.jinja2:194
 msgid "Logout"
 msgstr "Logout"
 
-#: ../templates/macros.jinja2:227 ../templates/tracks/tracks.jinja2:95
+#: ../templates/macros.jinja2:235 ../templates/tracks/tracks.jinja2:95
 #: ../templates/tracks/tracks.jinja2:117
 msgid "Cancel"
 msgstr "Abbrechen"
