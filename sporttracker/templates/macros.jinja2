@@ -86,6 +86,14 @@
                                             </span>&nbsp;{{ gettext('Achievements') }}
                                         </a>
                                     </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center {% if activeLink == 'annualAchievements' %}active {% endif %}"
+                                           href="{{ url_for('annualAchievements.showAnnualAchievements') }}">
+                                            <span class="navbar-icon">
+                                                <span class="material-icons fs-5">stacked_line_chart</span>
+                                            </span>&nbsp;{{ gettext('Annual Statistics') }}
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="nav-item">

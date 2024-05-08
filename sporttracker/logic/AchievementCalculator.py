@@ -2,7 +2,7 @@ from datetime import datetime, date
 
 from flask_babel import format_datetime, gettext
 from flask_login import current_user
-from sqlalchemy import asc, func
+from sqlalchemy import asc, func, extract
 
 from sporttracker.logic.model.MonthGoal import get_goal_summaries_by_year_and_month_and_types
 from sporttracker.logic.model.Track import get_distance_per_month_by_type, TrackType, Track
@@ -22,11 +22,35 @@ class AchievementCalculator:
         return value / 1000
 
     @staticmethod
+    def get_longest_distance_by_type_and_year(trackType: TrackType, year: int) -> float:
+        value = (
+            db.session.query(func.max(Track.distance))
+            .filter(Track.type == trackType)
+            .filter(Track.user_id == current_user.id)
+            .filter(extract('year', Track.startTime) == year)
+            .scalar()
+            or 0
+        )
+        return value / 1000
+
+    @staticmethod
     def get_total_distance_by_type(trackType: TrackType) -> float:
         value = (
             db.session.query(func.sum(Track.distance))
             .filter(Track.type == trackType)
             .filter(Track.user_id == current_user.id)
+            .scalar()
+            or 0
+        )
+        return value / 1000
+
+    @staticmethod
+    def get_total_distance_by_type_and_year(trackType: TrackType, year: int) -> float:
+        value = (
+            db.session.query(func.sum(Track.distance))
+            .filter(Track.type == trackType)
+            .filter(Track.user_id == current_user.id)
+            .filter(extract('year', Track.startTime) == year)
             .scalar()
             or 0
         )
@@ -110,4 +134,25 @@ class AchievementCalculator:
             .filter(Track.user_id == current_user.id)
             .order_by(asc(Track.startTime))
             .first()
+        )
+
+    @staticmethod
+    def get_total_duration_by_type_and_year(trackType: TrackType, year: int) -> int:
+        value = (
+            db.session.query(func.sum(Track.duration))
+            .filter(Track.type == trackType)
+            .filter(Track.user_id == current_user.id)
+            .filter(extract('year', Track.startTime) == year)
+            .scalar()
+            or 0
+        )
+        return value
+
+    @staticmethod
+    def get_total_number_of_tracks_by_type_and_year(trackType: TrackType, year: int) -> int:
+        return (
+            Track.query.filter(Track.type == trackType)
+            .filter(Track.user_id == current_user.id)
+            .filter(extract('year', Track.startTime) == year)
+            .count()
         )

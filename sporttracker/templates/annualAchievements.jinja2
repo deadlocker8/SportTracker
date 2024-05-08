@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+{% macro renderAchievement(icon, is_font_awesome_icon, borderColor, title, description) -%}
+    <div class="col mx-auto">
+        <div class="tile">
+            <div class="diamond-small d-flex align-items-center justify-content-center mx-auto bg-secondary-subtle {{ borderColor }} text-dark">
+                <div class="label fw-bold">
+                    {% if is_font_awesome_icon %}
+                        <i class="fa-solid {{ icon }} fa-fw"></i>
+                    {% else %}
+                        <span class="material-icons">{{ icon }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card height-60 ">
+            <div class="card-body mt-1">
+                <h4 class="card-text mt-4 fw-bold">{{ description }}</h4>
+                <p class="card-title mb-2">{{ title }}</p>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Achievements') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/achievements.css") }}"/>
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('annualAchievements') }}
+
+        {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row mb-5">
+                    <div class="col col-12 mx-auto">
+                        {% for year in availableYears %}
+                            <a href="{{ url_for('annualAchievements.showAnnualAchievementsByYear', year=year) }}" class="btn btn-primary btn-sm">
+                                <span class="text-light">{{ year }}</span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% for trackType, achievements in achievements.items() %}
+                    <div class="row mt-3 mb-3">
+                        <div class="col col-12 mx-auto">
+                            <h3 class="d-flex align-items-center justify-content-center">
+                                {{ trackMacros.track_type_icon_small(trackType, classes='me-3')}}
+                                <span>{{ trackType.get_localized_name() }} - {{ currentYear | string }}</span>
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5">
+                        {% for achievement in achievements %}
+                            {{ renderAchievement(achievement.icon, achievement.is_font_awesome_icon, achievement.color, achievement.title, achievement.description) }}
+                        {% endfor %}
+                    </div>
+
+                    <div class="mt-3">&nbsp;</div>
+                {% endfor %}
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>

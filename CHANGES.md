@@ -1,3 +1,6 @@
+# 1.22.0
+- add: added annual statistics page
+
 # 1.21.0
 - add: planned tours now allow to specify their arrival and departure method (e.g. by car, by train, ...)
 - add: planned tours now allow to specify their direction (e.g. single, roundtrip, ...)

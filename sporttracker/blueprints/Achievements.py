@@ -34,6 +34,7 @@ def construct_blueprint():
             achievementList.append(
                 Achievement(
                     icon='sports_score',
+                    is_font_awesome_icon=False,
                     color=trackType.border_color,
                     title=gettext('Month Goal Streak'),
                     description=gettext(
@@ -45,6 +46,7 @@ def construct_blueprint():
             achievementList.append(
                 Achievement(
                     icon='route',
+                    is_font_awesome_icon=False,
                     color=trackType.border_color,
                     title=gettext('Longest Track'),
                     description=gettext(
@@ -60,6 +62,7 @@ def construct_blueprint():
             achievementList.append(
                 Achievement(
                     icon='map',
+                    is_font_awesome_icon=False,
                     color=trackType.border_color,
                     title=gettext('Total Distance'),
                     description=gettext(
@@ -75,6 +78,7 @@ def construct_blueprint():
             achievementList.append(
                 Achievement(
                     icon='calendar_month',
+                    is_font_awesome_icon=False,
                     color=trackType.border_color,
                     title=gettext('Best Month'),
                     description=gettext(

@@ -15,6 +15,16 @@
     transform-style: preserve-3d;
 }
 
+.diamond-small {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 0.5rem;
+    border: 0.4rem solid;
+    transform: translateY(25%) rotateZ(45deg);
+    transform-origin: center center;
+    transform-style: preserve-3d;
+}
+
 .label {
     transform: rotateZ(-45deg);
     transform-style: preserve-3d;
@@ -22,6 +32,10 @@
 
 .label .material-icons {
     font-size: 4rem;
+}
+
+.diamond-small .label .material-icons, .diamond-small .label svg {
+    font-size: 2rem;
 }
 
 .height-60 {
