@@ -17,7 +17,7 @@ from sporttracker.logic.model.db import db
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, Any]):
+def construct_blueprint(uploadFolder: str):
     gpxTracks = Blueprint('gpxTracks', __name__, static_folder='static', url_prefix='/gpxTracks')
 
     @gpxTracks.route('/track/<int:track_id>')
@@ -57,7 +57,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
         if track is None:
             return Response(status=204)
 
-        return __deleteGpxTrack(uploadFolder, track, gpxPreviewImageSettings)
+        return __deleteGpxTrack(uploadFolder, track)
 
     @gpxTracks.route('/delete/plannedTour/<int:tour_id>')
     @login_required
@@ -67,7 +67,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
         if plannedTour is None:
             return Response(status=204)
 
-        return __deleteGpxTrack(uploadFolder, plannedTour, gpxPreviewImageSettings)
+        return __deleteGpxTrack(uploadFolder, plannedTour)
 
     @gpxTracks.route('/previewImage<int:tour_id>')
     @login_required
@@ -106,16 +106,18 @@ def handleGpxTrackForTrack(files: dict[str, FileStorage], uploadFolder: str) -> 
 
 
 def handleGpxTrackForPlannedTour(
-        files: dict[str, FileStorage], uploadFolder: str, gpxPreviewImageSettings: dict[str, Any]
+    files: dict[str, FileStorage], uploadFolder: str, gpxPreviewImageSettings: dict[str, Any]
 ) -> str | None:
-    return __handleGpxTrack(files, uploadFolder, gpxPreviewImageSettings['enabled'], gpxPreviewImageSettings)
+    return __handleGpxTrack(
+        files, uploadFolder, gpxPreviewImageSettings['enabled'], gpxPreviewImageSettings
+    )
 
 
 def __handleGpxTrack(
-        files: dict[str, FileStorage],
-        uploadFolder: str,
-        generatePreviewImage: bool,
-        gpxPreviewImageSettings: dict[str, Any]
+    files: dict[str, FileStorage],
+    uploadFolder: str,
+    generatePreviewImage: bool,
+    gpxPreviewImageSettings: dict[str, Any],
 ) -> str | None:
     if 'gpxTrack' not in files:
         return None
@@ -156,7 +158,7 @@ def __downloadGpxTrack(uploadFolder: str, item, downloadName: str) -> Response |
     return None
 
 
-def __deleteGpxTrack(uploadFolder: str, item, gpxPreviewImageSettings: dict[str, Any]) -> Response:
+def __deleteGpxTrack(uploadFolder: str, item) -> Response:
     gpxFileName = str(item.gpxFileName)
     if gpxFileName is not None:
         item.gpxFileName = None  # type: ignore[assignment]
@@ -170,17 +172,15 @@ def __deleteGpxTrack(uploadFolder: str, item, gpxPreviewImageSettings: dict[str,
         except OSError as e:
             LOGGER.error(e)
 
-        if gpxPreviewImageSettings['enabled']:
-            gpxPreviewImageService = GpxPreviewImageService(gpxFileName, uploadFolder)
-            gpxPreviewImagePath = gpxPreviewImageService.get_preview_image_path()
-
-            if gpxPreviewImageService.is_image_existing():
-                try:
-                    os.remove(gpxPreviewImagePath)
-                    LOGGER.debug(
-                        f'Deleted preview image file "{gpxPreviewImagePath}" for {item.__class__.__name__} id {item.id}'
-                    )
-                except OSError as e:
-                    LOGGER.error(e)
+        gpxPreviewImageService = GpxPreviewImageService(gpxFileName, uploadFolder)
+        gpxPreviewImagePath = gpxPreviewImageService.get_preview_image_path()
+        if gpxPreviewImageService.is_image_existing():
+            try:
+                os.remove(gpxPreviewImagePath)
+                LOGGER.debug(
+                    f'Deleted preview image file "{gpxPreviewImagePath}" for {item.__class__.__name__} id {item.id}'
+                )
+            except OSError as e:
+                LOGGER.error(e)
 
     return Response(status=204)

@@ -225,11 +225,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Api.construct_blueprint(self._version, app.config['UPLOAD_FOLDER']))
         app.register_blueprint(Achievements.construct_blueprint())
         app.register_blueprint(Search.construct_blueprint())
-        app.register_blueprint(
-            GpxTracks.construct_blueprint(
-                app.config['UPLOAD_FOLDER'], self._settings['gpxPreviewImages']
-            )
-        )
+        app.register_blueprint(GpxTracks.construct_blueprint(app.config['UPLOAD_FOLDER']))
         app.register_blueprint(Maps.construct_blueprint())
         app.register_blueprint(QuickFilter.construct_blueprint())
         app.register_blueprint(MaintenanceEvents.construct_blueprint())
