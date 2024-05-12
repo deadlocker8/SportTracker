@@ -2,6 +2,7 @@ import logging
 import os
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Any
 
 from flask import Blueprint, render_template, redirect, url_for, abort, request, Response
 from flask_login import login_required, current_user
@@ -9,7 +10,7 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 from sqlalchemy.sql import or_
 
-from sporttracker.blueprints.GpxTracks import handleGpxTrack
+from sporttracker.blueprints.GpxTracks import handleGpxTrackForPlannedTour
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
@@ -113,7 +114,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
             'plannedTours/plannedTours.jinja2',
             plannedTours=plannedTourList,
             quickFilterState=quickFilterState,
-            isGpxPreviewImagesEnabled=gpxPreviewImageSettings['enabled']
+            isGpxPreviewImagesEnabled=gpxPreviewImageSettings['enabled'],
         )
 
     @plannedTours.route('/add')
@@ -128,7 +129,9 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
     @login_required
     @validate()
     def addPost(form: PlannedTourFormModel):
-        gpxFileName = handleGpxTrack(request.files, uploadFolder)
+        gpxFileName = handleGpxTrackForPlannedTour(
+            request.files, uploadFolder, gpxPreviewImageSettings
+        )
 
         sharedUserIds = [int(item) for item in request.form.getlist('sharedUsers')]
         sharedUsers = get_users_by_ids(sharedUserIds)
@@ -200,7 +203,9 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
         plannedTour.departure_method = TravelType(form.departureMethod)  # type: ignore[call-arg]
         plannedTour.direction = TravelDirection(form.direction)  # type: ignore[call-arg]
 
-        newGpxFileName = handleGpxTrack(request.files, uploadFolder)
+        newGpxFileName = handleGpxTrackForPlannedTour(
+            request.files, uploadFolder, gpxPreviewImageSettings
+        )
         if plannedTour.gpxFileName is None:
             plannedTour.gpxFileName = newGpxFileName
         else:

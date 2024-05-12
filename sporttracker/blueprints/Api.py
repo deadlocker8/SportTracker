@@ -6,7 +6,7 @@ from flask import Blueprint, jsonify, request, abort
 from flask_login import login_required, current_user
 from pydantic import ValidationError, BaseModel
 
-from sporttracker.blueprints.GpxTracks import handleGpxTrack
+from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack
 from sporttracker.blueprints.MonthGoalsCount import MonthGoalCountFormModel
 from sporttracker.blueprints.MonthGoalsDistance import MonthGoalDistanceFormModel
 from sporttracker.logic import Constants
@@ -163,7 +163,7 @@ def construct_blueprint(version: dict, uploadFolder: str):
         if track is None:
             abort(404)
 
-        newGpxFileName = handleGpxTrack(request.files, uploadFolder)
+        newGpxFileName = handleGpxTrackForTrack(request.files, uploadFolder)
         if newGpxFileName is None:
             abort(400)
 

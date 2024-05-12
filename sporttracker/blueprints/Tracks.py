@@ -12,7 +12,7 @@ from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel, ConfigDict, field_validator
 
-from sporttracker.blueprints.GpxTracks import handleGpxTrack
+from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
@@ -146,7 +146,7 @@ def construct_blueprint(uploadFolder: str):
     @login_required
     @validate()
     def addPost(form: TrackFormModel):
-        gpxFileName = handleGpxTrack(request.files, uploadFolder)
+        gpxFileName = handleGpxTrackForTrack(request.files, uploadFolder)
 
         participantIds = [int(item) for item in request.form.getlist('participants')]
         participants = get_participants_by_ids(participantIds)
@@ -233,7 +233,7 @@ def construct_blueprint(uploadFolder: str):
         participantIds = [int(item) for item in request.form.getlist('participants')]
         track.participants = get_participants_by_ids(participantIds)
 
-        newGpxFileName = handleGpxTrack(request.files, uploadFolder)
+        newGpxFileName = handleGpxTrackForTrack(request.files, uploadFolder)
         if track.gpxFileName is None:
             track.gpxFileName = newGpxFileName
         else:

@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import Any
 
 from sporttracker.logic import Constants
 
@@ -22,3 +23,7 @@ class GpxPreviewImageService:
 
     def is_image_existing(self) -> bool:
         return os.path.exists(self.get_preview_image_path())
+
+    def generate_image(self, gpxPreviewImageSettings: dict[str, Any]) -> None:
+        # TODO: generate image
+        pass
