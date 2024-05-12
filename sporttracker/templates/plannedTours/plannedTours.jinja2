@@ -46,7 +46,9 @@
                                 </div>
 
                                 {% if isGpxPreviewImagesEnabled %}
-                                    <img class="img-fluid" src="{{ url_for('gpxTracks.getPreviewImageByPlannedTourId', tour_id=plannedTour.id) }}" alt="">
+                                    <a href="{{ url_for('maps.showPlannedTour', tour_id=plannedTour.id or -1) }}">
+                                        <img class="img-fluid" src="{{ url_for('gpxTracks.getPreviewImageByPlannedTourId', tour_id=plannedTour.id) }}" alt="">
+                                    </a>
                                 {% endif %}
 
                                 <div class="card-body">

@@ -3,6 +3,7 @@
 
 # 1.22.0
 - add: added annual statistics page
+- add: planned tours: open map in click on preview image
 - fix: improve search page if there are no search result
 - chore: update dependencies
 
