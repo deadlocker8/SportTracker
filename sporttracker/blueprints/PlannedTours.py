@@ -61,7 +61,7 @@ class PlannedTourFormModel(BaseModel):
     sharedUsers: list[str] | str | None = None
 
 
-def construct_blueprint(uploadFolder: str):
+def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, Any]):
     plannedTours = Blueprint(
         'plannedTours', __name__, static_folder='static', url_prefix='/plannedTours'
     )
@@ -113,6 +113,7 @@ def construct_blueprint(uploadFolder: str):
             'plannedTours/plannedTours.jinja2',
             plannedTours=plannedTourList,
             quickFilterState=quickFilterState,
+            isGpxPreviewImagesEnabled=gpxPreviewImageSettings['enabled']
         )
 
     @plannedTours.route('/add')

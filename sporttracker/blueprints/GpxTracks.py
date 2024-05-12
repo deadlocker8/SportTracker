@@ -67,6 +67,24 @@ def construct_blueprint(uploadFolder: str):
 
         return __deleteGpxTrack(uploadFolder, plannedTour)
 
+    @gpxTracks.route('/previewImage<int:tour_id>')
+    @login_required
+    def getPreviewImageByPlannedTourId(tour_id: int):
+        plannedTour = get_planned_tour_by_id(tour_id)
+
+        if plannedTour is None:
+            abort(404)
+
+        if plannedTour.gpxFileName is None:
+            return send_from_directory('static', path='images/map_placeholder.png', mimetype='image/png')
+
+        gpxPreviewImageService = GpxPreviewImageService(plannedTour.gpxFileName, uploadFolder)
+        if not gpxPreviewImageService.is_image_existing():
+            return send_from_directory('static', path='images/map_placeholder.png', mimetype='image/png')
+
+        gpxPreviewImageFileName = gpxPreviewImageService.get_preview_image_path()
+        return send_file(gpxPreviewImageFileName, mimetype='image/jpg')
+
     return gpxTracks
 
 
