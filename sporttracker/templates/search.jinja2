@@ -58,11 +58,20 @@
                     {{ macros.track_type_quick_filter(url_for('search.performSearch', searchText=searchText)) }}
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col col-12">
-                        {{ render_pagination(pagination) }}
+                {% if pagination.total == 0 %}
+                    <div class="row my-5">
+                        <div class="col col-12 fst-italic">
+                            <h4>{{ gettext('No search results') }}</h4>
+                        </div>
                     </div>
-                </div>
+
+                {% else %}
+                    <div class="row mb-3">
+                        <div class="col col-12">
+                            {{ render_pagination(pagination) }}
+                        </div>
+                    </div>
+                {% endif %}
 
                 {% for monthName, tracks in results.items() %}
                     <h3 class="mt-4">{{ monthName }}</h3>
