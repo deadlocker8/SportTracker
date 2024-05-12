@@ -15,5 +15,8 @@
     },
     "database": {
         "uri": "sqlite:///:memory:"
+    },
+    "gpxPreviewImages": {
+        "enabled": false
     }
 }
