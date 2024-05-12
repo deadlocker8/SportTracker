@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-09 00:33+0200\n"
-"PO-Revision-Date: 2024-05-09 00:34+0200\n"
+"POT-Creation-Date: 2024-05-12 21:57+0200\n"
+"PO-Revision-Date: 2024-05-12 21:58+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -302,6 +302,10 @@ msgstr "von"
 #: ../templates/search.jinja2:38 ../templates/search.jinja2:51
 msgid "Search Results"
 msgstr "Suchergebnisse"
+
+#: ../templates/search.jinja2:64
+msgid "No search results"
+msgstr "Keine Suchergebnisse"
 
 #: ../templates/charts/chartAverageSpeed.jinja2:35
 #: ../templates/charts/chartSpeedPerTrack.jinja2:31
