@@ -1,4 +1,5 @@
 from datetime import datetime, date
+from statistics import mean
 
 from flask_babel import format_datetime, gettext
 from flask_login import current_user
@@ -156,3 +157,17 @@ class AchievementCalculator:
             .filter(extract('year', Track.startTime) == year)
             .count()
         )
+
+    @staticmethod
+    def get_average_speed_by_type_and_year(trackType: TrackType, year: int) -> float:
+        tracks = (
+            Track.query.filter(Track.user_id == current_user.id)
+            .filter(Track.type == trackType)
+            .filter(extract('year', Track.startTime) == year)
+            .all()
+        )
+
+        speedData = [
+            track.distance / track.duration * 3.6 for track in tracks if track.duration is not None
+        ]
+        return round(mean(speedData), 2) if speedData else 0.0

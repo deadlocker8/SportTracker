@@ -26,7 +26,7 @@ def create_dummy_track(date: datetime.date, distance: int) -> Track:
         startTime=datetime.datetime(
             year=date.year, month=date.month, day=date.day, hour=12, minute=0, second=0
         ),
-        duration=200,
+        duration=2000,
         distance=distance * 1000,
         averageHeartRate=130,
         elevationSum=16,
@@ -80,7 +80,7 @@ class TestAchievementCalculatorGetLongestDistanceByType:
             assert 50 == result
 
 
-class TestAchievementCalculatorGeTotalDistanceByType:
+class TestAchievementCalculatorGetTotalDistanceByType:
     def test_get_total_distance_by_type_no_tracks_should_return_0(self, app):
         with app.test_request_context():
             user = db.session.get(User, 1)
@@ -313,3 +313,39 @@ class TestAchievementCalculatorGetStreaksByType:
                 TrackType.BIKING, datetime.datetime.now().date()
             )
             assert (1, 1) == result
+
+
+class TestAchievementCalculatorGetAverageSpeedByType:
+    def test_get_average_speed_by_type_no_tracks_should_return_0(self, app):
+        with app.test_request_context():
+            user = db.session.get(User, 1)
+            login_user(user, remember=False)
+
+            result = AchievementCalculator.get_average_speed_by_type_and_year(
+                TrackType.BIKING, 2023
+            )
+            assert 0.0 == result
+
+    def test_get_total_distance_by_type_multiple_tracks_should_return_max_distance(self, app):
+        with app.test_request_context():
+            user = db.session.get(User, 1)
+            login_user(user, remember=False)
+
+            track_1 = create_dummy_track(datetime.date(2023, 1, 1), 30)
+            track_2 = create_dummy_track(datetime.date(2023, 2, 1), 50)
+            track_3 = create_dummy_track(datetime.date(2023, 3, 1), 22)
+            db.session.add(track_1)
+            db.session.add(track_2)
+            db.session.add(track_3)
+            db.session.commit()
+
+            result = AchievementCalculator.get_average_speed_by_type_and_year(
+                TrackType.BIKING, 2023
+            )
+
+            speed_1 = track_1.distance / track_1.duration * 3.6
+            speed_2 = track_2.distance / track_2.duration * 3.6
+            speed_3 = track_3.distance / track_3.duration * 3.6
+            expectedSpeed = (speed_1 + speed_2 + speed_3) / 3
+
+            assert expectedSpeed == pytest.approx(result)
