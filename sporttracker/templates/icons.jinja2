@@ -126,6 +126,12 @@
                    {% call group('participant form') %}
                         {{ materialize_icon('name', 'edit') }}
                     {% endcall %}
+
+                     {% call group('annual statistics') %}
+                        {{ materialize_icon('annual statistics trend up', 'trending_up') }}
+                        {{ materialize_icon('annual statistics trend down', 'trending_down') }}
+                        {{ materialize_icon('annual statistics show details down', 'query_stats') }}
+                    {% endcall %}
                 </div>
 
                 <div class="d-flex flex-column justify-content-between">
@@ -187,8 +193,6 @@
                         {{ fontawesome_icon('search', 'fa-magnifying-glass') }}
                         {{ materialize_icon('save', 'save') }}
                         {{ materialize_icon('delete', 'delete') }}
-                        {{ materialize_icon('annual statistics trend up', 'trending_up') }}
-                        {{ materialize_icon('annual statistics trend down', 'trending_down') }}
                     {% endcall %}
 
                     {% call group('navbar/headlines') %}

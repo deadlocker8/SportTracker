@@ -15,7 +15,7 @@ class Achievement:
 
 class AnnualAchievementDifferenceType(enum.Enum):
     LESS = 'LESS', 'trending_down', 'text-danger'
-    EQUAL = 'EQUAL', 'trending_down', 'text-success'
+    EQUAL = 'EQUAL', 'trending_up', 'text-success'
     MORE = 'MORE', 'trending_up', 'text-success'
 
     icon: str
@@ -45,6 +45,19 @@ class AnnualAchievementDifferenceType(enum.Enum):
 
 
 @dataclass
+class AllYearData:
+    year_names: list[str]
+    values: list
+    labels: list[str]
+    min: str
+    max: str
+    sum: str
+    average: str
+
+
+@dataclass
 class AnnualAchievement(Achievement):
     difference_to_previous_year: str
     difference_type: AnnualAchievementDifferenceType
+    all_year_data: AllYearData
+    unit: str

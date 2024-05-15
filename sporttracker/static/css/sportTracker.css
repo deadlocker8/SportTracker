@@ -27,6 +27,10 @@ body {
     background-color: #6BBDA5;
 }
 
+.text-green {
+    color: #6BBDA5;
+}
+
 .border-green {
     border-color: #6BBDA5 !important;
 }

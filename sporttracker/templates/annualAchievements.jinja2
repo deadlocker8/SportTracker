@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-{% macro renderAnnualAchievement(achievement) -%}
+{% macro renderAnnualAchievement(achievement, index) -%}
     <div class="col mx-auto">
         <div class="tile">
             <div class="diamond-small d-flex align-items-center justify-content-center mx-auto bg-secondary-subtle {{ achievement.color }} text-dark">
@@ -13,18 +13,104 @@
                 </div>
             </div>
         </div>
-        <div class="card height-60 ">
+        <div class="card">
             <div class="card-body mt-1">
                 <h4 class="card-text mt-4 fw-bold mb-1">{{ achievement.description }}</h4>
                 <span class="fw-semibold d-inline-flex align-items-center {{ achievement.difference_type.color }}">
                     <span class="material-icons fs-5 me-1">{{ achievement.difference_type.icon }}</span>
                     {{ achievement.difference_to_previous_year }}
                 </span>
-                <p class="card-title mt-2 mb-4">{{ achievement.title }}</p>
+                <p class="card-title mt-2">{{ achievement.title }}</p>
+                <button class="mt-4 mb-2 btn btn-sm btn-outline-primary d-inline-flex align-items-center border-2 buttonAnnualAchievementModal"
+                        data-bs-toggle="modal"
+                        data-bs-target="#annual-achievement-modal-{{ index }}">
+                    <span class="material-icons fs-5">query_stats</span>&nbsp;{{ gettext('Details') }}
+                </button>
             </div>
         </div>
     </div>
 {%- endmacro %}
+
+{% macro annualAchievementModal(idSuffix, trackType, achievement) -%}
+    <div class="modal fade" tabindex="-1" id="annual-achievement-modal-{{ idSuffix }}">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header d-flex align-items-center justify-content-start">
+                    {{ trackMacros.track_type_icon_small(trackType, fontSize='fs-3') }}
+                    <div class="fs-5 ms-3">
+                        {{ trackType.get_localized_name() }} - {{ achievement.title }}
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div id="annual-achievement-chart-container-{{ idSuffix }}" class="w-100"></div>
+                    <div class="row">
+                        {{ annualAchievementStatisticCard(gettext('Min'), trackType, achievement.all_year_data.min) }}
+                        {{ annualAchievementStatisticCard(gettext('Max'), trackType, achievement.all_year_data.max) }}
+                        {{ annualAchievementStatisticCard(gettext('Total'), trackType, achievement.all_year_data.sum) }}
+                        {{ annualAchievementStatisticCard(gettext('Average'), trackType, achievement.all_year_data.average) }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{ gettext('Close') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro annualAchievementStatisticCard(title, trackType, value) -%}
+    <div class="col-6">
+        <div class="card bg-body-secondary border-0 mb-3" data-bs-theme="dark">
+            <div class="card-body">
+                <div class="card-title">{{ title }}</div>
+                <h5 class="card-title {{ trackType.text_color }} fw-bold">{{ value }}</h5>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro annualAchievementChart(index, trackType, achievement) -%}
+    <script>
+        document.getElementById('annual-achievement-modal-{{ index }}').addEventListener('shown.bs.modal', event =>
+        {
+            Plotly.newPlot('annual-achievement-chart-container-{{ index }}',
+                [
+                    {
+                        x: {{ achievement.all_year_data.year_names }},
+                        y: {{ achievement.all_year_data.values }},
+                        type: 'bar',
+                        marker: {
+                            color: '{{ trackType.background_color_hex }}'
+                        },
+                        text: {{ achievement.all_year_data.labels }},
+                    }
+                ],
+                {
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    xaxis: {
+                        showline: false,
+                        showgrid: false,
+                        type: 'category',
+                        color: '#FFFFFF'
+                    },
+                    yaxis: {
+                        title: '{{ achievement.unit }}',
+                        showline: false,
+                        zeroline: false,
+                        rangemode: 'tozero',
+                        tickformat: '.0f',
+                        color: '#FFFFFF'
+                    },
+                },
+                {
+                    responsive: true,
+                    displayModeBar: false
+                });
+        });
+    </script>
+{%- endmacro %}
+
 
 <html>
     <head>
@@ -33,6 +119,7 @@
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/achievements.css") }}"/>
+        <script src="{{ url_for('static', filename='js/libs/plotly.min.js') }}" type="text/javascript"></script>
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('annualAchievements') }}
@@ -51,11 +138,12 @@
                     </div>
                 </div>
 
+                {% set ns = namespace(index = 0) %}
                 {% for trackType, achievements in achievements.items() %}
                     <div class="row mt-3 mb-3">
                         <div class="col col-12 mx-auto">
                             <h3 class="d-flex align-items-center justify-content-center">
-                                {{ trackMacros.track_type_icon_small(trackType, classes='me-3')}}
+                                {{ trackMacros.track_type_icon_small(trackType, classes='me-3') }}
                                 <span>{{ trackType.get_localized_name() }} - {{ currentYear | string }}</span>
                             </h3>
                         </div>
@@ -63,7 +151,10 @@
 
                     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5">
                         {% for achievement in achievements %}
-                            {{ renderAnnualAchievement(achievement) }}
+                            {% set ns.index = ns.index + 2 %}
+                            {{ renderAnnualAchievement(achievement, ns.index) }}
+                            {{ annualAchievementModal(ns.index, trackType, achievement) }}
+                            {{ annualAchievementChart(ns.index, trackType, achievement) }}
                         {% endfor %}
                     </div>
 

@@ -15,15 +15,36 @@ from sporttracker.logic.model.db import db
 
 
 class TrackType(enum.Enum):
-    BIKING = 'BIKING', 'directions_bike', False, 'bg-warning', '#FFC107', 'border-warning', True, 0
-    RUNNING = 'RUNNING', 'directions_run', False, 'bg-info', '#0DCAF0', 'border-info', False, 1
-    HIKING = 'HIKING', 'hiking', False, 'bg-green', '#619B8A', 'border-green', True, 2
+    BIKING = (
+        'BIKING',
+        'directions_bike',
+        False,
+        'bg-warning',
+        '#FFC107',
+        'border-warning',
+        'text-warning',
+        True,
+        0,
+    )
+    RUNNING = (
+        'RUNNING',
+        'directions_run',
+        False,
+        'bg-info',
+        '#0DCAF0',
+        'border-info',
+        'text-info',
+        False,
+        1,
+    )
+    HIKING = 'HIKING', 'hiking', False, 'bg-green', '#619B8A', 'border-green', 'text-green', True, 2
 
     icon: str
     is_font_awesome_icon: bool
     background_color: str
     background_color_hex: str
     border_color: str
+    text_color: str
     render_speed_in_kph: bool
     order: int
 
@@ -35,6 +56,7 @@ class TrackType(enum.Enum):
         background_color: str,
         background_color_hex: str,
         border_color: str,
+        text_color: str,
         render_speed_in_kph: bool,
         order: int,
     ):
@@ -45,6 +67,7 @@ class TrackType(enum.Enum):
         member.background_color = background_color
         member.background_color_hex = background_color_hex
         member.border_color = border_color
+        member.text_color = text_color
         member.render_speed_in_kph = render_speed_in_kph
         member.order = order
         return member
