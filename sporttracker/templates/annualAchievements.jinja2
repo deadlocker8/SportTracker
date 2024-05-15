@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 
-{% macro renderAchievement(icon, is_font_awesome_icon, borderColor, title, description) -%}
+{% macro renderAnnualAchievement(achievement) -%}
     <div class="col mx-auto">
         <div class="tile">
-            <div class="diamond-small d-flex align-items-center justify-content-center mx-auto bg-secondary-subtle {{ borderColor }} text-dark">
+            <div class="diamond-small d-flex align-items-center justify-content-center mx-auto bg-secondary-subtle {{ achievement.color }} text-dark">
                 <div class="label fw-bold">
-                    {% if is_font_awesome_icon %}
-                        <i class="fa-solid {{ icon }} fa-fw"></i>
+                    {% if achievement.is_font_awesome_icon %}
+                        <i class="fa-solid {{ achievement.icon }} fa-fw"></i>
                     {% else %}
-                        <span class="material-icons">{{ icon }}</span>
+                        <span class="material-icons">{{ achievement.icon }}</span>
                     {% endif %}
                 </div>
             </div>
         </div>
         <div class="card height-60 ">
             <div class="card-body mt-1">
-                <h4 class="card-text mt-4 fw-bold">{{ description }}</h4>
-                <p class="card-title mb-2">{{ title }}</p>
+                <h4 class="card-text mt-4 fw-bold mb-1">{{ achievement.description }}</h4>
+                <span class="fw-semibold d-inline-flex align-items-center {{ achievement.difference_type.color }}">
+                    <span class="material-icons fs-5 me-1">{{ achievement.difference_type.icon }}</span>
+                    {{ achievement.difference_to_previous_year }}
+                </span>
+                <p class="card-title mt-2 mb-4">{{ achievement.title }}</p>
             </div>
         </div>
     </div>
@@ -59,7 +63,7 @@
 
                     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5">
                         {% for achievement in achievements %}
-                            {{ renderAchievement(achievement.icon, achievement.is_font_awesome_icon, achievement.color, achievement.title, achievement.description) }}
+                            {{ renderAnnualAchievement(achievement) }}
                         {% endfor %}
                     </div>
 
