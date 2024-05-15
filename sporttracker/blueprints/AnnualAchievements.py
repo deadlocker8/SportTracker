@@ -50,19 +50,20 @@ def construct_blueprint():
         for trackType in TrackType:
             achievementList = []
 
-            totalDistance = AchievementCalculator.get_total_distance_by_type_and_year(
-                trackType, year
-            )
-            totalDistancePreviousYear = AchievementCalculator.get_total_distance_by_type_and_year(
-                trackType, year - 1
-            )
+            values = []
+            totalDistance = 0.0
+            totalDistancePreviousYear = 0.0
+            for currentYear in availableYears:
+                value = AchievementCalculator.get_total_distance_by_type_and_year(
+                    trackType, currentYear
+                )
+                values.append(value)
+                if currentYear == year:
+                    totalDistance = value
+                elif currentYear == year - 1:
+                    totalDistancePreviousYear = value
             totalDistanceDifference = totalDistance - totalDistancePreviousYear
 
-            values = []
-            for year in availableYears:
-                values.append(
-                    AchievementCalculator.get_total_distance_by_type_and_year(trackType, year)
-                )
             totalDistanceAllYearData = AllYearData(
                 year_names=yearNames,
                 values=values,
@@ -89,19 +90,20 @@ def construct_blueprint():
                 )
             )
 
-            totalDuration = AchievementCalculator.get_total_duration_by_type_and_year(
-                trackType, year
-            )
-            totalDurationPreviousYear = AchievementCalculator.get_total_duration_by_type_and_year(
-                trackType, year - 1
-            )
+            values = []
+            totalDuration = 0
+            totalDurationPreviousYear = 0
+            for currentYear in availableYears:
+                value = AchievementCalculator.get_total_duration_by_type_and_year(
+                    trackType, currentYear
+                )
+                values.append(value)
+                if currentYear == year:
+                    totalDuration = value
+                elif currentYear == year - 1:
+                    totalDurationPreviousYear = value
             totalDurationDifference = totalDuration - totalDurationPreviousYear
 
-            values = []
-            for year in availableYears:
-                values.append(
-                    AchievementCalculator.get_total_duration_by_type_and_year(trackType, year)
-                )
             totalDurationAllYearData = AllYearData(
                 year_names=yearNames,
                 values=values,
@@ -128,23 +130,20 @@ def construct_blueprint():
                 )
             )
 
-            totalTrackCount = AchievementCalculator.get_total_number_of_tracks_by_type_and_year(
-                trackType, year
-            )
-            totalTrackCountPreviousYear = (
-                AchievementCalculator.get_total_number_of_tracks_by_type_and_year(
-                    trackType, year - 1
+            values = []
+            totalTrackCount = 0
+            totalTrackCountPreviousYear = 0
+            for currentYear in availableYears:
+                value = AchievementCalculator.get_total_number_of_tracks_by_type_and_year(
+                    trackType, currentYear
                 )
-            )
+                values.append(value)
+                if currentYear == year:
+                    totalTrackCount = value
+                elif currentYear == year - 1:
+                    totalTrackCountPreviousYear = value
             totalTrackCountDifference = totalTrackCount - totalTrackCountPreviousYear
 
-            values = []
-            for year in availableYears:
-                values.append(
-                    AchievementCalculator.get_total_number_of_tracks_by_type_and_year(
-                        trackType, year
-                    )
-                )
             totalTrackCountAllYearData = AllYearData(
                 year_names=yearNames,
                 values=values,
@@ -171,12 +170,18 @@ def construct_blueprint():
                 )
             )
 
-            longestTrack = AchievementCalculator.get_longest_distance_by_type_and_year(
-                trackType, year
-            )
-            longestTrackPreviousYear = AchievementCalculator.get_longest_distance_by_type_and_year(
-                trackType, year - 1
-            )
+            values = []
+            longestTrack = 0.0
+            longestTrackPreviousYear = 0.0
+            for currentYear in availableYears:
+                value = AchievementCalculator.get_longest_distance_by_type_and_year(
+                    trackType, currentYear
+                )
+                values.append(value)
+                if currentYear == year:
+                    longestTrack = value
+                elif currentYear == year - 1:
+                    longestTrackPreviousYear = value
             longestTrackDifference = longestTrack - longestTrackPreviousYear
 
             values = []
@@ -210,17 +215,20 @@ def construct_blueprint():
                 )
             )
 
-            averageSpeed = AchievementCalculator.get_average_speed_by_type_and_year(trackType, year)
-            averageSpeedPreviousYear = AchievementCalculator.get_average_speed_by_type_and_year(
-                trackType, year - 1
-            )
+            values = []
+            averageSpeed = 0.0
+            averageSpeedPreviousYear = 0.0
+            for currentYear in availableYears:
+                value = AchievementCalculator.get_average_speed_by_type_and_year(
+                    trackType, currentYear
+                )
+                values.append(value)
+                if currentYear == year:
+                    averageSpeed = value
+                elif currentYear == year - 1:
+                    averageSpeedPreviousYear = value
             averageSpeedDifference = averageSpeed - averageSpeedPreviousYear
 
-            values = []
-            for year in availableYears:
-                values.append(
-                    AchievementCalculator.get_average_speed_by_type_and_year(trackType, year)
-                )
             averageSpeedAllYearData = AllYearData(
                 year_names=yearNames,
                 values=values,
