@@ -48,6 +48,13 @@ Example charts:
 ![](screenshots/chart_duration_per_track.png)
 ![](screenshots/chart_distance_per_month.png)
 
+### Annual Statistics
+Every year is summarized for each sport type.
+
+![](screenshots/annual_statistics_1.png)
+![](screenshots/annual_statistics_2.png)
+
+
 ### Achievements
 The achievement page shows aggregated information about all your tracks.
 
