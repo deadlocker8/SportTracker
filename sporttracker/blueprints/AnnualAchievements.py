@@ -106,7 +106,7 @@ def construct_blueprint():
 
             totalDurationAllYearData = AllYearData(
                 year_names=yearNames,
-                values=values,
+                values=[x / 3600 for x in values],
                 labels=[__format_duration(x) for x in values],
                 min=__format_duration(min(values)) if values else '-',
                 max=__format_duration(max(values)) if values else '-',
