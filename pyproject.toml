@@ -30,7 +30,7 @@ faker = "25.0.1"
 
 [tool.poetry.dev-dependencies]
 ruff = "0.4.3"
-pre-commit = "3.7.0"
+pre-commit = "3.7.1"
 mypy = "1.10.0"
 pytest = "8.2.0"
 pytest-selenium = "4.1.0"
