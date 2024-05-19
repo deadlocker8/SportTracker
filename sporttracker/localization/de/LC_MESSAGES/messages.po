@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-16 20:18+0200\n"
-"PO-Revision-Date: 2024-05-16 20:19+0200\n"
+"POT-Creation-Date: 2024-05-19 16:32+0200\n"
+"PO-Revision-Date: 2024-05-19 16:33+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -84,7 +84,7 @@ msgstr "Anzahl Tracks"
 #: ../templates/charts/chartAverageSpeed.jinja2:23
 #: ../templates/charts/chartChooser.jinja2:42
 msgid "Average Speed"
-msgstr "Durchschnittsgeschwindigkeit"
+msgstr "Durchschnittliche Geschwindigkeit"
 
 #: ../blueprints/Authentication.py:25 ../blueprints/Authentication.py:32
 msgid "Unknown user"
@@ -203,7 +203,7 @@ msgid "Changelog"
 msgstr "Changelog"
 
 #: ../templates/achievements.jinja2:24
-#: ../templates/annualAchievements.jinja2:118 ../templates/macros.jinja2:86
+#: ../templates/annualAchievements.jinja2:125 ../templates/macros.jinja2:86
 msgid "Achievements"
 msgstr "Errungenschaften"
 

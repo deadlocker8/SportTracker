@@ -13,15 +13,17 @@
                 </div>
             </div>
         </div>
-        <div class="card">
-            <div class="card-body mt-1">
-                <h4 class="card-text mt-4 fw-bold mb-1">{{ achievement.description }}</h4>
-                <span class="fw-semibold d-inline-flex align-items-center {{ achievement.difference_type.color }}">
-                    <span class="material-icons fs-5 me-1">{{ achievement.difference_type.icon }}</span>
-                    {{ achievement.difference_to_previous_year }}
-                </span>
-                <p class="card-title mt-2">{{ achievement.title }}</p>
-                <button class="mt-4 mb-2 btn btn-sm btn-outline-primary d-inline-flex align-items-center border-2 buttonAnnualAchievementModal"
+        <div class="card height-75">
+            <div class="card-body mt-1 mb-2 d-flex flex-column align-items-center justify-content-between">
+                <div class="mb-3">
+                    <h4 class="card-text mt-4 fw-bold mb-1">{{ achievement.description }}</h4>
+                    <span class="fw-semibold d-inline-flex align-items-center {{ achievement.difference_type.color }}">
+                        <span class="material-icons fs-5 me-1">{{ achievement.difference_type.icon }}</span>
+                        {{ achievement.difference_to_previous_year }}
+                    </span>
+                    <p class="card-title mt-2">{{ achievement.title }}</p>
+                </div>
+                <button class="btn btn-sm btn-outline-primary d-inline-flex align-items-center border-2 buttonAnnualAchievementModal"
                         data-bs-toggle="modal"
                         data-bs-target="#annual-achievement-modal-{{ index }}">
                     <span class="material-icons fs-5">query_stats</span>&nbsp;{{ gettext('Details') }}

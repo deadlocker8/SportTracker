@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-16 20:18+0200\n"
+"POT-Creation-Date: 2024-05-19 16:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -192,7 +192,7 @@ msgid "Changelog"
 msgstr ""
 
 #: ../templates/achievements.jinja2:24
-#: ../templates/annualAchievements.jinja2:118 ../templates/macros.jinja2:86
+#: ../templates/annualAchievements.jinja2:125 ../templates/macros.jinja2:86
 msgid "Achievements"
 msgstr ""
 
