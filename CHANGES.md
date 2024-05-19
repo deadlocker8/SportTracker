@@ -1,6 +1,7 @@
 # 1.22.0
 - add: added annual statistics page
 - fix: improve search page if there are no search result
+- chore: update dependencies
 
 # 1.21.0
 - add: planned tours now allow to specify their arrival and departure method (e.g. by car, by train, ...)
