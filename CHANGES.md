@@ -1,3 +1,7 @@
+# 1.23.0
+- add: planned tours: show preview images
+- add: planned tours: open map on click on preview image
+
 # 1.22.1
 - fix: calculation of annual statistics
 
