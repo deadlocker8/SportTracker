@@ -326,7 +326,7 @@ class TestAchievementCalculatorGetAverageSpeedByType:
             )
             assert 0.0 == result
 
-    def test_get_total_distance_by_type_multiple_tracks_should_return_max_distance(self, app):
+    def test_get_average_speed(self, app):
         with app.test_request_context():
             user = db.session.get(User, 1)
             login_user(user, remember=False)
@@ -334,9 +334,11 @@ class TestAchievementCalculatorGetAverageSpeedByType:
             track_1 = create_dummy_track(datetime.date(2023, 1, 1), 30)
             track_2 = create_dummy_track(datetime.date(2023, 2, 1), 50)
             track_3 = create_dummy_track(datetime.date(2023, 3, 1), 22)
+            track_4 = create_dummy_track(datetime.date(2022, 1, 1), 20)
             db.session.add(track_1)
             db.session.add(track_2)
             db.session.add(track_3)
+            db.session.add(track_4)
             db.session.commit()
 
             result = AchievementCalculator.get_average_speed_by_type_and_year(
@@ -349,3 +351,8 @@ class TestAchievementCalculatorGetAverageSpeedByType:
             expectedSpeed = (speed_1 + speed_2 + speed_3) / 3
 
             assert expectedSpeed == pytest.approx(result)
+
+            result = AchievementCalculator.get_average_speed_by_type_and_year(
+                TrackType.BIKING, 2022
+            )
+            assert track_4.distance / track_4.duration * 3.6 == pytest.approx(result)

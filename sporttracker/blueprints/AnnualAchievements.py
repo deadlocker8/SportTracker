@@ -185,9 +185,9 @@ def construct_blueprint():
             longestTrackDifference = longestTrack - longestTrackPreviousYear
 
             values = []
-            for year in availableYears:
+            for currentYear in availableYears:
                 values.append(
-                    AchievementCalculator.get_longest_distance_by_type_and_year(trackType, year)
+                    AchievementCalculator.get_longest_distance_by_type_and_year(trackType, currentYear)
                 )
             longestTrackAllYearData = AllYearData(
                 year_names=yearNames,

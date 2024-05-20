@@ -1,3 +1,6 @@
+# 1.22.1
+- fix: calculation of annual statistics
+
 # 1.22.0
 - add: added annual statistics page
 - fix: improve search page if there are no search result
