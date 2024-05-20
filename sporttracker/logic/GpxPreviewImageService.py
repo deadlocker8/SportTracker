@@ -2,6 +2,8 @@ import logging
 import os
 from typing import Any
 
+import requests
+
 from sporttracker.logic import Constants
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -25,5 +27,20 @@ class GpxPreviewImageService:
         return os.path.exists(self.get_preview_image_path())
 
     def generate_image(self, gpxPreviewImageSettings: dict[str, Any]) -> None:
-        # TODO: generate image
-        pass
+        if not gpxPreviewImageSettings['enabled']:
+            return
+
+        if os.path.exists(self.get_preview_image_file_name()):
+            return
+
+        try:
+            gpxFilePath = os.path.join(self._folder, self._gpxFileName)
+
+            files = {'gpx': open(gpxFilePath, 'rb')}
+            response = requests.post(gpxPreviewImageSettings['geoRenderUrl'], files=files)
+            response.raise_for_status()
+
+            with open(self.get_preview_image_path(), 'wb') as f:
+                f.write(response.content)
+        except requests.exceptions.HTTPError as err:
+            LOGGER.error(err)

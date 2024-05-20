@@ -17,6 +17,7 @@
         "uri": "postgresql://username:password@localhost:5432/your_database"
     },
     "gpxPreviewImages": {
-        "enabled": false
+        "enabled": false,
+        "geoRenderUrl": "http://localhost:3000"
     }
 }
