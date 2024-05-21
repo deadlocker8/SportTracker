@@ -1,4 +1,5 @@
 # 1.23.0
+- BREAKING CHANGE: you must update your settings.json (new section "gpxPreviewImages", see settings-example.json)
 - add: planned tours: show preview images
 - add: planned tours: open map on click on preview image
 - chore: update dependencies
