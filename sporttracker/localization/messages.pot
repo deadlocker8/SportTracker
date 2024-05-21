@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-19 16:32+0200\n"
+"POT-Creation-Date: 2024-05-21 22:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgid ""
 "=\"fw-bold\">{maxStreak}</span>)"
 msgstr ""
 
-#: ../blueprints/Achievements.py:51 ../blueprints/AnnualAchievements.py:207
+#: ../blueprints/Achievements.py:51 ../blueprints/AnnualAchievements.py:209
 msgid "Longest Track"
 msgstr ""
 
@@ -71,7 +71,7 @@ msgstr ""
 msgid "Number Of Tracks"
 msgstr ""
 
-#: ../blueprints/AnnualAchievements.py:247 ../logic/model/User.py:63
+#: ../blueprints/AnnualAchievements.py:249 ../logic/model/User.py:63
 #: ../templates/charts/chartAverageSpeed.jinja2:23
 #: ../templates/charts/chartChooser.jinja2:42
 msgid "Average Speed"
@@ -192,31 +192,31 @@ msgid "Changelog"
 msgstr ""
 
 #: ../templates/achievements.jinja2:24
-#: ../templates/annualAchievements.jinja2:125 ../templates/macros.jinja2:86
+#: ../templates/annualAchievements.jinja2:127 ../templates/macros.jinja2:86
 msgid "Achievements"
 msgstr ""
 
-#: ../templates/annualAchievements.jinja2:27
+#: ../templates/annualAchievements.jinja2:29
 msgid "Details"
 msgstr ""
 
-#: ../templates/annualAchievements.jinja2:47
+#: ../templates/annualAchievements.jinja2:49
 msgid "Min"
 msgstr ""
 
-#: ../templates/annualAchievements.jinja2:48
+#: ../templates/annualAchievements.jinja2:50
 msgid "Max"
 msgstr ""
 
-#: ../templates/annualAchievements.jinja2:49
+#: ../templates/annualAchievements.jinja2:51
 msgid "Total"
 msgstr ""
 
-#: ../templates/annualAchievements.jinja2:50
+#: ../templates/annualAchievements.jinja2:52
 msgid "Average"
 msgstr ""
 
-#: ../templates/annualAchievements.jinja2:54
+#: ../templates/annualAchievements.jinja2:56
 msgid "Close"
 msgstr ""
 
@@ -801,10 +801,6 @@ msgstr ""
 
 #: ../templates/plannedTours/plannedTours.jinja2:90
 msgid "last edited"
-msgstr ""
-
-#: ../templates/plannedTours/plannedTours.jinja2:94
-msgid "Edit"
 msgstr ""
 
 #: ../templates/plannedTours/plannedToursMacros.jinja2:6

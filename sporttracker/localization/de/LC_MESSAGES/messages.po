@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-19 16:32+0200\n"
+"POT-Creation-Date: 2024-05-21 22:31+0200\n"
 "PO-Revision-Date: 2024-05-19 16:33+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
@@ -17,7 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.15.0\n"
-"X-Generator: Poedit 2.4.2\n"
 
 #: ../blueprints/Achievements.py:39
 msgid "Month Goal Streak"
@@ -25,24 +24,25 @@ msgstr "Monatsziele in Folge"
 
 #: ../blueprints/Achievements.py:40
 msgid ""
-"You have achieved all your monthly goals for <span class=\"fw-bold"
-"\">{currentStreak}</span> months in a row!<br>(Best: <span class=\"fw-bold"
-"\">{maxStreak}</span>)"
+"You have achieved all your monthly goals for <span class=\"fw-"
+"bold\">{currentStreak}</span> months in a row!<br>(Best: <span class"
+"=\"fw-bold\">{maxStreak}</span>)"
 msgstr ""
-"Du hast alle deine monatlichen Ziele für <span class=\"fw-bold"
-"\">{currentStreak}</span> Monate in Folge erreicht!<br>(Beste: <span class="
-"\"fw-bold\">{maxStreak}</span>)"
+"Du hast alle deine monatlichen Ziele für <span class=\"fw-"
+"bold\">{currentStreak}</span> Monate in Folge erreicht!<br>(Beste: <span "
+"class=\"fw-bold\">{maxStreak}</span>)"
 
-#: ../blueprints/Achievements.py:51 ../blueprints/AnnualAchievements.py:207
+#: ../blueprints/Achievements.py:51 ../blueprints/AnnualAchievements.py:209
 msgid "Longest Track"
 msgstr "Längster Track"
 
 #: ../blueprints/Achievements.py:52
 msgid ""
-"You completed <span class=\"fw-bold\">{longestTrack} km</span> in one trip!"
+"You completed <span class=\"fw-bold\">{longestTrack} km</span> in one "
+"trip!"
 msgstr ""
-"Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einem Training "
-"zurückgelegt!"
+"Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einem "
+"Training zurückgelegt!"
 
 #: ../blueprints/Achievements.py:67 ../blueprints/AnnualAchievements.py:82
 msgid "Total Distance"
@@ -50,7 +50,8 @@ msgstr "Gesamtstrecke"
 
 #: ../blueprints/Achievements.py:68
 msgid ""
-"You completed a total of <span class=\"fw-bold\">{totalDistance} km</span>!"
+"You completed a total of <span class=\"fw-bold\">{totalDistance} "
+"km</span>!"
 msgstr ""
 "Du hast insgesamt <span class=\"fw-bold\">{totalDistance} km</span> "
 "zurückgelegt!"
@@ -61,8 +62,8 @@ msgstr "Bester Monat"
 
 #: ../blueprints/Achievements.py:84
 msgid ""
-"<span class=\"fw-bold\">{bestMonthName}</span> was your best month with <span "
-"class=\"fw-bold\">{bestMonthDistance} km</span>!"
+"<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
+"<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
 msgstr ""
 "<span class=\"fw-bold\">{bestMonthName}</span> war dein bester Monat mit "
 "<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
@@ -80,7 +81,7 @@ msgstr "Stunden"
 msgid "Number Of Tracks"
 msgstr "Anzahl Tracks"
 
-#: ../blueprints/AnnualAchievements.py:247 ../logic/model/User.py:63
+#: ../blueprints/AnnualAchievements.py:249 ../logic/model/User.py:63
 #: ../templates/charts/chartAverageSpeed.jinja2:23
 #: ../templates/charts/chartChooser.jinja2:42
 msgid "Average Speed"
@@ -112,11 +113,12 @@ msgstr "Der Endmonat muss größer oder gleich dem Startmonat sein."
 
 #: ../blueprints/Settings.py:355
 msgid ""
-"The specified field name \"{0}\" conflicts with a reserved field name and "
-"therefore can't be used as custom field name."
+"The specified field name \"{0}\" conflicts with a reserved field name and"
+" therefore can't be used as custom field name."
 msgstr ""
-"Der angegebene Name \"{0}\" kollidiert mit einem reservierten Namen und kann "
-"daher nicht als Name für ein benutzerdefiniertes Feld verwendet werden."
+"Der angegebene Name \"{0}\" kollidiert mit einem reservierten Namen und "
+"kann daher nicht als Name für ein benutzerdefiniertes Feld verwendet "
+"werden."
 
 #: ../blueprints/Settings.py:369
 msgid "The specified field name \"{0}\" already exists."
@@ -203,31 +205,31 @@ msgid "Changelog"
 msgstr "Changelog"
 
 #: ../templates/achievements.jinja2:24
-#: ../templates/annualAchievements.jinja2:125 ../templates/macros.jinja2:86
+#: ../templates/annualAchievements.jinja2:127 ../templates/macros.jinja2:86
 msgid "Achievements"
 msgstr "Errungenschaften"
 
-#: ../templates/annualAchievements.jinja2:27
+#: ../templates/annualAchievements.jinja2:29
 msgid "Details"
 msgstr "Details"
 
-#: ../templates/annualAchievements.jinja2:47
+#: ../templates/annualAchievements.jinja2:49
 msgid "Min"
 msgstr "Min"
 
-#: ../templates/annualAchievements.jinja2:48
+#: ../templates/annualAchievements.jinja2:50
 msgid "Max"
 msgstr "Max"
 
-#: ../templates/annualAchievements.jinja2:49
+#: ../templates/annualAchievements.jinja2:51
 msgid "Total"
 msgstr "Gesamt"
 
-#: ../templates/annualAchievements.jinja2:50
+#: ../templates/annualAchievements.jinja2:52
 msgid "Average"
 msgstr "Durchschnitt"
 
-#: ../templates/annualAchievements.jinja2:54
+#: ../templates/annualAchievements.jinja2:56
 msgid "Close"
 msgstr "Schließen"
 
@@ -814,10 +816,6 @@ msgstr "geteilt"
 msgid "last edited"
 msgstr "bearbeitet"
 
-#: ../templates/plannedTours/plannedTours.jinja2:94
-msgid "Edit"
-msgstr "Bearbeiten"
-
 #: ../templates/plannedTours/plannedToursMacros.jinja2:6
 msgid "Share this tour with"
 msgstr "Diese Tour teilen mit"
@@ -996,7 +994,8 @@ msgstr "Lauf-Track bearbeiten"
 #: ../templates/tracks/tracks.jinja2:53
 msgid "Toggle months via arrow keys or press \"0\" for current month"
 msgstr ""
-"Monate mit Pfeiltasten umschalten oder \"0\" für den aktuellen Monat drücken"
+"Monate mit Pfeiltasten umschalten oder \"0\" für den aktuellen Monat "
+"drücken"
 
 #: ../templates/tracks/tracks.jinja2:60
 msgid "Toggle months by swiping left or right"
@@ -1027,13 +1026,13 @@ msgstr "Administrator"
 
 #~ msgid "You ran <span class=\"fw-bold\">{longestTrack} km</span> in one trip!"
 #~ msgstr ""
-#~ "Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einem Lauf "
-#~ "zurückgelegt!"
+#~ "Du hast <span class=\"fw-bold\">{longestTrack}"
+#~ " km</span> in einem Lauf zurückgelegt!"
 
 #~ msgid "You ran a total of <span class=\"fw-bold\">{totalDistance} km</span>!"
 #~ msgstr ""
-#~ "Du bist insgesamt <span class=\"fw-bold\">{totalDistance} km</span> "
-#~ "gelaufen!"
+#~ "Du bist insgesamt <span class=\"fw-"
+#~ "bold\">{totalDistance} km</span> gelaufen!"
 
 #~ msgid "Bike"
 #~ msgstr "Fahrrad"
@@ -1052,8 +1051,13 @@ msgstr "Administrator"
 
 #~ msgid "Do you really want to delete the GPX file associated with this track?"
 #~ msgstr ""
-#~ "Willst du die GPX-Datei, die mit diesem Track verknüpft ist, wirklich "
+#~ "Willst du die GPX-Datei, die mit"
+#~ " diesem Track verknüpft ist, wirklich "
 #~ "löschen?"
 
 #~ msgid "by Car"
 #~ msgstr "per Auto"
+
+#~ msgid "Edit"
+#~ msgstr "Bearbeiten"
+
