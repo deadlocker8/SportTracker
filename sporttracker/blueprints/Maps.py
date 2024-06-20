@@ -7,7 +7,7 @@ from sqlalchemy import func, extract
 
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.PlannedTour import get_planned_tour_by_id
+from sporttracker.logic.model.PlannedTour import get_planned_tour_by_id, PlannedTour
 from sporttracker.logic.model.Track import Track, get_available_years, get_track_by_id
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -19,6 +19,15 @@ def createGpxInfo(trackId: int, trackName: str, trackStartTime: datetime) -> dic
         'gpxUrl': url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=trackId),
         'trackUrl': url_for('tracks.edit', track_id=trackId),
         'trackName': f'{trackStartTime.strftime("%Y-%m-%d")} - {trackName}',
+    }
+
+
+def createGpxInfoPlannedTour(tourId: int, tourName: str) -> dict[str, str | int]:
+    return {
+        'trackId': tourId,
+        'gpxUrl': url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tourId),
+        'trackUrl': url_for('plannedTours.edit', tour_id=tourId),
+        'trackName': tourName,
     }
 
 
@@ -56,6 +65,8 @@ def construct_blueprint():
             quickFilterState=quickFilterState,
             yearFilterState=yearFilterState,
             availableYears=availableYears,
+            mapMode='tracks',
+            redirectUrl='maps.showAllTracksOnMap',
         )
 
     @maps.route('/map/<int:track_id>')
@@ -93,6 +104,34 @@ def construct_blueprint():
         session['mapYearFilterState'] = activeYears
 
         return redirect(url_for('maps.showAllTracksOnMap'))
+
+    @maps.route('/map/plannedTours')
+    @login_required
+    def showAllPlannedToursOnMap():
+        quickFilterState = get_quick_filter_state_from_session()
+
+        gpxInfo = []
+
+        plannedTours = (
+            PlannedTour.query.with_entities(PlannedTour.id, PlannedTour.name)
+            .filter(PlannedTour.user_id == current_user.id)
+            .filter(PlannedTour.gpxFileName.isnot(None))
+            .filter(PlannedTour.type.in_(quickFilterState.get_active_types()))
+            .order_by(PlannedTour.name.asc())
+            .all()
+        )
+
+        for tour in plannedTours:
+            tourId, tourName = tour
+            gpxInfo.append(createGpxInfoPlannedTour(tourId, tourName))
+
+        return render_template(
+            'maps/mapMultipleTracks.jinja2',
+            gpxInfo=gpxInfo,
+            quickFilterState=quickFilterState,
+            mapMode='plannedTours',
+            redirectUrl='maps.showAllPlannedToursOnMap',
+        )
 
     return maps
 

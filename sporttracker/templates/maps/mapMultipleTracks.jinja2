@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 
+{% macro toggleTracksAndPlannedTours(margin) -%}
+    <div class="btn-group {{ margin }}" role="group">
+        <a href="{{ url_for('maps.showAllTracksOnMap') }}" class="btn btn-sm btn-primary d-flex flex-row align-items-center justify-content-center {% if mapMode == 'plannedTours' %}btn-available-year{% endif %}">
+            <i class="fa-solid fa-route fa-fw fs-6"></i>&nbsp;{{ gettext('Tracks') }}
+        </a>
+        <a href="{{ url_for('maps.showAllPlannedToursOnMap') }}" class="btn btn-sm btn-primary d-flex flex-row align-items-center justify-content-center {% if mapMode == 'tracks' %}btn-available-year{% endif %}">
+            <i class="fa-solid fa-lightbulb fa-fw fs-6"></i>&nbsp;{{ gettext('Planned Tours') }}
+        </a>
+    </div>
+{%- endmacro %}
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -14,10 +25,20 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('map') }}
 
-
          <div class="row my-3">
-            <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center ">
-                {{ macros.track_type_quick_filter(url_for('maps.showAllTracksOnMap')) }}
+            <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center">
+                <div class="d-none d-lg-block">
+                    {{ toggleTracksAndPlannedTours('me-5') }}
+                </div>
+                <div class="d-none d-lg-block">
+                    {{ macros.track_type_quick_filter(url_for(redirectUrl)) }}
+                </div>
+                <div class="d-lg-none">
+                    <div class="d-flex flex-column align-items-center justify-content-center ms-3">
+                        {{ toggleTracksAndPlannedTours('mb-3') }}
+                        {{ macros.track_type_quick_filter(url_for(redirectUrl)) }}
+                    </div>
+                </div>
 
                 <div class="ms-5">
                     <form role="form" action="{{ url_for('maps.toggleYears') }}" method="post" class="d-flex flex-row align-items-center justify-content-center">
@@ -34,9 +55,11 @@
                                     </label>
                                 </div>
                             {% endfor %}
-                            <div class="col my-1">
-                                <button type="submit" class="btn btn-sm btn-success">{{ gettext('Apply') }}</button>
-                            </div>
+                            {% if availableYears | length != 0 %}
+                                <div class="col my-1">
+                                    <button type="submit" class="btn btn-sm btn-success">{{ gettext('Apply') }}</button>
+                                </div>
+                            {% endif %}
                         </div>
                     </form>
                 </div>
@@ -61,3 +84,4 @@
         <script defer src="{{ url_for('static', filename='js/mapMultipleTracks.js') }}" type="text/javascript"></script>
     </body>
 </html>
+
