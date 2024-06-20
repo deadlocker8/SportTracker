@@ -69,7 +69,7 @@ Record your maintenance events for each sport type.
 Save your planned tours for each sport type and view them on a map.
 
 
-![](screenshots/planned_tours.png)
+![](screenshots/planned_tours.jpg)
 
 #### Enable GPX review Images
 
