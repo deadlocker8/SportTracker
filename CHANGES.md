@@ -1,3 +1,7 @@
+# 1.24.0
+- add: map: add toggle button to switch between tracks and planned tours
+- chore: update dependencies
+
 # 1.23.0
 - BREAKING CHANGE: you must update your settings.json (new section "gpxPreviewImages", see settings-example.json)
 - add: planned tours: show preview images
