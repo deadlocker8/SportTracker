@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask import Blueprint, render_template, abort, url_for, session, redirect, request
 from flask_login import login_required, current_user
-from sqlalchemy import func, extract
+from sqlalchemy import func, extract, or_
 
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
@@ -112,18 +112,20 @@ def construct_blueprint():
 
         gpxInfo = []
 
-        plannedTours = (
-            PlannedTour.query.with_entities(PlannedTour.id, PlannedTour.name)
-            .filter(PlannedTour.user_id == current_user.id)
-            .filter(PlannedTour.gpxFileName.isnot(None))
+        plannedTours: list[PlannedTour] = (
+            PlannedTour.query.filter(
+                or_(
+                    PlannedTour.user_id == current_user.id,
+                    PlannedTour.shared_users.any(id=current_user.id),
+                )
+            )
             .filter(PlannedTour.type.in_(quickFilterState.get_active_types()))
             .order_by(PlannedTour.name.asc())
             .all()
         )
 
         for tour in plannedTours:
-            tourId, tourName = tour
-            gpxInfo.append(createGpxInfoPlannedTour(tourId, tourName))
+            gpxInfo.append(createGpxInfoPlannedTour(tour.id, tour.name))  # type: ignore[arg-type]
 
         return render_template(
             'maps/mapMultipleTracks.jinja2',
