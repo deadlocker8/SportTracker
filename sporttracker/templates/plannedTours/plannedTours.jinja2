@@ -25,6 +25,12 @@
                     {{ macros.track_type_quick_filter(url_for('plannedTours.listPlannedTours')) }}
                 </div>
 
+                <div class="mb-2">
+                    <a href="{{ url_for('maps.showAllPlannedToursOnMap') }}" class="btn btn-sm btn-primary d-inline-flex flex-row align-items-center justify-content-center {% if mapMode == 'tracks' %}btn-available-year{% endif %}">
+                          <div class="material-icons">map</div>&nbsp;{{ gettext('View all on map') }}
+                    </a>
+                </div>
+
                 <div class="row py-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
                     {% for plannedTour in plannedTours %}
                         <div class="col mb-5">
@@ -90,9 +96,9 @@
                                         {{ gettext('last edited') }}: {{ plannedTour.lastEditDate | format_date() }}
                                     </div>
 
-                                     <a href="{{ url_for('plannedTours.edit', tour_id=plannedTour.id) }}" class="btn btn-primary d-inline-flex align-items-center" id="button-logout">
-                                         <span class="material-icons text-light fs-5">edit</span>
-                                     </a>
+                                    <a href="{{ url_for('plannedTours.edit', tour_id=plannedTour.id) }}" class="btn btn-primary d-inline-flex align-items-center" id="button-logout">
+                                        <span class="material-icons text-light fs-5">edit</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
