@@ -34,7 +34,7 @@ def construct_blueprint(uploadFolder: str):
 
         abort(404)
 
-    @gpxTracks.route('/plannedTour<int:tour_id>')
+    @gpxTracks.route('/plannedTour/<int:tour_id>')
     @login_required
     def downloadGpxTrackByPlannedTourId(tour_id: int):
         plannedTour = get_planned_tour_by_id(tour_id)
