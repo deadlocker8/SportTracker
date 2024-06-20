@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-21 22:31+0200\n"
+"POT-Creation-Date: 2024-06-20 23:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -238,8 +238,8 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: ../templates/macros.jinja2:55 ../templates/tracks/tracks.jinja2:5
-#: ../templates/tracks/tracks.jinja2:25
+#: ../templates/macros.jinja2:55 ../templates/maps/mapMultipleTracks.jinja2:6
+#: ../templates/tracks/tracks.jinja2:5 ../templates/tracks/tracks.jinja2:25
 msgid "Tracks"
 msgstr ""
 
@@ -272,7 +272,7 @@ msgstr ""
 msgid "Annual Statistics"
 msgstr ""
 
-#: ../templates/macros.jinja2:104 ../templates/maps/mapMultipleTracks.jinja2:6
+#: ../templates/macros.jinja2:104 ../templates/maps/mapMultipleTracks.jinja2:17
 #: ../templates/maps/mapPlannedTour.jinja2:6
 #: ../templates/maps/mapSingleTrack.jinja2:6
 msgid "Map"
@@ -288,7 +288,7 @@ msgstr ""
 msgid "Maintenance"
 msgstr ""
 
-#: ../templates/macros.jinja2:133
+#: ../templates/macros.jinja2:133 ../templates/maps/mapMultipleTracks.jinja2:9
 #: ../templates/plannedTours/plannedTours.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:18
 msgid "Planned Tours"
@@ -607,7 +607,7 @@ msgstr ""
 msgid "Collapse Legend"
 msgstr ""
 
-#: ../templates/maps/mapMultipleTracks.jinja2:38
+#: ../templates/maps/mapMultipleTracks.jinja2:60
 msgid "Apply"
 msgstr ""
 
@@ -779,27 +779,31 @@ msgstr ""
 msgid "A GPX file is linked to this planned tour"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:41
+#: ../templates/plannedTours/plannedTours.jinja2:30
+msgid "View all on map"
+msgstr ""
+
+#: ../templates/plannedTours/plannedTours.jinja2:47
 msgid "new"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:43
+#: ../templates/plannedTours/plannedTours.jinja2:49
 msgid "updated"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:68
+#: ../templates/plannedTours/plannedTours.jinja2:74
 msgid "Arrival"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:72
+#: ../templates/plannedTours/plannedTours.jinja2:78
 msgid "Departure"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:86
+#: ../templates/plannedTours/plannedTours.jinja2:92
 msgid "shared"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:90
+#: ../templates/plannedTours/plannedTours.jinja2:96
 msgid "last edited"
 msgstr ""
 

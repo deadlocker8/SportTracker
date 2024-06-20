@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-21 22:31+0200\n"
-"PO-Revision-Date: 2024-05-19 16:33+0200\n"
+"POT-Creation-Date: 2024-06-20 23:26+0200\n"
+"PO-Revision-Date: 2024-06-20 23:26+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.15.0\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: ../blueprints/Achievements.py:39
 msgid "Month Goal Streak"
@@ -24,13 +25,13 @@ msgstr "Monatsziele in Folge"
 
 #: ../blueprints/Achievements.py:40
 msgid ""
-"You have achieved all your monthly goals for <span class=\"fw-"
-"bold\">{currentStreak}</span> months in a row!<br>(Best: <span class"
-"=\"fw-bold\">{maxStreak}</span>)"
+"You have achieved all your monthly goals for <span class=\"fw-bold"
+"\">{currentStreak}</span> months in a row!<br>(Best: <span class=\"fw-bold"
+"\">{maxStreak}</span>)"
 msgstr ""
-"Du hast alle deine monatlichen Ziele für <span class=\"fw-"
-"bold\">{currentStreak}</span> Monate in Folge erreicht!<br>(Beste: <span "
-"class=\"fw-bold\">{maxStreak}</span>)"
+"Du hast alle deine monatlichen Ziele für <span class=\"fw-bold"
+"\">{currentStreak}</span> Monate in Folge erreicht!<br>(Beste: <span class="
+"\"fw-bold\">{maxStreak}</span>)"
 
 #: ../blueprints/Achievements.py:51 ../blueprints/AnnualAchievements.py:209
 msgid "Longest Track"
@@ -38,11 +39,10 @@ msgstr "Längster Track"
 
 #: ../blueprints/Achievements.py:52
 msgid ""
-"You completed <span class=\"fw-bold\">{longestTrack} km</span> in one "
-"trip!"
+"You completed <span class=\"fw-bold\">{longestTrack} km</span> in one trip!"
 msgstr ""
-"Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einem "
-"Training zurückgelegt!"
+"Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einem Training "
+"zurückgelegt!"
 
 #: ../blueprints/Achievements.py:67 ../blueprints/AnnualAchievements.py:82
 msgid "Total Distance"
@@ -50,8 +50,7 @@ msgstr "Gesamtstrecke"
 
 #: ../blueprints/Achievements.py:68
 msgid ""
-"You completed a total of <span class=\"fw-bold\">{totalDistance} "
-"km</span>!"
+"You completed a total of <span class=\"fw-bold\">{totalDistance} km</span>!"
 msgstr ""
 "Du hast insgesamt <span class=\"fw-bold\">{totalDistance} km</span> "
 "zurückgelegt!"
@@ -62,8 +61,8 @@ msgstr "Bester Monat"
 
 #: ../blueprints/Achievements.py:84
 msgid ""
-"<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
-"<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
+"<span class=\"fw-bold\">{bestMonthName}</span> was your best month with <span "
+"class=\"fw-bold\">{bestMonthDistance} km</span>!"
 msgstr ""
 "<span class=\"fw-bold\">{bestMonthName}</span> war dein bester Monat mit "
 "<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
@@ -113,12 +112,11 @@ msgstr "Der Endmonat muss größer oder gleich dem Startmonat sein."
 
 #: ../blueprints/Settings.py:355
 msgid ""
-"The specified field name \"{0}\" conflicts with a reserved field name and"
-" therefore can't be used as custom field name."
+"The specified field name \"{0}\" conflicts with a reserved field name and "
+"therefore can't be used as custom field name."
 msgstr ""
-"Der angegebene Name \"{0}\" kollidiert mit einem reservierten Namen und "
-"kann daher nicht als Name für ein benutzerdefiniertes Feld verwendet "
-"werden."
+"Der angegebene Name \"{0}\" kollidiert mit einem reservierten Namen und kann "
+"daher nicht als Name für ein benutzerdefiniertes Feld verwendet werden."
 
 #: ../blueprints/Settings.py:369
 msgid "The specified field name \"{0}\" already exists."
@@ -251,8 +249,8 @@ msgstr "Passwort"
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../templates/macros.jinja2:55 ../templates/tracks/tracks.jinja2:5
-#: ../templates/tracks/tracks.jinja2:25
+#: ../templates/macros.jinja2:55 ../templates/maps/mapMultipleTracks.jinja2:6
+#: ../templates/tracks/tracks.jinja2:5 ../templates/tracks/tracks.jinja2:25
 msgid "Tracks"
 msgstr "Tracks"
 
@@ -285,7 +283,7 @@ msgstr "Diagramme"
 msgid "Annual Statistics"
 msgstr "Jahresstatistik"
 
-#: ../templates/macros.jinja2:104 ../templates/maps/mapMultipleTracks.jinja2:6
+#: ../templates/macros.jinja2:104 ../templates/maps/mapMultipleTracks.jinja2:17
 #: ../templates/maps/mapPlannedTour.jinja2:6
 #: ../templates/maps/mapSingleTrack.jinja2:6
 msgid "Map"
@@ -301,7 +299,7 @@ msgstr "Mehr"
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: ../templates/macros.jinja2:133
+#: ../templates/macros.jinja2:133 ../templates/maps/mapMultipleTracks.jinja2:9
 #: ../templates/plannedTours/plannedTours.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:18
 msgid "Planned Tours"
@@ -620,7 +618,7 @@ msgstr "Legende einblenden"
 msgid "Collapse Legend"
 msgstr "Legende ausblenden"
 
-#: ../templates/maps/mapMultipleTracks.jinja2:38
+#: ../templates/maps/mapMultipleTracks.jinja2:60
 msgid "Apply"
 msgstr "Übernehmen"
 
@@ -792,27 +790,31 @@ msgstr "Mit dieser geplanten Tour ist keine GPX-Datei verknüpft"
 msgid "A GPX file is linked to this planned tour"
 msgstr "Eine GPX-Datei ist mit dieser geplanten Tour verknüpft"
 
-#: ../templates/plannedTours/plannedTours.jinja2:41
+#: ../templates/plannedTours/plannedTours.jinja2:30
+msgid "View all on map"
+msgstr "Alle auf Karte anzeigen"
+
+#: ../templates/plannedTours/plannedTours.jinja2:47
 msgid "new"
 msgstr "neu"
 
-#: ../templates/plannedTours/plannedTours.jinja2:43
+#: ../templates/plannedTours/plannedTours.jinja2:49
 msgid "updated"
 msgstr "editiert"
 
-#: ../templates/plannedTours/plannedTours.jinja2:68
+#: ../templates/plannedTours/plannedTours.jinja2:74
 msgid "Arrival"
 msgstr "Anreise"
 
-#: ../templates/plannedTours/plannedTours.jinja2:72
+#: ../templates/plannedTours/plannedTours.jinja2:78
 msgid "Departure"
 msgstr "Abreise"
 
-#: ../templates/plannedTours/plannedTours.jinja2:86
+#: ../templates/plannedTours/plannedTours.jinja2:92
 msgid "shared"
 msgstr "geteilt"
 
-#: ../templates/plannedTours/plannedTours.jinja2:90
+#: ../templates/plannedTours/plannedTours.jinja2:96
 msgid "last edited"
 msgstr "bearbeitet"
 
@@ -994,8 +996,7 @@ msgstr "Lauf-Track bearbeiten"
 #: ../templates/tracks/tracks.jinja2:53
 msgid "Toggle months via arrow keys or press \"0\" for current month"
 msgstr ""
-"Monate mit Pfeiltasten umschalten oder \"0\" für den aktuellen Monat "
-"drücken"
+"Monate mit Pfeiltasten umschalten oder \"0\" für den aktuellen Monat drücken"
 
 #: ../templates/tracks/tracks.jinja2:60
 msgid "Toggle months by swiping left or right"
@@ -1026,13 +1027,13 @@ msgstr "Administrator"
 
 #~ msgid "You ran <span class=\"fw-bold\">{longestTrack} km</span> in one trip!"
 #~ msgstr ""
-#~ "Du hast <span class=\"fw-bold\">{longestTrack}"
-#~ " km</span> in einem Lauf zurückgelegt!"
+#~ "Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einem Lauf "
+#~ "zurückgelegt!"
 
 #~ msgid "You ran a total of <span class=\"fw-bold\">{totalDistance} km</span>!"
 #~ msgstr ""
-#~ "Du bist insgesamt <span class=\"fw-"
-#~ "bold\">{totalDistance} km</span> gelaufen!"
+#~ "Du bist insgesamt <span class=\"fw-bold\">{totalDistance} km</span> "
+#~ "gelaufen!"
 
 #~ msgid "Bike"
 #~ msgstr "Fahrrad"
@@ -1051,8 +1052,7 @@ msgstr "Administrator"
 
 #~ msgid "Do you really want to delete the GPX file associated with this track?"
 #~ msgstr ""
-#~ "Willst du die GPX-Datei, die mit"
-#~ " diesem Track verknüpft ist, wirklich "
+#~ "Willst du die GPX-Datei, die mit diesem Track verknüpft ist, wirklich "
 #~ "löschen?"
 
 #~ msgid "by Car"
@@ -1060,4 +1060,3 @@ msgstr "Administrator"
 
 #~ msgid "Edit"
 #~ msgstr "Bearbeiten"
-
