@@ -42,5 +42,5 @@ class GpxPreviewImageService:
 
             with open(self.get_preview_image_path(), 'wb') as f:
                 f.write(response.content)
-        except requests.exceptions.HTTPError as err:
+        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError) as err:
             LOGGER.error(err)
