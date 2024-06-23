@@ -1,11 +1,17 @@
 document.addEventListener('DOMContentLoaded', function()
 {
-    initMap();
+
+    if(mapMode === 'tracks')
+    {
+        initMap(sortTracksByName);
+    }
+    else
+    {
+        initMap(sortPlannedToursByName);
+    }
 });
 
-const PATTERN_TRACK_NAME = /(\d{4}-\d{2}-\d{2} - .*)<\/a>/;
-
-function initMap()
+function initMap(itemSortFunction)
 {
     let map = initMapBase();
 
@@ -97,20 +103,7 @@ function initMap()
         });
 
         routes._legend.options.sortLayers = true
-        routes._legend.options.sortFunction = function(layerA, layerB, nameA, nameB)
-        {
-            let realNameA = PATTERN_TRACK_NAME.exec(nameA)[1];
-            let realNameB = PATTERN_TRACK_NAME.exec(nameB)[1];
-            if(realNameA < realNameB)
-            {
-                return 1;
-            }
-            if(realNameA > realNameB)
-            {
-                return -1;
-            }
-            return 0;
-        };
+        routes._legend.options.sortFunction = itemSortFunction
 
         routes.addTo(map);
 
@@ -161,4 +154,34 @@ function initMap()
         });
         stateChangingButton.addTo(map);
     });
+}
+
+const PATTERN_TRACK_NAME = /(\d{4}-\d{2}-\d{2} - .*)<\/a>/;
+
+function sortTracksByName(layerA, layerB, nameA, nameB)
+{
+    let realNameA = PATTERN_TRACK_NAME.exec(nameA)[1];
+    let realNameB = PATTERN_TRACK_NAME.exec(nameB)[1];
+    if(realNameA < realNameB)
+    {
+        return 1;
+    }
+    if(realNameA > realNameB)
+    {
+        return -1;
+    }
+    return 0;
+}
+
+function sortPlannedToursByName(layerA, layerB, nameA, nameB)
+{
+    if(nameA.toLowerCase() > nameB.toLowerCase())
+    {
+        return 1;
+    }
+    if(nameA.toLowerCase() < nameB.toLowerCase())
+    {
+        return -1;
+    }
+    return 0;
 }
