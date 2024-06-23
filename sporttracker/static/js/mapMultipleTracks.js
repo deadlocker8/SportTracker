@@ -157,6 +157,7 @@ function initMap(itemSortFunction)
 }
 
 const PATTERN_TRACK_NAME = /(\d{4}-\d{2}-\d{2} - .*)<\/a>/;
+const PATTERN_PLANNED_TOUR_NAME = /<a.*>(.*)<\/a>/;
 
 function sortTracksByName(layerA, layerB, nameA, nameB)
 {
@@ -175,11 +176,13 @@ function sortTracksByName(layerA, layerB, nameA, nameB)
 
 function sortPlannedToursByName(layerA, layerB, nameA, nameB)
 {
-    if(nameA.toLowerCase() > nameB.toLowerCase())
+    let realNameA = PATTERN_PLANNED_TOUR_NAME.exec(nameA)[1].toLowerCase();
+    let realNameB = PATTERN_PLANNED_TOUR_NAME.exec(nameB)[1].toLowerCase();
+    if(realNameA > realNameB)
     {
         return 1;
     }
-    if(nameA.toLowerCase() < nameB.toLowerCase())
+    if(realNameA < realNameB)
     {
         return -1;
     }
