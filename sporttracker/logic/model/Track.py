@@ -217,12 +217,16 @@ def get_available_years() -> list[int]:
     return [int(row.year) for row in rows]
 
 
-def get_distance_since_date(date: datetime | DateTime, trackTypes: list[TrackType]) -> int:
+def get_distance_between_dates(
+    startDateTime: datetime | DateTime,
+    endDateTime: datetime | DateTime,
+    trackTypes: list[TrackType],
+) -> int:
     return int(
         Track.query.with_entities(func.sum(Track.distance))
         .filter(Track.type.in_(trackTypes))
         .filter(Track.user_id == current_user.id)
-        .filter(Track.startTime > date)
+        .filter(Track.startTime.between(startDateTime, endDateTime))
         .scalar()
         or 0
     )

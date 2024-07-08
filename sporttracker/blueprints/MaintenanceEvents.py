@@ -11,7 +11,7 @@ from pydantic import BaseModel
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.MaintenanceEvent import MaintenanceEvent, get_maintenance_event_by_id
-from sporttracker.logic.model.Track import TrackType, get_distance_since_date
+from sporttracker.logic.model.Track import TrackType, get_distance_between_dates
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -48,28 +48,48 @@ def construct_blueprint():
     def listMaintenanceEvents():
         quickFilterState = get_quick_filter_state_from_session()
 
-        events: list[MaintenanceEvent] = (
-            MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
+        eventDescriptions: list[str] = (
+            MaintenanceEvent.query.with_entities(MaintenanceEvent.description)
+            .filter(MaintenanceEvent.user_id == current_user.id)
             .filter(MaintenanceEvent.type.in_(quickFilterState.get_active_types()))
-            .order_by(MaintenanceEvent.event_date.desc())
+            .distinct()
             .all()
         )
+        eventDescriptions = [d[0] for d in eventDescriptions]
 
         maintenanceEventList: list[MaintenanceEventModel] = []
-        for event in events:
-            distanceSinceEvent = get_distance_since_date(event.event_date, [event.type])
-
-            maintenanceEventList.append(
-                MaintenanceEventModel(
-                    event.id,
-                    event.event_date,  # type: ignore[arg-type]
-                    event.get_date(),
-                    event.get_time(),
-                    event.type,
-                    event.description,  # type: ignore[arg-type]
-                    distanceSinceEvent,
-                )
+        for description in eventDescriptions:
+            events: list[MaintenanceEvent] = (
+                MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
+                .filter(MaintenanceEvent.type.in_(quickFilterState.get_active_types()))
+                .filter(MaintenanceEvent.description == description)
+                .order_by(MaintenanceEvent.event_date.asc())
+                .all()
             )
+
+            if not events:
+                continue
+
+            previousEventDate = events[0].event_date
+            for event in events:
+                distanceSinceEvent = get_distance_between_dates(
+                    previousEventDate, event.event_date, [event.type]
+                )
+                previousEventDate = event.event_date
+
+                maintenanceEventList.append(
+                    MaintenanceEventModel(
+                        event.id,
+                        event.event_date,  # type: ignore[arg-type]
+                        event.get_date(),
+                        event.get_time(),
+                        event.type,
+                        event.description,  # type: ignore[arg-type]
+                        distanceSinceEvent,
+                    )
+                )
+
+        maintenanceEventList = sorted(maintenanceEventList, key=lambda e: e.eventDate, reverse=True)
 
         maintenanceEventsByYear = {
             k: list(g)

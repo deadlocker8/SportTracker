@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-20 23:26+0200\n"
-"PO-Revision-Date: 2024-06-20 23:26+0200\n"
+"POT-Creation-Date: 2024-07-08 22:41+0200\n"
+"PO-Revision-Date: 2024-07-08 22:41+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -499,8 +499,8 @@ msgid "Save"
 msgstr "Speichern"
 
 #: ../templates/maintenanceEvents/maintenanceEvents.jinja2:51
-msgid "since event"
-msgstr "seit Ereignis"
+msgid "since previous event"
+msgstr "seit vorherigem Ereignis"
 
 #: ../templates/maps/mapMacros.jinja2:4
 msgid "Acceleration"
