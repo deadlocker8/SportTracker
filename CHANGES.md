@@ -1,3 +1,6 @@
+# 1.25.0
+- maintenance events: show distance since last event with same description
+
 # 1.24.0
 - add: map: add toggle button to switch between tracks and planned tours
 - fix: errors during generation of preview image for a planned tour no longer prevents saving a planned tour
