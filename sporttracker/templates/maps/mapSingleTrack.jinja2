@@ -42,11 +42,7 @@
                         {% endcall %}
 
                         {% call mapMacros.meta_info_item('route', track.type.text_color, 'Distance') %}
-                            {% if gpxMetaInfo is not none %}
-                                {{ (gpxMetaInfo.distance / 1000) | format_decimal(2) }}
-                            {% else %}
-                                -
-                            {% endif %} km
+                            {{ (track.distance / 1000) | format_decimal(2) }} km
                         {% endcall %}
 
                         {% call mapMacros.meta_info_item('timer', track.type.text_color, 'Duration') %}

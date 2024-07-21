@@ -123,11 +123,11 @@
                         {{ materialize_icon('calendar chart', 'calendar_month') }}
                     {% endcall %}
 
-                   {% call group('participant form') %}
+                    {% call group('participant form') %}
                         {{ materialize_icon('name', 'edit') }}
                     {% endcall %}
 
-                     {% call group('annual statistics') %}
+                    {% call group('annual statistics') %}
                         {{ materialize_icon('annual statistics trend up', 'trending_up') }}
                         {{ materialize_icon('annual statistics trend down', 'trending_down') }}
                         {{ materialize_icon('annual statistics show details down', 'query_stats') }}
@@ -155,7 +155,7 @@
                         {{ materialize_icon('return', 'sync_alt') }}
                     {% endcall %}
 
-                     {% call group('planned tour form') %}
+                    {% call group('planned tour form') %}
                         {{ fontawesome_icon('planned tours', 'fa-lightbulb') }}
                         {{ materialize_icon('track type', 'stars') }}
                         {{ materialize_icon('name', 'edit') }}
@@ -164,6 +164,13 @@
                         {{ materialize_icon('arrival method', 'arrow_forward') }}
                         {{ materialize_icon('departure method', 'arrow_back') }}
                         {{ materialize_icon('direction', 'directions') }}
+                    {% endcall %}
+
+                    {% call group('planned tour map') %}
+                        {{ materialize_icon('min height', 'vertical_align_bottom') }}
+                        {{ materialize_icon('max height', 'vertical_align_top') }}
+                        {{ materialize_icon('uphill', 'arrow_upward') }}
+                        {{ materialize_icon('downhill', 'arrow_downward') }}
                     {% endcall %}
 
                     {% call group('achievements') %}
