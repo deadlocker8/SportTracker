@@ -95,6 +95,10 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
     return user
 
 
+def get_user_by_id(identifier: int) -> User:
+    return User.query.filter(User.id == identifier).first()
+
+
 def get_users_by_ids(ids: list[int]) -> list[User]:
     return User.query.filter(User.id.in_(ids)).all()
 

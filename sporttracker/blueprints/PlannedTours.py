@@ -24,7 +24,7 @@ from sporttracker.logic.model.Track import TrackType
 from sporttracker.logic.model.User import (
     get_users_by_ids,
     User,
-    get_all_users_except_self_and_admin,
+    get_all_users_except_self_and_admin, get_user_by_id,
 )
 from sporttracker.logic.model.db import db
 
@@ -48,6 +48,7 @@ class PlannedTourModel:
     distance: float | None
     sharedUsers: list[str]
     ownerId: str
+    ownerName: str
     arrivalMethod: TravelType
     departureMethod: TravelType
     direction: TravelDirection
@@ -104,6 +105,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
                     distance=distance,
                     sharedUsers=[str(user.id) for user in tour.shared_users],
                     ownerId=str(tour.user_id),
+                    ownerName=get_user_by_id(tour.user_id).username,
                     arrivalMethod=tour.arrival_method,
                     departureMethod=tour.departure_method,
                     direction=tour.direction,
@@ -174,6 +176,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
             distance=None,
             sharedUsers=[str(user.id) for user in plannedTour.shared_users],
             ownerId=str(plannedTour.user_id),
+            ownerName=get_user_by_id(plannedTour.user_id).username,
             arrivalMethod=plannedTour.arrival_method,
             departureMethod=plannedTour.departure_method,
             direction=plannedTour.direction,
