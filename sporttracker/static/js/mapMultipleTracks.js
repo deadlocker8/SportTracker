@@ -97,7 +97,7 @@ function initMap(itemSortFunction)
             points: [],
             point_options: {},
             elevation: true,
-            elevation_options: initElevationChartSettings(false, 'disabled'),
+            elevation_options: initElevationChartSettings(false, 'disabled', 'inline'),
             legend: true,
             distanceMarkers: false
         });

@@ -14,7 +14,7 @@ function initMap()
 
     map.on('plugins_loaded', function(e)
     {
-        let controlElevation = L.control.elevation(initElevationChartSettings(false, false)).addTo(map);
+        let controlElevation = L.control.elevation(initElevationChartSettings(false, false, false)).addTo(map);
         controlElevation.load(gpxUrl);
     });
 }

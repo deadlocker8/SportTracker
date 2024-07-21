@@ -1,10 +1,10 @@
-function initElevationChartSettings(hotlineMode, speedMode)
+function initElevationChartSettings(hotlineMode, speedMode, summaryMode)
 {
     return {
         theme: 'custom-theme',
         detached: true,
         autofitBounds: true,
-        summary: 'summary',
+        summary: summaryMode,
         imperial: false,
         closeBtn: false,
         altitude: true,
