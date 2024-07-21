@@ -34,4 +34,18 @@
     </script>
 {%- endmacro %}
 
+{% macro meta_info_item(icon, iconColor, title) -%}
+    <div class="d-flex flex-column align-items-start mb-4">
+        <div class="d-flex align-items-start">
+            <div class="material-icons {{ iconColor }} fs-3 me-2">{{ icon }}</div>
+            <div>
+                <div class="fs-5">{{ gettext(title) }}</div>
+                <div class="fs-4">
+                    {{ caller() }}
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
 
