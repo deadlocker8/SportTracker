@@ -58,8 +58,9 @@
                 <div class="d-flex align-items-center">
                     {{ gettext('last edited') }}: {{ plannedTour.lastEditDate | format_date() }}
                 </div>
-                <div>
-                    {{ gettext('by') }} {{ plannedTour.ownerName }}
+                <div class="d-flex align-items-center">
+                    <div class="material-icons fs-4 me-1">person</div>
+                    <div>{{ plannedTour.ownerName }}</div>
                 </div>
             </div>
         </div>
@@ -136,8 +137,9 @@
                         <div class="d-flex align-items-center">
                             {{ gettext('last edited') }}: {{ plannedTour.lastEditDate | format_date() }}
                         </div>
-                        <div>
-                            {{ gettext('by') }} {{ plannedTour.ownerName }}
+                        <div class="d-flex align-items-center">
+                            <div class="material-icons fs-4 me-1">person</div>
+                            <div>{{ plannedTour.ownerName }}</div>
                         </div>
                     </div>
                 </div>
