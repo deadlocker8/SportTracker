@@ -23,11 +23,60 @@
             </div>
         </div>
 
-        <div class="row mx-5">
-            <div class="col col-10 p-0 pe-4">
+        <!-- small displays -->
+        <div class="card bg-body-secondary mx-3 mb-3 d-xl-none" data-bs-theme="dark">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <div class="material-icons fs-4 me-2">route</div>
+                    <div class="fs-5 text-truncate">
+                        {{ gettext('Track ') }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body ps-4 pt-4">
+                <div class="row row-cols-4 gy-3">
+                    {% call mapMacros.meta_info_item_small('event', track.type.text_color, 'Date') %}
+                        {{ track.startTime | format_date }}
+                    {% endcall %}
+                    {% call mapMacros.meta_info_item_small('route', track.type.text_color, 'Distance') %}
+                        {{ (track.distance / 1000) | format_decimal(2) }} km
+                    {% endcall %}
+                    {% call mapMacros.meta_info_item_small('timer', track.type.text_color, 'Duration', 'material-icons-outlined') %}
+                        {{ track.duration | format_duration }} h
+                    {% endcall %}
+                    {% call mapMacros.meta_info_item_small('speed', track.type.text_color, 'Speed') %}
+                        {% if track.type.render_speed_in_kph %}
+                            {% if track.duration is none %}
+                                -
+                            {% else %}
+                                {{ (track.distance / track.duration * 3.6) | round(1) | format_decimal }} km/h
+                            {% endif %}
+                        {% else %}
+                            {% if track.duration is none %}
+                                -
+                            {% else %}
+                                {{ track | format_pace }} min
+                            {% endif %}
+                        {% endif %}
+                    {% endcall %}
+                </div>
+            </div>
+
+            <div class="card-footer text-body-secondary d-flex align-items-center justify-content-end">
+                <div>
+                    {{ gettext('by') }} {{ ownerName }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row mx-3 mx-xl-5">
+            <div class="col col-12 col-xl-10 p-0">
                 <div id="map" class="leaflet-map text-dark map-smaller"></div>
             </div>
-            <div class="col col-2 p-0">
+
+            <!-- large displays -->
+            <div class="col col-2 p-0 ps-4 d-none d-xl-block">
                 <div class="card bg-body-secondary" data-bs-theme="dark">
                   <div class="card-header d-flex align-items-center">
                        <div class="material-icons fs-4 me-2">route</div>
@@ -45,8 +94,8 @@
                             {{ (track.distance / 1000) | format_decimal(2) }} km
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('timer', track.type.text_color, 'Duration') %}
-                            {{ track.duration | format_duration }}
+                        {% call mapMacros.meta_info_item('timer', track.type.text_color, 'Duration', 'material-icons-outlined') %}
+                            {{ track.duration | format_duration }} h
                         {% endcall %}
 
                         {% call mapMacros.meta_info_item('speed', track.type.text_color, 'Avg. Speed') %}

@@ -15,18 +15,62 @@
         {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
         {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
 
-        <div class="d-flex align-items-center text-truncate justify-content-center my-3">
+        <div class="d-flex align-items-center text-truncate justify-content-center mx-5 my-3">
             {{ trackMacros.track_type_icon_small(plannedTour.type, fontSize='fs-3') }}
             <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">
                 {{ plannedTour.name }}
             </div>
         </div>
 
-        <div class="row mx-5">
-            <div class="col col-10 p-0 pe-4">
+        <!-- small displays -->
+        <div class="card bg-body-secondary mx-3 mb-3 d-xl-none" data-bs-theme="dark">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <i class="fa-solid fa-lightbulb fa-fw fs-5 me-2"></i>
+                    <div class="fs-5 text-truncate">
+                        {{ gettext('Planned Tour') }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body ps-4 pt-4">
+                <div class="row row-cols-4 gy-3">
+                    {% call mapMacros.meta_info_item_small('route', plannedTour.type.text_color, 'Distance') %}
+                        {% if plannedTour.gpxMetaInfo is not none %}
+                            {{ (plannedTour.gpxMetaInfo.distance / 1000) | format_decimal(2) }} km
+                        {% else %}
+                            -
+                        {% endif %}
+                    {% endcall %}
+                    {% call mapMacros.meta_info_item_small('arrow_forward', plannedTour.type.text_color, 'Arrival') %}
+                        {{ plannedTour.arrivalMethod.get_localized_name() }}
+                    {% endcall %}
+                    {% call mapMacros.meta_info_item_small('arrow_back', plannedTour.type.text_color, 'Departure') %}
+                        {{ plannedTour.departureMethod.get_localized_name() }}
+                    {% endcall %}
+                    {% call mapMacros.meta_info_item_small('directions', plannedTour.type.text_color, 'Direction') %}
+                        {{ plannedTour.direction.get_localized_name() }}
+                    {% endcall %}
+                </div>
+            </div>
+
+            <div class="card-footer text-body-secondary d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    {{ gettext('last edited') }}: {{ plannedTour.lastEditDate | format_date() }}
+                </div>
+                <div>
+                    {{ gettext('by') }} {{ plannedTour.ownerName }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row mx-3 mx-xl-5">
+            <div class="col col-12 col-xl-10 p-0">
                 <div id="map" class="leaflet-map text-dark map-smaller"></div>
             </div>
-            <div class="col col-2 p-0">
+
+            <!-- large displays -->
+            <div class="col col-2 p-0 ps-4 d-none d-xl-block">
                 <div class="card bg-body-secondary" data-bs-theme="dark">
                     <div class="card-header d-flex align-items-center">
                         <i class="fa-solid fa-lightbulb fa-fw fs-5 me-2"></i>
@@ -38,10 +82,10 @@
                     <div class="card-body ps-4 pt-4">
                         {% call mapMacros.meta_info_item('route', plannedTour.type.text_color, 'Distance') %}
                             {% if plannedTour.gpxMetaInfo is not none %}
-                                {{ (plannedTour.gpxMetaInfo.distance / 1000) | format_decimal(2) }}
+                                {{ (plannedTour.gpxMetaInfo.distance / 1000) | format_decimal(2) }} km
                             {% else %}
                                 -
-                            {% endif %} km
+                            {% endif %}
                         {% endcall %}
 
                         {% call mapMacros.meta_info_item('arrow_forward', plannedTour.type.text_color, 'Arrival') %}
