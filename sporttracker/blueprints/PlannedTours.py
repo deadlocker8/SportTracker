@@ -24,7 +24,8 @@ from sporttracker.logic.model.Track import TrackType
 from sporttracker.logic.model.User import (
     get_users_by_ids,
     User,
-    get_all_users_except_self_and_admin, get_user_by_id,
+    get_all_users_except_self_and_admin,
+    get_user_by_id,
 )
 from sporttracker.logic.model.db import db
 

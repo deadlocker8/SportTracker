@@ -88,11 +88,13 @@ def construct_blueprint(uploadFolder: str):
             gpxService = GpxService(gpxTrackPath)
             gpxMetaInfo = gpxService.get_meta_info()
 
-        return render_template('maps/mapSingleTrack.jinja2',
-                               track=track,
-                               gpxMetaInfo=gpxMetaInfo,
-                               ownerName=get_user_by_id(track.user_id).username,
-                               gpxUrl=url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id))
+        return render_template(
+            'maps/mapSingleTrack.jinja2',
+            track=track,
+            gpxMetaInfo=gpxMetaInfo,
+            ownerName=get_user_by_id(track.user_id).username,
+            gpxUrl=url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id),
+        )
 
     @maps.route('/map/plannedTour/<int:tour_id>')
     @login_required
@@ -101,8 +103,6 @@ def construct_blueprint(uploadFolder: str):
 
         if plannedTour is None:
             abort(404)
-
-        plannedTour = get_planned_tour_by_id(tour_id)
 
         if plannedTour.gpxFileName is None:
             gpxMetaInfo = None
@@ -127,9 +127,11 @@ def construct_blueprint(uploadFolder: str):
             direction=plannedTour.direction,
         )
 
-        return render_template('maps/mapPlannedTour.jinja2',
-                               plannedTour=tourModel,
-                               gpxUrl=url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id))
+        return render_template(
+            'maps/mapPlannedTour.jinja2',
+            plannedTour=tourModel,
+            gpxUrl=url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id),
+        )
 
     @maps.route('/toggleYears', methods=['POST'])
     @login_required

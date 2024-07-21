@@ -65,7 +65,9 @@ class GpxService:
         return UphillDownhill(int(uphill), int(downhill))
 
     def get_meta_info(self) -> GpxMetaInfo:
-        return GpxMetaInfo(self.get_length(), self.get_elevation_extremes(), self.get_uphill_downhill())
+        return GpxMetaInfo(
+            self.get_length(), self.get_elevation_extremes(), self.get_uphill_downhill()
+        )
 
     @staticmethod
     def __join_tracks(gpx: GPX) -> None:
