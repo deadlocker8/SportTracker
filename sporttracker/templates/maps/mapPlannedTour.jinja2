@@ -1,5 +1,19 @@
 <!DOCTYPE html>
 
+{% macro test(icon, iconColor, title) -%}
+    <div class="d-flex flex-column align-items-start mb-4">
+        <div class="d-flex align-items-start">
+            <div class="material-icons {{ iconColor }} fs-3 me-2">{{ icon }}</div>
+            <div>
+                <div class="fs-5">{{ gettext(title) }}</div>
+                <div class="fs-4">
+                    {{ caller() }}
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -12,8 +26,92 @@
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('map') }}
+        {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
 
-        <div id="map" class="leaflet-map w-100 text-dark"></div>
+        <div class="d-flex align-items-center text-truncate justify-content-center my-3">
+
+            {{ trackMacros.track_type_icon_small(plannedTour.type, fontSize='fs-3') }}
+            <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">
+                {{ plannedTour.name }}
+            </div>
+        </div>
+
+        <div class="row mx-5">
+            <div class="col col-10 p-0 pe-4">
+                <div id="map" class="leaflet-map text-dark map-smaller"></div>
+            </div>
+            <div class="col col-2 p-0">
+                <div class="card bg-body-secondary" data-bs-theme="dark">
+                    <div class="card-header">
+                        <div class="fs-5 text-truncate planned-tour-name ">
+                            {{ gettext('Planned Tour') }}
+                        </div>
+                    </div>
+
+                    <div class="card-body ps-4 pt-4">
+                        {% call test('route', plannedTour.type.text_color, 'Distance') %}
+                            {% if plannedTour.gpxMetaInfo is not none %}
+                                {{ (plannedTour.gpxMetaInfo.distance / 1000) | format_decimal(2) }}
+                            {% else %}
+                                -
+                            {% endif %} km
+                        {% endcall %}
+
+                        {% call test('arrow_forward', plannedTour.type.text_color, 'Arrival') %}
+                            {{ plannedTour.arrivalMethod.get_localized_name() }}
+                        {% endcall %}
+
+                        {% call test('arrow_back', plannedTour.type.text_color, 'Departure') %}
+                            {{ plannedTour.departureMethod.get_localized_name() }}
+                        {% endcall %}
+
+                        {% call test('directions', plannedTour.type.text_color, 'Direction') %}
+                            {{ plannedTour.direction.get_localized_name() }}
+                        {% endcall %}
+
+                        {% call test('vertical_align_bottom', plannedTour.type.text_color, 'Min Height') %}
+                            {% if plannedTour.gpxMetaInfo is not none %}
+                                {{ (plannedTour.gpxMetaInfo.elevationExtremes.minimum) }}
+                            {% else %}
+                                -
+                            {% endif %} m
+                        {% endcall %}
+
+                        {% call test('vertical_align_top', plannedTour.type.text_color, 'Max Height') %}
+                            {% if plannedTour.gpxMetaInfo is not none %}
+                                {{ (plannedTour.gpxMetaInfo.elevationExtremes.maximum) }}
+                            {% else %}
+                                -
+                            {% endif %} m
+                        {% endcall %}
+
+                        {% call test('arrow_upward', plannedTour.type.text_color, 'Uphill') %}
+                            {% if plannedTour.gpxMetaInfo is not none %}
+                                {{ (plannedTour.gpxMetaInfo.uphillDownhill.uphill) }}
+                            {% else %}
+                                -
+                            {% endif %} m
+                        {% endcall %}
+                        {% call test('arrow_downward', plannedTour.type.text_color, 'Downhill') %}
+                            {% if plannedTour.gpxMetaInfo is not none %}
+                                {{ (plannedTour.gpxMetaInfo.uphillDownhill.downhill) }}
+                            {% else %}
+                                -
+                            {% endif %} m
+                        {% endcall %}
+                    </div>
+
+                    <div class="card-footer text-body-secondary d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            {{ gettext('last edited') }}: {{ plannedTour.lastEditDate | format_date() }}
+                        </div>
+                        <div>
+                            {{ gettext('by') }} {{ plannedTour.ownerName }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script>
             gpxUrl = '{{ gpxUrl }}';

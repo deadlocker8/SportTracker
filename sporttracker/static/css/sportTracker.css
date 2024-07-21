@@ -15,6 +15,10 @@ body {
     height: 65vh;
 }
 
+.map-smaller {
+    height: 60vh !important;
+}
+
 #map .leaflet-control-layers-inline .leaflet-control-layers-base span {
     padding: 0.2rem;
 }

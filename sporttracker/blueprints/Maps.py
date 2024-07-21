@@ -1,14 +1,18 @@
 import logging
+import os
 from datetime import datetime
 
 from flask import Blueprint, render_template, abort, url_for, session, redirect, request
 from flask_login import login_required, current_user
 from sqlalchemy import func, extract, or_
 
+from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.logic import Constants
+from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.PlannedTour import get_planned_tour_by_id, PlannedTour
 from sporttracker.logic.model.Track import Track, get_available_years, get_track_by_id
+from sporttracker.logic.model.User import get_user_by_id
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -31,7 +35,7 @@ def createGpxInfoPlannedTour(tourId: int, tourName: str) -> dict[str, str | int]
     }
 
 
-def construct_blueprint():
+def construct_blueprint(uploadFolder: str):
     maps = Blueprint('maps', __name__, static_folder='static')
 
     @maps.route('/map')
@@ -91,10 +95,34 @@ def construct_blueprint():
         if plannedTour is None:
             abort(404)
 
-        return render_template(
-            'maps/mapPlannedTour.jinja2',
-            gpxUrl=url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id),
+        plannedTour = get_planned_tour_by_id(tour_id)
+
+        if plannedTour.gpxFileName is None:
+            gpxMetaInfo = None
+        else:
+            gpxTrackPath = os.path.join(uploadFolder, str(plannedTour.gpxFileName))
+            gpxService = GpxService(gpxTrackPath)
+            gpxMetaInfo = gpxService.get_meta_info()
+
+        tourModel = PlannedTourModel(
+            id=plannedTour.id,
+            name=plannedTour.name,  # type: ignore[arg-type]
+            creationDate=plannedTour.creation_date,  # type: ignore[arg-type]
+            lastEditDate=plannedTour.last_edit_date,  # type: ignore[arg-type]
+            type=plannedTour.type,
+            gpxFileName=plannedTour.gpxFileName,
+            gpxMetaInfo=gpxMetaInfo,
+            sharedUsers=[str(user.id) for user in plannedTour.shared_users],
+            ownerId=str(plannedTour.user_id),
+            ownerName=get_user_by_id(plannedTour.user_id).username,
+            arrivalMethod=plannedTour.arrival_method,
+            departureMethod=plannedTour.departure_method,
+            direction=plannedTour.direction,
         )
+
+        return render_template('maps/mapPlannedTour.jinja2',
+                               plannedTour=tourModel,
+                               gpxUrl=url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id))
 
     @maps.route('/toggleYears', methods=['POST'])
     @login_required
