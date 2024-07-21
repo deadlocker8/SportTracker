@@ -12,7 +12,7 @@ from sqlalchemy.sql import or_
 
 from sporttracker.blueprints.GpxTracks import handleGpxTrackForPlannedTour
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService
+from sporttracker.logic.GpxService import GpxService, GpxMetaInfo
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.PlannedTour import (
     PlannedTour,
@@ -45,7 +45,7 @@ class PlannedTourModel:
     lastEditDate: datetime
     type: TrackType
     gpxFileName: str
-    distance: float | None
+    gpxMetaInfo: GpxMetaInfo | None
     sharedUsers: list[str]
     ownerId: str
     ownerName: str
@@ -88,11 +88,11 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
         plannedTourList: list[PlannedTourModel] = []
         for tour in tours:
             if tour.gpxFileName is None:
-                distance = None
+                gpxMetaInfo = None
             else:
                 gpxTrackPath = os.path.join(uploadFolder, str(tour.gpxFileName))
                 gpxService = GpxService(gpxTrackPath)
-                distance = gpxService.get_length()
+                gpxMetaInfo = gpxService.get_meta_info()
 
             plannedTourList.append(
                 PlannedTourModel(
@@ -102,7 +102,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
                     lastEditDate=tour.last_edit_date,  # type: ignore[arg-type]
                     type=tour.type,
                     gpxFileName=tour.gpxFileName,
-                    distance=distance,
+                    gpxMetaInfo=gpxMetaInfo,
                     sharedUsers=[str(user.id) for user in tour.shared_users],
                     ownerId=str(tour.user_id),
                     ownerName=get_user_by_id(tour.user_id).username,
@@ -173,7 +173,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
             lastEditDate=plannedTour.last_edit_date,  # type: ignore[arg-type]
             type=plannedTour.type,
             gpxFileName=plannedTour.gpxFileName,
-            distance=None,
+            gpxMetaInfo=None,
             sharedUsers=[str(user.id) for user in plannedTour.shared_users],
             ownerId=str(plannedTour.user_id),
             ownerName=get_user_by_id(plannedTour.user_id).username,
