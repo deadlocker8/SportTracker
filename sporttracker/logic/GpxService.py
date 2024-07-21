@@ -1,4 +1,5 @@
 import logging
+from dataclasses import dataclass
 
 import gpxpy
 from gpxpy.gpx import GPX, GPXTrack
@@ -6,6 +7,25 @@ from gpxpy.gpx import GPX, GPXTrack
 from sporttracker.logic import Constants
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
+
+
+@dataclass
+class ElevationExtremes:
+    minimum: int | None
+    maximum: int | None
+
+
+@dataclass
+class UphillDownhill:
+    uphill: int | None
+    downhill: int | None
+
+
+@dataclass
+class GpxMetaInfo:
+    distance: float
+    elevationExtremes: ElevationExtremes
+    uphillDownhill: UphillDownhill
 
 
 class GpxService:
@@ -25,6 +45,27 @@ class GpxService:
 
     def get_length(self) -> float:
         return self._gpx.length_2d()
+
+    def get_elevation_extremes(self) -> ElevationExtremes:
+        elevationExtremes = self._gpx.get_elevation_extremes()
+        minimum = elevationExtremes.minimum
+        maximum = elevationExtremes.maximum
+        if minimum is None or maximum is None:
+            return ElevationExtremes(None, None)
+
+        return ElevationExtremes(int(minimum), int(maximum))
+
+    def get_uphill_downhill(self) -> UphillDownhill:
+        uphillDownhill = self._gpx.get_uphill_downhill()
+        uphill = uphillDownhill.uphill
+        downhill = uphillDownhill.downhill
+        if uphill is None or downhill is None:
+            return UphillDownhill(None, None)
+
+        return UphillDownhill(int(uphill), int(downhill))
+
+    def get_meta_info(self) -> GpxMetaInfo:
+        return GpxMetaInfo(self.get_length(), self.get_elevation_extremes(), self.get_uphill_downhill())
 
     @staticmethod
     def __join_tracks(gpx: GPX) -> None:
