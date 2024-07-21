@@ -13,10 +13,106 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('map') }}
 
-        <div id="map" class="leaflet-map w-100 text-dark"></div>
+        {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+
+        <div class="d-flex align-items-center text-truncate justify-content-center my-3">
+            {{ trackMacros.track_type_icon_small(track.type, fontSize='fs-3') }}
+            <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">
+                {{ track.name }}
+            </div>
+        </div>
+
+        <div class="row mx-5">
+            <div class="col col-10 p-0 pe-4">
+                <div id="map" class="leaflet-map text-dark map-smaller"></div>
+            </div>
+            <div class="col col-2 p-0">
+                <div class="card bg-body-secondary" data-bs-theme="dark">
+                  <div class="card-header d-flex align-items-center">
+                       <div class="material-icons fs-4 me-2">route</div>
+                        <div class="fs-5 text-truncate">
+                            {{ gettext('Track') }}
+                        </div>
+                    </div>
+
+                    <div class="card-body ps-4 pt-4">
+                        {% call mapMacros.meta_info_item('event', track.type.text_color, 'Date') %}
+                            {{ track.startTime | format_date }}
+                        {% endcall %}
+
+                        {% call mapMacros.meta_info_item('route', track.type.text_color, 'Distance') %}
+                            {% if gpxMetaInfo is not none %}
+                                {{ (gpxMetaInfo.distance / 1000) | format_decimal(2) }}
+                            {% else %}
+                                -
+                            {% endif %} km
+                        {% endcall %}
+
+                        {% call mapMacros.meta_info_item('timer', track.type.text_color, 'Duration') %}
+                            {{ track.duration | format_duration }}
+                        {% endcall %}
+
+                        {% call mapMacros.meta_info_item('speed', track.type.text_color, 'Avg. Speed') %}
+                            {% if track.type.render_speed_in_kph %}
+                                {% if track.duration is none %}
+                                    -
+                                {% else %}
+                                    {{ (track.distance / track.duration * 3.6) | round(1) | format_decimal }} km/h
+                                {% endif %}
+                            {% else %}
+                                {% if track.duration is none %}
+                                    -
+                                {% else %}
+                                    {{ track | format_pace }} min
+                                {% endif %}
+                            {% endif %}
+                        {% endcall %}
+
+                        {% call mapMacros.meta_info_item('favorite_border', track.type.text_color, 'Avg. Heart Rate') %}
+                            {% if track.averageHeartRate is not none %}
+                                {{ track.averageHeartRate }} bpm
+                            {% else %}
+                                -
+                            {% endif %}
+                        {% endcall %}
+
+                         {% call mapMacros.meta_info_item('expand', track.type.text_color, 'Elevation Sum') %}
+                            {% if track.elevationSum is not none %}
+                                {{ track.elevationSum }} m
+                            {% else %}
+                                -
+                            {% endif %}
+                        {% endcall %}
+
+                        {% call mapMacros.meta_info_item('vertical_align_bottom', track.type.text_color, 'Min Height') %}
+                            {% if gpxMetaInfo is not none %}
+                                {{ (gpxMetaInfo.elevationExtremes.minimum) }} m
+                            {% else %}
+                                -
+                            {% endif %}
+                        {% endcall %}
+
+                        {% call mapMacros.meta_info_item('vertical_align_top', track.type.text_color, 'Max Height') %}
+                            {% if gpxMetaInfo is not none %}
+                                {{ (gpxMetaInfo.elevationExtremes.maximum) }} m
+                            {% else %}
+                                -
+                            {% endif %}
+                        {% endcall %}
+                    </div>
+
+                    <div class="card-footer text-body-secondary d-flex align-items-center justify-content-end">
+                        <div>
+                            {{ gettext('by') }} {{ ownerName }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script>
-            gpxInfo = {{ gpxInfo }};
+            gpxUrl = '{{ gpxUrl }}';
         </script>
 
         {% import 'maps/mapMacros.jinja2' as mapMacros with context %}

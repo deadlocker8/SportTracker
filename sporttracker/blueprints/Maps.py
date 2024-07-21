@@ -81,11 +81,18 @@ def construct_blueprint(uploadFolder: str):
         if track is None:
             abort(404)
 
-        gpxInfo = []
-        if track.gpxFileName:
-            gpxInfo = [createGpxInfo(track.id, track.name, track.startTime)]  # type: ignore[arg-type]
+        if track.gpxFileName is None:
+            gpxMetaInfo = None
+        else:
+            gpxTrackPath = os.path.join(uploadFolder, str(track.gpxFileName))
+            gpxService = GpxService(gpxTrackPath)
+            gpxMetaInfo = gpxService.get_meta_info()
 
-        return render_template('maps/mapSingleTrack.jinja2', gpxInfo=gpxInfo)
+        return render_template('maps/mapSingleTrack.jinja2',
+                               track=track,
+                               gpxMetaInfo=gpxMetaInfo,
+                               ownerName=get_user_by_id(track.user_id).username,
+                               gpxUrl=url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id))
 
     @maps.route('/map/plannedTour/<int:tour_id>')
     @login_required

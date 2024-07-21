@@ -7,7 +7,7 @@ function initMap()
 {
     let map = initMapBase();
 
-    if(gpxInfo.length === 0)
+    if(gpxUrl === null)
     {
         return;
     }
@@ -62,8 +62,8 @@ function initMap()
             }
         });
 
-        let controlElevation = L.control.elevation(initElevationChartSettings('speed', 'disabled', 'inline')).addTo(map);
-        controlElevation.load(gpxInfo[0].gpxUrl);
+        let controlElevation = L.control.elevation(initElevationChartSettings('speed', 'disabled', false)).addTo(map);
+        controlElevation.load(gpxUrl);
     });
 
 }

@@ -16,7 +16,6 @@
         {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
 
         <div class="d-flex align-items-center text-truncate justify-content-center my-3">
-
             {{ trackMacros.track_type_icon_small(plannedTour.type, fontSize='fs-3') }}
             <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">
                 {{ plannedTour.name }}
@@ -29,8 +28,9 @@
             </div>
             <div class="col col-2 p-0">
                 <div class="card bg-body-secondary" data-bs-theme="dark">
-                    <div class="card-header">
-                        <div class="fs-5 text-truncate planned-tour-name ">
+                    <div class="card-header d-flex align-items-center">
+                        <i class="fa-solid fa-lightbulb fa-fw fs-5 me-2"></i>
+                        <div class="fs-5 text-truncate">
                             {{ gettext('Planned Tour') }}
                         </div>
                     </div>
@@ -58,33 +58,33 @@
 
                         {% call mapMacros.meta_info_item('vertical_align_bottom', plannedTour.type.text_color, 'Min Height') %}
                             {% if plannedTour.gpxMetaInfo is not none %}
-                                {{ (plannedTour.gpxMetaInfo.elevationExtremes.minimum) }}
+                                {{ (plannedTour.gpxMetaInfo.elevationExtremes.minimum) }} m
                             {% else %}
                                 -
-                            {% endif %} m
+                            {% endif %}
                         {% endcall %}
 
                         {% call mapMacros.meta_info_item('vertical_align_top', plannedTour.type.text_color, 'Max Height') %}
                             {% if plannedTour.gpxMetaInfo is not none %}
-                                {{ (plannedTour.gpxMetaInfo.elevationExtremes.maximum) }}
+                                {{ (plannedTour.gpxMetaInfo.elevationExtremes.maximum) }} m
                             {% else %}
                                 -
-                            {% endif %} m
+                            {% endif %}
                         {% endcall %}
 
                         {% call mapMacros.meta_info_item('arrow_upward', plannedTour.type.text_color, 'Uphill') %}
                             {% if plannedTour.gpxMetaInfo is not none %}
-                                {{ (plannedTour.gpxMetaInfo.uphillDownhill.uphill) }}
+                                {{ (plannedTour.gpxMetaInfo.uphillDownhill.uphill) }} m
                             {% else %}
                                 -
-                            {% endif %} m
+                            {% endif %}
                         {% endcall %}
                         {% call mapMacros.meta_info_item('arrow_downward', plannedTour.type.text_color, 'Downhill') %}
                             {% if plannedTour.gpxMetaInfo is not none %}
-                                {{ (plannedTour.gpxMetaInfo.uphillDownhill.downhill) }}
+                                {{ (plannedTour.gpxMetaInfo.uphillDownhill.downhill) }} m
                             {% else %}
                                 -
-                            {% endif %} m
+                            {% endif %}
                         {% endcall %}
                     </div>
 
