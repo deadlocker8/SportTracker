@@ -431,6 +431,50 @@
     </div>
 {%- endmacro %}
 
+{% macro form_share_link(item, mapUrl, createUrl) -%}
+    <div class="mb-3">
+        <label for="track-participants" class="form-label">
+            <div class="d-flex align-items-center">
+                <span class="material-icons me-3">link</span>
+                <span>{{ gettext('Share via link') }}</span>
+            </div>
+        </label>
+
+        {% set hasShareCode = item and item.shareCode is not none %}
+
+        <div class="input-field-margin">
+            <div class="d-flex flex-column flex-md-row mb-3 {% if not hasShareCode %}hidden{% endif %}" id="sharedLinkControlsEnabled">
+                {% if hasShareCode %}
+                    <a href="{{ url_for(mapUrl, shareCode=item.shareCode, _external=True) }}" class="btn btn-sm btn-secondary" id="sharedLink">{{ url_for(mapUrl, shareCode=item.shareCode, _external=True) }}</a>
+                {% else %}
+                    <a class="btn btn-sm btn-secondary" id="sharedLink"></a>
+                {% endif %}
+                <div id="gpxButtons" class="d-flex mt-3 mt-md-0">
+                    <a class="btn btn-primary btn-sm ms-3 d-flex align-items-center" id="buttonCopySharedLink" data-bs-toggle="tooltip" data-bs-title="{{ gettext('Copied') }}">
+                        <span class="material-icons fs-4">content_copy</span>
+                    </a>
+
+                    <button type="button" class="btn btn-danger btn-sm ms-3 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete-modal-shared-link">
+                        <span class="material-icons fs-4">delete</span>
+                    </button>
+
+                    {% call macros.deleteModal(gettext('Delete shared link?'), gettext('Do you really want to delete this shared link?'), 'shared-link') %}
+                        <a class="btn btn-danger" id="buttonSharedLinkDelete" data-bs-dismiss="modal">{{ gettext('Delete') }}</a>
+                    {% endcall %}
+                </div>
+            </div>
+
+            <button type="button" class="{% if hasShareCode %}hidden{% endif %} btn btn-primary btn-sm d-flex align-items-center" id="buttonCreateSharedLink" data-url="{{ url_for(createUrl) }}">
+                <span class="material-icons fs-4 me-2">add_link</span>{{ gettext('Create link') }}
+            </button>
+
+            <input type="hidden" name="shareCode" value="{% if hasShareCode %}{{ item.shareCode }}{% endif %}">
+        </div>
+
+    </div>
+{%- endmacro %}
+
+
 {% macro render_maintenance_event_card(event) -%}
     <div class="row py-2">
         <div class="col col-12 mx-auto">

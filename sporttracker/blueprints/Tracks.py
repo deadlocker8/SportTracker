@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import logging
 import os
+import uuid
 from dataclasses import dataclass
 from datetime import datetime, date
 
@@ -327,6 +330,15 @@ def construct_blueprint(uploadFolder: str):
         db.session.commit()
 
         return redirect(url_for('tracks.listTracks'))
+
+    @tracks.route('/createShareCode')
+    @login_required
+    def createShareCode():
+        shareCode = uuid.uuid4().hex
+        return {
+            'url': url_for('maps.showSharedSingleTrack', shareCode=shareCode, _external=True),
+            'shareCode': shareCode,
+        }
 
     return tracks
 

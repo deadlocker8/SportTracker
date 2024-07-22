@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import os
+import uuid
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
@@ -269,6 +270,15 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
         db.session.commit()
 
         return Response(status=204)
+
+    @plannedTours.route('/createShareCode')
+    @login_required
+    def createShareCode():
+        shareCode = uuid.uuid4().hex
+        return {
+            'url': url_for('maps.showSharedPlannedTour', shareCode=shareCode, _external=True),
+            'shareCode': shareCode,
+        }
 
     return plannedTours
 
