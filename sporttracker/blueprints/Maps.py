@@ -100,7 +100,7 @@ def construct_blueprint(uploadFolder: str):
         track = get_track_by_share_code(shareCode)
 
         if track is None:
-            abort(404)
+            return render_template('maps/mapNotFound.jinja2')
 
         return render_template(
             'maps/mapSingleTrack.jinja2',
@@ -128,7 +128,7 @@ def construct_blueprint(uploadFolder: str):
         plannedTour = get_planned_tour_by_share_code(shareCode)
 
         if plannedTour is None:
-            abort(404)
+            return render_template('maps/mapNotFound.jinja2')
 
         return render_template(
             'maps/mapPlannedTour.jinja2',

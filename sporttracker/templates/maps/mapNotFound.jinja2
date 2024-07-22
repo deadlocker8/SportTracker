@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Map') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('map') }}
+
+        <div class="align-middle d-flex flex-column align-items-center justify-content-center mx-5 mt-5">
+            <span class="material-icons fs-1 mb-3 text-danger">error</span>
+            <h3>{{ gettext('Unknown shared link') }}</h3>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>
