@@ -89,6 +89,13 @@
                         {{ materialize_icon('participants', 'group') }}
                         {{ materialize_icon('gpx track', 'location_on') }}
                     {% endcall %}
+
+                    {% call group('shared links') %}
+                        {{ materialize_icon('shared link', 'link') }}
+                        {{ materialize_icon('create', 'add_link') }}
+                        {{ materialize_icon('copy', 'content_copy') }}
+                        {{ materialize_icon('delete', 'delete') }}
+                    {% endcall %}
                 </div>
 
                 <div class="d-flex flex-column justify-content-between">
