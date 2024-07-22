@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import logging
 import os
 import uuid
@@ -59,7 +57,7 @@ class PlannedTourModel:
     shareCode: str | None
 
     @staticmethod
-    def create_from_tour(plannedTour: PlannedTour, uploadFolder: str) -> PlannedTourModel:
+    def create_from_tour(plannedTour: PlannedTour, uploadFolder: str) -> 'PlannedTourModel':
         if plannedTour.gpxFileName is None:
             gpxMetaInfo = None
         else:

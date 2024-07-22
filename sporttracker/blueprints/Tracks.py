@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import logging
 import os
 import uuid
@@ -48,13 +46,6 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 @dataclass
-class MonthModel:
-    name: str
-    entries: list[TrackModel | MaintenanceEvent]
-    goals: list[MonthGoalSummary]
-
-
-@dataclass
 class TrackModel(DateTimeAccess):
     id: int
     name: str
@@ -71,7 +62,7 @@ class TrackModel(DateTimeAccess):
     ownerName: str
 
     @staticmethod
-    def create_from_track(track: Track, uploadFolder: str) -> TrackModel:
+    def create_from_track(track: Track, uploadFolder: str) -> 'TrackModel':
         if track.gpxFileName is None:
             gpxMetaInfo = None
         else:
@@ -97,6 +88,13 @@ class TrackModel(DateTimeAccess):
 
     def get_date_time(self) -> datetime:
         return self.startTime
+
+
+@dataclass
+class MonthModel:
+    name: str
+    entries: list[TrackModel | MaintenanceEvent]
+    goals: list[MonthGoalSummary]
 
 
 class TrackFormModel(BaseModel):
