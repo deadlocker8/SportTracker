@@ -36,16 +36,16 @@
 
             <div class="card-body ps-4 pt-4">
                 <div class="row row-cols-4 gy-3">
-                    {% call mapMacros.meta_info_item_small('event', track.type.text_color, 'Date') %}
+                    {% call mapMacros.meta_info_item_small('event', track.type.text_color, gettext('Date')) %}
                         {{ track.startTime | format_date }}
                     {% endcall %}
-                    {% call mapMacros.meta_info_item_small('route', track.type.text_color, 'Distance') %}
+                    {% call mapMacros.meta_info_item_small('route', track.type.text_color, gettext('Distance')) %}
                         {{ (track.distance / 1000) | format_decimal(2) }} km
                     {% endcall %}
-                    {% call mapMacros.meta_info_item_small('timer', track.type.text_color, 'Duration', 'material-icons-outlined') %}
+                    {% call mapMacros.meta_info_item_small('timer', track.type.text_color, gettext('Duration'), 'material-icons-outlined') %}
                         {{ track.duration | format_duration }} h
                     {% endcall %}
-                    {% call mapMacros.meta_info_item_small('speed', track.type.text_color, 'Speed') %}
+                    {% call mapMacros.meta_info_item_small('speed', track.type.text_color, gettext('Speed')) %}
                         {% if track.type.render_speed_in_kph %}
                             {% if track.duration is none %}
                                 -
@@ -66,7 +66,7 @@
             <div class="card-footer text-body-secondary d-flex align-items-center justify-content-end">
                 <div class="d-flex align-items-center">
                     <div class="material-icons fs-4 me-1">person</div>
-                    <div>{{ ownerName }}</div>
+                    <div>{{ track.ownerName }}</div>
                 </div>
             </div>
         </div>
@@ -87,19 +87,19 @@
                     </div>
 
                     <div class="card-body ps-4 pt-4">
-                        {% call mapMacros.meta_info_item('event', track.type.text_color, 'Date') %}
+                        {% call mapMacros.meta_info_item('event', track.type.text_color, gettext('Date')) %}
                             {{ track.startTime | format_date }}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('route', track.type.text_color, 'Distance') %}
+                        {% call mapMacros.meta_info_item('route', track.type.text_color, gettext('Distance')) %}
                             {{ (track.distance / 1000) | format_decimal(2) }} km
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('timer', track.type.text_color, 'Duration', 'material-icons-outlined') %}
+                        {% call mapMacros.meta_info_item('timer', track.type.text_color, gettext('Duration'), 'material-icons-outlined') %}
                             {{ track.duration | format_duration }} h
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('speed', track.type.text_color, 'Avg. Speed') %}
+                        {% call mapMacros.meta_info_item('speed', track.type.text_color, gettext('Avg. Speed')) %}
                             {% if track.type.render_speed_in_kph %}
                                 {% if track.duration is none %}
                                     -
@@ -115,7 +115,7 @@
                             {% endif %}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('favorite_border', track.type.text_color, 'Avg. Heart Rate') %}
+                        {% call mapMacros.meta_info_item('favorite_border', track.type.text_color, gettext('Avg. Heart Rate')) %}
                             {% if track.averageHeartRate is not none %}
                                 {{ track.averageHeartRate }} bpm
                             {% else %}
@@ -123,7 +123,7 @@
                             {% endif %}
                         {% endcall %}
 
-                         {% call mapMacros.meta_info_item('expand', track.type.text_color, 'Elevation Sum') %}
+                         {% call mapMacros.meta_info_item('expand', track.type.text_color, gettext('Elevation Sum')) %}
                             {% if track.elevationSum is not none %}
                                 {{ track.elevationSum }} m
                             {% else %}
@@ -131,7 +131,7 @@
                             {% endif %}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('vertical_align_bottom', track.type.text_color, 'Min Height') %}
+                        {% call mapMacros.meta_info_item('vertical_align_bottom', track.type.text_color, gettext('Min Height')) %}
                             {% if track.gpxMetaInfo is not none %}
                                 {{ (track.gpxMetaInfo.elevationExtremes.minimum) }} m
                             {% else %}
@@ -139,7 +139,7 @@
                             {% endif %}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('vertical_align_top', track.type.text_color, 'Max Height') %}
+                        {% call mapMacros.meta_info_item('vertical_align_top', track.type.text_color, gettext('Max Height')) %}
                             {% if track.gpxMetaInfo is not none %}
                                 {{ (track.gpxMetaInfo.elevationExtremes.maximum) }} m
                             {% else %}
@@ -151,7 +151,7 @@
                     <div class="card-footer text-body-secondary d-flex align-items-center justify-content-end">
                         <div class="d-flex align-items-center">
                             <div class="material-icons fs-4 me-1">person</div>
-                            <div>{{ ownerName }}</div>
+                            <div>{{ track.ownerName }}</div>
                         </div>
                     </div>
                 </div>

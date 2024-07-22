@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-07-22 23:53+0200\n"
+"POT-Creation-Date: 2024-07-23 00:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -167,11 +167,16 @@ msgstr ""
 msgid "Hiking"
 msgstr ""
 
-#: ../logic/model/User.py:59
+#: ../logic/model/User.py:59 ../templates/maps/mapPlannedTour.jinja2:38
+#: ../templates/maps/mapPlannedTour.jinja2:84
+#: ../templates/maps/mapSingleTrack.jinja2:42
+#: ../templates/maps/mapSingleTrack.jinja2:94
 msgid "Distance"
 msgstr ""
 
-#: ../logic/model/User.py:61 ../templates/tracks/trackMacros.jinja2:266
+#: ../logic/model/User.py:61 ../templates/maps/mapSingleTrack.jinja2:45
+#: ../templates/maps/mapSingleTrack.jinja2:98
+#: ../templates/tracks/trackMacros.jinja2:266
 msgid "Duration"
 msgstr ""
 
@@ -179,7 +184,7 @@ msgstr ""
 msgid "Average Heart Rate"
 msgstr ""
 
-#: ../logic/model/User.py:67
+#: ../logic/model/User.py:67 ../templates/maps/mapSingleTrack.jinja2:126
 msgid "Elevation Sum"
 msgstr ""
 
@@ -459,6 +464,8 @@ msgid "Type"
 msgstr ""
 
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:56
+#: ../templates/maps/mapSingleTrack.jinja2:39
+#: ../templates/maps/mapSingleTrack.jinja2:90
 #: ../templates/tracks/trackMacros.jinja2:234
 msgid "Date"
 msgstr ""
@@ -506,6 +513,7 @@ msgid "Slope"
 msgstr ""
 
 #: ../templates/maps/mapMacros.jinja2:7
+#: ../templates/maps/mapSingleTrack.jinja2:48
 msgid "Speed"
 msgstr ""
 
@@ -622,15 +630,59 @@ msgstr ""
 msgid "Planned Tour"
 msgstr ""
 
+#: ../templates/maps/mapPlannedTour.jinja2:45
+#: ../templates/maps/mapPlannedTour.jinja2:92
+#: ../templates/plannedTours/plannedTours.jinja2:74
+msgid "Arrival"
+msgstr ""
+
+#: ../templates/maps/mapPlannedTour.jinja2:48
+#: ../templates/maps/mapPlannedTour.jinja2:96
+#: ../templates/plannedTours/plannedTours.jinja2:78
+msgid "Departure"
+msgstr ""
+
+#: ../templates/maps/mapPlannedTour.jinja2:51
+#: ../templates/maps/mapPlannedTour.jinja2:100
+#: ../templates/plannedTours/plannedTourForm.jinja2:86
+msgid "Direction"
+msgstr ""
+
 #: ../templates/maps/mapPlannedTour.jinja2:59
 #: ../templates/maps/mapPlannedTour.jinja2:138
 #: ../templates/plannedTours/plannedTours.jinja2:96
 msgid "last edited"
 msgstr ""
 
+#: ../templates/maps/mapPlannedTour.jinja2:104
+#: ../templates/maps/mapSingleTrack.jinja2:134
+msgid "Min Height"
+msgstr ""
+
+#: ../templates/maps/mapPlannedTour.jinja2:112
+#: ../templates/maps/mapSingleTrack.jinja2:142
+msgid "Max Height"
+msgstr ""
+
+#: ../templates/maps/mapPlannedTour.jinja2:120
+msgid "Uphill"
+msgstr ""
+
+#: ../templates/maps/mapPlannedTour.jinja2:127
+msgid "Downhill"
+msgstr ""
+
 #: ../templates/maps/mapSingleTrack.jinja2:32
 #: ../templates/maps/mapSingleTrack.jinja2:85
 msgid "Track"
+msgstr ""
+
+#: ../templates/maps/mapSingleTrack.jinja2:102
+msgid "Avg. Speed"
+msgstr ""
+
+#: ../templates/maps/mapSingleTrack.jinja2:118
+msgid "Avg. Heart Rate"
 msgstr ""
 
 #: ../templates/monthGoals/monthGoalChooser.jinja2:6
@@ -789,10 +841,6 @@ msgstr ""
 msgid "Departure method"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTourForm.jinja2:86
-msgid "Direction"
-msgstr ""
-
 #: ../templates/plannedTours/plannedTourForm.jinja2:88
 msgid "No GPX file is linked to this planned tour"
 msgstr ""
@@ -811,14 +859,6 @@ msgstr ""
 
 #: ../templates/plannedTours/plannedTours.jinja2:49
 msgid "updated"
-msgstr ""
-
-#: ../templates/plannedTours/plannedTours.jinja2:74
-msgid "Arrival"
-msgstr ""
-
-#: ../templates/plannedTours/plannedTours.jinja2:78
-msgid "Departure"
 msgstr ""
 
 #: ../templates/plannedTours/plannedTours.jinja2:92

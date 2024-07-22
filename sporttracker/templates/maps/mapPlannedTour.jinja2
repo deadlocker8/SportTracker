@@ -35,20 +35,20 @@
 
             <div class="card-body ps-4 pt-4">
                 <div class="row row-cols-4 gy-3">
-                    {% call mapMacros.meta_info_item_small('route', plannedTour.type.text_color, 'Distance') %}
+                    {% call mapMacros.meta_info_item_small('route', plannedTour.type.text_color, gettext('Distance')) %}
                         {% if plannedTour.gpxMetaInfo is not none %}
                             {{ (plannedTour.gpxMetaInfo.distance / 1000) | format_decimal(2) }} km
                         {% else %}
                             -
                         {% endif %}
                     {% endcall %}
-                    {% call mapMacros.meta_info_item_small('arrow_forward', plannedTour.type.text_color, 'Arrival') %}
+                    {% call mapMacros.meta_info_item_small('arrow_forward', plannedTour.type.text_color, gettext('Arrival')) %}
                         {{ plannedTour.arrivalMethod.get_localized_name() }}
                     {% endcall %}
-                    {% call mapMacros.meta_info_item_small('arrow_back', plannedTour.type.text_color, 'Departure') %}
+                    {% call mapMacros.meta_info_item_small('arrow_back', plannedTour.type.text_color, gettext('Departure')) %}
                         {{ plannedTour.departureMethod.get_localized_name() }}
                     {% endcall %}
-                    {% call mapMacros.meta_info_item_small('directions', plannedTour.type.text_color, 'Direction') %}
+                    {% call mapMacros.meta_info_item_small('directions', plannedTour.type.text_color, gettext('Direction')) %}
                         {{ plannedTour.direction.get_localized_name() }}
                     {% endcall %}
                 </div>
@@ -81,7 +81,7 @@
                     </div>
 
                     <div class="card-body ps-4 pt-4">
-                        {% call mapMacros.meta_info_item('route', plannedTour.type.text_color, 'Distance') %}
+                        {% call mapMacros.meta_info_item('route', plannedTour.type.text_color, gettext('Distance')) %}
                             {% if plannedTour.gpxMetaInfo is not none %}
                                 {{ (plannedTour.gpxMetaInfo.distance / 1000) | format_decimal(2) }} km
                             {% else %}
@@ -89,19 +89,19 @@
                             {% endif %}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('arrow_forward', plannedTour.type.text_color, 'Arrival') %}
+                        {% call mapMacros.meta_info_item('arrow_forward', plannedTour.type.text_color, gettext('Arrival')) %}
                             {{ plannedTour.arrivalMethod.get_localized_name() }}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('arrow_back', plannedTour.type.text_color, 'Departure') %}
+                        {% call mapMacros.meta_info_item('arrow_back', plannedTour.type.text_color, gettext('Departure')) %}
                             {{ plannedTour.departureMethod.get_localized_name() }}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('directions', plannedTour.type.text_color, 'Direction') %}
+                        {% call mapMacros.meta_info_item('directions', plannedTour.type.text_color, gettext('Direction')) %}
                             {{ plannedTour.direction.get_localized_name() }}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('vertical_align_bottom', plannedTour.type.text_color, 'Min Height') %}
+                        {% call mapMacros.meta_info_item('vertical_align_bottom', plannedTour.type.text_color, gettext('Min Height')) %}
                             {% if plannedTour.gpxMetaInfo is not none %}
                                 {{ (plannedTour.gpxMetaInfo.elevationExtremes.minimum) }} m
                             {% else %}
@@ -109,7 +109,7 @@
                             {% endif %}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('vertical_align_top', plannedTour.type.text_color, 'Max Height') %}
+                        {% call mapMacros.meta_info_item('vertical_align_top', plannedTour.type.text_color, gettext('Max Height')) %}
                             {% if plannedTour.gpxMetaInfo is not none %}
                                 {{ (plannedTour.gpxMetaInfo.elevationExtremes.maximum) }} m
                             {% else %}
@@ -117,14 +117,14 @@
                             {% endif %}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('arrow_upward', plannedTour.type.text_color, 'Uphill') %}
+                        {% call mapMacros.meta_info_item('arrow_upward', plannedTour.type.text_color, gettext('Uphill')) %}
                             {% if plannedTour.gpxMetaInfo is not none %}
                                 {{ (plannedTour.gpxMetaInfo.uphillDownhill.uphill) }} m
                             {% else %}
                                 -
                             {% endif %}
                         {% endcall %}
-                        {% call mapMacros.meta_info_item('arrow_downward', plannedTour.type.text_color, 'Downhill') %}
+                        {% call mapMacros.meta_info_item('arrow_downward', plannedTour.type.text_color, gettext('Downhill')) %}
                             {% if plannedTour.gpxMetaInfo is not none %}
                                 {{ (plannedTour.gpxMetaInfo.uphillDownhill.downhill) }} m
                             {% else %}
