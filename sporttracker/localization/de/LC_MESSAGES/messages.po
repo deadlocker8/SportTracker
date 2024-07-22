@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-07-08 22:41+0200\n"
-"PO-Revision-Date: 2024-07-08 22:41+0200\n"
+"POT-Creation-Date: 2024-07-22 23:53+0200\n"
+"PO-Revision-Date: 2024-07-22 23:53+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -166,15 +166,15 @@ msgstr "Hin + zurück"
 msgid "Roundtrip"
 msgstr "Rundtour"
 
-#: ../logic/model/Track.py:78
+#: ../logic/model/Track.py:77
 msgid "Biking"
 msgstr "Fahrrad fahren"
 
-#: ../logic/model/Track.py:80
+#: ../logic/model/Track.py:79
 msgid "Running"
 msgstr "Laufen"
 
-#: ../logic/model/Track.py:82
+#: ../logic/model/Track.py:81
 msgid "Hiking"
 msgstr "Wandern"
 
@@ -284,6 +284,7 @@ msgid "Annual Statistics"
 msgstr "Jahresstatistik"
 
 #: ../templates/macros.jinja2:104 ../templates/maps/mapMultipleTracks.jinja2:17
+#: ../templates/maps/mapNotFound.jinja2:6
 #: ../templates/maps/mapPlannedTour.jinja2:6
 #: ../templates/maps/mapSingleTrack.jinja2:6
 msgid "Map"
@@ -442,6 +443,7 @@ msgstr "Neues Wartungsereignis"
 #: ../templates/tracks/trackHikingForm.jinja2:24
 #: ../templates/tracks/trackHikingForm.jinja2:28
 #: ../templates/tracks/trackMacros.jinja2:351
+#: ../templates/tracks/trackMacros.jinja2:462
 #: ../templates/tracks/trackRunningForm.jinja2:24
 #: ../templates/tracks/trackRunningForm.jinja2:28
 #: ../templates/users/userForm.jinja2:23
@@ -485,15 +487,15 @@ msgstr "Beschreibung"
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:107
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:98
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:109
-#: ../templates/plannedTours/plannedTourForm.jinja2:92
+#: ../templates/plannedTours/plannedTourForm.jinja2:94
 #: ../templates/settings/customFieldsForm.jinja2:84
 #: ../templates/settings/participantsForm.jinja2:58
 #: ../templates/settings/settings.jinja2:42
 #: ../templates/settings/settings.jinja2:59
 #: ../templates/settings/settings.jinja2:186
-#: ../templates/tracks/trackBikingForm.jinja2:66
-#: ../templates/tracks/trackHikingForm.jinja2:66
-#: ../templates/tracks/trackRunningForm.jinja2:66
+#: ../templates/tracks/trackBikingForm.jinja2:68
+#: ../templates/tracks/trackHikingForm.jinja2:68
+#: ../templates/tracks/trackRunningForm.jinja2:68
 #: ../templates/users/userForm.jinja2:66
 msgid "Save"
 msgstr "Speichern"
@@ -621,6 +623,26 @@ msgstr "Legende ausblenden"
 #: ../templates/maps/mapMultipleTracks.jinja2:60
 msgid "Apply"
 msgstr "Übernehmen"
+
+#: ../templates/maps/mapNotFound.jinja2:15
+msgid "Unknown shared link"
+msgstr "Unbekannter geteilter Link"
+
+#: ../templates/maps/mapPlannedTour.jinja2:31
+#: ../templates/maps/mapPlannedTour.jinja2:79
+msgid "Planned Tour"
+msgstr "Geplante Tour"
+
+#: ../templates/maps/mapPlannedTour.jinja2:59
+#: ../templates/maps/mapPlannedTour.jinja2:138
+#: ../templates/plannedTours/plannedTours.jinja2:96
+msgid "last edited"
+msgstr "bearbeitet"
+
+#: ../templates/maps/mapSingleTrack.jinja2:32
+#: ../templates/maps/mapSingleTrack.jinja2:85
+msgid "Track"
+msgstr "Track"
 
 #: ../templates/monthGoals/monthGoalChooser.jinja2:6
 #: ../templates/monthGoals/monthGoalChooser.jinja2:17
@@ -814,10 +836,6 @@ msgstr "Abreise"
 msgid "shared"
 msgstr "geteilt"
 
-#: ../templates/plannedTours/plannedTours.jinja2:96
-msgid "last edited"
-msgstr "bearbeitet"
-
 #: ../templates/plannedTours/plannedToursMacros.jinja2:6
 msgid "Share this tour with"
 msgstr "Diese Tour teilen mit"
@@ -847,7 +865,7 @@ msgstr "Ist Pflichtfeld"
 #: ../templates/settings/participantsForm.jinja2:6
 #: ../templates/settings/participantsForm.jinja2:19
 msgid "Edit Participant"
-msgstr "Teilnehmner bearbeiten"
+msgstr "Teilnehmer bearbeiten"
 
 #: ../templates/settings/participantsForm.jinja2:7
 #: ../templates/settings/participantsForm.jinja2:23
@@ -887,7 +905,7 @@ msgstr "Teilnehmer"
 
 #: ../templates/settings/settings.jinja2:157
 msgid "Delete Participant?"
-msgstr "Teilnehmner löschen?"
+msgstr "Teilnehmer löschen?"
 
 #: ../templates/settings/settings.jinja2:157
 #, python-format
@@ -988,6 +1006,26 @@ msgstr "Willst du die verknüpfte GPX-Datei wirklich löschen?"
 msgid "Add participants in the "
 msgstr "Hinzufügen von Teilnehmern in den "
 
+#: ../templates/tracks/trackMacros.jinja2:439
+msgid "Share via link"
+msgstr "Als Link teilen"
+
+#: ../templates/tracks/trackMacros.jinja2:453
+msgid "Copied"
+msgstr "Kopiert"
+
+#: ../templates/tracks/trackMacros.jinja2:461
+msgid "Delete shared link?"
+msgstr "Geteilten Link löschen?"
+
+#: ../templates/tracks/trackMacros.jinja2:461
+msgid "Do you really want to delete this shared link?"
+msgstr "Willst du diesen geteilten Link wirklich löschen?"
+
+#: ../templates/tracks/trackMacros.jinja2:468
+msgid "Create link"
+msgstr "Link erzeugen"
+
 #: ../templates/tracks/trackRunningForm.jinja2:6
 #: ../templates/tracks/trackRunningForm.jinja2:20
 msgid "Edit Running Track"
@@ -1060,3 +1098,6 @@ msgstr "Administrator"
 
 #~ msgid "Edit"
 #~ msgstr "Bearbeiten"
+
+#~ msgid "Track "
+#~ msgstr "Track "
