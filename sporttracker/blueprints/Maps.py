@@ -104,33 +104,9 @@ def construct_blueprint(uploadFolder: str):
         if plannedTour is None:
             abort(404)
 
-        if plannedTour.gpxFileName is None:
-            gpxMetaInfo = None
-        else:
-            gpxTrackPath = os.path.join(uploadFolder, str(plannedTour.gpxFileName))
-            gpxService = GpxService(gpxTrackPath)
-            gpxMetaInfo = gpxService.get_meta_info()
-
-        tourModel = PlannedTourModel(
-            id=plannedTour.id,
-            name=plannedTour.name,  # type: ignore[arg-type]
-            creationDate=plannedTour.creation_date,  # type: ignore[arg-type]
-            lastEditDate=plannedTour.last_edit_date,  # type: ignore[arg-type]
-            type=plannedTour.type,
-            gpxFileName=plannedTour.gpxFileName,
-            gpxMetaInfo=gpxMetaInfo,
-            sharedUsers=[str(user.id) for user in plannedTour.shared_users],
-            ownerId=str(plannedTour.user_id),
-            ownerName=get_user_by_id(plannedTour.user_id).username,
-            arrivalMethod=plannedTour.arrival_method,
-            departureMethod=plannedTour.departure_method,
-            direction=plannedTour.direction,
-            shareCode=plannedTour.share_code,
-        )
-
         return render_template(
             'maps/mapPlannedTour.jinja2',
-            plannedTour=tourModel,
+            plannedTour=PlannedTourModel.create_from_tour(plannedTour, uploadFolder),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id),
         )
 

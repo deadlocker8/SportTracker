@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import os
 from dataclasses import dataclass
@@ -55,6 +57,32 @@ class PlannedTourModel:
     direction: TravelDirection
     shareCode: str | None
 
+    @staticmethod
+    def create_from_tour(plannedTour: PlannedTour, uploadFolder: str) -> PlannedTourModel:
+        if plannedTour.gpxFileName is None:
+            gpxMetaInfo = None
+        else:
+            gpxTrackPath = os.path.join(uploadFolder, str(plannedTour.gpxFileName))
+            gpxService = GpxService(gpxTrackPath)
+            gpxMetaInfo = gpxService.get_meta_info()
+
+        return PlannedTourModel(
+            id=plannedTour.id,
+            name=plannedTour.name,  # type: ignore[arg-type]
+            creationDate=plannedTour.creation_date,  # type: ignore[arg-type]
+            lastEditDate=plannedTour.last_edit_date,  # type: ignore[arg-type]
+            type=plannedTour.type,
+            gpxFileName=plannedTour.gpxFileName,
+            gpxMetaInfo=gpxMetaInfo,
+            sharedUsers=[str(user.id) for user in plannedTour.shared_users],
+            ownerId=str(plannedTour.user_id),
+            ownerName=get_user_by_id(plannedTour.user_id).username,
+            arrivalMethod=plannedTour.arrival_method,
+            departureMethod=plannedTour.departure_method,
+            direction=plannedTour.direction,
+            shareCode=plannedTour.share_code,
+        )
+
 
 class PlannedTourFormModel(BaseModel):
     name: str
@@ -90,31 +118,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
 
         plannedTourList: list[PlannedTourModel] = []
         for tour in tours:
-            if tour.gpxFileName is None:
-                gpxMetaInfo = None
-            else:
-                gpxTrackPath = os.path.join(uploadFolder, str(tour.gpxFileName))
-                gpxService = GpxService(gpxTrackPath)
-                gpxMetaInfo = gpxService.get_meta_info()
-
-            plannedTourList.append(
-                PlannedTourModel(
-                    id=tour.id,
-                    name=tour.name,  # type: ignore[arg-type]
-                    creationDate=tour.creation_date,  # type: ignore[arg-type]
-                    lastEditDate=tour.last_edit_date,  # type: ignore[arg-type]
-                    type=tour.type,
-                    gpxFileName=tour.gpxFileName,
-                    gpxMetaInfo=gpxMetaInfo,
-                    sharedUsers=[str(user.id) for user in tour.shared_users],
-                    ownerId=str(tour.user_id),
-                    ownerName=get_user_by_id(tour.user_id).username,
-                    arrivalMethod=tour.arrival_method,
-                    departureMethod=tour.departure_method,
-                    direction=tour.direction,
-                    shareCode=tour.share_code,
-                )
-            )
+            plannedTourList.append(PlannedTourModel.create_from_tour(tour, uploadFolder))
 
         return render_template(
             'plannedTours/plannedTours.jinja2',
