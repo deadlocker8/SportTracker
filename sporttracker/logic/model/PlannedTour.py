@@ -131,6 +131,10 @@ def get_planned_tour_by_id(tour_id: int) -> PlannedTour | None:
     )
 
 
+def get_planned_tour_by_share_code(shareCode: str) -> PlannedTour | None:
+    return PlannedTour.query.filter(PlannedTour.share_code == shareCode).first()
+
+
 def get_new_planned_tour_ids() -> list[int]:
     if not current_user.is_authenticated:
         return []

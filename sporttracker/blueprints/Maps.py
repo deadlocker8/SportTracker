@@ -1,5 +1,4 @@
 import logging
-import os
 from datetime import datetime
 
 from flask import Blueprint, render_template, abort, url_for, session, redirect, request
@@ -7,12 +6,20 @@ from flask_login import login_required, current_user
 from sqlalchemy import func, extract, or_
 
 from sporttracker.blueprints.PlannedTours import PlannedTourModel
+from sporttracker.blueprints.Tracks import TrackModel
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.PlannedTour import get_planned_tour_by_id, PlannedTour
-from sporttracker.logic.model.Track import Track, get_available_years, get_track_by_id
-from sporttracker.logic.model.User import get_user_by_id
+from sporttracker.logic.model.PlannedTour import (
+    get_planned_tour_by_id,
+    PlannedTour,
+    get_planned_tour_by_share_code,
+)
+from sporttracker.logic.model.Track import (
+    Track,
+    get_available_years,
+    get_track_by_id,
+    get_track_by_share_code,
+)
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -81,19 +88,24 @@ def construct_blueprint(uploadFolder: str):
         if track is None:
             abort(404)
 
-        if track.gpxFileName is None:
-            gpxMetaInfo = None
-        else:
-            gpxTrackPath = os.path.join(uploadFolder, str(track.gpxFileName))
-            gpxService = GpxService(gpxTrackPath)
-            gpxMetaInfo = gpxService.get_meta_info()
+        return render_template(
+            'maps/mapSingleTrack.jinja2',
+            track=TrackModel.create_from_track(track, uploadFolder),
+            gpxUrl=url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id),
+        )
+
+    @maps.route('/map/shared/<string:shareCode>')
+    @login_required
+    def showSharedSingleTrack(shareCode: str):
+        track = get_track_by_share_code(shareCode)
+
+        if track is None:
+            abort(404)
 
         return render_template(
             'maps/mapSingleTrack.jinja2',
-            track=track,
-            gpxMetaInfo=gpxMetaInfo,
-            ownerName=get_user_by_id(track.user_id).username,
-            gpxUrl=url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id),
+            track=TrackModel.create_from_track(track, uploadFolder),
+            gpxUrl=url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track.id),
         )
 
     @maps.route('/map/plannedTour/<int:tour_id>')
@@ -108,6 +120,20 @@ def construct_blueprint(uploadFolder: str):
             'maps/mapPlannedTour.jinja2',
             plannedTour=PlannedTourModel.create_from_tour(plannedTour, uploadFolder),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id),
+        )
+
+    @maps.route('/map/plannedTour/shared/<string:shareCode>')
+    @login_required
+    def showSharedPlannedTour(shareCode: str):
+        plannedTour = get_planned_tour_by_share_code(shareCode)
+
+        if plannedTour is None:
+            abort(404)
+
+        return render_template(
+            'maps/mapPlannedTour.jinja2',
+            plannedTour=PlannedTourModel.create_from_tour(plannedTour, uploadFolder),
+            gpxUrl=url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=plannedTour.id),
         )
 
     @maps.route('/toggleYears', methods=['POST'])

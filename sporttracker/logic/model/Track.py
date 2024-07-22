@@ -232,3 +232,7 @@ def get_distance_between_dates(
 
 def get_track_by_id(track_id: int) -> Track | None:
     return Track.query.filter(Track.user_id == current_user.id).filter(Track.id == track_id).first()
+
+
+def get_track_by_share_code(shareCode: str) -> Track | None:
+    return Track.query.filter(Track.share_code == shareCode).first()
