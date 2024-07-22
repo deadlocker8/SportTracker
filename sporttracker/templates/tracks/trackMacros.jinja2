@@ -199,7 +199,7 @@
         </div>
 
         {% for entry in monthModel.entries %}
-            {% if entry.__class__.__name__ == 'Track' %}
+            {% if entry.__class__.__name__ == 'TrackModel' %}
                 {{ render_track_card(entry) }}
             {% elif entry.__class__.__name__ == 'MaintenanceEvent' %}
                 {{ render_maintenance_event_card(entry) }}

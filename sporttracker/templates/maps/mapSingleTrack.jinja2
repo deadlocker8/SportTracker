@@ -132,16 +132,16 @@
                         {% endcall %}
 
                         {% call mapMacros.meta_info_item('vertical_align_bottom', track.type.text_color, 'Min Height') %}
-                            {% if gpxMetaInfo is not none %}
-                                {{ (gpxMetaInfo.elevationExtremes.minimum) }} m
+                            {% if track.gpxMetaInfo is not none %}
+                                {{ (track.gpxMetaInfo.elevationExtremes.minimum) }} m
                             {% else %}
                                 -
                             {% endif %}
                         {% endcall %}
 
                         {% call mapMacros.meta_info_item('vertical_align_top', track.type.text_color, 'Max Height') %}
-                            {% if gpxMetaInfo is not none %}
-                                {{ (gpxMetaInfo.elevationExtremes.maximum) }} m
+                            {% if track.gpxMetaInfo is not none %}
+                                {{ (track.gpxMetaInfo.elevationExtremes.maximum) }} m
                             {% else %}
                                 -
                             {% endif %}

@@ -14,6 +14,8 @@ from pydantic import BaseModel, ConfigDict, field_validator
 
 from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack
 from sporttracker.logic import Constants
+from sporttracker.logic.DateTimeAccess import DateTimeAccess
+from sporttracker.logic.GpxService import GpxMetaInfo, GpxService
 from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
     QuickFilterState,
@@ -36,6 +38,7 @@ from sporttracker.logic.model.Track import (
     get_available_years,
     get_track_by_id,
 )
+from sporttracker.logic.model.User import get_user_by_id
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -44,8 +47,53 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 @dataclass
 class MonthModel:
     name: str
-    entries: list[Track | MaintenanceEvent]
+    entries: list[TrackModel | MaintenanceEvent]
     goals: list[MonthGoalSummary]
+
+
+@dataclass
+class TrackModel(DateTimeAccess):
+    id: int
+    name: str
+    type: str
+    startTime: datetime
+    distance: int
+    duration: int
+    averageHeartRate: int | None
+    elevationSum: int | None
+    gpxFileName: str | None
+    gpxMetaInfo: GpxMetaInfo | None
+    participants: list[str]
+    shareCode: str | None
+    ownerName: str
+
+    @staticmethod
+    def create_from_track(track: Track, uploadFolder: str) -> TrackModel:
+        if track.gpxFileName is None:
+            gpxMetaInfo = None
+        else:
+            gpxTrackPath = os.path.join(uploadFolder, str(track.gpxFileName))
+            gpxService = GpxService(gpxTrackPath)
+            gpxMetaInfo = gpxService.get_meta_info()
+
+        return TrackModel(
+            id=track.id,
+            name=track.name,  # type: ignore[arg-type]
+            type=track.type,
+            startTime=track.startTime,  # type: ignore[arg-type]
+            distance=track.distance,
+            duration=track.duration,
+            averageHeartRate=track.averageHeartRate,
+            elevationSum=track.elevationSum,
+            gpxFileName=track.gpxFileName,
+            gpxMetaInfo=gpxMetaInfo,
+            participants=[str(item.id) for item in track.participants],
+            shareCode=track.share_code,
+            ownerName=get_user_by_id(track.user_id).username,
+        )
+
+    def get_date_time(self) -> datetime:
+        return self.startTime
 
 
 class TrackFormModel(BaseModel):
@@ -97,10 +145,10 @@ def construct_blueprint(uploadFolder: str):
 
         quickFilterState = get_quick_filter_state_from_session()
 
-        monthRightSide = __get_month_model(monthRightSideDate, quickFilterState)
+        monthRightSide = __get_month_model(monthRightSideDate, quickFilterState, uploadFolder)
 
         monthLeftSideDate = monthRightSideDate - relativedelta(months=1)
-        monthLeftSide = __get_month_model(monthLeftSideDate, quickFilterState)
+        monthLeftSide = __get_month_model(monthLeftSideDate, quickFilterState, uploadFolder)
 
         nextMonthDate = monthRightSideDate + relativedelta(months=1)
 
@@ -199,7 +247,7 @@ def construct_blueprint(uploadFolder: str):
             elevationSum=track.elevationSum,
             gpxFileName=track.gpxFileName,
             participants=[str(item.id) for item in track.participants],
-            shareCode=track.shareCode,
+            shareCode=track.share_code,
             **track.custom_fields,
         )
 
@@ -283,18 +331,24 @@ def construct_blueprint(uploadFolder: str):
     return tracks
 
 
-def __get_month_model(monthDate: date, quickFilterState: QuickFilterState) -> MonthModel:
+def __get_month_model(
+    monthDate: date, quickFilterState: QuickFilterState, uploadFolder: str
+) -> MonthModel:
     tracks = get_tracks_by_year_and_month_by_type(
         monthDate.year,
         monthDate.month,
         quickFilterState.get_active_types(),
     )
 
+    trackModels = []
+    for track in tracks:
+        trackModels.append(TrackModel.create_from_track(track, uploadFolder))
+
     maintenanceEvents = get_maintenance_events_by_year_and_month_by_type(
         monthDate.year, monthDate.month, quickFilterState.get_active_types()
     )
 
-    entries = tracks + maintenanceEvents
+    entries = trackModels + maintenanceEvents
     entries.sort(key=lambda entry: entry.get_date_time(), reverse=True)
 
     return MonthModel(

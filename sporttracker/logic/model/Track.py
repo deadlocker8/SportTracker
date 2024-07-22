@@ -8,7 +8,6 @@ from sqlalchemy import Integer, String, DateTime, extract, func
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from sporttracker.logic.DateTimeAccess import DateTimeAccess
 from sporttracker.logic.model.Participant import Participant, track_participant_association
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
@@ -89,7 +88,7 @@ class TrackType(enum.Enum):
         return now.month == 4 and now.day == 1
 
 
-class Track(db.Model, DateTimeAccess):  # type: ignore[name-defined]
+class Track(db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     type = db.Column(db.Enum(TrackType))
     name: Mapped[String] = mapped_column(String, nullable=False)
@@ -103,9 +102,6 @@ class Track(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     custom_fields = db.Column(JSON)
     participants: Mapped[list[Participant]] = relationship(secondary=track_participant_association)
     share_code: Mapped[str] = mapped_column(String, nullable=True)
-
-    def get_date_time(self) -> datetime:
-        return self.startTime  # type: ignore[return-value]
 
     def __repr__(self):
         return (
