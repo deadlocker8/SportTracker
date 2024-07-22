@@ -102,6 +102,7 @@ class Track(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     custom_fields = db.Column(JSON)
     participants: Mapped[list[Participant]] = relationship(secondary=track_participant_association)
+    share_code: Mapped[str] = mapped_column(String, nullable=True)
 
     def get_date_time(self) -> datetime:
         return self.startTime  # type: ignore[return-value]
@@ -120,7 +121,8 @@ class Track(db.Model, DateTimeAccess):  # type: ignore[name-defined]
             f'gpxFileName: {self.gpxFileName}, '
             f'custom_fields: {self.custom_fields}, '
             f'participants: {self.participants}, '
-            f'user_id: {self.user_id})'
+            f'user_id: {self.user_id}, '
+            f'share_code: {self.share_code})'
         )
 
 

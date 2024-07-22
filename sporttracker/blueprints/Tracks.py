@@ -61,6 +61,7 @@ class TrackFormModel(BaseModel):
     elevationSum: int | None = None
     gpxFileName: str | None = None
     participants: list[str] | str | None = None
+    shareCode: str | None = None
 
     model_config = ConfigDict(
         extra='allow',
@@ -163,6 +164,7 @@ def construct_blueprint(uploadFolder: str):
             custom_fields=form.model_extra,
             user_id=current_user.id,
             participants=participants,
+            share_code=form.shareCode,
         )
         LOGGER.debug(f'Saved new track: {track}')
         db.session.add(track)
@@ -197,6 +199,7 @@ def construct_blueprint(uploadFolder: str):
             elevationSum=track.elevationSum,
             gpxFileName=track.gpxFileName,
             participants=[str(item.id) for item in track.participants],
+            shareCode=track.shareCode,
             **track.custom_fields,
         )
 
@@ -232,6 +235,7 @@ def construct_blueprint(uploadFolder: str):
         track.elevationSum = form.elevationSum  # type: ignore[assignment]
         participantIds = [int(item) for item in request.form.getlist('participants')]
         track.participants = get_participants_by_ids(participantIds)
+        track.share_code = form.shareCode  # type: ignore[assignment]
 
         newGpxFileName = handleGpxTrackForTrack(request.files, uploadFolder)
         if track.gpxFileName is None:

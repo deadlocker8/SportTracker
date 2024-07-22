@@ -97,6 +97,7 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     arrival_method = db.Column(db.Enum(TravelType))
     departure_method = db.Column(db.Enum(TravelType))
     direction = db.Column(db.Enum(TravelDirection))
+    share_code: Mapped[str] = mapped_column(String, nullable=True)
 
     def __repr__(self):
         return (
@@ -112,7 +113,8 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
             f'shared_users: {[user.id for user in self.shared_users]}, '
             f'arrival_method: {self.arrival_method}, '
             f'departure_method: {self.departure_method}, '
-            f'direction: {self.direction})'
+            f'direction: {self.direction}, '
+            f'share_code: {self.share_code})'
         )
 
 

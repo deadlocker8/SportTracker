@@ -97,6 +97,7 @@ def construct_blueprint(version: dict, uploadFolder: str):
             user_id=current_user.id,
             participants=participants,
             custom_fields={} if form.customFields is None else form.customFields,
+            share_code=None,
         )
 
         LOGGER.debug(f'Saved new track of type {track.type} from api: {track}')

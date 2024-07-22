@@ -53,6 +53,7 @@ class PlannedTourModel:
     arrivalMethod: TravelType
     departureMethod: TravelType
     direction: TravelDirection
+    shareCode: str | None
 
 
 class PlannedTourFormModel(BaseModel):
@@ -62,6 +63,7 @@ class PlannedTourFormModel(BaseModel):
     departureMethod: str
     direction: str
     sharedUsers: list[str] | str | None = None
+    shareCode: str | None = None
 
 
 def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, Any]):
@@ -110,6 +112,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
                     arrivalMethod=tour.arrival_method,
                     departureMethod=tour.departure_method,
                     direction=tour.direction,
+                    shareCode=tour.share_code,
                 )
             )
 
@@ -151,6 +154,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
             arrival_method=TravelType(form.arrivalMethod),  # type: ignore[call-arg]
             departure_method=TravelType(form.departureMethod),  # type: ignore[call-arg]
             direction=TravelDirection(form.direction),  # type: ignore[call-arg]
+            share_code=form.shareCode,
         )
 
         LOGGER.debug(f'Saved new planned tour: {plannedTour}')
@@ -181,6 +185,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
             arrivalMethod=plannedTour.arrival_method,
             departureMethod=plannedTour.departure_method,
             direction=plannedTour.direction,
+            shareCode=plannedTour.share_code,
         )
 
         return render_template(
@@ -206,6 +211,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
         plannedTour.arrival_method = TravelType(form.arrivalMethod)  # type: ignore[call-arg]
         plannedTour.departure_method = TravelType(form.departureMethod)  # type: ignore[call-arg]
         plannedTour.direction = TravelDirection(form.direction)  # type: ignore[call-arg]
+        plannedTour.share_code = form.shareCode  # type: ignore[assignment]
 
         newGpxFileName = handleGpxTrackForPlannedTour(
             request.files, uploadFolder, gpxPreviewImageSettings

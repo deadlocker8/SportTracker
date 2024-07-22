@@ -188,6 +188,7 @@ class DummyDataGenerator:
                     elevationSum=elevationSum,
                     user_id=user.id,
                     custom_fields={},
+                    share_code=None,
                 )
 
                 if index in indexesWithGpx:

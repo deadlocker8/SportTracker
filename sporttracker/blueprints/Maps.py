@@ -125,6 +125,7 @@ def construct_blueprint(uploadFolder: str):
             arrivalMethod=plannedTour.arrival_method,
             departureMethod=plannedTour.departure_method,
             direction=plannedTour.direction,
+            shareCode=plannedTour.share_code,
         )
 
         return render_template(
