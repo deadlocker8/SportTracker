@@ -46,6 +46,7 @@ body {
 
 .calendar-cell {
     width: 1.7rem;
+    min-width: 1.7rem;
 }
 
 .btn-available-year {

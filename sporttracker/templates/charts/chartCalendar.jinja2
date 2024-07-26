@@ -29,8 +29,8 @@
                     </div>
                 </div>
 
-                <div class="d-flex flex-column">
-                    <div class="row mb-3">
+                <div class="d-flex flex-column overflow-x-auto">
+                    <div class="row mb-3 gx-0">
                         <div class="col col-2 fs-4 text-end"></div>
 
                         <div class="col col-10 d-flex flex-row align-center ps-5">
@@ -41,7 +41,7 @@
                     </div>
 
                     {% for month in calendarData['months'] %}
-                        <div class="row mb-3">
+                        <div class="row mb-3 gx-0">
                             <div class="col col-2 fs-4 text-end">{{ month['name'] }}</div>
 
                             <div class="col col-10 d-flex flex-row align-center ps-5">
