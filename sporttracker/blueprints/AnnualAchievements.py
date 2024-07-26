@@ -37,7 +37,7 @@ def construct_blueprint():
         return render_template(
             'annualAchievements.jinja2',
             achievements=__get_annual_achievements(year),
-            currentYear=year,
+            selectedYear=year,
             availableYears=get_available_years(),
         )
 

@@ -135,6 +135,7 @@ class SportTracker(FlaskBaseApp):
                 'travelDirections': [x for x in TravelDirection],
                 'newPlannedTourIds': get_new_planned_tour_ids(),
                 'updatedPlannedTourIds': get_updated_planned_tour_ids(),
+                'currentYear': datetime.now().year,
             }
 
         def format_decimal(value: int | float, decimals: int = 1) -> str:

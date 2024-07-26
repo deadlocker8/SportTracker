@@ -7,13 +7,13 @@
         {{ macros.header() }}
     </head>
     <body class="bg-dark text-light">
-        {{ macros.navbar('charts') }}
+        {{ macros.navbar('calendar') }}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center calendar-container">
                 <div class="row mb-3">
                     <div class="col col-12 mx-auto">
-                        {% call macros.headline(gettext('Calendar') + ' ' + currentYear | string) %}
+                        {% call macros.headline(gettext('Calendar') + ' ' + selectedYear | string) %}
                             <span class="material-icons fs-1">leaderboard</span>
                         {% endcall %}
                     </div>

@@ -1,6 +1,6 @@
 import calendar
 import logging
-from datetime import date, datetime
+from datetime import date
 from typing import Any
 
 import flask_babel
@@ -32,7 +32,7 @@ def construct_blueprint():
     @charts.route('/')
     @login_required
     def chartChooser():
-        return render_template('charts/chartChooser.jinja2', currentYear=datetime.now().year)
+        return render_template('charts/chartChooser.jinja2')
 
     @charts.route('/distancePerYear')
     @login_required
@@ -361,7 +361,7 @@ def construct_blueprint():
             'charts/chartCalendar.jinja2',
             calendarData=calendarData,
             availableYears=get_available_years(),
-            currentYear=year,
+            selectedYear=year,
         )
 
     def __get_number_of_tracks_per_day_by_type(

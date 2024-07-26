@@ -64,7 +64,7 @@
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle d-flex align-items-center {% if activeLink == 'charts' or activeLink == 'achievements' %}active {% endif %}" href="#" role="button" data-bs-toggle="dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center {% if activeLink == 'charts' or activeLink == 'achievements' or activeLink == 'annualAchievements' or activeLink == 'calendar' %}active {% endif %}" href="#" role="button" data-bs-toggle="dropdown">
                                     <span class="navbar-icon">
                                         <span class="material-icons fs-5">leaderboard</span>
                                     </span>&nbsp;{{ gettext('Analytics') }}
@@ -84,6 +84,14 @@
                                             <span class="navbar-icon">
                                                 <span class="material-icons fs-5">emoji_events</span>
                                             </span>&nbsp;{{ gettext('Achievements') }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center {% if activeLink == 'calendar' %}active {% endif %}"
+                                           href="{{ url_for('charts.chartCalendar', year=currentYear) }}">
+                                            <span class="navbar-icon">
+                                                <span class="material-icons fs-5">calendar_month</span>
+                                            </span>&nbsp;{{ gettext('Calendar') }}
                                         </a>
                                     </li>
                                     <li>
