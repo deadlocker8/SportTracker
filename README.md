@@ -19,6 +19,8 @@ Supported types of sports:
 
 You can fill in a lot of information for each training session. If the pre-defined inputs are not enough, it is possible to set custom fields for each type of sports.
 
+You can share your tracks via public links.
+
 ![](screenshots/tracks.png)
 
 ### Month goals
@@ -70,6 +72,9 @@ Save your planned tours for each sport type and view them on a map.
 
 
 ![](screenshots/planned_tours.jpg)
+
+Share planned tours with other SportTracker users or create public links.
+![](screenshots/shared_planned_tour.jpg)
 
 #### Enable GPX review Images
 
