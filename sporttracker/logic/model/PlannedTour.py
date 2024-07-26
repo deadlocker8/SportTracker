@@ -117,6 +117,9 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
             f'share_code: {self.share_code})'
         )
 
+    def get_download_name(self) -> str:
+        return ''.join([c if c.isalnum() else '_' for c in str(self.name)])
+
 
 def get_planned_tour_by_id(tour_id: int) -> PlannedTour | None:
     return (

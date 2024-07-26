@@ -95,7 +95,6 @@ def construct_blueprint(uploadFolder: str):
         )
 
     @maps.route('/map/shared/<string:shareCode>')
-    @login_required
     def showSharedSingleTrack(shareCode: str):
         track = get_track_by_share_code(shareCode)
 
@@ -105,7 +104,7 @@ def construct_blueprint(uploadFolder: str):
         return render_template(
             'maps/mapSingleTrack.jinja2',
             track=TrackModel.create_from_track(track, uploadFolder),
-            gpxUrl=url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track.id),
+            gpxUrl=url_for('gpxTracks.downloadGpxTrackBySharedTrack', shareCode=shareCode),
         )
 
     @maps.route('/map/plannedTour/<int:tour_id>')
@@ -123,7 +122,6 @@ def construct_blueprint(uploadFolder: str):
         )
 
     @maps.route('/map/plannedTour/shared/<string:shareCode>')
-    @login_required
     def showSharedPlannedTour(shareCode: str):
         plannedTour = get_planned_tour_by_share_code(shareCode)
 
@@ -133,7 +131,7 @@ def construct_blueprint(uploadFolder: str):
         return render_template(
             'maps/mapPlannedTour.jinja2',
             plannedTour=PlannedTourModel.create_from_tour(plannedTour, uploadFolder),
-            gpxUrl=url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=plannedTour.id),
+            gpxUrl=url_for('gpxTracks.downloadGpxTrackBySharedPlannedTour', shareCode=shareCode),
         )
 
     @maps.route('/toggleYears', methods=['POST'])

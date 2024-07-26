@@ -10,8 +10,11 @@ from werkzeug.datastructures.file_storage import FileStorage
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.model.PlannedTour import get_planned_tour_by_id
-from sporttracker.logic.model.Track import get_track_by_id
+from sporttracker.logic.model.PlannedTour import (
+    get_planned_tour_by_id,
+    get_planned_tour_by_share_code,
+)
+from sporttracker.logic.model.Track import get_track_by_id, get_track_by_share_code
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -34,6 +37,18 @@ def construct_blueprint(uploadFolder: str):
 
         abort(404)
 
+    @gpxTracks.route('/track/shared/<string:shareCode>')
+    def downloadGpxTrackBySharedTrack(shareCode: str):
+        track = get_track_by_share_code(shareCode)
+        if track is None:
+            abort(404)
+
+        response = __downloadGpxTrack(uploadFolder, track, str(track.id))
+        if response is not None:
+            return response
+
+        abort(404)
+
     @gpxTracks.route('/plannedTour/<int:tour_id>')
     @login_required
     def downloadGpxTrackByPlannedTourId(tour_id: int):
@@ -42,8 +57,20 @@ def construct_blueprint(uploadFolder: str):
         if plannedTour is None:
             abort(404)
 
-        downloadFileName = ''.join([c if c.isalnum() else '_' for c in str(plannedTour.name)])
-        response = __downloadGpxTrack(uploadFolder, plannedTour, downloadFileName)
+        response = __downloadGpxTrack(uploadFolder, plannedTour, plannedTour.get_download_name())
+        if response is not None:
+            return response
+
+        abort(404)
+
+    @gpxTracks.route('/plannedTour/shared/<string:shareCode>')
+    def downloadGpxTrackBySharedPlannedTour(shareCode: str):
+        plannedTour = get_planned_tour_by_share_code(shareCode)
+
+        if plannedTour is None:
+            abort(404)
+
+        response = __downloadGpxTrack(uploadFolder, plannedTour, plannedTour.get_download_name())
         if response is not None:
             return response
 
