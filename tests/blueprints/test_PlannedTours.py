@@ -175,7 +175,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
             'departure-method-3',
             'direction-3',
         )
-        selenium.find_element(By.CSS_SELECTOR, 'section form button[type="submit"]').click()
+        self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -234,7 +234,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
         # check other user can edit planned tour
         self.__fill_form(selenium, TrackType.BIKING, 'Mega Tour', None, None, None)
-        selenium.find_element(By.CSS_SELECTOR, 'section form button[type="submit"]').click()
+        self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
