@@ -28,8 +28,6 @@ def upgrade():
             sa.Column('share_code', sa.String(), nullable=True, default='NONE'),
         )
 
-    op.execute("UPDATE planned_tour SET share_code='NONE' WHERE share_code IS NULL;")
-
     columns = inspector.get_columns('track')
     columnNames = [column['name'] for column in columns]
 
@@ -38,8 +36,6 @@ def upgrade():
             'track',
             sa.Column('share_code', sa.String(), nullable=True, default='NONE'),
         )
-
-    op.execute("UPDATE track SET share_code='NONE' WHERE share_code IS NULL;")
 
 
 def downgrade():
