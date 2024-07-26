@@ -46,12 +46,12 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
     @staticmethod
     def __fill_form(
-            selenium,
-            trackType,
-            name,
-            arrivalMethod: str | None,
-            departureMethod: str | None,
-            direction: str | None,
+        selenium,
+        trackType,
+        name,
+        arrivalMethod: str | None,
+        departureMethod: str | None,
+        direction: str | None,
     ):
         select = Select(selenium.find_element(By.ID, 'planned-tour-type'))
         select.select_by_visible_text(trackType.name.capitalize())
@@ -158,8 +158,8 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.__open_edit_form(selenium)
 
         assert (
-                selenium.find_element(By.ID, 'planned-tour-name').get_attribute('value')
-                == 'Awesome Tour'
+            selenium.find_element(By.ID, 'planned-tour-name').get_attribute('value')
+            == 'Awesome Tour'
         )
 
         assert selenium.find_element(By.ID, 'arrival-method-2').is_selected()
@@ -263,7 +263,9 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', None, None, None)
 
         selenium.find_element(By.ID, 'buttonCreateSharedLink').click()
-        WebDriverWait(selenium, 5).until(expected_conditions.visibility_of_element_located((By.ID, 'sharedLink')))
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
+        )
         sharedLink = selenium.find_element(By.ID, 'sharedLink').text
         self.__click_submit_button(selenium)
 
@@ -294,7 +296,9 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', None, None, None)
 
         selenium.find_element(By.ID, 'buttonCreateSharedLink').click()
-        WebDriverWait(selenium, 5).until(expected_conditions.visibility_of_element_located((By.ID, 'sharedLink')))
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
+        )
         sharedLink = selenium.find_element(By.ID, 'sharedLink').text
         self.__click_submit_button(selenium)
         WebDriverWait(selenium, 5).until(
@@ -309,10 +313,14 @@ class TestPlannedTours(SeleniumTestBaseClass):
         selenium.execute_script('arguments[0].scrollIntoView();', buttonSharedLinkDeleteModal)
         time.sleep(1)
         buttonSharedLinkDeleteModal.click()
-        WebDriverWait(selenium, 5).until(expected_conditions.element_to_be_clickable((By.ID, 'buttonSharedLinkDelete')))
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.element_to_be_clickable((By.ID, 'buttonSharedLinkDelete'))
+        )
         time.sleep(1)
         selenium.find_element(By.ID, 'buttonSharedLinkDelete').click()
-        WebDriverWait(selenium, 5).until(expected_conditions.invisibility_of_element_located((By.ID, 'sharedLink')))
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.invisibility_of_element_located((By.ID, 'sharedLink'))
+        )
         self.__click_submit_button(selenium)
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -324,7 +332,5 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.logout(selenium)
         selenium.get(sharedLink)
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.ID, 'errorIcon'), 'error'
-            )
+            expected_conditions.text_to_be_present_in_element((By.ID, 'errorIcon'), 'error')
         )

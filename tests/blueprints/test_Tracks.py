@@ -51,16 +51,16 @@ class TestTracks(SeleniumTestBaseClass):
 
     @staticmethod
     def __fill_form(
-            selenium,
-            name,
-            date,
-            startTime,
-            distance,
-            hours,
-            minutes,
-            seconds,
-            averageHeartRate,
-            elevationSum,
+        selenium,
+        name,
+        date,
+        startTime,
+        distance,
+        hours,
+        minutes,
+        seconds,
+        averageHeartRate,
+        elevationSum,
     ):
         selenium.find_element(By.ID, 'track-name').send_keys(name)
         selenium.find_element(By.ID, 'track-date').send_keys(date)
@@ -150,7 +150,7 @@ class TestTracks(SeleniumTestBaseClass):
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
 
     def test_add_track_non_mandatory_custom_field_not_filled(
-            self, server, selenium: WebDriver, app
+        self, server, selenium: WebDriver, app
     ):
         user = User.query.filter(User.username == TEST_USERNAME).first()
 
@@ -308,7 +308,9 @@ class TestTracks(SeleniumTestBaseClass):
         )
 
         selenium.find_element(By.ID, 'buttonCreateSharedLink').click()
-        WebDriverWait(selenium, 5).until(expected_conditions.visibility_of_element_located((By.ID, 'sharedLink')))
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
+        )
         sharedLink = selenium.find_element(By.ID, 'sharedLink').text
         self.__click_submit_button(selenium)
 
@@ -341,7 +343,9 @@ class TestTracks(SeleniumTestBaseClass):
         )
 
         selenium.find_element(By.ID, 'buttonCreateSharedLink').click()
-        WebDriverWait(selenium, 5).until(expected_conditions.visibility_of_element_located((By.ID, 'sharedLink')))
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
+        )
         sharedLink = selenium.find_element(By.ID, 'sharedLink').text
         self.__click_submit_button(selenium)
 
@@ -357,10 +361,14 @@ class TestTracks(SeleniumTestBaseClass):
         selenium.execute_script('arguments[0].scrollIntoView();', buttonSharedLinkDeleteModal)
         time.sleep(1)
         buttonSharedLinkDeleteModal.click()
-        WebDriverWait(selenium, 5).until(expected_conditions.element_to_be_clickable((By.ID, 'buttonSharedLinkDelete')))
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.element_to_be_clickable((By.ID, 'buttonSharedLinkDelete'))
+        )
         time.sleep(1)
         selenium.find_element(By.ID, 'buttonSharedLinkDelete').click()
-        WebDriverWait(selenium, 5).until(expected_conditions.invisibility_of_element_located((By.ID, 'sharedLink')))
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.invisibility_of_element_located((By.ID, 'sharedLink'))
+        )
         self.__click_submit_button(selenium)
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -372,7 +380,5 @@ class TestTracks(SeleniumTestBaseClass):
         self.logout(selenium)
         selenium.get(sharedLink)
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.ID, 'errorIcon'), 'error'
-            )
+            expected_conditions.text_to_be_present_in_element((By.ID, 'errorIcon'), 'error')
         )
