@@ -59,5 +59,19 @@
 {%- endmacro %}
 
 
-
+{% macro gpxDownloadButton(title, gpxUrl) -%}
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <i class="fa-solid fa-lightbulb fa-fw fs-5 me-2"></i>
+            <div class="fs-5 text-truncate">
+                {{ title }}
+            </div>
+        </div>
+        <a href="{{ gpxUrl }}"
+           class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
+           target="_blank">
+            <span class="material-icons fs-4">download</span> <span>GPX</span>
+        </a>
+    </div>
+{%- endmacro %}
 
