@@ -64,7 +64,7 @@ class TestTracks(SeleniumTestBaseClass):
         selenium.find_element(By.ID, 'track-elevationSum').send_keys(elevationSum)
 
     def __click_submit_button(self, selenium):
-        button = selenium.find_element(By.CSS_SELECTOR, 'section form button')
+        button = selenium.find_element(By.ID, 'buttonSaveTrack')
         selenium.execute_script('arguments[0].scrollIntoView();', button)
         time.sleep(1)
         button.click()
@@ -73,7 +73,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
-        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+        self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -87,7 +87,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, '', '', '', '', '', '', '', '', '')
-        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+        self.__click_submit_button(selenium)
 
         assert selenium.current_url.endswith('/tracks/add/BIKING')
 
@@ -237,7 +237,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.__fill_form(
             selenium, 'My Biking Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
         )
-        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+        self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -249,7 +249,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.__fill_form(
             selenium, 'My Running Track', '2023-02-01', '16:30', 5.5, 0, 20, 12, 188, 15
         )
-        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+        self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(

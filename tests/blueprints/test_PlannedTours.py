@@ -71,7 +71,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
             selenium.find_element(By.XPATH, f'//label[@for="{direction}"]').click()
 
     def __click_submit_button(self, selenium):
-        button = selenium.find_element(By.CSS_SELECTOR, 'section form button')
+        button = selenium.find_element(By.ID, 'buttonSavePlannedTour')
         selenium.execute_script('arguments[0].scrollIntoView();', button)
         time.sleep(1)
         button.click()
@@ -87,7 +87,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
             'departure-method-2',
             'direction-2',
         )
-        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+        self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -101,7 +101,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, TrackType.BIKING, '', None, None, None)
-        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+        self.__click_submit_button(selenium)
 
         assert selenium.current_url.endswith('/plannedTours/add')
 
@@ -109,7 +109,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', None, None, None)
-        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+        self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -119,7 +119,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
         self.__open_form(selenium)
         self.__fill_form(selenium, TrackType.RUNNING, 'Run away', None, None, None)
-        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+        self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -148,7 +148,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
             'departure-method-2',
             'direction-2',
         )
-        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+        self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -193,7 +193,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
         selenium.find_element(By.XPATH, '//label[@for="sharedUser-3"]').click()
 
-        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+        self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
