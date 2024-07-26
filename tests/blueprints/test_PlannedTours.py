@@ -13,7 +13,6 @@ from sporttracker.logic.model.User import create_user, Language
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
 
-
 TEST_USERNAME_2 = 'test_user_2'
 TEST_PASSWORD_2 = 'abcdef'
 
@@ -47,12 +46,12 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
     @staticmethod
     def __fill_form(
-        selenium,
-        trackType,
-        name,
-        arrivalMethod: str | None,
-        departureMethod: str | None,
-        direction: str | None,
+            selenium,
+            trackType,
+            name,
+            arrivalMethod: str | None,
+            departureMethod: str | None,
+            direction: str | None,
     ):
         select = Select(selenium.find_element(By.ID, 'planned-tour-type'))
         select.select_by_visible_text(trackType.name.capitalize())
@@ -159,8 +158,8 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.__open_edit_form(selenium)
 
         assert (
-            selenium.find_element(By.ID, 'planned-tour-name').get_attribute('value')
-            == 'Awesome Tour'
+                selenium.find_element(By.ID, 'planned-tour-name').get_attribute('value')
+                == 'Awesome Tour'
         )
 
         assert selenium.find_element(By.ID, 'arrival-method-2').is_selected()
@@ -256,3 +255,76 @@ class TestPlannedTours(SeleniumTestBaseClass):
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
         assert len(cards) == 1
         assert cards[0].find_element(By.XPATH, '//span[contains(text(), "updated")]')
+
+    def test_new_tour_share_via_link(self, server, selenium: WebDriver):
+        self.login(selenium)
+        self.__open_form(selenium)
+
+        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', None, None, None)
+
+        selenium.find_element(By.ID, 'buttonCreateSharedLink').click()
+        WebDriverWait(selenium, 5).until(expected_conditions.visibility_of_element_located((By.ID, 'sharedLink')))
+        sharedLink = selenium.find_element(By.ID, 'sharedLink').text
+        self.__click_submit_button(selenium)
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
+        )
+
+        cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
+        assert len(cards) == 1
+        # check share icon is displayed
+        assert cards[0].find_element(By.XPATH, '//div[contains(text(), "shared")]')
+
+        # check shared link can be viewed without login
+        self.logout(selenium)
+        selenium.get(sharedLink)
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'planned-tour-name'), 'Awesome Tour'
+            )
+        )
+
+    def test_edit_tour_remove_shared_link(self, server, selenium: WebDriver):
+        self.login(selenium)
+        self.__open_form(selenium)
+
+        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', None, None, None)
+
+        selenium.find_element(By.ID, 'buttonCreateSharedLink').click()
+        WebDriverWait(selenium, 5).until(expected_conditions.visibility_of_element_located((By.ID, 'sharedLink')))
+        sharedLink = selenium.find_element(By.ID, 'sharedLink').text
+        self.__click_submit_button(selenium)
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
+        )
+
+        self.__open_edit_form(selenium)
+
+        buttonSharedLinkDeleteModal = selenium.find_element(By.ID, 'buttonSharedLinkDeleteModal')
+        selenium.execute_script('arguments[0].scrollIntoView();', buttonSharedLinkDeleteModal)
+        time.sleep(1)
+        buttonSharedLinkDeleteModal.click()
+        WebDriverWait(selenium, 5).until(expected_conditions.element_to_be_clickable((By.ID, 'buttonSharedLinkDelete')))
+        time.sleep(1)
+        selenium.find_element(By.ID, 'buttonSharedLinkDelete').click()
+        WebDriverWait(selenium, 5).until(expected_conditions.invisibility_of_element_located((By.ID, 'sharedLink')))
+        self.__click_submit_button(selenium)
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
+        )
+
+        # check shared link can no longer bew viewed
+        self.logout(selenium)
+        selenium.get(sharedLink)
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.ID, 'errorIcon'), 'error'
+            )
+        )
