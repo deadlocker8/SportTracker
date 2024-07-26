@@ -1,5 +1,8 @@
+# 1.26.0
+- add: tracks and planned tours can now be shared via public links
+
 # 1.25.0
-- maintenance events: show distance since last event with same description
+- add: maintenance events: show distance since last event with same description
 
 # 1.24.0
 - add: map: add toggle button to switch between tracks and planned tours
