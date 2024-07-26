@@ -214,7 +214,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
         plannedTour.arrival_method = TravelType(form.arrivalMethod)  # type: ignore[call-arg]
         plannedTour.departure_method = TravelType(form.departureMethod)  # type: ignore[call-arg]
         plannedTour.direction = TravelDirection(form.direction)  # type: ignore[call-arg]
-        plannedTour.share_code = form.shareCode  # type: ignore[assignment]
+        plannedTour.share_code = form.shareCode if form.shareCode else None  # type: ignore[assignment]
 
         newGpxFileName = handleGpxTrackForPlannedTour(
             request.files, uploadFolder, gpxPreviewImageSettings
