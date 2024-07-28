@@ -448,12 +448,12 @@
         <div class="input-field-margin">
             <div class="d-flex flex-column flex-md-row mb-3 {% if not hasShareCode %}hidden{% endif %}" id="sharedLinkControlsEnabled">
                 {% if hasShareCode %}
-                    <a href="{{ url_for(mapUrl, shareCode=item.shareCode, _external=True) }}" class="btn btn-sm btn-secondary" id="sharedLink">{{ url_for(mapUrl, shareCode=item.shareCode, _external=True) }}</a>
+                    <a href="{{ url_for(mapUrl, shareCode=item.shareCode, _external=True) }}" class="btn btn-sm btn-secondary text-break" id="sharedLink">{{ url_for(mapUrl, shareCode=item.shareCode, _external=True) }}</a>
                 {% else %}
-                    <a class="btn btn-sm btn-secondary" id="sharedLink"></a>
+                    <a class="btn btn-sm btn-secondary text-break" id="sharedLink"></a>
                 {% endif %}
                 <div id="sharedLinkButtons" class="d-flex mt-3 mt-md-0">
-                    <a class="btn btn-primary btn-sm ms-3 d-flex align-items-center" id="buttonCopySharedLink" data-bs-toggle="tooltip" data-bs-title="{{ gettext('Copied') }}">
+                    <a class="btn btn-primary btn-sm ms-0 ms-md-3 d-flex align-items-center" id="buttonCopySharedLink" data-bs-toggle="tooltip" data-bs-title="{{ gettext('Copied') }}">
                         <span class="material-icons fs-4">content_copy</span>
                     </a>
 

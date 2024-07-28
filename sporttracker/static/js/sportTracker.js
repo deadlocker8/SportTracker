@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function()
 
                     document.getElementsByName('shareCode')[0].value = response.shareCode;
                     document.getElementById('sharedLink').href = response.url;
-                    document.getElementById('sharedLink').innerText =response.url;
+                    document.getElementById('sharedLink').innerText = response.url;
                     document.getElementById('sharedLinkControlsEnabled').classList.toggle('hidden', false);
                     document.getElementById('buttonCreateSharedLink').classList.toggle('hidden', true);
                 }
