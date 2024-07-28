@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         {% if track.shareCode and track.ownerName != current_user.username %}
             <title>SportTracker - {{ gettext('Shared Track') }}</title>
+            <meta name="description" content="{{ track.ownerName|capitalize }} is sharing a track with you!">
         {% else %}
             <title>SportTracker - {{ gettext('Track') }}</title>
         {% endif %}
