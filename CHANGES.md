@@ -1,3 +1,6 @@
+# 1.26.1
+- fix: annual statistics: round average number of tracks
+
 # 1.26.0
 - add: tracks and planned tours can now be shared via public links
 - add: moved calendar chart from chart overview to navbar menu entry "analytics"

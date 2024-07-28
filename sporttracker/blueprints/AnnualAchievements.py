@@ -147,11 +147,11 @@ def construct_blueprint():
             totalTrackCountAllYearData = AllYearData(
                 year_names=yearNames,
                 values=values,
-                labels=[str(x) for x in values],
-                min=str(min(values)) if values else '-',
-                max=str(max(values)) if values else '-',
-                sum=str(sum(values)) if values else '-',
-                average=str(mean(values)) if values else '-',
+                labels=[__format_count(x) for x in values],
+                min=__format_count(min(values)) if values else '-',
+                max=__format_count(max(values)) if values else '-',
+                sum=__format_count(sum(values)) if values else '-',
+                average=__format_count(mean(values)) if values else '-',
             )
 
             achievementList.append(
@@ -273,3 +273,7 @@ def __format_duration(duration: int | float) -> str:
 
 def __format_speed(speed: float) -> str:
     return '{speed} km/h'.format(speed=Helpers.format_decimal(speed, decimals=2))
+
+
+def __format_count(count: float) -> str:
+    return f'{int(count)}'
