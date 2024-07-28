@@ -3,7 +3,11 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {{ gettext('Map') }}</title>
+        {% if plannedTour.shareCode and plannedTour.ownerName != current_user.username%}
+            <title>SportTracker - {{ gettext('Shared Planned Tour') }}</title>
+        {% else %}
+            <title>SportTracker - {{ gettext('Planned Tour') }}</title>
+        {% endif %}
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
         <link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>

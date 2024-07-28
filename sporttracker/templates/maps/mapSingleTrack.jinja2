@@ -3,7 +3,11 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {{ gettext('Map') }}</title>
+        {% if track.shareCode and track.ownerName != current_user.username %}
+            <title>SportTracker - {{ gettext('Shared Track') }}</title>
+        {% else %}
+            <title>SportTracker - {{ gettext('Track') }}</title>
+        {% endif %}
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
         <link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
