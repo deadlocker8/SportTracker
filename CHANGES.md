@@ -1,6 +1,7 @@
 # 1.26.1
 - fix: annual statistics: round average number of tracks
 - fix: line break long shared links on mobile devices
+- fix: hide navbar toggler on mobile devices if not logged in
 
 # 1.26.0
 - add: tracks and planned tours can now be shared via public links
