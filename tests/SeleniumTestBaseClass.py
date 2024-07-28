@@ -23,7 +23,7 @@ class SeleniumTestBaseClass(ABC):
 
         selenium.find_element(By.ID, 'username').send_keys(username)
         selenium.find_element(By.ID, 'password').send_keys(password)
-        selenium.find_elements(By.TAG_NAME, 'button')[1].click()
+        selenium.find_elements(By.TAG_NAME, 'button')[0].click()
 
         now = datetime.now()
         assert selenium.current_url.endswith(f'/tracks/{now.year}/{now.month}')
