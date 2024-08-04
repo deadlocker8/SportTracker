@@ -301,7 +301,7 @@ class TestTracks(SeleniumTestBaseClass):
             selenium, 'My Biking Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
         )
 
-        selenium.find_element(By.ID, 'buttonCreateSharedLink').click()
+        self.click_button_by_id(selenium, 'buttonCreateSharedLink')
         WebDriverWait(selenium, 5).until(
             expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
         )
@@ -336,7 +336,7 @@ class TestTracks(SeleniumTestBaseClass):
             selenium, 'My Biking Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
         )
 
-        selenium.find_element(By.ID, 'buttonCreateSharedLink').click()
+        self.click_button_by_id(selenium, 'buttonCreateSharedLink')
         WebDriverWait(selenium, 5).until(
             expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
         )
