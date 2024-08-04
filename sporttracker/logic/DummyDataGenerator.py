@@ -49,6 +49,8 @@ class DummyDataGenerator:
 
             self.__generate_demo_custom_field(user)
 
+            plannedTour = self.__generate_demo_planned_tours(user, user2)
+
             self.__generate_demo_tracks(
                 user=user,
                 trackType=TrackType.BIKING,
@@ -56,6 +58,8 @@ class DummyDataGenerator:
                 numberOfTracksWithGpx=2,
                 numberOfTracksWithParticipants=2,
                 numberOfTracksWithSharedLink=1,
+                numberOfTracksWithLinkedPlannedTour=1,
+                plannedTour=plannedTour,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_BIKING,
                 distanceMin=15.0,
                 distanceMax=50.0,
@@ -68,6 +72,8 @@ class DummyDataGenerator:
                 numberOfTracksWithGpx=2,
                 numberOfTracksWithParticipants=0,
                 numberOfTracksWithSharedLink=1,
+                numberOfTracksWithLinkedPlannedTour=0,
+                plannedTour=plannedTour,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_RUNNING,
                 distanceMin=2.0,
                 distanceMax=6.0,
@@ -80,6 +86,8 @@ class DummyDataGenerator:
                 numberOfTracksWithGpx=1,
                 numberOfTracksWithParticipants=1,
                 numberOfTracksWithSharedLink=1,
+                numberOfTracksWithLinkedPlannedTour=0,
+                plannedTour=plannedTour,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_HIKING,
                 distanceMin=6.0,
                 distanceMax=18.0,
@@ -88,8 +96,6 @@ class DummyDataGenerator:
             self.__generate_demo_month_goals(user)
 
             self.__generate_demo_maintenance_events(user)
-
-            self.__generate_demo_planned_tours(user, user2)
 
     @staticmethod
     def __generate_demo_user(name: str, password: str) -> User:
@@ -158,6 +164,8 @@ class DummyDataGenerator:
         numberOfTracksWithGpx: int,
         numberOfTracksWithParticipants: int,
         numberOfTracksWithSharedLink: int,
+        numberOfTracksWithLinkedPlannedTour: int,
+        plannedTour: PlannedTour,
         averageSpeed: int,
         distanceMin: float,
         distanceMax: float,
@@ -177,6 +185,9 @@ class DummyDataGenerator:
             )
             indexesWithSharedLink = random.choices(
                 range(numberOfTracksPerMonth), k=numberOfTracksWithSharedLink
+            )
+            indexesWithLinkedPlannedTour = random.choices(
+                range(numberOfTracksPerMonth), k=numberOfTracksWithLinkedPlannedTour
             )
 
             for index in range(numberOfTracksPerMonth):
@@ -207,6 +218,9 @@ class DummyDataGenerator:
 
                 if index in indexesWithSharedLink:
                     track.share_code = uuid.uuid4().hex
+
+                if index in indexesWithLinkedPlannedTour:
+                    track.plannedTour = plannedTour
 
                 db.session.add(track)
 
@@ -267,8 +281,10 @@ class DummyDataGenerator:
         )
         db.session.commit()
 
-    def __generate_demo_planned_tours(self, user, user2) -> None:
+    def __generate_demo_planned_tours(self, user, user2) -> PlannedTour:
         fake = Faker()
+
+        lastPlannedTour = None
 
         for index in range(2):
             fakeTime = fake.date_time_between_dates(
@@ -299,5 +315,8 @@ class DummyDataGenerator:
 
             self.__append_gpx(plannedTour)
             db.session.add(plannedTour)
+            lastPlannedTour = plannedTour
 
         db.session.commit()
+
+        return lastPlannedTour  # type: ignore[return-value]
