@@ -14,7 +14,8 @@ from sporttracker.logic.model.Achievement import (
     AnnualAchievementDifferenceType,
     AllYearData,
 )
-from sporttracker.logic.model.Track import TrackType, get_available_years
+from sporttracker.logic.model.Track import get_available_years
+from sporttracker.logic.model.TrackType import TrackType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

@@ -6,7 +6,8 @@ from flask_login import current_user
 from sqlalchemy import asc, func, extract
 
 from sporttracker.logic.model.MonthGoal import get_goal_summaries_by_year_and_month_and_types
-from sporttracker.logic.model.Track import get_distance_per_month_by_type, TrackType, Track
+from sporttracker.logic.model.Track import get_distance_per_month_by_type, Track
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.db import db
 
 

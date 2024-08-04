@@ -21,7 +21,7 @@ from sporttracker.logic.model.PlannedTour import (
     TravelType,
     TravelDirection,
 )
-from sporttracker.logic.model.Track import TrackType
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import (
     get_users_by_ids,
     User,

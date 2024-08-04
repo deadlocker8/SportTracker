@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 from sporttracker.logic import Constants
 from sporttracker.logic.model.MonthGoal import MonthGoalCount, get_month_goal_count_by_id
-from sporttracker.logic.model.Track import TrackType
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

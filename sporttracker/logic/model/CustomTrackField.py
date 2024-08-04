@@ -5,7 +5,7 @@ from flask_login import current_user
 from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
-from sporttracker.logic.model.Track import TrackType
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.db import db
 
 

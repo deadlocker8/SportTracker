@@ -34,11 +34,11 @@ from sporttracker.logic.model.Participant import get_participants_by_ids, get_pa
 from sporttracker.logic.model.Track import (
     Track,
     get_tracks_by_year_and_month_by_type,
-    TrackType,
     get_track_names_by_track_type,
     get_available_years,
     get_track_by_id,
 )
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import get_user_by_id
 from sporttracker.logic.model.db import db
 

@@ -8,7 +8,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from sporttracker.logic.model.CustomTrackField import CustomTrackField, CustomTrackFieldType
 from sporttracker.logic.model.Participant import Participant
-from sporttracker.logic.model.Track import TrackType
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import create_user, Language, User
 from sporttracker.logic.model.db import db
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass

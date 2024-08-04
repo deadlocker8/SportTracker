@@ -7,7 +7,7 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 from sqlalchemy.sql import or_
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
-from sporttracker.logic.model.Track import TrackType
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 

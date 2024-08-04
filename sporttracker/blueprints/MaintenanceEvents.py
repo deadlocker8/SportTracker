@@ -11,7 +11,8 @@ from pydantic import BaseModel
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.MaintenanceEvent import MaintenanceEvent, get_maintenance_event_by_id
-from sporttracker.logic.model.Track import TrackType, get_distance_between_dates
+from sporttracker.logic.model.Track import get_distance_between_dates
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

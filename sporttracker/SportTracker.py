@@ -45,7 +45,8 @@ from sporttracker.logic.model.PlannedTour import (
     get_new_planned_tour_ids,
     get_updated_planned_tour_ids,
 )
-from sporttracker.logic.model.Track import Track, TrackType
+from sporttracker.logic.model.Track import Track
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import (
     User,
     Language,

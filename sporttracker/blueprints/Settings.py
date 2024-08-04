@@ -16,7 +16,7 @@ from sporttracker.logic.model.CustomTrackField import (
     RESERVED_FIELD_NAMES,
 )
 from sporttracker.logic.model.Participant import Participant, get_participants
-from sporttracker.logic.model.Track import TrackType
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import (
     User,
     Language,

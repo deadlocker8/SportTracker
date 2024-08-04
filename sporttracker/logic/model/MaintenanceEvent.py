@@ -5,7 +5,7 @@ from sqlalchemy import Integer, DateTime, String, extract
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
-from sporttracker.logic.model.Track import TrackType
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.db import db
 
 

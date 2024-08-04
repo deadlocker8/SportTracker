@@ -9,7 +9,7 @@ from sporttracker.logic.model.CustomTrackField import (
     CustomTrackFieldType,
     RESERVED_FIELD_NAMES,
 )
-from sporttracker.logic.model.Track import TrackType
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import create_user, Language, User
 from sporttracker.logic.model.db import db
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass

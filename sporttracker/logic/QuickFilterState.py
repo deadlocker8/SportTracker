@@ -4,7 +4,7 @@ import json
 
 from flask import session
 
-from sporttracker.logic.model.Track import TrackType
+from sporttracker.logic.model.TrackType import TrackType
 
 
 class QuickFilterState:

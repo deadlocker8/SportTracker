@@ -5,7 +5,8 @@ from flask_login import FlaskLoginClient, login_user
 
 from sporttracker.logic.AchievementCalculator import AchievementCalculator
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
-from sporttracker.logic.model.Track import TrackType, Track
+from sporttracker.logic.model.Track import Track
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import create_user, Language, User
 from sporttracker.logic.model.db import db
 from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME

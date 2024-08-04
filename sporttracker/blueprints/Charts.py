@@ -15,12 +15,12 @@ from sporttracker.logic import Constants
 from sporttracker.logic.model.CustomTrackField import get_custom_fields_by_track_type
 from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.Track import (
-    TrackType,
     Track,
     get_distance_per_month_by_type,
     get_tracks_by_year_and_month_by_type,
     get_available_years,
 )
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
