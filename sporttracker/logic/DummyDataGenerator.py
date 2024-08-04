@@ -55,6 +55,7 @@ class DummyDataGenerator:
                 numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_BIKING,
                 numberOfTracksWithGpx=2,
                 numberOfTracksWithParticipants=2,
+                numberOfTracksWithSharedLink=1,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_BIKING,
                 distanceMin=15.0,
                 distanceMax=50.0,
@@ -66,6 +67,7 @@ class DummyDataGenerator:
                 numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_RUNNING,
                 numberOfTracksWithGpx=2,
                 numberOfTracksWithParticipants=0,
+                numberOfTracksWithSharedLink=1,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_RUNNING,
                 distanceMin=2.0,
                 distanceMax=6.0,
@@ -77,6 +79,7 @@ class DummyDataGenerator:
                 numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_HIKING,
                 numberOfTracksWithGpx=1,
                 numberOfTracksWithParticipants=1,
+                numberOfTracksWithSharedLink=1,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_HIKING,
                 distanceMin=6.0,
                 distanceMax=18.0,
@@ -154,6 +157,7 @@ class DummyDataGenerator:
         numberOfTracksPerMonth: int,
         numberOfTracksWithGpx: int,
         numberOfTracksWithParticipants: int,
+        numberOfTracksWithSharedLink: int,
         averageSpeed: int,
         distanceMin: float,
         distanceMax: float,
@@ -170,6 +174,9 @@ class DummyDataGenerator:
             indexesWithGpx = random.choices(range(numberOfTracksPerMonth), k=numberOfTracksWithGpx)
             indexesWithParticipants = random.choices(
                 range(numberOfTracksPerMonth), k=numberOfTracksWithParticipants
+            )
+            indexesWithSharedLink = random.choices(
+                range(numberOfTracksPerMonth), k=numberOfTracksWithSharedLink
             )
 
             for index in range(numberOfTracksPerMonth):
@@ -197,6 +204,9 @@ class DummyDataGenerator:
 
                 if index in indexesWithParticipants:
                     track.participants = [self.__get_participant()]
+
+                if index in indexesWithSharedLink:
+                    track.share_code = uuid.uuid4().hex
 
                 db.session.add(track)
 
@@ -269,6 +279,10 @@ class DummyDataGenerator:
             if index == 1:
                 shared_users = [user2]
 
+            share_code = None
+            if index == 1:
+                share_code = uuid.uuid4().hex
+
             plannedTour = PlannedTour(
                 type=TrackType.BIKING,
                 creation_date=fakeTime,
@@ -280,6 +294,7 @@ class DummyDataGenerator:
                 arrival_method=TravelType.TRAIN,
                 departure_method=TravelType.NONE,
                 direction=TravelDirection.SINGLE,
+                share_code=share_code,
             )
 
             self.__append_gpx(plannedTour)
