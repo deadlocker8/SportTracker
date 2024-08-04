@@ -222,7 +222,7 @@ def construct_blueprint(uploadFolder: str):
             custom_fields=form.model_extra,
             user_id=current_user.id,
             participants=participants,
-            share_code=form.shareCode,
+            share_code=form.shareCode if form.shareCode else None,
             plannedTour=plannedTour,
         )
         LOGGER.debug(f'Saved new track: {track}')
