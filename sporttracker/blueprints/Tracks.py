@@ -31,6 +31,7 @@ from sporttracker.logic.model.MonthGoal import (
     get_goal_summaries_by_year_and_month_and_types,
 )
 from sporttracker.logic.model.Participant import get_participants_by_ids, get_participants
+from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_tour_by_id
 from sporttracker.logic.model.Track import (
     Track,
     get_tracks_by_year_and_month_by_type,
@@ -106,6 +107,7 @@ class TrackFormModel(BaseModel):
     durationHours: int
     durationMinutes: int
     durationSeconds: int
+    plannedTourId: str = '-1'
     averageHeartRate: int | None = None
     elevationSum: int | None = None
     gpxFileName: str | None = None
@@ -172,7 +174,9 @@ def construct_blueprint(uploadFolder: str):
     @tracks.route('/add')
     @login_required
     def add():
-        return render_template('tracks/trackChooser.jinja2')
+        return render_template(
+            'tracks/trackChooser.jinja2',
+        )
 
     @tracks.route('/add/<string:track_type>')
     @login_required
@@ -190,6 +194,7 @@ def construct_blueprint(uploadFolder: str):
             customFields=customFields,
             participants=get_participants(),
             trackNames=get_track_names_by_track_type(trackType),
+            plannedTours=get_planned_tours([trackType]),
         )
 
     @tracks.route('/post', methods=['POST'])
@@ -200,6 +205,10 @@ def construct_blueprint(uploadFolder: str):
 
         participantIds = [int(item) for item in request.form.getlist('participants')]
         participants = get_participants_by_ids(participantIds)
+        if form.plannedTourId == '-1':
+            plannedTour = None
+        else:
+            plannedTour = get_planned_tour_by_id(int(form.plannedTourId))
 
         track = Track(
             name=form.name,
@@ -214,6 +223,7 @@ def construct_blueprint(uploadFolder: str):
             user_id=current_user.id,
             participants=participants,
             share_code=form.shareCode,
+            plannedTour=plannedTour,
         )
         LOGGER.debug(f'Saved new track: {track}')
         db.session.add(track)
@@ -249,6 +259,7 @@ def construct_blueprint(uploadFolder: str):
             gpxFileName=track.gpxFileName,
             participants=[str(item.id) for item in track.participants],
             shareCode=track.share_code,
+            plannedTourId=str(track.plannedTour.id) if track.plannedTour else '-1',
             **track.custom_fields,
         )
 
@@ -265,6 +276,7 @@ def construct_blueprint(uploadFolder: str):
             customFields=customFields,
             participants=get_participants(),
             trackNames=get_track_names_by_track_type(track.type),
+            plannedTours=get_planned_tours([track.type]),
         )
 
     @tracks.route('/edit/<int:track_id>', methods=['POST'])
@@ -276,6 +288,11 @@ def construct_blueprint(uploadFolder: str):
         if track is None:
             abort(404)
 
+        if form.plannedTourId == '-1':
+            plannedTour = None
+        else:
+            plannedTour = get_planned_tour_by_id(int(form.plannedTourId))
+
         track.name = form.name  # type: ignore[assignment]
         track.startTime = form.calculate_start_time()  # type: ignore[assignment]
         track.distance = form.distance * 1000  # type: ignore[assignment]
@@ -285,6 +302,7 @@ def construct_blueprint(uploadFolder: str):
         participantIds = [int(item) for item in request.form.getlist('participants')]
         track.participants = get_participants_by_ids(participantIds)
         track.share_code = form.shareCode if form.shareCode else None  # type: ignore[assignment]
+        track.plannedTour = plannedTour
 
         newGpxFileName = handleGpxTrackForTrack(request.files, uploadFolder)
         if track.gpxFileName is None:

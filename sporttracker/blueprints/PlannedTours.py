@@ -9,7 +9,6 @@ from flask import Blueprint, render_template, redirect, url_for, abort, request,
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel
-from sqlalchemy.sql import or_
 
 from sporttracker.blueprints.GpxTracks import handleGpxTrackForPlannedTour
 from sporttracker.logic import Constants
@@ -19,7 +18,8 @@ from sporttracker.logic.model.PlannedTour import (
     PlannedTour,
     get_planned_tour_by_id,
     TravelType,
-    TravelDirection, get_planned_tours,
+    TravelDirection,
+    get_planned_tours,
 )
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import (
