@@ -41,6 +41,12 @@ class SharedUserModel:
 
 
 @dataclass
+class LinkedTrack:
+    id: int
+    startTime: datetime
+
+
+@dataclass
 class PlannedTourModel:
     id: int
     name: str
@@ -56,7 +62,25 @@ class PlannedTourModel:
     departureMethod: TravelType
     direction: TravelDirection
     shareCode: str | None
-    linkedTrackIds: list[int]
+    linkedTracks: list[LinkedTrack]
+
+    @staticmethod
+    def __get_linked_tracks_by_planned_tour(plannedTour: PlannedTour) -> list[LinkedTrack]:
+        linkedTrack = (
+            Track.query.filter(Track.user_id == current_user.id)
+            .filter(Track.plannedTour == plannedTour)
+            .order_by(Track.startTime.asc())
+            .all()
+        )
+
+        if linkedTrack is None:
+            return []
+
+        result = []
+        for track in linkedTrack:
+            result.append(LinkedTrack(int(track.id), track.startTime))
+
+        return result
 
     @staticmethod
     def create_from_tour(
@@ -72,7 +96,7 @@ class PlannedTourModel:
         else:
             gpxMetaInfo = None
 
-        linkedTrackIds = get_track_ids_by_planned_tour(plannedTour)
+        linkedTracks = PlannedTourModel.__get_linked_tracks_by_planned_tour(plannedTour)
 
         return PlannedTourModel(
             id=plannedTour.id,
@@ -89,7 +113,7 @@ class PlannedTourModel:
             departureMethod=plannedTour.departure_method,
             direction=plannedTour.direction,
             shareCode=plannedTour.share_code,
-            linkedTrackIds=linkedTrackIds,
+            linkedTracks=linkedTracks,
         )
 
 

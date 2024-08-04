@@ -75,3 +75,22 @@
     </div>
 {%- endmacro %}
 
+
+{% macro showLinkedTracksButton(linkedTracks, collapsibleId, classes) -%}
+    <div class="d-flex flex-column align-items-center">
+        <button class="btn btn-orange mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#{{ collapsibleId }}">
+            {{ gettext('Show') }} {{ linkedTracks|length }} {{ gettext('Linked Tracks') }}
+        </button>
+        <div class="collapse {{ classes }}" id="{{ collapsibleId }}">
+            <div class="list-group text-start">
+                {% for linkedTrack in linkedTracks %}
+                    <a href="{{ url_for('maps.showSingleTrack', track_id=linkedTrack.id) }}"
+                       class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
+                        {{ linkedTrack.startTime | format_date() }}
+                        <span class="material-icons text-primary">send</span>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{%- endmacro %}

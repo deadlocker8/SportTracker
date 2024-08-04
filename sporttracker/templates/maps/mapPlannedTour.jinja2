@@ -63,6 +63,12 @@
             </div>
         </div>
 
+        {% if plannedTour.linkedTracks|length != 0 %}
+            <div class="card bg-body-secondary mx-3 mb-3 d-xl-none pt-3" data-bs-theme="dark">
+                {{ mapMacros.showLinkedTracksButton(plannedTour.linkedTracks, 'collapseLinkedTracksSmall', 'w-50 mb-3') }}
+            </div>
+        {% endif %}
+
         <div class="row mx-3 mx-xl-5">
             <div class="col col-12 col-xl-10 p-0">
                 <div id="map" class="leaflet-map text-dark map-smaller"></div>
@@ -124,6 +130,10 @@
                                 -
                             {% endif %}
                         {% endcall %}
+
+                        {% if plannedTour.linkedTracks|length != 0 %}
+                            {{ mapMacros.showLinkedTracksButton(plannedTour.linkedTracks, 'collapseLinkedTracksLarge', 'w-100') }}
+                        {% endif %}
                     </div>
 
                     <div class="card-footer text-body-secondary d-flex align-items-center justify-content-between">
