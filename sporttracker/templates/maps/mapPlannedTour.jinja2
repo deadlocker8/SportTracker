@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        {% if plannedTour.shareCode and plannedTour.ownerName != current_user.username%}
+        {% if plannedTour.shareCode and plannedTour.ownerName != current_user.username %}
             <title>SportTracker - {{ gettext('Shared Planned Tour') }}</title>
             <meta name="description" content="{{ plannedTour.ownerName|capitalize }} is sharing a planned tour with you!">
         {% else %}
@@ -71,7 +71,7 @@
             <!-- large displays -->
             <div class="col col-2 p-0 ps-4 d-none d-xl-block">
                 <div class="card bg-body-secondary" data-bs-theme="dark">
-                    {{ mapMacros.gpxDownloadButton(gettext('Planned Tour'), gpxUrl) }}
+                    {{ mapMacros.gpxDownloadButton(gettext('Planned Tour'), gpxUrl, 'flex-column flex-xxl-row') }}
 
                     <div class="card-body ps-4 pt-4">
                         {% call mapMacros.meta_info_item('route', plannedTour.type.text_color, gettext('Distance')) %}

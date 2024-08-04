@@ -59,8 +59,8 @@
 {%- endmacro %}
 
 
-{% macro gpxDownloadButton(title, gpxUrl) -%}
-    <div class="card-header d-flex align-items-center justify-content-between">
+{% macro gpxDownloadButton(title, gpxUrl, classes='') -%}
+    <div class="card-header d-flex align-items-center {{ classes }} justify-content-between">
         <div class="d-flex align-items-center">
             <i class="fa-solid fa-lightbulb fa-fw fs-5 me-2"></i>
             <div class="fs-5 text-truncate">
