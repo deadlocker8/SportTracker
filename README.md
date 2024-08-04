@@ -68,8 +68,7 @@ Record your maintenance events for each sport type.
 ![](screenshots/maintenance.png)
 
 ### Planned Tours
-Save your planned tours for each sport type and view them on a map.
-
+Save your planned tours for each sport type and view them on a map. Once you actually took a planned tour you can link the corresponding track to the tour.
 
 ![](screenshots/planned_tours.jpg)
 
