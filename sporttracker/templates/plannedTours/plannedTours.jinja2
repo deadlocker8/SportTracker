@@ -88,8 +88,14 @@
                                     <div class="d-flex align-items-center">
                                         {% if plannedTour.sharedUsers or plannedTour.shareCode %}
                                             <div class="badge rounded-pill text-bg-success d-flex align-items-center me-2">
-                                                <div class="material-icons fs-4">share</div>
+                                                <div class="material-icons fs-5">share</div>
                                                 <div class="fs-6 fw-normal">&nbsp;{{ gettext('shared') }}</div>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if plannedTour.linkedTrackIds %}
+                                            <div class="badge rounded-pill bg-orange text-black d-flex align-items-center me-2">
+                                                <div class="fs-6 fw-normal lh-sm">{{ plannedTour.linkedTrackIds|length }} {{ gettext('Tracks') }}</div>
                                             </div>
                                         {% endif %}
 

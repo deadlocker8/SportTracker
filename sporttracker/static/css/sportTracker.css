@@ -39,6 +39,18 @@ body {
     border-color: #6BBDA5 !important;
 }
 
+.bg-orange {
+    background-color: #FD7E14;
+}
+
+.text-orange {
+    color: #FD7E14;
+}
+
+.border-orange {
+    border-color: #FD7E14 !important;
+}
+
 .calendar-container {
     max-width: 90%;
     margin: auto;

@@ -302,7 +302,7 @@ def construct_blueprint(uploadFolder: str):
         participantIds = [int(item) for item in request.form.getlist('participants')]
         track.participants = get_participants_by_ids(participantIds)
         track.share_code = form.shareCode if form.shareCode else None  # type: ignore[assignment]
-        track.plannedTour = plannedTour
+        track.plannedTour = plannedTour  # type: ignore[assignment]
 
         newGpxFileName = handleGpxTrackForTrack(request.files, uploadFolder)
         if track.gpxFileName is None:

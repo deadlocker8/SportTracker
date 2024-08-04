@@ -21,6 +21,7 @@ from sporttracker.logic.model.PlannedTour import (
     TravelDirection,
     get_planned_tours,
 )
+from sporttracker.logic.model.Track import Track
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import (
     get_users_by_ids,
@@ -55,15 +56,33 @@ class PlannedTourModel:
     departureMethod: TravelType
     direction: TravelDirection
     shareCode: str | None
+    linkedTrackIds: list[int]
 
     @staticmethod
-    def create_from_tour(plannedTour: PlannedTour, uploadFolder: str) -> 'PlannedTourModel':
-        if plannedTour.gpxFileName is None:
-            gpxMetaInfo = None
+    def create_from_tour(
+        plannedTour: PlannedTour, uploadFolder: str, includeGpxMetaInfo: bool
+    ) -> 'PlannedTourModel':
+        if includeGpxMetaInfo:
+            if plannedTour.gpxFileName is None:
+                gpxMetaInfo = None
+            else:
+                gpxTrackPath = os.path.join(uploadFolder, str(plannedTour.gpxFileName))
+                gpxService = GpxService(gpxTrackPath)
+                gpxMetaInfo = gpxService.get_meta_info()
         else:
-            gpxTrackPath = os.path.join(uploadFolder, str(plannedTour.gpxFileName))
-            gpxService = GpxService(gpxTrackPath)
-            gpxMetaInfo = gpxService.get_meta_info()
+            gpxMetaInfo = None
+
+        linkedTrackIds = (
+            Track.query.with_entities(Track.id)
+            .filter(Track.user_id == current_user.id)
+            .filter(Track.plannedTour == plannedTour)
+            .all()
+        )
+
+        if linkedTrackIds is None:
+            linkedTrackIds = []
+        else:
+            linkedTrackIds = [int(row.id) for row in linkedTrackIds]
 
         return PlannedTourModel(
             id=plannedTour.id,
@@ -80,6 +99,7 @@ class PlannedTourModel:
             departureMethod=plannedTour.departure_method,
             direction=plannedTour.direction,
             shareCode=plannedTour.share_code,
+            linkedTrackIds=linkedTrackIds,
         )
 
 
@@ -107,7 +127,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
 
         plannedTourList: list[PlannedTourModel] = []
         for tour in tours:
-            plannedTourList.append(PlannedTourModel.create_from_tour(tour, uploadFolder))
+            plannedTourList.append(PlannedTourModel.create_from_tour(tour, uploadFolder, True))
 
         return render_template(
             'plannedTours/plannedTours.jinja2',
@@ -164,22 +184,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
         if plannedTour is None:
             abort(404)
 
-        tourModel = PlannedTourModel(
-            id=plannedTour.id,
-            name=plannedTour.name,  # type: ignore[arg-type]
-            creationDate=plannedTour.creation_date,  # type: ignore[arg-type]
-            lastEditDate=plannedTour.last_edit_date,  # type: ignore[arg-type]
-            type=plannedTour.type,
-            gpxFileName=plannedTour.gpxFileName,
-            gpxMetaInfo=None,
-            sharedUsers=[str(user.id) for user in plannedTour.shared_users],
-            ownerId=str(plannedTour.user_id),
-            ownerName=get_user_by_id(plannedTour.user_id).username,
-            arrivalMethod=plannedTour.arrival_method,
-            departureMethod=plannedTour.departure_method,
-            direction=plannedTour.direction,
-            shareCode=plannedTour.share_code,
-        )
+        tourModel = PlannedTourModel.create_from_tour(plannedTour, uploadFolder, False)
 
         return render_template(
             'plannedTours/plannedTourForm.jinja2',
