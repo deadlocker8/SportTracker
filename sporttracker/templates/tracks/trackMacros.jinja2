@@ -102,7 +102,7 @@
 
 {%  macro track_card_feature_icons(track) -%}
     <div class="z-2 d-flex">
-        {% if track.shareCode %}
+        {% if track.shareCode or track.share_code %}
             <span class="material-icons fs-4 text-body">share</span>
         {% endif %}
         {% if track.participants %}
