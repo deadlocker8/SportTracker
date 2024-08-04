@@ -181,6 +181,20 @@ def get_updated_planned_tour_ids() -> list[int]:
     return [int(row[0]) for row in rows]
 
 
+def get_planned_tours(trackTypes: list[TrackType]) -> list[PlannedTour]:
+    return (
+        PlannedTour.query.filter(
+            or_(
+                PlannedTour.user_id == current_user.id,
+                PlannedTour.shared_users.any(id=current_user.id),
+            )
+        )
+        .filter(PlannedTour.type.in_(trackTypes))
+        .order_by(PlannedTour.name.asc())
+        .all()
+    )
+
+
 track_planned_tour_association = Table(
     'track_planned_tour_association',
     db.Model.metadata,

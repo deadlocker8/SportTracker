@@ -19,7 +19,7 @@ from sporttracker.logic.model.PlannedTour import (
     PlannedTour,
     get_planned_tour_by_id,
     TravelType,
-    TravelDirection,
+    TravelDirection, get_planned_tours,
 )
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import (
@@ -103,17 +103,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
     def listPlannedTours():
         quickFilterState = get_quick_filter_state_from_session()
 
-        tours: list[PlannedTour] = (
-            PlannedTour.query.filter(
-                or_(
-                    PlannedTour.user_id == current_user.id,
-                    PlannedTour.shared_users.any(id=current_user.id),
-                )
-            )
-            .filter(PlannedTour.type.in_(quickFilterState.get_active_types()))
-            .order_by(PlannedTour.name.asc())
-            .all()
-        )
+        tours = get_planned_tours(quickFilterState.get_active_types())
 
         plannedTourList: list[PlannedTourModel] = []
         for tour in tours:
