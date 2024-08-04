@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-07-28 22:43+0200\n"
-"PO-Revision-Date: 2024-07-28 22:44+0200\n"
+"POT-Creation-Date: 2024-08-04 14:39+0200\n"
+"PO-Revision-Date: 2024-08-04 14:39+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgstr ""
 "\">{currentStreak}</span> Monate in Folge erreicht!<br>(Beste: <span class="
 "\"fw-bold\">{maxStreak}</span>)"
 
-#: ../blueprints/Achievements.py:51 ../blueprints/AnnualAchievements.py:209
+#: ../blueprints/Achievements.py:51 ../blueprints/AnnualAchievements.py:210
 msgid "Longest Track"
 msgstr "Längster Track"
 
@@ -44,7 +44,7 @@ msgstr ""
 "Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einem Training "
 "zurückgelegt!"
 
-#: ../blueprints/Achievements.py:67 ../blueprints/AnnualAchievements.py:82
+#: ../blueprints/Achievements.py:67 ../blueprints/AnnualAchievements.py:83
 msgid "Total Distance"
 msgstr "Gesamtstrecke"
 
@@ -67,20 +67,20 @@ msgstr ""
 "<span class=\"fw-bold\">{bestMonthName}</span> war dein bester Monat mit "
 "<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
 
-#: ../blueprints/AnnualAchievements.py:122
+#: ../blueprints/AnnualAchievements.py:123
 msgid "Total Duration"
 msgstr "Gesamtdauer"
 
-#: ../blueprints/AnnualAchievements.py:129
+#: ../blueprints/AnnualAchievements.py:130
 #: ../templates/tracks/trackMacros.jinja2:275
 msgid "Hours"
 msgstr "Stunden"
 
-#: ../blueprints/AnnualAchievements.py:162
+#: ../blueprints/AnnualAchievements.py:163
 msgid "Number Of Tracks"
 msgstr "Anzahl Tracks"
 
-#: ../blueprints/AnnualAchievements.py:249 ../logic/model/User.py:63
+#: ../blueprints/AnnualAchievements.py:250 ../logic/model/User.py:63
 #: ../templates/charts/chartAverageSpeed.jinja2:23
 #: ../templates/charts/chartChooser.jinja2:42
 msgid "Average Speed"
@@ -126,7 +126,7 @@ msgstr "Der angegebene Name \"{0}\" existiert bereits."
 msgid "The specified participant name \"{0}\" already exists."
 msgstr "Ein Teilnehmer mit dem Namen \"{0}\" existiert bereits."
 
-#: ../logic/AchievementCalculator.py:65 ../logic/AchievementCalculator.py:70
+#: ../logic/AchievementCalculator.py:66 ../logic/AchievementCalculator.py:71
 msgid "No month"
 msgstr "Kein Monat"
 
@@ -166,27 +166,27 @@ msgstr "Hin + zurück"
 msgid "Roundtrip"
 msgstr "Rundtour"
 
-#: ../logic/model/Track.py:77
+#: ../logic/model/TrackType.py:68
 msgid "Biking"
 msgstr "Fahrrad fahren"
 
-#: ../logic/model/Track.py:79
+#: ../logic/model/TrackType.py:70
 msgid "Running"
 msgstr "Laufen"
 
-#: ../logic/model/Track.py:81
+#: ../logic/model/TrackType.py:72
 msgid "Hiking"
 msgstr "Wandern"
 
-#: ../logic/model/User.py:59 ../templates/maps/mapPlannedTour.jinja2:35
-#: ../templates/maps/mapPlannedTour.jinja2:76
-#: ../templates/maps/mapSingleTrack.jinja2:39
-#: ../templates/maps/mapSingleTrack.jinja2:86
+#: ../logic/model/User.py:59 ../templates/maps/mapPlannedTour.jinja2:36
+#: ../templates/maps/mapPlannedTour.jinja2:83
+#: ../templates/maps/mapSingleTrack.jinja2:40
+#: ../templates/maps/mapSingleTrack.jinja2:87
 msgid "Distance"
 msgstr "Strecke"
 
-#: ../logic/model/User.py:61 ../templates/maps/mapSingleTrack.jinja2:42
-#: ../templates/maps/mapSingleTrack.jinja2:90
+#: ../logic/model/User.py:61 ../templates/maps/mapSingleTrack.jinja2:43
+#: ../templates/maps/mapSingleTrack.jinja2:91
 #: ../templates/tracks/trackMacros.jinja2:269
 msgid "Duration"
 msgstr "Dauer"
@@ -195,7 +195,7 @@ msgstr "Dauer"
 msgid "Average Heart Rate"
 msgstr "Durchschnittliche Herzfrequenz"
 
-#: ../logic/model/User.py:67 ../templates/maps/mapSingleTrack.jinja2:118
+#: ../logic/model/User.py:67 ../templates/maps/mapSingleTrack.jinja2:119
 msgid "Elevation Sum"
 msgstr "Summe Höhenmeter"
 
@@ -255,6 +255,7 @@ msgid "Users"
 msgstr "Benutzer"
 
 #: ../templates/macros.jinja2:57 ../templates/maps/mapMultipleTracks.jinja2:6
+#: ../templates/plannedTours/plannedTours.jinja2:98
 #: ../templates/tracks/tracks.jinja2:5 ../templates/tracks/tracks.jinja2:25
 msgid "Tracks"
 msgstr "Tracks"
@@ -472,8 +473,8 @@ msgid "Type"
 msgstr "Typ"
 
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:56
-#: ../templates/maps/mapSingleTrack.jinja2:36
-#: ../templates/maps/mapSingleTrack.jinja2:82
+#: ../templates/maps/mapSingleTrack.jinja2:37
+#: ../templates/maps/mapSingleTrack.jinja2:83
 #: ../templates/tracks/trackMacros.jinja2:237
 msgid "Date"
 msgstr "Datum"
@@ -497,9 +498,9 @@ msgstr "Beschreibung"
 #: ../templates/settings/settings.jinja2:42
 #: ../templates/settings/settings.jinja2:59
 #: ../templates/settings/settings.jinja2:186
-#: ../templates/tracks/trackBikingForm.jinja2:68
-#: ../templates/tracks/trackHikingForm.jinja2:68
-#: ../templates/tracks/trackRunningForm.jinja2:68
+#: ../templates/tracks/trackBikingForm.jinja2:70
+#: ../templates/tracks/trackHikingForm.jinja2:70
+#: ../templates/tracks/trackRunningForm.jinja2:70
 #: ../templates/users/userForm.jinja2:66
 msgid "Save"
 msgstr "Speichern"
@@ -521,7 +522,7 @@ msgid "Slope"
 msgstr "Steigung"
 
 #: ../templates/maps/mapMacros.jinja2:7
-#: ../templates/maps/mapSingleTrack.jinja2:45
+#: ../templates/maps/mapSingleTrack.jinja2:46
 msgid "Speed"
 msgstr "Geschwindigkeit"
 
@@ -625,6 +626,11 @@ msgstr "Legende einblenden"
 msgid "Collapse Legend"
 msgstr "Legende ausblenden"
 
+#: ../templates/maps/mapMacros.jinja2:82
+#, python-format
+msgid "Show %(length)s linked Tracks"
+msgstr "Zeige %(length)s verlinkte Tracks"
+
 #: ../templates/maps/mapMultipleTracks.jinja2:60
 msgid "Apply"
 msgstr "Übernehmen"
@@ -637,51 +643,51 @@ msgstr "Unbekannter geteilter Link"
 msgid "Shared Planned Tour"
 msgstr "Geteilte Geplante Tour"
 
-#: ../templates/maps/mapPlannedTour.jinja2:9
-#: ../templates/maps/mapPlannedTour.jinja2:31
-#: ../templates/maps/mapPlannedTour.jinja2:73
+#: ../templates/maps/mapPlannedTour.jinja2:10
+#: ../templates/maps/mapPlannedTour.jinja2:32
+#: ../templates/maps/mapPlannedTour.jinja2:80
 msgid "Planned Tour"
 msgstr "Geplante Tour"
 
-#: ../templates/maps/mapPlannedTour.jinja2:42
-#: ../templates/maps/mapPlannedTour.jinja2:84
+#: ../templates/maps/mapPlannedTour.jinja2:43
+#: ../templates/maps/mapPlannedTour.jinja2:91
 #: ../templates/plannedTours/plannedTours.jinja2:74
 msgid "Arrival"
 msgstr "Anreise"
 
-#: ../templates/maps/mapPlannedTour.jinja2:45
-#: ../templates/maps/mapPlannedTour.jinja2:88
+#: ../templates/maps/mapPlannedTour.jinja2:46
+#: ../templates/maps/mapPlannedTour.jinja2:95
 #: ../templates/plannedTours/plannedTours.jinja2:78
 msgid "Departure"
 msgstr "Abreise"
 
-#: ../templates/maps/mapPlannedTour.jinja2:48
-#: ../templates/maps/mapPlannedTour.jinja2:92
+#: ../templates/maps/mapPlannedTour.jinja2:49
+#: ../templates/maps/mapPlannedTour.jinja2:99
 #: ../templates/plannedTours/plannedTourForm.jinja2:86
 msgid "Direction"
 msgstr "Richtung"
 
-#: ../templates/maps/mapPlannedTour.jinja2:56
-#: ../templates/maps/mapPlannedTour.jinja2:130
-#: ../templates/plannedTours/plannedTours.jinja2:96
+#: ../templates/maps/mapPlannedTour.jinja2:57
+#: ../templates/maps/mapPlannedTour.jinja2:141
+#: ../templates/plannedTours/plannedTours.jinja2:102
 msgid "last edited"
 msgstr "bearbeitet"
 
-#: ../templates/maps/mapPlannedTour.jinja2:96
-#: ../templates/maps/mapSingleTrack.jinja2:126
+#: ../templates/maps/mapPlannedTour.jinja2:103
+#: ../templates/maps/mapSingleTrack.jinja2:127
 msgid "Min Height"
 msgstr "Min. Höhe"
 
-#: ../templates/maps/mapPlannedTour.jinja2:104
-#: ../templates/maps/mapSingleTrack.jinja2:134
+#: ../templates/maps/mapPlannedTour.jinja2:111
+#: ../templates/maps/mapSingleTrack.jinja2:135
 msgid "Max Height"
 msgstr "Max. Höhe"
 
-#: ../templates/maps/mapPlannedTour.jinja2:112
+#: ../templates/maps/mapPlannedTour.jinja2:119
 msgid "Uphill"
 msgstr "Bergauf"
 
-#: ../templates/maps/mapPlannedTour.jinja2:119
+#: ../templates/maps/mapPlannedTour.jinja2:126
 msgid "Downhill"
 msgstr "Bergab"
 
@@ -689,17 +695,17 @@ msgstr "Bergab"
 msgid "Shared Track"
 msgstr "Geteilter Track"
 
-#: ../templates/maps/mapSingleTrack.jinja2:9
-#: ../templates/maps/mapSingleTrack.jinja2:32
-#: ../templates/maps/mapSingleTrack.jinja2:79
+#: ../templates/maps/mapSingleTrack.jinja2:10
+#: ../templates/maps/mapSingleTrack.jinja2:33
+#: ../templates/maps/mapSingleTrack.jinja2:80
 msgid "Track"
 msgstr "Track"
 
-#: ../templates/maps/mapSingleTrack.jinja2:94
+#: ../templates/maps/mapSingleTrack.jinja2:95
 msgid "Avg. Speed"
 msgstr "Duchschn. Geschwindigkeit"
 
-#: ../templates/maps/mapSingleTrack.jinja2:110
+#: ../templates/maps/mapSingleTrack.jinja2:111
 msgid "Avg. Heart Rate"
 msgstr "Durchschn. Herzfrequenz"
 
@@ -1072,6 +1078,14 @@ msgstr "Willst du diesen geteilten Link wirklich löschen?"
 #: ../templates/tracks/trackMacros.jinja2:471
 msgid "Create link"
 msgstr "Link erzeugen"
+
+#: ../templates/tracks/trackMacros.jinja2:482
+msgid "Based on Planned Tour"
+msgstr "Basiert auf geplanter Tour"
+
+#: ../templates/tracks/trackMacros.jinja2:486
+msgid "Not based on a Planned Tour"
+msgstr "Basiert auf keiner geplanten Tour"
 
 #: ../templates/tracks/trackRunningForm.jinja2:6
 #: ../templates/tracks/trackRunningForm.jinja2:20

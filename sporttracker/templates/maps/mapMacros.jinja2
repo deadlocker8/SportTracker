@@ -79,7 +79,7 @@
 {% macro showLinkedTracksButton(linkedTracks, collapsibleId, classes) -%}
     <div class="d-flex flex-column align-items-center">
         <button class="btn btn-orange mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#{{ collapsibleId }}">
-            {{ gettext('Show') }} {{ linkedTracks|length }} {{ gettext('Linked Tracks') }}
+            {% trans length=linkedTracks|length %}Show {{ length }} linked Tracks{% endtrans %}
         </button>
         <div class="collapse {{ classes }}" id="{{ collapsibleId }}">
             <div class="list-group text-start">
