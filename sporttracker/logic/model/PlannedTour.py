@@ -179,3 +179,11 @@ def get_updated_planned_tour_ids() -> list[int]:
     )
 
     return [int(row[0]) for row in rows]
+
+
+track_planned_tour_association = Table(
+    'track_planned_tour_association',
+    db.Model.metadata,
+    Column('track_id', ForeignKey('track.id')),
+    Column('planned_tour_id', ForeignKey('planned_tour.id')),
+)

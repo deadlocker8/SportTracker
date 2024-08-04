@@ -8,6 +8,7 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from sporttracker.logic.model.Participant import Participant, track_participant_association
 from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.PlannedTour import PlannedTour, track_planned_tour_association
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 
@@ -26,6 +27,7 @@ class Track(db.Model):  # type: ignore[name-defined]
     custom_fields = db.Column(JSON)
     participants: Mapped[list[Participant]] = relationship(secondary=track_participant_association)
     share_code: Mapped[str] = mapped_column(String, nullable=True)
+    plannedTour: Mapped[PlannedTour] = relationship(secondary=track_planned_tour_association)
 
     def __repr__(self):
         return (
