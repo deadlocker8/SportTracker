@@ -1,4 +1,5 @@
 # 1.27.0
+- add: allow tracks to be linked to a planned tour
 - fix: improve page load performance for track and planned tour overview
 
 # 1.26.1
