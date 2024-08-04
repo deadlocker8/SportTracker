@@ -141,7 +141,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
 
         plannedTourList: list[PlannedTourModel] = []
         for tour in tours:
-            plannedTourList.append(PlannedTourModel.create_from_tour(tour, uploadFolder, True))
+            plannedTourList.append(PlannedTourModel.create_from_tour(tour, uploadFolder, False))
 
         return render_template(
             'plannedTours/plannedTours.jinja2',

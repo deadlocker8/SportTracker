@@ -1,3 +1,6 @@
+# 1.27.0
+- fix: improve page load performance for track and planned tour overview
+
 # 1.26.1
 - fix: annual statistics: round average number of tracks
 - fix: line break long shared links on mobile devices

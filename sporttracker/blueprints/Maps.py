@@ -90,7 +90,7 @@ def construct_blueprint(uploadFolder: str):
 
         return render_template(
             'maps/mapSingleTrack.jinja2',
-            track=TrackModel.create_from_track(track, uploadFolder),
+            track=TrackModel.create_from_track(track, uploadFolder, True),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id),
         )
 
@@ -103,7 +103,7 @@ def construct_blueprint(uploadFolder: str):
 
         return render_template(
             'maps/mapSingleTrack.jinja2',
-            track=TrackModel.create_from_track(track, uploadFolder),
+            track=TrackModel.create_from_track(track, uploadFolder, True),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackBySharedTrack', shareCode=shareCode),
         )
 

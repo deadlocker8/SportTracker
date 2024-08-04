@@ -63,13 +63,18 @@ class TrackModel(DateTimeAccess):
     ownerName: str
 
     @staticmethod
-    def create_from_track(track: Track, uploadFolder: str) -> 'TrackModel':
-        if track.gpxFileName is None:
-            gpxMetaInfo = None
+    def create_from_track(
+        track: Track, uploadFolder: str, includeGpxMetaInfo: bool
+    ) -> 'TrackModel':
+        if includeGpxMetaInfo:
+            if track.gpxFileName is None:
+                gpxMetaInfo = None
+            else:
+                gpxTrackPath = os.path.join(uploadFolder, str(track.gpxFileName))
+                gpxService = GpxService(gpxTrackPath)
+                gpxMetaInfo = gpxService.get_meta_info()
         else:
-            gpxTrackPath = os.path.join(uploadFolder, str(track.gpxFileName))
-            gpxService = GpxService(gpxTrackPath)
-            gpxMetaInfo = gpxService.get_meta_info()
+            gpxMetaInfo = None
 
         return TrackModel(
             id=track.id,
@@ -370,7 +375,7 @@ def __get_month_model(
 
     trackModels = []
     for track in tracks:
-        trackModels.append(TrackModel.create_from_track(track, uploadFolder))
+        trackModels.append(TrackModel.create_from_track(track, uploadFolder, False))
 
     maintenanceEvents = get_maintenance_events_by_year_and_month_by_type(
         monthDate.year, monthDate.month, quickFilterState.get_active_types()
