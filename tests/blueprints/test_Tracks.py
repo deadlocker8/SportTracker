@@ -1,13 +1,16 @@
 import time
+from datetime import datetime
 
 import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
 from sporttracker.logic.model.CustomTrackField import CustomTrackField, CustomTrackFieldType
 from sporttracker.logic.model.Participant import Participant
+from sporttracker.logic.model.PlannedTour import PlannedTour, TravelType, TravelDirection
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import create_user, Language, User
 from sporttracker.logic.model.db import db
@@ -18,7 +21,25 @@ from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
 @pytest.fixture(autouse=True)
 def prepare_test_data(app):
     with app.app_context():
-        create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH)
+        user = create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH)
+
+        plannedTour = PlannedTour(
+            id=1,
+            type=TrackType.BIKING,
+            name='Megatour',
+            creation_date=datetime.now(),
+            last_edit_date=datetime.now(),
+            last_edit_user_id=user.id,
+            gpxFileName=None,
+            user_id=user.id,
+            shared_users=[],
+            arrival_method=TravelType.TRAIN,
+            departure_method=TravelType.NONE,
+            direction=TravelDirection.SINGLE,
+            share_code=None,
+        )
+        db.session.add(plannedTour)
+        db.session.commit()
 
 
 class TestTracks(SeleniumTestBaseClass):
@@ -61,6 +82,7 @@ class TestTracks(SeleniumTestBaseClass):
         seconds,
         averageHeartRate,
         elevationSum,
+        plannedTourName='Not based on a Planned Tour',
     ):
         selenium.find_element(By.ID, 'track-name').send_keys(name)
         selenium.find_element(By.ID, 'track-date').send_keys(date)
@@ -71,6 +93,9 @@ class TestTracks(SeleniumTestBaseClass):
         selenium.find_element(By.ID, 'track-duration-seconds').send_keys(seconds)
         selenium.find_element(By.ID, 'track-averageHeartRate').send_keys(averageHeartRate)
         selenium.find_element(By.ID, 'track-elevationSum').send_keys(elevationSum)
+
+        select = Select(selenium.find_element(By.ID, 'track-plannedTour'))
+        select.select_by_visible_text(plannedTourName)
 
     def test_add_track_valid(self, server, selenium: WebDriver):
         self.login(selenium)
@@ -376,3 +401,35 @@ class TestTracks(SeleniumTestBaseClass):
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element((By.ID, 'errorIcon'), 'error')
         )
+
+    def test_linked_planned_tour(self, server, selenium: WebDriver):
+        self.login(selenium)
+        self.__open_form(selenium)
+        self.__fill_form(
+            selenium,
+            'My Track',
+            '2023-02-01',
+            '15:30',
+            22.5,
+            1,
+            13,
+            46,
+            123,
+            650,
+            plannedTourName='Megatour',
+        )
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+            )
+        )
+
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
+
+        # check number of linked tracks is shown
+        selenium.get(self.build_url('/plannedTours'))
+        pills = selenium.find_elements(By.CSS_SELECTOR, '.badge.rounded-pill.bg-orange')
+        assert len(pills) == 1
+        assert pills[0].text == '1 Tracks'

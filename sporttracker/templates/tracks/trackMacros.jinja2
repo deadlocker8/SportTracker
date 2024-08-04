@@ -479,10 +479,10 @@
 
 {% macro form_linked_planned_tour(track, plannedTours) -%}
     <div class="mb-3">
-        <label for="month-goal-type" class="form-label input-field-margin">{{ gettext('Based on Planned Tour') }}</label>
+        <label for="track-plannedTour" class="form-label input-field-margin">{{ gettext('Based on Planned Tour') }}</label>
         <div class="d-flex align-items-center">
             <i class="fa-solid fa-lightbulb fa-fw fs-4 me-3"></i>
-            <select class="form-select" id="track-planned-tour" name="plannedTourId">
+            <select class="form-select" id="track-plannedTour" name="plannedTourId">
                 <option value="-1" {% if not track %} selected{% endif %}>{{ gettext('Not based on a Planned Tour') }}</option>
                 {% for plannedTour in plannedTours %}
                     <option value="{{ plannedTour.id }}" {% if track and track.plannedTourId != '-1' and track.plannedTourId == plannedTour.id|string %}selected{% endif %}>{{ plannedTour.name }}</option>
