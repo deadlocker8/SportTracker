@@ -21,7 +21,7 @@ from sporttracker.logic.model.PlannedTour import (
     TravelDirection,
     get_planned_tours,
 )
-from sporttracker.logic.model.Track import get_track_ids_by_planned_tour, get_track_by_id, Track
+from sporttracker.logic.model.Track import get_track_ids_by_planned_tour, Track
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import (
     get_users_by_ids,
@@ -213,6 +213,22 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
         sharedUserIds = [int(item) for item in request.form.getlist('sharedUsers')]
         sharedUsers = get_users_by_ids(sharedUserIds)
         plannedTour.shared_users = sharedUsers
+
+        # The list of shared users may have changed.
+        # All tracks that link to this planned tour must be checked, whether they are owned by the owner of the
+        # planned tour or if the planned tour is still shared to the owner of the track.
+        linkedTrackIds = get_track_ids_by_planned_tour(plannedTour)
+        for trackId in linkedTrackIds:
+            track = Track.query.filter().filter(Track.id == trackId).first()
+            if track.user_id == plannedTour.user_id:
+                continue
+
+            if track.user_id in sharedUserIds:
+                continue
+
+            track.plannedTour = None
+            LOGGER.debug(f'Removed linked planned tour from track: {trackId}')
+            db.session.commit()
 
         LOGGER.debug(f'Updated planned tour: {plannedTour}')
         db.session.commit()
