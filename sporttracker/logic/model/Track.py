@@ -162,3 +162,17 @@ def get_track_by_id(track_id: int) -> Track | None:
 
 def get_track_by_share_code(shareCode: str) -> Track | None:
     return Track.query.filter(Track.share_code == shareCode).first()
+
+
+def get_track_ids_by_planned_tour(plannedTour: PlannedTour) -> list[int]:
+    linkedTrackIds = (
+        Track.query.with_entities(Track.id)
+        .filter(Track.user_id == current_user.id)
+        .filter(Track.plannedTour == plannedTour)
+        .all()
+    )
+
+    if linkedTrackIds is None:
+        return []
+
+    return [int(row.id) for row in linkedTrackIds]

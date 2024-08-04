@@ -21,7 +21,7 @@ from sporttracker.logic.model.PlannedTour import (
     TravelDirection,
     get_planned_tours,
 )
-from sporttracker.logic.model.Track import Track
+from sporttracker.logic.model.Track import get_track_ids_by_planned_tour
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import (
     get_users_by_ids,
@@ -72,17 +72,7 @@ class PlannedTourModel:
         else:
             gpxMetaInfo = None
 
-        linkedTrackIds = (
-            Track.query.with_entities(Track.id)
-            .filter(Track.user_id == current_user.id)
-            .filter(Track.plannedTour == plannedTour)
-            .all()
-        )
-
-        if linkedTrackIds is None:
-            linkedTrackIds = []
-        else:
-            linkedTrackIds = [int(row.id) for row in linkedTrackIds]
+        linkedTrackIds = get_track_ids_by_planned_tour(plannedTour)
 
         return PlannedTourModel(
             id=plannedTour.id,
