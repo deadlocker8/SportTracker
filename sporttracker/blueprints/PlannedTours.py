@@ -21,7 +21,7 @@ from sporttracker.logic.model.PlannedTour import (
     TravelDirection,
     get_planned_tours,
 )
-from sporttracker.logic.model.Track import get_track_ids_by_planned_tour
+from sporttracker.logic.model.Track import get_track_ids_by_planned_tour, get_track_by_id, Track
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import (
     get_users_by_ids,
@@ -238,6 +238,13 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
                 )
             except OSError as e:
                 LOGGER.error(e)
+
+        linkedTrackIds = get_track_ids_by_planned_tour(plannedTour)
+        for trackId in linkedTrackIds:
+            track = Track.query.filter().filter(Track.id == trackId).first()
+            track.plannedTour = None
+            LOGGER.debug(f'Removed linked planned tour from track: {trackId}')
+            db.session.commit()
 
         LOGGER.debug(f'Deleted planned tour: {plannedTour}')
         db.session.delete(plannedTour)
