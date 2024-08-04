@@ -84,7 +84,10 @@ class PlannedTourModel:
 
     @staticmethod
     def create_from_tour(
-        plannedTour: PlannedTour, uploadFolder: str, includeGpxMetaInfo: bool
+        plannedTour: PlannedTour,
+        uploadFolder: str,
+        includeGpxMetaInfo: bool,
+        includeLinkedTracks: bool,
     ) -> 'PlannedTourModel':
         if includeGpxMetaInfo:
             if plannedTour.gpxFileName is None:
@@ -96,7 +99,9 @@ class PlannedTourModel:
         else:
             gpxMetaInfo = None
 
-        linkedTracks = PlannedTourModel.__get_linked_tracks_by_planned_tour(plannedTour)
+        linkedTracks = []
+        if includeLinkedTracks:
+            linkedTracks = PlannedTourModel.__get_linked_tracks_by_planned_tour(plannedTour)
 
         return PlannedTourModel(
             id=plannedTour.id,
@@ -141,7 +146,9 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
 
         plannedTourList: list[PlannedTourModel] = []
         for tour in tours:
-            plannedTourList.append(PlannedTourModel.create_from_tour(tour, uploadFolder, False))
+            plannedTourList.append(
+                PlannedTourModel.create_from_tour(tour, uploadFolder, False, True)
+            )
 
         return render_template(
             'plannedTours/plannedTours.jinja2',
@@ -198,7 +205,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
         if plannedTour is None:
             abort(404)
 
-        tourModel = PlannedTourModel.create_from_tour(plannedTour, uploadFolder, False)
+        tourModel = PlannedTourModel.create_from_tour(plannedTour, uploadFolder, False, True)
 
         return render_template(
             'plannedTours/plannedTourForm.jinja2',

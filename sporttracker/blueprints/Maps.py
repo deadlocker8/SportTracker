@@ -117,7 +117,7 @@ def construct_blueprint(uploadFolder: str):
 
         return render_template(
             'maps/mapPlannedTour.jinja2',
-            plannedTour=PlannedTourModel.create_from_tour(plannedTour, uploadFolder, True),
+            plannedTour=PlannedTourModel.create_from_tour(plannedTour, uploadFolder, True, True),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id),
         )
 
@@ -130,7 +130,7 @@ def construct_blueprint(uploadFolder: str):
 
         return render_template(
             'maps/mapPlannedTour.jinja2',
-            plannedTour=PlannedTourModel.create_from_tour(plannedTour, uploadFolder, True),
+            plannedTour=PlannedTourModel.create_from_tour(plannedTour, uploadFolder, True, False),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackBySharedPlannedTour', shareCode=shareCode),
         )
 

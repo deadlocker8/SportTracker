@@ -256,7 +256,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
         self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', None, None, None)
 
-        selenium.find_element(By.ID, 'buttonCreateSharedLink').click()
+        self.click_button_by_id(selenium, 'buttonCreateSharedLink')
         WebDriverWait(selenium, 5).until(
             expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
         )
@@ -289,7 +289,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
         self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', None, None, None)
 
-        selenium.find_element(By.ID, 'buttonCreateSharedLink').click()
+        self.click_button_by_id(selenium, 'buttonCreateSharedLink')
         WebDriverWait(selenium, 5).until(
             expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
         )
