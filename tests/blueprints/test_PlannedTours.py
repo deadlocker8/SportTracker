@@ -69,12 +69,6 @@ class TestPlannedTours(SeleniumTestBaseClass):
         if direction is not None:
             selenium.find_element(By.XPATH, f'//label[@for="{direction}"]').click()
 
-    def __click_submit_button(self, selenium):
-        button = selenium.find_element(By.ID, 'buttonSavePlannedTour')
-        selenium.execute_script('arguments[0].scrollIntoView();', button)
-        time.sleep(1)
-        button.click()
-
     def test_add_tour_valid(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
@@ -86,7 +80,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
             'departure-method-2',
             'direction-2',
         )
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -100,7 +94,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, TrackType.BIKING, '', None, None, None)
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         assert selenium.current_url.endswith('/plannedTours/add')
 
@@ -108,7 +102,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', None, None, None)
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -118,7 +112,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
         self.__open_form(selenium)
         self.__fill_form(selenium, TrackType.RUNNING, 'Run away', None, None, None)
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -147,7 +141,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
             'departure-method-2',
             'direction-2',
         )
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -174,7 +168,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
             'departure-method-3',
             'direction-3',
         )
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -192,7 +186,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
         selenium.find_element(By.XPATH, '//label[@for="sharedUser-3"]').click()
 
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -233,7 +227,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
         # check other user can edit planned tour
         self.__fill_form(selenium, TrackType.BIKING, 'Mega Tour', None, None, None)
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -267,7 +261,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
             expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
         )
         sharedLink = selenium.find_element(By.ID, 'sharedLink').text
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -300,7 +294,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
             expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
         )
         sharedLink = selenium.find_element(By.ID, 'sharedLink').text
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSavePlannedTour')
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
                 (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
@@ -321,7 +315,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         WebDriverWait(selenium, 5).until(
             expected_conditions.invisibility_of_element_located((By.ID, 'sharedLink'))
         )
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSavePlannedTour')
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
                 (By.CLASS_NAME, 'headline-text'), 'Planned Tours'

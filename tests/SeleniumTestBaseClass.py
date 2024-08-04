@@ -1,3 +1,4 @@
+import time
 from abc import ABC
 from datetime import datetime
 
@@ -35,3 +36,10 @@ class SeleniumTestBaseClass(ABC):
             expected_conditions.visibility_of_element_located((By.ID, 'button-logout'))
         )
         selenium.find_element(By.ID, 'button-logout').click()
+
+    @staticmethod
+    def click_button_by_id(selenium, buttonId: str) -> None:
+        button = selenium.find_element(By.ID, buttonId)
+        selenium.execute_script('arguments[0].scrollIntoView();', button)
+        time.sleep(1)
+        button.click()

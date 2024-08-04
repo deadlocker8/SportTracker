@@ -72,17 +72,11 @@ class TestTracks(SeleniumTestBaseClass):
         selenium.find_element(By.ID, 'track-averageHeartRate').send_keys(averageHeartRate)
         selenium.find_element(By.ID, 'track-elevationSum').send_keys(elevationSum)
 
-    def __click_submit_button(self, selenium):
-        button = selenium.find_element(By.ID, 'buttonSaveTrack')
-        selenium.execute_script('arguments[0].scrollIntoView();', button)
-        time.sleep(1)
-        button.click()
-
     def test_add_track_valid(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -96,7 +90,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, '', '', '', '', '', '', '', '', '')
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
 
         assert selenium.current_url.endswith('/tracks/add/BIKING')
 
@@ -117,7 +111,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
 
         assert selenium.current_url.endswith('/tracks/add/BIKING')
 
@@ -139,7 +133,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         selenium.find_element(By.ID, 'track-my_custom_field').send_keys('15')
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -168,7 +162,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -193,7 +187,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         selenium.find_element(By.XPATH, '//label[@for="participant-1"]').click()
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -227,7 +221,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         selenium.find_element(By.XPATH, '//label[@for="participant-1"]').click()
         selenium.find_element(By.XPATH, '//label[@for="participant-2"]').click()
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -246,7 +240,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.__fill_form(
             selenium, 'My Biking Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
         )
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -258,7 +252,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.__fill_form(
             selenium, 'My Running Track', '2023-02-01', '16:30', 5.5, 0, 20, 12, 188, 15
         )
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -312,7 +306,7 @@ class TestTracks(SeleniumTestBaseClass):
             expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
         )
         sharedLink = selenium.find_element(By.ID, 'sharedLink').text
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -347,7 +341,7 @@ class TestTracks(SeleniumTestBaseClass):
             expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
         )
         sharedLink = selenium.find_element(By.ID, 'sharedLink').text
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -369,7 +363,7 @@ class TestTracks(SeleniumTestBaseClass):
         WebDriverWait(selenium, 5).until(
             expected_conditions.invisibility_of_element_located((By.ID, 'sharedLink'))
         )
-        self.__click_submit_button(selenium)
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
                 (By.CLASS_NAME, 'headline-text'), 'Tracks'
