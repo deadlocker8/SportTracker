@@ -1,6 +1,7 @@
 # 1.27.0
 - add: allow tracks to be linked to a planned tour
-- fix: improve page load performance for track and planned tour overview
+- fix: improve page load performance for track overview
+- chore: update dependencies
 
 # 1.26.1
 - fix: annual statistics: round average number of tracks
