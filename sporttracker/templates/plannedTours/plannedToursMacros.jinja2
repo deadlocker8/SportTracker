@@ -57,3 +57,34 @@
         </div>
     </div>
 {%- endmacro %}
+
+{% macro linkedTracksMacro(idSuffix, plannedTour) -%}
+    <div class="modal fade" tabindex="-1" id="linked-tracks-modal-{{ idSuffix }}">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header d-flex align-items-center justify-content-start">
+                    {{ trackMacros.track_type_icon_small(plannedTour.type, fontSize='fs-3') }}
+                    <div class="fs-5 ms-3 text-truncate">
+                        {{ plannedTour.name }}
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="list-group text-start">
+                            {% for linkedTrack in plannedTour.linkedTracks %}
+                                <a href="{{ url_for('maps.showSingleTrack', track_id=linkedTrack.id) }}"
+                                   class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
+                                    {{ linkedTrack.startTime | format_date() }}
+                                    <span class="material-icons text-primary">send</span>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{ gettext('Close') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}

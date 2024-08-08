@@ -1,6 +1,7 @@
 # 1.28.0
 - add: search: add pagination on bottom
 - add: show edit button for track and planned tour map
+- add: planned tour overview: clicking on number of linked tracks opens a modal with all linked tracks
 
 # 1.27.0
 - add: allow tracks to be linked to a planned tour
