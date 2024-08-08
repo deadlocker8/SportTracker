@@ -92,6 +92,7 @@ def construct_blueprint(uploadFolder: str):
             'maps/mapSingleTrack.jinja2',
             track=TrackModel.create_from_track(track, uploadFolder, True),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id),
+            editUrl=url_for('tracks.edit', track_id=track_id),
         )
 
     @maps.route('/map/shared/<string:shareCode>')
@@ -119,6 +120,7 @@ def construct_blueprint(uploadFolder: str):
             'maps/mapPlannedTour.jinja2',
             plannedTour=PlannedTourModel.create_from_tour(plannedTour, uploadFolder, True, True),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id),
+            editUrl=url_for('plannedTours.edit', tour_id=tour_id),
         )
 
     @maps.route('/map/plannedTour/shared/<string:shareCode>')

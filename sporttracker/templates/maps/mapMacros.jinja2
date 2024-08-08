@@ -59,7 +59,7 @@
 {%- endmacro %}
 
 
-{% macro gpxDownloadButton(title, gpxUrl, icon, classes='') -%}
+{% macro gpxDownloadButton(title, gpxUrl, icon, classes='', editUrl='') -%}
     <div class="card-header d-flex align-items-center {{ classes }} justify-content-between">
         <div class="d-flex align-items-center">
             <i class="fa-solid {{ icon }} fa-fw fs-5 me-2"></i>
@@ -67,11 +67,16 @@
                 {{ title }}
             </div>
         </div>
-        <a href="{{ gpxUrl }}"
-           class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
-           target="_blank">
-            <span class="material-icons fs-4">download</span> <span>GPX</span>
-        </a>
+        <div class="d-flex align-items-center">
+            {% if editUrl %}
+                <a href="{{ editUrl }}" class="btn btn-primary btn-sm ms-3 d-flex align-items-center">
+                    <span class="material-icons fs-4">edit</span>
+                </a>
+            {% endif %}
+            <a href="{{ gpxUrl }}" class="btn btn-primary btn-sm ms-3 d-flex align-items-center" target="_blank">
+                <span class="material-icons fs-4">download</span> <span>GPX</span>
+            </a>
+        </div>
     </div>
 {%- endmacro %}
 
