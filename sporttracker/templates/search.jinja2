@@ -71,19 +71,25 @@
                             {{ render_pagination(pagination) }}
                         </div>
                     </div>
-                {% endif %}
 
-                {% for monthName, tracks in results.items() %}
-                    <h3 class="mt-4">{{ monthName }}</h3>
-                    {% for track in tracks %}
-                        <div class="d-none d-lg-block">
-                            {{ trackMacros.render_track_card(track, renderAsRow=true, useSmallIcon=true) }}
-                        </div>
-                        <div class="d-lg-none">
-                            {{ trackMacros.render_track_card(track, renderAsRow=false, useSmallIcon=true) }}
-                        </div>
+                    {% for monthName, tracks in results.items() %}
+                        <h3 class="mt-4">{{ monthName }}</h3>
+                        {% for track in tracks %}
+                            <div class="d-none d-lg-block">
+                                {{ trackMacros.render_track_card(track, renderAsRow=true, useSmallIcon=true) }}
+                            </div>
+                            <div class="d-lg-none">
+                                {{ trackMacros.render_track_card(track, renderAsRow=false, useSmallIcon=true) }}
+                            </div>
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
+
+                     <div class="row mb-3">
+                        <div class="col col-12">
+                            {{ render_pagination(pagination) }}
+                        </div>
+                    </div>
+                {% endif %}
             </section>
         </div>
 
