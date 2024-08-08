@@ -43,32 +43,6 @@ class GpxService:
         self.__join_tracks(self._gpx)
         return self._gpx.to_xml(prettyprint=False)
 
-    def get_length(self) -> float:
-        return self._gpx.length_2d()
-
-    def get_elevation_extremes(self) -> ElevationExtremes:
-        elevationExtremes = self._gpx.get_elevation_extremes()
-        minimum = elevationExtremes.minimum
-        maximum = elevationExtremes.maximum
-        if minimum is None or maximum is None:
-            return ElevationExtremes(None, None)
-
-        return ElevationExtremes(int(minimum), int(maximum))
-
-    def get_uphill_downhill(self) -> UphillDownhill:
-        uphillDownhill = self._gpx.get_uphill_downhill()
-        uphill = uphillDownhill.uphill
-        downhill = uphillDownhill.downhill
-        if uphill is None or downhill is None:
-            return UphillDownhill(None, None)
-
-        return UphillDownhill(int(uphill), int(downhill))
-
-    def get_meta_info(self) -> GpxMetaInfo:
-        return GpxMetaInfo(
-            self.get_length(), self.get_elevation_extremes(), self.get_uphill_downhill()
-        )
-
     @staticmethod
     def __join_tracks(gpx: GPX) -> None:
         joinedTrack = gpxpy.gpx.GPXTrack()
@@ -97,3 +71,29 @@ class GpxService:
             LOGGER.debug(f'Joined {numberOfSegments} segments')
             track.segments.clear()
             track.segments.append(joinedSegment)
+
+    def __get_length(self) -> float:
+        return self._gpx.length_2d()
+
+    def __get_elevation_extremes(self) -> ElevationExtremes:
+        elevationExtremes = self._gpx.get_elevation_extremes()
+        minimum = elevationExtremes.minimum
+        maximum = elevationExtremes.maximum
+        if minimum is None or maximum is None:
+            return ElevationExtremes(None, None)
+
+        return ElevationExtremes(int(minimum), int(maximum))
+
+    def __get_uphill_downhill(self) -> UphillDownhill:
+        uphillDownhill = self._gpx.get_uphill_downhill()
+        uphill = uphillDownhill.uphill
+        downhill = uphillDownhill.downhill
+        if uphill is None or downhill is None:
+            return UphillDownhill(None, None)
+
+        return UphillDownhill(int(uphill), int(downhill))
+
+    def get_meta_info(self) -> GpxMetaInfo:
+        return GpxMetaInfo(
+            self.__get_length(), self.__get_elevation_extremes(), self.__get_uphill_downhill()
+        )
