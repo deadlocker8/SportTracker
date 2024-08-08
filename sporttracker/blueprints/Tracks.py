@@ -16,7 +16,7 @@ from pydantic import BaseModel, ConfigDict, field_validator
 from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack
 from sporttracker.logic import Constants
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
-from sporttracker.logic.GpxService import GpxMetaInfo, GpxService
+from sporttracker.logic.GpxService import GpxMetaInfo, CachedGpxService
 from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
     QuickFilterState,
@@ -64,15 +64,17 @@ class TrackModel(DateTimeAccess):
 
     @staticmethod
     def create_from_track(
-        track: Track, uploadFolder: str, includeGpxMetaInfo: bool
+        track: Track,
+        uploadFolder: str,
+        includeGpxMetaInfo: bool,
+        cachedGpxService: CachedGpxService,
     ) -> 'TrackModel':
         if includeGpxMetaInfo:
             if track.gpxFileName is None:
                 gpxMetaInfo = None
             else:
                 gpxTrackPath = os.path.join(uploadFolder, str(track.gpxFileName))
-                gpxService = GpxService(gpxTrackPath)
-                gpxMetaInfo = gpxService.get_meta_info()
+                gpxMetaInfo = cachedGpxService.get_meta_info(gpxTrackPath)
         else:
             gpxMetaInfo = None
 
@@ -138,7 +140,7 @@ class TrackFormModel(BaseModel):
         return value
 
 
-def construct_blueprint(uploadFolder: str):
+def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
     tracks = Blueprint('tracks', __name__, static_folder='static', url_prefix='/tracks')
 
     @tracks.route('/', defaults={'year': None, 'month': None})
@@ -153,10 +155,14 @@ def construct_blueprint(uploadFolder: str):
 
         quickFilterState = get_quick_filter_state_from_session()
 
-        monthRightSide = __get_month_model(monthRightSideDate, quickFilterState, uploadFolder)
+        monthRightSide = __get_month_model(
+            monthRightSideDate, quickFilterState, uploadFolder, cachedGpxService
+        )
 
         monthLeftSideDate = monthRightSideDate - relativedelta(months=1)
-        monthLeftSide = __get_month_model(monthLeftSideDate, quickFilterState, uploadFolder)
+        monthLeftSide = __get_month_model(
+            monthLeftSideDate, quickFilterState, uploadFolder, cachedGpxService
+        )
 
         nextMonthDate = monthRightSideDate + relativedelta(months=1)
 
@@ -314,7 +320,9 @@ def construct_blueprint(uploadFolder: str):
             track.gpxFileName = newGpxFileName
         else:
             if newGpxFileName is not None:
+                oldGpxFilePath = os.path.join(uploadFolder, str(track.gpxFileName))
                 track.gpxFileName = newGpxFileName
+                cachedGpxService.invalidate_cache_entry(oldGpxFilePath)
 
         track.custom_fields = form.model_extra
 
@@ -365,7 +373,10 @@ def construct_blueprint(uploadFolder: str):
 
 
 def __get_month_model(
-    monthDate: date, quickFilterState: QuickFilterState, uploadFolder: str
+    monthDate: date,
+    quickFilterState: QuickFilterState,
+    uploadFolder: str,
+    cachedGpxService: CachedGpxService,
 ) -> MonthModel:
     tracks = get_tracks_by_year_and_month_by_type(
         monthDate.year,
@@ -375,7 +386,9 @@ def __get_month_model(
 
     trackModels = []
     for track in tracks:
-        trackModels.append(TrackModel.create_from_track(track, uploadFolder, False))
+        trackModels.append(
+            TrackModel.create_from_track(track, uploadFolder, False, cachedGpxService)
+        )
 
     maintenanceEvents = get_maintenance_events_by_year_and_month_by_type(
         monthDate.year, monthDate.month, quickFilterState.get_active_types()

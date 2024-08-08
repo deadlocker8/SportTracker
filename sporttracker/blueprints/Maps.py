@@ -8,6 +8,7 @@ from sqlalchemy import func, extract, or_
 from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Tracks import TrackModel
 from sporttracker.logic import Constants
+from sporttracker.logic.GpxService import CachedGpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.PlannedTour import (
     get_planned_tour_by_id,
@@ -42,7 +43,7 @@ def createGpxInfoPlannedTour(tourId: int, tourName: str) -> dict[str, str | int]
     }
 
 
-def construct_blueprint(uploadFolder: str):
+def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
     maps = Blueprint('maps', __name__, static_folder='static')
 
     @maps.route('/map')
@@ -90,7 +91,7 @@ def construct_blueprint(uploadFolder: str):
 
         return render_template(
             'maps/mapSingleTrack.jinja2',
-            track=TrackModel.create_from_track(track, uploadFolder, True),
+            track=TrackModel.create_from_track(track, uploadFolder, True, cachedGpxService),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id),
             editUrl=url_for('tracks.edit', track_id=track_id),
         )
@@ -104,7 +105,7 @@ def construct_blueprint(uploadFolder: str):
 
         return render_template(
             'maps/mapSingleTrack.jinja2',
-            track=TrackModel.create_from_track(track, uploadFolder, True),
+            track=TrackModel.create_from_track(track, uploadFolder, True, cachedGpxService),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackBySharedTrack', shareCode=shareCode),
         )
 
@@ -118,7 +119,9 @@ def construct_blueprint(uploadFolder: str):
 
         return render_template(
             'maps/mapPlannedTour.jinja2',
-            plannedTour=PlannedTourModel.create_from_tour(plannedTour, uploadFolder, True, True),
+            plannedTour=PlannedTourModel.create_from_tour(
+                plannedTour, uploadFolder, True, True, cachedGpxService
+            ),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id),
             editUrl=url_for('plannedTours.edit', tour_id=tour_id),
         )
@@ -132,7 +135,9 @@ def construct_blueprint(uploadFolder: str):
 
         return render_template(
             'maps/mapPlannedTour.jinja2',
-            plannedTour=PlannedTourModel.create_from_tour(plannedTour, uploadFolder, True, False),
+            plannedTour=PlannedTourModel.create_from_tour(
+                plannedTour, uploadFolder, True, False, cachedGpxService
+            ),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackBySharedPlannedTour', shareCode=shareCode),
         )
 

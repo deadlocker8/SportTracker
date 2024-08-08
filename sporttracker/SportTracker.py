@@ -38,6 +38,7 @@ from sporttracker.blueprints import (
 from sporttracker.helpers import Helpers
 from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
+from sporttracker.logic.GpxService import CachedGpxService
 from sporttracker.logic.model.CustomTrackField import CustomTrackFieldType
 from sporttracker.logic.model.PlannedTour import (
     TravelType,
@@ -194,6 +195,8 @@ class SportTracker(FlaskBaseApp):
 
         Babel(app, locale_selector=get_locale)
 
+        app.config['CACHED_GPX_SERVICE'] = CachedGpxService()
+
         return app
 
     def __create_admin_user(self):
@@ -217,7 +220,11 @@ class SportTracker(FlaskBaseApp):
     def _register_blueprints(self, app):
         app.register_blueprint(Authentication.construct_blueprint())
         app.register_blueprint(General.construct_blueprint())
-        app.register_blueprint(Tracks.construct_blueprint(app.config['UPLOAD_FOLDER']))
+        app.register_blueprint(
+            Tracks.construct_blueprint(
+                app.config['UPLOAD_FOLDER'], app.config['CACHED_GPX_SERVICE']
+            )
+        )
         app.register_blueprint(MonthGoals.construct_blueprint())
         app.register_blueprint(MonthGoalsDistance.construct_blueprint())
         app.register_blueprint(MonthGoalsCount.construct_blueprint())
@@ -228,12 +235,16 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Achievements.construct_blueprint())
         app.register_blueprint(Search.construct_blueprint())
         app.register_blueprint(GpxTracks.construct_blueprint(app.config['UPLOAD_FOLDER']))
-        app.register_blueprint(Maps.construct_blueprint(app.config['UPLOAD_FOLDER']))
+        app.register_blueprint(
+            Maps.construct_blueprint(app.config['UPLOAD_FOLDER'], app.config['CACHED_GPX_SERVICE'])
+        )
         app.register_blueprint(QuickFilter.construct_blueprint())
         app.register_blueprint(MaintenanceEvents.construct_blueprint())
         app.register_blueprint(
             PlannedTours.construct_blueprint(
-                app.config['UPLOAD_FOLDER'], self._settings['gpxPreviewImages']
+                app.config['UPLOAD_FOLDER'],
+                self._settings['gpxPreviewImages'],
+                app.config['CACHED_GPX_SERVICE'],
             )
         )
         app.register_blueprint(AnnualAchievements.construct_blueprint())

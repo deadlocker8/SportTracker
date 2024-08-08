@@ -2,6 +2,7 @@
 - add: search: add pagination on bottom
 - add: show edit button for track and planned tour map
 - add: planned tour overview: clicking on number of linked tracks opens a modal with all linked tracks
+- add: performance improvement: gpx meta info is calculated only once per gpx track and then cached
 
 # 1.27.0
 - add: allow tracks to be linked to a planned tour

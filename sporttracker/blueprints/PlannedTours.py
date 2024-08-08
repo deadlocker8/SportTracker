@@ -12,7 +12,7 @@ from pydantic import BaseModel
 
 from sporttracker.blueprints.GpxTracks import handleGpxTrackForPlannedTour
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService, GpxMetaInfo
+from sporttracker.logic.GpxService import GpxMetaInfo, CachedGpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.PlannedTour import (
     PlannedTour,
@@ -88,14 +88,14 @@ class PlannedTourModel:
         uploadFolder: str,
         includeGpxMetaInfo: bool,
         includeLinkedTracks: bool,
+        cachedGpxService: CachedGpxService,
     ) -> 'PlannedTourModel':
         if includeGpxMetaInfo:
             if plannedTour.gpxFileName is None:
                 gpxMetaInfo = None
             else:
                 gpxTrackPath = os.path.join(uploadFolder, str(plannedTour.gpxFileName))
-                gpxService = GpxService(gpxTrackPath)
-                gpxMetaInfo = gpxService.get_meta_info()
+                gpxMetaInfo = cachedGpxService.get_meta_info(gpxTrackPath)
         else:
             gpxMetaInfo = None
 
@@ -132,7 +132,9 @@ class PlannedTourFormModel(BaseModel):
     shareCode: str | None = None
 
 
-def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, Any]):
+def construct_blueprint(
+    uploadFolder: str, gpxPreviewImageSettings: dict[str, Any], cachedGpxService: CachedGpxService
+) -> Blueprint:
     plannedTours = Blueprint(
         'plannedTours', __name__, static_folder='static', url_prefix='/plannedTours'
     )
@@ -147,7 +149,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
         plannedTourList: list[PlannedTourModel] = []
         for tour in tours:
             plannedTourList.append(
-                PlannedTourModel.create_from_tour(tour, uploadFolder, True, True)
+                PlannedTourModel.create_from_tour(tour, uploadFolder, True, True, cachedGpxService)
             )
 
         return render_template(
@@ -205,7 +207,9 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
         if plannedTour is None:
             abort(404)
 
-        tourModel = PlannedTourModel.create_from_tour(plannedTour, uploadFolder, False, True)
+        tourModel = PlannedTourModel.create_from_tour(
+            plannedTour, uploadFolder, False, True, cachedGpxService
+        )
 
         return render_template(
             'plannedTours/plannedTourForm.jinja2',
@@ -239,7 +243,9 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
             plannedTour.gpxFileName = newGpxFileName
         else:
             if newGpxFileName is not None:
+                oldGpxFilePath = os.path.join(uploadFolder, str(plannedTour.gpxFileName))
                 plannedTour.gpxFileName = newGpxFileName
+                cachedGpxService.invalidate_cache_entry(oldGpxFilePath)
 
         sharedUserIds = [int(item) for item in request.form.getlist('sharedUsers')]
         sharedUsers = get_users_by_ids(sharedUserIds)

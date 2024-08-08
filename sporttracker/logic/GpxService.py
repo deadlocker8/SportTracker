@@ -29,7 +29,7 @@ class GpxMetaInfo:
 
 
 class GpxService:
-    def __init__(self, gpxPath: str):
+    def __init__(self, gpxPath: str) -> None:
         self._gpxPath = gpxPath
         self._gpx = self.__parse_gpx(self._gpxPath)
 
@@ -97,3 +97,22 @@ class GpxService:
         return GpxMetaInfo(
             self.__get_length(), self.__get_elevation_extremes(), self.__get_uphill_downhill()
         )
+
+
+class CachedGpxService:
+    def __init__(self) -> None:
+        self._gpxCache: dict[str, GpxMetaInfo] = {}
+
+    def get_meta_info(self, gpxPath: str) -> GpxMetaInfo:
+        if gpxPath not in self._gpxCache:
+            gpxService = GpxService(gpxPath)
+            gpxMetaInfo = gpxService.get_meta_info()
+            self._gpxCache[gpxPath] = gpxMetaInfo
+            LOGGER.debug(f'Added gpx cache entry for "{gpxPath}"')
+
+        return self._gpxCache[gpxPath]
+
+    def invalidate_cache_entry(self, gpxPath: str) -> None:
+        if gpxPath in self._gpxCache:
+            LOGGER.debug(f'Invalidated gpx cache entry for "{gpxPath}"')
+            del self._gpxCache[gpxPath]
