@@ -320,6 +320,7 @@ def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
             track.gpxFileName = newGpxFileName
         else:
             if newGpxFileName is not None:
+                __delete_gpx_track(uploadFolder, track)
                 oldGpxFilePath = os.path.join(uploadFolder, str(track.gpxFileName))
                 track.gpxFileName = newGpxFileName
                 cachedGpxService.invalidate_cache_entry(oldGpxFilePath)
@@ -346,13 +347,7 @@ def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
             abort(404)
 
         if track.gpxFileName is not None:
-            try:
-                os.remove(os.path.join(uploadFolder, track.gpxFileName))
-                LOGGER.debug(
-                    f'Deleted linked gpx file "{track.gpxFileName}" for track with id {track_id}'
-                )
-            except OSError as e:
-                LOGGER.error(e)
+            __delete_gpx_track(uploadFolder, track)
 
         LOGGER.debug(f'Deleted track: {track}')
         db.session.delete(track)
@@ -406,3 +401,11 @@ def __get_month_model(
             quickFilterState.get_active_types(),
         ),
     )
+
+
+def __delete_gpx_track(uploadFolder: str, track: Track) -> None:
+    try:
+        os.remove(os.path.join(uploadFolder, track.gpxFileName))
+        LOGGER.debug(f'Deleted linked gpx file "{track.gpxFileName}" for track with id {track.d}')
+    except OSError as e:
+        LOGGER.error(e)

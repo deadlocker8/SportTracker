@@ -243,6 +243,7 @@ def construct_blueprint(
             plannedTour.gpxFileName = newGpxFileName
         else:
             if newGpxFileName is not None:
+                __delete_gpx_track(uploadFolder, plannedTour)
                 oldGpxFilePath = os.path.join(uploadFolder, str(plannedTour.gpxFileName))
                 plannedTour.gpxFileName = newGpxFileName
                 cachedGpxService.invalidate_cache_entry(oldGpxFilePath)
@@ -284,13 +285,7 @@ def construct_blueprint(
             abort(403)
 
         if plannedTour.gpxFileName is not None:
-            try:
-                os.remove(os.path.join(uploadFolder, plannedTour.gpxFileName))
-                LOGGER.debug(
-                    f'Deleted linked gpx file "{plannedTour.gpxFileName}" for planned tour with id {tour_id}'
-                )
-            except OSError as e:
-                LOGGER.error(e)
+            __delete_gpx_track(uploadFolder, plannedTour)
 
         linkedTrackIds = get_track_ids_by_planned_tour(plannedTour)
         for trackId in linkedTrackIds:
@@ -331,3 +326,13 @@ def __get_user_models(users: list[User]) -> list[SharedUserModel]:
     for user in users:
         sharedUserModels.append(SharedUserModel(user.id, user.username))
     return sharedUserModels
+
+
+def __delete_gpx_track(uploadFolder: str, plannedTour: PlannedTour) -> None:
+    try:
+        os.remove(os.path.join(uploadFolder, plannedTour.gpxFileName))
+        LOGGER.debug(
+            f'Deleted linked gpx file "{plannedTour.gpxFileName}" for planned tour with id {plannedTour.id}'
+        )
+    except OSError as e:
+        LOGGER.error(e)
