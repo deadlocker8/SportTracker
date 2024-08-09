@@ -4,6 +4,7 @@
 - add: planned tour overview: clicking on number of linked tracks opens a modal with all linked tracks
 - add: performance improvement: gpx meta info is calculated only once per gpx track and then cached
 - add: delete previous gpx track when new one is uploaded
+- chore: update dependencies
 
 # 1.27.0
 - add: allow tracks to be linked to a planned tour
