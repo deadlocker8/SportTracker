@@ -36,6 +36,7 @@ from sporttracker.blueprints import (
     AnnualAchievements,
 )
 from sporttracker.helpers import Helpers
+from sporttracker.helpers.SettingsChecker import SettingsChecker
 from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
 from sporttracker.logic.GpxService import CachedGpxService
@@ -79,6 +80,8 @@ class SportTracker(FlaskBaseApp):
         self._isDebug = isDebug
         self._generateDummyData = generateDummyData
         self._prepareDatabase = prepareDatabase
+
+        SettingsChecker(self._settings).check()
 
         loggingSettings = self._settings['logging']
         if loggingSettings['enableRotatingLogFile']:
