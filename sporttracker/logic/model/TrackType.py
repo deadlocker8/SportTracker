@@ -13,6 +13,7 @@ class TrackType(enum.Enum):
         '#FFC107',
         'border-warning',
         'text-warning',
+        '#FFC10796',
         True,
         0,
     )
@@ -24,10 +25,22 @@ class TrackType(enum.Enum):
         '#0DCAF0',
         'border-info',
         'text-info',
+        '#0DCAF080',
         False,
         1,
     )
-    HIKING = 'HIKING', 'hiking', False, 'bg-green', '#619B8A', 'border-green', 'text-green', True, 2
+    HIKING = (
+        'HIKING',
+        'hiking',
+        False,
+        'bg-green',
+        '#619B8A',
+        'border-green',
+        'text-green',
+        '#39B856AA',
+        True,
+        2,
+    )
 
     icon: str
     is_font_awesome_icon: bool
@@ -35,6 +48,7 @@ class TrackType(enum.Enum):
     background_color_hex: str
     border_color: str
     text_color: str
+    tile_color: str
     render_speed_in_kph: bool
     order: int
 
@@ -47,6 +61,7 @@ class TrackType(enum.Enum):
         background_color_hex: str,
         border_color: str,
         text_color: str,
+        tile_color: str,
         render_speed_in_kph: bool,
         order: int,
     ):
@@ -58,6 +73,7 @@ class TrackType(enum.Enum):
         member.background_color_hex = background_color_hex
         member.border_color = border_color
         member.text_color = text_color
+        member.tile_color = tile_color
         member.render_speed_in_kph = render_speed_in_kph
         member.order = order
         return member

@@ -179,7 +179,7 @@ def __downloadGpxTrack(
 ) -> Response | None:
     if item.gpxFileName is not None:
         gpxTrackPath = os.path.join(uploadFolder, str(item.gpxFileName))
-        gpxService = GpxService(gpxTrackPath, baseZoomLevel)
+        gpxService = GpxService(gpxTrackPath, baseZoomLevel, (0, 0, 0, 0))
         modifiedGpxXml = gpxService.join_tracks_and_segments()
         fileName = f'{downloadName}.gpx'
         return Response(

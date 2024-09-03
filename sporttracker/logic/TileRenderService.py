@@ -71,12 +71,20 @@ class TileRenderService:
         """
         return [(x // 2, y // 2)]
 
-    def __is_tile_visited(self, x: int, y: int) -> bool:
+    def __calculate_color(self, x: int, y: int) -> tuple[int, int, int, int]:
         """
-        Return whether a tile with the position (x, y) has been visited.
+        Return all visited tiles with the position (x, y).
         Expects x, y to be in self._baseZoomLevel coordinates.
         """
-        return any([True for t in self._visitedTiles if t.x == x and t.y == y])
+        matchingTiles = [t for t in self._visitedTiles if t.x == x and t.y == y]
+        if len(matchingTiles) == 0:
+            return 0, 0, 0, 0
+
+        if len(matchingTiles) == 1:
+            return matchingTiles[0].color
+
+        # TODO: mix colors
+        return 255, 255, 255, 255
 
     def __calculate_border_color(
         self,
@@ -108,12 +116,11 @@ class TileRenderService:
         x: int,
         y: int,
         zoom: int,
-        color: tuple[int, int, int, int],
         borderColor: tuple[int, int, int, int] | None,
     ) -> Image.Image:
         """
         Renders a tile image for a tile with the position (x,y) and the specified zoom level.
-        Already visited (sub-) tiles are shown as squares using the specified color.
+        Already visited (sub-) tiles are shown as squares using the color defined inside the visited tile isntance.
         All non visited (sub-) tiles will be transparent.
         Optionally renders a border for each sub tile.
         """
@@ -129,9 +136,7 @@ class TileRenderService:
                 elementIndex = row * numberOfElementsPerAxis + col
                 position = positions[elementIndex]
 
-                colorToUse = (0, 0, 0, 0)
-                if self.__is_tile_visited(position[0], position[1]):
-                    colorToUse = color
+                colorToUse = self.__calculate_color(position[0], position[1])
 
                 for dy in range(boxSize):
                     for dx in range(boxSize):

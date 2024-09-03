@@ -12,7 +12,7 @@ from sqlalchemy import func, extract, or_
 from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Tracks import TrackModel
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import CachedGpxService
+from sporttracker.logic.GpxService import CachedGpxService, VisitedTile
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.TileRenderService import TileRenderService
 from sporttracker.logic.model.PlannedTour import (
@@ -216,17 +216,16 @@ def construct_blueprint(
             visitedTiles = set()
         else:
             gpxTrackPath = os.path.join(uploadFolder, str(track.gpxFileName))
-            gpxMetaInfo = cachedGpxService.get_meta_info(gpxTrackPath)
+            color = ImageColor.getcolor(track.type.tile_color, 'RGBA')
+            gpxMetaInfo = cachedGpxService.get_meta_info(gpxTrackPath, color)  # type: ignore[arg-type]
             visitedTiles = gpxMetaInfo.visitedTiles
 
         tileRenderService = TileRenderService(
             tileHuntingSettings['baseZoomLevel'], 256, visitedTiles
         )
-        alphaChannel = '96'
-        color = ImageColor.getcolor(track.type.background_color_hex + alphaChannel, 'RGBA')
         borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
 
-        image = tileRenderService.render_image(x, y, zoom, color, borderColor)  # type: ignore[arg-type]
+        image = tileRenderService.render_image(x, y, zoom, borderColor)  # type: ignore[arg-type]
 
         with io.BytesIO() as output:
             image.save(output, format='PNG')

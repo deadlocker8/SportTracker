@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
+from PIL import ImageColor
 from flask import Blueprint, render_template, redirect, url_for, abort, request, Response
 from flask_login import login_required, current_user
 from flask_pydantic import validate
@@ -95,7 +96,10 @@ class PlannedTourModel:
                 gpxMetaInfo = None
             else:
                 gpxTrackPath = os.path.join(uploadFolder, str(plannedTour.gpxFileName))
-                gpxMetaInfo = cachedGpxService.get_meta_info(gpxTrackPath)
+                gpxMetaInfo = cachedGpxService.get_meta_info(
+                    gpxTrackPath,
+                    ImageColor.getcolor(plannedTour.type.tile_color, 'RGBA'),  # type: ignore[arg-type]
+                )
         else:
             gpxMetaInfo = None
 

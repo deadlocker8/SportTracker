@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from datetime import datetime, date
 
 import flask_babel
+from PIL import ImageColor
 from babel.dates import get_month_names
 from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template, abort, redirect, url_for, request
@@ -74,7 +75,10 @@ class TrackModel(DateTimeAccess):
                 gpxMetaInfo = None
             else:
                 gpxTrackPath = os.path.join(uploadFolder, str(track.gpxFileName))
-                gpxMetaInfo = cachedGpxService.get_meta_info(gpxTrackPath)
+                gpxMetaInfo = cachedGpxService.get_meta_info(
+                    gpxTrackPath,
+                    ImageColor.getcolor(track.type.tile_color, 'RGBA'),  # type: ignore[arg-type]
+                )  # type: ignore[arg-type]
         else:
             gpxMetaInfo = None
 
