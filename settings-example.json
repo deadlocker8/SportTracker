@@ -21,6 +21,7 @@
         "geoRenderUrl": "http://localhost:3000"
     },
     "tileHunting": {
-        "baseZoomLevel": 14
+        "baseZoomLevel": 14,
+        "borderColor": "#000000C8"
     }
 }

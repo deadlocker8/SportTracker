@@ -242,7 +242,11 @@ class SportTracker(FlaskBaseApp):
             )
         )
         app.register_blueprint(
-            Maps.construct_blueprint(app.config['UPLOAD_FOLDER'], app.config['CACHED_GPX_SERVICE'])
+            Maps.construct_blueprint(
+                app.config['UPLOAD_FOLDER'],
+                app.config['CACHED_GPX_SERVICE'],
+                self._settings['tileHunting'],
+            )
         )
         app.register_blueprint(QuickFilter.construct_blueprint())
         app.register_blueprint(MaintenanceEvents.construct_blueprint())

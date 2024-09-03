@@ -18,5 +18,9 @@
     },
     "gpxPreviewImages": {
         "enabled": false
+    },
+    "tileHunting": {
+        "baseZoomLevel": 14,
+        "borderColor": "#000000C8"
     }
 }

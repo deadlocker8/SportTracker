@@ -144,9 +144,6 @@ class CachedGpxService:
         self._gpxCache: dict[str, GpxMetaInfo] = {}
         self._baseZoomLevel = baseZoomLevel
 
-    def get_base_zoom_level(self):
-        return self._baseZoomLevel
-
     def get_meta_info(self, gpxPath: str) -> GpxMetaInfo:
         if gpxPath not in self._gpxCache:
             gpxService = GpxService(gpxPath, self._baseZoomLevel)
