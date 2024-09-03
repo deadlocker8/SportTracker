@@ -21,11 +21,18 @@ class UphillDownhill:
     downhill: int | None
 
 
+@dataclass(frozen=True)
+class VisitedTile:
+    x: int
+    y: int
+
+
 @dataclass
 class GpxMetaInfo:
     distance: float
     elevationExtremes: ElevationExtremes
     uphillDownhill: UphillDownhill
+    visitedTiles: set[VisitedTile]
 
 
 class GpxService:
@@ -93,9 +100,15 @@ class GpxService:
 
         return UphillDownhill(int(uphill), int(downhill))
 
+    def __get_visited_tiles(self) -> set[VisitedTile]:
+        return set()
+
     def get_meta_info(self) -> GpxMetaInfo:
         return GpxMetaInfo(
-            self.__get_length(), self.__get_elevation_extremes(), self.__get_uphill_downhill()
+            self.__get_length(),
+            self.__get_elevation_extremes(),
+            self.__get_uphill_downhill(),
+            self.__get_visited_tiles(),
         )
 
 

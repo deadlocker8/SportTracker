@@ -4,12 +4,13 @@ import math
 from PIL import Image
 
 from sporttracker.logic import Constants
+from sporttracker.logic.GpxService import VisitedTile
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 class TileRenderService:
-    def __init__(self, baseZoomLevel: int, tileSize: int, visitedTiles: list[tuple[int, int]]):
+    def __init__(self, baseZoomLevel: int, tileSize: int, visitedTiles: set[VisitedTile]):
         self._baseZoomLevel = baseZoomLevel
         self._tileSize = tileSize
         self._visitedTiles = visitedTiles
@@ -75,7 +76,7 @@ class TileRenderService:
         Return whether a tile with the position (x, y) has been visited.
         Expects x, y to be in self._baseZoomLevel coordinates.
         """
-        return any([True for t in self._visitedTiles if t[0] == x and t[1] == y])
+        return any([True for t in self._visitedTiles if t.x == x and t.y == y])
 
     def __calculate_border_color(
         self,
