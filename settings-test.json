@@ -17,7 +17,8 @@
         "uri": "sqlite:///:memory:"
     },
     "gpxPreviewImages": {
-        "enabled": false
+        "enabled": false,
+        "geoRenderUrl": "http://localhost:3000"
     },
     "tileHunting": {
         "baseZoomLevel": 14,
