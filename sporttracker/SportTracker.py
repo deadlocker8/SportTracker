@@ -195,7 +195,9 @@ class SportTracker(FlaskBaseApp):
 
         Babel(app, locale_selector=get_locale)
 
-        app.config['CACHED_GPX_SERVICE'] = CachedGpxService()
+        app.config['CACHED_GPX_SERVICE'] = CachedGpxService(
+            self._settings['tileHunting']['baseZoomLevel']
+        )
 
         return app
 
@@ -234,7 +236,11 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Api.construct_blueprint(self._version, app.config['UPLOAD_FOLDER']))
         app.register_blueprint(Achievements.construct_blueprint())
         app.register_blueprint(Search.construct_blueprint())
-        app.register_blueprint(GpxTracks.construct_blueprint(app.config['UPLOAD_FOLDER']))
+        app.register_blueprint(
+            GpxTracks.construct_blueprint(
+                app.config['UPLOAD_FOLDER'], self._settings['tileHunting']['baseZoomLevel']
+            )
+        )
         app.register_blueprint(
             Maps.construct_blueprint(app.config['UPLOAD_FOLDER'], app.config['CACHED_GPX_SERVICE'])
         )

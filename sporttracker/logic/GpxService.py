@@ -1,4 +1,5 @@
 import logging
+import math
 from dataclasses import dataclass
 
 import gpxpy
@@ -36,8 +37,9 @@ class GpxMetaInfo:
 
 
 class GpxService:
-    def __init__(self, gpxPath: str) -> None:
+    def __init__(self, gpxPath: str, baseZoomLevel: int) -> None:
         self._gpxPath = gpxPath
+        self._baseZoomLevel = baseZoomLevel
         self._gpx = self.__parse_gpx(self._gpxPath)
 
     @staticmethod
@@ -101,7 +103,32 @@ class GpxService:
         return UphillDownhill(int(uphill), int(downhill))
 
     def __get_visited_tiles(self) -> set[VisitedTile]:
-        return set()
+        visitedTiles = set()
+
+        numberOfPoints = self._gpx.get_points_no()
+        for track in self._gpx.tracks:
+            for segment in track.segments:
+                for point in segment.points:
+                    visitedTiles.add(
+                        self.__convertCoordinatesToTilePosition(
+                            point.latitude, point.longitude, self._baseZoomLevel
+                        )
+                    )
+
+        LOGGER.debug(
+            f'{numberOfPoints} points in gpx track resulted in {len(visitedTiles)} distinct tiles'
+        )
+        return visitedTiles
+
+    @staticmethod
+    def __convertCoordinatesToTilePosition(
+        lat_deg: float, lon_deg: float, zoom: int
+    ) -> VisitedTile:
+        lat_rad = math.radians(lat_deg)
+        n = 1 << zoom
+        x = int((lon_deg + 180.0) / 360.0 * n)
+        y = int((1.0 - math.asinh(math.tan(lat_rad)) / math.pi) / 2.0 * n)
+        return VisitedTile(x, y)
 
     def get_meta_info(self) -> GpxMetaInfo:
         return GpxMetaInfo(
@@ -113,12 +140,16 @@ class GpxService:
 
 
 class CachedGpxService:
-    def __init__(self) -> None:
+    def __init__(self, baseZoomLevel: int) -> None:
         self._gpxCache: dict[str, GpxMetaInfo] = {}
+        self._baseZoomLevel = baseZoomLevel
+
+    def get_base_zoom_level(self):
+        return self._baseZoomLevel
 
     def get_meta_info(self, gpxPath: str) -> GpxMetaInfo:
         if gpxPath not in self._gpxCache:
-            gpxService = GpxService(gpxPath)
+            gpxService = GpxService(gpxPath, self._baseZoomLevel)
             gpxMetaInfo = gpxService.get_meta_info()
             self._gpxCache[gpxPath] = gpxMetaInfo
             LOGGER.debug(f'Added gpx cache entry for "{gpxPath}"')

@@ -20,7 +20,7 @@ from sporttracker.logic.model.db import db
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def construct_blueprint(uploadFolder: str):
+def construct_blueprint(uploadFolder: str, baseZoomLevel: int):
     gpxTracks = Blueprint('gpxTracks', __name__, static_folder='static', url_prefix='/gpxTracks')
 
     @gpxTracks.route('/track/<int:track_id>')
@@ -31,7 +31,7 @@ def construct_blueprint(uploadFolder: str):
         if track is None:
             abort(404)
 
-        response = __downloadGpxTrack(uploadFolder, track, str(track.id))
+        response = __downloadGpxTrack(uploadFolder, track, str(track.id), baseZoomLevel)
         if response is not None:
             return response
 
@@ -43,7 +43,7 @@ def construct_blueprint(uploadFolder: str):
         if track is None:
             abort(404)
 
-        response = __downloadGpxTrack(uploadFolder, track, str(track.id))
+        response = __downloadGpxTrack(uploadFolder, track, str(track.id), baseZoomLevel)
         if response is not None:
             return response
 
@@ -57,7 +57,9 @@ def construct_blueprint(uploadFolder: str):
         if plannedTour is None:
             abort(404)
 
-        response = __downloadGpxTrack(uploadFolder, plannedTour, plannedTour.get_download_name())
+        response = __downloadGpxTrack(
+            uploadFolder, plannedTour, plannedTour.get_download_name(), baseZoomLevel
+        )
         if response is not None:
             return response
 
@@ -70,7 +72,9 @@ def construct_blueprint(uploadFolder: str):
         if plannedTour is None:
             abort(404)
 
-        response = __downloadGpxTrack(uploadFolder, plannedTour, plannedTour.get_download_name())
+        response = __downloadGpxTrack(
+            uploadFolder, plannedTour, plannedTour.get_download_name(), baseZoomLevel
+        )
         if response is not None:
             return response
 
@@ -170,10 +174,12 @@ def __handleGpxTrack(
     return None
 
 
-def __downloadGpxTrack(uploadFolder: str, item, downloadName: str) -> Response | None:
+def __downloadGpxTrack(
+    uploadFolder: str, item, downloadName: str, baseZoomLevel: int
+) -> Response | None:
     if item.gpxFileName is not None:
         gpxTrackPath = os.path.join(uploadFolder, str(item.gpxFileName))
-        gpxService = GpxService(gpxTrackPath)
+        gpxService = GpxService(gpxTrackPath, baseZoomLevel)
         modifiedGpxXml = gpxService.join_tracks_and_segments()
         fileName = f'{downloadName}.gpx'
         return Response(
