@@ -19,5 +19,8 @@
     "gpxPreviewImages": {
         "enabled": false,
         "geoRenderUrl": "http://localhost:3000"
+    },
+    "tileHunting": {
+        "baseZoomLevel": 14
     }
 }
