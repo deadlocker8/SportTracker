@@ -231,6 +231,71 @@ def construct_blueprint(
             image.save(output, format='PNG')
             return Response(output.getvalue(), mimetype='image/png')
 
+    @maps.route('/map/renderAllTiles/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')
+    def renderAllTiles(user_id: int, zoom: int, x: int, y: int):
+        if not current_user.is_authenticated:
+            abort(401)
+
+        if current_user.id != user_id:
+            abort(403)
+
+        quickFilterState = get_quick_filter_state_from_session()
+        availableYears = get_available_years()
+        yearFilterState = __get_map_year_filter_state_from_session(availableYears)
+
+        tracks = (
+            Track.query.with_entities(Track.gpxFileName, Track.type)
+            .filter(Track.user_id == current_user.id)
+            .filter(Track.gpxFileName.isnot(None))
+            .filter(Track.type.in_(quickFilterState.get_active_types()))
+            .filter(extract('year', Track.startTime).in_(yearFilterState))
+            .all()
+        )
+
+        totalVisitedTiles: set[VisitedTile] = set()
+        for track in tracks:
+            gpxTrackPath = os.path.join(uploadFolder, str(track[0]))
+            color = ImageColor.getcolor(track[1].tile_color, 'RGBA')
+            gpxMetaInfo = cachedGpxService.get_meta_info(gpxTrackPath, color)  # type: ignore[arg-type]
+            totalVisitedTiles = totalVisitedTiles.union(gpxMetaInfo.visitedTiles)
+
+        tileRenderService = TileRenderService(
+            tileHuntingSettings['baseZoomLevel'], 256, totalVisitedTiles
+        )
+        borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
+
+        image = tileRenderService.render_image(x, y, zoom, borderColor)  # type: ignore[arg-type]
+
+        with io.BytesIO() as output:
+            image.save(output, format='PNG')
+            return Response(output.getvalue(), mimetype='image/png')
+
+    @maps.route('/map/tileHunting')
+    @login_required
+    def showTileHuntingMap():
+        quickFilterState = get_quick_filter_state_from_session()
+        availableYears = get_available_years()
+        yearFilterState = __get_map_year_filter_state_from_session(availableYears)
+
+        tileRenderUrl = url_for(
+            'maps.renderAllTiles',
+            user_id=current_user.id,
+            zoom=0,
+            x=0,
+            y=0,
+            _external=True,
+        )
+        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
+
+        return render_template(
+            'maps/mapTileHunting.jinja2',
+            quickFilterState=quickFilterState,
+            yearFilterState=yearFilterState,
+            availableYears=availableYears,
+            redirectUrl='maps.showTileHuntingMap',
+            tileRenderUrl=tileRenderUrl,
+        )
+
     return maps
 
 

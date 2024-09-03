@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+{% macro toggleTracksAndPlannedTours(margin) -%}
+    <div class="btn-group {{ margin }}" role="group">
+        <a href="{{ url_for('maps.showAllTracksOnMap') }}" class="btn btn-sm btn-primary d-flex flex-row align-items-center justify-content-center {% if mapMode == 'plannedTours' %}btn-available-year{% endif %}">
+            <i class="fa-solid fa-route fa-fw fs-6"></i>&nbsp;{{ gettext('Tracks') }}
+        </a>
+        <a href="{{ url_for('maps.showAllPlannedToursOnMap') }}" class="btn btn-sm btn-primary d-flex flex-row align-items-center justify-content-center {% if mapMode == 'tracks' %}btn-available-year{% endif %}">
+            <i class="fa-solid fa-lightbulb fa-fw fs-6"></i>&nbsp;{{ gettext('Planned Tours') }}
+        </a>
+    </div>
+{%- endmacro %}
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Map') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+        <link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/leaflet-theme.css") }}"/>
+        <style>
+            .leaflet-layer:first-child {
+                -webkit-filter: grayscale(100%);
+                filter: grayscale(100%);
+            }
+        </style>
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('map') }}
+
+        <div class="row my-3">
+            <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center">
+                <div class="d-none d-lg-block">
+                    {{ macros.track_type_quick_filter(url_for(redirectUrl)) }}
+                </div>
+                <div class="d-lg-none">
+                    <div class="d-flex flex-column align-items-center justify-content-center ms-3">
+                        {{ macros.track_type_quick_filter(url_for(redirectUrl)) }}
+                    </div>
+                </div>
+
+                <div class="ms-5">
+                    <form role="form" action="{{ url_for('maps.toggleYears') }}" method="post" class="d-flex flex-row align-items-center justify-content-center">
+                        <div class="row row-cols-auto">
+                            {% for availableYear in availableYears %}
+                                <div class="col my-1">
+                                    <input class="btn-check" type="checkbox" role="switch"
+                                           {% if availableYear in yearFilterState %}checked{% endif %}
+                                           id="availableYear-{{ loop.index }}"
+                                           name="activeYears"
+                                           value="{{ availableYear }}">
+                                    <label class="btn btn-sm btn-available-year" for="availableYear-{{ loop.index }}">
+                                        {{ availableYear }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                            {% if availableYears | length != 0 %}
+                                <div class="col my-1">
+                                    <button type="submit" class="btn btn-sm btn-success">{{ gettext('Apply') }}</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="map" class="leaflet-map w-100 text-dark"></div>
+
+        <script>
+            tileRenderUrl = '{{ tileRenderUrl }}';
+        </script>
+
+        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+        {{ mapMacros.mapLocale() }}
+
+        {{ macros.scripts() }}
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet-ui@0.6.0/dist/leaflet-ui.js"></script>
+        <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+        <script defer src="{{ url_for('static', filename='js/mapCommon.js') }}" type="text/javascript"></script>
+        <script defer src="{{ url_for('static', filename='js/mapTileHunting.js') }}" type="text/javascript"></script>
+    </body>
+</html>
+

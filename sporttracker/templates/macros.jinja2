@@ -150,6 +150,14 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a class="dropdown-item d-flex align-items-center {% if activeLink == 'tileHunting' %}active {% endif %}"
+                                           href="{{ url_for('maps.showTileHuntingMap') }}">
+                                            <span class="navbar-icon">
+                                                <span class="material-icons-outlined fs-5">explore</span>
+                                            </span>&nbsp;{{ gettext('Tile Hunting') }}
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a class="dropdown-item d-flex align-items-center {% if activeLink == 'about' %}active {% endif %}"
                                            href="{{ url_for('general.about') }}">
                                             <span class="navbar-icon">
