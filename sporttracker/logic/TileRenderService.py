@@ -83,8 +83,7 @@ class TileRenderService:
         if len(matchingTiles) == 1:
             return matchingTiles[0].color
 
-        # TODO: mix colors
-        return 255, 255, 255, 255
+        return 255, 0, 0, 96
 
     def __calculate_border_color(
         self,
