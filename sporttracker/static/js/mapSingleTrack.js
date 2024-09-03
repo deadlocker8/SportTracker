@@ -12,6 +12,12 @@ function initMap()
         return;
     }
 
+    L.tileLayer(tileRenderUrl + '/{z}/{x}/{y}.png', {
+        minZoom: 9,
+        maxZoom: 16
+    }).addTo(map);
+
+
     map.on('plugins_loaded', function(e)
     {
         L.Control.Elevation.include({
@@ -65,5 +71,4 @@ function initMap()
         let controlElevation = L.control.elevation(initElevationChartSettings('speed', 'disabled', false)).addTo(map);
         controlElevation.load(gpxUrl);
     });
-
 }

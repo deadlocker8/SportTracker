@@ -1,7 +1,11 @@
+import io
 import logging
+import os
 from datetime import datetime
+from typing import Any
 
-from flask import Blueprint, render_template, abort, url_for, session, redirect, request
+from PIL import ImageColor
+from flask import Blueprint, render_template, abort, url_for, session, redirect, request, Response
 from flask_login import login_required, current_user
 from sqlalchemy import func, extract, or_
 
@@ -10,6 +14,7 @@ from sporttracker.blueprints.Tracks import TrackModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import CachedGpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
+from sporttracker.logic.TileRenderService import TileRenderService
 from sporttracker.logic.model.PlannedTour import (
     get_planned_tour_by_id,
     PlannedTour,
@@ -43,7 +48,9 @@ def createGpxInfoPlannedTour(tourId: int, tourName: str) -> dict[str, str | int]
     }
 
 
-def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
+def construct_blueprint(
+    uploadFolder: str, cachedGpxService: CachedGpxService, tileHuntingSettings: dict[str, Any]
+):
     maps = Blueprint('maps', __name__, static_folder='static')
 
     @maps.route('/map')
@@ -89,11 +96,23 @@ def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
         if track is None:
             abort(404)
 
+        tileRenderUrl = url_for(
+            'maps.renderTile',
+            track_id=track_id,
+            user_id=current_user.id,
+            zoom=0,
+            x=0,
+            y=0,
+            _external=True,
+        )
+        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
+
         return render_template(
             'maps/mapSingleTrack.jinja2',
             track=TrackModel.create_from_track(track, uploadFolder, True, cachedGpxService),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id),
             editUrl=url_for('tracks.edit', track_id=track_id),
+            tileRenderUrl=tileRenderUrl,
         )
 
     @maps.route('/map/shared/<string:shareCode>')
@@ -179,6 +198,39 @@ def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
             mapMode='plannedTours',
             redirectUrl='maps.showAllPlannedToursOnMap',
         )
+
+    @maps.route('/map/<int:track_id>/renderTile/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')
+    def renderTile(track_id: int, user_id: int, zoom: int, x: int, y: int):
+        if not current_user.is_authenticated:
+            abort(401)
+
+        if current_user.id != user_id:
+            abort(403)
+
+        track = get_track_by_id(track_id)
+
+        if track is None:
+            abort(404)
+
+        if track.gpxFileName is None:
+            visitedTiles = set()
+        else:
+            gpxTrackPath = os.path.join(uploadFolder, str(track.gpxFileName))
+            gpxMetaInfo = cachedGpxService.get_meta_info(gpxTrackPath)
+            visitedTiles = gpxMetaInfo.visitedTiles
+
+        tileRenderService = TileRenderService(
+            tileHuntingSettings['baseZoomLevel'], 256, visitedTiles
+        )
+        alphaChannel = '96'
+        color = ImageColor.getcolor(track.type.background_color_hex + alphaChannel, 'RGBA')
+        borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
+
+        image = tileRenderService.render_image(x, y, zoom, color, borderColor)  # type: ignore[arg-type]
+
+        with io.BytesIO() as output:
+            image.save(output, format='PNG')
+            return Response(output.getvalue(), mimetype='image/png')
 
     return maps
 
