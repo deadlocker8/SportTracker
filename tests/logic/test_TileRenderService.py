@@ -46,25 +46,30 @@ class TestTileRenderService:
 
     def test_calculate_border_color_not_a_border_pixel(self):
         color = TileRenderService.calculate_border_color(
-            2, 2, 17599, 10747, (17599, 10747), self.COLOR_VISITED, self.COLOR_BORDER, 0
+            2, 2, False, False, self.COLOR_VISITED, self.COLOR_BORDER
         )
         assert color == self.COLOR_VISITED
 
     def test_calculate_border_color_a_border_pixel_same_zoom(self):
         color = TileRenderService.calculate_border_color(
-            0, 2, 17599, 10747, (17599, 10747), self.COLOR_VISITED, self.COLOR_BORDER, 0
+            0, 2, True, False, self.COLOR_VISITED, self.COLOR_BORDER
         )
         assert color == self.COLOR_BORDER
 
     def test_calculate_border_color_a_border_pixel_lower_zoom(self):
         color = TileRenderService.calculate_border_color(
-            0, 2, 17599, 17599, (35198, 21494), self.COLOR_VISITED, self.COLOR_BORDER, -1
+            0,
+            2,
+            True,
+            False,
+            self.COLOR_VISITED,
+            self.COLOR_BORDER,
         )
         assert color == self.COLOR_BORDER
 
     def test_calculate_border_color_a_border_pixel_higher_zoom_subtile_not_at_border(self):
         color = TileRenderService.calculate_border_color(
-            0, 2, 35198, 21495, (17599, 17599), self.COLOR_VISITED, self.COLOR_BORDER, 1
+            0, 2, False, False, self.COLOR_VISITED, self.COLOR_BORDER
         )
         assert color == self.COLOR_VISITED
 

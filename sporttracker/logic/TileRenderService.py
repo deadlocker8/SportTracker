@@ -95,21 +95,20 @@ class TileRenderService:
     def calculate_border_color(
         pixelX: int,
         pixelY: int,
-        tileX: int,
-        tileY: int,
-        position: tuple[int, int],
+        isTouchingUpperEdgeOfBaseZoomTile: bool,
+        isTouchingLeftEdgeOfBaseZoomTile: bool,
         tileColor: tuple[int, int, int, int],
         borderColor: tuple[int, int, int, int],
-        zoomDifference: int,
     ) -> tuple[int, int, int, int]:
         """
         Determines the color to use for the border pixels.
         """
         if pixelX == 0:
-            if zoomDifference <= 0 or tileY / (2 * zoomDifference) == position[1]:
+            if isTouchingUpperEdgeOfBaseZoomTile:
                 return borderColor
+
         if pixelY == 0:
-            if zoomDifference <= 0 or tileX / (2 * zoomDifference) == position[0]:
+            if isTouchingLeftEdgeOfBaseZoomTile:
                 return borderColor
 
         return tileColor
@@ -133,28 +132,33 @@ class TileRenderService:
         positions = self.__transform_tile_positions_to_base_zoom_level(x, y, zoom)
         numberOfElementsPerAxis = int(math.sqrt(len(positions)))
         boxSize = int(self._tileSize / numberOfElementsPerAxis)
+        zoomDifference = zoom - self._baseZoomLevel
 
         for row in range(0, numberOfElementsPerAxis):
             for col in range(0, numberOfElementsPerAxis):
                 elementIndex = row * numberOfElementsPerAxis + col
                 position = positions[elementIndex]
+                if zoomDifference > 0:
+                    isTouchingUpperEdgeOfBaseZoomTile = x / 2**zoomDifference == position[0]
+                    isTouchingLeftEdgeOfBaseZoomTile = y / 2**zoomDifference == position[1]
+                else:
+                    isTouchingUpperEdgeOfBaseZoomTile = True
+                    isTouchingLeftEdgeOfBaseZoomTile = True
 
                 colorToUse = self.calculate_color(position[0], position[1], self._visitedTiles)
 
-                for pixelY in range(boxSize):
-                    for pixelX in range(boxSize):
-                        pixels[row * boxSize + pixelY, col * boxSize + pixelX] = colorToUse  # type: ignore[index]
+                for pixelX in range(boxSize):
+                    for pixelY in range(boxSize):
+                        pixels[row * boxSize + pixelX, col * boxSize + pixelY] = colorToUse  # type: ignore[index]
                         if borderColor is not None:
                             border = self.calculate_border_color(
                                 pixelX,
                                 pixelY,
-                                x,
-                                y,
-                                position,
+                                isTouchingUpperEdgeOfBaseZoomTile,
+                                isTouchingLeftEdgeOfBaseZoomTile,
                                 colorToUse,
                                 borderColor,
-                                zoom - self._baseZoomLevel,
                             )
-                            pixels[row * boxSize + pixelY, col * boxSize + pixelX] = border  # type: ignore[index]
+                            pixels[row * boxSize + pixelX, col * boxSize + pixelY] = border  # type: ignore[index]
 
         return img
