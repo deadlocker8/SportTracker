@@ -112,7 +112,7 @@ class GpxService:
             for segment in track.segments:
                 for point in segment.points:
                     visitedTiles.add(
-                        self.__convertCoordinatesToTilePosition(
+                        self.convert_coordinate_to_tile_position(
                             point.latitude, point.longitude, self._baseZoomLevel, self._color
                         )
                     )
@@ -123,9 +123,12 @@ class GpxService:
         return visitedTiles
 
     @staticmethod
-    def __convertCoordinatesToTilePosition(
+    def convert_coordinate_to_tile_position(
         lat_deg: float, lon_deg: float, zoom: int, color: tuple[int, int, int, int]
     ) -> VisitedTile:
+        if zoom < 0 or zoom > 20:
+            raise ValueError(f'Zoom level {zoom} is not valid. Must be between 0 and 20')
+
         lat_rad = math.radians(lat_deg)
         n = 1 << zoom
         x = int((lon_deg + 180.0) / 360.0 * n)
