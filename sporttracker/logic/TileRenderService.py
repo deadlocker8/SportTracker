@@ -10,6 +10,9 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 class TileRenderService:
+    COLOR_TRANSPARENT = (0, 0, 0, 0)
+    COLOR_MULTIPLE_MATCHES = (255, 0, 0, 96)
+
     def __init__(self, baseZoomLevel: int, tileSize: int, visitedTiles: set[VisitedTile]):
         self._baseZoomLevel = baseZoomLevel
         self._tileSize = tileSize
@@ -32,10 +35,10 @@ class TileRenderService:
         def counterDecrement(zoomLevel: int) -> int:
             return zoomLevel - 1
 
-        transformerFunction = self.__transform_position_zoom_in
+        transformerFunction = self.transform_position_zoom_in
         counterModifierFunction = counterIncrement
         if zoom > self._baseZoomLevel:
-            transformerFunction = self.__transform_position_zoom_out
+            transformerFunction = self.transform_position_zoom_out
             counterModifierFunction = counterDecrement
 
         positions = [(x, y)]
@@ -51,7 +54,7 @@ class TileRenderService:
         return sorted(list(newPositions), key=lambda p: (p[0], p[1]))
 
     @staticmethod
-    def __transform_position_zoom_in(x: int, y: int) -> list[tuple[int, int]]:
+    def transform_position_zoom_in(x: int, y: int) -> list[tuple[int, int]]:
         """
         Returns the coordinates of all sub tiles for a tile with the position (x,y).
         The coordinates are in the sub zoom level coordinate system.
@@ -64,48 +67,49 @@ class TileRenderService:
         ]
 
     @staticmethod
-    def __transform_position_zoom_out(x: int, y: int) -> list[tuple[int, int]]:
+    def transform_position_zoom_out(x: int, y: int) -> list[tuple[int, int]]:
         """
         Returns the coordinates of all parent tiles for a tile with the position (x,y).
         The coordinates are in the parent zoom level coordinate system.
         """
         return [(x // 2, y // 2)]
 
-    def __calculate_color(self, x: int, y: int) -> tuple[int, int, int, int]:
+    @staticmethod
+    def calculate_color(
+        x: int, y: int, visitedTiles: set[VisitedTile]
+    ) -> tuple[int, int, int, int]:
         """
         Return all visited tiles with the position (x, y).
         Expects x, y to be in self._baseZoomLevel coordinates.
         """
-        matchingTiles = [t for t in self._visitedTiles if t.x == x and t.y == y]
+        matchingTiles = [t for t in visitedTiles if t.x == x and t.y == y]
         if len(matchingTiles) == 0:
-            return 0, 0, 0, 0
+            return TileRenderService.COLOR_TRANSPARENT
 
         if len(matchingTiles) == 1:
             return matchingTiles[0].color
 
-        return 255, 0, 0, 96
+        return TileRenderService.COLOR_MULTIPLE_MATCHES
 
-    def __calculate_border_color(
-        self,
-        dx: int,
-        dy: int,
-        x: int,
-        y: int,
-        zoom: int,
+    @staticmethod
+    def calculate_border_color(
+        pixelX: int,
+        pixelY: int,
+        tileX: int,
+        tileY: int,
         position: tuple[int, int],
         tileColor: tuple[int, int, int, int],
         borderColor: tuple[int, int, int, int],
+        zoomDifference: int,
     ) -> tuple[int, int, int, int]:
         """
         Determines the color to use for the border pixels.
         """
-        zoomDifference = zoom - self._baseZoomLevel
-
-        if dx == 0:
-            if zoom <= self._baseZoomLevel or y / (2 * zoomDifference) == position[1]:
+        if pixelX == 0:
+            if zoomDifference <= 0 or tileY / (2 * zoomDifference) == position[1]:
                 return borderColor
-        if dy == 0:
-            if zoom <= self._baseZoomLevel or x / (2 * zoomDifference) == position[0]:
+        if pixelY == 0:
+            if zoomDifference <= 0 or tileX / (2 * zoomDifference) == position[0]:
                 return borderColor
 
         return tileColor
@@ -135,15 +139,22 @@ class TileRenderService:
                 elementIndex = row * numberOfElementsPerAxis + col
                 position = positions[elementIndex]
 
-                colorToUse = self.__calculate_color(position[0], position[1])
+                colorToUse = self.calculate_color(position[0], position[1], self._visitedTiles)
 
-                for dy in range(boxSize):
-                    for dx in range(boxSize):
-                        pixels[row * boxSize + dy, col * boxSize + dx] = colorToUse  # type: ignore[index]
+                for pixelY in range(boxSize):
+                    for pixelX in range(boxSize):
+                        pixels[row * boxSize + pixelY, col * boxSize + pixelX] = colorToUse  # type: ignore[index]
                         if borderColor is not None:
-                            border = self.__calculate_border_color(
-                                dx, dy, x, y, zoom, position, colorToUse, borderColor
+                            border = self.calculate_border_color(
+                                pixelX,
+                                pixelY,
+                                x,
+                                y,
+                                position,
+                                colorToUse,
+                                borderColor,
+                                zoom - self._baseZoomLevel,
                             )
-                            pixels[row * boxSize + dy, col * boxSize + dx] = border  # type: ignore[index]
+                            pixels[row * boxSize + pixelY, col * boxSize + pixelX] = border  # type: ignore[index]
 
         return img
