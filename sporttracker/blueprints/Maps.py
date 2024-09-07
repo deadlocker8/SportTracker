@@ -12,7 +12,7 @@ from sqlalchemy import func, extract, or_
 from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Tracks import TrackModel
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import CachedGpxService
+from sporttracker.logic.GpxService import CachedGpxVisitedTileService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.TileRenderService import TileRenderService
 from sporttracker.logic.VisitedTileService import VisitedTileService
@@ -50,7 +50,9 @@ def createGpxInfoPlannedTour(tourId: int, tourName: str) -> dict[str, str | int]
 
 
 def construct_blueprint(
-    uploadFolder: str, cachedGpxService: CachedGpxService, tileHuntingSettings: dict[str, Any]
+    uploadFolder: str,
+    cachedGpxVisitedTileService: CachedGpxVisitedTileService,
+    tileHuntingSettings: dict[str, Any],
 ):
     maps = Blueprint('maps', __name__, static_folder='static')
 
@@ -216,9 +218,7 @@ def construct_blueprint(
         else:
             gpxTrackPath = os.path.join(uploadFolder, gpxMetadata.gpx_file_name)
             color = ImageColor.getcolor(track.type.tile_color, 'RGBA')
-            # TODO:
-            gpxMetaInfo = cachedGpxService.get_meta_info(gpxTrackPath, color)  # type: ignore[arg-type]
-            visitedTiles = gpxMetaInfo.visitedTiles
+            visitedTiles = cachedGpxVisitedTileService.get_visited_tiles(gpxTrackPath, color)  # type: ignore[arg-type]
 
         tileRenderService = TileRenderService(
             tileHuntingSettings['baseZoomLevel'], 256, visitedTiles
@@ -244,7 +244,7 @@ def construct_blueprint(
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         visitedTiles = VisitedTileService.calculate_visited_tiles(
-            quickFilterState, yearFilterState, uploadFolder, cachedGpxService
+            quickFilterState, yearFilterState, uploadFolder, cachedGpxVisitedTileService
         )
 
         tileRenderService = TileRenderService(
@@ -277,7 +277,7 @@ def construct_blueprint(
         tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
 
         visitedTiles = VisitedTileService.calculate_visited_tiles(
-            quickFilterState, yearFilterState, uploadFolder, cachedGpxService
+            quickFilterState, yearFilterState, uploadFolder, cachedGpxVisitedTileService
         )
 
         return render_template(

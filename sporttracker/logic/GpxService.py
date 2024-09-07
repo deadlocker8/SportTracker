@@ -34,14 +34,11 @@ class GpxMetaInfo:
     distance: float
     elevationExtremes: ElevationExtremes
     uphillDownhill: UphillDownhill
-    visitedTiles: set[VisitedTile]
 
 
 class GpxService:
-    def __init__(self, gpxPath: str, baseZoomLevel: int, color: tuple[int, int, int, int]) -> None:
+    def __init__(self, gpxPath: str) -> None:
         self._gpxPath = gpxPath
-        self._baseZoomLevel = baseZoomLevel
-        self._color = color
         self._gpx = self.__parse_gpx(self._gpxPath)
 
     @staticmethod
@@ -104,7 +101,9 @@ class GpxService:
 
         return UphillDownhill(int(uphill), int(downhill))
 
-    def __get_visited_tiles(self) -> set[VisitedTile]:
+    def get_visited_tiles(
+        self, baseZoomLevel: int, color: tuple[int, int, int, int]
+    ) -> set[VisitedTile]:
         visitedTiles = set()
 
         numberOfPoints = self._gpx.get_points_no()
@@ -113,7 +112,7 @@ class GpxService:
                 for point in segment.points:
                     visitedTiles.add(
                         self.convert_coordinate_to_tile_position(
-                            point.latitude, point.longitude, self._baseZoomLevel, self._color
+                            point.latitude, point.longitude, baseZoomLevel, color
                         )
                     )
 
@@ -140,20 +139,18 @@ class GpxService:
             self.__get_length(),
             self.__get_elevation_extremes(),
             self.__get_uphill_downhill(),
-            self.__get_visited_tiles(),
         )
 
 
-class CachedGpxService:
+class CachedGpxVisitedTileService:
     def __init__(self, baseZoomLevel: int) -> None:
-        self._gpxCache: dict[str, GpxMetaInfo] = {}
+        self._gpxCache: dict[str, set[VisitedTile]] = {}
         self._baseZoomLevel = baseZoomLevel
 
-    def get_meta_info(self, gpxPath: str, color: tuple[int, int, int, int]) -> GpxMetaInfo:
+    def get_visited_tiles(self, gpxPath: str, color: tuple[int, int, int, int]) -> set[VisitedTile]:
         if gpxPath not in self._gpxCache:
-            gpxService = GpxService(gpxPath, self._baseZoomLevel, color)
-            gpxMetaInfo = gpxService.get_meta_info()
-            self._gpxCache[gpxPath] = gpxMetaInfo
+            gpxService = GpxService(gpxPath)
+            self._gpxCache[gpxPath] = gpxService.get_visited_tiles(self._baseZoomLevel, color)
             LOGGER.debug(f'Added gpx cache entry for "{gpxPath}"')
 
         return self._gpxCache[gpxPath]

@@ -39,7 +39,7 @@ from sporttracker.helpers import Helpers
 from sporttracker.helpers.SettingsChecker import SettingsChecker
 from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
-from sporttracker.logic.GpxService import CachedGpxService
+from sporttracker.logic.GpxService import CachedGpxVisitedTileService
 from sporttracker.logic.model.CustomTrackField import CustomTrackFieldType
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.PlannedTour import (
@@ -199,7 +199,7 @@ class SportTracker(FlaskBaseApp):
 
         Babel(app, locale_selector=get_locale)
 
-        app.config['CACHED_GPX_SERVICE'] = CachedGpxService(
+        app.config['CACHED_GPX_SERVICE'] = CachedGpxVisitedTileService(
             self._settings['tileHunting']['baseZoomLevel']
         )
 
@@ -252,9 +252,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(MaintenanceEvents.construct_blueprint())
         app.register_blueprint(
             PlannedTours.construct_blueprint(
-                app.config['UPLOAD_FOLDER'],
-                self._settings['gpxPreviewImages'],
-                app.config['CACHED_GPX_SERVICE'],
+                app.config['UPLOAD_FOLDER'], self._settings['gpxPreviewImages']
             )
         )
         app.register_blueprint(AnnualAchievements.construct_blueprint())

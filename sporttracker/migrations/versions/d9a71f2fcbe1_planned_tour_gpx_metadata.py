@@ -54,7 +54,7 @@ def upgrade():
             )
             gpxPath = os.path.join(uploadDirectory, gpxFileName)
 
-            gpxService = GpxService(gpxPath, 0, (0, 0, 0, 0))
+            gpxService = GpxService(gpxPath)
             metaInfo = gpxService.get_meta_info()
 
             result = connection.execute(

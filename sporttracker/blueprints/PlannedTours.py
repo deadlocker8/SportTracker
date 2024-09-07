@@ -12,7 +12,6 @@ from pydantic import BaseModel
 
 from sporttracker.blueprints.GpxTracks import handleGpxTrackForPlannedTour
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import CachedGpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.PlannedTour import (
@@ -134,9 +133,7 @@ class PlannedTourEditFormModel(BaseModel):
     gpxFileName: str | None = None
 
 
-def construct_blueprint(
-    uploadFolder: str, gpxPreviewImageSettings: dict[str, Any], cachedGpxService: CachedGpxService
-) -> Blueprint:
+def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, Any]) -> Blueprint:
     plannedTours = Blueprint(
         'plannedTours', __name__, static_folder='static', url_prefix='/plannedTours'
     )

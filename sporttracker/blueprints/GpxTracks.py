@@ -183,8 +183,7 @@ def __handleGpxTrack(
 
 def __create_gpx_metadata(gpxFileName: str, uploadFolder: str) -> int:
     gpxTrackPath = os.path.join(uploadFolder, str(gpxFileName))
-    # TODO
-    gpxService = GpxService(gpxTrackPath, 0, (0, 0, 0, 0))
+    gpxService = GpxService(gpxTrackPath)
     metaInfo = gpxService.get_meta_info()
 
     gpxMetadata = GpxMetadata(
@@ -209,8 +208,7 @@ def __downloadGpxTrack(uploadFolder: str, item: Track, downloadName: str) -> Res
         return None
 
     gpxTrackPath = os.path.join(uploadFolder, gpxMetadata.gpx_file_name)
-    # TODO:
-    gpxService = GpxService(gpxTrackPath, 0, (0, 0, 0, 0))
+    gpxService = GpxService(gpxTrackPath)
     modifiedGpxXml = gpxService.join_tracks_and_segments()
     fileName = f'{downloadName}.gpx'
     return Response(
