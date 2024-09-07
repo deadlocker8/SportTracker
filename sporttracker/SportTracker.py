@@ -41,6 +41,7 @@ from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
 from sporttracker.logic.GpxService import CachedGpxService
 from sporttracker.logic.model.CustomTrackField import CustomTrackFieldType
+from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.PlannedTour import (
     TravelType,
     TravelDirection,
@@ -225,11 +226,7 @@ class SportTracker(FlaskBaseApp):
     def _register_blueprints(self, app):
         app.register_blueprint(Authentication.construct_blueprint())
         app.register_blueprint(General.construct_blueprint())
-        app.register_blueprint(
-            Tracks.construct_blueprint(
-                app.config['UPLOAD_FOLDER'], app.config['CACHED_GPX_SERVICE']
-            )
-        )
+        app.register_blueprint(Tracks.construct_blueprint(app.config['UPLOAD_FOLDER']))
         app.register_blueprint(MonthGoals.construct_blueprint())
         app.register_blueprint(MonthGoalsDistance.construct_blueprint())
         app.register_blueprint(MonthGoalsCount.construct_blueprint())
@@ -263,6 +260,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(AnnualAchievements.construct_blueprint())
 
     def __prepare_database(self, app):
+        GpxMetadata
         with app.app_context():
             db.create_all()
 

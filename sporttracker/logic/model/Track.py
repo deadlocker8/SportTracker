@@ -6,6 +6,7 @@ from sqlalchemy import Integer, String, DateTime, extract, func
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
+from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.Participant import Participant, track_participant_association
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.PlannedTour import PlannedTour, track_planned_tour_association
@@ -22,12 +23,12 @@ class Track(db.Model):  # type: ignore[name-defined]
     distance: Mapped[int] = mapped_column(Integer, nullable=False)
     averageHeartRate: Mapped[int] = mapped_column(Integer, nullable=True)
     elevationSum: Mapped[int] = mapped_column(Integer, nullable=True)
-    gpxFileName: Mapped[str] = mapped_column(String, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     custom_fields = db.Column(JSON)
     participants: Mapped[list[Participant]] = relationship(secondary=track_participant_association)
     share_code: Mapped[str] = mapped_column(String, nullable=True)
     plannedTour: Mapped[PlannedTour] = relationship(secondary=track_planned_tour_association)
+    gpx_metadata_id = db.Column(db.Integer, db.ForeignKey('gpx_metadata.id'), nullable=False)
 
     def __repr__(self):
         return (
@@ -40,12 +41,18 @@ class Track(db.Model):  # type: ignore[name-defined]
             f'distance: {self.distance}, '
             f'averageHeartRate: {self.averageHeartRate}, '
             f'elevationSum: {self.elevationSum}, '
-            f'gpxFileName: {self.gpxFileName}, '
             f'custom_fields: {self.custom_fields}, '
             f'participants: {self.participants}, '
             f'user_id: {self.user_id}, '
-            f'share_code: {self.share_code})'
+            f'share_code: {self.share_code},'
+            f'gpx_metadata_id: {self.gpx_metadata_id})'
         )
+
+    def get_gpx_metadata(self) -> GpxMetadata | None:
+        if self.gpx_metadata_id is None:
+            return None
+        else:
+            return GpxMetadata.query.get(self.gpx_metadata_id)
 
 
 def get_track_names_by_track_type(trackType: TrackType) -> list[str]:

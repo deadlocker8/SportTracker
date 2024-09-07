@@ -67,7 +67,7 @@ def construct_blueprint(
         tracks = (
             Track.query.with_entities(func.max(Track.id), Track.name, funcStartTime)
             .filter(Track.user_id == current_user.id)
-            .filter(Track.gpxFileName.isnot(None))
+            .filter(Track.gpx_metadata_id.isnot(None))
             .filter(Track.type.in_(quickFilterState.get_active_types()))
             .filter(extract('year', Track.startTime).in_(yearFilterState))
             .group_by(Track.name)
@@ -110,7 +110,7 @@ def construct_blueprint(
 
         return render_template(
             'maps/mapSingleTrack.jinja2',
-            track=TrackModel.create_from_track(track, uploadFolder, True, cachedGpxService),
+            track=TrackModel.create_from_track(track),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id),
             editUrl=url_for('tracks.edit', track_id=track_id),
             tileRenderUrl=tileRenderUrl,
@@ -125,7 +125,7 @@ def construct_blueprint(
 
         return render_template(
             'maps/mapSingleTrack.jinja2',
-            track=TrackModel.create_from_track(track, uploadFolder, True, cachedGpxService),
+            track=TrackModel.create_from_track(track),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackBySharedTrack', shareCode=shareCode),
         )
 
@@ -213,10 +213,12 @@ def construct_blueprint(
         if track is None:
             abort(404)
 
-        if track.gpxFileName is None:
+        gpxMetadata = track.get_gpx_metadata()
+
+        if gpxMetadata is None:
             visitedTiles = set()
         else:
-            gpxTrackPath = os.path.join(uploadFolder, str(track.gpxFileName))
+            gpxTrackPath = os.path.join(uploadFolder, gpxMetadata.gpx_file_name)
             color = ImageColor.getcolor(track.type.tile_color, 'RGBA')
             gpxMetaInfo = cachedGpxService.get_meta_info(gpxTrackPath, color)  # type: ignore[arg-type]
             visitedTiles = gpxMetaInfo.visitedTiles

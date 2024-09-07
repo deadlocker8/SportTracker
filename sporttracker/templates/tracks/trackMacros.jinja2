@@ -108,7 +108,7 @@
         {% if track.participants %}
             <span class="material-icons fs-4 text-body">group</span>
         {% endif %}
-        {% if track.gpxFileName is not none %}
+        {% if track.gpxMetadata is not none %}
             <a href="{{ url_for('maps.showSingleTrack', track_id=track.id) }}"
                class="text-decoration-none ms-2">
                 <span class="material-icons fs-4 text-body">map</span>

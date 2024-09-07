@@ -18,9 +18,8 @@ class VisitedTileService:
         cachedGpxService: CachedGpxService,
     ) -> set[VisitedTile]:
         tracks = (
-            Track.query.with_entities(Track.gpxFileName, Track.type)
-            .filter(Track.user_id == current_user.id)
-            .filter(Track.gpxFileName.isnot(None))
+            Track.query.filter(Track.user_id == current_user.id)
+            .filter(Track.gpx_metadata_id.isnot(None))
             .filter(Track.type.in_(quickFilterState.get_active_types()))
             .filter(extract('year', Track.startTime).in_(yearFilterState))
             .all()
@@ -28,8 +27,8 @@ class VisitedTileService:
 
         totalVisitedTiles: set[VisitedTile] = set()
         for track in tracks:
-            gpxTrackPath = os.path.join(uploadFolder, str(track[0]))
-            color = ImageColor.getcolor(track[1].tile_color, 'RGBA')
+            gpxTrackPath = os.path.join(uploadFolder, track.get_gpx_metadata())
+            color = ImageColor.getcolor(track.type.tile_color, 'RGBA')
             gpxMetaInfo = cachedGpxService.get_meta_info(gpxTrackPath, color)  # type: ignore[arg-type]
             totalVisitedTiles = totalVisitedTiles.union(gpxMetaInfo.visitedTiles)
 

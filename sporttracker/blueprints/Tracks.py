@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from datetime import datetime, date
 
 import flask_babel
-from PIL import ImageColor
 from babel.dates import get_month_names
 from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template, abort, redirect, url_for, request
@@ -17,12 +16,12 @@ from pydantic import BaseModel, ConfigDict, field_validator
 from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack
 from sporttracker.logic import Constants
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
-from sporttracker.logic.GpxService import GpxMetaInfo, CachedGpxService
 from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
     QuickFilterState,
 )
 from sporttracker.logic.model.CustomTrackField import CustomTrackField
+from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.MaintenanceEvent import (
     MaintenanceEvent,
     get_maintenance_events_by_year_and_month_by_type,
@@ -57,8 +56,7 @@ class TrackModel(DateTimeAccess):
     duration: int
     averageHeartRate: int | None
     elevationSum: int | None
-    gpxFileName: str | None
-    gpxMetaInfo: GpxMetaInfo | None
+    gpxMetadata: GpxMetadata | None
     participants: list[str]
     shareCode: str | None
     ownerName: str
@@ -66,22 +64,7 @@ class TrackModel(DateTimeAccess):
     @staticmethod
     def create_from_track(
         track: Track,
-        uploadFolder: str,
-        includeGpxMetaInfo: bool,
-        cachedGpxService: CachedGpxService,
     ) -> 'TrackModel':
-        if includeGpxMetaInfo:
-            if track.gpxFileName is None:
-                gpxMetaInfo = None
-            else:
-                gpxTrackPath = os.path.join(uploadFolder, str(track.gpxFileName))
-                gpxMetaInfo = cachedGpxService.get_meta_info(
-                    gpxTrackPath,
-                    ImageColor.getcolor(track.type.tile_color, 'RGBA'),  # type: ignore[arg-type]
-                )  # type: ignore[arg-type]
-        else:
-            gpxMetaInfo = None
-
         return TrackModel(
             id=track.id,
             name=track.name,  # type: ignore[arg-type]
@@ -91,8 +74,7 @@ class TrackModel(DateTimeAccess):
             duration=track.duration,
             averageHeartRate=track.averageHeartRate,
             elevationSum=track.elevationSum,
-            gpxFileName=track.gpxFileName,
-            gpxMetaInfo=gpxMetaInfo,
+            gpxMetadata=track.get_gpx_metadata(),
             participants=[str(item.id) for item in track.participants],
             shareCode=track.share_code,
             ownerName=get_user_by_id(track.user_id).username,
@@ -144,7 +126,7 @@ class TrackFormModel(BaseModel):
         return value
 
 
-def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
+def construct_blueprint(uploadFolder: str):
     tracks = Blueprint('tracks', __name__, static_folder='static', url_prefix='/tracks')
 
     @tracks.route('/', defaults={'year': None, 'month': None})
@@ -159,13 +141,12 @@ def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
 
         quickFilterState = get_quick_filter_state_from_session()
 
-        monthRightSide = __get_month_model(
-            monthRightSideDate, quickFilterState, uploadFolder, cachedGpxService
-        )
+        monthRightSide = __get_month_model(monthRightSideDate, quickFilterState)
 
         monthLeftSideDate = monthRightSideDate - relativedelta(months=1)
         monthLeftSide = __get_month_model(
-            monthLeftSideDate, quickFilterState, uploadFolder, cachedGpxService
+            monthLeftSideDate,
+            quickFilterState,
         )
 
         nextMonthDate = monthRightSideDate + relativedelta(months=1)
@@ -216,7 +197,7 @@ def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
     @login_required
     @validate()
     def addPost(form: TrackFormModel):
-        gpxFileName = handleGpxTrackForTrack(request.files, uploadFolder)
+        gpxMetadataId = handleGpxTrackForTrack(request.files, uploadFolder)
 
         participantIds = [int(item) for item in request.form.getlist('participants')]
         participants = get_participants_by_ids(participantIds)
@@ -233,7 +214,7 @@ def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
             distance=form.distance * 1000,
             averageHeartRate=form.averageHeartRate,
             elevationSum=form.elevationSum,
-            gpxFileName=gpxFileName,
+            gpx_metadata_id=gpxMetadataId,
             custom_fields=form.model_extra,
             user_id=current_user.id,
             participants=participants,
@@ -260,6 +241,11 @@ def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
         if track is None:
             abort(404)
 
+        gpxFileName = None
+        gpxMetadata = track.get_gpx_metadata()
+        if gpxMetadata is not None:
+            gpxFileName = gpxMetadata.gpx_file_name
+
         trackModel = TrackFormModel(
             name=track.name,  # type: ignore[arg-type]
             type=track.type,
@@ -271,7 +257,7 @@ def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
             durationSeconds=track.duration % 3600 % 60,
             averageHeartRate=track.averageHeartRate,
             elevationSum=track.elevationSum,
-            gpxFileName=track.gpxFileName,
+            gpxFileName=gpxFileName,
             participants=[str(item.id) for item in track.participants],
             shareCode=track.share_code,
             plannedTourId=str(track.plannedTour.id) if track.plannedTour else '-1',
@@ -319,15 +305,13 @@ def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
         track.share_code = form.shareCode if form.shareCode else None  # type: ignore[assignment]
         track.plannedTour = plannedTour  # type: ignore[assignment]
 
-        newGpxFileName = handleGpxTrackForTrack(request.files, uploadFolder)
-        if track.gpxFileName is None:
-            track.gpxFileName = newGpxFileName
+        newGpxMetadataId = handleGpxTrackForTrack(request.files, uploadFolder)
+        if track.gpx_metadata_id is None:
+            track.gpx_metadata_id = newGpxMetadataId
         else:
-            if newGpxFileName is not None:
+            if newGpxMetadataId is not None:
                 __delete_gpx_track(uploadFolder, track)
-                oldGpxFilePath = os.path.join(uploadFolder, str(track.gpxFileName))
-                track.gpxFileName = newGpxFileName
-                cachedGpxService.invalidate_cache_entry(oldGpxFilePath)
+                track.gpx_metadata_id = newGpxMetadataId
 
         track.custom_fields = form.model_extra
 
@@ -350,7 +334,7 @@ def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
         if track is None:
             abort(404)
 
-        if track.gpxFileName is not None:
+        if track.gpx_metadata_id is not None:
             __delete_gpx_track(uploadFolder, track)
 
         LOGGER.debug(f'Deleted track: {track}')
@@ -374,8 +358,6 @@ def construct_blueprint(uploadFolder: str, cachedGpxService: CachedGpxService):
 def __get_month_model(
     monthDate: date,
     quickFilterState: QuickFilterState,
-    uploadFolder: str,
-    cachedGpxService: CachedGpxService,
 ) -> MonthModel:
     tracks = get_tracks_by_year_and_month_by_type(
         monthDate.year,
@@ -385,9 +367,7 @@ def __get_month_model(
 
     trackModels = []
     for track in tracks:
-        trackModels.append(
-            TrackModel.create_from_track(track, uploadFolder, False, cachedGpxService)
-        )
+        trackModels.append(TrackModel.create_from_track(track))
 
     maintenanceEvents = get_maintenance_events_by_year_and_month_by_type(
         monthDate.year, monthDate.month, quickFilterState.get_active_types()
@@ -409,7 +389,21 @@ def __get_month_model(
 
 def __delete_gpx_track(uploadFolder: str, track: Track) -> None:
     try:
-        os.remove(os.path.join(uploadFolder, track.gpxFileName))
-        LOGGER.debug(f'Deleted linked gpx file "{track.gpxFileName}" for track with id {track.d}')
+        gpxMetadata = track.get_gpx_metadata()
+        if gpxMetadata is None:
+            return
+
+        track.gpx_metadata_id = None
+
+        db.session.delete(gpxMetadata)
+        LOGGER.debug(f'Deleted gpx metadata {gpxMetadata.id}')
+        db.session.commit()
+
+        gpxFilePath = os.path.join(uploadFolder, str(gpxMetadata.gpx_file_name))
+        os.remove(os.path.join(uploadFolder, gpxFilePath))
+        LOGGER.debug(
+            f'Deleted linked gpx file "{gpxMetadata.gpx_file_name}" for track with id {track.id}'
+        )
+
     except OSError as e:
         LOGGER.error(e)
