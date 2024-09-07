@@ -10,6 +10,7 @@ from faker import Faker
 
 from sporttracker.logic import Constants
 from sporttracker.logic.model.CustomTrackField import CustomTrackField, CustomTrackFieldType
+from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.MaintenanceEvent import MaintenanceEvent
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
 from sporttracker.logic.model.Participant import Participant
@@ -235,9 +236,21 @@ class DummyDataGenerator:
         currentDirectory = os.path.abspath(os.path.dirname(__file__))
         dummyDataDirectory = os.path.join(os.path.dirname(currentDirectory), 'dummyData')
         sourcePath = os.path.join(dummyDataDirectory, random.choice(self.GPX_FILE_NAMES))
-
         shutil.copy2(sourcePath, destinationPath)
-        item.gpxFileName = filename
+
+        gpxMetadata = GpxMetadata(
+            gpx_file_name=filename,
+            length=random.uniform(20 * 1000.0, 60 * 1000.0),
+            elevation_minimum=random.randint(30, 200),
+            elevation_maximum=random.randint(220, 400),
+            uphill=random.randint(30, 400),
+            downhill=random.randint(30, 400),
+        )
+
+        db.session.add(gpxMetadata)
+        db.session.commit()
+
+        item.gpx_metadata_id = gpxMetadata.id
 
     def __generate_demo_maintenance_events(self, user) -> None:
         lastDayCurrentMonth = datetime.now().date() + relativedelta(day=31)
