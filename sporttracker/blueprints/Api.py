@@ -165,15 +165,17 @@ def construct_blueprint(version: dict, uploadFolder: str):
         if track is None:
             abort(404)
 
-        newGpxFileName = handleGpxTrackForTrack(request.files, uploadFolder)
-        if newGpxFileName is None:
+        gpxMetadataId = handleGpxTrackForTrack(request.files, uploadFolder)
+        if gpxMetadataId is None:
             abort(400)
 
-        track.gpxFileName = newGpxFileName
+        track.gpx_metadata_id = gpxMetadataId
 
-        LOGGER.debug(f'Added gpx track {newGpxFileName} to track {track.id}')
         db.session.add(track)
         db.session.commit()
+        LOGGER.debug(
+            f'Added gpx track {track.get_gpx_metadata().gpx_file_name} to track {track.id}'
+        )
 
         return '', 200
 
@@ -189,6 +191,8 @@ def construct_blueprint(version: dict, uploadFolder: str):
 
         result = []
         for track in tracks:
+            gpxMetadata = track.get_gpx_metadata()
+
             result.append(
                 TrackModel(
                     id=track.id,
@@ -199,7 +203,7 @@ def construct_blueprint(version: dict, uploadFolder: str):
                     duration=track.duration,
                     averageHeartRate=track.averageHeartRate,
                     elevationSum=track.elevationSum,
-                    gpxFileName=track.gpxFileName,
+                    gpxFileName=gpxMetadata.gpx_file_name if gpxMetadata is not None else None,
                     participants=[p.id for p in track.participants],
                     customFields=track.custom_fields,
                 )
