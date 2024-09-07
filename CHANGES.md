@@ -1,3 +1,6 @@
+# 1.29.0
+- add: gpx meta information is calculated only once and stored in database
+
 # 1.28.0
 - add: search: add pagination on bottom
 - add: show edit button for track and planned tour map
