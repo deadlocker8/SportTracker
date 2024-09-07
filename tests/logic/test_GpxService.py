@@ -4,15 +4,13 @@ from sporttracker.logic.GpxService import GpxService, VisitedTile
 
 
 class TestGpxService:
-    COLOR = (0, 0, 0, 0)
-
     def test_convert_coordinate_to_tile_position_zoom_too_small_should_raise(self):
         with pytest.raises(ValueError):
-            GpxService.convert_coordinate_to_tile_position(0, 0, -1, (0, 0, 0, 0))
+            GpxService.convert_coordinate_to_tile_position(0, 0, -1)
 
     def test_convert_coordinate_to_tile_position_zoom_too_high_should_raise(self):
         with pytest.raises(ValueError):
-            GpxService.convert_coordinate_to_tile_position(0, 0, 21, (0, 0, 0, 0))
+            GpxService.convert_coordinate_to_tile_position(0, 0, 21)
 
     @pytest.mark.parametrize(
         'lat,lon,zoom,expected_x,expected_y',
@@ -29,5 +27,5 @@ class TestGpxService:
     def test_convert_coordinate_to_tile_position_zoom_level_16(
         self, lat, lon, zoom, expected_x, expected_y
     ):
-        tile = GpxService.convert_coordinate_to_tile_position(lat, lon, zoom, self.COLOR)
-        assert tile == VisitedTile(expected_x, expected_y, self.COLOR)
+        tile = GpxService.convert_coordinate_to_tile_position(lat, lon, zoom)
+        assert tile == VisitedTile(expected_x, expected_y)

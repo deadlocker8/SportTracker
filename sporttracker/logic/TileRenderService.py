@@ -1,10 +1,10 @@
 import logging
 import math
 
-from PIL import Image
+from PIL import Image, ImageColor
 
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import VisitedTile
+from sporttracker.logic.VisitedTileService import VisitedTileService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -13,10 +13,10 @@ class TileRenderService:
     COLOR_TRANSPARENT = (0, 0, 0, 0)
     COLOR_MULTIPLE_MATCHES = (255, 0, 0, 96)
 
-    def __init__(self, baseZoomLevel: int, tileSize: int, visitedTiles: set[VisitedTile]):
+    def __init__(self, baseZoomLevel: int, tileSize: int, visitedTileService: VisitedTileService):
         self._baseZoomLevel = baseZoomLevel
         self._tileSize = tileSize
-        self._visitedTiles = visitedTiles
+        self._visitedTileService = visitedTileService
 
     def __transform_tile_positions_to_base_zoom_level(
         self, x: int, y: int, zoom: int
@@ -74,20 +74,24 @@ class TileRenderService:
         """
         return [(x // 2, y // 2)]
 
-    @staticmethod
-    def calculate_color(
-        x: int, y: int, visitedTiles: set[VisitedTile]
-    ) -> tuple[int, int, int, int]:
+    def calculate_color(self, x: int, y: int) -> tuple[int, int, int, int]:
         """
-        Return all visited tiles with the position (x, y).
+        Calculates the color of a tile with the position (x, y).
         Expects x, y to be in self._baseZoomLevel coordinates.
+
+        If a tile was not yet visited by the user COLOR_TRANSPARENT is returned.
+        If a tile was visited by exactly one gpx track the color of the corresponding track type is returned.
+        If a tile was visited by multiple gpx tracks COLOR_MULTIPLE_MATCHES is returned.
         """
-        matchingTiles = [t for t in visitedTiles if t.x == x and t.y == y]
-        if len(matchingTiles) == 0:
+        colorsOfMatchingTracks = (
+            self._visitedTileService.determine_tile_colors_of_tracks_that_visit_tile(x, y)
+        )
+
+        if len(colorsOfMatchingTracks) == 0:
             return TileRenderService.COLOR_TRANSPARENT
 
-        if len(matchingTiles) == 1:
-            return matchingTiles[0].color
+        if len(colorsOfMatchingTracks) == 1:
+            return ImageColor.getcolor(colorsOfMatchingTracks[0], 'RGBA')  # type: ignore[return-value]
 
         return TileRenderService.COLOR_MULTIPLE_MATCHES
 
@@ -145,7 +149,7 @@ class TileRenderService:
                     isTouchingUpperEdgeOfBaseZoomTile = True
                     isTouchingLeftEdgeOfBaseZoomTile = True
 
-                colorToUse = self.calculate_color(position[0], position[1], self._visitedTiles)
+                colorToUse = self.calculate_color(position[0], position[1])
 
                 for pixelX in range(boxSize):
                     for pixelY in range(boxSize):

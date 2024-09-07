@@ -1,6 +1,5 @@
 import io
 import logging
-import os
 from datetime import datetime
 from typing import Any
 
@@ -12,7 +11,6 @@ from sqlalchemy import func, extract, or_
 from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Tracks import TrackModel
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import CachedGpxVisitedTileService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.TileRenderService import TileRenderService
 from sporttracker.logic.VisitedTileService import VisitedTileService
@@ -49,11 +47,7 @@ def createGpxInfoPlannedTour(tourId: int, tourName: str) -> dict[str, str | int]
     }
 
 
-def construct_blueprint(
-    uploadFolder: str,
-    cachedGpxVisitedTileService: CachedGpxVisitedTileService,
-    tileHuntingSettings: dict[str, Any],
-):
+def construct_blueprint(tileHuntingSettings: dict[str, Any]):
     maps = Blueprint('maps', __name__, static_folder='static')
 
     @maps.route('/map')
@@ -211,17 +205,14 @@ def construct_blueprint(
         if track is None:
             abort(404)
 
-        gpxMetadata = track.get_gpx_metadata()
+        quickFilterState = get_quick_filter_state_from_session()
+        availableYears = get_available_years()
+        yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
-        if gpxMetadata is None:
-            visitedTiles = set()
-        else:
-            gpxTrackPath = os.path.join(uploadFolder, gpxMetadata.gpx_file_name)
-            color = ImageColor.getcolor(track.type.tile_color, 'RGBA')
-            visitedTiles = cachedGpxVisitedTileService.get_visited_tiles(gpxTrackPath, color)  # type: ignore[arg-type]
+        visitedTileService = VisitedTileService(quickFilterState, yearFilterState, trackId=track.id)
 
         tileRenderService = TileRenderService(
-            tileHuntingSettings['baseZoomLevel'], 256, visitedTiles
+            tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
         )
         borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
 
@@ -243,12 +234,9 @@ def construct_blueprint(
         availableYears = get_available_years()
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
-        visitedTiles = VisitedTileService.calculate_visited_tiles(
-            quickFilterState, yearFilterState, uploadFolder, cachedGpxVisitedTileService
-        )
-
+        visitedTileService = VisitedTileService(quickFilterState, yearFilterState)
         tileRenderService = TileRenderService(
-            tileHuntingSettings['baseZoomLevel'], 256, visitedTiles
+            tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
         )
         borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
 
@@ -276,9 +264,12 @@ def construct_blueprint(
 
         tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
 
-        visitedTiles = VisitedTileService.calculate_visited_tiles(
-            quickFilterState, yearFilterState, uploadFolder, cachedGpxVisitedTileService
-        )
+        quickFilterState = get_quick_filter_state_from_session()
+        availableYears = get_available_years()
+        yearFilterState = __get_map_year_filter_state_from_session(availableYears)
+
+        visitedTileService = VisitedTileService(quickFilterState, yearFilterState)
+        totalNumberOfTiles = visitedTileService.calculate_total_number_of_visited_tiles()
 
         return render_template(
             'maps/mapTileHunting.jinja2',
@@ -287,7 +278,7 @@ def construct_blueprint(
             availableYears=availableYears,
             redirectUrl='maps.showTileHuntingMap',
             tileRenderUrl=tileRenderUrl,
-            totalNumberOfTiles=len(visitedTiles),
+            totalNumberOfTiles=totalNumberOfTiles,
         )
 
     return maps

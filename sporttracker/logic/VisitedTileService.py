@@ -1,35 +1,75 @@
-import os
-
-from PIL import ImageColor
 from flask_login import current_user
 from sqlalchemy import extract
+from sqlalchemy.orm import aliased
 
-from sporttracker.logic.GpxService import VisitedTile, CachedGpxVisitedTileService
 from sporttracker.logic.QuickFilterState import QuickFilterState
+from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
 from sporttracker.logic.model.Track import Track
 
 
 class VisitedTileService:
-    @staticmethod
-    def calculate_visited_tiles(
+    def __init__(
+        self,
         quickFilterState: QuickFilterState,
         yearFilterState: list[int],
-        uploadFolder: str,
-        cachedGpxVisitedTileService: CachedGpxVisitedTileService,
-    ) -> set[VisitedTile]:
-        tracks = (
-            Track.query.filter(Track.user_id == current_user.id)
-            .filter(Track.gpx_metadata_id.isnot(None))
-            .filter(Track.type.in_(quickFilterState.get_active_types()))
-            .filter(extract('year', Track.startTime).in_(yearFilterState))
+        trackId: int | None = None,
+    ):
+        self._quickFilterState = quickFilterState
+        self._yearFilterState = yearFilterState
+        self._trackId = trackId
+
+    def calculate_total_number_of_visited_tiles(
+        self,
+    ) -> int:
+        trackAlias = aliased(Track)
+        gpxVisitedTileAlias = aliased(GpxVisitedTile)
+
+        return (
+            trackAlias.query.select_from(trackAlias)
+            .join(gpxVisitedTileAlias, gpxVisitedTileAlias.track_id == trackAlias.id)
+            .filter(trackAlias.user_id == current_user.id)
+            .filter(trackAlias.type.in_(self._quickFilterState.get_active_types()))
+            .filter(extract('year', trackAlias.startTime).in_(self._yearFilterState))
+            .distinct(gpxVisitedTileAlias.x, gpxVisitedTileAlias.y)
+            .count()
+        )
+
+    def determine_tile_colors_of_tracks_that_visit_tile(self, x: int, y: int) -> list[str]:
+        if self._trackId is None:
+            return self.__determine_tile_colors_of_all_tracks_that_visit_tile(x, y)
+
+        return self.__determine_tile_colors_of_single_track(x, y, self._trackId)
+
+    def __determine_tile_colors_of_all_tracks_that_visit_tile(self, x: int, y: int) -> list[str]:
+        trackAlias = aliased(Track)
+        gpxVisitedTileAlias = aliased(GpxVisitedTile)
+
+        rows = (
+            trackAlias.query.select_from(trackAlias)
+            .join(gpxVisitedTileAlias, gpxVisitedTileAlias.track_id == trackAlias.id)
+            .filter(trackAlias.user_id == current_user.id)
+            .filter(trackAlias.type.in_(self._quickFilterState.get_active_types()))
+            .filter(extract('year', trackAlias.startTime).in_(self._yearFilterState))
+            .filter(gpxVisitedTileAlias.x == x)
+            .filter(gpxVisitedTileAlias.y == y)
+            .with_entities(trackAlias.type)
+            .all()
+        )
+        return [row[0].tile_color for row in rows]
+
+    def __determine_tile_colors_of_single_track(self, x: int, y: int, trackId: int) -> list[str]:
+        trackAlias = aliased(Track)
+        gpxVisitedTileAlias = aliased(GpxVisitedTile)
+
+        rows = (
+            trackAlias.query.select_from(trackAlias)
+            .join(gpxVisitedTileAlias, gpxVisitedTileAlias.track_id == trackAlias.id)
+            .filter(trackAlias.user_id == current_user.id)
+            .filter(trackAlias.id == trackId)
+            .filter(gpxVisitedTileAlias.x == x)
+            .filter(gpxVisitedTileAlias.y == y)
+            .with_entities(trackAlias.type)
             .all()
         )
 
-        totalVisitedTiles: set[VisitedTile] = set()
-        for track in tracks:
-            gpxTrackPath = os.path.join(uploadFolder, track.get_gpx_metadata().gpx_file_name)
-            color = ImageColor.getcolor(track.type.tile_color, 'RGBA')
-            visitedTiles = cachedGpxVisitedTileService.get_visited_tiles(gpxTrackPath, color)  # type: ignore[arg-type]
-            totalVisitedTiles = totalVisitedTiles.union(visitedTiles)
-
-        return totalVisitedTiles
+        return [row[0].tile_color for row in rows]
