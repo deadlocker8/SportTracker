@@ -98,7 +98,7 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     departure_method = db.Column(db.Enum(TravelType))
     direction = db.Column(db.Enum(TravelDirection))
     share_code: Mapped[str] = mapped_column(String, nullable=True)
-    gpx_metadata_id = db.Column(db.Integer, db.ForeignKey('gpx_metadata.id'), nullable=False)
+    gpx_metadata_id = db.Column(db.Integer, db.ForeignKey('gpx_metadata.id'), nullable=True)
 
     def __repr__(self):
         return (

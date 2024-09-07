@@ -28,7 +28,7 @@ class Track(db.Model):  # type: ignore[name-defined]
     participants: Mapped[list[Participant]] = relationship(secondary=track_participant_association)
     share_code: Mapped[str] = mapped_column(String, nullable=True)
     plannedTour: Mapped[PlannedTour] = relationship(secondary=track_planned_tour_association)
-    gpx_metadata_id = db.Column(db.Integer, db.ForeignKey('gpx_metadata.id'), nullable=False)
+    gpx_metadata_id = db.Column(db.Integer, db.ForeignKey('gpx_metadata.id'), nullable=True)
 
     def __repr__(self):
         return (
