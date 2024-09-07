@@ -139,9 +139,7 @@ def construct_blueprint(
 
         return render_template(
             'maps/mapPlannedTour.jinja2',
-            plannedTour=PlannedTourModel.create_from_tour(
-                plannedTour, uploadFolder, True, True, cachedGpxService
-            ),
+            plannedTour=PlannedTourModel.create_from_tour(plannedTour, True),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id),
             editUrl=url_for('plannedTours.edit', tour_id=tour_id),
         )
@@ -155,9 +153,7 @@ def construct_blueprint(
 
         return render_template(
             'maps/mapPlannedTour.jinja2',
-            plannedTour=PlannedTourModel.create_from_tour(
-                plannedTour, uploadFolder, True, False, cachedGpxService
-            ),
+            plannedTour=PlannedTourModel.create_from_tour(plannedTour, False),
             gpxUrl=url_for('gpxTracks.downloadGpxTrackBySharedPlannedTour', shareCode=shareCode),
         )
 
@@ -220,6 +216,7 @@ def construct_blueprint(
         else:
             gpxTrackPath = os.path.join(uploadFolder, gpxMetadata.gpx_file_name)
             color = ImageColor.getcolor(track.type.tile_color, 'RGBA')
+            # TODO:
             gpxMetaInfo = cachedGpxService.get_meta_info(gpxTrackPath, color)  # type: ignore[arg-type]
             visitedTiles = gpxMetaInfo.visitedTiles
 

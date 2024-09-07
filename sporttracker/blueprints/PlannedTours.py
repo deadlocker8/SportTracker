@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
-from PIL import ImageColor
 from flask import Blueprint, render_template, redirect, url_for, abort, request, Response
 from flask_login import login_required, current_user
 from flask_pydantic import validate
@@ -13,8 +12,9 @@ from pydantic import BaseModel
 
 from sporttracker.blueprints.GpxTracks import handleGpxTrackForPlannedTour
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxMetaInfo, CachedGpxService
+from sporttracker.logic.GpxService import CachedGpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
+from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.PlannedTour import (
     PlannedTour,
     get_planned_tour_by_id,
@@ -54,8 +54,7 @@ class PlannedTourModel:
     creationDate: datetime
     lastEditDate: datetime
     type: TrackType
-    gpxFileName: str
-    gpxMetaInfo: GpxMetaInfo | None
+    gpxMetadata: GpxMetadata | None
     sharedUsers: list[str]
     ownerId: str
     ownerName: str
@@ -86,22 +85,9 @@ class PlannedTourModel:
     @staticmethod
     def create_from_tour(
         plannedTour: PlannedTour,
-        uploadFolder: str,
-        includeGpxMetaInfo: bool,
         includeLinkedTracks: bool,
-        cachedGpxService: CachedGpxService,
     ) -> 'PlannedTourModel':
-        if includeGpxMetaInfo:
-            if plannedTour.gpxFileName is None:
-                gpxMetaInfo = None
-            else:
-                gpxTrackPath = os.path.join(uploadFolder, str(plannedTour.gpxFileName))
-                gpxMetaInfo = cachedGpxService.get_meta_info(
-                    gpxTrackPath,
-                    ImageColor.getcolor(plannedTour.type.tile_color, 'RGBA'),  # type: ignore[arg-type]
-                )
-        else:
-            gpxMetaInfo = None
+        gpxMetadata = plannedTour.get_gpx_metadata()
 
         linkedTracks = []
         if includeLinkedTracks:
@@ -113,8 +99,7 @@ class PlannedTourModel:
             creationDate=plannedTour.creation_date,  # type: ignore[arg-type]
             lastEditDate=plannedTour.last_edit_date,  # type: ignore[arg-type]
             type=plannedTour.type,
-            gpxFileName=plannedTour.gpxFileName,
-            gpxMetaInfo=gpxMetaInfo,
+            gpxMetadata=gpxMetadata,
             sharedUsers=[str(user.id) for user in plannedTour.shared_users],
             ownerId=str(plannedTour.user_id),
             ownerName=get_user_by_id(plannedTour.user_id).username,
@@ -136,6 +121,19 @@ class PlannedTourFormModel(BaseModel):
     shareCode: str | None = None
 
 
+class PlannedTourEditFormModel(BaseModel):
+    name: str
+    type: str
+    arrivalMethod: TravelType
+    departureMethod: TravelType
+    direction: TravelDirection
+    ownerId: str
+    ownerName: str
+    sharedUsers: list[str] | str | None = None
+    shareCode: str | None = None
+    gpxFileName: str | None = None
+
+
 def construct_blueprint(
     uploadFolder: str, gpxPreviewImageSettings: dict[str, Any], cachedGpxService: CachedGpxService
 ) -> Blueprint:
@@ -152,9 +150,7 @@ def construct_blueprint(
 
         plannedTourList: list[PlannedTourModel] = []
         for tour in tours:
-            plannedTourList.append(
-                PlannedTourModel.create_from_tour(tour, uploadFolder, True, True, cachedGpxService)
-            )
+            plannedTourList.append(PlannedTourModel.create_from_tour(tour, True))
 
         return render_template(
             'plannedTours/plannedTours.jinja2',
@@ -175,7 +171,7 @@ def construct_blueprint(
     @login_required
     @validate()
     def addPost(form: PlannedTourFormModel):
-        gpxFileName = handleGpxTrackForPlannedTour(
+        gpxMetadataId = handleGpxTrackForPlannedTour(
             request.files, uploadFolder, gpxPreviewImageSettings
         )
 
@@ -189,7 +185,7 @@ def construct_blueprint(
             creation_date=datetime.now(),
             last_edit_date=datetime.now(),
             last_edit_user_id=current_user.id,
-            gpxFileName=gpxFileName,
+            gpx_metadata_id=gpxMetadataId,
             shared_users=sharedUsers,
             arrival_method=TravelType(form.arrivalMethod),  # type: ignore[call-arg]
             departure_method=TravelType(form.departureMethod),  # type: ignore[call-arg]
@@ -211,8 +207,22 @@ def construct_blueprint(
         if plannedTour is None:
             abort(404)
 
-        tourModel = PlannedTourModel.create_from_tour(
-            plannedTour, uploadFolder, False, True, cachedGpxService
+        gpxFileName = None
+        gpxMetadata = plannedTour.get_gpx_metadata()
+        if gpxMetadata is not None:
+            gpxFileName = gpxMetadata.gpx_file_name
+
+        tourModel = PlannedTourEditFormModel(
+            name=plannedTour.name,  # type: ignore[arg-type]
+            type=plannedTour.type,
+            arrivalMethod=plannedTour.arrival_method,
+            departureMethod=plannedTour.departure_method,
+            direction=plannedTour.direction,
+            ownerId=str(plannedTour.user_id),
+            ownerName=get_user_by_id(plannedTour.user_id).username,
+            sharedUsers=[str(user.id) for user in plannedTour.shared_users],
+            shareCode=plannedTour.share_code,
+            gpxFileName=gpxFileName,
         )
 
         return render_template(
@@ -240,17 +250,15 @@ def construct_blueprint(
         plannedTour.direction = TravelDirection(form.direction)  # type: ignore[call-arg]
         plannedTour.share_code = form.shareCode if form.shareCode else None  # type: ignore[assignment]
 
-        newGpxFileName = handleGpxTrackForPlannedTour(
+        newGpxMetadataId = handleGpxTrackForPlannedTour(
             request.files, uploadFolder, gpxPreviewImageSettings
         )
-        if plannedTour.gpxFileName is None:
-            plannedTour.gpxFileName = newGpxFileName
+        if plannedTour.gpx_metadata_id is None:
+            plannedTour.gpx_metadata_id = newGpxMetadataId
         else:
-            if newGpxFileName is not None:
+            if newGpxMetadataId is not None:
                 __delete_gpx_track(uploadFolder, plannedTour)
-                oldGpxFilePath = os.path.join(uploadFolder, str(plannedTour.gpxFileName))
-                plannedTour.gpxFileName = newGpxFileName
-                cachedGpxService.invalidate_cache_entry(oldGpxFilePath)
+                plannedTour.gpx_metadata_id = newGpxMetadataId
 
         sharedUserIds = [int(item) for item in request.form.getlist('sharedUsers')]
         sharedUsers = get_users_by_ids(sharedUserIds)
@@ -288,7 +296,7 @@ def construct_blueprint(
         if current_user.id != plannedTour.user_id:
             abort(403)
 
-        if plannedTour.gpxFileName is not None:
+        if plannedTour.gpx_metadata_id is not None:
             __delete_gpx_track(uploadFolder, plannedTour)
 
         linkedTrackIds = get_track_ids_by_planned_tour(plannedTour)
@@ -334,9 +342,21 @@ def __get_user_models(users: list[User]) -> list[SharedUserModel]:
 
 def __delete_gpx_track(uploadFolder: str, plannedTour: PlannedTour) -> None:
     try:
-        os.remove(os.path.join(uploadFolder, plannedTour.gpxFileName))
+        gpxMetadata = plannedTour.get_gpx_metadata()
+        if gpxMetadata is None:
+            return
+
+        plannedTour.gpx_metadata_id = None
+
+        db.session.delete(gpxMetadata)
+        LOGGER.debug(f'Deleted gpx metadata {gpxMetadata.id}')
+        db.session.commit()
+
+        gpxFilePath = os.path.join(uploadFolder, str(gpxMetadata.gpx_file_name))
+        os.remove(os.path.join(uploadFolder, gpxFilePath))
         LOGGER.debug(
-            f'Deleted linked gpx file "{plannedTour.gpxFileName}" for planned tour with id {plannedTour.id}'
+            f'Deleted linked gpx file "{gpxMetadata.gpx_file_name}" for planned tour with id {plannedTour.id}'
         )
+
     except OSError as e:
         LOGGER.error(e)

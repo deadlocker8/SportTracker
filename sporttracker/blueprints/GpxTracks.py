@@ -33,7 +33,7 @@ def construct_blueprint(uploadFolder: str, baseZoomLevel: int):
         if track is None:
             abort(404)
 
-        response = __downloadGpxTrackForTrack(uploadFolder, track, str(track.id))
+        response = __downloadGpxTrack(uploadFolder, track, str(track.id))
         if response is not None:
             return response
 
@@ -45,7 +45,7 @@ def construct_blueprint(uploadFolder: str, baseZoomLevel: int):
         if track is None:
             abort(404)
 
-        response = __downloadGpxTrackForTrack(uploadFolder, track, str(track.id))
+        response = __downloadGpxTrack(uploadFolder, track, str(track.id))
         if response is not None:
             return response
 
@@ -59,9 +59,7 @@ def construct_blueprint(uploadFolder: str, baseZoomLevel: int):
         if plannedTour is None:
             abort(404)
 
-        response = __downloadGpxTrackForPlannedTour(
-            uploadFolder, plannedTour, plannedTour.get_download_name(), baseZoomLevel
-        )
+        response = __downloadGpxTrack(uploadFolder, plannedTour, plannedTour.get_download_name())
         if response is not None:
             return response
 
@@ -74,9 +72,7 @@ def construct_blueprint(uploadFolder: str, baseZoomLevel: int):
         if plannedTour is None:
             abort(404)
 
-        response = __downloadGpxTrackForPlannedTour(
-            uploadFolder, plannedTour, plannedTour.get_download_name(), baseZoomLevel
-        )
+        response = __downloadGpxTrack(uploadFolder, plannedTour, plannedTour.get_download_name())
         if response is not None:
             return response
 
@@ -90,7 +86,7 @@ def construct_blueprint(uploadFolder: str, baseZoomLevel: int):
         if track is None:
             return Response(status=204)
 
-        return __deleteGpxTrackForTrack(uploadFolder, track)
+        return __deleteGpxTrack(uploadFolder, track)
 
     @gpxTracks.route('/delete/plannedTour/<int:tour_id>')
     @login_required
@@ -100,7 +96,7 @@ def construct_blueprint(uploadFolder: str, baseZoomLevel: int):
         if plannedTour is None:
             return Response(status=204)
 
-        return __deleteGpxTrackForPlannedTour(uploadFolder, plannedTour)
+        return __deleteGpxTrack(uploadFolder, plannedTour)
 
     @gpxTracks.route('/previewImage<int:tour_id>')
     @login_required
@@ -110,12 +106,13 @@ def construct_blueprint(uploadFolder: str, baseZoomLevel: int):
         if plannedTour is None:
             abort(404)
 
-        if plannedTour.gpxFileName is None:
+        gpxMetadata = plannedTour.get_gpx_metadata()
+        if gpxMetadata is None:
             return send_from_directory(
                 'static', path='images/map_placeholder.png', mimetype='image/png'
             )
 
-        gpxPreviewImageService = GpxPreviewImageService(plannedTour.gpxFileName, uploadFolder)
+        gpxPreviewImageService = GpxPreviewImageService(gpxMetadata.gpx_file_name, uploadFolder)
         if not gpxPreviewImageService.is_image_existing():
             return send_from_directory(
                 'static', path='images/map_placeholder.png', mimetype='image/png'
@@ -139,33 +136,19 @@ def handleGpxTrackForTrack(files: dict[str, FileStorage], uploadFolder: str) -> 
     if gpxFileName is None:
         return None
 
-    gpxTrackPath = os.path.join(uploadFolder, str(gpxFileName))
-    # TODO
-    gpxService = GpxService(gpxTrackPath, 0, (0, 0, 0, 0))
-    metaInfo = gpxService.get_meta_info()
-
-    gpxMetadata = GpxMetadata(
-        gpx_file_name=gpxFileName,
-        length=metaInfo.distance,
-        elevation_minimum=metaInfo.elevationExtremes.minimum,
-        elevation_maximum=metaInfo.elevationExtremes.maximum,
-        uphill=metaInfo.uphillDownhill.uphill,
-        downhill=metaInfo.uphillDownhill.downhill,
-    )
-
-    LOGGER.debug(f'Saved new gpxMetadata: {gpxMetadata}')
-    db.session.add(gpxMetadata)
-    db.session.commit()
-
-    return gpxMetadata.id
+    return __create_gpx_metadata(gpxFileName, uploadFolder)
 
 
 def handleGpxTrackForPlannedTour(
     files: dict[str, FileStorage], uploadFolder: str, gpxPreviewImageSettings: dict[str, Any]
-) -> str | None:
-    return __handleGpxTrack(
+) -> int | None:
+    gpxFileName = __handleGpxTrack(
         files, uploadFolder, gpxPreviewImageSettings['enabled'], gpxPreviewImageSettings
     )
+    if gpxFileName is None:
+        return None
+
+    return __create_gpx_metadata(gpxFileName, uploadFolder)
 
 
 def __handleGpxTrack(
@@ -198,9 +181,29 @@ def __handleGpxTrack(
     return None
 
 
-def __downloadGpxTrackForTrack(
-    uploadFolder: str, item: Track, downloadName: str
-) -> Response | None:
+def __create_gpx_metadata(gpxFileName: str, uploadFolder: str) -> int:
+    gpxTrackPath = os.path.join(uploadFolder, str(gpxFileName))
+    # TODO
+    gpxService = GpxService(gpxTrackPath, 0, (0, 0, 0, 0))
+    metaInfo = gpxService.get_meta_info()
+
+    gpxMetadata = GpxMetadata(
+        gpx_file_name=gpxFileName,
+        length=metaInfo.distance,
+        elevation_minimum=metaInfo.elevationExtremes.minimum,
+        elevation_maximum=metaInfo.elevationExtremes.maximum,
+        uphill=metaInfo.uphillDownhill.uphill,
+        downhill=metaInfo.uphillDownhill.downhill,
+    )
+
+    LOGGER.debug(f'Saved new gpxMetadata: {gpxMetadata}')
+    db.session.add(gpxMetadata)
+    db.session.commit()
+
+    return gpxMetadata.id
+
+
+def __downloadGpxTrack(uploadFolder: str, item: Track, downloadName: str) -> Response | None:
     gpxMetadata = item.get_gpx_metadata()
     if gpxMetadata is None:
         return None
@@ -217,34 +220,14 @@ def __downloadGpxTrackForTrack(
     )
 
 
-def __downloadGpxTrackForPlannedTour(
-    uploadFolder: str, item: PlannedTour, downloadName: str, baseZoomLevel: int
-) -> Response | None:
-    if item.gpxFileName is not None:
-        gpxTrackPath = os.path.join(uploadFolder, str(item.gpxFileName))
-        gpxService = GpxService(gpxTrackPath, baseZoomLevel, (0, 0, 0, 0))
-        modifiedGpxXml = gpxService.join_tracks_and_segments()
-        fileName = f'{downloadName}.gpx'
-        return Response(
-            modifiedGpxXml,
-            mimetype='application/gpx',
-            headers={'content-disposition': f'attachment; filename={fileName}'},
-        )
-
-    return None
-
-
-def __deleteGpxTrackForTrack(uploadFolder: str, item) -> Response:
+def __deleteGpxTrack(uploadFolder: str, item: Track | PlannedTour) -> Response:
     gpxMetadata = item.get_gpx_metadata()
     if gpxMetadata is not None:
-        item.gpxFileName = None  # type: ignore[assignment]
+        item.gpx_metadata_id = None
+        db.session.delete(gpxMetadata)
         db.session.commit()
 
         try:
-            item.gpx_metadata_id = None
-            db.session.delete(gpxMetadata)
-            db.session.commit()
-
             os.remove(os.path.join(uploadFolder, gpxMetadata.gpx_file_name))
             LOGGER.debug(
                 f'Deleted linked gpx file "{gpxMetadata.gpx_file_name}" for {item.__class__.__name__} id {item.id}'
@@ -253,34 +236,6 @@ def __deleteGpxTrackForTrack(uploadFolder: str, item) -> Response:
             LOGGER.error(e)
 
         gpxPreviewImageService = GpxPreviewImageService(gpxMetadata.gpx_file_name, uploadFolder)
-        gpxPreviewImagePath = gpxPreviewImageService.get_preview_image_path()
-        if gpxPreviewImageService.is_image_existing():
-            try:
-                os.remove(gpxPreviewImagePath)
-                LOGGER.debug(
-                    f'Deleted preview image file "{gpxPreviewImagePath}" for {item.__class__.__name__} id {item.id}'
-                )
-            except OSError as e:
-                LOGGER.error(e)
-
-    return Response(status=204)
-
-
-def __deleteGpxTrackForPlannedTour(uploadFolder: str, item) -> Response:
-    gpxFileName = str(item.gpxFileName)
-    if gpxFileName is not None:
-        item.gpxFileName = None  # type: ignore[assignment]
-        db.session.commit()
-
-        try:
-            os.remove(os.path.join(uploadFolder, gpxFileName))
-            LOGGER.debug(
-                f'Deleted linked gpx file "{gpxFileName}" for {item.__class__.__name__} id {item.id}'
-            )
-        except OSError as e:
-            LOGGER.error(e)
-
-        gpxPreviewImageService = GpxPreviewImageService(gpxFileName, uploadFolder)
         gpxPreviewImagePath = gpxPreviewImageService.get_preview_image_path()
         if gpxPreviewImageService.is_image_existing():
             try:

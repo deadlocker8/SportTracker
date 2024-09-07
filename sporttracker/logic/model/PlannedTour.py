@@ -7,6 +7,7 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 from sqlalchemy.sql import or_
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
+from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
@@ -91,13 +92,13 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     creation_date: Mapped[DateTime] = mapped_column(DateTime)
     last_edit_date: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     last_edit_user_id: Mapped[int] = mapped_column(Integer, nullable=True)
-    gpxFileName: Mapped[str] = mapped_column(String, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     shared_users: Mapped[list[User]] = relationship(secondary=planned_tour_user_association)
     arrival_method = db.Column(db.Enum(TravelType))
     departure_method = db.Column(db.Enum(TravelType))
     direction = db.Column(db.Enum(TravelDirection))
     share_code: Mapped[str] = mapped_column(String, nullable=True)
+    gpx_metadata_id = db.Column(db.Integer, db.ForeignKey('gpx_metadata.id'), nullable=False)
 
     def __repr__(self):
         return (
@@ -108,17 +109,23 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
             f'creation_date: {self.creation_date}, '
             f'last_edit_date: {self.last_edit_date}, '
             f'last_edit_user_id: {self.last_edit_user_id}, '
-            f'gpxFileName: {self.gpxFileName}, '
             f'user_id: {self.user_id}, '
             f'shared_users: {[user.id for user in self.shared_users]}, '
             f'arrival_method: {self.arrival_method}, '
             f'departure_method: {self.departure_method}, '
             f'direction: {self.direction}, '
-            f'share_code: {self.share_code})'
+            f'share_code: {self.share_code},'
+            f'gpx_metadata_id: {self.gpx_metadata_id})'
         )
 
     def get_download_name(self) -> str:
         return ''.join([c if c.isalnum() else '_' for c in str(self.name)])
+
+    def get_gpx_metadata(self) -> GpxMetadata | None:
+        if self.gpx_metadata_id is None:
+            return None
+        else:
+            return GpxMetadata.query.get(self.gpx_metadata_id)
 
 
 def get_planned_tour_by_id(tour_id: int) -> PlannedTour | None:
