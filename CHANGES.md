@@ -1,5 +1,7 @@
 # 1.29.0
-- add: gpx meta information is calculated only once and stored in database
+- BREAKING CHANGE: you must update your settings.json (new section "tileHunting", see settings-example.json)
+- add: gpx meta information is calculated only once and stored in database. CAUTION: The first start of SportTracker will take quite some time to calculate the gpx information for all uploaded gpx files.
+- add: settings files are checked for missing entries upon server start
 
 # 1.28.0
 - add: search: add pagination on bottom
