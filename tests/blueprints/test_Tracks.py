@@ -30,7 +30,7 @@ def prepare_test_data(app):
             creation_date=datetime.now(),
             last_edit_date=datetime.now(),
             last_edit_user_id=user.id,
-            gpxFileName=None,
+            gpx_metadata_id=None,
             user_id=user.id,
             shared_users=[],
             arrival_method=TravelType.TRAIN,
