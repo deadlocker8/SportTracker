@@ -3,6 +3,7 @@ from unittest.mock import Mock
 from PIL import Image, ImageChops
 
 from sporttracker.logic.TileRenderService import TileRenderService
+from sporttracker.logic.VisitedTileService import TileColorPosition
 
 
 class TestTileRenderService:
@@ -28,50 +29,21 @@ class TestTileRenderService:
         assert (17599, 10747) in result
 
     def test_calculate_color_not_visited(self):
-        def mocked_color_method(x: int, y: int) -> list[str]:
-            return [self.COLOR_NOT_VISITED_HEX]
-
-        visitedTileService = Mock()
-        visitedTileService.determine_tile_colors_of_tracks_that_visit_tile.side_effect = (
-            mocked_color_method
-        )
-
-        service = TileRenderService(14, 4, visitedTileService)
-
-        color = service.calculate_color(35199, 21494)
+        color = TileRenderService.calculate_color(35199, 21494, [])
         assert color == (0, 0, 0, 0)
 
     def test_calculate_color_visited_only_one_match(self):
-        def mocked_color_method(x: int, y: int) -> list[str]:
-            if x == 35199 and y == 21494:
-                return [self.COLOR_VISITED_HEX]
-            return [self.COLOR_NOT_VISITED_HEX]
-
-        visitedTileService = Mock()
-        visitedTileService.determine_tile_colors_of_tracks_that_visit_tile.side_effect = (
-            mocked_color_method
+        color = TileRenderService.calculate_color(
+            35199, 21494, [TileColorPosition(self.COLOR_VISITED_HEX, 35199, 21494)]
         )
-
-        service = TileRenderService(14, 4, visitedTileService)
-        color = service.calculate_color(35199, 21494)
         assert color == self.COLOR_VISITED
 
     def test_calculate_color_visited_multiple_matches(self):
-        visitedColor2 = '#00FF00FF'
-
-        def mocked_color_method(x: int, y: int) -> list[str]:
-            if x == 35199 and y == 21494:
-                return [self.COLOR_VISITED_HEX, visitedColor2]
-
-            return [self.COLOR_NOT_VISITED_HEX]
-
-        visitedTileService = Mock()
-        visitedTileService.determine_tile_colors_of_tracks_that_visit_tile.side_effect = (
-            mocked_color_method
-        )
-
-        service = TileRenderService(14, 4, visitedTileService)
-        color = service.calculate_color(35199, 21494)
+        tileColorPositions = [
+            TileColorPosition(self.COLOR_VISITED_HEX, 35199, 21494),
+            TileColorPosition('#00FF00FF', 35199, 21494),
+        ]
+        color = TileRenderService.calculate_color(35199, 21494, tileColorPositions)
         assert color == (255, 0, 0, 96)
 
     def test_calculate_border_color_not_a_border_pixel(self):
@@ -104,15 +76,16 @@ class TestTileRenderService:
         assert color == self.COLOR_VISITED
 
     def test_render_image_same_zoom(self):
-        def mocked_color_method(x: int, y: int) -> list[str]:
-            if x == 35198 and y == 21494:
-                return [self.COLOR_VISITED_HEX]
-            if x == 35199 and y == 21494:
-                return [self.COLOR_VISITED_HEX]
-            return [self.COLOR_NOT_VISITED_HEX]
+        def mocked_color_method(
+            min_x: int, max_x: int, min_y: int, max_y: int
+        ) -> list[TileColorPosition]:
+            return [
+                TileColorPosition(self.COLOR_VISITED_HEX, 35198, 21494),
+                TileColorPosition(self.COLOR_VISITED_HEX, 35199, 21494),
+            ]
 
         visitedTileService = Mock()
-        visitedTileService.determine_tile_colors_of_tracks_that_visit_tile.side_effect = (
+        visitedTileService.determine_tile_colors_of_tracks_that_visit_tiles.side_effect = (
             mocked_color_method
         )
 
@@ -141,15 +114,16 @@ class TestTileRenderService:
         assert not ImageChops.difference(image, expectedImage).getbbox()
 
     def test_render_image_lower_zoom(self):
-        def mocked_color_method(x: int, y: int) -> list[str]:
-            if x == 35198 and y == 21494:
-                return [self.COLOR_VISITED_HEX]
-            if x == 35199 and y == 21494:
-                return [self.COLOR_VISITED_HEX]
-            return [self.COLOR_NOT_VISITED_HEX]
+        def mocked_color_method(
+            min_x: int, max_x: int, min_y: int, max_y: int
+        ) -> list[TileColorPosition]:
+            return [
+                TileColorPosition(self.COLOR_VISITED_HEX, 35198, 21494),
+                TileColorPosition(self.COLOR_VISITED_HEX, 35199, 21494),
+            ]
 
         visitedTileService = Mock()
-        visitedTileService.determine_tile_colors_of_tracks_that_visit_tile.side_effect = (
+        visitedTileService.determine_tile_colors_of_tracks_that_visit_tiles.side_effect = (
             mocked_color_method
         )
 
@@ -178,17 +152,19 @@ class TestTileRenderService:
         assert not ImageChops.difference(image, expectedImage).getbbox()
 
     def test_render_image_higher_zoom(self):
-        def mocked_color_method(x: int, y: int) -> list[str]:
-            if x == 17599 and y == 10747:
-                return [self.COLOR_VISITED_HEX]
-            return [self.COLOR_NOT_VISITED_HEX]
+        def mocked_color_method(
+            min_x: int, max_x: int, min_y: int, max_y: int
+        ) -> list[TileColorPosition]:
+            return [
+                TileColorPosition(self.COLOR_VISITED_HEX, 17599, 10747),
+            ]
 
         visitedTileService = Mock()
-        visitedTileService.determine_tile_colors_of_tracks_that_visit_tile.side_effect = (
+        visitedTileService.determine_tile_colors_of_tracks_that_visit_tiles.side_effect = (
             mocked_color_method
         )
-        service = TileRenderService(13, 4, visitedTileService)
-        image = service.render_image(35198, 21494, 14, self.COLOR_BORDER)
+        service = TileRenderService(15, 4, visitedTileService)
+        image = service.render_image(35198, 21494, 16, self.COLOR_BORDER)
 
         expectedImage = Image.new('RGBA', (4, 4), color=self.COLOR_VISITED)
         pixels = expectedImage.load()

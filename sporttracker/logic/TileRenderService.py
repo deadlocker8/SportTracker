@@ -4,7 +4,7 @@ import math
 from PIL import Image, ImageColor
 
 from sporttracker.logic import Constants
-from sporttracker.logic.VisitedTileService import VisitedTileService
+from sporttracker.logic.VisitedTileService import VisitedTileService, TileColorPosition
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -74,18 +74,19 @@ class TileRenderService:
         """
         return [(x // 2, y // 2)]
 
-    def calculate_color(self, x: int, y: int) -> tuple[int, int, int, int]:
+    @staticmethod
+    def calculate_color(
+        x: int, y: int, tileColorPositions: list[TileColorPosition]
+    ) -> tuple[int, int, int, int]:
         """
         Calculates the color of a tile with the position (x, y).
         Expects x, y to be in self._baseZoomLevel coordinates.
 
-        If a tile was not yet visited by the user COLOR_TRANSPARENT is returned.
-        If a tile was visited by exactly one gpx track the color of the corresponding track type is returned.
-        If a tile was visited by multiple gpx tracks COLOR_MULTIPLE_MATCHES is returned.
+        If a tile was not yet visited by the user, COLOR_TRANSPARENT is returned.
+        If a tile was visited by exactly one gpx track, the color of the corresponding track type is returned.
+        If a tile was visited by multiple gpx tracks, COLOR_MULTIPLE_MATCHES is returned.
         """
-        colorsOfMatchingTracks = (
-            self._visitedTileService.determine_tile_colors_of_tracks_that_visit_tile(x, y)
-        )
+        colorsOfMatchingTracks = [t.tile_color for t in tileColorPositions if t.x == x and t.y == y]
 
         if len(colorsOfMatchingTracks) == 0:
             return TileRenderService.COLOR_TRANSPARENT
@@ -138,6 +139,20 @@ class TileRenderService:
         boxSize = int(self._tileSize / numberOfElementsPerAxis)
         zoomDifference = zoom - self._baseZoomLevel
 
+        if not positions:
+            raise RuntimeError(f'No positions were found for tile with coordinates x: {x}, y: {y}')
+
+        max_x, max_y, min_x, min_y = self.__calculate_min_and_max(positions)
+
+        tileColorPositions = (
+            self._visitedTileService.determine_tile_colors_of_tracks_that_visit_tiles(
+                min_x,  # type: ignore[arg-type]
+                max_x,  # type: ignore[arg-type]
+                min_y,  # type: ignore[arg-type]
+                max_y,  # type: ignore[arg-type]
+            )
+        )
+
         for row in range(0, numberOfElementsPerAxis):
             for col in range(0, numberOfElementsPerAxis):
                 elementIndex = row * numberOfElementsPerAxis + col
@@ -149,7 +164,7 @@ class TileRenderService:
                     isTouchingUpperEdgeOfBaseZoomTile = True
                     isTouchingLeftEdgeOfBaseZoomTile = True
 
-                colorToUse = self.calculate_color(position[0], position[1])
+                colorToUse = self.calculate_color(position[0], position[1], tileColorPositions)
 
                 for pixelX in range(boxSize):
                     for pixelY in range(boxSize):
@@ -166,3 +181,28 @@ class TileRenderService:
                             pixels[row * boxSize + pixelX, col * boxSize + pixelY] = border  # type: ignore[index]
 
         return img
+
+    @staticmethod
+    def __calculate_min_and_max(
+        positions: list[tuple[int, int]],
+    ) -> tuple[int | None, int | None, int | None, int | None]:
+        min_x = None
+        max_x = None
+        min_y = None
+        max_y = None
+
+        for position in positions:
+            pos_x, pos_y = position
+            if min_x is None or pos_x < min_x:
+                min_x = pos_x
+
+            if max_x is None or pos_x > max_x:
+                max_x = pos_x
+
+            if min_y is None or pos_y < min_y:
+                min_y = pos_y
+
+            if max_y is None or pos_y > max_y:
+                max_y = pos_y
+
+        return max_x, max_y, min_x, min_y
