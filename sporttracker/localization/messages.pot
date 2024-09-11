@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-04 14:39+0200\n"
+"POT-Creation-Date: 2024-09-11 23:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.16.0\n"
 
 #: ../blueprints/Achievements.py:39
 msgid "Month Goal Streak"
@@ -71,7 +71,7 @@ msgstr ""
 msgid "Number Of Tracks"
 msgstr ""
 
-#: ../blueprints/AnnualAchievements.py:250 ../logic/model/User.py:63
+#: ../blueprints/AnnualAchievements.py:250 ../logic/model/User.py:65
 #: ../templates/charts/chartAverageSpeed.jinja2:23
 #: ../templates/charts/chartChooser.jinja2:42
 msgid "Average Speed"
@@ -101,17 +101,17 @@ msgstr ""
 msgid "End Month must be greater or equal Start Month."
 msgstr ""
 
-#: ../blueprints/Settings.py:355
+#: ../blueprints/Settings.py:377
 msgid ""
 "The specified field name \"{0}\" conflicts with a reserved field name and"
 " therefore can't be used as custom field name."
 msgstr ""
 
-#: ../blueprints/Settings.py:369
+#: ../blueprints/Settings.py:391
 msgid "The specified field name \"{0}\" already exists."
 msgstr ""
 
-#: ../blueprints/Settings.py:380
+#: ../blueprints/Settings.py:402
 msgid "The specified participant name \"{0}\" already exists."
 msgstr ""
 
@@ -131,64 +131,64 @@ msgstr ""
 msgid "Float"
 msgstr ""
 
-#: ../logic/model/PlannedTour.py:38
+#: ../logic/model/PlannedTour.py:39
 msgid "none"
 msgstr ""
 
-#: ../logic/model/PlannedTour.py:40
+#: ../logic/model/PlannedTour.py:41
 msgid "Car"
 msgstr ""
 
-#: ../logic/model/PlannedTour.py:42
+#: ../logic/model/PlannedTour.py:43
 msgid "Train"
 msgstr ""
 
-#: ../logic/model/PlannedTour.py:70
+#: ../logic/model/PlannedTour.py:71
 msgid "Single"
 msgstr ""
 
-#: ../logic/model/PlannedTour.py:72
+#: ../logic/model/PlannedTour.py:73
 msgid "Return"
 msgstr ""
 
-#: ../logic/model/PlannedTour.py:74
+#: ../logic/model/PlannedTour.py:75
 msgid "Roundtrip"
 msgstr ""
 
-#: ../logic/model/TrackType.py:68
+#: ../logic/model/TrackType.py:84
 msgid "Biking"
 msgstr ""
 
-#: ../logic/model/TrackType.py:70
+#: ../logic/model/TrackType.py:86
 msgid "Running"
 msgstr ""
 
-#: ../logic/model/TrackType.py:72
+#: ../logic/model/TrackType.py:88
 msgid "Hiking"
 msgstr ""
 
-#: ../logic/model/User.py:59 ../templates/maps/mapPlannedTour.jinja2:36
+#: ../logic/model/User.py:61 ../templates/maps/mapPlannedTour.jinja2:36
 #: ../templates/maps/mapPlannedTour.jinja2:83
-#: ../templates/maps/mapSingleTrack.jinja2:40
-#: ../templates/maps/mapSingleTrack.jinja2:87
+#: ../templates/maps/mapSingleTrack.jinja2:47
+#: ../templates/maps/mapSingleTrack.jinja2:94
 msgid "Distance"
 msgstr ""
 
-#: ../logic/model/User.py:61 ../templates/maps/mapSingleTrack.jinja2:43
-#: ../templates/maps/mapSingleTrack.jinja2:91
+#: ../logic/model/User.py:63 ../templates/maps/mapSingleTrack.jinja2:50
+#: ../templates/maps/mapSingleTrack.jinja2:98
 #: ../templates/tracks/trackMacros.jinja2:269
 msgid "Duration"
 msgstr ""
 
-#: ../logic/model/User.py:65 ../templates/tracks/trackMacros.jinja2:295
+#: ../logic/model/User.py:67 ../templates/tracks/trackMacros.jinja2:295
 msgid "Average Heart Rate"
 msgstr ""
 
-#: ../logic/model/User.py:67 ../templates/maps/mapSingleTrack.jinja2:119
+#: ../logic/model/User.py:69 ../templates/maps/mapSingleTrack.jinja2:126
 msgid "Elevation Sum"
 msgstr ""
 
-#: ../templates/about.jinja2:6 ../templates/macros.jinja2:157
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:167
 msgid "About"
 msgstr ""
 
@@ -222,6 +222,7 @@ msgid "Average"
 msgstr ""
 
 #: ../templates/annualAchievements.jinja2:56
+#: ../templates/plannedTours/plannedToursMacros.jinja2:85
 msgid "Close"
 msgstr ""
 
@@ -244,7 +245,8 @@ msgid "Users"
 msgstr ""
 
 #: ../templates/macros.jinja2:57 ../templates/maps/mapMultipleTracks.jinja2:6
-#: ../templates/plannedTours/plannedTours.jinja2:98
+#: ../templates/maps/mapTileHunting.jinja2:6
+#: ../templates/plannedTours/plannedTours.jinja2:102
 #: ../templates/tracks/tracks.jinja2:5 ../templates/tracks/tracks.jinja2:25
 msgid "Tracks"
 msgstr ""
@@ -284,6 +286,7 @@ msgstr ""
 
 #: ../templates/macros.jinja2:114 ../templates/maps/mapMultipleTracks.jinja2:17
 #: ../templates/maps/mapNotFound.jinja2:6
+#: ../templates/maps/mapTileHunting.jinja2:17
 msgid "Map"
 msgstr ""
 
@@ -298,26 +301,31 @@ msgid "Maintenance"
 msgstr ""
 
 #: ../templates/macros.jinja2:143 ../templates/maps/mapMultipleTracks.jinja2:9
+#: ../templates/maps/mapTileHunting.jinja2:9
 #: ../templates/plannedTours/plannedTours.jinja2:6
-#: ../templates/plannedTours/plannedTours.jinja2:18
+#: ../templates/plannedTours/plannedTours.jinja2:19
 msgid "Planned Tours"
 msgstr ""
 
-#: ../templates/macros.jinja2:166
+#: ../templates/macros.jinja2:158 ../templates/maps/mapMacros.jinja2:107
+msgid "Tile Hunting"
+msgstr ""
+
+#: ../templates/macros.jinja2:176
 msgid "Search"
 msgstr ""
 
-#: ../templates/macros.jinja2:195 ../templates/settings/settings.jinja2:6
+#: ../templates/macros.jinja2:205 ../templates/settings/settings.jinja2:6
 #: ../templates/settings/settings.jinja2:18
 #: ../templates/tracks/trackMacros.jinja2:389
 msgid "Settings"
 msgstr ""
 
-#: ../templates/macros.jinja2:204
+#: ../templates/macros.jinja2:214
 msgid "Logout"
 msgstr ""
 
-#: ../templates/macros.jinja2:245 ../templates/tracks/tracks.jinja2:95
+#: ../templates/macros.jinja2:255 ../templates/tracks/tracks.jinja2:95
 #: ../templates/tracks/tracks.jinja2:117
 msgid "Cancel"
 msgstr ""
@@ -428,8 +436,8 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:26
 #: ../templates/plannedTours/plannedTourForm.jinja2:26
 #: ../templates/plannedTours/plannedTourForm.jinja2:31
-#: ../templates/settings/settings.jinja2:113
-#: ../templates/settings/settings.jinja2:158
+#: ../templates/settings/settings.jinja2:134
+#: ../templates/settings/settings.jinja2:179
 #: ../templates/tracks/trackBikingForm.jinja2:24
 #: ../templates/tracks/trackBikingForm.jinja2:28
 #: ../templates/tracks/trackHikingForm.jinja2:24
@@ -457,13 +465,13 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:28
 #: ../templates/plannedTours/plannedTourForm.jinja2:47
 #: ../templates/settings/customFieldsForm.jinja2:61
-#: ../templates/settings/settings.jinja2:90
+#: ../templates/settings/settings.jinja2:111
 msgid "Type"
 msgstr ""
 
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:56
-#: ../templates/maps/mapSingleTrack.jinja2:37
-#: ../templates/maps/mapSingleTrack.jinja2:83
+#: ../templates/maps/mapSingleTrack.jinja2:44
+#: ../templates/maps/mapSingleTrack.jinja2:90
 #: ../templates/tracks/trackMacros.jinja2:237
 msgid "Date"
 msgstr ""
@@ -484,9 +492,10 @@ msgstr ""
 #: ../templates/plannedTours/plannedTourForm.jinja2:94
 #: ../templates/settings/customFieldsForm.jinja2:84
 #: ../templates/settings/participantsForm.jinja2:58
-#: ../templates/settings/settings.jinja2:42
-#: ../templates/settings/settings.jinja2:59
-#: ../templates/settings/settings.jinja2:186
+#: ../templates/settings/settings.jinja2:43
+#: ../templates/settings/settings.jinja2:61
+#: ../templates/settings/settings.jinja2:80
+#: ../templates/settings/settings.jinja2:208
 #: ../templates/tracks/trackBikingForm.jinja2:70
 #: ../templates/tracks/trackHikingForm.jinja2:70
 #: ../templates/tracks/trackRunningForm.jinja2:70
@@ -511,7 +520,7 @@ msgid "Slope"
 msgstr ""
 
 #: ../templates/maps/mapMacros.jinja2:7
-#: ../templates/maps/mapSingleTrack.jinja2:46
+#: ../templates/maps/mapSingleTrack.jinja2:53
 msgid "Speed"
 msgstr ""
 
@@ -615,12 +624,22 @@ msgstr ""
 msgid "Collapse Legend"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:82
+#: ../templates/maps/mapMacros.jinja2:87
 #, python-format
 msgid "Show %(length)s linked Tracks"
 msgstr ""
 
-#: ../templates/maps/mapMultipleTracks.jinja2:60
+#: ../templates/maps/mapMacros.jinja2:115
+msgid "Show visited tiles"
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:123
+#: ../templates/maps/mapTileHunting.jinja2:90
+msgid "Show grid"
+msgstr ""
+
+#: ../templates/maps/mapMultipleTracks.jinja2:61
+#: ../templates/maps/mapTileHunting.jinja2:63
 msgid "Apply"
 msgstr ""
 
@@ -640,13 +659,13 @@ msgstr ""
 
 #: ../templates/maps/mapPlannedTour.jinja2:43
 #: ../templates/maps/mapPlannedTour.jinja2:91
-#: ../templates/plannedTours/plannedTours.jinja2:74
+#: ../templates/plannedTours/plannedTours.jinja2:76
 msgid "Arrival"
 msgstr ""
 
 #: ../templates/maps/mapPlannedTour.jinja2:46
 #: ../templates/maps/mapPlannedTour.jinja2:95
-#: ../templates/plannedTours/plannedTours.jinja2:78
+#: ../templates/plannedTours/plannedTours.jinja2:80
 msgid "Departure"
 msgstr ""
 
@@ -658,17 +677,17 @@ msgstr ""
 
 #: ../templates/maps/mapPlannedTour.jinja2:57
 #: ../templates/maps/mapPlannedTour.jinja2:141
-#: ../templates/plannedTours/plannedTours.jinja2:102
+#: ../templates/plannedTours/plannedTours.jinja2:106
 msgid "last edited"
 msgstr ""
 
 #: ../templates/maps/mapPlannedTour.jinja2:103
-#: ../templates/maps/mapSingleTrack.jinja2:127
+#: ../templates/maps/mapSingleTrack.jinja2:134
 msgid "Min Height"
 msgstr ""
 
 #: ../templates/maps/mapPlannedTour.jinja2:111
-#: ../templates/maps/mapSingleTrack.jinja2:135
+#: ../templates/maps/mapSingleTrack.jinja2:142
 msgid "Max Height"
 msgstr ""
 
@@ -685,17 +704,36 @@ msgid "Shared Track"
 msgstr ""
 
 #: ../templates/maps/mapSingleTrack.jinja2:10
-#: ../templates/maps/mapSingleTrack.jinja2:33
-#: ../templates/maps/mapSingleTrack.jinja2:80
+#: ../templates/maps/mapSingleTrack.jinja2:40
+#: ../templates/maps/mapSingleTrack.jinja2:87
 msgid "Track"
 msgstr ""
 
-#: ../templates/maps/mapSingleTrack.jinja2:95
+#: ../templates/maps/mapSingleTrack.jinja2:102
 msgid "Avg. Speed"
 msgstr ""
 
-#: ../templates/maps/mapSingleTrack.jinja2:111
+#: ../templates/maps/mapSingleTrack.jinja2:118
 msgid "Avg. Heart Rate"
+msgstr ""
+
+#: ../templates/maps/mapTileHunting.jinja2:75
+msgid "Tiles visited"
+msgstr ""
+
+#: ../templates/maps/mapTileHunting.jinja2:80
+msgid ""
+"Tiles are shown in their corresponding track type color. If different "
+"track types had visited a tile, it will be shown in <span class=&quot"
+";text-danger fw-bold&quot;>red</span>."
+msgstr ""
+
+#: ../templates/maps/mapTileHunting.jinja2:94
+msgid "Zoom in to view visited tiles."
+msgstr ""
+
+#: ../templates/maps/mapTileHunting.jinja2:149
+msgid "Number of new tiles"
 msgstr ""
 
 #: ../templates/monthGoals/monthGoalChooser.jinja2:6
@@ -840,8 +878,8 @@ msgstr ""
 #: ../templates/plannedTours/plannedTourForm.jinja2:61
 #: ../templates/settings/customFieldsForm.jinja2:52
 #: ../templates/settings/participantsForm.jinja2:50
-#: ../templates/settings/settings.jinja2:89
-#: ../templates/settings/settings.jinja2:139
+#: ../templates/settings/settings.jinja2:110
+#: ../templates/settings/settings.jinja2:160
 #: ../templates/tracks/trackMacros.jinja2:217
 msgid "Name"
 msgstr ""
@@ -862,19 +900,19 @@ msgstr ""
 msgid "A GPX file is linked to this planned tour"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:30
+#: ../templates/plannedTours/plannedTours.jinja2:31
 msgid "View all on map"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:47
+#: ../templates/plannedTours/plannedTours.jinja2:49
 msgid "new"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:49
+#: ../templates/plannedTours/plannedTours.jinja2:51
 msgid "updated"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:92
+#: ../templates/plannedTours/plannedTours.jinja2:94
 msgid "shared"
 msgstr ""
 
@@ -914,47 +952,51 @@ msgstr ""
 msgid "New Participant"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:48
+#: ../templates/settings/settings.jinja2:49
 msgid "Language"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:68
+#: ../templates/settings/settings.jinja2:74
+msgid "Activate tile hunting map and statistics"
+msgstr ""
+
+#: ../templates/settings/settings.jinja2:89
 msgid "Custom Track Fields"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:91
+#: ../templates/settings/settings.jinja2:112
 msgid "Is Required"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:92
-#: ../templates/settings/settings.jinja2:140
+#: ../templates/settings/settings.jinja2:113
+#: ../templates/settings/settings.jinja2:161
 msgid "Action"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:112
+#: ../templates/settings/settings.jinja2:133
 msgid "Delete Custom Field?"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:112
+#: ../templates/settings/settings.jinja2:133
 #, python-format
 msgid "Do you really want to delete the custom field \"%(name)s\"?"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:130
+#: ../templates/settings/settings.jinja2:151
 #: ../templates/tracks/trackMacros.jinja2:372
 msgid "Participants"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:157
+#: ../templates/settings/settings.jinja2:178
 msgid "Delete Participant?"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:157
+#: ../templates/settings/settings.jinja2:178
 #, python-format
 msgid "Do you really want to delete the participant \"%(name)s\"?"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:172
+#: ../templates/settings/settings.jinja2:193
 msgid "Select Information to show for each track"
 msgstr ""
 
