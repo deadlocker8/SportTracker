@@ -49,7 +49,7 @@
 {%- endmacro %}
 
 {% macro meta_info_item_small(icon, iconColor, subText, iconClass='material-icons') -%}
-   <div class="col d-flex flex-column align-items-center justify-content-between">
+    <div class="col d-flex flex-column align-items-center justify-content-between">
         <div class="{{ iconClass }} {{ iconColor }} fs-3 mb-2">{{ icon }}</div>
         <div class="fs-5 text-center text-body-emphasis">
             {{ caller() }}
@@ -95,6 +95,32 @@
                         <span class="material-icons text-primary">send</span>
                     </a>
                 {% endfor %}
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro tileHuntingMapSettings(isShowTilesActive, isGridActive, trackId) -%}
+    <div class="dropdown ms-3">
+        <button class="btn btn-sm btn-primary dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="material-icons fs-5">explore</span>
+            <span class="ms-2 d-none d-lg-block">{{ gettext('Tile Hunting') }}</span>
+        </button>
+        <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
+            <div class="form-check text-nowrap mb-2">
+                <input class="form-check-input tileHuntingCheckbox" type="checkbox"
+                       id="tileHuntingEnableTiles"
+                       {% if isShowTilesActive %}checked{% endif %}
+                       data-url="{{ url_for('maps.toggleTileHuntingViewTiles', redirectUrl=url_for('maps.showSingleTrack', track_id=trackId)) }}">
+                <label class="form-check-label" for="tileHuntingEnableTiles">{{ gettext('Show visited tiles') }}</label>
+            </div>
+            <div class="form-check text-nowrap">
+                <input class="form-check-input tileHuntingCheckbox" type="checkbox"
+                       id="tileHuntingEnableGrid"
+                       {% if isGridActive %}checked{% endif %}
+                       {% if not isShowTilesActive %}disabled{% endif %}
+                       data-url="{{ url_for('maps.toggleTileHuntingViewGrid', redirectUrl=url_for('maps.showSingleTrack', track_id=trackId)) }}">
+                <label class="form-check-label" for="tileHuntingEnableGrid">{{ gettext('Show grid') }}</label>
             </div>
         </div>
     </div>

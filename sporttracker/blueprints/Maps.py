@@ -111,6 +111,8 @@ def construct_blueprint(tileHuntingSettings: dict[str, Any]):
             gpxUrl=url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id),
             editUrl=url_for('tracks.edit', track_id=track_id),
             tileRenderUrl=tileRenderUrl,
+            tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
+            tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
         )
 
     @maps.route('/map/shared/<string:shareCode>')
@@ -216,7 +218,10 @@ def construct_blueprint(tileHuntingSettings: dict[str, Any]):
         tileRenderService = TileRenderService(
             tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
         )
-        borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
+
+        borderColor = None
+        if __get_tile_hunting_is_grid_active():
+            borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
 
         image = tileRenderService.render_image(x, y, zoom, borderColor)  # type: ignore[arg-type]
 
@@ -240,7 +245,10 @@ def construct_blueprint(tileHuntingSettings: dict[str, Any]):
         tileRenderService = TileRenderService(
             tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
         )
-        borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
+
+        borderColor = None
+        if __get_tile_hunting_is_grid_active():
+            borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
 
         image = tileRenderService.render_image(x, y, zoom, borderColor)  # type: ignore[arg-type]
 
@@ -301,6 +309,20 @@ def construct_blueprint(tileHuntingSettings: dict[str, Any]):
             chartDataNewTilesPerTrack=chartDataNewTilesPerTrack,
         )
 
+    @maps.route('/toggleTileHuntingViewTiles')
+    @login_required
+    def toggleTileHuntingViewTiles():
+        redirectUrl = request.args['redirectUrl']
+        session['tileHuntingIsShowTilesActive'] = not __get_tile_hunting_is_show_tiles_active()
+        return redirect(redirectUrl)
+
+    @maps.route('/toggleTileHuntingViewGrid')
+    @login_required
+    def toggleTileHuntingViewGrid():
+        redirectUrl = request.args['redirectUrl']
+        session['tileHuntingIsGridActive'] = not __get_tile_hunting_is_grid_active()
+        return redirect(redirectUrl)
+
     return maps
 
 
@@ -309,3 +331,17 @@ def __get_map_year_filter_state_from_session(availableYears: list[int]) -> list[
         session['mapYearFilterState'] = availableYears
 
     return sorted(session['mapYearFilterState'])
+
+
+def __get_tile_hunting_is_show_tiles_active() -> bool:
+    if 'tileHuntingIsShowTilesActive' not in session:
+        session['tileHuntingIsShowTilesActive'] = True
+
+    return session['tileHuntingIsShowTilesActive']
+
+
+def __get_tile_hunting_is_grid_active() -> bool:
+    if 'tileHuntingIsGridActive' not in session:
+        session['tileHuntingIsGridActive'] = False
+
+    return session['tileHuntingIsGridActive']
