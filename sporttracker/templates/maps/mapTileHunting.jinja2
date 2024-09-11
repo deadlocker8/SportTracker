@@ -70,8 +70,15 @@
         </div>
 
         <div class="row g-0">
-            <div class="col">
+            <div class="col mb-2 d-flex align-items-center justify-content-center">
                 <h3 class="text-center">{{ totalNumberOfTiles }} {{ gettext('Tiles visited') }}</h3>
+                 <div id="button-help" class="link-light text-decoration-none d-flex-inline align-items-center ms-3"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="right"
+                      data-bs-html="true"
+                      data-bs-title="{{ gettext('Tiles are shown in their corresponding track type color. If different track types had visited a tile, it will be shown in <span class=&quot;text-danger fw-bold&quot;>red</span>.') }}">
+                    <span class="rounded-circle bg-primary p-1 fs-5 material-icons">question_mark</span>
+                </div>
             </div>
         </div>
 

@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function()
 {
+    const buttonHelp = document.getElementById('button-help');
+    new bootstrap.Tooltip(buttonHelp, {});
+
     initMap();
 });
 
