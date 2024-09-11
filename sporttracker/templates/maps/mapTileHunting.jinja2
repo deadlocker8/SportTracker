@@ -31,7 +31,7 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('map') }}
 
-        <div class="row my-3">
+        <div class="row my-3 g-0">
             <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center">
                 <div class="d-none d-lg-block">
                     {{ macros.track_type_quick_filter(url_for(redirectUrl)) }}
@@ -45,6 +45,7 @@
                 <div class="ms-5">
                     <form role="form" action="{{ url_for('maps.toggleYears') }}" method="post" class="d-flex flex-row align-items-center justify-content-center">
                         <div class="row row-cols-auto">
+                            <input type="hidden" name="redirectUrl" value="{{ url_for(redirectUrl) }}"/>
                             {% for availableYear in availableYears %}
                                 <div class="col my-1">
                                     <input class="btn-check" type="checkbox" role="switch"
@@ -68,7 +69,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row g-0">
             <div class="col">
                 <h3 class="text-center">{{ totalNumberOfTiles }} {{ gettext('Tiles visited') }}</h3>
             </div>

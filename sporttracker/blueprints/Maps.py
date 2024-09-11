@@ -157,10 +157,11 @@ def construct_blueprint(tileHuntingSettings: dict[str, Any]):
     @login_required
     def toggleYears():
         activeYears = [int(item) for item in request.form.getlist('activeYears')]
+        redirectUrl = request.form['redirectUrl']
 
         session['mapYearFilterState'] = activeYears
 
-        return redirect(url_for('maps.showAllTracksOnMap'))
+        return redirect(redirectUrl)
 
     @maps.route('/map/plannedTours')
     @login_required

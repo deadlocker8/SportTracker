@@ -43,6 +43,7 @@
                 <div class="ms-5">
                     <form role="form" action="{{ url_for('maps.toggleYears') }}" method="post" class="d-flex flex-row align-items-center justify-content-center">
                         <div class="row row-cols-auto">
+                            <input type="hidden" name="redirectUrl" value="{{ url_for(redirectUrl) }}"/>
                             {% for availableYear in availableYears %}
                                 <div class="col my-1">
                                     <input class="btn-check" type="checkbox" role="switch"
