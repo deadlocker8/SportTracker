@@ -259,10 +259,6 @@ def construct_blueprint(tileHuntingSettings: dict[str, Any]):
     @maps.route('/map/tileHunting')
     @login_required
     def showTileHuntingMap():
-        quickFilterState = get_quick_filter_state_from_session()
-        availableYears = get_available_years()
-        yearFilterState = __get_map_year_filter_state_from_session(availableYears)
-
         tileRenderUrl = url_for(
             'maps.renderAllTiles',
             user_id=current_user.id,
