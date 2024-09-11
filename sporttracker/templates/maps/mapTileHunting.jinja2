@@ -81,6 +81,15 @@
                         <span class="rounded-circle bg-primary p-1 fs-5 material-icons">question_mark</span>
                     </div>
                 </div>
+
+                <div class="form-check text-nowrap ms-0 ms-md-5">
+                    <input class="form-check-input" type="checkbox"
+                           id="tileHuntingEnableGrid"
+                           {% if tileHuntingIsGridActive %}checked{% endif %}
+                           data-url="{{ url_for('maps.toggleTileHuntingViewGrid', redirectUrl=url_for('maps.showTileHuntingMap')) }}">
+                    <label class="form-check-label" for="tileHuntingEnableGrid">{{ gettext('Show grid') }}</label>
+                </div>
+
                 <h5 class="mt-3 mt-md-0 ms-0 ms-md-5" id="warning-zoom">
                     <span class="badge text-bg-warning">{{ gettext('Zoom in too view visited tiles.') }}</span></h5>
             </div>

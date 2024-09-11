@@ -3,6 +3,12 @@ document.addEventListener('DOMContentLoaded', function()
     const buttonHelp = document.getElementById('button-help');
     new bootstrap.Tooltip(buttonHelp, {});
 
+    const checkboxGrid = document.getElementById('tileHuntingEnableGrid');
+    checkboxGrid.addEventListener('change', function()
+    {
+        window.location.href = checkboxGrid.dataset.url;
+    });
+
     initMap();
 });
 

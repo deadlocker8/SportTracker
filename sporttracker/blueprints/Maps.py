@@ -307,6 +307,7 @@ def construct_blueprint(tileHuntingSettings: dict[str, Any]):
             tileRenderUrl=tileRenderUrl,
             totalNumberOfTiles=totalNumberOfTiles,
             chartDataNewTilesPerTrack=chartDataNewTilesPerTrack,
+            tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
         )
 
     @maps.route('/toggleTileHuntingViewTiles')
