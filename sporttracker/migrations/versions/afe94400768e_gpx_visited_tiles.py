@@ -39,7 +39,9 @@ def upgrade():
             sa.PrimaryKeyConstraint('track_id', 'x', 'y'),
         )
 
-        connection = op.get_bind()
+    connection = op.get_bind()
+    existingTableEntries = connection.execute(text('SELECT * FROM gpx_visited_tile')).fetchall()
+    if len(existingTableEntries) == 0:
         rows = connection.execute(
             text(
                 'SELECT t.id, g.gpx_file_name from track as t, gpx_metadata as g '
@@ -59,7 +61,7 @@ def upgrade():
             trackId = row[0]
             gpxFileName = row[1]
             LOGGER.debug(
-                f'Calculate visited tiles for track {trackId} with gpx file "{gpxFileName}"'
+                f'Calculate visited tiles for track [{index + 1}/{len(rows)}]: id {trackId} with gpx file "{gpxFileName}"'
             )
             gpxPath = os.path.join(uploadDirectory, gpxFileName)
 
