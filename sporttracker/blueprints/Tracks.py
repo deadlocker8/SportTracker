@@ -3,6 +3,7 @@ import os
 import uuid
 from dataclasses import dataclass
 from datetime import datetime, date
+from typing import Any
 
 import flask_babel
 from babel.dates import get_month_names
@@ -12,8 +13,9 @@ from flask_babel import format_datetime
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel, ConfigDict, field_validator
+from sqlalchemy import delete
 
-from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack
+from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack, updateVisitedTilesForTrack
 from sporttracker.logic import Constants
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
 from sporttracker.logic.QuickFilterState import (
@@ -22,6 +24,7 @@ from sporttracker.logic.QuickFilterState import (
 )
 from sporttracker.logic.model.CustomTrackField import CustomTrackField
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
+from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
 from sporttracker.logic.model.MaintenanceEvent import (
     MaintenanceEvent,
     get_maintenance_events_by_year_and_month_by_type,
@@ -126,7 +129,7 @@ class TrackFormModel(BaseModel):
         return value
 
 
-def construct_blueprint(uploadFolder: str):
+def construct_blueprint(uploadFolder: str, tileHuntingSettings: dict[str, Any]):
     tracks = Blueprint('tracks', __name__, static_folder='static', url_prefix='/tracks')
 
     @tracks.route('/', defaults={'year': None, 'month': None})
@@ -225,6 +228,9 @@ def construct_blueprint(uploadFolder: str):
         db.session.add(track)
         db.session.commit()
 
+        if gpxMetadataId is not None:
+            updateVisitedTilesForTrack(uploadFolder, track, tileHuntingSettings['baseZoomLevel'])
+
         return redirect(
             url_for(
                 'tracks.listTracks',
@@ -305,18 +311,25 @@ def construct_blueprint(uploadFolder: str):
         track.share_code = form.shareCode if form.shareCode else None  # type: ignore[assignment]
         track.plannedTour = plannedTour  # type: ignore[assignment]
 
+        shouldUpdateVisitedTiles = False
         newGpxMetadataId = handleGpxTrackForTrack(request.files, uploadFolder)
         if track.gpx_metadata_id is None:
             track.gpx_metadata_id = newGpxMetadataId
+            shouldUpdateVisitedTiles = True
         else:
             if newGpxMetadataId is not None:
                 __delete_gpx_track(uploadFolder, track)
                 track.gpx_metadata_id = newGpxMetadataId
+                shouldUpdateVisitedTiles = True
 
         track.custom_fields = form.model_extra
 
-        LOGGER.debug(f'Updated track: {track}')
         db.session.commit()
+
+        if shouldUpdateVisitedTiles and track.gpx_metadata_id is not None:
+            updateVisitedTilesForTrack(uploadFolder, track, tileHuntingSettings['baseZoomLevel'])
+
+        LOGGER.debug(f'Updated track: {track}')
 
         return redirect(
             url_for(
@@ -397,6 +410,10 @@ def __delete_gpx_track(uploadFolder: str, track: Track) -> None:
 
         db.session.delete(gpxMetadata)
         LOGGER.debug(f'Deleted gpx metadata {gpxMetadata.id}')
+        db.session.commit()
+
+        db.session.execute(delete(GpxVisitedTile).where(GpxVisitedTile.track_id == track.id))
+        LOGGER.debug(f'Deleted gpx visited tiles for track with id {track.id}')
         db.session.commit()
 
         gpxFilePath = os.path.join(uploadFolder, str(gpxMetadata.gpx_file_name))

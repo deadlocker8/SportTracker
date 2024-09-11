@@ -5,12 +5,14 @@ from typing import Any
 
 from flask import Blueprint, abort, Response, send_file, send_from_directory
 from flask_login import login_required
+from sqlalchemy import delete
 from werkzeug.datastructures.file_storage import FileStorage
 
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
+from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
 from sporttracker.logic.model.PlannedTour import (
     get_planned_tour_by_id,
     get_planned_tour_by_share_code,
@@ -225,6 +227,11 @@ def __deleteGpxTrack(uploadFolder: str, item: Track | PlannedTour) -> Response:
         db.session.delete(gpxMetadata)
         db.session.commit()
 
+        if isinstance(item, Track):
+            db.session.execute(delete(GpxVisitedTile).where(GpxVisitedTile.track_id == item.id))
+            LOGGER.debug(f'Deleted gpx visited tiles for track with id {item.id}')
+            db.session.commit()
+
         try:
             os.remove(os.path.join(uploadFolder, gpxMetadata.gpx_file_name))
             LOGGER.debug(
@@ -245,3 +252,14 @@ def __deleteGpxTrack(uploadFolder: str, item: Track | PlannedTour) -> Response:
                 LOGGER.error(e)
 
     return Response(status=204)
+
+
+def updateVisitedTilesForTrack(uploadFolder: str, track: Track, baseZoomLevel: int):
+    gpxPath = os.path.join(uploadFolder, track.get_gpx_metadata().gpx_file_name)  # type: ignore[union-attr]
+    gpxService = GpxService(gpxPath)
+    visitedTiles = gpxService.get_visited_tiles(baseZoomLevel)
+
+    for tile in visitedTiles:
+        gpxVisitedTile = GpxVisitedTile(track_id=track.id, x=tile.x, y=tile.y)
+        db.session.add(gpxVisitedTile)
+        db.session.commit()
