@@ -14,4 +14,10 @@ function initMap()
         minZoom: 9,
         maxZoom: 16
     }).addTo(map);
+
+    map.on('zoomend', function(e)
+    {
+        const currentZoom = map.getZoom();
+        document.getElementById('warning-zoom').classList.toggle('d-none', currentZoom >= 9);
+    });
 }
