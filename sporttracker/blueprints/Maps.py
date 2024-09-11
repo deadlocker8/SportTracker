@@ -3,6 +3,7 @@ import logging
 from datetime import datetime
 from typing import Any
 
+import flask_babel
 from PIL import ImageColor
 from flask import Blueprint, render_template, abort, url_for, session, redirect, request, Response
 from flask_login import login_required, current_user
@@ -272,6 +273,23 @@ def construct_blueprint(tileHuntingSettings: dict[str, Any]):
         visitedTileService = VisitedTileService(quickFilterState, yearFilterState)
         totalNumberOfTiles = visitedTileService.calculate_total_number_of_visited_tiles()
 
+        dates = []
+        values = []
+        colors = []
+        names = []
+        for entry in visitedTileService.determine_new_tiles_per_track():
+            dates.append(flask_babel.format_date(entry.startTime, 'short'))
+            values.append(entry.numberOfNewTiles)
+            colors.append(entry.type.background_color_hex)
+            names.append(entry.name)
+
+        chartDataNewTilesPerTrack = {
+            'dates': dates,
+            'values': values,
+            'colors': colors,
+            'names': names,
+        }
+
         return render_template(
             'maps/mapTileHunting.jinja2',
             quickFilterState=quickFilterState,
@@ -280,6 +298,7 @@ def construct_blueprint(tileHuntingSettings: dict[str, Any]):
             redirectUrl='maps.showTileHuntingMap',
             tileRenderUrl=tileRenderUrl,
             totalNumberOfTiles=totalNumberOfTiles,
+            chartDataNewTilesPerTrack=chartDataNewTilesPerTrack,
         )
 
     return maps
