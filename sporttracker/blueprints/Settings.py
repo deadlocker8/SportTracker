@@ -36,6 +36,10 @@ class EditSelfLanguageFormModel(BaseModel):
     language: str
 
 
+class EditSelfTileHuntingFormModel(BaseModel):
+    isTileHuntingActivated: bool | None = None
+
+
 class EditSelfTrackInfoItemsModel(BaseModel):
     model_config = ConfigDict(
         extra='allow',
@@ -132,6 +136,24 @@ def construct_blueprint():
         user.language = Language(form.language)  # type: ignore[call-arg]
 
         LOGGER.debug(f'Updated language for user: {user.username} to {form.language}')
+        db.session.commit()
+
+        return redirect(url_for('settings.settingsShow'))
+
+    @settings.route('/editSelfTileHunting', methods=['POST'])
+    @login_required
+    @validate()
+    def editSelfTileHunting(form: EditSelfTileHuntingFormModel):
+        user = User.query.filter(User.id == current_user.id).first()
+
+        if user is None:
+            abort(404)
+
+        user.isTileHuntingActivated = bool(form.isTileHuntingActivated)
+
+        LOGGER.debug(
+            f'Updated tile hunting settings for user: {user.username} to {bool(form.isTileHuntingActivated)}'
+        )
         db.session.commit()
 
         return redirect(url_for('settings.settingsShow'))

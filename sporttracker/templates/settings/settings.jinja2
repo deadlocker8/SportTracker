@@ -15,7 +15,7 @@
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col col-12 mx-auto">
-                         {% call macros.headline(gettext('Settings')) %}
+                        {% call macros.headline(gettext('Settings')) %}
                             <span class="material-icons fs-1">settings</span>
                         {% endcall %}
                     </div>
@@ -39,7 +39,8 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
+                                <span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
 
                         <form role="form" action="{{ url_for('settings.editSelfLanguagePost') }}" method="post"
@@ -56,7 +57,27 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
+                                <span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                        </form>
+
+                        <form role="form" action="{{ url_for('settings.editSelfTileHunting') }}" method="post"
+                              class="mt-5">
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center">
+                                    <span class="material-icons me-3">explore</span>
+                                    <div class="form-check text-nowrap">
+                                        <input class="form-check-input" type="checkbox"
+                                               id="isTileHuntingActivated"
+                                               name="isTileHuntingActivated"
+                                               {% if current_user.isTileHuntingActivated %}checked{% endif %}/>
+                                        <label class="form-check-label" for="isTileHuntingActivated">{{ gettext('Activate tile hunting map and statistics') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
+                                <span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>
@@ -183,7 +204,8 @@
                                 </div>
                             {% endfor %}
 
-                            <button type="submit" class="btn btn-primary mt-4 d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary mt-4 d-flex align-items-center">
+                                <span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

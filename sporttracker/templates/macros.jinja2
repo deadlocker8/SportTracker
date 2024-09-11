@@ -149,14 +149,16 @@
                                             {% endif %}
                                         </a>
                                     </li>
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center {% if activeLink == 'tileHunting' %}active {% endif %}"
-                                           href="{{ url_for('maps.showTileHuntingMap') }}">
-                                            <span class="navbar-icon">
-                                                <span class="material-icons-outlined fs-5">explore</span>
-                                            </span>&nbsp;{{ gettext('Tile Hunting') }}
-                                        </a>
-                                    </li>
+                                    {% if current_user.isTileHuntingActivated %}
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center {% if activeLink == 'tileHunting' %}active {% endif %}"
+                                               href="{{ url_for('maps.showTileHuntingMap') }}">
+                                                <span class="navbar-icon">
+                                                    <span class="material-icons-outlined fs-5">explore</span>
+                                                </span>&nbsp;{{ gettext('Tile Hunting') }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
                                     <li>
                                         <a class="dropdown-item d-flex align-items-center {% if activeLink == 'about' %}active {% endif %}"
                                            href="{{ url_for('general.about') }}">

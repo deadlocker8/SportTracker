@@ -22,7 +22,8 @@ function initMap()
     }
 
 
-    if(document.getElementById('tileHuntingEnableTiles').checked)
+    const checkBoxEnableTileHunting = document.getElementById('tileHuntingEnableTiles');
+    if(checkBoxEnableTileHunting !== null && checkBoxEnableTileHunting.checked)
     {
         L.tileLayer(tileRenderUrl + '/{z}/{x}/{y}.png', {
             minZoom: 9,

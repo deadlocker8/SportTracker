@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            {% if editUrl %}
+            {% if editUrl and current_user.isTileHuntingActivated %}
                 {{ mapMacros.tileHuntingMapSettings(tileHuntingIsShowTilesActive, tileHuntingIsGridActive, track.id) }}
             {% endif %}
         </div>

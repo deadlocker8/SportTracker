@@ -35,6 +35,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     customFields = db.relationship('CustomTrackField', backref='user', lazy=True, cascade='delete')
     trackInfoItems = db.relationship('TrackInfoItem', backref='user', lazy=True, cascade='delete')
     planned_tours_last_viewed_date: Mapped[DateTime] = mapped_column(DateTime)
+    isTileHuntingActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
     def __repr__(self):
         return (
@@ -44,6 +45,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
             f'isAdmin: {self.isAdmin}, '
             f'language: {self.language}, '
             f'planned_tours_last_viewed_date: {self.planned_tours_last_viewed_date})'
+            f'isTileHuntingActivated: {self.isTileHuntingActivated})'
         )
 
 
@@ -83,6 +85,7 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
         isAdmin=isAdmin,
         language=language,
         planned_tours_last_viewed_date=datetime.now(),
+        isTileHuntingActivated=True,
     )
     db.session.add(user)
     db.session.commit()
