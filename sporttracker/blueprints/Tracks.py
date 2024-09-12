@@ -18,6 +18,7 @@ from sqlalchemy import delete
 from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack, addVisitedTilesForTrack
 from sporttracker.logic import Constants
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
+from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
     QuickFilterState,
@@ -129,7 +130,9 @@ class TrackFormModel(BaseModel):
         return value
 
 
-def construct_blueprint(uploadFolder: str, tileHuntingSettings: dict[str, Any]):
+def construct_blueprint(
+    uploadFolder: str, tileHuntingSettings: dict[str, Any], newVisitedTileCache: NewVisitedTileCache
+):
     tracks = Blueprint('tracks', __name__, static_folder='static', url_prefix='/tracks')
 
     @tracks.route('/', defaults={'year': None, 'month': None})
@@ -230,6 +233,7 @@ def construct_blueprint(uploadFolder: str, tileHuntingSettings: dict[str, Any]):
 
         if gpxMetadataId is not None:
             addVisitedTilesForTrack(uploadFolder, track, tileHuntingSettings['baseZoomLevel'])
+            newVisitedTileCache.invalidate_cache_entry_by_user(current_user.id)
 
         return redirect(
             url_for(
@@ -328,6 +332,7 @@ def construct_blueprint(uploadFolder: str, tileHuntingSettings: dict[str, Any]):
 
         if shouldUpdateVisitedTiles and track.gpx_metadata_id is not None:
             addVisitedTilesForTrack(uploadFolder, track, tileHuntingSettings['baseZoomLevel'])
+            newVisitedTileCache.invalidate_cache_entry_by_user(current_user.id)
 
         LOGGER.debug(f'Updated track: {track}')
 
@@ -349,6 +354,7 @@ def construct_blueprint(uploadFolder: str, tileHuntingSettings: dict[str, Any]):
 
         if track.gpx_metadata_id is not None:
             __delete_gpx_track(uploadFolder, track)
+            newVisitedTileCache.invalidate_cache_entry_by_user(current_user.id)
 
         LOGGER.debug(f'Deleted track: {track}')
         db.session.delete(track)

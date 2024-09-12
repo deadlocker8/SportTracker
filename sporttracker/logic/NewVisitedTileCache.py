@@ -1,10 +1,14 @@
+import logging
 from dataclasses import dataclass
 from datetime import datetime
 
 from sqlalchemy import text
 
+from sporttracker.logic import Constants
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.db import db
+
+LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 @dataclass
@@ -22,9 +26,15 @@ class NewVisitedTileCache:
 
     def get_new_visited_tiles_per_track_by_user(self, userId: int) -> list[NewTilesPerTrack]:
         if userId not in self._newVisitedTilesPerUser:
+            LOGGER.debug(f'Creating entry in NewVisitedTileCache for user with id {userId}')
             self._newVisitedTilesPerUser[userId] = self.__determine_new_tiles_per_track(userId)
 
         return self._newVisitedTilesPerUser[userId]
+
+    def invalidate_cache_entry_by_user(self, userId: int) -> None:
+        if userId in self._newVisitedTilesPerUser:
+            LOGGER.debug(f'Invalidating NewVisitedTileCache for user with id {userId}')
+            del self._newVisitedTilesPerUser[userId]
 
     @staticmethod
     def __determine_new_tiles_per_track(userId: int) -> list[NewTilesPerTrack]:

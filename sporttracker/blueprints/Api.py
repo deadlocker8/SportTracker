@@ -11,6 +11,7 @@ from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack, addVisited
 from sporttracker.blueprints.MonthGoalsCount import MonthGoalCountFormModel
 from sporttracker.blueprints.MonthGoalsDistance import MonthGoalDistanceFormModel
 from sporttracker.logic import Constants
+from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
 from sporttracker.logic.model.Participant import get_participants_by_ids, Participant
 from sporttracker.logic.model.Track import Track
@@ -69,7 +70,12 @@ class ParticipantModel:
     name: str
 
 
-def construct_blueprint(version: dict, uploadFolder: str, tileHuntingSettings: dict[str, Any]):
+def construct_blueprint(
+    version: dict,
+    uploadFolder: str,
+    tileHuntingSettings: dict[str, Any],
+    newVisitedTileCache: NewVisitedTileCache,
+):
     api = Blueprint('api', __name__, static_folder='static', url_prefix='/api')
 
     @api.route('/version')
@@ -176,6 +182,7 @@ def construct_blueprint(version: dict, uploadFolder: str, tileHuntingSettings: d
         db.session.commit()
 
         addVisitedTilesForTrack(uploadFolder, track, tileHuntingSettings['baseZoomLevel'])
+        newVisitedTileCache.invalidate_cache_entry_by_user(current_user.id)
 
         LOGGER.debug(
             f'Added gpx track {track.get_gpx_metadata().gpx_file_name} to track {track.id}'

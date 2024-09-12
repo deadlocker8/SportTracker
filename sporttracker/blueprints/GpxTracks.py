@@ -4,13 +4,14 @@ import uuid
 from typing import Any
 
 from flask import Blueprint, abort, Response, send_file, send_from_directory
-from flask_login import login_required
+from flask_login import login_required, current_user
 from sqlalchemy import delete
 from werkzeug.datastructures.file_storage import FileStorage
 
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.logic.GpxService import GpxService
+from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
 from sporttracker.logic.model.PlannedTour import (
@@ -24,7 +25,7 @@ from sporttracker.logic.model.db import db
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def construct_blueprint(uploadFolder: str, baseZoomLevel: int):
+def construct_blueprint(uploadFolder: str, newVisitedTileCache: NewVisitedTileCache):
     gpxTracks = Blueprint('gpxTracks', __name__, static_folder='static', url_prefix='/gpxTracks')
 
     @gpxTracks.route('/track/<int:track_id>')
@@ -88,7 +89,7 @@ def construct_blueprint(uploadFolder: str, baseZoomLevel: int):
         if track is None:
             return Response(status=204)
 
-        return __deleteGpxTrack(uploadFolder, track)
+        return __deleteGpxTrack(uploadFolder, track, newVisitedTileCache)
 
     @gpxTracks.route('/delete/plannedTour/<int:tour_id>')
     @login_required
@@ -98,7 +99,7 @@ def construct_blueprint(uploadFolder: str, baseZoomLevel: int):
         if plannedTour is None:
             return Response(status=204)
 
-        return __deleteGpxTrack(uploadFolder, plannedTour)
+        return __deleteGpxTrack(uploadFolder, plannedTour, newVisitedTileCache)
 
     @gpxTracks.route('/previewImage<int:tour_id>')
     @login_required
@@ -220,7 +221,9 @@ def __downloadGpxTrack(uploadFolder: str, item: Track, downloadName: str) -> Res
     )
 
 
-def __deleteGpxTrack(uploadFolder: str, item: Track | PlannedTour) -> Response:
+def __deleteGpxTrack(
+    uploadFolder: str, item: Track | PlannedTour, newVisitedTileCache: NewVisitedTileCache
+) -> Response:
     gpxMetadata = item.get_gpx_metadata()
     if gpxMetadata is not None:
         item.gpx_metadata_id = None
@@ -231,6 +234,8 @@ def __deleteGpxTrack(uploadFolder: str, item: Track | PlannedTour) -> Response:
             db.session.execute(delete(GpxVisitedTile).where(GpxVisitedTile.track_id == item.id))
             LOGGER.debug(f'Deleted gpx visited tiles for track with id {item.id}')
             db.session.commit()
+
+            newVisitedTileCache.invalidate_cache_entry_by_user(current_user.id)
 
         try:
             os.remove(os.path.join(uploadFolder, gpxMetadata.gpx_file_name))
