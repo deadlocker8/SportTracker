@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from faker import Faker
 
+from sporttracker.blueprints.GpxTracks import addVisitedTilesForTrack
 from sporttracker.logic import Constants
 from sporttracker.logic.model.CustomTrackField import CustomTrackField, CustomTrackFieldType
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
@@ -224,10 +225,12 @@ class DummyDataGenerator:
                     track.plannedTour = plannedTour
 
                 db.session.add(track)
+                db.session.commit()
+
+                if index in indexesWithGpx:
+                    addVisitedTilesForTrack(self._uploadFolder, track, 14)
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
-
-        db.session.commit()
 
     def __append_gpx(self, item: Track | PlannedTour) -> None:
         filename = f'{uuid.uuid4().hex}.gpx'
