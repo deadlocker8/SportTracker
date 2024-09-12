@@ -254,7 +254,7 @@ def __deleteGpxTrack(uploadFolder: str, item: Track | PlannedTour) -> Response:
     return Response(status=204)
 
 
-def updateVisitedTilesForTrack(uploadFolder: str, track: Track, baseZoomLevel: int):
+def addVisitedTilesForTrack(uploadFolder: str, track: Track, baseZoomLevel: int):
     gpxPath = os.path.join(uploadFolder, track.get_gpx_metadata().gpx_file_name)  # type: ignore[union-attr]
     gpxService = GpxService(gpxPath)
     visitedTiles = gpxService.get_visited_tiles(baseZoomLevel)

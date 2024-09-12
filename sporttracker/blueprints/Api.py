@@ -7,7 +7,7 @@ from flask import Blueprint, jsonify, request, abort
 from flask_login import login_required, current_user
 from pydantic import ValidationError, BaseModel
 
-from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack, updateVisitedTilesForTrack
+from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack, addVisitedTilesForTrack
 from sporttracker.blueprints.MonthGoalsCount import MonthGoalCountFormModel
 from sporttracker.blueprints.MonthGoalsDistance import MonthGoalDistanceFormModel
 from sporttracker.logic import Constants
@@ -175,7 +175,7 @@ def construct_blueprint(version: dict, uploadFolder: str, tileHuntingSettings: d
         db.session.add(track)
         db.session.commit()
 
-        updateVisitedTilesForTrack(uploadFolder, track, tileHuntingSettings['baseZoomLevel'])
+        addVisitedTilesForTrack(uploadFolder, track, tileHuntingSettings['baseZoomLevel'])
 
         LOGGER.debug(
             f'Added gpx track {track.get_gpx_metadata().gpx_file_name} to track {track.id}'

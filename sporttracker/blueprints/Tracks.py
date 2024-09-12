@@ -15,7 +15,7 @@ from flask_pydantic import validate
 from pydantic import BaseModel, ConfigDict, field_validator
 from sqlalchemy import delete
 
-from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack, updateVisitedTilesForTrack
+from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack, addVisitedTilesForTrack
 from sporttracker.logic import Constants
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
 from sporttracker.logic.QuickFilterState import (
@@ -229,7 +229,7 @@ def construct_blueprint(uploadFolder: str, tileHuntingSettings: dict[str, Any]):
         db.session.commit()
 
         if gpxMetadataId is not None:
-            updateVisitedTilesForTrack(uploadFolder, track, tileHuntingSettings['baseZoomLevel'])
+            addVisitedTilesForTrack(uploadFolder, track, tileHuntingSettings['baseZoomLevel'])
 
         return redirect(
             url_for(
@@ -327,7 +327,7 @@ def construct_blueprint(uploadFolder: str, tileHuntingSettings: dict[str, Any]):
         db.session.commit()
 
         if shouldUpdateVisitedTiles and track.gpx_metadata_id is not None:
-            updateVisitedTilesForTrack(uploadFolder, track, tileHuntingSettings['baseZoomLevel'])
+            addVisitedTilesForTrack(uploadFolder, track, tileHuntingSettings['baseZoomLevel'])
 
         LOGGER.debug(f'Updated track: {track}')
 
