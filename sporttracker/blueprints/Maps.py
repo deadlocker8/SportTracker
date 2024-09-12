@@ -12,6 +12,7 @@ from sqlalchemy import func, extract, or_
 from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Tracks import TrackModel
 from sporttracker.logic import Constants
+from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.TileRenderService import TileRenderService
 from sporttracker.logic.VisitedTileService import VisitedTileService
@@ -48,7 +49,9 @@ def createGpxInfoPlannedTour(tourId: int, tourName: str) -> dict[str, str | int]
     }
 
 
-def construct_blueprint(tileHuntingSettings: dict[str, Any]):
+def construct_blueprint(
+    tileHuntingSettings: dict[str, Any], newVisitedTileCache: NewVisitedTileCache
+) -> Blueprint:
     maps = Blueprint('maps', __name__, static_folder='static')
 
     @maps.route('/map')
@@ -213,7 +216,9 @@ def construct_blueprint(tileHuntingSettings: dict[str, Any]):
         availableYears = get_available_years()
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
-        visitedTileService = VisitedTileService(quickFilterState, yearFilterState, trackId=track.id)
+        visitedTileService = VisitedTileService(
+            newVisitedTileCache, quickFilterState, yearFilterState, trackId=track.id
+        )
 
         tileRenderService = TileRenderService(
             tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
@@ -241,7 +246,9 @@ def construct_blueprint(tileHuntingSettings: dict[str, Any]):
         availableYears = get_available_years()
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
-        visitedTileService = VisitedTileService(quickFilterState, yearFilterState)
+        visitedTileService = VisitedTileService(
+            newVisitedTileCache, quickFilterState, yearFilterState
+        )
         tileRenderService = TileRenderService(
             tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
         )
@@ -274,14 +281,16 @@ def construct_blueprint(tileHuntingSettings: dict[str, Any]):
         availableYears = get_available_years()
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
-        visitedTileService = VisitedTileService(quickFilterState, yearFilterState)
+        visitedTileService = VisitedTileService(
+            newVisitedTileCache, quickFilterState, yearFilterState
+        )
         totalNumberOfTiles = visitedTileService.calculate_total_number_of_visited_tiles()
 
         dates = []
         values = []
         colors = []
         names = []
-        for entry in visitedTileService.determine_new_tiles_per_track():
+        for entry in visitedTileService.get_new_tiles_per_track():
             dates.append(flask_babel.format_date(entry.startTime, 'short'))
             values.append(entry.numberOfNewTiles)
             colors.append(entry.type.background_color_hex)
