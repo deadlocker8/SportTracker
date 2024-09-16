@@ -38,6 +38,12 @@ View all gpx tracks on a map:
 View a single gpx track on a map, with additional information (e.g. track line is colored according to speed):
 ![](screenshots/map_single.jpg)
 
+### Tile Hunting
+Each user can optionally enable tile hunting.   
+If enabled an additional map is provided that shows all already visited tiles. A tile is considered visited if one or more gpx tracks cross it. By default, the size of a tile is equivalent to the size of an OpenStreetMap tile at zoom level 14 (This can be configured in the SportTracker settings file).
+Tile hunting can be useful to discover new areas in your surrounding or gain some motivation to explore new routes.
+![](screenshots/map_tile_hunting.jpg)
+
 ### Charts
 Tracked data is visualized in charts, e.g.:
 - Distance per month
