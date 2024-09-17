@@ -30,7 +30,7 @@ faker = "28.0.0"
 pillow = "10.4.0"
 
 [tool.poetry.dev-dependencies]
-ruff = "0.5.7"
+ruff = "0.6.5"
 pre-commit = "3.8.0"
 mypy = "1.11.2"
 pytest = "8.3.3"
