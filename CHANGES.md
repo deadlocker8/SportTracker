@@ -3,6 +3,7 @@
 - add: gpx meta information is calculated only once and stored in database. CAUTION: The first start of SportTracker will take quite some time to calculate the gpx information for all uploaded gpx files.
 - add: settings files are checked for missing entries upon server start
 - add: tile hunting map (for details see README)
+- chore: update dependencies
 
 # 1.28.0
 - add: search: add pagination on bottom
