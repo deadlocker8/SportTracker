@@ -125,6 +125,11 @@ class SportTracker(FlaskBaseApp):
                 self.__create_admin_user()
 
                 if self._generateDummyData:
+                    if User.query.count() > 1:
+                        raise RuntimeError(
+                            'Could not generate dummy data because there are already existing users!'
+                        )
+
                     dummyDataGenerator = DummyDataGenerator(app.config['UPLOAD_FOLDER'])
                     dummyDataGenerator.generate()
 
