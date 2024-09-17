@@ -5,6 +5,7 @@ from flask import Blueprint, render_template, request
 from flask_babel import format_datetime
 from flask_login import login_required, current_user
 
+from sporttracker.blueprints.Tracks import TrackModel
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.Track import Track
@@ -60,9 +61,13 @@ def construct_blueprint():
             )
         }
 
+        resultModelItems = {}
+        for month, tracks in results.items():
+            resultModelItems[month] = [TrackModel.create_from_track(t) for t in tracks]
+
         return render_template(
             'search.jinja2',
-            results=results,
+            results=resultModelItems,
             pagination=pagination,
             searchText=searchText,
             quickFilterState=quickFilterState,
