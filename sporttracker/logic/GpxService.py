@@ -1,11 +1,28 @@
+from __future__ import annotations
+
 import logging
 import math
+import os
+import shutil
+import uuid
 from dataclasses import dataclass
+from typing import Any
+from zipfile import ZipFile, ZIP_DEFLATED
 
 import gpxpy
+from flask_login import current_user
 from gpxpy.gpx import GPX, GPXTrack
+from sqlalchemy import delete
+from werkzeug.datastructures.file_storage import FileStorage
 
 from sporttracker.logic import Constants
+from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
+from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.logic.model.GpxMetadata import GpxMetadata
+from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
+from sporttracker.logic.model.PlannedTour import PlannedTour
+from sporttracker.logic.model.Track import Track
+from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -36,15 +53,164 @@ class GpxMetaInfo:
 
 
 class GpxService:
-    def __init__(self, gpxPath: str) -> None:
-        self._gpxPath = gpxPath
-        self._gpx = self.__parse_gpx(self._gpxPath)
+    ZIP_FILE_EXTENSION = '.gpx.zip'
+    GPX_FILE_EXTENSION = '.gpx'
+
+    def __init__(self, dataPath: str, newVisitedTileCache: NewVisitedTileCache) -> None:
+        self._dataPath = dataPath
+        self._newVisitedTileCache = newVisitedTileCache
+
+    def get_folder_path(self, gpxFileName: str) -> str:
+        return os.path.join(self._dataPath, gpxFileName)
+
+    def __get_zip_file_path(self, gpxFileName: str) -> str:
+        return os.path.join(
+            self.get_folder_path(gpxFileName), f'{gpxFileName}{self.ZIP_FILE_EXTENSION}'
+        )
+
+    def get_gpx_content(self, gpxFileName: str) -> bytes:
+        zipFilePath = self.__get_zip_file_path(gpxFileName)
+
+        if not os.path.exists(zipFilePath):
+            raise FileNotFoundError(zipFilePath)
+
+        with ZipFile(zipFilePath, 'r') as zipObject:
+            with zipObject.open(f'{gpxFileName}{self.GPX_FILE_EXTENSION}') as gpxFile:
+                return gpxFile.read()
+
+    def get_joined_tracks_and_segments(self, gpxFileName: str) -> str:
+        return GpxParser(self.get_gpx_content(gpxFileName)).join_tracks_and_segments()
+
+    def handle_gpx_upload_for_track(self, files: dict[str, FileStorage]) -> int | None:
+        gpxFileName = self.__handle_gpx_upload(files, False, {})
+        if gpxFileName is None:
+            return None
+
+        return self.__create_gpx_metadata(gpxFileName)
+
+    def handle_gpx_upload_for_planned_tour(
+        self, files: dict[str, FileStorage], gpxPreviewImageSettings: dict[str, Any]
+    ) -> int | None:
+        gpxFileName = self.__handle_gpx_upload(
+            files, gpxPreviewImageSettings['enabled'], gpxPreviewImageSettings
+        )
+        if gpxFileName is None:
+            return None
+
+        return self.__create_gpx_metadata(gpxFileName)
+
+    def __handle_gpx_upload(
+        self,
+        files: dict[str, FileStorage],
+        generatePreviewImage: bool,
+        gpxPreviewImageSettings: dict[str, Any],
+    ) -> str | None:
+        if 'gpxTrack' not in files:
+            return None
+
+        file = files['gpxTrack']
+        if file.filename == '' or file.filename is None:
+            return None
+
+        if file and self.__is_allowed_file(file.filename):
+            filename = uuid.uuid4().hex
+            destinationFolderPath = os.path.join(self._dataPath, filename)
+            os.makedirs(destinationFolderPath)
+
+            zipFilePath = self.create_zip(filename, file.stream.read())
+            LOGGER.debug(f'Saved uploaded file "{file.filename}" to "{zipFilePath}"')
+
+            if generatePreviewImage:
+                gpxPreviewImageService = GpxPreviewImageService(filename, self)
+                gpxPreviewImagePath = gpxPreviewImageService.get_preview_image_path()
+                gpxPreviewImageService.generate_image(gpxPreviewImageSettings)
+                LOGGER.debug(f'Generated gpx preview image {gpxPreviewImagePath}')
+
+            return filename
+
+        return None
+
+    def __is_allowed_file(self, filename: str) -> bool:
+        if '.' not in filename:
+            return False
+
+        return filename.rsplit('.', 1)[1].lower() == 'gpx'
+
+    def create_zip(self, gpxFileName: str, data: bytes) -> str:
+        zipFilePath = self.__get_zip_file_path(gpxFileName)
+        with ZipFile(zipFilePath, mode='w', compression=ZIP_DEFLATED, compresslevel=9) as zipObject:
+            zipObject.writestr(f'{gpxFileName}{self.GPX_FILE_EXTENSION}', data)
+        return zipFilePath
+
+    def __create_gpx_metadata(self, gpxFileName: str) -> int:
+        gpxParser = GpxParser(self.get_gpx_content(gpxFileName))
+        metaInfo = gpxParser.get_meta_info()
+
+        gpxMetadata = GpxMetadata(
+            gpx_file_name=gpxFileName,
+            length=metaInfo.distance,
+            elevation_minimum=metaInfo.elevationExtremes.minimum,
+            elevation_maximum=metaInfo.elevationExtremes.maximum,
+            uphill=metaInfo.uphillDownhill.uphill,
+            downhill=metaInfo.uphillDownhill.downhill,
+        )
+
+        LOGGER.debug(f'Saved new GpxMetadata: {gpxMetadata}')
+        db.session.add(gpxMetadata)
+        db.session.commit()
+
+        return gpxMetadata.id
+
+    def delete_gpx(self, item: Track | PlannedTour) -> None:
+        gpxMetadata = item.get_gpx_metadata()
+        if gpxMetadata is not None:
+            item.gpx_metadata_id = None
+            db.session.delete(gpxMetadata)
+            LOGGER.debug(f'Deleted gpx metadata {gpxMetadata.id}')
+            db.session.commit()
+
+            if isinstance(item, Track):
+                db.session.execute(delete(GpxVisitedTile).where(GpxVisitedTile.track_id == item.id))
+                LOGGER.debug(f'Deleted gpx visited tiles for track with id {item.id}')
+                db.session.commit()
+
+                self._newVisitedTileCache.invalidate_cache_entry_by_user(current_user.id)
+
+            try:
+                shutil.rmtree(self.get_folder_path(gpxMetadata.gpx_file_name))
+                LOGGER.debug(
+                    f'Deleted all files for gpx "{gpxMetadata.gpx_file_name}" for {item.__class__.__name__} id {item.id}'
+                )
+            except OSError as e:
+                LOGGER.error(e)
+
+    def add_visited_tiles_for_track(self, track: Track, baseZoomLevel: int):
+        gpxParser = GpxParser(self.get_gpx_content(track.get_gpx_metadata().gpx_file_name))  # type: ignore[union-attr]
+        visitedTiles = gpxParser.get_visited_tiles(baseZoomLevel)
+
+        for tile in visitedTiles:
+            gpxVisitedTile = GpxVisitedTile(track_id=track.id, x=tile.x, y=tile.y)
+            db.session.add(gpxVisitedTile)
+            db.session.commit()
+
+        self._newVisitedTileCache.invalidate_cache_entry_by_user(current_user.id)
+
+
+class GpxParser:
+    def __init__(self, gpxContent: bytes) -> None:
+        self._gpx = self.__parse_gpx(gpxContent)
 
     @staticmethod
-    def __parse_gpx(gpxPath: str) -> GPX:
-        LOGGER.debug(f'Parse gpx "{gpxPath}"')
-        with open(gpxPath, encoding='utf-8') as f:
-            return gpxpy.parse(f)
+    def from_file_path(gpxFilePath: str) -> GpxParser:
+        LOGGER.debug(f'Parse gpx "{gpxFilePath}"')
+        with open(gpxFilePath, mode='rb', encoding='utf-8') as f:
+            gpxContent = f.read()
+
+        return GpxParser(gpxContent)
+
+    @staticmethod
+    def __parse_gpx(gpxContent: bytes) -> GPX:
+        return gpxpy.parse(gpxContent)
 
     def join_tracks_and_segments(self) -> str:
         self.__join_tracks(self._gpx)
@@ -63,7 +229,7 @@ class GpxService:
         gpx.tracks.clear()
         gpx.tracks.append(joinedTrack)
 
-        GpxService.__join_track_segments(joinedTrack)
+        GpxParser.__join_track_segments(joinedTrack)
 
     @staticmethod
     def __join_track_segments(track: GPXTrack) -> None:

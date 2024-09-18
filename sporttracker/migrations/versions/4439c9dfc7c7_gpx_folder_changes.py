@@ -41,11 +41,11 @@ def upgrade():
         gpxFileName = row[0]
 
         try:
-            LOGGER.debug(
-                f'Migrate gpx data [{index + 1}/{len(rows)}]: gpx file name: "{gpxFileName}"'
-            )
-
             if gpxFileName.endswith('.gpx'):
+                LOGGER.debug(
+                    f'Migrate gpx data [{index + 1}/{len(rows)}]: gpx file name: "{gpxFileName}"'
+                )
+
                 gpxFileNameWithoutExtension = gpxFileName[:-4]
 
                 connection.execute(
@@ -55,7 +55,7 @@ def upgrade():
                 )
                 connection.commit()
             else:
-                gpxFileNameWithoutExtension = gpxFileName
+                continue
 
             destinationFolderPath = os.path.join(dataDirectory, gpxFileNameWithoutExtension)
             LOGGER.debug(f'    Create gpx folder: "{destinationFolderPath}"')
@@ -70,7 +70,7 @@ def upgrade():
             with ZipFile(
                 zipFolderPath, mode='w', compression=ZIP_DEFLATED, compresslevel=9
             ) as zipObject:
-                zipObject.write(sourceGpxPath)
+                zipObject.write(sourceGpxPath, arcname=gpxFileName)
 
             sourcePreviewImage = os.path.join(uploadDirectory, f'{gpxFileNameWithoutExtension}.jpg')
             if os.path.isfile(sourcePreviewImage):
@@ -84,4 +84,4 @@ def upgrade():
 
 
 def downgrade():
-    raise NotImplementedError('Downgrade is not supported')
+    pass

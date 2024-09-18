@@ -39,6 +39,7 @@ from sporttracker.helpers import Helpers
 from sporttracker.helpers.SettingsChecker import SettingsChecker
 from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
+from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.model.CustomTrackField import CustomTrackFieldType
 from sporttracker.logic.model.PlannedTour import (
@@ -103,7 +104,7 @@ class SportTracker(FlaskBaseApp):
         migrate.init_app(app, db)
 
         rootDirectory = os.path.dirname(currentDirectory)
-        app.config['UPLOAD_FOLDER'] = os.path.join(rootDirectory, 'uploads')
+        app.config['DATA_FOLDER'] = os.path.join(rootDirectory, 'data')
 
         if self._prepareDatabase:
             self.__prepare_database(app)
@@ -130,7 +131,7 @@ class SportTracker(FlaskBaseApp):
                             'Could not generate dummy data because there are already existing users!'
                         )
 
-                    dummyDataGenerator = DummyDataGenerator(app.config['UPLOAD_FOLDER'])
+                    dummyDataGenerator = DummyDataGenerator(app.config['DATA_FOLDER'])
                     dummyDataGenerator.generate()
 
         @app.context_processor
@@ -204,6 +205,9 @@ class SportTracker(FlaskBaseApp):
         Babel(app, locale_selector=get_locale)
 
         app.config['NEW_VISITED_TILE_CACHE'] = NewVisitedTileCache()
+        app.config['GPX_SERVICE'] = GpxService(
+            app.config['DATA_FOLDER'], app.config['NEW_VISITED_TILE_CACHE']
+        )
 
         return app
 
@@ -229,11 +233,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Authentication.construct_blueprint())
         app.register_blueprint(General.construct_blueprint())
         app.register_blueprint(
-            Tracks.construct_blueprint(
-                app.config['UPLOAD_FOLDER'],
-                self._settings['tileHunting'],
-                app.config['NEW_VISITED_TILE_CACHE'],
-            )
+            Tracks.construct_blueprint(app.config['GPX_SERVICE'], self._settings['tileHunting'])
         )
         app.register_blueprint(MonthGoals.construct_blueprint())
         app.register_blueprint(MonthGoalsDistance.construct_blueprint())
@@ -244,18 +244,13 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(
             Api.construct_blueprint(
                 self._version,
-                app.config['UPLOAD_FOLDER'],
+                app.config['GPX_SERVICE'],
                 self._settings['tileHunting'],
-                app.config['NEW_VISITED_TILE_CACHE'],
             )
         )
         app.register_blueprint(Achievements.construct_blueprint())
         app.register_blueprint(Search.construct_blueprint())
-        app.register_blueprint(
-            GpxTracks.construct_blueprint(
-                app.config['UPLOAD_FOLDER'], app.config['NEW_VISITED_TILE_CACHE']
-            )
-        )
+        app.register_blueprint(GpxTracks.construct_blueprint(app.config['GPX_SERVICE']))
         app.register_blueprint(
             Maps.construct_blueprint(
                 self._settings['tileHunting'], app.config['NEW_VISITED_TILE_CACHE']
@@ -265,7 +260,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(MaintenanceEvents.construct_blueprint())
         app.register_blueprint(
             PlannedTours.construct_blueprint(
-                app.config['UPLOAD_FOLDER'], self._settings['gpxPreviewImages']
+                app.config['GPX_SERVICE'], self._settings['gpxPreviewImages']
             )
         )
         app.register_blueprint(AnnualAchievements.construct_blueprint())

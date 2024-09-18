@@ -2,5 +2,6 @@
 settings.json
 sportTracker.db
 uploads/
+data/
 testreport.xml
 tests/screenshots/

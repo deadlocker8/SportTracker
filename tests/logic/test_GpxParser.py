@@ -1,16 +1,16 @@
 import pytest
 
-from sporttracker.logic.GpxService import GpxService, VisitedTile
+from sporttracker.logic.GpxService import VisitedTile, GpxParser
 
 
-class TestGpxService:
+class TestGpxParser:
     def test_convert_coordinate_to_tile_position_zoom_too_small_should_raise(self):
         with pytest.raises(ValueError):
-            GpxService.convert_coordinate_to_tile_position(0, 0, -1)
+            GpxParser.convert_coordinate_to_tile_position(0, 0, -1)
 
     def test_convert_coordinate_to_tile_position_zoom_too_high_should_raise(self):
         with pytest.raises(ValueError):
-            GpxService.convert_coordinate_to_tile_position(0, 0, 21)
+            GpxParser.convert_coordinate_to_tile_position(0, 0, 21)
 
     @pytest.mark.parametrize(
         'lat,lon,zoom,expected_x,expected_y',
@@ -27,5 +27,5 @@ class TestGpxService:
     def test_convert_coordinate_to_tile_position_zoom_level_16(
         self, lat, lon, zoom, expected_x, expected_y
     ):
-        tile = GpxService.convert_coordinate_to_tile_position(lat, lon, zoom)
+        tile = GpxParser.convert_coordinate_to_tile_position(lat, lon, zoom)
         assert tile == VisitedTile(expected_x, expected_y)

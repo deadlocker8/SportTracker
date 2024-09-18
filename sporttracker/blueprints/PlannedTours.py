@@ -1,5 +1,4 @@
 import logging
-import os
 import uuid
 from dataclasses import dataclass
 from datetime import datetime
@@ -10,8 +9,8 @@ from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel
 
-from sporttracker.blueprints.GpxTracks import handleGpxTrackForPlannedTour
 from sporttracker.logic import Constants
+from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.PlannedTour import (
@@ -133,7 +132,9 @@ class PlannedTourEditFormModel(BaseModel):
     gpxFileName: str | None = None
 
 
-def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, Any]) -> Blueprint:
+def construct_blueprint(
+    gpxService: GpxService, gpxPreviewImageSettings: dict[str, Any]
+) -> Blueprint:
     plannedTours = Blueprint(
         'plannedTours', __name__, static_folder='static', url_prefix='/plannedTours'
     )
@@ -168,10 +169,9 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
     @login_required
     @validate()
     def addPost(form: PlannedTourFormModel):
-        gpxMetadataId = handleGpxTrackForPlannedTour(
-            request.files, uploadFolder, gpxPreviewImageSettings
+        gpxMetadataId = gpxService.handle_gpx_upload_for_planned_tour(
+            request.files, gpxPreviewImageSettings
         )
-
         sharedUserIds = [int(item) for item in request.form.getlist('sharedUsers')]
         sharedUsers = get_users_by_ids(sharedUserIds)
 
@@ -247,15 +247,14 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
         plannedTour.direction = TravelDirection(form.direction)  # type: ignore[call-arg]
         plannedTour.share_code = form.shareCode if form.shareCode else None  # type: ignore[assignment]
 
-        newGpxMetadataId = handleGpxTrackForPlannedTour(
-            request.files, uploadFolder, gpxPreviewImageSettings
+        newGpxMetadataId = gpxService.handle_gpx_upload_for_planned_tour(
+            request.files, gpxPreviewImageSettings
         )
         if plannedTour.gpx_metadata_id is None:
             plannedTour.gpx_metadata_id = newGpxMetadataId
         else:
             if newGpxMetadataId is not None:
-                __delete_gpx_track(uploadFolder, plannedTour)
-                plannedTour.gpx_metadata_id = newGpxMetadataId
+                gpxService.delete_gpx(plannedTour)
 
         sharedUserIds = [int(item) for item in request.form.getlist('sharedUsers')]
         sharedUsers = get_users_by_ids(sharedUserIds)
@@ -293,8 +292,7 @@ def construct_blueprint(uploadFolder: str, gpxPreviewImageSettings: dict[str, An
         if current_user.id != plannedTour.user_id:
             abort(403)
 
-        if plannedTour.gpx_metadata_id is not None:
-            __delete_gpx_track(uploadFolder, plannedTour)
+        gpxService.delete_gpx(plannedTour)
 
         linkedTrackIds = get_track_ids_by_planned_tour(plannedTour)
         for trackId in linkedTrackIds:
@@ -335,25 +333,3 @@ def __get_user_models(users: list[User]) -> list[SharedUserModel]:
     for user in users:
         sharedUserModels.append(SharedUserModel(user.id, user.username))
     return sharedUserModels
-
-
-def __delete_gpx_track(uploadFolder: str, plannedTour: PlannedTour) -> None:
-    try:
-        gpxMetadata = plannedTour.get_gpx_metadata()
-        if gpxMetadata is None:
-            return
-
-        plannedTour.gpx_metadata_id = None
-
-        db.session.delete(gpxMetadata)
-        LOGGER.debug(f'Deleted gpx metadata {gpxMetadata.id}')
-        db.session.commit()
-
-        gpxFilePath = os.path.join(uploadFolder, str(gpxMetadata.gpx_file_name))
-        os.remove(os.path.join(uploadFolder, gpxFilePath))
-        LOGGER.debug(
-            f'Deleted linked gpx file "{gpxMetadata.gpx_file_name}" for planned tour with id {plannedTour.id}'
-        )
-
-    except OSError as e:
-        LOGGER.error(e)

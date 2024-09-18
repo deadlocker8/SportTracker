@@ -1,15 +1,14 @@
 import logging
 import os
 import random
-import shutil
 import uuid
 from datetime import datetime, timedelta, date
 
 from dateutil.relativedelta import relativedelta
 from faker import Faker
 
-from sporttracker.blueprints.GpxTracks import addVisitedTilesForTrack
 from sporttracker.logic import Constants
+from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.CustomTrackField import CustomTrackField, CustomTrackFieldType
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.MaintenanceEvent import MaintenanceEvent
@@ -36,11 +35,11 @@ class DummyDataGenerator:
     GPX_FILE_NAMES = ['gpxTrack_1.gpx', 'gpxTrack_2.gpx']
     MAINTENANCE_EVENT_NAMES = ['chain oiled', 'new pedals', 'new front tire']
 
-    def __init__(self, uploadFolder: str):
+    def __init__(self, gpxService: GpxService):
         self._now = datetime.now().date()
         self._previousMonth = self._now - timedelta(days=30)
         self._previousPreviousMonth = self._previousMonth - timedelta(days=30)
-        self._uploadFolder = uploadFolder
+        self._gpxService = gpxService
 
     def generate(self) -> None:
         user = self.__generate_demo_user('demo', 'demo')
@@ -228,18 +227,18 @@ class DummyDataGenerator:
                 db.session.commit()
 
                 if index in indexesWithGpx:
-                    addVisitedTilesForTrack(self._uploadFolder, track, 14)
+                    self._gpxService.add_visited_tiles_for_track(track, 14)
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 
     def __append_gpx(self, item: Track | PlannedTour) -> None:
-        filename = f'{uuid.uuid4().hex}.gpx'
-        destinationPath = os.path.join(self._uploadFolder, filename)
-
         currentDirectory = os.path.abspath(os.path.dirname(__file__))
         dummyDataDirectory = os.path.join(os.path.dirname(currentDirectory), 'dummyData')
         sourcePath = os.path.join(dummyDataDirectory, random.choice(self.GPX_FILE_NAMES))
-        shutil.copy2(sourcePath, destinationPath)
+
+        filename = f'{uuid.uuid4().hex}.gpx'
+        with open(sourcePath, 'rb', encoding='utf-8') as f:
+            self._gpxService.create_zip(filename, f.read())
 
         gpxMetadata = GpxMetadata(
             gpx_file_name=filename,

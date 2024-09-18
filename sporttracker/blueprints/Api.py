@@ -7,11 +7,10 @@ from flask import Blueprint, jsonify, request, abort
 from flask_login import login_required, current_user
 from pydantic import ValidationError, BaseModel
 
-from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack, addVisitedTilesForTrack
 from sporttracker.blueprints.MonthGoalsCount import MonthGoalCountFormModel
 from sporttracker.blueprints.MonthGoalsDistance import MonthGoalDistanceFormModel
 from sporttracker.logic import Constants
-from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
 from sporttracker.logic.model.Participant import get_participants_by_ids, Participant
 from sporttracker.logic.model.Track import Track
@@ -70,12 +69,7 @@ class ParticipantModel:
     name: str
 
 
-def construct_blueprint(
-    version: dict,
-    uploadFolder: str,
-    tileHuntingSettings: dict[str, Any],
-    newVisitedTileCache: NewVisitedTileCache,
-):
+def construct_blueprint(version: dict, gpxService: GpxService, tileHuntingSettings: dict[str, Any]):
     api = Blueprint('api', __name__, static_folder='static', url_prefix='/api')
 
     @api.route('/version')
@@ -172,7 +166,7 @@ def construct_blueprint(
         if track is None:
             abort(404)
 
-        gpxMetadataId = handleGpxTrackForTrack(request.files, uploadFolder)
+        gpxMetadataId = gpxService.handle_gpx_upload_for_track(request.files)
         if gpxMetadataId is None:
             abort(400)
 
@@ -181,8 +175,7 @@ def construct_blueprint(
         db.session.add(track)
         db.session.commit()
 
-        addVisitedTilesForTrack(uploadFolder, track, tileHuntingSettings['baseZoomLevel'])
-        newVisitedTileCache.invalidate_cache_entry_by_user(current_user.id)
+        gpxService.add_visited_tiles_for_track(track, tileHuntingSettings['baseZoomLevel'])
 
         LOGGER.debug(
             f'Added gpx track {track.get_gpx_metadata().gpx_file_name} to track {track.id}'

@@ -10,17 +10,18 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 class GpxPreviewImageService:
-    def __init__(self, gpxFileName: str, folder: str):
+    def __init__(self, gpxFileName: str, gpxService) -> None:
         self._gpxFileName = gpxFileName
-        self._folder = folder
+        self._gpxService = gpxService
 
-        gpxFileNameWithoutExtension = os.path.splitext(self._gpxFileName)[0]
-        self._previewImageFileName = f'{gpxFileNameWithoutExtension}.jpg'
+        self._previewImageFileName = f'{self._gpxFileName}.jpg'
 
     def get_preview_image_path(self) -> str:
-        return os.path.join(self._folder, self._previewImageFileName)
+        return os.path.join(
+            self._gpxService.get_folder_path(self._gpxFileName), self._previewImageFileName
+        )
 
-    def get_preview_image_file_name(self) -> str:
+    def __get_preview_image_file_name(self) -> str:
         return self._previewImageFileName
 
     def is_image_existing(self) -> bool:
@@ -30,13 +31,11 @@ class GpxPreviewImageService:
         if not gpxPreviewImageSettings['enabled']:
             return
 
-        if os.path.exists(self.get_preview_image_file_name()):
+        if os.path.exists(self.get_preview_image_path()):
             return
 
         try:
-            gpxFilePath = os.path.join(self._folder, self._gpxFileName)
-
-            files = {'gpx': open(gpxFilePath, 'rb')}
+            files = {'gpx': self._gpxService.get_gpx_content(self._gpxFileName)}
             response = requests.post(gpxPreviewImageSettings['geoRenderUrl'], files=files)
             response.raise_for_status()
 

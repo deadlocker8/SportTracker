@@ -1,5 +1,4 @@
 import logging
-import os
 import uuid
 from dataclasses import dataclass
 from datetime import datetime, date
@@ -13,19 +12,16 @@ from flask_babel import format_datetime
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel, ConfigDict, field_validator
-from sqlalchemy import delete
 
-from sporttracker.blueprints.GpxTracks import handleGpxTrackForTrack, addVisitedTilesForTrack
 from sporttracker.logic import Constants
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
-from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
     QuickFilterState,
 )
 from sporttracker.logic.model.CustomTrackField import CustomTrackField
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
-from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
 from sporttracker.logic.model.MaintenanceEvent import (
     MaintenanceEvent,
     get_maintenance_events_by_year_and_month_by_type,
@@ -130,9 +126,7 @@ class TrackFormModel(BaseModel):
         return value
 
 
-def construct_blueprint(
-    uploadFolder: str, tileHuntingSettings: dict[str, Any], newVisitedTileCache: NewVisitedTileCache
-):
+def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, Any]):
     tracks = Blueprint('tracks', __name__, static_folder='static', url_prefix='/tracks')
 
     @tracks.route('/', defaults={'year': None, 'month': None})
@@ -203,7 +197,7 @@ def construct_blueprint(
     @login_required
     @validate()
     def addPost(form: TrackFormModel):
-        gpxMetadataId = handleGpxTrackForTrack(request.files, uploadFolder)
+        gpxMetadataId = gpxService.handle_gpx_upload_for_track(request.files)
 
         participantIds = [int(item) for item in request.form.getlist('participants')]
         participants = get_participants_by_ids(participantIds)
@@ -232,8 +226,7 @@ def construct_blueprint(
         db.session.commit()
 
         if gpxMetadataId is not None:
-            addVisitedTilesForTrack(uploadFolder, track, tileHuntingSettings['baseZoomLevel'])
-            newVisitedTileCache.invalidate_cache_entry_by_user(current_user.id)
+            gpxService.add_visited_tiles_for_track(track, tileHuntingSettings['baseZoomLevel'])
 
         return redirect(
             url_for(
@@ -316,13 +309,13 @@ def construct_blueprint(
         track.plannedTour = plannedTour  # type: ignore[assignment]
 
         shouldUpdateVisitedTiles = False
-        newGpxMetadataId = handleGpxTrackForTrack(request.files, uploadFolder)
+        newGpxMetadataId = gpxService.handle_gpx_upload_for_track(request.files)
         if track.gpx_metadata_id is None:
             track.gpx_metadata_id = newGpxMetadataId
             shouldUpdateVisitedTiles = True
         else:
             if newGpxMetadataId is not None:
-                __delete_gpx_track(uploadFolder, track)
+                gpxService.delete_gpx(track)
                 track.gpx_metadata_id = newGpxMetadataId
                 shouldUpdateVisitedTiles = True
 
@@ -331,8 +324,7 @@ def construct_blueprint(
         db.session.commit()
 
         if shouldUpdateVisitedTiles and track.gpx_metadata_id is not None:
-            addVisitedTilesForTrack(uploadFolder, track, tileHuntingSettings['baseZoomLevel'])
-            newVisitedTileCache.invalidate_cache_entry_by_user(current_user.id)
+            gpxService.add_visited_tiles_for_track(track, tileHuntingSettings['baseZoomLevel'])
 
         LOGGER.debug(f'Updated track: {track}')
 
@@ -352,9 +344,7 @@ def construct_blueprint(
         if track is None:
             abort(404)
 
-        if track.gpx_metadata_id is not None:
-            __delete_gpx_track(uploadFolder, track)
-            newVisitedTileCache.invalidate_cache_entry_by_user(current_user.id)
+        gpxService.delete_gpx(track)
 
         LOGGER.debug(f'Deleted track: {track}')
         db.session.delete(track)
@@ -404,29 +394,3 @@ def __get_month_model(
             quickFilterState.get_active_types(),
         ),
     )
-
-
-def __delete_gpx_track(uploadFolder: str, track: Track) -> None:
-    try:
-        gpxMetadata = track.get_gpx_metadata()
-        if gpxMetadata is None:
-            return
-
-        track.gpx_metadata_id = None
-
-        db.session.delete(gpxMetadata)
-        LOGGER.debug(f'Deleted gpx metadata {gpxMetadata.id}')
-        db.session.commit()
-
-        db.session.execute(delete(GpxVisitedTile).where(GpxVisitedTile.track_id == track.id))
-        LOGGER.debug(f'Deleted gpx visited tiles for track with id {track.id}')
-        db.session.commit()
-
-        gpxFilePath = os.path.join(uploadFolder, str(gpxMetadata.gpx_file_name))
-        os.remove(os.path.join(uploadFolder, gpxFilePath))
-        LOGGER.debug(
-            f'Deleted linked gpx file "{gpxMetadata.gpx_file_name}" for track with id {track.id}'
-        )
-
-    except OSError as e:
-        LOGGER.error(e)
