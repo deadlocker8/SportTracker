@@ -137,22 +137,3 @@ class GpxService:
             self.__get_elevation_extremes(),
             self.__get_uphill_downhill(),
         )
-
-
-class CachedGpxVisitedTileService:
-    def __init__(self, baseZoomLevel: int) -> None:
-        self._gpxCache: dict[str, set[VisitedTile]] = {}
-        self._baseZoomLevel = baseZoomLevel
-
-    def get_visited_tiles(self, gpxPath: str) -> set[VisitedTile]:
-        if gpxPath not in self._gpxCache:
-            gpxService = GpxService(gpxPath)
-            self._gpxCache[gpxPath] = gpxService.get_visited_tiles(self._baseZoomLevel)
-            LOGGER.debug(f'Added gpx cache entry for "{gpxPath}"')
-
-        return self._gpxCache[gpxPath]
-
-    def invalidate_cache_entry(self, gpxPath: str) -> None:
-        if gpxPath in self._gpxCache:
-            LOGGER.debug(f'Invalidated gpx cache entry for "{gpxPath}"')
-            del self._gpxCache[gpxPath]
