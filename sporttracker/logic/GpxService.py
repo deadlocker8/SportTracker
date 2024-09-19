@@ -155,9 +155,9 @@ class GpxService:
             downhill=metaInfo.uphillDownhill.downhill,
         )
 
-        LOGGER.debug(f'Saved new GpxMetadata: {gpxMetadata}')
         db.session.add(gpxMetadata)
         db.session.commit()
+        LOGGER.debug(f'Saved new GpxMetadata: {gpxMetadata}')
 
         return gpxMetadata.id
 
