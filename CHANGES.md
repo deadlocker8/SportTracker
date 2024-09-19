@@ -2,6 +2,7 @@
 - BREAKING CHANGE: all uploaded gpx files are now stored in a folder called "data" instead of "uploads". All existing gpx files will be automatically migrated. Please adjust your docker volume mounts.
 - add: gpx files are now stored in a zip to reduce file size
 - add: planned tour preview images are stored in the same folder as the corresponding gpx file
+- add: changed color of save buttons for track and planned tour forms to ensure they are not confused with the "create link" button
 
 # 1.29.0
 - BREAKING CHANGE: you must update your settings.json (new section "tileHunting", see settings-example.json)
