@@ -1,3 +1,8 @@
+# 1.30.0
+- BREAKING CHANGE: all uploaded gpx files are now stored in a folder called "data" instead of "uploads". All existing gpx files will be automatically migrated. Please adjust your docker volume mounts.
+- add: gpx files are now stored in a zip to reduce file size
+- add: planned tour preview images are stored in the same folder as the corresponding gpx file
+
 # 1.29.0
 - BREAKING CHANGE: you must update your settings.json (new section "tileHunting", see settings-example.json)
 - add: gpx meta information is calculated only once and stored in database. CAUTION: The first start of SportTracker will take quite some time to calculate the gpx information for all uploaded gpx files.
