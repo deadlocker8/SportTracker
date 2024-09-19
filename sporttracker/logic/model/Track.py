@@ -8,8 +8,8 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.Participant import Participant, track_participant_association
-from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.PlannedTour import PlannedTour, track_planned_tour_association
+from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 
@@ -53,6 +53,10 @@ class Track(db.Model):  # type: ignore[name-defined]
             return None
         else:
             return GpxMetadata.query.get(self.gpx_metadata_id)
+
+    def get_download_name(self) -> str:
+        escapedName = ''.join([c if c.isalnum() else '_' for c in str(self.name)])
+        return f'{self.id} - {escapedName}'
 
 
 def get_track_names_by_track_type(trackType: TrackType) -> list[str]:

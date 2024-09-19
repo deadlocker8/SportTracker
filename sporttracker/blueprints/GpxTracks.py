@@ -26,7 +26,7 @@ def construct_blueprint(gpxService: GpxService):
         if track is None:
             abort(404)
 
-        response = __downloadGpxTrack(gpxService, track, str(track.id))
+        response = __downloadGpxTrack(gpxService, track, track.get_download_name())
         if response is not None:
             return response
 
@@ -38,7 +38,7 @@ def construct_blueprint(gpxService: GpxService):
         if track is None:
             abort(404)
 
-        response = __downloadGpxTrack(gpxService, track, str(track.id))
+        response = __downloadGpxTrack(gpxService, track, track.get_download_name())
         if response is not None:
             return response
 

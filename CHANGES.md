@@ -3,6 +3,7 @@
 - add: gpx files are now stored in a zip to reduce file size
 - add: planned tour preview images are stored in the same folder as the corresponding gpx file
 - add: changed color of save buttons for track and planned tour forms to ensure they are not confused with the "create link" button
+- add: improve file name on gpx download
 
 # 1.29.0
 - BREAKING CHANGE: you must update your settings.json (new section "tileHunting", see settings-example.json)
