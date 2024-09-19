@@ -255,6 +255,7 @@ def construct_blueprint(
         else:
             if newGpxMetadataId is not None:
                 gpxService.delete_gpx(plannedTour)
+                plannedTour.gpx_metadata_id = newGpxMetadataId
 
         sharedUserIds = [int(item) for item in request.form.getlist('sharedUsers')]
         sharedUsers = get_users_by_ids(sharedUserIds)
