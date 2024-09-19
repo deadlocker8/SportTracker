@@ -1,5 +1,6 @@
 import logging
 import os
+import tempfile
 from typing import Any
 
 import requests
@@ -35,11 +36,17 @@ class GpxPreviewImageService:
             return
 
         try:
-            files = {'gpx': self._gpxService.get_gpx_content(self._gpxFileName)}
-            response = requests.post(gpxPreviewImageSettings['geoRenderUrl'], files=files)
-            response.raise_for_status()
+            with tempfile.TemporaryDirectory() as tempDirectory:
+                tempGpxFilePath = os.path.join(tempDirectory, f'{self._gpxFileName}.gpx')
+                with open(tempGpxFilePath, 'wb') as tempGpxFile:
+                    tempGpxFile.write(self._gpxService.get_gpx_content(self._gpxFileName))
 
-            with open(self.get_preview_image_path(), 'wb') as f:
-                f.write(response.content)
+                with open(tempGpxFilePath, 'rb') as fd:
+                    files = {'gpx': fd}
+                    response = requests.post(gpxPreviewImageSettings['geoRenderUrl'], files=files)
+                    response.raise_for_status()
+
+                    with open(self.get_preview_image_path(), 'wb') as f:
+                        f.write(response.content)
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError) as err:
             LOGGER.error(err)
