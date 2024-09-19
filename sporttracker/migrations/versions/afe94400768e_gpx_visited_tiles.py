@@ -8,14 +8,60 @@ Create Date: 2024-09-07 20:19:28.995606
 
 import json
 import logging
+import math
 import os
+from dataclasses import dataclass
 
+import gpxpy
 import sqlalchemy as sa
 from alembic import op
 from sqlalchemy import Inspector, text
 
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService
+
+
+@dataclass(frozen=True)
+class VisitedTile:
+    x: int
+    y: int
+
+
+class GpxService:
+    def __init__(self, gpxPath: str) -> None:
+        with open(gpxPath, encoding='utf-8') as f:
+            self._gpx = gpxpy.parse(f)
+
+    def get_visited_tiles(self, baseZoomLevel: int) -> set[VisitedTile]:
+        visitedTiles = set()
+
+        numberOfPoints = self._gpx.get_points_no()
+        for track in self._gpx.tracks:
+            for segment in track.segments:
+                for point in segment.points:
+                    visitedTiles.add(
+                        self.convert_coordinate_to_tile_position(
+                            point.latitude, point.longitude, baseZoomLevel
+                        )
+                    )
+
+        LOGGER.debug(
+            f'{numberOfPoints} points in gpx track resulted in {len(visitedTiles)} distinct tiles'
+        )
+        return visitedTiles
+
+    @staticmethod
+    def convert_coordinate_to_tile_position(
+        lat_deg: float, lon_deg: float, zoom: int
+    ) -> VisitedTile:
+        if zoom < 0 or zoom > 20:
+            raise ValueError(f'Zoom level {zoom} is not valid. Must be between 0 and 20')
+
+        lat_rad = math.radians(lat_deg)
+        n = 1 << zoom
+        x = int((lon_deg + 180.0) / 360.0 * n)
+        y = int((1.0 - math.asinh(math.tan(lat_rad)) / math.pi) / 2.0 * n)
+        return VisitedTile(x, y)
+
 
 # revision identifiers, used by Alembic.
 revision = 'afe94400768e'

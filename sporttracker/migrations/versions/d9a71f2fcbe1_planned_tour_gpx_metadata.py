@@ -8,13 +8,49 @@ Create Date: 2024-09-07 18:11:45.907017
 
 import logging
 import os
+from dataclasses import dataclass
 
+import gpxpy
 import sqlalchemy as sa
 from alembic import op
 from sqlalchemy import Inspector, text
 
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService
+
+
+@dataclass
+class GpxMetaInfo:
+    distance: float
+    elevationMinimum: int | None
+    elevationMaximum: int | None
+    uphill: int | None
+    downhill: int | None
+
+
+class GpxService:
+    def __init__(self, gpxPath: str) -> None:
+        with open(gpxPath, encoding='utf-8') as f:
+            self._gpx = gpxpy.parse(f)
+
+    def get_meta_info(self) -> GpxMetaInfo:
+        elevationExtremes = self._gpx.get_elevation_extremes()
+        elevationMinimum = None
+        elevationMaximum = None
+        if elevationExtremes.minimum is not None and elevationExtremes.maximum is not None:
+            elevationMinimum = int(elevationExtremes.minimum)
+            elevationMaximum = int(elevationExtremes.maximum)
+
+        uphillDownhill = self._gpx.get_uphill_downhill()
+        uphill = None
+        downhill = None
+        if uphillDownhill.uphill is not None and uphillDownhill.downhill is not None:
+            uphill = int(uphillDownhill.uphill)
+            downhill = int(uphillDownhill.downhill)
+
+        return GpxMetaInfo(
+            self._gpx.length_2d(), elevationMinimum, elevationMaximum, uphill, downhill
+        )
+
 
 # revision identifiers, used by Alembic.
 revision = 'd9a71f2fcbe1'
@@ -63,10 +99,10 @@ def upgrade():
                     f'VALUES ('
                     f"'{gpxFileName}', "
                     f"'{metaInfo.distance}', "
-                    f"'{metaInfo.elevationExtremes.minimum}', "
-                    f"'{metaInfo.elevationExtremes.maximum}', "
-                    f"'{metaInfo.uphillDownhill.uphill}', "
-                    f"'{metaInfo.uphillDownhill.downhill}' "
+                    f"'{metaInfo.elevationMinimum}', "
+                    f"'{metaInfo.elevationMaximum}', "
+                    f"'{metaInfo.uphill}', "
+                    f"'{metaInfo.downhill}' "
                     f') RETURNING id;'
                 )
             )
