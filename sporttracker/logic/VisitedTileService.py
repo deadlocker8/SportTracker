@@ -34,17 +34,11 @@ class VisitedTileService:
         self,
     ) -> int:
         newVisitedTilesPerTrack = self._newVisitedTileCache.get_new_visited_tiles_per_track_by_user(
-            current_user.id
+            current_user.id, self._quickFilterState.get_active_types(), self._yearFilterState
         )
 
-        filteredVisitedTiles = [
-            t
-            for t in newVisitedTilesPerTrack
-            if t.type in self._quickFilterState.get_active_types()
-            and t.startTime.year in self._yearFilterState
-        ]
         totalNumberOfTiles = 0
-        for t in filteredVisitedTiles:
+        for t in newVisitedTilesPerTrack:
             totalNumberOfTiles += t.numberOfNewTiles
 
         return totalNumberOfTiles
@@ -107,13 +101,6 @@ class VisitedTileService:
         return [TileColorPosition(r[0].tile_color, r[1], r[2]) for r in rows]
 
     def get_new_tiles_per_track(self) -> list[NewTilesPerTrack]:
-        newVisitedTilesPerTrack = self._newVisitedTileCache.get_new_visited_tiles_per_track_by_user(
-            current_user.id
+        return self._newVisitedTileCache.get_new_visited_tiles_per_track_by_user(
+            current_user.id, self._quickFilterState.get_active_types(), self._yearFilterState
         )
-
-        return [
-            t
-            for t in newVisitedTilesPerTrack
-            if t.type in self._quickFilterState.get_active_types()
-            and t.startTime.year in self._yearFilterState
-        ]

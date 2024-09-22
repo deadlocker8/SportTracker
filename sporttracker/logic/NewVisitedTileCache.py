@@ -22,22 +22,47 @@ class NewTilesPerTrack:
 
 class NewVisitedTileCache:
     def __init__(self) -> None:
-        self._newVisitedTilesPerUser: dict[int, list[NewTilesPerTrack]] = {}
-
-    def get_new_visited_tiles_per_track_by_user(self, userId: int) -> list[NewTilesPerTrack]:
-        if userId not in self._newVisitedTilesPerUser:
-            LOGGER.debug(f'Creating entry in NewVisitedTileCache for user with id {userId}')
-            self._newVisitedTilesPerUser[userId] = self.__determine_new_tiles_per_track(userId)
-
-        return self._newVisitedTilesPerUser[userId]
-
-    def invalidate_cache_entry_by_user(self, userId: int) -> None:
-        if userId in self._newVisitedTilesPerUser:
-            LOGGER.debug(f'Invalidating NewVisitedTileCache for user with id {userId}')
-            del self._newVisitedTilesPerUser[userId]
+        self._newVisitedTilesPerUser: dict[str, list[NewTilesPerTrack]] = {}
 
     @staticmethod
-    def __determine_new_tiles_per_track(userId: int) -> list[NewTilesPerTrack]:
+    def __calculate_cache_key(userId: int, trackTypes: list[TrackType], years: list[int]) -> str:
+        activeTrackTypes = '_'.join(sorted([t.name for t in trackTypes]))
+        activeYears = '_'.join(sorted([str(y) for y in years]))
+        return f'{userId}_{activeTrackTypes}_{activeYears}'
+
+    def get_new_visited_tiles_per_track_by_user(
+        self, userId: int, trackTypes: list[TrackType], years: list[int]
+    ) -> list[NewTilesPerTrack]:
+        cacheKey = self.__calculate_cache_key(userId, trackTypes, years)
+
+        if cacheKey not in self._newVisitedTilesPerUser:
+            LOGGER.debug(f'Creating entry in NewVisitedTileCache with key {cacheKey}')
+            self._newVisitedTilesPerUser[cacheKey] = self.__determine_new_tiles_per_track(
+                userId, trackTypes, years
+            )
+
+        return self._newVisitedTilesPerUser[cacheKey]
+
+    def invalidate_cache_entry_by_user(self, userId: int) -> None:
+        for key in list(self._newVisitedTilesPerUser.keys()):
+            if key.startswith(f'{userId}_'):
+                LOGGER.debug(f'Invalidating NewVisitedTileCache with key with id {key}')
+                del self._newVisitedTilesPerUser[key]
+
+    @staticmethod
+    def __determine_new_tiles_per_track(
+        userId: int, trackTypes: list[TrackType], years: list[int]
+    ) -> list[NewTilesPerTrack]:
+        trackTypeOperator = ''
+        if trackTypes:
+            activeTrackTypes = ','.join([f"'{x.name}'" for x in trackTypes])
+            trackTypeOperator = f'AND prev."type" in ({activeTrackTypes})'
+
+        yearOperator = ''
+        if years:
+            activeYears = ','.join([f"'{x}'" for x in years])
+            yearOperator = f'AND EXTRACT(year FROM prev."startTime") in ({activeYears})'
+
         rows = db.session.execute(
             text(f"""SELECT t."id",
                t."type",
@@ -52,7 +77,10 @@ class NewVisitedTileCache:
                                   WHERE prev."startTime" < t."startTime"
                                     AND prev."user_id" = t."user_id"
                                     AND gpx_visited_tile."x" = visitied."x"
-                                    AND gpx_visited_tile."y" = visitied."y")) AS newTiles
+                                    AND gpx_visited_tile."y" = visitied."y"
+                                    {trackTypeOperator}
+                                    {yearOperator}
+                                    )) AS newTiles
         FROM track AS t
         WHERE t."gpx_metadata_id" IS NOT NULL
         AND t."user_id" = {userId}

@@ -5,6 +5,7 @@
 - add: changed color of save buttons for track and planned tour forms to ensure they are not confused with the "create link" button
 - add: improve file name on gpx download
 - add: the changelog now also contains the release dates for each version
+- fix: tile hunting map: the total number of visited tiles and the bar chart now correctly shows the visited tiles depending on the selected track types and years
 
 # 1.29.0 - (17.09.24)
 - BREAKING CHANGE: you must update your settings.json (new section "tileHunting", see settings-example.json)
