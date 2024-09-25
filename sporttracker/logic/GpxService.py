@@ -53,8 +53,8 @@ class GpxMetaInfo:
 
 
 class GpxService:
-    ZIP_FILE_EXTENSION = '.gpx.zip'
-    GPX_FILE_EXTENSION = '.gpx'
+    ZIP_FILE_EXTENSION = 'gpx.zip'
+    GPX_FILE_EXTENSION = 'gpx'
 
     def __init__(self, dataPath: str, newVisitedTileCache: NewVisitedTileCache) -> None:
         self._dataPath = dataPath
@@ -65,7 +65,7 @@ class GpxService:
 
     def __get_zip_file_path(self, gpxFileName: str) -> str:
         return os.path.join(
-            self.get_folder_path(gpxFileName), f'{gpxFileName}{self.ZIP_FILE_EXTENSION}'
+            self.get_folder_path(gpxFileName), f'{gpxFileName}.{self.ZIP_FILE_EXTENSION}'
         )
 
     def get_gpx_content(self, gpxFileName: str) -> bytes:
@@ -75,7 +75,7 @@ class GpxService:
             raise FileNotFoundError(zipFilePath)
 
         with ZipFile(zipFilePath, 'r') as zipObject:
-            with zipObject.open(f'{gpxFileName}{self.GPX_FILE_EXTENSION}') as gpxFile:
+            with zipObject.open(f'{gpxFileName}.{self.GPX_FILE_EXTENSION}') as gpxFile:
                 return gpxFile.read()
 
     def get_joined_tracks_and_segments(self, gpxFileName: str) -> str:
@@ -139,7 +139,7 @@ class GpxService:
     def create_zip(self, gpxFileName: str, data: bytes) -> str:
         zipFilePath = self.__get_zip_file_path(gpxFileName)
         with ZipFile(zipFilePath, mode='w', compression=ZIP_DEFLATED, compresslevel=9) as zipObject:
-            zipObject.writestr(f'{gpxFileName}{self.GPX_FILE_EXTENSION}', data)
+            zipObject.writestr(f'{gpxFileName}.{self.GPX_FILE_EXTENSION}', data)
         return zipFilePath
 
     def __create_gpx_metadata(self, gpxFileName: str) -> int:
