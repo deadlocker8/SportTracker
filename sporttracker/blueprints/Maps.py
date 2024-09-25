@@ -12,6 +12,7 @@ from sqlalchemy import func, extract, or_
 from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Tracks import TrackModel
 from sporttracker.logic import Constants
+from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.TileRenderService import TileRenderService
@@ -34,7 +35,11 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 def createGpxInfo(trackId: int, trackName: str, trackStartTime: datetime) -> dict[str, str | int]:
     return {
         'trackId': trackId,
-        'gpxUrl': url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=trackId),
+        'gpxUrl': url_for(
+            'gpxTracks.downloadGpxTrackByTrackId',
+            track_id=trackId,
+            file_format=GpxService.GPX_FILE_EXTENSION,
+        ),
         'trackUrl': url_for('tracks.edit', track_id=trackId),
         'trackName': f'{trackStartTime.strftime("%Y-%m-%d")} - {trackName}',
     }
@@ -43,7 +48,11 @@ def createGpxInfo(trackId: int, trackName: str, trackStartTime: datetime) -> dic
 def createGpxInfoPlannedTour(tourId: int, tourName: str) -> dict[str, str | int]:
     return {
         'trackId': tourId,
-        'gpxUrl': url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tourId),
+        'gpxUrl': url_for(
+            'gpxTracks.downloadGpxTrackByPlannedTourId',
+            tour_id=tourId,
+            file_format=GpxService.GPX_FILE_EXTENSION,
+        ),
         'trackUrl': url_for('plannedTours.edit', tour_id=tourId),
         'trackName': tourName,
     }
@@ -111,7 +120,11 @@ def construct_blueprint(
         return render_template(
             'maps/mapSingleTrack.jinja2',
             track=TrackModel.create_from_track(track),
-            gpxUrl=url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id),
+            gpxUrl=url_for(
+                'gpxTracks.downloadGpxTrackByTrackId',
+                track_id=track_id,
+                file_format=GpxService.GPX_FILE_EXTENSION,
+            ),
             editUrl=url_for('tracks.edit', track_id=track_id),
             tileRenderUrl=tileRenderUrl,
             tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
@@ -128,7 +141,11 @@ def construct_blueprint(
         return render_template(
             'maps/mapSingleTrack.jinja2',
             track=TrackModel.create_from_track(track),
-            gpxUrl=url_for('gpxTracks.downloadGpxTrackBySharedTrack', shareCode=shareCode),
+            gpxUrl=url_for(
+                'gpxTracks.downloadGpxTrackBySharedTrack',
+                shareCode=shareCode,
+                file_format=GpxService.GPX_FILE_EXTENSION,
+            ),
         )
 
     @maps.route('/map/plannedTour/<int:tour_id>')
@@ -142,7 +159,11 @@ def construct_blueprint(
         return render_template(
             'maps/mapPlannedTour.jinja2',
             plannedTour=PlannedTourModel.create_from_tour(plannedTour, True),
-            gpxUrl=url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id),
+            gpxUrl=url_for(
+                'gpxTracks.downloadGpxTrackByPlannedTourId',
+                tour_id=tour_id,
+                file_format=GpxService.GPX_FILE_EXTENSION,
+            ),
             editUrl=url_for('plannedTours.edit', tour_id=tour_id),
         )
 

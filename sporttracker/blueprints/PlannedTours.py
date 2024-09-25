@@ -130,6 +130,7 @@ class PlannedTourEditFormModel(BaseModel):
     sharedUsers: list[str] | str | None = None
     shareCode: str | None = None
     gpxFileName: str | None = None
+    hasFitFile: bool = False
 
 
 def construct_blueprint(
@@ -220,6 +221,7 @@ def construct_blueprint(
             sharedUsers=[str(user.id) for user in plannedTour.shared_users],
             shareCode=plannedTour.share_code,
             gpxFileName=gpxFileName,
+            hasFitFile=gpxService.has_fit_file(gpxFileName),
         )
 
         return render_template(

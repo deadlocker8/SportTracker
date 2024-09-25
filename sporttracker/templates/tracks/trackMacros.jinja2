@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 
 {% macro render_track_unit(unit) -%}
-       <div class="fs-6 d-lg-none">{{ unit }}</div>
-       <span class="d-none d-lg-inline">{{ unit }}</span>
+    <div class="fs-6 d-lg-none">{{ unit }}</div>
+    <span class="d-none d-lg-inline">{{ unit }}</span>
 {%- endmacro %}
 
 {% macro render_track_speed_kmh(track, renderAsRow) -%}
@@ -28,10 +28,10 @@
 {%- endmacro %}
 
 {% macro render_track_distance(track, renderAsRow) -%}
-     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
+    <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
         <span class="material-icons fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">route</span>
         <div class="fs-5 text-center">{{ (track.distance / 1000) | format_decimal(2) }} {{ render_track_unit('km') }}</div>
-     </div>
+    </div>
 {%- endmacro %}
 
 {% macro render_track_duration(track, renderAsRow) -%}
@@ -52,14 +52,14 @@
 
 {% macro render_track_elevation(track, renderAsRow) -%}
     {% if track.elevationSum is not none %}
-       <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
+        <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
             <span class="material-icons-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">expand</span>
             <div class="fs-5 text-center">{{ track.elevationSum }} {{ render_track_unit('m') }}</div>
         </div>
     {% endif %}
 {%- endmacro %}
 
-{%  macro track_type_icon_non_responsive(trackType, classes='') -%}
+{% macro track_type_icon_non_responsive(trackType, classes='') -%}
     {% if trackType.is_easter_egg_activated() %}
         <div class="d-inline-block rounded-circle p-3 {{ trackType.background_color }} {{ classes }}">
             <img class="track-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + trackType.name.lower() + "_easter_egg.svg") }}"/>
@@ -71,7 +71,7 @@
     {% endif %}
 {%- endmacro %}
 
-{%  macro track_type_icon(trackType, classes='') -%}
+{% macro track_type_icon(trackType, classes='') -%}
     {% if trackType.is_easter_egg_activated() %}
         <div class="d-none d-lg-inline-block rounded-circle p-3 {{ trackType.background_color }} {{ classes }}">
             <img class="track-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + trackType.name.lower() + "_easter_egg.svg") }}"/>
@@ -88,19 +88,22 @@
     {% endif %}
 {%- endmacro %}
 
-{%  macro track_type_icon_small(trackType, fontSize='fs-2', classes='', backgroundColorOverride='') -%}
+{% macro track_type_icon_small(trackType, fontSize='fs-2', classes='', backgroundColorOverride='') -%}
     {% if trackType.is_easter_egg_activated() %}
-        <div class="rounded-circle p-2 {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} d-flex align-items-center {{ classes }}">
+        <div class="rounded-circle p-2
+                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} d-flex align-items-center {{ classes }}">
             <img class="track-type-icon-easter-egg {{ fontSize }}" src="{{ url_for('static', filename="images/easterEggs/" + trackType.name.lower() + "_easter_egg.svg") }}"/>
         </div>
     {% elif trackType.is_font_awesome_icon %}
-        <i class="fa-solid {{ trackType.icon }} fa-fw rounded-circle {{ fontSize }} p-2 text-dark {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} {{ classes }}"></i>
+        <i class="fa-solid {{ trackType.icon }} fa-fw rounded-circle {{ fontSize }} p-2 text-dark
+                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} {{ classes }}"></i>
     {% else %}
-        <span class="material-icons rounded-circle {{ fontSize }} p-2 text-dark {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} {{ classes }}">{{ trackType.icon }}</span>
+        <span class="material-icons rounded-circle {{ fontSize }} p-2 text-dark
+                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} {{ classes }}">{{ trackType.icon }}</span>
     {% endif %}
 {%- endmacro %}
 
-{%  macro track_card_feature_icons(track) -%}
+{% macro track_card_feature_icons(track) -%}
     <div class="z-2 d-flex">
         {% if track.shareCode or track.share_code %}
             <span class="material-icons fs-4 text-body">share</span>
@@ -315,15 +318,15 @@
 {%- endmacro %}
 
 {% macro track_form_gpx(track, track_id) -%}
-    {{ form_gpx(track, url_for('maps.showSingleTrack', track_id=track_id or -1 ), url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id  or -1), url_for('gpxTracks.deleteGpxTrackByTrackId', track_id=track_id or -1), gettext('No GPX file is linked to this track'), gettext('A GPX file is linked to this track') ) }}
+    {{ form_gpx(track, url_for('maps.showSingleTrack', track_id=track_id or -1 ), url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id  or -1, file_format='gpx'), url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id  or -1, file_format='fit'), url_for('gpxTracks.deleteGpxTrackByTrackId', track_id=track_id or -1), gettext('No GPX or FIT file is linked to this track'), gettext('A GPX or FIT file is linked to this track') ) }}
 {%- endmacro %}
 
-{% macro form_gpx(item, mapUrl, downloadUrl, deleteUrl, placeholderText, gpxFileLinkedText) -%}
+{% macro form_gpx(item, mapUrl, downloadUrlGpx, downloadUrlFit, deleteUrl, placeholderText, gpxFileLinkedText) -%}
     <div class="mb-3">
         <label for="track-gpxFileName" class="form-label">
             <div class="d-flex align-items-center">
                 <span class="material-icons me-3">location_on</span>
-                <span>{{ gettext('GPX Track') }}</span>
+                <span>{{ gettext('GPX/FIT Track') }}</span>
             </div>
         </label>
 
@@ -339,18 +342,28 @@
                            target="_blank">
                             <span class="material-icons fs-4">map</span>
                         </a>
-                        <a href="{{ downloadUrl }}"
+                        <a href="{{ downloadUrlGpx }}"
                            class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
                            id="buttonGpxTrackDownload"
                            target="_blank">
                             <span class="material-icons fs-4">download</span>
+                            <span>GPX</span>
                         </a>
+                        {% if hasGpxTrack and item.hasFitFile %}
+                            <a href="{{ downloadUrlFit }}"
+                               class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
+                               id="buttonFitTrackDownload"
+                               target="_blank">
+                                <span class="material-icons fs-4">download</span>
+                                <span>FIT</span>
+                            </a>
+                        {% endif %}
 
                         <button type="button" class="btn btn-danger btn-sm ms-3 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete-modal-gpx">
                             <span class="material-icons fs-4">delete</span>
                         </button>
 
-                        {% call macros.deleteModal(gettext('Delete GPX Track?'), gettext('Do you really want to delete this associated GPX file?'), 'gpx') %}
+                        {% call macros.deleteModal(gettext('Delete GPX and FIT Track?'), gettext('Do you really want to delete this associated GPX and FIT file?'), 'gpx') %}
                             <a data-url="{{ deleteUrl }}" class="btn btn-danger" id="buttonGpxTrackDelete" data-bs-dismiss="modal">{{ gettext('Delete') }}</a>
                         {% endcall %}
                     </div>
@@ -359,7 +372,7 @@
             <div class="{% if hasGpxTrack %}hidden{% endif %}" id="gpxControlsDisabled">
                 <span class="mb-3 badge bg-secondary lh-lg rounded-pill px-3">{{ placeholderText }}</span>
             </div>
-            <input class="form-control" type="file" id="track-gpxFileName" name="gpxTrack" accept=".gpx">
+            <input class="form-control" type="file" id="track-gpxFileName" name="gpxTrack" accept=".gpx,.fit">
         </div>
     </div>
 {%- endmacro %}
@@ -483,7 +496,8 @@
         <div class="d-flex align-items-center">
             <i class="fa-solid fa-lightbulb fa-fw fs-4 me-3"></i>
             <select class="form-select" id="track-plannedTour" name="plannedTourId">
-                <option value="-1" {% if not track %} selected{% endif %}>{{ gettext('Not based on a Planned Tour') }}</option>
+                <option value="-1"
+                        {% if not track %} selected{% endif %}>{{ gettext('Not based on a Planned Tour') }}</option>
                 {% for plannedTour in plannedTours %}
                     <option value="{{ plannedTour.id }}" {% if track and track.plannedTourId != '-1' and track.plannedTourId == plannedTour.id|string %}selected{% endif %}>{{ plannedTour.name }}</option>
                 {% endfor %}

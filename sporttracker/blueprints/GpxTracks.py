@@ -18,54 +18,54 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 def construct_blueprint(gpxService: GpxService):
     gpxTracks = Blueprint('gpxTracks', __name__, static_folder='static', url_prefix='/gpxTracks')
 
-    @gpxTracks.route('/track/<int:track_id>')
+    @gpxTracks.route('/track/<string:file_format>/<int:track_id>')
     @login_required
-    def downloadGpxTrackByTrackId(track_id: int):
+    def downloadGpxTrackByTrackId(track_id: int, file_format: str):
         track = get_track_by_id(track_id)
 
         if track is None:
             abort(404)
 
-        response = __downloadGpxTrack(gpxService, track, track.get_download_name())
+        response = __downloadTrackFile(gpxService, track, file_format)
         if response is not None:
             return response
 
         abort(404)
 
-    @gpxTracks.route('/track/shared/<string:shareCode>')
-    def downloadGpxTrackBySharedTrack(shareCode: str):
+    @gpxTracks.route('/track/shared/<string:shareCode>/<string:file_format>')
+    def downloadGpxTrackBySharedTrack(shareCode: str, file_format: str):
         track = get_track_by_share_code(shareCode)
         if track is None:
             abort(404)
 
-        response = __downloadGpxTrack(gpxService, track, track.get_download_name())
+        response = __downloadTrackFile(gpxService, track, file_format)
         if response is not None:
             return response
 
         abort(404)
 
-    @gpxTracks.route('/plannedTour/<int:tour_id>')
+    @gpxTracks.route('/plannedTour/<string:file_format>/<int:tour_id>')
     @login_required
-    def downloadGpxTrackByPlannedTourId(tour_id: int):
+    def downloadGpxTrackByPlannedTourId(tour_id: int, file_format: str):
         plannedTour = get_planned_tour_by_id(tour_id)
 
         if plannedTour is None:
             abort(404)
 
-        response = __downloadGpxTrack(gpxService, plannedTour, plannedTour.get_download_name())
+        response = __downloadTrackFile(gpxService, plannedTour, file_format)
         if response is not None:
             return response
 
         abort(404)
 
-    @gpxTracks.route('/plannedTour/shared/<string:shareCode>')
-    def downloadGpxTrackBySharedPlannedTour(shareCode: str):
+    @gpxTracks.route('/plannedTour/shared/<string:shareCode>/<string:file_format>')
+    def downloadGpxTrackBySharedPlannedTour(shareCode: str, file_format: str):
         plannedTour = get_planned_tour_by_share_code(shareCode)
 
         if plannedTour is None:
             abort(404)
 
-        response = __downloadGpxTrack(gpxService, plannedTour, plannedTour.get_download_name())
+        response = __downloadTrackFile(gpxService, plannedTour, file_format)
         if response is not None:
             return response
 
@@ -119,6 +119,15 @@ def construct_blueprint(gpxService: GpxService):
     return gpxTracks
 
 
+def __downloadTrackFile(gpxService: GpxService, item: Track, fileFormat: str) -> Response | None:
+    if fileFormat == GpxService.GPX_FILE_EXTENSION:
+        return __downloadGpxTrack(gpxService, item, item.get_download_name())
+    elif fileFormat == GpxService.FIT_FILE_EXTENSION:
+        return __downloadFitTrack(gpxService, item, item.get_download_name())
+
+    return None
+
+
 def __downloadGpxTrack(gpxService: GpxService, item: Track, downloadName: str) -> Response | None:
     gpxMetadata = item.get_gpx_metadata()
     if gpxMetadata is None:
@@ -129,5 +138,19 @@ def __downloadGpxTrack(gpxService: GpxService, item: Track, downloadName: str) -
     return Response(
         modifiedGpxXml,
         mimetype='application/gpx',
+        headers={'content-disposition': f'attachment; filename={fileName}'},
+    )
+
+
+def __downloadFitTrack(gpxService: GpxService, item: Track, downloadName: str) -> Response | None:
+    gpxMetadata = item.get_gpx_metadata()
+    if gpxMetadata is None:
+        return None
+
+    fitContent = gpxService.get_fit_content(gpxMetadata.gpx_file_name)
+    fileName = f'{downloadName}.fit'
+    return Response(
+        fitContent,
+        mimetype='application/octet-stream',
         headers={'content-disposition': f'attachment; filename={fileName}'},
     )

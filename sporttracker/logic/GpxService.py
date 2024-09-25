@@ -55,6 +55,7 @@ class GpxMetaInfo:
 class GpxService:
     ZIP_FILE_EXTENSION = 'gpx.zip'
     GPX_FILE_EXTENSION = 'gpx'
+    FIT_FILE_EXTENSION = 'fit'
 
     def __init__(self, dataPath: str, newVisitedTileCache: NewVisitedTileCache) -> None:
         self._dataPath = dataPath
@@ -194,6 +195,30 @@ class GpxService:
             db.session.commit()
 
         self._newVisitedTileCache.invalidate_cache_entry_by_user(current_user.id)
+
+    def has_fit_file(self, gpxFileName: str | None) -> bool:
+        if gpxFileName is None:
+            return False
+
+        fitFilePath = os.path.join(
+            self.get_folder_path(gpxFileName), f'{gpxFileName}.{self.FIT_FILE_EXTENSION}'
+        )
+
+        return os.path.exists(fitFilePath)
+
+    def get_fit_content(self, gpxFileName: str) -> bytes:
+        if gpxFileName is None:
+            raise FileNotFoundError(gpxFileName)
+
+        fitFilePath = os.path.join(
+            self.get_folder_path(gpxFileName), f'{gpxFileName}.{self.FIT_FILE_EXTENSION}'
+        )
+
+        if not os.path.exists(fitFilePath):
+            raise FileNotFoundError(fitFilePath)
+
+        with open(fitFilePath, 'rb') as f:
+            return f.read()
 
 
 class GpxParser:

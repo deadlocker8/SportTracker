@@ -104,6 +104,7 @@ class TrackFormModel(BaseModel):
     averageHeartRate: int | None = None
     elevationSum: int | None = None
     gpxFileName: str | None = None
+    hasFitFile: bool = False
     participants: list[str] | str | None = None
     shareCode: str | None = None
 
@@ -261,6 +262,7 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             averageHeartRate=track.averageHeartRate,
             elevationSum=track.elevationSum,
             gpxFileName=gpxFileName,
+            hasFitFile=gpxService.has_fit_file(gpxFileName),
             participants=[str(item.id) for item in track.participants],
             shareCode=track.share_code,
             plannedTourId=str(track.plannedTour.id) if track.plannedTour else '-1',
