@@ -177,7 +177,11 @@ def construct_blueprint(
         return render_template(
             'maps/mapPlannedTour.jinja2',
             plannedTour=PlannedTourModel.create_from_tour(plannedTour, False),
-            gpxUrl=url_for('gpxTracks.downloadGpxTrackBySharedPlannedTour', shareCode=shareCode),
+            gpxUrl=url_for(
+                'gpxTracks.downloadGpxTrackBySharedPlannedTour',
+                shareCode=shareCode,
+                file_format='gpx',
+            ),
         )
 
     @maps.route('/toggleYears', methods=['POST'])
