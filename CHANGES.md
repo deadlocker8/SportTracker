@@ -1,4 +1,4 @@
-# 1.30.0 - (??.??.??)
+# 1.30.0 - (25.09.24)
 - BREAKING CHANGE: all uploaded gpx files are now stored in a folder called "data" instead of "uploads". All existing gpx files will be automatically migrated. Please adjust your docker volume mounts.
 - add: gpx files are now stored in a zip to reduce file size
 - add: planned tour preview images are stored in the same folder as the corresponding gpx file
