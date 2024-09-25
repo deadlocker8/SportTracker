@@ -16,6 +16,7 @@ from sqlalchemy import delete
 from werkzeug.datastructures.file_storage import FileStorage
 
 from sporttracker.logic import Constants
+from sporttracker.logic.FitToGpxConverter import FitToGpxConverter
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
@@ -118,8 +119,11 @@ class GpxService:
             destinationFolderPath = os.path.join(self._dataPath, filename)
             os.makedirs(destinationFolderPath)
 
-            zipFilePath = self.create_zip(filename, file.stream.read())
-            LOGGER.debug(f'Saved uploaded file "{file.filename}" to "{zipFilePath}"')
+            if file.filename.endswith(f'.{self.GPX_FILE_EXTENSION}'):
+                zipFilePath = self.create_zip(filename, file.stream.read())
+                LOGGER.debug(f'Saved uploaded gpx file "{file.filename}" to "{zipFilePath}"')
+            elif file.filename.endswith(f'.{self.FIT_FILE_EXTENSION}'):
+                self.__handle_fit_upload(destinationFolderPath, file, filename)
 
             if generatePreviewImage:
                 gpxPreviewImageService = GpxPreviewImageService(filename, self)
@@ -131,11 +135,31 @@ class GpxService:
 
         return None
 
+    def __handle_fit_upload(self, destinationFolderPath, file, filename):
+        fitFilePath = os.path.join(destinationFolderPath, f'{filename}.{self.FIT_FILE_EXTENSION}')
+        file.save(fitFilePath)
+        LOGGER.debug(f'Saved uploaded fit file "{file.filename}" to "{fitFilePath}"')
+
+        gpxFilePath = os.path.join(destinationFolderPath, f'{filename}.{self.GPX_FILE_EXTENSION}')
+        try:
+            FitToGpxConverter.convert_fit_to_gpx(fitFilePath, gpxFilePath)
+
+            with open(gpxFilePath, 'rb') as gpxFile:
+                self.create_zip(filename, gpxFile.read())
+
+            os.remove(gpxFilePath)
+            LOGGER.debug(f'Converted uploaded fit file "{file.filename}" to gpx')
+        except Exception as e:
+            LOGGER.error(f'Error while converting {fitFilePath} to gpx', e)
+
     def __is_allowed_file(self, filename: str) -> bool:
         if '.' not in filename:
             return False
 
-        return filename.rsplit('.', 1)[1].lower() == 'gpx'
+        return filename.rsplit('.', 1)[1].lower() in [
+            self.GPX_FILE_EXTENSION,
+            self.FIT_FILE_EXTENSION,
+        ]
 
     def create_zip(self, gpxFileName: str, data: bytes) -> str:
         zipFilePath = self.__get_zip_file_path(gpxFileName)
