@@ -35,8 +35,8 @@
 
 {% macro annualAchievementModal(idSuffix, trackType, achievement) -%}
     <div class="modal fade" tabindex="-1" id="annual-achievement-modal-{{ idSuffix }}">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content bg-dark">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content bg-dark max-height-90">
                 <div class="modal-header d-flex align-items-center justify-content-start">
                     {{ trackMacros.track_type_icon_small(trackType, fontSize='fs-3') }}
                     <div class="fs-5 ms-3">
@@ -52,7 +52,7 @@
                         {{ annualAchievementStatisticCard(gettext('Average'), trackType, achievement.all_year_data.average) }}
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer overflow-y-auto">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{ gettext('Close') }}</button>
                 </div>
             </div>
@@ -61,8 +61,8 @@
 {%- endmacro %}
 
 {% macro annualAchievementStatisticCard(title, trackType, value) -%}
-    <div class="col-6">
-        <div class="card bg-body-secondary border-0 mb-3" data-bs-theme="dark">
+    <div class="col-6 mb-3">
+        <div class="card bg-body-secondary border-0 h-100" data-bs-theme="dark">
             <div class="card-body">
                 <div class="card-title">{{ title }}</div>
                 <h5 class="card-title {{ trackType.text_color }} fw-bold">{{ value }}</h5>
@@ -110,6 +110,10 @@
                         rangemode: 'tozero',
                         tickformat: '.0f',
                         color: '#FFFFFF'
+                    },
+                    margin: {
+                        t: 0,
+                        b: 60
                     },
                 },
                 {

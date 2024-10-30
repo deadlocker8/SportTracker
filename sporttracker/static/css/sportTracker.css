@@ -144,6 +144,10 @@ body {
     max-width: 20ch;
 }
 
+.max-height-90 {
+    max-height: 90% !important;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

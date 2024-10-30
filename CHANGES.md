@@ -1,3 +1,8 @@
+# 1.31.0 - (--.--.--)
+- fix: responsiveness of settings page
+- fix: responsiveness of track form page
+- fix: responsiveness of annual achievements modals 
+
 # 1.30.0 - (25.09.24)
 - BREAKING CHANGE: all uploaded gpx files are now stored in a folder called "data" instead of "uploads". All existing gpx files will be automatically migrated. Please adjust your docker volume mounts.
 - add: gpx files are now stored in a zip to reduce file size
