@@ -2,8 +2,13 @@
 
 <html>
     <head>
+        {% set isEdit = false %}
+        {% if maintenanceEvent and maintenanceEvent.id is not none %}
+            {% set isEdit = true %}
+        {% endif %}
+
         <meta charset="UTF-8">
-        <title>SportTracker - {% if maintenanceEvent %}{{ gettext('Edit Maintenance Event') }}{% else %}{{ gettext('New Maintenance Event') }}{% endif %}</title>
+        <title>SportTracker - {% if isEdit %}{{ gettext('Edit Maintenance Event') }}{% else %}{{ gettext('New Maintenance Event') }}{% endif %}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -14,7 +19,7 @@
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col col-12 mx-auto">
-                        {% if maintenanceEvent %}
+                        {% if isEdit %}
                             {% call macros.headline(gettext('Edit Maintenance Event')) %}
                                 <i class="fa-solid fa-wrench fa-fw fs-2"></i>
                             {% endcall %}
@@ -35,7 +40,7 @@
 
                 <div class="row mt-5 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
-                        <form role="form" action="{% if maintenanceEvent %}{{ url_for('maintenanceEvents.editPost', event_id=event_id) }}{% else %}{{ url_for('maintenanceEvents.addPost') }}{% endif %}"
+                        <form role="form" action="{% if isEdit %}{{ url_for('maintenanceEvents.editPost', event_id=event_id) }}{% else %}{{ url_for('maintenanceEvents.addPost') }}{% endif %}"
                               method="post">
                             <div class="mb-3">
                                 <label for="maintenance-event-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>

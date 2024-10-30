@@ -6,6 +6,7 @@
         <title>SportTracker - {{ gettext('Maintenance') }}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/maintenanceEvents.css") }}"/>
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('maintenanceEvents') }}
@@ -25,38 +26,82 @@
                     {{ macros.track_type_quick_filter(url_for('maintenanceEvents.listMaintenanceEvents')) }}
                 </div>
 
-                {% for year, maintenanceEvents in maintenanceEventsByYear.items() %}
-                    <h3 class="mt-4">{{ year }}</h3>
+                <div class="row py-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
+                    {% set ns = namespace(index = 0) %}
+                    {% set eventLimit = 4 %}
 
-                    {% for maintenanceEvent in maintenanceEvents %}
-                        <div class="row py-3">
-                            <div class="col col-xxl-8 col-lg-10 col-sm-12 mx-auto px-xxl-5 px-xl-4 px-lg-3">
-                                <a href="{{ url_for('maintenanceEvents.edit', event_id=maintenanceEvent.id) }}"
-                                   class="text-decoration-none">
-                                    <div class="card">
-                                        <div class="row g-0 d-flex align-items-center p-2">
-                                            <div class="col col-4 col-md-2 d-flex align-items-center">
-                                                <i class="fa-solid fa-wrench fa-fw fs-3 p-2 text-secondary me-3"></i>
-                                                {{ trackMacros.track_type_icon_small(maintenanceEvent.type, fontSize='fs-3') }}
+                    {% for description, maintenanceEventsByType in maintenanceEventsByDescription.items() %}
+                        {% for trackType, maintenanceEvents in maintenanceEventsByType.items() %}
+                            <div class="col mb-5">
+                                <div class="card h-100">
+                                    <div class="card-header mb-0">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center text-truncate">
+                                                {{ trackMacros.track_type_icon_small(trackType, fontSize='fs-3') }}
+                                                <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">{{ description }}</div>
                                             </div>
-                                            <div class="col col-5 col-md-2 text-start fs-5 d-flex flex-column">
-                                                <div>{{ maintenanceEvent.eventDate | format_date() }}</div>
-                                                <div class="text-truncate maintenance-event-description d-md-none">{{ maintenanceEvent.description }}</div>
-                                            </div>
-                                            <div class="col col-md-5 text-start fs-5 text-truncate d-none d-md-block">
-                                                {{ maintenanceEvent.description }}
-                                            </div>
-                                            <div class="col col-3 col-md-3 text-start fs-6 text-center">
-                                                {{ (maintenanceEvent.distanceSinceEvent // 1000) }} km
-                                                <div class="fw-light">{{ gettext('since previous event') }}</div>
-                                            </div>
+                                            <a href="{{ url_for('maintenanceEvents.addByTypeAndDescription', track_type=trackType.name, description=description) }}" class="link-light text-decoration-none d-flex-inline align-items-center -self-end">
+                                                <span class="rounded-circle bg-primary p-1 fs-5 material-icons">add</span>
+                                            </a>
                                         </div>
                                     </div>
-                                </a>
+
+                                    <div class="card-body d-flex flex-column ps-5 pb-4 text-start">
+                                        {% for maintenanceEvent in maintenanceEvents | reverse %}
+                                            {% if loop.index == 4 and maintenanceEvents | length > eventLimit %}
+                                                <button class="btn btn-primary align-self-center d-flex align-items-center toggle-button-hide" type="button" data-bs-toggle="collapse" data-bs-target="#maintenance-collapse-{{ ns.index }}">
+                                                    <span class="material-icons fs-5">keyboard_arrow_down</span>&nbsp;{{ gettext('Show all (+%(remaining)d)', remaining=maintenanceEvents|length - loop.index + 1) }}
+                                                </button>
+
+                                                <div class="collapse" id="maintenance-collapse-{{ ns.index }}">
+                                                <div class="d-flex flex-column">
+                                            {% endif %}
+
+                                        <ul class="timeline-with-icons {% if maintenanceEvent.id is none %}timeline-dashed{% endif %}">
+                                            <li class="timeline-item">
+                                                {% if maintenanceEvent.id is none %}
+                                                    <span class="timeline-icon">
+                                                            <i class="fa-solid fa-calendar-day text-secondary fa-sm fa-fw fs-5 p-2"></i>
+                                                        </span>
+
+                                                    <div class="fw-bold fs-5">{{ gettext('Today') }}</div>
+                                                {% else %}
+                                                    <span class="timeline-icon">
+                                                            <i class="fa-solid fa-wrench text-secondary fa-sm fa-fw fs-5 p-2"></i>
+                                                        </span>
+
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="fw-bold fs-5">{{ maintenanceEvent.eventDate | format_date() }}</div>
+                                                        <a href="{{ url_for('maintenanceEvents.edit', event_id=maintenanceEvent.id) }}" class="btn btn-sm d-inline-flex align-items-center ms-2" id="button-logout">
+                                                            <span class="material-icons text-primary fs-5">edit</span>
+                                                        </a>
+                                                    </div>
+                                                {% endif %}
+
+                                                {% if not loop.last %}
+                                                    <div class="text-start fst-italic">
+                                                        <span class="text-secondary">{{ maintenanceEvent.numberOfDaysSinceEvent }} {{ gettext('days') }}</span>
+                                                    </div>
+
+                                                    <div class="mt-3 mb-4 text-start">
+                                                        {{ (maintenanceEvent.distanceSinceEvent // 1000) }} km
+                                                    </div>
+                                                {% endif %}
+                                            </li>
+                                        </ul>
+                                        {% if loop.last and maintenanceEvents | length > eventLimit and loop.index >= eventLimit %}
+                                            </div>
+                                            </div>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+
+                            {% set ns.index = ns.index + 1 %}
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
+                </div>
             </section>
         </div>
 

@@ -1,7 +1,6 @@
 import logging
 from dataclasses import dataclass
 from datetime import datetime
-from itertools import groupby
 
 from flask import Blueprint, render_template, redirect, url_for, abort
 from flask_login import login_required, current_user
@@ -20,13 +19,14 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 @dataclass
 class MaintenanceEventModel:
-    id: int
-    eventDate: datetime
-    date: str
-    time: str
+    id: int | None
+    eventDate: datetime | None
+    date: str | None
+    time: str | None
     type: TrackType
     description: str
     distanceSinceEvent: int
+    numberOfDaysSinceEvent: int
 
 
 class MaintenanceEventFormModel(BaseModel):
@@ -58,50 +58,65 @@ def construct_blueprint():
         )
         eventDescriptions = [d[0] for d in eventDescriptions]
 
-        maintenanceEventList: list[MaintenanceEventModel] = []
+        maintenanceEventsByDescription: dict[str, dict[TrackType, list[MaintenanceEventModel]]] = {}
         for description in eventDescriptions:
-            events: list[MaintenanceEvent] = (
-                MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
-                .filter(MaintenanceEvent.type.in_(quickFilterState.get_active_types()))
-                .filter(MaintenanceEvent.description == description)
-                .order_by(MaintenanceEvent.event_date.asc())
-                .all()
-            )
+            maintenanceEventsByDescription[description] = {}
 
-            if not events:
-                continue
-
-            previousEventDate = events[0].event_date
-            for event in events:
-                distanceSinceEvent = get_distance_between_dates(
-                    previousEventDate, event.event_date, [event.type]
+            for trackType in TrackType:
+                events: list[MaintenanceEvent] = (
+                    MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
+                    .filter(MaintenanceEvent.type.in_(quickFilterState.get_active_types()))
+                    .filter(MaintenanceEvent.type == trackType)
+                    .filter(MaintenanceEvent.description == description)
+                    .order_by(MaintenanceEvent.event_date.asc())
+                    .all()
                 )
-                previousEventDate = event.event_date
 
-                maintenanceEventList.append(
+                if not events:
+                    continue
+
+                maintenanceEventsByDescription[description][trackType] = []
+
+                previousEventDate = events[0].event_date
+                for event in events:
+                    distanceSinceEvent = get_distance_between_dates(
+                        previousEventDate, event.event_date, [event.type]
+                    )
+                    numberOfDaysSinceEvent = (event.event_date - previousEventDate).days  # type: ignore[operator]
+                    previousEventDate = event.event_date
+
+                    maintenanceEventsByDescription[description][trackType].append(
+                        MaintenanceEventModel(
+                            event.id,
+                            event.event_date,  # type: ignore[arg-type]
+                            event.get_date(),
+                            event.get_time(),
+                            event.type,
+                            event.description,  # type: ignore[arg-type]
+                            distanceSinceEvent,
+                            numberOfDaysSinceEvent,
+                        )
+                    )
+
+                now = datetime.now()
+                distanceUntilToday = get_distance_between_dates(event.event_date, now, [event.type])
+
+                maintenanceEventsByDescription[description][trackType].append(
                     MaintenanceEventModel(
-                        event.id,
-                        event.event_date,  # type: ignore[arg-type]
-                        event.get_date(),
-                        event.get_time(),
-                        event.type,
-                        event.description,  # type: ignore[arg-type]
-                        distanceSinceEvent,
+                        None,
+                        now,  # type: ignore[arg-type]
+                        None,
+                        None,
+                        events[0].type,
+                        description,  # type: ignore[arg-type]
+                        distanceUntilToday,
+                        (now - event.event_date).days,  # type: ignore[operator]
                     )
                 )
 
-        maintenanceEventList = sorted(maintenanceEventList, key=lambda e: e.eventDate, reverse=True)
-
-        maintenanceEventsByYear = {
-            k: list(g)
-            for k, g in groupby(
-                maintenanceEventList, key=lambda eventModel: eventModel.eventDate.year
-            )
-        }
-
         return render_template(
             'maintenanceEvents/maintenanceEvents.jinja2',
-            maintenanceEventsByYear=maintenanceEventsByYear,
+            maintenanceEventsByDescription=maintenanceEventsByDescription,
             quickFilterState=quickFilterState,
         )
 
@@ -109,6 +124,26 @@ def construct_blueprint():
     @login_required
     def add():
         return render_template('maintenanceEvents/maintenanceEventForm.jinja2')
+
+    @maintenanceEvents.route('/addByTypeAndDescription/<string:track_type>/<string:description>')
+    @login_required
+    def addByTypeAndDescription(track_type: str, description: str):
+        trackType = TrackType(track_type)  # type: ignore[call-arg]
+
+        eventModel = MaintenanceEventModel(
+            id=None,
+            eventDate=None,
+            date=None,
+            time=None,
+            type=trackType.name,  # type: ignore[arg-type]
+            description=description,
+            distanceSinceEvent=0,
+            numberOfDaysSinceEvent=0,
+        )
+        return render_template(
+            'maintenanceEvents/maintenanceEventForm.jinja2',
+            maintenanceEvent=eventModel,
+        )
 
     @maintenanceEvents.route('/post', methods=['POST'])
     @login_required
@@ -143,6 +178,7 @@ def construct_blueprint():
             type=maintenanceEvent.type.name,
             description=maintenanceEvent.description,  # type: ignore[arg-type]
             distanceSinceEvent=0,
+            numberOfDaysSinceEvent=0,
         )
 
         return render_template(
