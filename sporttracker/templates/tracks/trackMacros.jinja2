@@ -335,7 +335,7 @@
         <div class="input-field-margin">
             {% if item is defined %}
                 <div class="d-flex flex-column flex-md-row mb-3 {% if not hasGpxTrack %}hidden{% endif %}" id="gpxControlsEnabled">
-                    <span class="badge bg-success lh-lg rounded-pill d-flex align-items-center px-3 text-truncate">{{ gpxFileLinkedText }}</span>
+                    <span class="badge bg-success lh-lg rounded-pill d-flex align-items-center px-3 text-wrap">{{ gpxFileLinkedText }}</span>
                     <div id="gpxButtons" class="d-flex mt-3 mt-md-0">
                         <a href="{{ mapUrl }}"
                            class="btn btn-primary btn-sm ms-0 ms-md-3 d-flex align-items-center"
@@ -370,7 +370,7 @@
                 </div>
             {% endif %}
             <div class="{% if hasGpxTrack %}hidden{% endif %}" id="gpxControlsDisabled">
-                <span class="mb-3 badge bg-secondary lh-lg rounded-pill px-3">{{ placeholderText }}</span>
+                <span class="mb-3 badge bg-secondary lh-lg rounded-pill px-3 text-wrap">{{ placeholderText }}</span>
             </div>
             <input class="form-control" type="file" id="track-gpxFileName" name="gpxTrack" accept=".gpx,.fit">
         </div>
