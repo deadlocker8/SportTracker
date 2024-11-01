@@ -227,7 +227,7 @@ class DummyDataGenerator:
                 db.session.commit()
 
                 if index in indexesWithGpx:
-                    self._gpxService.add_visited_tiles_for_track(track, 14)
+                    self._gpxService.add_visited_tiles_for_track(track, 14, user.id)
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 
@@ -236,8 +236,8 @@ class DummyDataGenerator:
         dummyDataDirectory = os.path.join(os.path.dirname(currentDirectory), 'dummyData')
         sourcePath = os.path.join(dummyDataDirectory, random.choice(self.GPX_FILE_NAMES))
 
-        filename = f'{uuid.uuid4().hex}.gpx'
-        with open(sourcePath, 'rb', encoding='utf-8') as f:
+        filename = uuid.uuid4().hex
+        with open(sourcePath, 'rb') as f:
             self._gpxService.create_zip(filename, f.read())
 
         gpxMetadata = GpxMetadata(
@@ -255,7 +255,7 @@ class DummyDataGenerator:
         item.gpx_metadata_id = gpxMetadata.id
 
     def __generate_demo_maintenance_events(self, user) -> None:
-        lastDayCurrentMonth = datetime.now().date() + relativedelta(day=31)
+        lastDayCurrentMonth = datetime.now().date()
 
         fake = Faker()
 

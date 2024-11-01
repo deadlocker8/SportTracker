@@ -10,7 +10,6 @@ from typing import Any
 from zipfile import ZipFile, ZIP_DEFLATED
 
 import gpxpy
-from flask_login import current_user
 from gpxpy.gpx import GPX, GPXTrack
 from sqlalchemy import delete
 from werkzeug.datastructures.file_storage import FileStorage
@@ -162,6 +161,9 @@ class GpxService:
         ]
 
     def create_zip(self, gpxFileName: str, data: bytes) -> str:
+        destinationFolderPath = os.path.join(self._dataPath, gpxFileName)
+        os.makedirs(destinationFolderPath, exist_ok=True)
+
         zipFilePath = self.__get_zip_file_path(gpxFileName)
         with ZipFile(zipFilePath, mode='w', compression=ZIP_DEFLATED, compresslevel=9) as zipObject:
             zipObject.writestr(f'{gpxFileName}.{self.GPX_FILE_EXTENSION}', data)
@@ -186,7 +188,7 @@ class GpxService:
 
         return gpxMetadata.id
 
-    def delete_gpx(self, item: Track | PlannedTour) -> None:
+    def delete_gpx(self, item: Track | PlannedTour, userId: int) -> None:
         gpxMetadata = item.get_gpx_metadata()
         if gpxMetadata is not None:
             item.gpx_metadata_id = None
@@ -199,7 +201,7 @@ class GpxService:
                 LOGGER.debug(f'Deleted gpx visited tiles for track with id {item.id}')
                 db.session.commit()
 
-                self._newVisitedTileCache.invalidate_cache_entry_by_user(current_user.id)
+                self._newVisitedTileCache.invalidate_cache_entry_by_user(userId)
 
             try:
                 shutil.rmtree(self.get_folder_path(gpxMetadata.gpx_file_name))
@@ -209,7 +211,7 @@ class GpxService:
             except OSError as e:
                 LOGGER.error(e)
 
-    def add_visited_tiles_for_track(self, track: Track, baseZoomLevel: int):
+    def add_visited_tiles_for_track(self, track: Track, baseZoomLevel: int, userId: int):
         gpxParser = GpxParser(self.get_gpx_content(track.get_gpx_metadata().gpx_file_name))  # type: ignore[union-attr]
         visitedTiles = gpxParser.get_visited_tiles(baseZoomLevel)
 
@@ -218,7 +220,7 @@ class GpxService:
             db.session.add(gpxVisitedTile)
             db.session.commit()
 
-        self._newVisitedTileCache.invalidate_cache_entry_by_user(current_user.id)
+        self._newVisitedTileCache.invalidate_cache_entry_by_user(userId)
 
     def has_fit_file(self, gpxFileName: str | None) -> bool:
         if gpxFileName is None:

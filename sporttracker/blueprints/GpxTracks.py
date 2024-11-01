@@ -1,7 +1,7 @@
 import logging
 
 from flask import Blueprint, abort, Response, send_file, send_from_directory
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
@@ -79,7 +79,7 @@ def construct_blueprint(gpxService: GpxService):
         if track is None:
             return Response(status=204)
 
-        gpxService.delete_gpx(track)
+        gpxService.delete_gpx(track, current_user.id)
         return Response(status=204)
 
     @gpxTracks.route('/delete/plannedTour/<int:tour_id>')
@@ -90,7 +90,7 @@ def construct_blueprint(gpxService: GpxService):
         if plannedTour is None:
             return Response(status=204)
 
-        gpxService.delete_gpx(plannedTour)
+        gpxService.delete_gpx(plannedTour, current_user.id)
         return Response(status=204)
 
     @gpxTracks.route('/previewImage<int:tour_id>')

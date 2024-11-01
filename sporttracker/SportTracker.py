@@ -106,6 +106,11 @@ class SportTracker(FlaskBaseApp):
         rootDirectory = os.path.dirname(currentDirectory)
         app.config['DATA_FOLDER'] = os.path.join(rootDirectory, 'data')
 
+        app.config['NEW_VISITED_TILE_CACHE'] = NewVisitedTileCache()
+        app.config['GPX_SERVICE'] = GpxService(
+            app.config['DATA_FOLDER'], app.config['NEW_VISITED_TILE_CACHE']
+        )
+
         if self._prepareDatabase:
             self.__prepare_database(app)
 
@@ -131,7 +136,7 @@ class SportTracker(FlaskBaseApp):
                             'Could not generate dummy data because there are already existing users!'
                         )
 
-                    dummyDataGenerator = DummyDataGenerator(app.config['DATA_FOLDER'])
+                    dummyDataGenerator = DummyDataGenerator(app.config['GPX_SERVICE'])
                     dummyDataGenerator.generate()
 
         @app.context_processor
@@ -203,11 +208,6 @@ class SportTracker(FlaskBaseApp):
             return request.accept_languages.best_match(app.config['LANGUAGES'].keys())
 
         Babel(app, locale_selector=get_locale)
-
-        app.config['NEW_VISITED_TILE_CACHE'] = NewVisitedTileCache()
-        app.config['GPX_SERVICE'] = GpxService(
-            app.config['DATA_FOLDER'], app.config['NEW_VISITED_TILE_CACHE']
-        )
 
         return app
 

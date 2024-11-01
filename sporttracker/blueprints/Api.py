@@ -175,7 +175,9 @@ def construct_blueprint(version: dict, gpxService: GpxService, tileHuntingSettin
         db.session.add(track)
         db.session.commit()
 
-        gpxService.add_visited_tiles_for_track(track, tileHuntingSettings['baseZoomLevel'])
+        gpxService.add_visited_tiles_for_track(
+            track, tileHuntingSettings['baseZoomLevel'], current_user.id
+        )
 
         LOGGER.debug(
             f'Added gpx track {track.get_gpx_metadata().gpx_file_name} to track {track.id}'

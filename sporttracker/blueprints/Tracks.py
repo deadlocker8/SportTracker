@@ -227,7 +227,9 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
         db.session.commit()
 
         if gpxMetadataId is not None:
-            gpxService.add_visited_tiles_for_track(track, tileHuntingSettings['baseZoomLevel'])
+            gpxService.add_visited_tiles_for_track(
+                track, tileHuntingSettings['baseZoomLevel'], current_user.id
+            )
 
         return redirect(
             url_for(
@@ -317,7 +319,7 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             shouldUpdateVisitedTiles = True
         else:
             if newGpxMetadataId is not None:
-                gpxService.delete_gpx(track)
+                gpxService.delete_gpx(track, current_user.id)
                 track.gpx_metadata_id = newGpxMetadataId
                 shouldUpdateVisitedTiles = True
 
@@ -326,7 +328,9 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
         db.session.commit()
 
         if shouldUpdateVisitedTiles and track.gpx_metadata_id is not None:
-            gpxService.add_visited_tiles_for_track(track, tileHuntingSettings['baseZoomLevel'])
+            gpxService.add_visited_tiles_for_track(
+                track, tileHuntingSettings['baseZoomLevel'], current_user.id
+            )
 
         LOGGER.debug(f'Updated track: {track}')
 
@@ -346,7 +350,7 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
         if track is None:
             abort(404)
 
-        gpxService.delete_gpx(track)
+        gpxService.delete_gpx(track, current_user.id)
 
         LOGGER.debug(f'Deleted track: {track}')
         db.session.delete(track)
