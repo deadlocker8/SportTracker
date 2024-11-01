@@ -1,4 +1,5 @@
 # 1.31.0 - (--.--.--)
+- add: redesigned maintenance events page (grouped by type and description, show distances, show distance until today, ...)
 - fix: responsiveness of settings page
 - fix: responsiveness of track form page
 - fix: responsiveness of annual achievements modals 
