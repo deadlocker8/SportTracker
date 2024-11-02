@@ -1,5 +1,26 @@
 <!DOCTYPE html>
 
+{% macro render_maintenance_event(maintenanceEvent) -%}
+     {% if maintenanceEvent.id is none %}
+        <span class="timeline-icon">
+                <i class="fa-solid fa-calendar-day text-secondary fa-sm fa-fw fs-5 p-2"></i>
+            </span>
+
+        <div class="fw-bold fs-5">{{ gettext('Today') }}</div>
+    {% else %}
+        <span class="timeline-icon">
+            <i class="fa-solid fa-wrench text-secondary fa-sm fa-fw fs-5 p-2"></i>
+        </span>
+
+        <div class="d-flex align-items-center">
+            <div class="fw-bold fs-5">{{ maintenanceEvent.eventDate | format_date() }}</div>
+            <a href="{{ url_for('maintenanceEvents.edit', event_id=maintenanceEvent.id) }}" class="btn btn-sm d-inline-flex align-items-center ms-2" id="button-logout">
+                <span class="material-icons text-primary fs-5">edit</span>
+            </a>
+        </div>
+    {% endif %}
+{%- endmacro %}
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -59,24 +80,7 @@
 
                                         <ul class="timeline-with-icons {% if maintenanceEvent.id is none %}timeline-dashed{% endif %}">
                                             <li class="timeline-item">
-                                                {% if maintenanceEvent.id is none %}
-                                                    <span class="timeline-icon">
-                                                            <i class="fa-solid fa-calendar-day text-secondary fa-sm fa-fw fs-5 p-2"></i>
-                                                        </span>
-
-                                                    <div class="fw-bold fs-5">{{ gettext('Today') }}</div>
-                                                {% else %}
-                                                    <span class="timeline-icon">
-                                                            <i class="fa-solid fa-wrench text-secondary fa-sm fa-fw fs-5 p-2"></i>
-                                                        </span>
-
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="fw-bold fs-5">{{ maintenanceEvent.eventDate | format_date() }}</div>
-                                                        <a href="{{ url_for('maintenanceEvents.edit', event_id=maintenanceEvent.id) }}" class="btn btn-sm d-inline-flex align-items-center ms-2" id="button-logout">
-                                                            <span class="material-icons text-primary fs-5">edit</span>
-                                                        </a>
-                                                    </div>
-                                                {% endif %}
+                                                {{ render_maintenance_event(maintenanceEvent) }}
 
                                                 {% if not loop.last %}
                                                     <div class="text-start fst-italic">

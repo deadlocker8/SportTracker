@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 from dataclasses import dataclass
 from datetime import datetime
@@ -8,7 +10,10 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 
 from sporttracker.logic import Constants
-from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
+from sporttracker.logic.QuickFilterState import (
+    get_quick_filter_state_from_session,
+    QuickFilterState,
+)
 from sporttracker.logic.model.MaintenanceEvent import MaintenanceEvent, get_maintenance_event_by_id
 from sporttracker.logic.model.Track import get_distance_between_dates
 from sporttracker.logic.model.TrackType import TrackType
@@ -25,8 +30,19 @@ class MaintenanceEventModel:
     time: str | None
     type: TrackType
     description: str
-    distanceSinceEvent: int
-    numberOfDaysSinceEvent: int
+    distanceSinceEvent: int | None = None
+    numberOfDaysSinceEvent: int | None = None
+
+    @staticmethod
+    def create_from_event(event: MaintenanceEvent) -> MaintenanceEventModel:
+        return MaintenanceEventModel(
+            id=event.id,
+            eventDate=event.event_date,  # type: ignore[arg-type]
+            date=event.get_date(),
+            time=event.get_time(),
+            type=event.type,
+            description=event.description,  # type: ignore[arg-type]
+        )
 
 
 class MaintenanceEventFormModel(BaseModel):
@@ -49,27 +65,15 @@ def construct_blueprint():
     def listMaintenanceEvents():
         quickFilterState = get_quick_filter_state_from_session()
 
-        eventDescriptions: list[str] = (
-            MaintenanceEvent.query.with_entities(MaintenanceEvent.description)
-            .filter(MaintenanceEvent.user_id == current_user.id)
-            .filter(MaintenanceEvent.type.in_(quickFilterState.get_active_types()))
-            .distinct()
-            .all()
-        )
-        eventDescriptions = [d[0] for d in eventDescriptions]
+        availableEventDescriptions: list[str] = __get_all_event_descriptions(quickFilterState)
 
         maintenanceEventsByDescription: dict[str, dict[TrackType, list[MaintenanceEventModel]]] = {}
-        for description in eventDescriptions:
+        for description in availableEventDescriptions:
             maintenanceEventsByDescription[description] = {}
 
             for trackType in TrackType:
-                events: list[MaintenanceEvent] = (
-                    MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
-                    .filter(MaintenanceEvent.type.in_(quickFilterState.get_active_types()))
-                    .filter(MaintenanceEvent.type == trackType)
-                    .filter(MaintenanceEvent.description == description)
-                    .order_by(MaintenanceEvent.event_date.asc())
-                    .all()
+                events: list[MaintenanceEvent] = __get_maintenance_events_by_description_and_type(
+                    description, quickFilterState, trackType
                 )
 
                 if not events:
@@ -85,32 +89,25 @@ def construct_blueprint():
                     numberOfDaysSinceEvent = (event.event_date - previousEventDate).days  # type: ignore[operator]
                     previousEventDate = event.event_date
 
-                    maintenanceEventsByDescription[description][trackType].append(
-                        MaintenanceEventModel(
-                            event.id,
-                            event.event_date,  # type: ignore[arg-type]
-                            event.get_date(),
-                            event.get_time(),
-                            event.type,
-                            event.description,  # type: ignore[arg-type]
-                            distanceSinceEvent,
-                            numberOfDaysSinceEvent,
-                        )
-                    )
+                    eventModel = MaintenanceEventModel.create_from_event(event)
+                    eventModel.distanceSinceEvent = distanceSinceEvent
+                    eventModel.numberOfDaysSinceEvent = numberOfDaysSinceEvent
+                    maintenanceEventsByDescription[description][trackType].append(eventModel)
 
+                # add additional pseudo maintenance event representing today
                 now = datetime.now()
-                distanceUntilToday = get_distance_between_dates(event.event_date, now, [event.type])
+                distanceUntilToday = get_distance_between_dates(previousEventDate, now, [trackType])
 
                 maintenanceEventsByDescription[description][trackType].append(
                     MaintenanceEventModel(
-                        None,
-                        now,  # type: ignore[arg-type]
-                        None,
-                        None,
-                        events[0].type,
-                        description,  # type: ignore[arg-type]
-                        distanceUntilToday,
-                        (now - event.event_date).days,  # type: ignore[operator]
+                        id=None,
+                        eventDate=now,  # type: ignore[arg-type]
+                        date=None,
+                        time=None,
+                        type=events[0].type,
+                        description=description,  # type: ignore[arg-type]
+                        distanceSinceEvent=distanceUntilToday,
+                        numberOfDaysSinceEvent=(now - previousEventDate).days,  # type: ignore[operator]
                     )
                 )
 
@@ -118,6 +115,29 @@ def construct_blueprint():
             'maintenanceEvents/maintenanceEvents.jinja2',
             maintenanceEventsByDescription=maintenanceEventsByDescription,
             quickFilterState=quickFilterState,
+        )
+
+    def __get_all_event_descriptions(quickFilterState: QuickFilterState) -> list[str]:
+        availableEventDescriptions = (
+            MaintenanceEvent.query.with_entities(MaintenanceEvent.description)
+            .filter(MaintenanceEvent.user_id == current_user.id)
+            .filter(MaintenanceEvent.type.in_(quickFilterState.get_active_types()))
+            .distinct()
+            .all()
+        )
+
+        return [d[0] for d in availableEventDescriptions]
+
+    def __get_maintenance_events_by_description_and_type(
+        description: str, quickFilterState: QuickFilterState, trackType: TrackType
+    ) -> list[MaintenanceEvent]:
+        return (
+            MaintenanceEvent.query.filter(MaintenanceEvent.user_id == current_user.id)
+            .filter(MaintenanceEvent.type.in_(quickFilterState.get_active_types()))
+            .filter(MaintenanceEvent.type == trackType)
+            .filter(MaintenanceEvent.description == description)
+            .order_by(MaintenanceEvent.event_date.asc())
+            .all()
         )
 
     @maintenanceEvents.route('/add')
@@ -137,8 +157,6 @@ def construct_blueprint():
             time=None,
             type=trackType.name,  # type: ignore[arg-type]
             description=description,
-            distanceSinceEvent=0,
-            numberOfDaysSinceEvent=0,
         )
         return render_template(
             'maintenanceEvents/maintenanceEventForm.jinja2',
@@ -177,8 +195,6 @@ def construct_blueprint():
             time=maintenanceEvent.get_time(),
             type=maintenanceEvent.type.name,
             description=maintenanceEvent.description,  # type: ignore[arg-type]
-            distanceSinceEvent=0,
-            numberOfDaysSinceEvent=0,
         )
 
         return render_template(
