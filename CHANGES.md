@@ -3,6 +3,7 @@
 - fix: responsiveness of settings page
 - fix: responsiveness of track form page
 - fix: responsiveness of annual achievements modals 
+- fix: tile hunting map: the total number of visited tiles and the bar chart now correctly shows the visited tiles depending on the selected track types and years
 
 # 1.30.0 - (25.09.24)
 - BREAKING CHANGE: all uploaded gpx files are now stored in a folder called "data" instead of "uploads". All existing gpx files will be automatically migrated. Please adjust your docker volume mounts.

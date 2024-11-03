@@ -54,14 +54,18 @@ class NewVisitedTileCache:
         userId: int, trackTypes: list[TrackType], years: list[int]
     ) -> list[NewTilesPerTrack]:
         trackTypeOperator = ''
+        trackTypeOperator2 = ''
         if trackTypes:
             activeTrackTypes = ','.join([f"'{x.name}'" for x in trackTypes])
             trackTypeOperator = f'AND prev."type" in ({activeTrackTypes})'
+            trackTypeOperator2 = f'AND t."type" in ({activeTrackTypes})'
 
         yearOperator = ''
+        yearOperator2 = ''
         if years:
             activeYears = ','.join([f"'{x}'" for x in years])
             yearOperator = f'AND EXTRACT(year FROM prev."startTime") in ({activeYears})'
+            yearOperator2 = f'AND EXTRACT(year FROM t."startTime") in ({activeYears})'
 
         rows = db.session.execute(
             text(f"""SELECT t."id",
@@ -84,6 +88,8 @@ class NewVisitedTileCache:
         FROM track AS t
         WHERE t."gpx_metadata_id" IS NOT NULL
         AND t."user_id" = {userId}
+        {trackTypeOperator2}
+        {yearOperator2}
         ORDER BY t."startTime\"""")
         ).fetchall()
 
