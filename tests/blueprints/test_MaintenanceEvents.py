@@ -150,4 +150,46 @@ class TestMaintenanceEvents(SeleniumTestBaseClass):
             )
         )
 
-        assert len(selenium.find_elements(By.CLASS_NAME, 'maintenance-event-description')) == 1
+        # actual event + pseudo element for "today"
+        assert len(selenium.find_elements(By.CLASS_NAME, 'timeline-icon')) == 2
+
+    def test_add_event_prefilled(self, server, selenium: WebDriver):
+        self.login(selenium)
+        self.__open_form(selenium)
+        self.__fill_form(selenium, TrackType.RUNNING, '2023-02-01', '15:30', 'new shoes')
+        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Maintenance'
+            )
+        )
+
+        selenium.find_element(By.CLASS_NAME, 'button-new-maintenance-event').click()
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'New Maintenance Event'
+            )
+        )
+
+        assert (
+            selenium.find_element(By.ID, 'maintenance-event-description').get_attribute('value')
+            == 'new shoes'
+        )
+
+        select = Select(selenium.find_element(By.ID, 'maintenance-event-type'))
+        assert select.first_selected_option.text == 'Running'
+
+        self.__fill_form(selenium, TrackType.RUNNING, '2023-02-01', '15:30', 'new shoes')
+        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Maintenance'
+            )
+        )
+
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card')) == 1
+
+        # 2 events + pseudo element for "today"
+        assert len(selenium.find_elements(By.CLASS_NAME, 'timeline-icon')) == 3

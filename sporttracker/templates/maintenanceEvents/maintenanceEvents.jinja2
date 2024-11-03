@@ -61,7 +61,7 @@
                                                 {{ trackMacros.track_type_icon_small(trackType, fontSize='fs-3') }}
                                                 <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">{{ description }}</div>
                                             </div>
-                                            <a href="{{ url_for('maintenanceEvents.addByTypeAndDescription', track_type=trackType.name, description=description) }}" class="link-light text-decoration-none d-flex-inline align-items-center -self-end">
+                                            <a href="{{ url_for('maintenanceEvents.addByTypeAndDescription', track_type=trackType.name, description=description) }}" class="link-light text-decoration-none d-flex-inline align-items-center button-new-maintenance-event">
                                                 <span class="rounded-circle bg-primary p-1 fs-5 material-icons">add</span>
                                             </a>
                                         </div>

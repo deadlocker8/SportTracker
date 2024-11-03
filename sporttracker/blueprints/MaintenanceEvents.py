@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import logging
 from dataclasses import dataclass
 from datetime import datetime
@@ -34,7 +32,7 @@ class MaintenanceEventModel:
     numberOfDaysSinceEvent: int | None = None
 
     @staticmethod
-    def create_from_event(event: MaintenanceEvent) -> MaintenanceEventModel:
+    def create_from_event(event: MaintenanceEvent) -> 'MaintenanceEventModel':
         return MaintenanceEventModel(
             id=event.id,
             eventDate=event.event_date,  # type: ignore[arg-type]
