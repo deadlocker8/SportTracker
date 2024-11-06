@@ -13,15 +13,13 @@ from sporttracker.logic.model.db import db
 
 class AchievementCalculator:
     @staticmethod
-    def get_longest_distance_by_type(trackType: TrackType) -> float:
-        value = (
-            db.session.query(func.max(Track.distance))
-            .filter(Track.type == trackType)
+    def get_track_with_longest_distance_by_type(trackType: TrackType) -> Track | None:
+        return (
+            Track.query.filter(Track.type == trackType)
             .filter(Track.user_id == current_user.id)
-            .scalar()
-            or 0
+            .order_by(Track.distance.desc())
+            .first()
         )
-        return value / 1000
 
     @staticmethod
     def get_longest_distance_by_type_and_year(trackType: TrackType, year: int) -> float:

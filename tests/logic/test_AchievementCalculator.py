@@ -59,15 +59,17 @@ def create_count_goal(year, month, countMinimum=1):
 
 
 class TestAchievementCalculatorGetLongestDistanceByType:
-    def test_get_longest_distance_by_type_no_tracks_should_return_0(self, app):
+    def test_get_track_with_longest_distance_by_type_no_tracks_should_return_none(self, app):
         with app.test_request_context():
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            result = AchievementCalculator.get_longest_distance_by_type(TrackType.BIKING)
-            assert 0 == result
+            result = AchievementCalculator.get_track_with_longest_distance_by_type(TrackType.BIKING)
+            assert result is None
 
-    def test_get_longest_distance_by_type_multiple_tracks_should_return_max_distance(self, app):
+    def test_get_track_with_longest_distance_by_type_multiple_tracks_should_return_max_distance(
+        self, app
+    ):
         with app.test_request_context():
             user = db.session.get(User, 1)
             login_user(user, remember=False)
@@ -77,8 +79,10 @@ class TestAchievementCalculatorGetLongestDistanceByType:
             db.session.add(create_dummy_track(datetime.date(2023, 3, 1), 22))
             db.session.commit()
 
-            result = AchievementCalculator.get_longest_distance_by_type(TrackType.BIKING)
-            assert 50 == result
+            result = AchievementCalculator.get_track_with_longest_distance_by_type(TrackType.BIKING)
+            assert result is not None
+            assert 2 == result.id
+            assert 50000 == result.distance
 
 
 class TestAchievementCalculatorGetTotalDistanceByType:
