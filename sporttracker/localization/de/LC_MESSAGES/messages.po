@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-01 23:25+0100\n"
-"PO-Revision-Date: 2024-11-01 23:25+0100\n"
+"POT-Creation-Date: 2024-11-06 23:41+0100\n"
+"PO-Revision-Date: 2024-11-06 23:41+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -33,33 +33,39 @@ msgstr ""
 "\">{currentStreak}</span> Monate in Folge erreicht!<br>(Beste: <span class="
 "\"fw-bold\">{maxStreak}</span>)"
 
-#: ../blueprints/Achievements.py:51 ../blueprints/AnnualAchievements.py:210
+#: ../blueprints/Achievements.py:48
+msgid "no date"
+msgstr "kein Datum"
+
+#: ../blueprints/Achievements.py:60 ../blueprints/AnnualAchievements.py:210
 msgid "Longest Track"
 msgstr "Längster Track"
 
-#: ../blueprints/Achievements.py:52
+#: ../blueprints/Achievements.py:61
 msgid ""
-"You completed <span class=\"fw-bold\">{longestTrack} km</span> in one trip!"
+"You completed <span class=\"fw-bold\">{longestTrackDistance} km</span> in one "
+"trip on <span class=\"fw-bold\">{longestTrackDate}</span>!"
 msgstr ""
-"Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einem Training "
+"Du hast am <span class=\"fw-bold\">{longestTrackDate}</span> in einem "
+"Training <span class=\"fw-bold\">{longestTrackDistance} km</span> "
 "zurückgelegt!"
 
-#: ../blueprints/Achievements.py:67 ../blueprints/AnnualAchievements.py:83
+#: ../blueprints/Achievements.py:74 ../blueprints/AnnualAchievements.py:83
 msgid "Total Distance"
 msgstr "Gesamtstrecke"
 
-#: ../blueprints/Achievements.py:68
+#: ../blueprints/Achievements.py:75
 msgid ""
 "You completed a total of <span class=\"fw-bold\">{totalDistance} km</span>!"
 msgstr ""
 "Du hast insgesamt <span class=\"fw-bold\">{totalDistance} km</span> "
 "zurückgelegt!"
 
-#: ../blueprints/Achievements.py:83
+#: ../blueprints/Achievements.py:90
 msgid "Best Month"
 msgstr "Bester Monat"
 
-#: ../blueprints/Achievements.py:84
+#: ../blueprints/Achievements.py:91
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with <span "
 "class=\"fw-bold\">{bestMonthDistance} km</span>!"
@@ -126,7 +132,7 @@ msgstr "Der angegebene Name \"{0}\" existiert bereits."
 msgid "The specified participant name \"{0}\" already exists."
 msgstr "Ein Teilnehmer mit dem Namen \"{0}\" existiert bereits."
 
-#: ../logic/AchievementCalculator.py:66 ../logic/AchievementCalculator.py:71
+#: ../logic/AchievementCalculator.py:64 ../logic/AchievementCalculator.py:69
 msgid "No month"
 msgstr "Kein Monat"
 
@@ -305,8 +311,8 @@ msgid "More"
 msgstr "Mehr"
 
 #: ../templates/macros.jinja2:135
-#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:6
-#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:19
+#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:27
+#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:40
 msgid "Maintenance"
 msgstr "Wartung"
 
@@ -514,16 +520,16 @@ msgstr "Beschreibung"
 msgid "Save"
 msgstr "Speichern"
 
-#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:53
+#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:9
+msgid "Today"
+msgstr "Heute"
+
+#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:74
 #, python-format
 msgid "Show all (+%(remaining)d)"
 msgstr "Alle anzeigen (+%(remaining)d)"
 
-#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:67
-msgid "Today"
-msgstr "Heute"
-
-#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:83
+#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:87
 msgid "days"
 msgstr "Tage"
 
