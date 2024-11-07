@@ -10,7 +10,7 @@ from typing import Any
 from zipfile import ZipFile, ZIP_DEFLATED
 
 import gpxpy
-from gpxpy.gpx import GPX, GPXTrack
+from gpxpy.gpx import GPX, GPXTrack, GPXTrackPoint
 from sqlalchemy import delete
 from werkzeug.datastructures.file_storage import FileStorage
 
@@ -265,7 +265,48 @@ class GpxParser:
 
     def join_tracks_and_segments(self) -> str:
         self.__join_tracks(self._gpx)
+
+        self.__fix_missing_elevation_for_first_points(self._gpx)
+
         return self._gpx.to_xml(prettyprint=False)
+
+    @staticmethod
+    def __fix_missing_elevation_for_first_points(gpx: GPX):
+        if gpx.get_points_no() == 0:
+            return
+
+        # only safe if the gpx tracks and segments were joined before
+        points = gpx.tracks[0].segments[0].points
+
+        indexFirstElevation = GpxParser.__find_index_of_first_point_with_elevation(points)
+        if indexFirstElevation is None:
+            # no elevation data in any point
+            return
+
+        if indexFirstElevation < 2:
+            # at least the first or second point contains elevation data
+            return
+
+        firstElevation = points[indexFirstElevation].elevation
+
+        distanceBetweenFirstPointAndFirstElevation = points[0].distance_2d(
+            points[indexFirstElevation]
+        )
+        LOGGER.debug(
+            f'Detected missing elevation for the gpx data points 0 to {indexFirstElevation}. '
+            f'First elevation is at index {indexFirstElevation} with value {firstElevation:.2f}. '
+            f'Elevation will be copied for {distanceBetweenFirstPointAndFirstElevation:.2f}m.'
+        )
+        for index in range(0, indexFirstElevation):
+            points[index].elevation = firstElevation
+
+    @staticmethod
+    def __find_index_of_first_point_with_elevation(points: list[GPXTrackPoint]) -> int | None:
+        for index, point in enumerate(points):
+            if point.has_elevation():
+                return index
+
+        return None
 
     @staticmethod
     def __join_tracks(gpx: GPX) -> None:
