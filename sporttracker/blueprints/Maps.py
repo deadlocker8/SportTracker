@@ -67,7 +67,7 @@ def construct_blueprint(
     @login_required
     def showAllTracksOnMap():
         quickFilterState = get_quick_filter_state_from_session()
-        availableYears = get_available_years()
+        availableYears = get_available_years(current_user.id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         gpxInfo = []
@@ -238,7 +238,7 @@ def construct_blueprint(
             abort(404)
 
         quickFilterState = get_quick_filter_state_from_session()
-        availableYears = get_available_years()
+        availableYears = get_available_years(user_id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         visitedTileService = VisitedTileService(
@@ -253,7 +253,7 @@ def construct_blueprint(
         if __get_tile_hunting_is_grid_active():
             borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
 
-        image = tileRenderService.render_image(x, y, zoom, borderColor)  # type: ignore[arg-type]
+        image = tileRenderService.render_image(x, y, zoom, user_id, borderColor)  # type: ignore[arg-type]
 
         with io.BytesIO() as output:
             image.save(output, format='PNG')
@@ -268,7 +268,7 @@ def construct_blueprint(
             abort(403)
 
         quickFilterState = get_quick_filter_state_from_session()
-        availableYears = get_available_years()
+        availableYears = get_available_years(user_id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         visitedTileService = VisitedTileService(
@@ -303,7 +303,7 @@ def construct_blueprint(
         tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
 
         quickFilterState = get_quick_filter_state_from_session()
-        availableYears = get_available_years()
+        availableYears = get_available_years(current_user.id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         visitedTileService = VisitedTileService(

@@ -44,11 +44,11 @@ class VisitedTileService:
         return totalNumberOfTiles
 
     def determine_tile_colors_of_tracks_that_visit_tiles(
-        self, min_x: int, max_x: int, min_y: int, max_y: int
+        self, min_x: int, max_x: int, min_y: int, max_y: int, user_id: int
     ) -> list[TileColorPosition]:
         if self._trackId is None:
             return self.__determine_tile_colors_of_all_tracks_that_visit_tiles(
-                min_x, max_x, min_y, max_y
+                min_x, max_x, min_y, max_y, user_id
             )
 
         return self.__determine_tile_colors_of_single_track(
@@ -56,7 +56,7 @@ class VisitedTileService:
         )
 
     def __determine_tile_colors_of_all_tracks_that_visit_tiles(
-        self, min_x: int, max_x: int, min_y: int, max_y: int
+        self, min_x: int, max_x: int, min_y: int, max_y: int, user_id: int
     ) -> list[TileColorPosition]:
         trackAlias = aliased(Track)
         gpxVisitedTileAlias = aliased(GpxVisitedTile)
@@ -65,7 +65,7 @@ class VisitedTileService:
             trackAlias.query.select_from(trackAlias)
             .join(gpxVisitedTileAlias, gpxVisitedTileAlias.track_id == trackAlias.id)
             .with_entities(trackAlias.type, gpxVisitedTileAlias.x, gpxVisitedTileAlias.y)
-            .filter(trackAlias.user_id == current_user.id)
+            .filter(trackAlias.user_id == user_id)
             .filter(trackAlias.type.in_(self._quickFilterState.get_active_types()))
             .filter(extract('year', trackAlias.startTime).in_(self._yearFilterState))
             .filter(gpxVisitedTileAlias.x >= min_x)

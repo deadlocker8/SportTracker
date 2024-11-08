@@ -162,7 +162,7 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             quickFilterState=quickFilterState,
             year=year,
             month=month,
-            availableYears=get_available_years() or [datetime.now().year],
+            availableYears=get_available_years(current_user.id) or [datetime.now().year],
             monthNames=list(
                 get_month_names(width='wide', locale=flask_babel.get_locale()).values()
             ),

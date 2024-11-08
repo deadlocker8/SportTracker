@@ -135,12 +135,12 @@ def get_distance_per_month_by_type(
     return result
 
 
-def get_available_years() -> list[int]:
+def get_available_years(userId) -> list[int]:
     year = extract('year', Track.startTime)
 
     rows = (
         Track.query.with_entities(year.label('year'))
-        .filter(Track.user_id == current_user.id)
+        .filter(Track.user_id == userId)
         .group_by(year)
         .order_by(year)
         .all()

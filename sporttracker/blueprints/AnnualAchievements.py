@@ -4,7 +4,7 @@ from statistics import mean
 
 from flask import Blueprint, render_template, redirect, url_for
 from flask_babel import gettext
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from sporttracker.helpers import Helpers
 from sporttracker.logic import Constants
@@ -39,13 +39,13 @@ def construct_blueprint():
             'annualAchievements.jinja2',
             achievements=__get_annual_achievements(year),
             selectedYear=year,
-            availableYears=get_available_years(),
+            availableYears=get_available_years(current_user.id),
         )
 
     def __get_annual_achievements(year: int) -> dict[TrackType, list[AnnualAchievement]]:
         result = {}
 
-        availableYears = get_available_years()
+        availableYears = get_available_years(current_user.id)
         yearNames = [str(year) for year in availableYears]
 
         for trackType in TrackType:

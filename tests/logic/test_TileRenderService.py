@@ -77,7 +77,7 @@ class TestTileRenderService:
 
     def test_render_image_same_zoom(self):
         def mocked_color_method(
-            min_x: int, max_x: int, min_y: int, max_y: int
+            min_x: int, max_x: int, min_y: int, max_y: int, user_id: int
         ) -> list[TileColorPosition]:
             return [
                 TileColorPosition(self.COLOR_VISITED_HEX, 35198, 21494),
@@ -90,7 +90,7 @@ class TestTileRenderService:
         )
 
         service = TileRenderService(14, 4, visitedTileService)
-        image = service.render_image(35198, 21494, 14, self.COLOR_BORDER)
+        image = service.render_image(35198, 21494, 14, 1, self.COLOR_BORDER)
 
         expectedImage = Image.new('RGBA', (4, 4))
         pixels = expectedImage.load()
@@ -115,7 +115,7 @@ class TestTileRenderService:
 
     def test_render_image_lower_zoom(self):
         def mocked_color_method(
-            min_x: int, max_x: int, min_y: int, max_y: int
+            min_x: int, max_x: int, min_y: int, max_y: int, user_id: int
         ) -> list[TileColorPosition]:
             return [
                 TileColorPosition(self.COLOR_VISITED_HEX, 35198, 21494),
@@ -128,7 +128,7 @@ class TestTileRenderService:
         )
 
         service = TileRenderService(14, 4, visitedTileService)
-        image = service.render_image(17599, 10747, 13, self.COLOR_BORDER)
+        image = service.render_image(17599, 10747, 13, 1, self.COLOR_BORDER)
 
         expectedImage = Image.new('RGBA', (4, 4))
         pixels = expectedImage.load()
@@ -153,7 +153,7 @@ class TestTileRenderService:
 
     def test_render_image_higher_zoom(self):
         def mocked_color_method(
-            min_x: int, max_x: int, min_y: int, max_y: int
+            min_x: int, max_x: int, min_y: int, max_y: int, user_id: int
         ) -> list[TileColorPosition]:
             return [
                 TileColorPosition(self.COLOR_VISITED_HEX, 17599, 10747),
@@ -164,7 +164,7 @@ class TestTileRenderService:
             mocked_color_method
         )
         service = TileRenderService(15, 4, visitedTileService)
-        image = service.render_image(35198, 21494, 16, self.COLOR_BORDER)
+        image = service.render_image(35198, 21494, 16, 1, self.COLOR_BORDER)
 
         expectedImage = Image.new('RGBA', (4, 4), color=self.COLOR_VISITED)
         pixels = expectedImage.load()

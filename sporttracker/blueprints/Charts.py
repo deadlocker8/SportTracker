@@ -360,7 +360,7 @@ def construct_blueprint():
         return render_template(
             'charts/chartCalendar.jinja2',
             calendarData=calendarData,
-            availableYears=get_available_years(),
+            availableYears=get_available_years(current_user.id),
             selectedYear=year,
         )
 

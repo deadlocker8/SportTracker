@@ -123,6 +123,7 @@ class TileRenderService:
         x: int,
         y: int,
         zoom: int,
+        user_id: int,
         borderColor: tuple[int, int, int, int] | None,
     ) -> Image.Image:
         """
@@ -150,6 +151,7 @@ class TileRenderService:
                 max_x,  # type: ignore[arg-type]
                 min_y,  # type: ignore[arg-type]
                 max_y,  # type: ignore[arg-type]
+                user_id,
             )
         )
 
