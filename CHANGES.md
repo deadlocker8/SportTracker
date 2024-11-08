@@ -1,4 +1,4 @@
-# 1.31.0 - (--.--.--)
+# 1.31.0 - (09.11.24)
 - add: redesigned maintenance events page (grouped by type and description, show distances, show distance until today, ...) (#141)
 - add: achievements page: show date for longest track and link to corresponding track (#146)
 - add: tile hunting: new user settings option to allow access to your tile hunting map via share code (#136)
@@ -7,6 +7,7 @@
 - fix: responsiveness of annual achievements modals (#140)
 - fix: tile hunting map: the total number of visited tiles and the bar chart now correctly shows the visited tiles depending on the selected track types and years (#142)
 - fix: track map: the elevation chart is now correctly displayed even if the gpx track does not contain elevation information for the first data points (#145)
+- chore: update dependencies
 
 # 1.30.0 - (25.09.24)
 - BREAKING CHANGE: all uploaded gpx files are now stored in a folder called "data" instead of "uploads". All existing gpx files will be automatically migrated. Please adjust your docker volume mounts.
