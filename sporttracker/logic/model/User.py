@@ -36,6 +36,8 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     trackInfoItems = db.relationship('TrackInfoItem', backref='user', lazy=True, cascade='delete')
     planned_tours_last_viewed_date: Mapped[DateTime] = mapped_column(DateTime)
     isTileHuntingActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    isTileHuntingAccessActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    tileHuntingShareCode: Mapped[str] = mapped_column(String, nullable=True)
 
     def __repr__(self):
         return (
@@ -46,6 +48,8 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
             f'language: {self.language}, '
             f'planned_tours_last_viewed_date: {self.planned_tours_last_viewed_date})'
             f'isTileHuntingActivated: {self.isTileHuntingActivated})'
+            f'isTileHuntingAccessActivated: {self.isTileHuntingAccessActivated})'
+            f'tileHuntingShareCode: {self.tileHuntingShareCode})'
         )
 
 
@@ -86,6 +90,8 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
         language=language,
         planned_tours_last_viewed_date=datetime.now(),
         isTileHuntingActivated=True,
+        isTileHuntingAccessActivated=False,
+        tileHuntingShareCode=None,
     )
     db.session.add(user)
     db.session.commit()

@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function()
     {
         buttonCopySharedLink.addEventListener('click', function()
         {
-            navigator.clipboard.writeText(document.getElementById('sharedLink').href);
+            navigator.clipboard.writeText(document.getElementById('sharedLink').innerText);
             const tooltip = new bootstrap.Tooltip(buttonCopySharedLink, {
                 'trigger': 'manual'
             });

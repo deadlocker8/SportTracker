@@ -60,6 +60,16 @@
                             <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
                                 <span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
+                    </div>
+                </div>
+
+                <hr class="mt-5"/>
+
+                <div class="row mt-5 text-start">
+                    <div class="col col-11 col-md-9 mx-auto">
+                        {% call macros.headline(gettext('Tile Hunting'), '', 'fs-3') %}
+                            <span class="material-icons fs-2">explore</span>
+                        {% endcall %}
 
                         <form role="form" action="{{ url_for('settings.editSelfTileHunting') }}" method="post"
                               class="mt-5">
@@ -72,6 +82,29 @@
                                                name="isTileHuntingActivated"
                                                {% if current_user.isTileHuntingActivated %}checked{% endif %}/>
                                         <label class="form-check-label" for="isTileHuntingActivated">{{ gettext('Activate tile hunting map and statistics') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="d-flex align-items-start">
+                                    <span class="material-icons me-3">link</span>
+                                    <div class="d-flex flex-column">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox"
+                                                   id="isTileHuntingAccessActivated"
+                                                   name="isTileHuntingAccessActivated"
+                                                   {% if current_user.isTileHuntingAccessActivated %}checked{% endif %}/>
+                                            <label class="form-check-label" for="isTileHuntingAccessActivated">{{ gettext('Allow access to your tile hunting map without login (Generated link will be shown after saving)') }}</label>
+                                        </div>
+                                        <div class="d-flex flex-column flex-md-row my-3 {% if not current_user.tileHuntingShareCode %}hidden{% endif %}">
+                                            <a id="sharedLink" class="btn btn-sm btn-secondary text-break disabled opacity-100">{{ tileRenderUrl | safe }}</a>
+                                            <div id="sharedLinkButtons" class="d-flex mt-3 mt-md-0">
+                                                <a class="btn btn-primary btn-sm ms-0 ms-md-3 d-flex align-items-center" id="buttonCopySharedLink" data-bs-toggle="tooltip" data-bs-title="{{ gettext('Copied') }}">
+                                                    <span class="material-icons fs-4">content_copy</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

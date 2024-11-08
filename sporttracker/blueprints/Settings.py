@@ -1,4 +1,5 @@
 import logging
+import uuid
 from gettext import gettext
 
 from flask import Blueprint, render_template, redirect, url_for, abort, flash
@@ -38,6 +39,7 @@ class EditSelfLanguageFormModel(BaseModel):
 
 class EditSelfTileHuntingFormModel(BaseModel):
     isTileHuntingActivated: bool | None = None
+    isTileHuntingAccessActivated: bool | None = None
 
 
 class EditSelfTrackInfoItemsModel(BaseModel):
@@ -88,6 +90,7 @@ def construct_blueprint():
             customFieldsByTrackType=get_custom_fields_by_track_type(),
             participants=get_participants(),
             infoItems=infoItems,
+            tileRenderUrl='',
         )
 
     @settings.route('/editSelfPost', methods=['POST'])
@@ -150,9 +153,19 @@ def construct_blueprint():
             abort(404)
 
         user.isTileHuntingActivated = bool(form.isTileHuntingActivated)
+        user.isTileHuntingAccessActivated = bool(form.isTileHuntingAccessActivated)
+
+        if user.isTileHuntingAccessActivated:
+            if user.tileHuntingShareCode is None:
+                user.tileHuntingShareCode = uuid.uuid4().hex
+        else:
+            user.tileHuntingShareCode = None
 
         LOGGER.debug(
-            f'Updated tile hunting settings for user: {user.username} to {bool(form.isTileHuntingActivated)}'
+            f'Updated tile hunting settings for user: {user.username} to '
+            f'"isTileHuntingActivated": {bool(form.isTileHuntingActivated)}, '
+            f'"isTileHuntingAccessActivated": {bool(form.isTileHuntingAccessActivated)}, '
+            f'"tileHuntingShareCode": {user.tileHuntingShareCode}'
         )
         db.session.commit()
 
