@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-06 23:41+0100\n"
-"PO-Revision-Date: 2024-11-06 23:41+0100\n"
+"POT-Creation-Date: 2024-11-08 23:50+0100\n"
+"PO-Revision-Date: 2024-11-08 23:52+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -86,7 +86,7 @@ msgstr "Stunden"
 msgid "Number Of Tracks"
 msgstr "Anzahl Tracks"
 
-#: ../blueprints/AnnualAchievements.py:250 ../logic/model/User.py:65
+#: ../blueprints/AnnualAchievements.py:250 ../logic/model/User.py:69
 #: ../templates/charts/chartAverageSpeed.jinja2:23
 #: ../templates/charts/chartChooser.jinja2:42
 msgid "Average Speed"
@@ -116,7 +116,7 @@ msgstr "Das Endjahr muss größer oder gleich dem Anfangsjahr sein."
 msgid "End Month must be greater or equal Start Month."
 msgstr "Der Endmonat muss größer oder gleich dem Startmonat sein."
 
-#: ../blueprints/Settings.py:377
+#: ../blueprints/Settings.py:408
 msgid ""
 "The specified field name \"{0}\" conflicts with a reserved field name and "
 "therefore can't be used as custom field name."
@@ -124,11 +124,11 @@ msgstr ""
 "Der angegebene Name \"{0}\" kollidiert mit einem reservierten Namen und kann "
 "daher nicht als Name für ein benutzerdefiniertes Feld verwendet werden."
 
-#: ../blueprints/Settings.py:391
+#: ../blueprints/Settings.py:422
 msgid "The specified field name \"{0}\" already exists."
 msgstr "Der angegebene Name \"{0}\" existiert bereits."
 
-#: ../blueprints/Settings.py:402
+#: ../blueprints/Settings.py:433
 msgid "The specified participant name \"{0}\" already exists."
 msgstr "Ein Teilnehmer mit dem Namen \"{0}\" existiert bereits."
 
@@ -184,24 +184,24 @@ msgstr "Laufen"
 msgid "Hiking"
 msgstr "Wandern"
 
-#: ../logic/model/User.py:61 ../templates/maps/mapPlannedTour.jinja2:36
+#: ../logic/model/User.py:65 ../templates/maps/mapPlannedTour.jinja2:36
 #: ../templates/maps/mapPlannedTour.jinja2:83
 #: ../templates/maps/mapSingleTrack.jinja2:47
 #: ../templates/maps/mapSingleTrack.jinja2:94
 msgid "Distance"
 msgstr "Strecke"
 
-#: ../logic/model/User.py:63 ../templates/maps/mapSingleTrack.jinja2:50
+#: ../logic/model/User.py:67 ../templates/maps/mapSingleTrack.jinja2:50
 #: ../templates/maps/mapSingleTrack.jinja2:98
 #: ../templates/tracks/trackMacros.jinja2:272
 msgid "Duration"
 msgstr "Dauer"
 
-#: ../logic/model/User.py:67 ../templates/tracks/trackMacros.jinja2:298
+#: ../logic/model/User.py:71 ../templates/tracks/trackMacros.jinja2:298
 msgid "Average Heart Rate"
 msgstr "Durchschnittliche Herzfrequenz"
 
-#: ../logic/model/User.py:69 ../templates/maps/mapSingleTrack.jinja2:126
+#: ../logic/model/User.py:73 ../templates/maps/mapSingleTrack.jinja2:126
 msgid "Elevation Sum"
 msgstr "Summe Höhenmeter"
 
@@ -325,6 +325,7 @@ msgstr "Geplante Touren"
 
 #: ../templates/macros.jinja2:158 ../templates/maps/mapMacros.jinja2:107
 #: ../templates/maps/mapTileHunting.jinja2:17
+#: ../templates/settings/settings.jinja2:70
 msgid "Tile Hunting"
 msgstr "Tile Hunting"
 
@@ -453,8 +454,8 @@ msgstr "Neues Wartungsereignis"
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:26
 #: ../templates/plannedTours/plannedTourForm.jinja2:26
 #: ../templates/plannedTours/plannedTourForm.jinja2:31
-#: ../templates/settings/settings.jinja2:134
-#: ../templates/settings/settings.jinja2:179
+#: ../templates/settings/settings.jinja2:171
+#: ../templates/settings/settings.jinja2:216
 #: ../templates/tracks/trackBikingForm.jinja2:24
 #: ../templates/tracks/trackBikingForm.jinja2:28
 #: ../templates/tracks/trackHikingForm.jinja2:24
@@ -482,7 +483,7 @@ msgstr "Willst du dieses Wartungsereignis wirklich löschen?"
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:28
 #: ../templates/plannedTours/plannedTourForm.jinja2:47
 #: ../templates/settings/customFieldsForm.jinja2:61
-#: ../templates/settings/settings.jinja2:111
+#: ../templates/settings/settings.jinja2:148
 msgid "Type"
 msgstr "Typ"
 
@@ -511,8 +512,8 @@ msgstr "Beschreibung"
 #: ../templates/settings/participantsForm.jinja2:58
 #: ../templates/settings/settings.jinja2:43
 #: ../templates/settings/settings.jinja2:61
-#: ../templates/settings/settings.jinja2:80
-#: ../templates/settings/settings.jinja2:208
+#: ../templates/settings/settings.jinja2:117
+#: ../templates/settings/settings.jinja2:245
 #: ../templates/tracks/trackBikingForm.jinja2:70
 #: ../templates/tracks/trackHikingForm.jinja2:70
 #: ../templates/tracks/trackRunningForm.jinja2:70
@@ -907,8 +908,8 @@ msgstr "Willst du diese geplante Tour wirklich löschen?"
 #: ../templates/plannedTours/plannedTourForm.jinja2:61
 #: ../templates/settings/customFieldsForm.jinja2:52
 #: ../templates/settings/participantsForm.jinja2:50
-#: ../templates/settings/settings.jinja2:110
-#: ../templates/settings/settings.jinja2:160
+#: ../templates/settings/settings.jinja2:147
+#: ../templates/settings/settings.jinja2:197
 #: ../templates/tracks/trackMacros.jinja2:220
 msgid "Name"
 msgstr "Name"
@@ -985,47 +986,69 @@ msgstr "Neuer Teilnehmer"
 msgid "Language"
 msgstr "Sprache"
 
-#: ../templates/settings/settings.jinja2:74
+#: ../templates/settings/settings.jinja2:84
 msgid "Activate tile hunting map and statistics"
 msgstr "Aktivieren der Tile Hunting Karte und zugehöriger Statistiken"
 
-#: ../templates/settings/settings.jinja2:89
+#: ../templates/settings/settings.jinja2:98
+msgid ""
+"Allow access to your tile hunting map without login (Generated link will be "
+"shown after saving)"
+msgstr ""
+"Aktivieren des Zugangs zur Tile Hunting Karte ohne Anmeldung (der generierte "
+"Link wird nach dem Speichern angezeigt)"
+
+#: ../templates/settings/settings.jinja2:103
+#: ../templates/tracks/trackMacros.jinja2:469
+msgid "Copied"
+msgstr "Kopiert"
+
+#: ../templates/settings/settings.jinja2:110
+msgid ""
+"This link can be used to add an overlay to OpenStreetMap based maps, e.g. "
+"https://bikerouter.de/ to plan your next tile hunting route."
+msgstr ""
+"Dieser Link kann verwendet werden, um ein Overlay zu OpenStreetMap-basierten "
+"Karten hinzuzufügen, z.B. https://bikerouter.de/, um die nächste Tile Hunting "
+"Route zu planen."
+
+#: ../templates/settings/settings.jinja2:126
 msgid "Custom Track Fields"
 msgstr "Benutzerdefinierte Felder"
 
-#: ../templates/settings/settings.jinja2:112
+#: ../templates/settings/settings.jinja2:149
 msgid "Is Required"
 msgstr "Ist Pflichtfeld"
 
-#: ../templates/settings/settings.jinja2:113
-#: ../templates/settings/settings.jinja2:161
+#: ../templates/settings/settings.jinja2:150
+#: ../templates/settings/settings.jinja2:198
 msgid "Action"
 msgstr "Aktion"
 
-#: ../templates/settings/settings.jinja2:133
+#: ../templates/settings/settings.jinja2:170
 msgid "Delete Custom Field?"
 msgstr "Benutzerdefiniertes Feld löschen?"
 
-#: ../templates/settings/settings.jinja2:133
+#: ../templates/settings/settings.jinja2:170
 #, python-format
 msgid "Do you really want to delete the custom field \"%(name)s\"?"
 msgstr "Willst du das benutzerdefinierte Feld \"%(name)s\" wirklich löschen?"
 
-#: ../templates/settings/settings.jinja2:151
+#: ../templates/settings/settings.jinja2:188
 #: ../templates/tracks/trackMacros.jinja2:385
 msgid "Participants"
 msgstr "Teilnehmer"
 
-#: ../templates/settings/settings.jinja2:178
+#: ../templates/settings/settings.jinja2:215
 msgid "Delete Participant?"
 msgstr "Teilnehmer löschen?"
 
-#: ../templates/settings/settings.jinja2:178
+#: ../templates/settings/settings.jinja2:215
 #, python-format
 msgid "Do you really want to delete the participant \"%(name)s\"?"
 msgstr "Willst du den Teilnehmer \"%(name)s\" wirklich löschen?"
 
-#: ../templates/settings/settings.jinja2:193
+#: ../templates/settings/settings.jinja2:230
 msgid "Select Information to show for each track"
 msgstr "Informationen auswählen, die für jeden Track angezeigt werden"
 
@@ -1122,10 +1145,6 @@ msgstr "Hinzufügen von Teilnehmern in den "
 #: ../templates/tracks/trackMacros.jinja2:455
 msgid "Share via link"
 msgstr "Als Link teilen"
-
-#: ../templates/tracks/trackMacros.jinja2:469
-msgid "Copied"
-msgstr "Kopiert"
 
 #: ../templates/tracks/trackMacros.jinja2:477
 msgid "Delete shared link?"
