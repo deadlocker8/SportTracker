@@ -1,6 +1,7 @@
 # 1.31.0 - (--.--.--)
 - add: redesigned maintenance events page (grouped by type and description, show distances, show distance until today, ...) (#141)
 - add: achievements page: show date for longest track and link to corresponding track (#146)
+- add: tile hunting: new user settings option to allow access to your tile hunting map via share code (#136)
 - fix: responsiveness of settings page (#140)
 - fix: responsiveness of track form page (#140)
 - fix: responsiveness of annual achievements modals (#140)
