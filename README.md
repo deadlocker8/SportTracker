@@ -56,6 +56,13 @@ Overall tile hunting map:
 Map for a single track:
 ![](screenshots/tile_hunting_single.jpg)
 
+#### Tile hunting overlay access
+To plan your next tile hunting route you may want to allow access to your tile hunting map via a share code in your user settings.  
+This can be useful to add a custom overlay to OpenStreetMap based maps, e.g. https://bikerouter.de.
+
+1. Add a custom overlay layer
+2. Use the url shown on your user settings page (e.g. http://localhost/map/tileOverlay/1df60cca70c340239cfd869673443be4/{z}/{x}/{y}.png)
+
 ### Charts
 Tracked data is visualized in charts, e.g.:
 - Distance per month
