@@ -114,3 +114,7 @@ def get_users_by_ids(ids: list[int]) -> list[User]:
 
 def get_all_users_except_self_and_admin() -> list[User]:
     return User.query.filter(User.id != current_user.id).filter(User.isAdmin.is_(False)).all()
+
+
+def get_user_by_tile_hunting_shared_code(share_code: str) -> User | None:
+    return User.query.filter(User.tileHuntingShareCode == share_code).first()

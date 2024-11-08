@@ -84,14 +84,32 @@ def construct_blueprint():
 
         infoItems.sort(key=lambda item: item.type.get_localized_name().lower())
 
+        tileRenderUrl = __get_tile_render_url()
+
         return render_template(
             'settings/settings.jinja2',
             userLanguage=current_user.language.name,
             customFieldsByTrackType=get_custom_fields_by_track_type(),
             participants=get_participants(),
             infoItems=infoItems,
-            tileRenderUrl='',
+            tileRenderUrl=tileRenderUrl,
         )
+
+    def __get_tile_render_url() -> str:
+        if not current_user.isTileHuntingAccessActivated:
+            return ''
+
+        tileRenderUrl = url_for(
+            'maps.renderAllTilesViaShareCode',
+            share_code=current_user.tileHuntingShareCode,
+            zoom=0,
+            x=0,
+            y=0,
+            _external=True,
+        )
+        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
+        tileRenderUrl = tileRenderUrl + '/{z}/{x}/{y}.png'
+        return tileRenderUrl
 
     @settings.route('/editSelfPost', methods=['POST'])
     @login_required

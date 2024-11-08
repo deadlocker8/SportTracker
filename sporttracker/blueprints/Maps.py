@@ -28,6 +28,7 @@ from sporttracker.logic.model.Track import (
     get_track_by_id,
     get_track_by_share_code,
 )
+from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -282,7 +283,31 @@ def construct_blueprint(
         if __get_tile_hunting_is_grid_active():
             borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
 
-        image = tileRenderService.render_image(x, y, zoom, borderColor)  # type: ignore[arg-type]
+        image = tileRenderService.render_image(x, y, zoom, user_id, borderColor)  # type: ignore[arg-type]
+
+        with io.BytesIO() as output:
+            image.save(output, format='PNG')
+            return Response(output.getvalue(), mimetype='image/png')
+
+    @maps.route('/map/tileOverlay/<string:share_code>/<int:zoom>/<int:x>/<int:y>.png')
+    def renderAllTilesViaShareCode(share_code: str, zoom: int, x: int, y: int):
+        user = get_user_by_tile_hunting_shared_code(share_code)
+        if user is None:
+            abort(404)
+
+        quickFilterState = get_quick_filter_state_from_session()
+        availableYears = get_available_years(user.id)
+        yearFilterState = __get_map_year_filter_state_from_session(availableYears)
+
+        visitedTileService = VisitedTileService(
+            newVisitedTileCache, quickFilterState, yearFilterState
+        )
+        tileRenderService = TileRenderService(
+            tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
+        )
+
+        borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
+        image = tileRenderService.render_image(x, y, zoom, user.id, borderColor)  # type: ignore[arg-type]
 
         with io.BytesIO() as output:
             image.save(output, format='PNG')
