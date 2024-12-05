@@ -79,7 +79,9 @@ def construct_blueprint():
             abort(400, gettext('End Month must be greater or equal Start Month.'))
 
         monthGoals = []
-        while currentYear != form.end_year or currentMonth != form.end_month:
+        while currentYear < form.end_year or (
+            currentYear == form.end_year and currentMonth <= form.end_month
+        ):
             monthGoals.append(
                 MonthGoalDistance(
                     type=TrackType(form.type),  # type: ignore[call-arg]

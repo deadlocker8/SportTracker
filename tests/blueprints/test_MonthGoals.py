@@ -91,7 +91,7 @@ class TestMonthGoalsDistance(SeleniumTestBaseClass):
             )
         )
 
-        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 3
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 4
 
     def test_add_multiple_distance_goals_all_empty(self, server, selenium: WebDriver):
         self.__open_form(selenium, 1, 'Multiple New Distance Month Goals')
@@ -168,7 +168,7 @@ class TestMonthGoalsCount(SeleniumTestBaseClass):
             )
         )
 
-        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 3
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 4
 
     def test_add_multiple_count_goals_all_empty(self, server, selenium: WebDriver):
         self.__open_form(selenium, 3, 'Multiple New Count Month Goals')
