@@ -1,0 +1,6 @@
+- [ ] update localization
+- [ ] database migration
+- [ ] add dummy data
+- [ ] update README
+- [ ] update changelog
+- [ ] update screenshots
