@@ -106,7 +106,7 @@
                                         {{ gettext('last edited') }}: {{ plannedTour.lastEditDate | format_date() }}
                                     </div>
 
-                                    <a href="{{ url_for('plannedTours.edit', tour_id=plannedTour.id) }}" class="btn btn-primary d-inline-flex align-items-center" id="button-logout">
+                                    <a href="{{ url_for('plannedTours.edit', tour_id=plannedTour.id) }}" class="btn btn-primary d-inline-flex align-items-center">
                                         <span class="material-icons text-light fs-5">edit</span>
                                     </a>
                                 </div>

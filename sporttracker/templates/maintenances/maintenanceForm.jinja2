@@ -27,7 +27,7 @@
                                 <span class="material-icons text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                             </button>
 
-                            {% call macros.deleteModal(gettext('Delete Maintenance?'), gettext('Do you really want to delete this maintenance?')) %}
+                            {% call macros.deleteModal(gettext('Delete Maintenance?'), gettext('Do you really want to delete this maintenance and all associated maintenance events?')) %}
                                 <a href="{{ url_for('maintenances.delete', maintenance_id=maintenance_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
                             {% endcall %}
                         {% else %}

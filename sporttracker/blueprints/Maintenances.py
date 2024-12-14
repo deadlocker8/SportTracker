@@ -184,7 +184,14 @@ def construct_blueprint():
         if maintenance is None:
             abort(404)
 
-        LOGGER.debug(f'Deleted maintenance: {maintenance}')
+        events = get_maintenance_events_by_maintenance_id(maintenance_id)
+        for event in events:
+            LOGGER.debug(f'Deleted maintenance event: {event}')
+            db.session.delete(event)
+
+        db.session.commit()
+
+        LOGGER.debug(f'Deleted maintenance: {maintenance} and {len(events)} events')
         db.session.delete(maintenance)
         db.session.commit()
 

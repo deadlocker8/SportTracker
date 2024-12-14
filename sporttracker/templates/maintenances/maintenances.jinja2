@@ -14,7 +14,7 @@
 
         <div class="d-flex align-items-center">
             <div class="fw-bold fs-5">{{ maintenanceEvent.eventDate | format_date() }}</div>
-            <a href="{{ url_for('maintenanceEventInstances.edit', event_id=maintenanceEvent.id) }}" class="btn btn-sm d-inline-flex align-items-center ms-2" id="button-logout">
+            <a href="{{ url_for('maintenanceEventInstances.edit', event_id=maintenanceEvent.id) }}" class="btn btn-sm d-inline-flex align-items-center ms-2">
                 <span class="material-icons text-primary fs-5">edit</span>
             </a>
         </div>
@@ -60,9 +60,14 @@
                                             {{ trackMacros.track_type_icon_small(maintenancesWithEvent.type, fontSize='fs-3') }}
                                             <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">{{ maintenancesWithEvent.description }}</div>
                                         </div>
-                                        <a href="{{ url_for('maintenanceEventInstances.add', maintenance_id=maintenancesWithEvent.id) }}" class="link-light text-decoration-none d-inline-flex align-items-center button-new-maintenance-event">
-                                            <span class="rounded-circle bg-primary p-1 fs-5 material-icons">add</span>
-                                        </a>
+                                        <div class="d-flex align-items-center">
+                                            <a href="{{ url_for('maintenances.edit', maintenance_id=maintenancesWithEvent.id) }}" class="link-light text-decoration-none d-inline-flex align-items-center button-edit-maintenance me-2">
+                                                <span class="rounded-circle bg-primary p-1 fs-5 material-icons">edit</span>
+                                            </a>
+                                            <a href="{{ url_for('maintenanceEventInstances.add', maintenance_id=maintenancesWithEvent.id) }}" class="link-light text-decoration-none d-inline-flex align-items-center button-new-maintenance-event">
+                                                <span class="rounded-circle bg-primary p-1 fs-5 material-icons">add</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
 
