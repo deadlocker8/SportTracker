@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 {% macro render_maintenance_event(maintenanceEvent) -%}
-     {% if maintenanceEvent.id is none %}
+    {% if maintenanceEvent.id is none %}
         <span class="timeline-icon">
                 <i class="fa-solid fa-calendar-day text-secondary fa-sm fa-fw fs-5 p-2"></i>
             </span>
@@ -60,7 +60,7 @@
                                             {{ trackMacros.track_type_icon_small(maintenancesWithEvent.type, fontSize='fs-3') }}
                                             <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">{{ maintenancesWithEvent.description }}</div>
                                         </div>
-                                        <a href="{{ url_for('maintenanceEventInstances.add', maintenance_id=maintenancesWithEvent.id) }}" class="link-light text-decoration-none d-flex-inline align-items-center button-new-maintenance-event">
+                                        <a href="{{ url_for('maintenanceEventInstances.add', maintenance_id=maintenancesWithEvent.id) }}" class="link-light text-decoration-none d-inline-flex align-items-center button-new-maintenance-event">
                                             <span class="rounded-circle bg-primary p-1 fs-5 material-icons">add</span>
                                         </a>
                                     </div>
