@@ -11,7 +11,8 @@ from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.CustomTrackField import CustomTrackField, CustomTrackFieldType
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
-from sporttracker.logic.model.MaintenanceEvent import MaintenanceEvent
+from sporttracker.logic.model.Maintenance import Maintenance
+from sporttracker.logic.model.MaintenanceEventInstance import MaintenanceEventInstance
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
 from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.PlannedTour import PlannedTour, TravelType, TravelDirection
@@ -259,16 +260,27 @@ class DummyDataGenerator:
 
         fake = Faker()
 
+        maintenances = []
+        for name in self.MAINTENANCE_EVENT_NAMES:
+            maintenance = Maintenance(
+                type=TrackType.BIKING,
+                description=name,
+                user_id=user.id,
+            )
+
+            db.session.add(maintenance)
+            maintenances.append(maintenance)
+
+        db.session.commit()
+
         for monthIndex in range(self.NUMBER_OF_MONTHS):
             firstDay = date(year=lastDayCurrentMonth.year, month=lastDayCurrentMonth.month, day=1)
             fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
 
             db.session.add(
-                MaintenanceEvent(
-                    type=TrackType.BIKING,
+                MaintenanceEventInstance(
                     event_date=fakeTime,
-                    description=random.choice(self.MAINTENANCE_EVENT_NAMES),
-                    user_id=user.id,
+                    maintenance_id=random.choice(maintenances).id,
                 )
             )
 

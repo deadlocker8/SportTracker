@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% set isEdit = false %}
+        {% if maintenance and maintenance.id is not none %}
+            {% set isEdit = true %}
+        {% endif %}
+
+        <meta charset="UTF-8">
+        <title>SportTracker - {% if isEdit %}{{ gettext('Edit Maintenance') }}{% else %}{{ gettext('New Maintenance') }}{% endif %}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('maintenance') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        {% if isEdit %}
+                            {% call macros.headline(gettext('Edit Maintenance')) %}
+                                <i class="fa-solid fa-wrench fa-fw fs-2"></i>
+                            {% endcall %}
+                            <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                                <span class="material-icons text-light">delete</span>&nbsp;{{ gettext('Delete') }}
+                            </button>
+
+                            {% call macros.deleteModal(gettext('Delete Maintenance?'), gettext('Do you really want to delete this maintenance?')) %}
+                                <a href="{{ url_for('maintenances.delete', maintenance_id=maintenance_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                            {% endcall %}
+                        {% else %}
+                            {% call macros.headline(gettext('New Maintenance')) %}
+                                <i class="fa-solid fa-wrench fa-fw fs-2"></i>
+                            {% endcall %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row mt-5 text-start">
+                    <div class="col col-11 col-md-9 mx-auto">
+                        <form role="form" action="{% if isEdit %}{{ url_for('maintenances.editPost', maintenance_id=maintenance_id) }}{% else %}{{ url_for('maintenances.addPost') }}{% endif %}"
+                              method="post">
+                            <div class="mb-3">
+                                <label for="maintenance-event-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="material-icons me-3">stars</span>
+                                    <select class="form-select" id="maintenance-event-type" name="type" required="required">
+                                        {% for trackType in trackTypes %}
+                                            <option value="{{ trackType.name }}"
+                                                    {% if maintenance and maintenance.type == trackType.name %}selected{% endif %}>{{ trackType.get_localized_name() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-group">
+                                    <label for="maintenance-event-description" class="form-label input-field-margin">{{ gettext('Description') }}</label>
+                                    <div class="d-flex align-items-center">
+                                        <span class="material-icons me-3">article</span>
+                                        <input type="text" class="form-control" id="maintenance-event-description"
+                                               name="description" required="required"
+                                               {% if maintenance %}value="{{ maintenance.description }}"{% endif %}>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>

@@ -31,7 +31,8 @@ from sporttracker.blueprints import (
     GpxTracks,
     Settings,
     QuickFilter,
-    MaintenanceEvents,
+    Maintenances,
+    MaintenanceEventInstances,
     PlannedTours,
     AnnualAchievements,
 )
@@ -257,7 +258,8 @@ class SportTracker(FlaskBaseApp):
             )
         )
         app.register_blueprint(QuickFilter.construct_blueprint())
-        app.register_blueprint(MaintenanceEvents.construct_blueprint())
+        app.register_blueprint(Maintenances.construct_blueprint())
+        app.register_blueprint(MaintenanceEventInstances.construct_blueprint())
         app.register_blueprint(
             PlannedTours.construct_blueprint(
                 app.config['GPX_SERVICE'], self._settings['gpxPreviewImages']

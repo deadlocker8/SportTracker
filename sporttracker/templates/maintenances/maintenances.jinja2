@@ -14,7 +14,7 @@
 
         <div class="d-flex align-items-center">
             <div class="fw-bold fs-5">{{ maintenanceEvent.eventDate | format_date() }}</div>
-            <a href="{{ url_for('maintenanceEvents.edit', event_id=maintenanceEvent.id) }}" class="btn btn-sm d-inline-flex align-items-center ms-2" id="button-logout">
+            <a href="{{ url_for('maintenanceEventInstances.edit', event_id=maintenanceEvent.id) }}" class="btn btn-sm d-inline-flex align-items-center ms-2" id="button-logout">
                 <span class="material-icons text-primary fs-5">edit</span>
             </a>
         </div>
@@ -30,53 +30,52 @@
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/maintenanceEvents.css") }}"/>
     </head>
     <body class="bg-dark text-light">
-        {{ macros.navbar('maintenanceEvents') }}
+        {{ macros.navbar('maintenance') }}
         {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row mb-3">
                     <div class="col col-12 mx-auto">
-                        {% call macros.headline(gettext('Maintenance'), url_for('maintenanceEvents.add')) %}
+                        {% call macros.headline(gettext('Maintenance'), url_for('maintenances.add')) %}
                             <i class="fa-solid fa-wrench fa-fw fs-2"></i>
                         {% endcall %}
                     </div>
                 </div>
 
                 <div class="mb-4">
-                    {{ macros.track_type_quick_filter(url_for('maintenanceEvents.listMaintenanceEvents')) }}
+                    {{ macros.track_type_quick_filter(url_for('maintenances.listMaintenances')) }}
                 </div>
 
                 <div class="row py-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
                     {% set ns = namespace(index = 0) %}
                     {% set eventLimit = 4 %}
 
-                    {% for description, maintenanceEventsByType in maintenanceEventsByDescription.items() %}
-                        {% for trackType, maintenanceEvents in maintenanceEventsByType.items() %}
-                            <div class="col mb-5">
-                                <div class="card h-100">
-                                    <div class="card-header mb-0">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="d-flex align-items-center text-truncate">
-                                                {{ trackMacros.track_type_icon_small(trackType, fontSize='fs-3') }}
-                                                <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">{{ description }}</div>
-                                            </div>
-                                            <a href="{{ url_for('maintenanceEvents.addByTypeAndDescription', track_type=trackType.name, description=description) }}" class="link-light text-decoration-none d-flex-inline align-items-center button-new-maintenance-event">
-                                                <span class="rounded-circle bg-primary p-1 fs-5 material-icons">add</span>
-                                            </a>
+                    {% for maintenancesWithEvent in maintenancesWithEvents %}
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <div class="card-header mb-0">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center text-truncate">
+                                            {{ trackMacros.track_type_icon_small(maintenancesWithEvent.type, fontSize='fs-3') }}
+                                            <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">{{ maintenancesWithEvent.description }}</div>
                                         </div>
+                                        <a href="{{ url_for('maintenanceEventInstances.add', maintenance_id=maintenancesWithEvent.id) }}" class="link-light text-decoration-none d-flex-inline align-items-center button-new-maintenance-event">
+                                            <span class="rounded-circle bg-primary p-1 fs-5 material-icons">add</span>
+                                        </a>
                                     </div>
+                                </div>
 
-                                    <div class="card-body d-flex flex-column ps-5 pb-4 text-start">
-                                        {% for maintenanceEvent in maintenanceEvents | reverse %}
-                                            {% if loop.index == 4 and maintenanceEvents | length > eventLimit %}
-                                                <button class="btn btn-primary align-self-center d-flex align-items-center toggle-button-hide" type="button" data-bs-toggle="collapse" data-bs-target="#maintenance-collapse-{{ ns.index }}">
-                                                    <span class="material-icons fs-5">keyboard_arrow_down</span>&nbsp;{{ gettext('Show all (+%(remaining)d)', remaining=maintenanceEvents|length - loop.index + 1) }}
-                                                </button>
+                                <div class="card-body d-flex flex-column ps-5 pb-4 text-start">
+                                    {% for maintenanceEvent in maintenancesWithEvent.events | reverse %}
+                                        {% if loop.index == 4 and maintenancesWithEvent.events | length > eventLimit %}
+                                            <button class="btn btn-primary align-self-center d-flex align-items-center toggle-button-hide" type="button" data-bs-toggle="collapse" data-bs-target="#maintenance-collapse-{{ ns.index }}">
+                                                <span class="material-icons fs-5">keyboard_arrow_down</span>&nbsp;{{ gettext('Show all (+%(remaining)d)', remaining=maintenancesWithEvent.events|length - loop.index + 1) }}
+                                            </button>
 
-                                                <div class="collapse" id="maintenance-collapse-{{ ns.index }}">
-                                                <div class="d-flex flex-column">
-                                            {% endif %}
+                                            <div class="collapse" id="maintenance-collapse-{{ ns.index }}">
+                                            <div class="d-flex flex-column">
+                                        {% endif %}
 
                                         <ul class="timeline-with-icons {% if maintenanceEvent.id is none %}timeline-dashed{% endif %}">
                                             <li class="timeline-item">
@@ -93,17 +92,16 @@
                                                 {% endif %}
                                             </li>
                                         </ul>
-                                        {% if loop.last and maintenanceEvents | length > eventLimit and loop.index >= eventLimit %}
+                                        {% if loop.last and maintenancesWithEvent.events | length > eventLimit and loop.index >= eventLimit %}
                                             </div>
                                             </div>
                                         {% endif %}
-                                        {% endfor %}
-                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
+                        </div>
 
-                            {% set ns.index = ns.index + 1 %}
-                        {% endfor %}
+                        {% set ns.index = ns.index + 1 %}
                     {% endfor %}
                 </div>
             </section>

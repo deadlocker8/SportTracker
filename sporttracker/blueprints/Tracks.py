@@ -22,7 +22,7 @@ from sporttracker.logic.QuickFilterState import (
 )
 from sporttracker.logic.model.CustomTrackField import CustomTrackField
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
-from sporttracker.logic.model.MaintenanceEvent import (
+from sporttracker.logic.model.MaintenanceEventInstance import (
     MaintenanceEvent,
     get_maintenance_events_by_year_and_month_by_type,
 )

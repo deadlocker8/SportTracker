@@ -115,7 +115,7 @@
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle d-flex align-items-center {% if activeLink == 'maintenanceEvents' or activeLink == 'plannedTours' or activeLink == 'about'%}active {% endif %}" href="#" role="button" data-bs-toggle="dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center {% if activeLink == 'maintenance' or activeLink == 'plannedTours' or activeLink == 'about'%}active {% endif %}" href="#" role="button" data-bs-toggle="dropdown">
                                     <span class="navbar-icon">
                                         <span class="material-icons fs-5">format_list_bulleted</span>
                                     </span>&nbsp;{{ gettext('More') }}
@@ -128,8 +128,8 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="dropdown-item d-flex align-items-center {% if activeLink == 'maintenanceEvents' %}active {% endif %}"
-                                           href="{{ url_for('maintenanceEvents.listMaintenanceEvents') }}">
+                                        <a class="dropdown-item d-flex align-items-center {% if activeLink == 'maintenance' %}active {% endif %}"
+                                           href="{{ url_for('maintenances.listMaintenances') }}">
                                             <span class="navbar-icon">
                                                 <i class="fa-solid fa-wrench fa-fw fs-6"></i>
                                             </span>&nbsp;{{ gettext('Maintenance') }}
