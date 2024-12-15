@@ -94,6 +94,9 @@ class TestTracks(SeleniumTestBaseClass):
         selenium.find_element(By.ID, 'track-averageHeartRate').send_keys(averageHeartRate)
         selenium.find_element(By.ID, 'track-elevationSum').send_keys(elevationSum)
 
+        buttonSave = selenium.find_element(By.ID, 'buttonSaveTrack')
+        selenium.execute_script('arguments[0].scrollIntoView();', buttonSave)
+        time.sleep(1)
         select = Select(selenium.find_element(By.ID, 'track-plannedTour'))
         select.select_by_visible_text(plannedTourName)
 
