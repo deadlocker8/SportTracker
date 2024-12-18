@@ -1,5 +1,6 @@
 # 1.32.0 - (XX.XX.XX)
 - fix: add multiple month goals: end month is now included (#148)
+- chore: update to python 3.12 (#150)
 
 # 1.31.0 - (09.11.24)
 - add: redesigned maintenance events page (grouped by type and description, show distances, show distance until today, ...) (#141)

@@ -1,4 +1,4 @@
-FROM python:3.11-alpine AS poetry
+FROM python:3.12-alpine AS poetry
 
 RUN apk update && apk upgrade && \
     apk add curl gcc python3-dev libc-dev build-base linux-headers postgresql-dev && \
@@ -13,7 +13,7 @@ WORKDIR /opt/SportTracker
 RUN /root/.local/bin/poetry install --without dev
 RUN ln -s $($HOME/.local/share/pypoetry/venv/bin/poetry env info -p) /opt/SportTracker/myvenv
 
-FROM python:3.11-alpine
+FROM python:3.12-alpine
 
 RUN apk update && apk upgrade && \
     apk add postgresql-libs && \

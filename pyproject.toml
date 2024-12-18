@@ -11,7 +11,7 @@ url = "https://pypi.thecodelabs.de"
 priority = "explicit"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 thecodelabs-baseutils = { version = "*", source = "TheCodeLabs" }
 thecodelabs-flaskutils = { version = "*", source = "TheCodeLabs" }
 flask = "3.0.3"
