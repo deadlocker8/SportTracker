@@ -266,6 +266,8 @@ class DummyDataGenerator:
                 type=TrackType.BIKING,
                 description=name,
                 user_id=user.id,
+                is_reminder_active=True,
+                reminder_limit=200 * 1000,
             )
 
             db.session.add(maintenance)

@@ -1,5 +1,5 @@
 from flask_login import current_user
-from sqlalchemy import Integer, String
+from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
@@ -12,6 +12,8 @@ class Maintenance(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     type = db.Column(db.Enum(TrackType))
     description: Mapped[String] = mapped_column(String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    is_reminder_active: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    reminder_limit: Mapped[int] = mapped_column(Integer, nullable=True)
 
     def __repr__(self):
         return (
@@ -19,7 +21,9 @@ class Maintenance(db.Model, DateTimeAccess):  # type: ignore[name-defined]
             f'id: {self.id}, '
             f'type: {self.type}, '
             f'description: {self.description}, '
-            f'user_id: {self.user_id})'
+            f'user_id: {self.user_id}, '
+            f'is_reminder_active: {self.is_reminder_active}, '
+            f'reminder_limit: {self.reminder_limit})'
         )
 
 

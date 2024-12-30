@@ -85,7 +85,7 @@ def upgrade():
                 LOGGER.debug(f'    Create new maintenance: {typeName}, {description}, {userId}')
                 connection.execute(
                     text(
-                        f"INSERT INTO maintenance (type, description, user_id) VALUES ('{typeName}', '{description}', {userId});"
+                        f"INSERT INTO maintenance (type, description, user_id, is_reminder_active, reminder_limit) VALUES ('{typeName}', '{description}', {userId}, False, NULL);"
                     )
                 )
                 existingMaintenance = __get_maintenance(connection, typeName, description, userId)
