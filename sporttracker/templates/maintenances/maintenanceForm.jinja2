@@ -8,7 +8,8 @@
         {% endif %}
 
         <meta charset="UTF-8">
-        <title>SportTracker - {% if isEdit %}{{ gettext('Edit Maintenance') }}{% else %}{{ gettext('New Maintenance') }}{% endif %}</title>
+        <title>SportTracker - {% if isEdit %}{{ gettext('Edit Maintenance') }}{% else %}
+            {{ gettext('New Maintenance') }}{% endif %}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -40,7 +41,10 @@
 
                 <div class="row mt-5 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
-                        <form role="form" action="{% if isEdit %}{{ url_for('maintenances.editPost', maintenance_id=maintenance_id) }}{% else %}{{ url_for('maintenances.addPost') }}{% endif %}"
+                        <form role="form" action="
+
+
+                                {% if isEdit %}{{ url_for('maintenances.editPost', maintenance_id=maintenance_id) }}{% else %}{{ url_for('maintenances.addPost') }}{% endif %}"
                               method="post">
                             <div class="mb-3">
                                 <label for="maintenance-event-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>
@@ -67,7 +71,35 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+
+                            <div class="mb-3 mt-5">
+                                <label for="maintenance-event-reminder" class="form-label">
+                                    <div class="d-flex align-items-center">
+                                        <span class="material-icons me-3">notifications</span>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox"
+                                                   {% if maintenance and maintenance.is_reminder_active %}checked{% endif %}
+                                                   id="maintenance-event-reminder-checkbox"
+                                                   name="is_reminder_active">
+                                            <label class="form-check-label" for="maintenance-event-reminder-checkbox">
+                                                {{ gettext('Activate Reminder') }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <div class="input-field-margin {% if not maintenance or not maintenance.is_reminder_active %} hidden{% endif %}" id="maintenance-event-reminder">
+                                    <label for="maintenance-event-reminder-limit" class="form-label">{{ gettext('Limit (in km)') }}</label>
+                                    <input type="number" class="form-control" id="maintenance-event-reminder-limit"
+                                           step="1" min="0"
+                                           name="reminder_limit"
+                                           value="{% if maintenance and maintenance.reminder_limit is not none %}{{ maintenance.reminder_limit }}{% else %}100{% endif %}">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center">
+                                <span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}
+                            </button>
                         </form>
                     </div>
                 </div>

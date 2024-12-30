@@ -72,4 +72,13 @@ document.addEventListener('DOMContentLoaded', function()
             xhr.send();
         });
     }
+
+    let checkboxMaintenanceReminder = document.getElementById('maintenance-event-reminder-checkbox');
+    if(checkboxMaintenanceReminder !== null)
+    {
+        checkboxMaintenanceReminder.addEventListener('click', function()
+        {
+            document.getElementById('maintenance-event-reminder').classList.toggle('hidden', !checkboxMaintenanceReminder.checked);
+        });
+    }
 });
