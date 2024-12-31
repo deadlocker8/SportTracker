@@ -264,3 +264,12 @@ def get_month_goal_distance_by_id(goal_id: int) -> MonthGoalDistance | None:
         .filter(MonthGoalDistance.id == goal_id)
         .first()
     )
+
+
+def get_month_goal_duration_by_id(goal_id: int) -> MonthGoalDuration | None:
+    return (
+        MonthGoalDuration.query.join(User)
+        .filter(User.username == current_user.username)
+        .filter(MonthGoalDuration.id == goal_id)
+        .first()
+    )

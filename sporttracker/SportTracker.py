@@ -35,6 +35,7 @@ from sporttracker.blueprints import (
     MaintenanceEventInstances,
     PlannedTours,
     AnnualAchievements,
+    MonthGoalsDuration,
 )
 from sporttracker.helpers import Helpers
 from sporttracker.helpers.SettingsChecker import SettingsChecker
@@ -243,6 +244,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(MonthGoals.construct_blueprint())
         app.register_blueprint(MonthGoalsDistance.construct_blueprint())
         app.register_blueprint(MonthGoalsCount.construct_blueprint())
+        app.register_blueprint(MonthGoalsDuration.construct_blueprint())
         app.register_blueprint(Charts.construct_blueprint())
         app.register_blueprint(Users.construct_blueprint())
         app.register_blueprint(Settings.construct_blueprint())
