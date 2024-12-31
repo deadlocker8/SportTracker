@@ -6,7 +6,7 @@ from flask_login import login_required, current_user
 
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
+from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.User import User
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -38,7 +38,16 @@ def construct_blueprint():
             .all()
         )
 
-        goals = goalsDistance + goalsCount
+        goalsDuration: list[MonthGoalDuration] = (
+            MonthGoalDuration.query.join(User)
+            .filter(User.username == current_user.username)
+            .filter(MonthGoalDuration.type.in_(quickFilterState.get_active_types()))
+            .order_by(MonthGoalDuration.year.desc())
+            .order_by(MonthGoalDuration.month.desc())
+            .all()
+        )
+
+        goals = goalsDistance + goalsCount + goalsDuration
         goals.sort(
             key=lambda summary: f'{summary.year}_{str(summary.month).zfill(2)}', reverse=True
         )

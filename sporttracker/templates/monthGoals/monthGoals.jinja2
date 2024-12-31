@@ -34,6 +34,9 @@
                         {% elif goalSummary.type_name == 'COUNT' %}
                             {{ monthGoalsMacros.render_month_goal_count_summary_card_large(goalSummary) }}
                             {{ monthGoalsMacros.render_month_goal_count_summary_card_small(goalSummary) }}
+                        {% elif goalSummary.type_name == 'DURATION' %}
+                            {{ monthGoalsMacros.render_month_goal_duration_summary_card_large(goalSummary) }}
+                            {{ monthGoalsMacros.render_month_goal_duration_summary_card_small(goalSummary) }}
                         {% endif %}
                     {% endfor %}
                 {% endfor %}

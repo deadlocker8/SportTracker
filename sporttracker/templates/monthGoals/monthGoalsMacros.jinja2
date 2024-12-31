@@ -12,6 +12,10 @@
     <div class="fs-5">{{ goalSummary.actual_count }}/{{ goalSummary.goal_count_perfect }}</div>
 {%- endmacro %}
 
+{% macro render_month_goal_duration(goalSummary) -%}
+    <div class="fs-5">{{ goalSummary.actual_duration | format_duration }}/{{ goalSummary.goal_duration_perfect | format_duration }} h</div>
+{%- endmacro %}
+
 {% macro render_month_goal_distance_summary_card_large(goalSummary) -%}
     {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
 
@@ -120,6 +124,67 @@
                         </div>
                         <div class="col col-4">
                             {{ render_month_goal_count(goalSummary) }}
+                        </div>
+                    </div>
+                    <div class="row g-0 d-flex align-items-center justify-content-between py-3 px-2">
+                        <div class="col col-12">
+                            {{ render_month_goal_progress_bar(goalSummary) }}
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro render_month_goal_duration_summary_card_large(goalSummary) -%}
+    {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+
+    <div class="row py-3 d-none d-lg-block">
+        <div class="col col-xxl-8 col-lg-10 col-sm-12 mx-auto px-xxl-5 px-xl-4 px-lg-3">
+            <a href="{{ url_for('monthGoalsDuration.edit', goal_id=goalSummary.id) }}" class="text-decoration-none">
+                <div class="card">
+                    <div class="row g-0 d-flex align-items-center p-2">
+                        <div class="col col-2 d-flex align-items-center justify-content-center">
+                            <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {{ trackMacros.track_type_icon_small(goalSummary.type, fontSize='fs-3') }}
+                        </div>
+                        <div class="col col-3 text-start fs-4">
+                            {{ goalSummary.name }}
+                        </div>
+                        <div class="col col-4">
+                            {{ render_month_goal_progress_bar(goalSummary) }}
+                        </div>
+                        <div class="col col-3">
+                            {{ render_month_goal_duration(goalSummary) }}
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+{%- endmacro %}
+
+
+{% macro render_month_goal_duration_summary_card_small(goalSummary) -%}
+    <div class="row py-3 d-lg-none">
+        <div class="col col-xxl-8 col-lg-10 col-sm-12 mx-auto px-xxl-5 px-xl-4 px-lg-3">
+            <a href="{{ url_for('monthGoalsDuration.edit', goal_id=goalSummary.id) }}" class="text-decoration-none">
+                <div class="card">
+                    <div class="row g-0 d-flex align-items-center pt-3 px-2">
+                        <div class="col col-4 d-flex align-items-center">
+                            <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% if goalSummary.type.is_font_awesome_icon %}
+                                <i class="fa-solid {{ goalSummary.type.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ goalSummary.type.background_color }}"></i>
+                            {% else %}
+                                <span class="material-icons rounded-circle fs-3 p-2 text-dark {{ goalSummary.type.background_color }}">{{ goalSummary.type.icon }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="col col-4 text-start fs-4">
+                            {{ goalSummary.name }}
+                        </div>
+                        <div class="col col-4">
+                            {{ render_month_goal_duration(goalSummary) }}
                         </div>
                     </div>
                     <div class="row g-0 d-flex align-items-center justify-content-between py-3 px-2">
