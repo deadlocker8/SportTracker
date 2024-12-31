@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-08 23:50+0100\n"
+"POT-Creation-Date: 2024-12-31 15:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -192,7 +192,7 @@ msgstr ""
 msgid "Elevation Sum"
 msgstr ""
 
-#: ../templates/about.jinja2:6 ../templates/macros.jinja2:167
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:172
 msgid "About"
 msgstr ""
 
@@ -298,39 +298,39 @@ msgid "More"
 msgstr ""
 
 #: ../templates/macros.jinja2:135
-#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:27
-#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:40
+#: ../templates/maintenances/maintenances.jinja2:34
+#: ../templates/maintenances/maintenances.jinja2:47
 msgid "Maintenance"
 msgstr ""
 
-#: ../templates/macros.jinja2:143 ../templates/maps/mapMultipleTracks.jinja2:9
+#: ../templates/macros.jinja2:148 ../templates/maps/mapMultipleTracks.jinja2:9
 #: ../templates/maps/mapTileHunting.jinja2:9
 #: ../templates/plannedTours/plannedTours.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:19
 msgid "Planned Tours"
 msgstr ""
 
-#: ../templates/macros.jinja2:158 ../templates/maps/mapMacros.jinja2:107
+#: ../templates/macros.jinja2:163 ../templates/maps/mapMacros.jinja2:107
 #: ../templates/maps/mapTileHunting.jinja2:17
 #: ../templates/settings/settings.jinja2:70
 msgid "Tile Hunting"
 msgstr ""
 
-#: ../templates/macros.jinja2:176
+#: ../templates/macros.jinja2:181
 msgid "Search"
 msgstr ""
 
-#: ../templates/macros.jinja2:205 ../templates/settings/settings.jinja2:6
+#: ../templates/macros.jinja2:210 ../templates/settings/settings.jinja2:6
 #: ../templates/settings/settings.jinja2:18
 #: ../templates/tracks/trackMacros.jinja2:402
 msgid "Settings"
 msgstr ""
 
-#: ../templates/macros.jinja2:214
+#: ../templates/macros.jinja2:219
 msgid "Logout"
 msgstr ""
 
-#: ../templates/macros.jinja2:255 ../templates/tracks/tracks.jinja2:95
+#: ../templates/macros.jinja2:260 ../templates/tracks/tracks.jinja2:95
 #: ../templates/tracks/tracks.jinja2:117
 msgid "Cancel"
 msgstr ""
@@ -424,17 +424,19 @@ msgid "Note: Only names with at least two tracks are listed"
 msgstr ""
 
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:11
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:23
+#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:25
 msgid "Edit Maintenance Event"
 msgstr ""
 
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:11
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:34
+#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:12
+#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:36
 msgid "New Maintenance Event"
 msgstr ""
 
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:27
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:31
+#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:29
+#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:33
+#: ../templates/maintenances/maintenanceForm.jinja2:28
+#: ../templates/maintenances/maintenanceForm.jinja2:32
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:22
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:26
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:22
@@ -455,41 +457,27 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:30
+#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:32
 msgid "Delete Maintenance Event?"
 msgstr ""
 
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:30
+#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:32
 msgid "Do you really want to delete this maintenance event?"
 msgstr ""
 
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:46
-#: ../templates/monthGoals/monthGoalCountForm.jinja2:41
-#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:28
-#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:41
-#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:28
-#: ../templates/plannedTours/plannedTourForm.jinja2:47
-#: ../templates/settings/customFieldsForm.jinja2:61
-#: ../templates/settings/settings.jinja2:148
-msgid "Type"
-msgstr ""
-
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:61
+#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:58
 #: ../templates/maps/mapSingleTrack.jinja2:44
 #: ../templates/maps/mapSingleTrack.jinja2:90
 #: ../templates/tracks/trackMacros.jinja2:240
 msgid "Date"
 msgstr ""
 
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:69
+#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:66
 msgid "Time"
 msgstr ""
 
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:81
-msgid "Description"
-msgstr ""
-
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:91
+#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:77
+#: ../templates/maintenances/maintenanceForm.jinja2:101
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:98
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:107
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:98
@@ -508,16 +496,63 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:9
+#: ../templates/maintenances/maintenanceForm.jinja2:11
+#: ../templates/maintenances/maintenanceForm.jinja2:24
+msgid "Edit Maintenance"
+msgstr ""
+
+#: ../templates/maintenances/maintenanceForm.jinja2:12
+#: ../templates/maintenances/maintenanceForm.jinja2:35
+msgid "New Maintenance"
+msgstr ""
+
+#: ../templates/maintenances/maintenanceForm.jinja2:31
+msgid "Delete Maintenance?"
+msgstr ""
+
+#: ../templates/maintenances/maintenanceForm.jinja2:31
+msgid ""
+"Do you really want to delete this maintenance and all associated "
+"maintenance events?"
+msgstr ""
+
+#: ../templates/maintenances/maintenanceForm.jinja2:50
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:41
+#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:28
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:41
+#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:28
+#: ../templates/plannedTours/plannedTourForm.jinja2:47
+#: ../templates/settings/customFieldsForm.jinja2:61
+#: ../templates/settings/settings.jinja2:148
+msgid "Type"
+msgstr ""
+
+#: ../templates/maintenances/maintenanceForm.jinja2:64
+msgid "Description"
+msgstr ""
+
+#: ../templates/maintenances/maintenanceForm.jinja2:85
+msgid "Activate Reminder"
+msgstr ""
+
+#: ../templates/maintenances/maintenanceForm.jinja2:92
+msgid "Limit (in km)"
+msgstr ""
+
+#: ../templates/maintenances/maintenances.jinja2:10
 msgid "Today"
 msgstr ""
 
-#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:74
+#: ../templates/maintenances/maintenances.jinja2:13
+msgid "over limit"
+msgstr ""
+
+#: ../templates/maintenances/maintenances.jinja2:85
 #, python-format
 msgid "Show all (+%(remaining)d)"
 msgstr ""
 
-#: ../templates/maintenanceEvents/maintenanceEvents.jinja2:87
+#: ../templates/maintenances/maintenances.jinja2:98
 msgid "days"
 msgstr ""
 
