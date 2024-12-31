@@ -244,8 +244,16 @@ def get_goal_summaries_by_year_and_month_and_types(
         .filter(MonthGoalCount.type.in_(trackTypes))
         .all()
     )
+    goalsDuration = (
+        MonthGoalDuration.query.join(User)
+        .filter(User.username == current_user.username)
+        .filter(MonthGoalDuration.year == year)
+        .filter(MonthGoalDuration.month == month)
+        .filter(MonthGoalDuration.type.in_(trackTypes))
+        .all()
+    )
 
-    return [goal.get_summary() for goal in goalsDistance + goalsCount]
+    return [goal.get_summary() for goal in goalsDistance + goalsCount + goalsDuration]
 
 
 def get_month_goal_count_by_id(goal_id: int) -> MonthGoalCount | None:
