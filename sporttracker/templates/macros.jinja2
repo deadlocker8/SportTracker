@@ -120,9 +120,9 @@
                                         <span class="material-icons fs-5">format_list_bulleted</span>
                                     </span>&nbsp;{{ gettext('More') }}
                                     {% set numberOfUpdatedPlannedTours = newPlannedTourIds|length + updatedPlannedTourIds|length %}
-                                    {% if numberOfUpdatedPlannedTours > 0 %}
+                                    {% if numberOfUpdatedPlannedTours > 0 or numberOfTriggeredMaintenanceReminders > 0 %}
                                         <span class="badge rounded-pill bg-danger ms-1">
-                                            {{ numberOfUpdatedPlannedTours }}
+                                            {{ numberOfUpdatedPlannedTours + numberOfTriggeredMaintenanceReminders }}
                                         </span>
                                     {% endif %}
                                 </a>
@@ -133,6 +133,11 @@
                                             <span class="navbar-icon">
                                                 <i class="fa-solid fa-wrench fa-fw fs-6"></i>
                                             </span>&nbsp;{{ gettext('Maintenance') }}
+                                            {% if numberOfTriggeredMaintenanceReminders > 0 %}
+                                                <span class="badge rounded-pill bg-danger ms-1">
+                                                    {{ numberOfTriggeredMaintenanceReminders }}
+                                                </span>
+                                            {% endif %}
                                         </a>
                                     </li>
                                     <li>

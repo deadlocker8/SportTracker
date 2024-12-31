@@ -105,3 +105,11 @@ def __convert_events_to_models(
     )
 
     return eventModels
+
+
+def get_number_of_triggered_maintenance_reminders() -> int:
+    if not current_user.is_authenticated:
+        return 0
+
+    maintenancesWithEvents = get_maintenances_with_events(QuickFilterState())
+    return len([m for m in maintenancesWithEvents if m.isLimitExceeded])

@@ -41,6 +41,9 @@ from sporttracker.helpers.SettingsChecker import SettingsChecker
 from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
 from sporttracker.logic.GpxService import GpxService
+from sporttracker.logic.MaintenanceEventsCollector import (
+    get_number_of_triggered_maintenance_reminders,
+)
 from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.model.CustomTrackField import CustomTrackFieldType
 from sporttracker.logic.model.PlannedTour import (
@@ -152,6 +155,7 @@ class SportTracker(FlaskBaseApp):
                 'travelDirections': [x for x in TravelDirection],
                 'newPlannedTourIds': get_new_planned_tour_ids(),
                 'updatedPlannedTourIds': get_updated_planned_tour_ids(),
+                'numberOfTriggeredMaintenanceReminders': get_number_of_triggered_maintenance_reminders(),
                 'currentYear': datetime.now().year,
             }
 

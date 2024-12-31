@@ -69,7 +69,7 @@ def construct_blueprint():
             description=form.description,
             user_id=current_user.id,
             is_reminder_active=bool(form.is_reminder_active),
-            reminder_limit=form.reminder_limit * 1000,
+            reminder_limit=None if form.reminder_limit is None else form.reminder_limit * 1000,
         )
 
         LOGGER.debug(f'Saved new maintenance: {maintenance}')
@@ -91,7 +91,9 @@ def construct_blueprint():
             type=maintenance.type.name,
             description=maintenance.description,  # type: ignore[arg-type]
             is_reminder_active=maintenance.is_reminder_active,  # type: ignore[arg-type]
-            reminder_limit=maintenance.reminder_limit / 1000,  # type: ignore[arg-type]
+            reminder_limit=None
+            if maintenance.reminder_limit is None
+            else maintenance.reminder_limit // 1000,  # type: ignore[arg-type]
         )
 
         return render_template(
@@ -113,7 +115,9 @@ def construct_blueprint():
         maintenance.description = form.description  # type: ignore[assignment]
         maintenance.user_id = current_user.id
         maintenance.is_reminder_active = bool(form.is_reminder_active)
-        maintenance.reminder_limit = form.reminder_limit * 1000  # type: ignore[assignment]
+        maintenance.reminder_limit = (
+            None if form.reminder_limit is None else form.reminder_limit * 1000,
+        )  # type: ignore[assignment]
 
         LOGGER.debug(f'Updated maintenance: {maintenance}')
         db.session.commit()
