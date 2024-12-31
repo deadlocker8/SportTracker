@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-31 15:42+0100\n"
+"POT-Creation-Date: 2024-12-31 18:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,6 +67,10 @@ msgid "Total Duration"
 msgstr ""
 
 #: ../blueprints/AnnualAchievements.py:130
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:88
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:106
+#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:95
+#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:113
 #: ../templates/tracks/trackMacros.jinja2:278
 msgid "Hours"
 msgstr ""
@@ -98,10 +102,12 @@ msgid "Unknown"
 msgstr ""
 
 #: ../blueprints/MonthGoalsCount.py:76 ../blueprints/MonthGoalsDistance.py:76
+#: ../blueprints/MonthGoalsDuration.py:100
 msgid "End Year must be greater or equal Start Year."
 msgstr ""
 
 #: ../blueprints/MonthGoalsCount.py:79 ../blueprints/MonthGoalsDistance.py:79
+#: ../blueprints/MonthGoalsDuration.py:103
 msgid "End Month must be greater or equal Start Month."
 msgstr ""
 
@@ -298,8 +304,8 @@ msgid "More"
 msgstr ""
 
 #: ../templates/macros.jinja2:135
-#: ../templates/maintenances/maintenances.jinja2:34
-#: ../templates/maintenances/maintenances.jinja2:47
+#: ../templates/maintenances/maintenances.jinja2:35
+#: ../templates/maintenances/maintenances.jinja2:48
 msgid "Maintenance"
 msgstr ""
 
@@ -441,6 +447,8 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:26
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:22
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:26
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:23
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:27
 #: ../templates/plannedTours/plannedTourForm.jinja2:26
 #: ../templates/plannedTours/plannedTourForm.jinja2:31
 #: ../templates/settings/settings.jinja2:171
@@ -482,6 +490,8 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:107
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:98
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:109
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:121
+#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:126
 #: ../templates/plannedTours/plannedTourForm.jinja2:94
 #: ../templates/settings/customFieldsForm.jinja2:84
 #: ../templates/settings/participantsForm.jinja2:58
@@ -521,6 +531,8 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:28
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:41
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:28
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:44
+#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:28
 #: ../templates/plannedTours/plannedTourForm.jinja2:47
 #: ../templates/settings/customFieldsForm.jinja2:61
 #: ../templates/settings/settings.jinja2:148
@@ -543,16 +555,16 @@ msgstr ""
 msgid "Today"
 msgstr ""
 
-#: ../templates/maintenances/maintenances.jinja2:13
+#: ../templates/maintenances/maintenances.jinja2:14
 msgid "over limit"
 msgstr ""
 
-#: ../templates/maintenances/maintenances.jinja2:85
+#: ../templates/maintenances/maintenances.jinja2:86
 #, python-format
 msgid "Show all (+%(remaining)d)"
 msgstr ""
 
-#: ../templates/maintenances/maintenances.jinja2:98
+#: ../templates/maintenances/maintenances.jinja2:99
 msgid "days"
 msgstr ""
 
@@ -806,6 +818,14 @@ msgstr ""
 msgid "Multiple New Count Goals"
 msgstr ""
 
+#: ../templates/monthGoals/monthGoalChooser.jinja2:56
+msgid "New Duration Goal"
+msgstr ""
+
+#: ../templates/monthGoals/monthGoalChooser.jinja2:63
+msgid "Multiple New Duration Goals"
+msgstr ""
+
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:6
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:18
 msgid "Edit Count Month Goal"
@@ -814,6 +834,7 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:6
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:29
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:6
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:7
 msgid "New Count Month Goal"
 msgstr ""
 
@@ -827,11 +848,13 @@ msgstr ""
 
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:55
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:55
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:58
 msgid "Year"
 msgstr ""
 
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:64
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:64
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:67
 msgid "Month"
 msgstr ""
 
@@ -852,21 +875,25 @@ msgstr ""
 
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:42
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:42
+#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:42
 msgid "Start Year"
 msgstr ""
 
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:51
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:51
+#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:51
 msgid "Start Month"
 msgstr ""
 
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:65
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:65
+#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:65
 msgid "End Year"
 msgstr ""
 
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:74
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:74
+#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:74
 msgid "End Month"
 msgstr ""
 
@@ -900,6 +927,46 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:6
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:17
 msgid "Multiple New Distance Month Goals"
+msgstr ""
+
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:6
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:19
+msgid "Edit Duration Month Goal"
+msgstr ""
+
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:26
+msgid "Delete Duration Month Goal?"
+msgstr ""
+
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:26
+msgid "Do you really want to delete this duration month goal?"
+msgstr ""
+
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:30
+msgid "New Duration Month Goal"
+msgstr ""
+
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:82
+#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:89
+msgid "Minimum Duration"
+msgstr ""
+
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:95
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:113
+#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:102
+#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:120
+#: ../templates/tracks/trackMacros.jinja2:285
+msgid "Minutes"
+msgstr ""
+
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:100
+#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:107
+msgid "Perfect Duration"
+msgstr ""
+
+#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:6
+#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:17
+msgid "Multiple New Duration Month Goals"
 msgstr ""
 
 #: ../templates/monthGoals/monthGoals.jinja2:19
@@ -1118,10 +1185,6 @@ msgstr ""
 
 #: ../templates/tracks/trackMacros.jinja2:261
 msgid "Distance (in km)"
-msgstr ""
-
-#: ../templates/tracks/trackMacros.jinja2:285
-msgid "Minutes"
 msgstr ""
 
 #: ../templates/tracks/trackMacros.jinja2:291
