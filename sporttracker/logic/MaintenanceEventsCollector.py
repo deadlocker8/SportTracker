@@ -19,6 +19,8 @@ class MaintenanceWithEventsModel:
     id: int
     type: TrackType
     description: str
+    isLimitExceeded: bool
+    limitExceededDistance: int | None
     events: list[MaintenanceEventInstanceModel]
 
 
@@ -44,10 +46,20 @@ def get_maintenances_with_events(
             events, maintenance
         )
 
+        isLimitExceeded = False
+        limitExceededDistance = None
+        if maintenance.is_reminder_active and eventModels:
+            distanceUntilToday = eventModels[-1].distanceSinceEvent
+            if distanceUntilToday >= maintenance.reminder_limit:
+                isLimitExceeded = True
+                limitExceededDistance = (distanceUntilToday - maintenance.reminder_limit) // 1000
+
         model = MaintenanceWithEventsModel(
             id=maintenance.id,
             type=maintenance.type,
             description=maintenance.description,
+            isLimitExceeded=isLimitExceeded,
+            limitExceededDistance=limitExceededDistance,
             events=eventModels,
         )
 
