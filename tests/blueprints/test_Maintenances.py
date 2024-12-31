@@ -40,13 +40,31 @@ class TestMaintenances(SeleniumTestBaseClass):
         )
 
     @staticmethod
-    def __fill_maintenance_form(selenium, trackType, description):
+    def __fill_maintenance_form(selenium, trackType, description, reminderLimit=None):
         select = Select(selenium.find_element(By.ID, 'maintenance-event-type'))
         select.select_by_visible_text(trackType.name.capitalize())
 
         descriptionInput = selenium.find_element(By.ID, 'maintenance-event-description')
         descriptionInput.clear()
         descriptionInput.send_keys(description)
+
+        if reminderLimit is not None:
+            if not selenium.find_element(
+                By.ID, 'maintenance-event-reminder-checkbox'
+            ).is_selected():
+                selenium.find_element(
+                    By.XPATH, '//label[@for="maintenance-event-reminder-checkbox"]'
+                ).click()
+
+            WebDriverWait(selenium, 5).until(
+                expected_conditions.visibility_of_element_located(
+                    (By.ID, 'maintenance-event-reminder-limit')
+                )
+            )
+
+            reminderLimitInput = selenium.find_element(By.ID, 'maintenance-event-reminder-limit')
+            reminderLimitInput.clear()
+            reminderLimitInput.send_keys(reminderLimit)
 
     def __open_event_form(self, selenium):
         selenium.get(self.build_url('/maintenances'))
@@ -87,7 +105,7 @@ class TestMaintenances(SeleniumTestBaseClass):
     def test_add_maintenance_valid(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_maintenance_form(selenium)
-        self.__fill_maintenance_form(selenium, TrackType.BIKING, 'chain oiled')
+        self.__fill_maintenance_form(selenium, TrackType.BIKING, 'chain oiled', '100')
         self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
@@ -109,7 +127,7 @@ class TestMaintenances(SeleniumTestBaseClass):
     def test_edit_maintenance_valid(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_maintenance_form(selenium)
-        self.__fill_maintenance_form(selenium, TrackType.BIKING, 'chain oiled')
+        self.__fill_maintenance_form(selenium, TrackType.BIKING, 'chain oiled', '500')
         self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
@@ -132,7 +150,7 @@ class TestMaintenances(SeleniumTestBaseClass):
             == 'chain oiled'
         )
 
-        self.__fill_maintenance_form(selenium, TrackType.BIKING, 'chain replaced')
+        self.__fill_maintenance_form(selenium, TrackType.BIKING, 'chain replaced', '200')
 
         self.__click_submit_button(selenium)
 
@@ -270,3 +288,30 @@ class TestMaintenances(SeleniumTestBaseClass):
 
         # actual event + pseudo element for "today"
         assert len(selenium.find_elements(By.CLASS_NAME, 'timeline-icon')) == 2
+
+    def test_reminder_triggered(self, server, selenium: WebDriver):
+        self.login(selenium)
+
+        self.__open_maintenance_form(selenium)
+        self.__fill_maintenance_form(selenium, TrackType.BIKING, 'chain oiled', '0')
+        self.__click_submit_button(selenium)
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Maintenance'
+            )
+        )
+
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card')) == 1
+
+        self.__open_event_form(selenium)
+        self.__fill_event_form(selenium, '2023-02-01', '15:30')
+        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Maintenance'
+            )
+        )
+
+        assert selenium.find_element(By.XPATH, '//span[contains(text(), "over limit")]')

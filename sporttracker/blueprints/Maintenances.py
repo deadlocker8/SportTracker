@@ -64,12 +64,16 @@ def construct_blueprint():
     @login_required
     @validate()
     def addPost(form: MaintenanceFormModel):
+        reminderLimit = None
+        if form.reminder_limit is not None:
+            reminderLimit = form.reminder_limit * 1000
+
         maintenance = Maintenance(
             type=TrackType(form.type),  # type: ignore[call-arg]
             description=form.description,
             user_id=current_user.id,
             is_reminder_active=bool(form.is_reminder_active),
-            reminder_limit=None if form.reminder_limit is None else form.reminder_limit * 1000,
+            reminder_limit=reminderLimit,
         )
 
         LOGGER.debug(f'Saved new maintenance: {maintenance}')
@@ -111,13 +115,15 @@ def construct_blueprint():
         if maintenance is None:
             abort(404)
 
+        reminderLimit = None
+        if form.reminder_limit is not None:
+            reminderLimit = form.reminder_limit * 1000
+
         maintenance.type = TrackType(form.type)  # type: ignore[call-arg]
         maintenance.description = form.description  # type: ignore[assignment]
         maintenance.user_id = current_user.id
         maintenance.is_reminder_active = bool(form.is_reminder_active)
-        maintenance.reminder_limit = (
-            None if form.reminder_limit is None else form.reminder_limit * 1000,
-        )  # type: ignore[assignment]
+        maintenance.reminder_limit = reminderLimit  # type: ignore[assignment]
 
         LOGGER.debug(f'Updated maintenance: {maintenance}')
         db.session.commit()

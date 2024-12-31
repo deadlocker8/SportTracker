@@ -10,7 +10,8 @@
             <div class="fw-bold fs-5">{{ gettext('Today') }}</div>
             {% if maintenance.isLimitExceeded %}
                 <div class="d-flex align-items-center badge text-bg-danger ms-3">
-                    <span class="material-icons fs-5 me-1">warning</span>{{ maintenance.limitExceededDistance }} km {{ gettext('over limit') }}
+                    <span class="material-icons fs-5 me-1">warning</span>
+                    <span>{{ maintenance.limitExceededDistance }} km {{ gettext('over limit') }}</span>
                 </div>
             {% endif %}
         </div>
