@@ -88,7 +88,7 @@ The achievement page shows aggregated information about all your tracks.
 ![](screenshots/achievements.png)
 
 ### Maintenance Events
-Record your maintenance events for each sport type.
+Record your maintenance events for each sport type. You can optionally set reminders for each maintenance.
 
 ![](screenshots/maintenance.png)
 
