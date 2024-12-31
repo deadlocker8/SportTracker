@@ -1,4 +1,5 @@
 # 1.32.0 - (XX.XX.XX)
+- add: maintenance reminders: for each maintenance an optional reminder can be activated. If a maintenance exceeds the given reminder limit you will be notified in the navbar and on the maintenance page (#149)
 - fix: add multiple month goals: end month is now included (#148)
 - chore: update to python 3.12 (#150)
 
