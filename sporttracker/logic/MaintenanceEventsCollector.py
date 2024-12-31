@@ -9,6 +9,7 @@ from sporttracker.logic.model.Maintenance import Maintenance
 from sporttracker.logic.model.MaintenanceEventInstance import (
     MaintenanceEventInstance,
     get_maintenance_events_by_maintenance_id,
+    get_latest_maintenance_event_by_maintenance_id,
 )
 from sporttracker.logic.model.Track import get_distance_between_dates
 from sporttracker.logic.model.TrackType import TrackType
@@ -111,5 +112,26 @@ def get_number_of_triggered_maintenance_reminders() -> int:
     if not current_user.is_authenticated:
         return 0
 
-    maintenancesWithEvents = get_maintenances_with_events(QuickFilterState())
-    return len([m for m in maintenancesWithEvents if m.isLimitExceeded])
+    maintenanceList = Maintenance.query.filter(Maintenance.user_id == current_user.id).all()
+
+    numberOfTriggeredMaintenanceReminders = 0
+    for maintenance in maintenanceList:
+        latestEvent: MaintenanceEventInstance | None = (
+            get_latest_maintenance_event_by_maintenance_id(maintenance.id)
+        )
+
+        if latestEvent is None:
+            continue
+
+        now = datetime.now()
+        distanceUntilToday = get_distance_between_dates(
+            latestEvent.event_date, now, [maintenance.type]
+        )
+
+        if not maintenance.is_reminder_active:
+            continue
+
+        if distanceUntilToday >= maintenance.reminder_limit:
+            numberOfTriggeredMaintenanceReminders += 1
+
+    return numberOfTriggeredMaintenanceReminders

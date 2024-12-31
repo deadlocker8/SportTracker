@@ -80,3 +80,13 @@ def get_maintenance_events_by_maintenance_id(maintenance_id: int) -> list[Mainte
         .order_by(MaintenanceEventInstance.event_date.asc())
         .all()
     )
+
+
+def get_latest_maintenance_event_by_maintenance_id(maintenance_id: int) -> MaintenanceEventInstance:
+    return (
+        MaintenanceEventInstance.query.join(Maintenance)
+        .filter(Maintenance.user_id == current_user.id)
+        .filter(MaintenanceEventInstance.maintenance_id == maintenance_id)
+        .order_by(MaintenanceEventInstance.event_date.desc())
+        .first()
+    )
