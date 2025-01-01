@@ -29,10 +29,12 @@ class DummyDataGenerator:
     NUMBER_OF_TRACKS_PER_MONTH_BIKING = 7
     NUMBER_OF_TRACKS_PER_MONTH_RUNNING = 2
     NUMBER_OF_TRACKS_PER_MONTH_HIKING = 1
+    NUMBER_OF_TRACKS_PER_MONTH_WORKOUT = 2
     AVERAGE_SPEED_IN_KMH_BIKING = 22
     AVERAGE_SPEED_IN_KMH_RUNNING = 10
     AVERAGE_SPEED_IN_KMH_HIKING = 4
     TRACK_NAMES = ['Short trip', 'Afterwork I', 'Afterwork II', 'Berlin + Potsdam', 'Megatour']
+    WORKOUT_NAMES = ['Core Workout', 'HIIT', 'Leg Day', 'Biceps']
     GPX_FILE_NAMES = ['gpxTrack_1.gpx', 'gpxTrack_2.gpx']
     MAINTENANCE_EVENT_NAMES = ['chain oiled', 'new pedals', 'new front tire']
 
@@ -93,6 +95,15 @@ class DummyDataGenerator:
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_HIKING,
                 distanceMin=6.0,
                 distanceMax=18.0,
+            )
+
+            self.__generate_demo_duration_based_tracks(
+                user=user,
+                trackType=TrackType.WORKOUT,
+                numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_WORKOUT,
+                numberOfTracksWithParticipants=1,
+                durationMin=20 * 60,
+                durationMax=90 * 60,
             )
 
             self.__generate_demo_month_goals(user)
@@ -158,10 +169,10 @@ class DummyDataGenerator:
 
         db.session.add(
             MonthGoalDuration(
-                type=TrackType.RUNNING,
+                type=TrackType.WORKOUT,
                 year=self._now.year,
                 month=self._now.month,
-                duration_minimum=4 * 60 * 60,
+                duration_minimum=2 * 60 * 60,
                 duration_perfect=6 * 60 * 60,
                 user_id=user.id,
             )
@@ -265,6 +276,54 @@ class DummyDataGenerator:
         db.session.commit()
 
         item.gpx_metadata_id = gpxMetadata.id
+
+    def __generate_demo_duration_based_tracks(
+        self,
+        user: User,
+        trackType: TrackType,
+        numberOfTracksPerMonth: int,
+        numberOfTracksWithParticipants: int,
+        durationMin: int,
+        durationMax: int,
+    ) -> None:
+        LOGGER.debug(f'Generate dummy duration-based tracks {trackType.name}...')
+
+        fake = Faker()
+
+        lastDayCurrentMonth = datetime.now().date() + relativedelta(day=31)
+
+        for monthIndex in range(self.NUMBER_OF_MONTHS):
+            firstDay = date(year=lastDayCurrentMonth.year, month=lastDayCurrentMonth.month, day=1)
+
+            indexesWithParticipants = random.choices(
+                range(numberOfTracksPerMonth), k=numberOfTracksWithParticipants
+            )
+
+            for index in range(numberOfTracksPerMonth):
+                fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
+                duration = round(random.uniform(durationMin, durationMax), 2)
+                heartRate = random.randint(85, 160)
+
+                track = Track(
+                    type=trackType,
+                    name=random.choice(self.WORKOUT_NAMES),
+                    startTime=fakeTime,
+                    duration=duration,
+                    distance=0,
+                    averageHeartRate=heartRate,
+                    elevationSum=None,
+                    user_id=user.id,
+                    custom_fields={},
+                    share_code=None,
+                )
+
+                if index in indexesWithParticipants:
+                    track.participants = [self.__get_participant()]
+
+                db.session.add(track)
+                db.session.commit()
+
+            lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 
     def __generate_demo_maintenance_events(self, user) -> None:
         lastDayCurrentMonth = datetime.now().date()
