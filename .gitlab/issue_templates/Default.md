@@ -1,3 +1,4 @@
+- [ ] adapt/add selenium tests
 - [ ] update localization
 - [ ] update icon overview 
 - [ ] database migration
