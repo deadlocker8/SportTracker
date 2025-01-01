@@ -96,9 +96,9 @@
                                                    required="required"
                                                    {% if goal %}value="{{ goal.duration_minimum_hours }}"{% endif %}>
 
-                                            <label for="track-duration-minutes" class="form-label">&nbsp;</label>
+                                            <label for="month-goal-minimum-minutes" class="form-label">&nbsp;</label>
                                             <input type="number" step="1" min="0" max="59" class="form-control"
-                                                   id="track-duration-minutes" name="duration_minimum_minutes"
+                                                   id="month-goal-minimum-minutes" name="duration_minimum_minutes"
                                                    placeholder="{{ gettext('Minutes') }}" required="required"
                                                    {% if goal %}value="{{ goal.duration_minimum_minutes }}"{% endif %}>
                                         </div>
@@ -114,9 +114,9 @@
                                                    required="required"
                                                    {% if goal %}value="{{ goal.duration_perfect_hours }}"{% endif %}>
 
-                                            <label for="track-duration-minutes" class="form-label">&nbsp;</label>
+                                            <label for="month-goal-perfect-minutes" class="form-label">&nbsp;</label>
                                             <input type="number" step="1" min="0" max="59" class="form-control"
-                                                   id="track-duration-minutes" name="duration_perfect_minutes"
+                                                   id="month-goal-perfect-minutes" name="duration_perfect_minutes"
                                                    placeholder="{{ gettext('Minutes') }}" required="required"
                                                    {% if goal %}value="{{ goal.duration_perfect_minutes }}"{% endif %}>
                                         </div>

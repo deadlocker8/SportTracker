@@ -174,3 +174,94 @@ class TestMonthGoalsCount(SeleniumTestBaseClass):
         self.__open_form(selenium, 3, 'Multiple New Count Month Goals')
         self.__fill_and_submit_multiple_form(selenium, '', '', '', '', '', '')
         assert selenium.current_url.endswith('/goalsCount/addMultiple')
+
+
+class TestMonthGoalsDuration(SeleniumTestBaseClass):
+    def __open_form(self, selenium, index, expectedTitle):
+        self.login(selenium)
+        selenium.get(self.build_url('/goals'))
+
+        # open goal chooser
+        selenium.find_element(By.CLASS_NAME, 'headline').find_element(By.TAG_NAME, 'a').click()
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'New Month Goal'
+            )
+        )
+
+        # click button to create new goal
+        buttons = selenium.find_elements(By.CSS_SELECTOR, 'section .btn')
+        buttons[index].click()
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), expectedTitle
+            )
+        )
+
+    @staticmethod
+    def __fill_and_submit_form(
+        selenium, year, month, minimumHours, minimumMinutes, perfectHours, perfectMinutes
+    ):
+        selenium.find_element(By.ID, 'month-goal-year').send_keys(year)
+        selenium.find_element(By.ID, 'month-goal-month').send_keys(month)
+        selenium.find_element(By.ID, 'month-goal-minimum-hours').send_keys(minimumHours)
+        selenium.find_element(By.ID, 'month-goal-minimum-minutes').send_keys(minimumMinutes)
+        selenium.find_element(By.ID, 'month-goal-perfect-hours').send_keys(perfectHours)
+        selenium.find_element(By.ID, 'month-goal-perfect-minutes').send_keys(perfectMinutes)
+        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+
+    @staticmethod
+    def __fill_and_submit_multiple_form(
+        selenium,
+        starYear,
+        startMonth,
+        endYear,
+        endMonth,
+        minimumHours,
+        minimumMinutes,
+        perfectHours,
+        perfectMinutes,
+    ):
+        selenium.find_element(By.ID, 'month-goal-start-year').send_keys(starYear)
+        selenium.find_element(By.ID, 'month-goal-start-month').send_keys(startMonth)
+        selenium.find_element(By.ID, 'month-goal-end-year').send_keys(endYear)
+        selenium.find_element(By.ID, 'month-goal-end-month').send_keys(endMonth)
+        selenium.find_element(By.ID, 'month-goal-minimum-hours').send_keys(minimumHours)
+        selenium.find_element(By.ID, 'month-goal-minimum-minutes').send_keys(minimumMinutes)
+        selenium.find_element(By.ID, 'month-goal-perfect-hours').send_keys(perfectHours)
+        selenium.find_element(By.ID, 'month-goal-perfect-minutes').send_keys(perfectMinutes)
+        selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
+
+    def test_add_duration_goal_valid(self, server, selenium: WebDriver):
+        self.__open_form(selenium, 4, 'New Duration Month Goal')
+        self.__fill_and_submit_form(selenium, 2024, 2, 1, 30, 3, 0)
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Month Goals'
+            )
+        )
+
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 1
+
+    def test_add_duration_goal_all_empty(self, server, selenium: WebDriver):
+        self.__open_form(selenium, 4, 'New Duration Month Goal')
+        self.__fill_and_submit_form(selenium, '', '', '', '', '', '')
+        assert selenium.current_url.endswith('/goalsDuration/add')
+
+    def test_add_multiple_duration_goals_valid(self, server, selenium: WebDriver):
+        self.__open_form(selenium, 5, 'Multiple New Duration Month Goals')
+        self.__fill_and_submit_multiple_form(selenium, 2023, 11, 2024, 2, 1, 30, 3, 0)
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Month Goals'
+            )
+        )
+
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 4
+
+    def test_add_multiple_duration_goals_all_empty(self, server, selenium: WebDriver):
+        self.__open_form(selenium, 5, 'Multiple New Duration Month Goals')
+        self.__fill_and_submit_multiple_form(selenium, '', '', '', '', '', '', '', '')
+        assert selenium.current_url.endswith('/goalsDuration/addMultiple')
