@@ -1,4 +1,4 @@
-# 1.32.0 - (XX.XX.XX)
+# 1.32.0 - (01.01.25)
 - add: maintenance reminders: for each maintenance an optional reminder can be activated. If a maintenance exceeds the given reminder limit you will be notified in the navbar and on the maintenance page (#149)
 - add: new track type "Workout" - In addition to the existing distance based track types a new type is now available that is duration based, e.g. for workouts (#152)
 - add: new month goal type: duration month goal
@@ -6,6 +6,7 @@
 - add: chart: distance per participant: include distance travelled alone (#151)
 - fix: add multiple month goals: end month is now included (#148)
 - chore: update to python 3.12 (#150)
+- chore: update dependencies
 
 # 1.31.0 - (09.11.24)
 - add: redesigned maintenance events page (grouped by type and description, show distances, show distance until today, ...) (#141)
