@@ -6,7 +6,11 @@ from flask_login import current_user
 from sqlalchemy import asc, func, extract
 
 from sporttracker.logic.model.MonthGoal import get_goal_summaries_by_year_and_month_and_types
-from sporttracker.logic.model.Track import get_distance_per_month_by_type, Track
+from sporttracker.logic.model.Track import (
+    get_distance_per_month_by_type,
+    Track,
+    get_duration_per_month_by_type,
+)
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.db import db
 
@@ -57,7 +61,7 @@ class AchievementCalculator:
         return value / 1000
 
     @staticmethod
-    def get_best_month_by_type(trackType: TrackType) -> tuple[str, float]:
+    def get_best_distance_month_by_type(trackType: TrackType) -> tuple[str, float]:
         maxDate, minDate = AchievementCalculator._get_min_and_max_date(trackType)
 
         if minDate is None or maxDate is None:
@@ -112,6 +116,44 @@ class AchievementCalculator:
                 year += 1
 
         return highestStreak, currentStreak
+
+    @staticmethod
+    def get_track_with_longest_duration_by_type(trackType: TrackType) -> Track | None:
+        return (
+            Track.query.filter(Track.type == trackType)
+            .filter(Track.user_id == current_user.id)
+            .order_by(Track.duration.desc())
+            .first()
+        )
+
+    @staticmethod
+    def get_total_duration_by_type(trackType: TrackType) -> int:
+        value = (
+            db.session.query(func.sum(Track.duration))
+            .filter(Track.type == trackType)
+            .filter(Track.user_id == current_user.id)
+            .scalar()
+            or 0
+        )
+        return value
+
+    @staticmethod
+    def get_best_duration_month_by_type(trackType: TrackType) -> tuple[str, int]:
+        maxDate, minDate = AchievementCalculator._get_min_and_max_date(trackType)
+
+        if minDate is None or maxDate is None:
+            return gettext('No month'), 0
+
+        monthDurationSums = get_duration_per_month_by_type(trackType, minDate.year, maxDate.year)
+
+        if not monthDurationSums:
+            return gettext('No month'), 0
+
+        bestMonth = max(
+            monthDurationSums, key=lambda monthDurationSum: monthDurationSum.durationSum
+        )
+        bestMonthDate = date(year=bestMonth.year, month=bestMonth.month, day=1)
+        return format_datetime(bestMonthDate, format='MMMM yyyy'), bestMonth.durationSum
 
     @staticmethod
     def _get_min_and_max_date(trackType: TrackType) -> tuple[datetime | None, datetime | None]:

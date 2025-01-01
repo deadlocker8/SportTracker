@@ -20,14 +20,16 @@ def prepare_test_data(app):
         create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH)
 
 
-def create_dummy_track(date: datetime.date, distance: int) -> Track:
+def create_dummy_track(
+    trackType: TrackType, date: datetime.date, distance: int, duration: int = 2000
+) -> Track:
     return Track(
-        type=TrackType.BIKING,
+        type=trackType,
         name='Dummy Track',
         startTime=datetime.datetime(
             year=date.year, month=date.month, day=date.day, hour=12, minute=0, second=0
         ),
-        duration=2000,
+        duration=duration,
         distance=distance * 1000,
         averageHeartRate=130,
         elevationSum=16,
@@ -74,15 +76,52 @@ class TestAchievementCalculatorGetLongestDistanceByType:
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_track(datetime.date(2023, 2, 1), 50))
-            db.session.add(create_dummy_track(datetime.date(2023, 3, 1), 22))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 2, 1), 50))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 3, 1), 22))
             db.session.commit()
 
             result = AchievementCalculator.get_track_with_longest_distance_by_type(TrackType.BIKING)
             assert result is not None
             assert 2 == result.id
             assert 50000 == result.distance
+
+
+class TestAchievementCalculatorGetLongestDurationByType:
+    def test_get_track_with_longest_duration_by_type_no_tracks_should_return_none(self, app):
+        with app.test_request_context():
+            user = db.session.get(User, 1)
+            login_user(user, remember=False)
+
+            result = AchievementCalculator.get_track_with_longest_duration_by_type(
+                TrackType.WORKOUT
+            )
+            assert result is None
+
+    def test_get_track_with_longest_duration_by_type_multiple_tracks_should_return_max_duration(
+        self, app
+    ):
+        with app.test_request_context():
+            user = db.session.get(User, 1)
+            login_user(user, remember=False)
+
+            db.session.add(
+                create_dummy_track(TrackType.WORKOUT, datetime.date(2023, 1, 1), 30, duration=2000)
+            )
+            db.session.add(
+                create_dummy_track(TrackType.WORKOUT, datetime.date(2023, 2, 1), 50, duration=4000)
+            )
+            db.session.add(
+                create_dummy_track(TrackType.WORKOUT, datetime.date(2023, 3, 1), 22, duration=3000)
+            )
+            db.session.commit()
+
+            result = AchievementCalculator.get_track_with_longest_duration_by_type(
+                TrackType.WORKOUT
+            )
+            assert result is not None
+            assert 2 == result.id
+            assert 4000 == result.duration
 
 
 class TestAchievementCalculatorGetTotalDistanceByType:
@@ -99,48 +138,122 @@ class TestAchievementCalculatorGetTotalDistanceByType:
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_track(datetime.date(2023, 2, 1), 50))
-            db.session.add(create_dummy_track(datetime.date(2023, 3, 1), 22))
+            db.session.add(
+                create_dummy_track(TrackType.WORKOUT, datetime.date(2023, 1, 1), 30, duration=2000)
+            )
+            db.session.add(
+                create_dummy_track(TrackType.WORKOUT, datetime.date(2023, 2, 1), 50, duration=4000)
+            )
+            db.session.add(
+                create_dummy_track(TrackType.WORKOUT, datetime.date(2023, 3, 1), 22, duration=3000)
+            )
+            db.session.commit()
+
+            result = AchievementCalculator.get_total_duration_by_type(TrackType.WORKOUT)
+            assert 9000 == result
+
+
+class TestAchievementCalculatorGetTotalDurationByType:
+    def test_get_total_duration_by_type_no_tracks_should_return_0(self, app):
+        with app.test_request_context():
+            user = db.session.get(User, 1)
+            login_user(user, remember=False)
+
+            result = AchievementCalculator.get_total_distance_by_type(TrackType.WORKOUT)
+            assert 0 == result
+
+    def test_get_total_duration_by_type_multiple_tracks_should_return_max_duration(self, app):
+        with app.test_request_context():
+            user = db.session.get(User, 1)
+            login_user(user, remember=False)
+
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 2, 1), 50))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 3, 1), 22))
             db.session.commit()
 
             result = AchievementCalculator.get_total_distance_by_type(TrackType.BIKING)
             assert 102 == result
 
 
-class TestAchievementCalculatorGetBestMonthByType:
-    def test_get_best_month_by_type_no_tracks_should_return_0(self, app):
+class TestAchievementCalculatorGetBestDistanceMonthByType:
+    def test_get_best_distance_month_by_type_no_tracks_should_return_0(self, app):
         with app.test_request_context():
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            result = AchievementCalculator.get_best_month_by_type(TrackType.BIKING)
+            result = AchievementCalculator.get_best_distance_month_by_type(TrackType.BIKING)
             assert ('No month', 0) == result
 
-    def test_get_best_month_by_type_single_months(self, app):
+    def test_get_best_distance_month_by_type_single_months(self, app):
         with app.test_request_context():
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 30))
             db.session.commit()
 
-            result = AchievementCalculator.get_best_month_by_type(TrackType.BIKING)
+            result = AchievementCalculator.get_best_distance_month_by_type(TrackType.BIKING)
             assert ('January 2023', 30) == result
 
-    def test_get_best_month_by_type_multiple_months(self, app):
+    def test_get_best_distance_month_by_type_multiple_months(self, app):
         with app.test_request_context():
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_track(datetime.date(2023, 2, 1), 22))
-            db.session.add(create_dummy_track(datetime.date(2023, 2, 5), 30))
-            db.session.add(create_dummy_track(datetime.date(2023, 3, 1), 22))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 2, 1), 22))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 2, 5), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 3, 1), 22))
             db.session.commit()
 
-            result = AchievementCalculator.get_best_month_by_type(TrackType.BIKING)
+            result = AchievementCalculator.get_best_distance_month_by_type(TrackType.BIKING)
             assert ('February 2023', 52) == result
+
+
+class TestAchievementCalculatorGetBestDurationMonthByType:
+    def test_get_best_duration_month_by_type_no_tracks_should_return_0(self, app):
+        with app.test_request_context():
+            user = db.session.get(User, 1)
+            login_user(user, remember=False)
+
+            result = AchievementCalculator.get_best_duration_month_by_type(TrackType.WORKOUT)
+            assert ('No month', 0) == result
+
+    def test_get_best_duration_month_by_type_single_months(self, app):
+        with app.test_request_context():
+            user = db.session.get(User, 1)
+            login_user(user, remember=False)
+
+            db.session.add(
+                create_dummy_track(TrackType.WORKOUT, datetime.date(2023, 1, 1), 30, duration=3000)
+            )
+            db.session.commit()
+
+            result = AchievementCalculator.get_best_duration_month_by_type(TrackType.WORKOUT)
+            assert ('January 2023', 3000) == result
+
+    def test_get_best_duration_month_by_type_multiple_months(self, app):
+        with app.test_request_context():
+            user = db.session.get(User, 1)
+            login_user(user, remember=False)
+
+            db.session.add(
+                create_dummy_track(TrackType.WORKOUT, datetime.date(2023, 1, 1), 30, duration=2000)
+            )
+            db.session.add(
+                create_dummy_track(TrackType.WORKOUT, datetime.date(2023, 2, 1), 22, duration=4000)
+            )
+            db.session.add(
+                create_dummy_track(TrackType.WORKOUT, datetime.date(2023, 2, 5), 30, duration=3000)
+            )
+            db.session.add(
+                create_dummy_track(TrackType.WORKOUT, datetime.date(2023, 3, 1), 22, duration=3500)
+            )
+            db.session.commit()
+
+            result = AchievementCalculator.get_best_duration_month_by_type(TrackType.WORKOUT)
+            assert ('February 2023', 7000) == result
 
 
 class TestAchievementCalculatorGetStreaksByType:
@@ -161,7 +274,7 @@ class TestAchievementCalculatorGetStreaksByType:
 
             db.session.add(create_distance_goal(2023, 1))
 
-            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 30))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
@@ -177,8 +290,8 @@ class TestAchievementCalculatorGetStreaksByType:
             db.session.add(create_distance_goal(2023, 1))
             db.session.add(create_distance_goal(2023, 2))
 
-            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_track(datetime.date(2023, 2, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 2, 1), 30))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
@@ -196,10 +309,10 @@ class TestAchievementCalculatorGetStreaksByType:
             db.session.add(create_distance_goal(2023, 3))
             db.session.add(create_distance_goal(2023, 4))
 
-            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_track(datetime.date(2023, 2, 1), 30))
-            db.session.add(create_dummy_track(datetime.date(2023, 3, 1), 10))
-            db.session.add(create_dummy_track(datetime.date(2023, 4, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 2, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 3, 1), 10))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 4, 1), 30))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
@@ -217,10 +330,10 @@ class TestAchievementCalculatorGetStreaksByType:
             db.session.add(create_distance_goal(2024, 1))
             db.session.add(create_distance_goal(2024, 2))
 
-            db.session.add(create_dummy_track(datetime.date(2023, 11, 1), 30))
-            db.session.add(create_dummy_track(datetime.date(2023, 12, 1), 30))
-            db.session.add(create_dummy_track(datetime.date(2024, 1, 1), 30))
-            db.session.add(create_dummy_track(datetime.date(2024, 2, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 11, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 12, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2024, 1, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2024, 2, 1), 30))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
@@ -236,8 +349,8 @@ class TestAchievementCalculatorGetStreaksByType:
             db.session.add(create_distance_goal(2023, 1))
             db.session.add(create_distance_goal(2023, 1, distanceMinimum=50))
 
-            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 80))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 80))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
@@ -255,8 +368,8 @@ class TestAchievementCalculatorGetStreaksByType:
             db.session.add(create_distance_goal(2023, 1))
             db.session.add(create_count_goal(2023, 1))
 
-            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 80))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 80))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
@@ -273,9 +386,9 @@ class TestAchievementCalculatorGetStreaksByType:
             db.session.add(create_distance_goal(2023, 2))
             db.session.add(create_distance_goal(2023, 3))
 
-            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_track(datetime.date(2023, 2, 1), 30))
-            db.session.add(create_dummy_track(datetime.date(2023, 3, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 2, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 3, 1), 30))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
@@ -292,8 +405,8 @@ class TestAchievementCalculatorGetStreaksByType:
             db.session.add(create_distance_goal(2023, 2))
             db.session.add(create_distance_goal(2023, 3))
 
-            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_track(datetime.date(2023, 2, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 2, 1), 30))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
@@ -311,7 +424,7 @@ class TestAchievementCalculatorGetStreaksByType:
                 create_distance_goal(2023, 1, distanceMinimum=50, trackType=TrackType.RUNNING)
             )
 
-            db.session.add(create_dummy_track(datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 30))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
@@ -336,10 +449,10 @@ class TestAchievementCalculatorGetAverageSpeedByType:
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            track_1 = create_dummy_track(datetime.date(2023, 1, 1), 30)
-            track_2 = create_dummy_track(datetime.date(2023, 2, 1), 50)
-            track_3 = create_dummy_track(datetime.date(2023, 3, 1), 22)
-            track_4 = create_dummy_track(datetime.date(2022, 1, 1), 20)
+            track_1 = create_dummy_track(TrackType.BIKING, datetime.date(2023, 1, 1), 30)
+            track_2 = create_dummy_track(TrackType.BIKING, datetime.date(2023, 2, 1), 50)
+            track_3 = create_dummy_track(TrackType.BIKING, datetime.date(2023, 3, 1), 22)
+            track_4 = create_dummy_track(TrackType.BIKING, datetime.date(2022, 1, 1), 20)
             db.session.add(track_1)
             db.session.add(track_2)
             db.session.add(track_3)

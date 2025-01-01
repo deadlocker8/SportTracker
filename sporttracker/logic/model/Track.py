@@ -59,13 +59,13 @@ class Track(db.Model):  # type: ignore[name-defined]
         return f'{self.id} - {escapedName}'
 
     def clear_attributes_for_track_type(self) -> None:
-        trackType = TrackType(self.type)
+        trackType = TrackType(self.type)  # type: ignore[call-arg]
         if not trackType.supports_distance:
             self.distance = 0
-            self.elevationSum = None
+            self.elevationSum = None  # type: ignore[assignment]
             self.gpx_metadata_id = None
-            self.plannedTour = None
-            self.share_code = None
+            self.plannedTour = None  # type: ignore[assignment]
+            self.share_code = None  # type: ignore[assignment]
 
 
 def get_track_names_by_track_type(trackType: TrackType) -> list[str]:
@@ -106,6 +106,13 @@ class MonthDistanceSum:
     distanceSum: float
 
 
+@dataclass
+class MonthDurationSum:
+    year: int
+    month: int
+    durationSum: int
+
+
 def get_distance_per_month_by_type(
     trackType: TrackType, minYear: int, maxYear: int
 ) -> list[MonthDistanceSum]:
@@ -140,6 +147,42 @@ def get_distance_per_month_by_type(
                 result.append(
                     MonthDistanceSum(year=currentYear, month=currentMonth, distanceSum=0.0)
                 )
+
+    return result
+
+
+def get_duration_per_month_by_type(
+    trackType: TrackType, minYear: int, maxYear: int
+) -> list[MonthDurationSum]:
+    year = extract('year', Track.startTime)
+    month = extract('month', Track.startTime)
+
+    rows = (
+        Track.query.with_entities(
+            func.sum(Track.duration).label('durationSum'),
+            year.label('year'),
+            month.label('month'),
+        )
+        .filter(Track.type == trackType)
+        .filter(Track.user_id == current_user.id)
+        .group_by(year, month)
+        .order_by(year, month)
+        .all()
+    )
+
+    result = []
+    for currentYear in range(minYear, maxYear + 1):
+        for currentMonth in range(1, 13):
+            for row in rows:
+                if row.year == currentYear and row.month == currentMonth:
+                    result.append(
+                        MonthDurationSum(
+                            year=currentYear, month=currentMonth, durationSum=int(row.durationSum)
+                        )
+                    )
+                    break
+            else:
+                result.append(MonthDurationSum(year=currentYear, month=currentMonth, durationSum=0))
 
     return result
 
