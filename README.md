@@ -24,7 +24,7 @@ You can share your tracks via public links.
 ![](screenshots/tracks.png)
 
 ### Month goals
-Set custom month goals (either distance or number of tracks).
+Set custom month goals (either distance, duration or number of tracks).
 The current status of each month goal is visualized via progress bars.
 
 ![](screenshots/goals.png)
