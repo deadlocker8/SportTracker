@@ -43,4 +43,10 @@ def get_quick_filter_state_from_session() -> QuickFilterState:
     if 'quickFilterState' not in session:
         session['quickFilterState'] = QuickFilterState().to_json()
 
+    quickFilterState = QuickFilterState.from_json(session['quickFilterState'])
+
+    # check if any track types are missing and update session accordingly
+    if quickFilterState.get_states().keys() != QuickFilterState().get_states().keys():
+        session['quickFilterState'] = QuickFilterState().to_json()
+
     return QuickFilterState.from_json(session['quickFilterState'])

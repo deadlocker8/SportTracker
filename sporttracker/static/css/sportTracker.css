@@ -39,6 +39,18 @@ body {
     border-color: #6BBDA5 !important;
 }
 
+.bg-purple {
+    background-color: #AB87FF;
+}
+
+.text-purple {
+    color: #AB87FF;
+}
+
+.border-purple {
+    border-color: #AB87FF !important;
+}
+
 .bg-orange {
     background-color: #FD7E14;
 }

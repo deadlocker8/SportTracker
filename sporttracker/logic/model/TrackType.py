@@ -36,13 +36,26 @@ class TrackType(enum.Enum):
         'hiking',
         False,
         'bg-green',
-        '#619B8A',
+        '#6BBDA5',
         'border-green',
         'text-green',
         '#39B856AA',
         True,
         2,
         True,
+    )
+    WORKOUT = (
+        'WORKOUT',
+        'fitness_center',
+        False,
+        'bg-purple',
+        '#AB87FF',
+        'border-purple',
+        'text-purple',
+        '#39B856AA',
+        True,
+        3,
+        False,
     )
 
     icon: str
@@ -92,6 +105,8 @@ class TrackType(enum.Enum):
             return gettext('Running')
         elif self == self.HIKING:
             return gettext('Hiking')
+        elif self == self.WORKOUT:
+            return gettext('Workout')
 
         raise ValueError(f'Could not get localized name for unsupported TrackType: {self}')
 
