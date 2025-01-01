@@ -31,7 +31,7 @@ pillow = "11.0.0"
 fitdecode = "0.10.0"
 
 [tool.poetry.dev-dependencies]
-ruff = "0.7.3"
+ruff = "0.8.4"
 pre-commit = "4.0.1"
 mypy = "1.14.1"
 pytest = "8.3.4"
