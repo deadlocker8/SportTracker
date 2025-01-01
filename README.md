@@ -13,9 +13,14 @@ Multiple users can track their sport data using different accounts.
 Record the data of your training sessions after you have finished them.
 
 Supported types of sports:
+
+Distance-based:
 - Biking
 - Running
 - Hiking
+
+Duration-based:
+- Workouts
 
 You can fill in a lot of information for each training session. If the pre-defined inputs are not enough, it is possible to set custom fields for each type of sports.
 
@@ -30,7 +35,7 @@ The current status of each month goal is visualized via progress bars.
 ![](screenshots/goals.png)
 
 ### GPX tracks / Map
-A GPX recoding can be attached to every single track. The GPX recordings can be viewed on a map.
+A GPX recoding can be attached to every distance-based track. The GPX recordings can be viewed on a map.
 
 View all gpx tracks on a map:
 ![](screenshots/map_all.jpg)
@@ -93,7 +98,7 @@ Record your maintenance events for each sport type. You can optionally set remin
 ![](screenshots/maintenance.png)
 
 ### Planned Tours
-Save your planned tours for each sport type and view them on a map. Once you actually took a planned tour you can link the corresponding track to the tour.
+Save your planned tours for each sport type (distance-based types) and view them on a map. Once you actually took a planned tour you can link the corresponding track to the tour.
 
 ![](screenshots/planned_tours.jpg)
 
