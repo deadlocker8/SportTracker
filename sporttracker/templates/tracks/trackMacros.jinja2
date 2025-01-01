@@ -144,7 +144,7 @@
                             </div>
 
                             <div class="d-flex align-items-center justify-content-around me-1 me-md-3">
-                                {% if is_track_info_item_activated('DISTANCE') %}
+                                {% if track.type.supports_distance and is_track_info_item_activated('DISTANCE') %}
                                     {{ render_track_distance(track, renderAsRow) }}
                                 {% endif %}
 
@@ -152,7 +152,7 @@
                                     {{ render_track_duration(track, renderAsRow) }}
                                 {% endif %}
 
-                                {% if is_track_info_item_activated('SPEED') %}
+                                {% if track.type.supports_distance and is_track_info_item_activated('SPEED') %}
                                     {% if track.type.render_speed_in_kph %}
                                         {{ render_track_speed_kmh(track, renderAsRow) }}
                                     {% else %}
@@ -164,7 +164,7 @@
                                     {{ render_track_average_heart_rate(track, renderAsRow) }}
                                 {% endif %}
 
-                                {% if is_track_info_item_activated('ELEVATION_SUM') %}
+                                {% if track.type.supports_distance and is_track_info_item_activated('ELEVATION_SUM') %}
                                     {{ render_track_elevation(track, renderAsRow) }}
                                 {% endif %}
                             </div>
