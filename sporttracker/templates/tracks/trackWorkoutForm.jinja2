@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {% if track %}{{ gettext('Edit Workout') }}{% else %}{{ gettext('New Workout') }}{% endif %}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('tracks') }}
+
+        {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        {% if track %}
+                            {% call macros.headline(gettext('Edit Workout')) %}
+                                <span class="material-icons fs-1">fitness_center</span>
+                            {% endcall %}
+                            <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                                <span class="material-icons text-light">delete</span>&nbsp;{{ gettext('Delete') }}
+                            </button>
+
+                            {% call macros.deleteModal(gettext('Delete Track?'), gettext('Do you really want to delete the track "%(name)s" (ID: %(id)d)?', name=track.name, id=track_id)) %}
+                                <a href="{{ url_for('tracks.delete', track_id=track_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                            {% endcall %}
+                        {% else %}
+                            {% call macros.headline(gettext('New Workout')) %}
+                                <span class="material-icons fs-1">fitness_center</span>
+                            {% endcall %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row mt-5 text-start">
+                    <div class="col col-11 col-md-9 mx-auto">
+                        <form role="form" action="{% if track %}{{ url_for('tracks.editPost', track_id=track_id) }}{% else %}{{ url_for('tracks.addPost') }}{% endif %}"
+                              method="post"
+                              enctype=multipart/form-data>
+
+                            <input type="hidden" class="form-control" id="track-type" name="type" value="WORKOUT">
+                            <input type="hidden" class="form-control" id="track-distance" name="distance" value="0">
+
+                            {{ trackMacros.track_form_name(track, trackNames) }}
+
+                            {{ trackMacros.track_form_start_time(track) }}
+
+                            {{ trackMacros.track_form_duration(track) }}
+
+                            {{ trackMacros.track_form_average_heart_rate(track) }}
+
+                            {% for field in customFields %}
+                                {{ trackMacros.track_form_custom_field_input(field) }}
+                            {% endfor %}
+
+                            {{ trackMacros.track_form_participants(track, participants) }}
+
+                            <button type="submit" id="buttonSaveTrack" class="btn btn-success mt-5 input-field-margin d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+        <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/libs/bootstrap-autocomplete.min.js') }}" type="text/javascript"></script>
+        <script>
+             $('#track-name').autocomplete()
+        </script>
+    </body>
+</html>

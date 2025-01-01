@@ -58,6 +58,15 @@ class Track(db.Model):  # type: ignore[name-defined]
         escapedName = ''.join([c if c.isalnum() else '_' for c in str(self.name)])
         return f'{self.id} - {escapedName}'
 
+    def clear_attributes_for_track_type(self) -> None:
+        trackType = TrackType(self.type)
+        if not trackType.supports_distance:
+            self.distance = 0
+            self.elevationSum = None
+            self.gpx_metadata_id = None
+            self.plannedTour = None
+            self.share_code = None
+
 
 def get_track_names_by_track_type(trackType: TrackType) -> list[str]:
     rows = (

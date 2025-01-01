@@ -222,6 +222,8 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             share_code=form.shareCode if form.shareCode else None,
             plannedTour=plannedTour,
         )
+        track.clear_attributes_for_track_type()
+
         LOGGER.debug(f'Saved new track: {track}')
         db.session.add(track)
         db.session.commit()
@@ -311,6 +313,8 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
         track.participants = get_participants_by_ids(participantIds)
         track.share_code = form.shareCode if form.shareCode else None  # type: ignore[assignment]
         track.plannedTour = plannedTour  # type: ignore[assignment]
+
+        track.clear_attributes_for_track_type()
 
         shouldUpdateVisitedTiles = False
         newGpxMetadataId = gpxService.handle_gpx_upload_for_track(request.files)
