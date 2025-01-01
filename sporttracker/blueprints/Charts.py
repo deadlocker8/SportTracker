@@ -44,6 +44,9 @@ def construct_blueprint():
             return chartDataDistancePerYear
         else:
             for trackType in TrackType:
+                if not trackType.supports_distance:
+                    continue
+
                 chartDataDistancePerYear.append(
                     __get_distance_per_year_by_type(trackType, minYear, maxYear)
                 )
@@ -62,6 +65,9 @@ def construct_blueprint():
             return chartDataDistancePerMonth
         else:
             for trackType in TrackType:
+                if not trackType.supports_distance:
+                    continue
+
                 chartDataDistancePerMonth.append(
                     __get_distance_per_month_by_type(trackType, minYear, maxYear)
                 )
@@ -89,9 +95,14 @@ def construct_blueprint():
     @charts.route('/chartDistancePerCustomFieldChooser')
     @login_required
     def chartDistancePerCustomFieldChooser():
+        customFieldsByTrackType = get_custom_fields_by_track_type()
+        for trackType in TrackType:
+            if not trackType.supports_distance:
+                del customFieldsByTrackType[trackType]
+
         return render_template(
             'charts/chartDistancePerCustomFieldChooser.jinja2',
-            customFieldsByTrackType=get_custom_fields_by_track_type(),
+            customFieldsByTrackType=customFieldsByTrackType,
         )
 
     @charts.route('/chartDistancePerCustomField/<string:track_type>/<string:name>')
@@ -171,6 +182,9 @@ def construct_blueprint():
             return chartDataAverageSpeed
         else:
             for trackType in TrackType:
+                if not trackType.supports_distance:
+                    continue
+
                 tracks = (
                     Track.query.filter(Track.user_id == current_user.id)
                     .filter(Track.type == trackType)
@@ -200,7 +214,7 @@ def construct_blueprint():
     def chartDurationPerTrackChooser():
         return render_template(
             'charts/chartDurationPerTrackChooser.jinja2',
-            trackNamesByTrackType=__get_track_names_by_type(),
+            trackNamesByTrackType=__get_track_names_by_type(False),
         )
 
     @charts.route('/durationPerTrack/<string:track_type>/<string:name>')
@@ -247,12 +261,15 @@ def construct_blueprint():
     def chartSpeedPerTrackChooser():
         return render_template(
             'charts/chartSpeedPerTrackChooser.jinja2',
-            trackNamesByTrackType=__get_track_names_by_type(),
+            trackNamesByTrackType=__get_track_names_by_type(True),
         )
 
-    def __get_track_names_by_type():
+    def __get_track_names_by_type(onlyDistanceBasedTrackTypes: bool) -> dict[TrackType, list[str]]:
         trackNamesByTrackType = {}
         for trackType in TrackType:
+            if onlyDistanceBasedTrackTypes and not trackType.supports_distance:
+                continue
+
             rows = (
                 Track.query.with_entities(Track.name)
                 .filter(Track.user_id == current_user.id)
