@@ -9,7 +9,8 @@
                 marker: {
                     color: '{{ entry.type.background_color_hex }}'
                 },
-                name: '{{ entry.type.name | capitalize }}'
+                 text: {{ entry['texts'] }},
+                name: '{{ entry.type.name | capitalize }}',
             },
         {% endfor %}
     ];

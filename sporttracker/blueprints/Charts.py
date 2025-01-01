@@ -429,13 +429,15 @@ def construct_blueprint():
         monthDistanceSums = get_distance_per_month_by_type(trackType, minYear, maxYear)
         monthNames = []
         values = []
+        texts = []
 
         for monthDistanceSum in monthDistanceSums:
             monthDate = date(year=monthDistanceSum.year, month=monthDistanceSum.month, day=1)
             monthNames.append(format_datetime(monthDate, format='MMMM yyyy'))
             values.append(monthDistanceSum.distanceSum)
+            texts.append(f'{monthDistanceSum.distanceSum} km')
 
-        return {'monthNames': monthNames, 'values': values, 'type': trackType}
+        return {'monthNames': monthNames, 'values': values, 'texts': texts, 'type': trackType}
 
     def __get_distance_per_year_by_type(
         trackType: TrackType, minYear: int, maxYear: int
@@ -455,16 +457,19 @@ def construct_blueprint():
 
         yearNames = []
         values = []
+        texts = []
         for currentYear in range(minYear, maxYear + 1):
             for row in rows:
                 if row.year == currentYear:
                     yearNames.append(currentYear)
                     values.append(float(row.distanceSum))
+                    texts.append(f'{float(row.distanceSum)} km')
                     break
             else:
                 yearNames.append(currentYear)
                 values.append(0.0)
+                texts.append('0.0 km')
 
-        return {'yearNames': yearNames, 'values': values, 'type': trackType}
+        return {'yearNames': yearNames, 'values': values, 'texts': texts, 'type': trackType}
 
     return charts
