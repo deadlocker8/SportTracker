@@ -13,7 +13,7 @@ from sporttracker.logic.model.CustomTrackField import CustomTrackField, CustomTr
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.Maintenance import Maintenance
 from sporttracker.logic.model.MaintenanceEventInstance import MaintenanceEventInstance
-from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
+from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.PlannedTour import PlannedTour, TravelType, TravelDirection
 from sporttracker.logic.model.Track import Track
@@ -152,6 +152,17 @@ class DummyDataGenerator:
                 month=self._now.month,
                 count_minimum=1,
                 count_perfect=4,
+                user_id=user.id,
+            )
+        )
+
+        db.session.add(
+            MonthGoalDuration(
+                type=TrackType.RUNNING,
+                year=self._now.year,
+                month=self._now.month,
+                duration_minimum=4 * 60 * 60,
+                duration_perfect=6 * 60 * 60,
                 user_id=user.id,
             )
         )
