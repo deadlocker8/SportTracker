@@ -100,6 +100,25 @@ class TestTracks(SeleniumTestBaseClass):
         select = Select(selenium.find_element(By.ID, 'track-plannedTour'))
         select.select_by_visible_text(plannedTourName)
 
+    @staticmethod
+    def __fill_duration_based_form(
+        selenium,
+        name,
+        date,
+        startTime,
+        hours,
+        minutes,
+        seconds,
+        averageHeartRate,
+    ):
+        selenium.find_element(By.ID, 'track-name').send_keys(name)
+        selenium.find_element(By.ID, 'track-date').send_keys(date)
+        selenium.find_element(By.ID, 'track-time').send_keys(startTime)
+        selenium.find_element(By.ID, 'track-duration-hours').send_keys(hours)
+        selenium.find_element(By.ID, 'track-duration-minutes').send_keys(minutes)
+        selenium.find_element(By.ID, 'track-duration-seconds').send_keys(seconds)
+        selenium.find_element(By.ID, 'track-averageHeartRate').send_keys(averageHeartRate)
+
     def test_add_track_valid(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
@@ -436,3 +455,25 @@ class TestTracks(SeleniumTestBaseClass):
         pills = selenium.find_elements(By.CSS_SELECTOR, '.badge.rounded-pill.bg-orange')
         assert len(pills) == 1
         assert pills[0].text == '1 Tracks'
+
+    def test_add_duration_based_track_valid(self, server, selenium: WebDriver):
+        self.login(selenium)
+        self.__open_form(selenium, buttonIndex=3, expectedHeadline='New Workout')
+        self.__fill_duration_based_form(selenium, 'My Track', '2023-02-01', '15:30', 0, 1, 13, 46)
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+            )
+        )
+
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
+
+    def test_add_duration_based_track_all_empty(self, server, selenium: WebDriver):
+        self.login(selenium)
+        self.__open_form(selenium, buttonIndex=3, expectedHeadline='New Workout')
+        self.__fill_duration_based_form(selenium, '', '', '', '', '', '', '')
+        self.click_button_by_id(selenium, 'buttonSaveTrack')
+
+        assert selenium.current_url.endswith('/tracks/add/WORKOUT')
