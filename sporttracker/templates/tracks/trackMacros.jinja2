@@ -148,7 +148,7 @@
                                     {{ render_track_distance(track, renderAsRow) }}
                                 {% endif %}
 
-                                {% if is_track_info_item_activated('DURATION') %}
+                                {% if is_track_info_item_activated('DURATION') or not track.type.supports_distance %}
                                     {{ render_track_duration(track, renderAsRow) }}
                                 {% endif %}
 
@@ -160,7 +160,7 @@
                                     {% endif %}
                                 {% endif %}
 
-                                {% if is_track_info_item_activated('AVERAGE_HEART_RATE') %}
+                                {% if is_track_info_item_activated('AVERAGE_HEART_RATE') or not track.type.supports_distance %}
                                     {{ render_track_average_heart_rate(track, renderAsRow) }}
                                 {% endif %}
 
