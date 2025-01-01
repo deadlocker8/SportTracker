@@ -106,7 +106,9 @@ def construct_blueprint():
 
         return result
 
-    def __create_achievement_total_distance(availableYears, trackType, year, yearNames):
+    def __create_achievement_total_distance(
+        availableYears: list[int], trackType: TrackType, year: int, yearNames: list[str]
+    ) -> AnnualAchievement:
         values = []
         totalDistance = 0.0
         totalDistancePreviousYear = 0.0
@@ -148,7 +150,9 @@ def construct_blueprint():
             unit='km',
         )
 
-    def __create_achievement_total_duration(availableYears, trackType, year, yearNames):
+    def __create_achievement_total_duration(
+        availableYears: list[int], trackType: TrackType, year: int, yearNames: list[str]
+    ) -> AnnualAchievement:
         values = []
         totalDuration = 0
         totalDurationPreviousYear = 0
@@ -189,8 +193,14 @@ def construct_blueprint():
         )
 
     def __create_achievement_track_count(
-        availableYears, trackType, year, yearNames, title, icon, is_font_awesome_icon
-    ):
+        availableYears: list[int],
+        trackType: TrackType,
+        year: int,
+        yearNames: list[str],
+        title: str,
+        icon: str,
+        is_font_awesome_icon: bool,
+    ) -> AnnualAchievement:
         values = []
         totalTrackCount = 0
         totalTrackCountPreviousYear = 0
@@ -230,7 +240,9 @@ def construct_blueprint():
             unit='',
         )
 
-    def __create_achievement_longest_track(availableYears, trackType, year, yearNames):
+    def __create_achievement_longest_track(
+        availableYears: list[int], trackType: TrackType, year: int, yearNames: list[str]
+    ) -> AnnualAchievement:
         values = []
         longestTrack = 0.0
         longestTrackPreviousYear = 0.0
@@ -271,7 +283,9 @@ def construct_blueprint():
             unit='km',
         )
 
-    def __create_achievement_average_speed(availableYears, trackType, year, yearNames):
+    def __create_achievement_average_speed(
+        availableYears: list[int], trackType: TrackType, year: int, yearNames: list[str]
+    ) -> AnnualAchievement:
         values = []
         averageSpeed = 0.0
         averageSpeedPreviousYear = 0.0
@@ -310,7 +324,9 @@ def construct_blueprint():
             unit='km/h',
         )
 
-    def __create_achievement_longest_duration(availableYears, trackType, year, yearNames):
+    def __create_achievement_longest_duration(
+        availableYears: list[int], trackType: TrackType, year: int, yearNames: list[str]
+    ) -> AnnualAchievement:
         values = []
         longestDuration = 0
         longestDurationPreviousYear = 0
