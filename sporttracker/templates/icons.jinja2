@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 {% macro materialize_icon(name, iconName, outlined=false) -%}
-    <tr data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{{ iconName }}">
+    <tr data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{{ iconName }}{% if outlined %} (outlined){% endif %}">
         <td class="pe-5 fs-5">{{ name }}</td>
         <td class="fs-4 icon d-flex align-items-center" data-icon="{{ iconName }}">
             <span class="material-icons{% if outlined %}-outlined{% endif %}">{{ iconName }}</span>
@@ -110,7 +110,7 @@
                     {% call group('month goals') %}
                         {{ materialize_icon('month goal distance', 'route') }}
                         {{ materialize_icon('month goal count', 'format_list_numbered') }}
-                        {{ materialize_icon('month goal duration', 'timer') }}
+                        {{ materialize_icon('month goal duration', 'timer', true) }}
                     {% endcall %}
 
                     {% call group('month goal form') %}
