@@ -3,6 +3,7 @@
 - add: new track type "Workout" - In addition to the existing distance based track types a new type is now available that is duration based, e.g. for workouts (#152)
 - add: new month goal type: duration month goal
 - add: add formatted text for distance per year and distance per month chart (#155)
+- add: chart: distance per participant: include distance travelled alone (#151)
 - fix: add multiple month goals: end month is now included (#148)
 - chore: update to python 3.12 (#150)
 

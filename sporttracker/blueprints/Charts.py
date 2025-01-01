@@ -164,6 +164,17 @@ def construct_blueprint():
             )
             values.append(float(distance))
 
+        keys.append(gettext('You'))
+        distance = (
+            Track.query.with_entities(func.sum(Track.distance) / 1000)
+            .filter(Track.user_id == current_user.id)
+            .filter(Track.type == track_type)
+            .filter(~Track.participants.any())
+            .scalar()
+            or 0
+        )
+        values.append(float(distance))
+
         chartDistancePerParticipantData = {'keys': keys, 'values': values}
 
         return render_template(
