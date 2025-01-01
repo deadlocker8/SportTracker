@@ -127,6 +127,18 @@ class AchievementCalculator:
         )
 
     @staticmethod
+    def get_longest_duration_by_type_and_year(trackType: TrackType, year: int) -> int:
+        value = (
+            db.session.query(func.max(Track.duration))
+            .filter(Track.type == trackType)
+            .filter(Track.user_id == current_user.id)
+            .filter(extract('year', Track.startTime) == year)
+            .scalar()
+            or 0
+        )
+        return value
+
+    @staticmethod
     def get_total_duration_by_type(trackType: TrackType) -> int:
         value = (
             db.session.query(func.sum(Track.duration))
