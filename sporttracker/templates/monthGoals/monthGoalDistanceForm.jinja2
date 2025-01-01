@@ -43,7 +43,9 @@
                                     <span class="material-icons me-3">stars</span>
                                     <select class="form-select" id="month-goal-type" name="type" required="required">
                                         {% for trackType in trackTypes %}
-                                            <option value="{{ trackType.name }}" {% if goal and goal.type == trackType.name %}selected{% endif %}>{{ trackType.get_localized_name() }}</option>
+                                            {% if trackType.supports_distance %}
+                                                <option value="{{ trackType.name }}" {% if goal and goal.type == trackType.name %}selected{% endif %}>{{ trackType.get_localized_name() }}</option>
+                                            {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
