@@ -16,6 +16,7 @@ class TrackType(enum.Enum):
         '#FFC10796',
         True,
         0,
+        True,
     )
     RUNNING = (
         'RUNNING',
@@ -28,6 +29,7 @@ class TrackType(enum.Enum):
         '#0DCAF080',
         False,
         1,
+        True,
     )
     HIKING = (
         'HIKING',
@@ -40,6 +42,7 @@ class TrackType(enum.Enum):
         '#39B856AA',
         True,
         2,
+        True,
     )
 
     icon: str
@@ -51,6 +54,7 @@ class TrackType(enum.Enum):
     tile_color: str
     render_speed_in_kph: bool
     order: int
+    supports_distance: bool
 
     def __new__(
         cls,
@@ -64,6 +68,7 @@ class TrackType(enum.Enum):
         tile_color: str,
         render_speed_in_kph: bool,
         order: int,
+        supports_distance: bool,
     ):
         member = object.__new__(cls)
         member._value_ = name
@@ -76,6 +81,7 @@ class TrackType(enum.Enum):
         member.tile_color = tile_color
         member.render_speed_in_kph = render_speed_in_kph
         member.order = order
+        member.supports_distance = supports_distance
         return member
 
     def get_localized_name(self) -> str:
