@@ -51,220 +51,230 @@ def construct_blueprint():
         for trackType in TrackType:
             achievementList = []
 
-            values = []
-            totalDistance = 0.0
-            totalDistancePreviousYear = 0.0
-            for currentYear in availableYears:
-                value = AchievementCalculator.get_total_distance_by_type_and_year(
-                    trackType, currentYear
-                )
-                values.append(value)
-                if currentYear == year:
-                    totalDistance = value
-                elif currentYear == year - 1:
-                    totalDistancePreviousYear = value
-            totalDistanceDifference = totalDistance - totalDistancePreviousYear
-
-            totalDistanceAllYearData = AllYearData(
-                year_names=yearNames,
-                values=values,
-                labels=[__format_distance(x) for x in values],
-                min=__format_distance(min(values)) if values else '-',
-                max=__format_distance(max(values)) if values else '-',
-                sum=__format_distance(sum(values)) if values else '-',
-                average=__format_distance(mean(values)) if values else '-',
+            achievementList.append(
+                __create_achievement_total_distance(availableYears, trackType, year, yearNames)
             )
 
             achievementList.append(
-                AnnualAchievement(
-                    icon='map',
-                    is_font_awesome_icon=False,
-                    is_outlined_icon=False,
-                    color=trackType.border_color,
-                    title=gettext('Total Distance'),
-                    description=__format_distance(totalDistance),
-                    difference_to_previous_year=__format_distance(abs(totalDistanceDifference)),
-                    difference_type=AnnualAchievementDifferenceType.get_by_difference(
-                        totalDistanceDifference
-                    ),
-                    all_year_data=totalDistanceAllYearData,
-                    unit='km',
-                )
-            )
-
-            values = []
-            totalDuration = 0
-            totalDurationPreviousYear = 0
-            for currentYear in availableYears:
-                value = AchievementCalculator.get_total_duration_by_type_and_year(
-                    trackType, currentYear
-                )
-                values.append(value)
-                if currentYear == year:
-                    totalDuration = value
-                elif currentYear == year - 1:
-                    totalDurationPreviousYear = value
-            totalDurationDifference = totalDuration - totalDurationPreviousYear
-
-            totalDurationAllYearData = AllYearData(
-                year_names=yearNames,
-                values=[x / 3600 for x in values],
-                labels=[__format_duration(x) for x in values],
-                min=__format_duration(min(values)) if values else '-',
-                max=__format_duration(max(values)) if values else '-',
-                sum=__format_duration(sum(values)) if values else '-',
-                average=__format_duration(mean(values)) if values else '-',
+                __create_achievement_total_duration(availableYears, trackType, year, yearNames)
             )
 
             achievementList.append(
-                AnnualAchievement(
-                    icon='timer',
-                    is_font_awesome_icon=False,
-                    is_outlined_icon=True,
-                    color=trackType.border_color,
-                    title=gettext('Total Duration'),
-                    description=__format_duration(totalDuration),
-                    difference_to_previous_year=__format_duration(abs(totalDurationDifference)),
-                    difference_type=AnnualAchievementDifferenceType.get_by_difference(
-                        totalDurationDifference
-                    ),
-                    all_year_data=totalDurationAllYearData,
-                    unit=gettext('Hours'),
-                )
-            )
-
-            values = []
-            totalTrackCount = 0
-            totalTrackCountPreviousYear = 0
-            for currentYear in availableYears:
-                value = AchievementCalculator.get_total_number_of_tracks_by_type_and_year(
-                    trackType, currentYear
-                )
-                values.append(value)
-                if currentYear == year:
-                    totalTrackCount = value
-                elif currentYear == year - 1:
-                    totalTrackCountPreviousYear = value
-            totalTrackCountDifference = totalTrackCount - totalTrackCountPreviousYear
-
-            totalTrackCountAllYearData = AllYearData(
-                year_names=yearNames,
-                values=values,
-                labels=[__format_count(x) for x in values],
-                min=__format_count(min(values)) if values else '-',
-                max=__format_count(max(values)) if values else '-',
-                sum=__format_count(sum(values)) if values else '-',
-                average=__format_count(mean(values)) if values else '-',
+                __create_achievement_track_count(availableYears, trackType, year, yearNames)
             )
 
             achievementList.append(
-                AnnualAchievement(
-                    icon='fa-route',
-                    is_font_awesome_icon=True,
-                    is_outlined_icon=False,
-                    color=trackType.border_color,
-                    title=gettext('Number Of Tracks'),
-                    description=str(totalTrackCount),
-                    difference_to_previous_year=str(abs(totalTrackCountDifference)),
-                    difference_type=AnnualAchievementDifferenceType.get_by_difference(
-                        totalTrackCountDifference
-                    ),
-                    all_year_data=totalTrackCountAllYearData,
-                    unit='',
-                )
-            )
-
-            values = []
-            longestTrack = 0.0
-            longestTrackPreviousYear = 0.0
-            for currentYear in availableYears:
-                value = AchievementCalculator.get_longest_distance_by_type_and_year(
-                    trackType, currentYear
-                )
-                values.append(value)
-                if currentYear == year:
-                    longestTrack = value
-                elif currentYear == year - 1:
-                    longestTrackPreviousYear = value
-            longestTrackDifference = longestTrack - longestTrackPreviousYear
-
-            values = []
-            for currentYear in availableYears:
-                values.append(
-                    AchievementCalculator.get_longest_distance_by_type_and_year(
-                        trackType, currentYear
-                    )
-                )
-            longestTrackAllYearData = AllYearData(
-                year_names=yearNames,
-                values=values,
-                labels=[__format_distance(x) for x in values],
-                min=__format_distance(min(values)) if values else '-',
-                max=__format_distance(max(values)) if values else '-',
-                sum=__format_distance(sum(values)) if values else '-',
-                average=__format_distance(mean(values)) if values else '-',
+                __create_achievement_longest_track(availableYears, trackType, year, yearNames)
             )
 
             achievementList.append(
-                AnnualAchievement(
-                    icon='route',
-                    is_font_awesome_icon=False,
-                    is_outlined_icon=False,
-                    color=trackType.border_color,
-                    title=gettext('Longest Track'),
-                    description=__format_distance(longestTrack),
-                    difference_to_previous_year=__format_distance(abs(longestTrackDifference)),
-                    difference_type=AnnualAchievementDifferenceType.get_by_difference(
-                        longestTrackDifference
-                    ),
-                    all_year_data=longestTrackAllYearData,
-                    unit='km',
-                )
-            )
-
-            values = []
-            averageSpeed = 0.0
-            averageSpeedPreviousYear = 0.0
-            for currentYear in availableYears:
-                value = AchievementCalculator.get_average_speed_by_type_and_year(
-                    trackType, currentYear
-                )
-                values.append(value)
-                if currentYear == year:
-                    averageSpeed = value
-                elif currentYear == year - 1:
-                    averageSpeedPreviousYear = value
-            averageSpeedDifference = averageSpeed - averageSpeedPreviousYear
-
-            averageSpeedAllYearData = AllYearData(
-                year_names=yearNames,
-                values=values,
-                labels=[__format_speed(x) for x in values],
-                min=__format_speed(min(values)) if values else '-',
-                max=__format_speed(max(values)) if values else '-',
-                sum=__format_speed(sum(values)) if values else '-',
-                average=__format_speed(mean(values)) if values else '-',
-            )
-
-            achievementList.append(
-                AnnualAchievement(
-                    icon='speed',
-                    is_font_awesome_icon=False,
-                    is_outlined_icon=False,
-                    color=trackType.border_color,
-                    title=gettext('Average Speed'),
-                    description=__format_speed(averageSpeed),
-                    difference_to_previous_year=__format_speed(abs(averageSpeedDifference)),
-                    difference_type=AnnualAchievementDifferenceType.get_by_difference(
-                        averageSpeedDifference
-                    ),
-                    all_year_data=averageSpeedAllYearData,
-                    unit='km/h',
-                )
+                __create_achievement_average_speed(availableYears, trackType, year, yearNames)
             )
             result[trackType] = achievementList
 
         return result
+
+    def __create_achievement_total_distance(availableYears, trackType, year, yearNames):
+        values = []
+        totalDistance = 0.0
+        totalDistancePreviousYear = 0.0
+
+        for currentYear in availableYears:
+            value = AchievementCalculator.get_total_distance_by_type_and_year(
+                trackType, currentYear
+            )
+            values.append(value)
+
+            if currentYear == year:
+                totalDistance = value
+            elif currentYear == year - 1:
+                totalDistancePreviousYear = value
+
+        totalDistanceDifference = totalDistance - totalDistancePreviousYear
+        totalDistanceAllYearData = AllYearData(
+            year_names=yearNames,
+            values=values,
+            labels=[__format_distance(x) for x in values],
+            min=__format_distance(min(values)) if values else '-',
+            max=__format_distance(max(values)) if values else '-',
+            sum=__format_distance(sum(values)) if values else '-',
+            average=__format_distance(mean(values)) if values else '-',
+        )
+
+        return AnnualAchievement(
+            icon='map',
+            is_font_awesome_icon=False,
+            is_outlined_icon=False,
+            color=trackType.border_color,
+            title=gettext('Total Distance'),
+            description=__format_distance(totalDistance),
+            difference_to_previous_year=__format_distance(abs(totalDistanceDifference)),
+            difference_type=AnnualAchievementDifferenceType.get_by_difference(
+                totalDistanceDifference
+            ),
+            all_year_data=totalDistanceAllYearData,
+            unit='km',
+        )
+
+    def __create_achievement_total_duration(availableYears, trackType, year, yearNames):
+        values = []
+        totalDuration = 0
+        totalDurationPreviousYear = 0
+
+        for currentYear in availableYears:
+            value = AchievementCalculator.get_total_duration_by_type_and_year(
+                trackType, currentYear
+            )
+            values.append(value)
+            if currentYear == year:
+                totalDuration = value
+            elif currentYear == year - 1:
+                totalDurationPreviousYear = value
+
+        totalDurationDifference = totalDuration - totalDurationPreviousYear
+        totalDurationAllYearData = AllYearData(
+            year_names=yearNames,
+            values=[x / 3600 for x in values],
+            labels=[__format_duration(x) for x in values],
+            min=__format_duration(min(values)) if values else '-',
+            max=__format_duration(max(values)) if values else '-',
+            sum=__format_duration(sum(values)) if values else '-',
+            average=__format_duration(mean(values)) if values else '-',
+        )
+        return AnnualAchievement(
+            icon='timer',
+            is_font_awesome_icon=False,
+            is_outlined_icon=True,
+            color=trackType.border_color,
+            title=gettext('Total Duration'),
+            description=__format_duration(totalDuration),
+            difference_to_previous_year=__format_duration(abs(totalDurationDifference)),
+            difference_type=AnnualAchievementDifferenceType.get_by_difference(
+                totalDurationDifference
+            ),
+            all_year_data=totalDurationAllYearData,
+            unit=gettext('Hours'),
+        )
+
+    def __create_achievement_track_count(availableYears, trackType, year, yearNames):
+        values = []
+        totalTrackCount = 0
+        totalTrackCountPreviousYear = 0
+
+        for currentYear in availableYears:
+            value = AchievementCalculator.get_total_number_of_tracks_by_type_and_year(
+                trackType, currentYear
+            )
+            values.append(value)
+            if currentYear == year:
+                totalTrackCount = value
+            elif currentYear == year - 1:
+                totalTrackCountPreviousYear = value
+
+        totalTrackCountDifference = totalTrackCount - totalTrackCountPreviousYear
+        totalTrackCountAllYearData = AllYearData(
+            year_names=yearNames,
+            values=values,
+            labels=[__format_count(x) for x in values],
+            min=__format_count(min(values)) if values else '-',
+            max=__format_count(max(values)) if values else '-',
+            sum=__format_count(sum(values)) if values else '-',
+            average=__format_count(mean(values)) if values else '-',
+        )
+        return AnnualAchievement(
+            icon='fa-route',
+            is_font_awesome_icon=True,
+            is_outlined_icon=False,
+            color=trackType.border_color,
+            title=gettext('Number Of Tracks'),
+            description=str(totalTrackCount),
+            difference_to_previous_year=str(abs(totalTrackCountDifference)),
+            difference_type=AnnualAchievementDifferenceType.get_by_difference(
+                totalTrackCountDifference
+            ),
+            all_year_data=totalTrackCountAllYearData,
+            unit='',
+        )
+
+    def __create_achievement_longest_track(availableYears, trackType, year, yearNames):
+        values = []
+        longestTrack = 0.0
+        longestTrackPreviousYear = 0.0
+
+        for currentYear in availableYears:
+            value = AchievementCalculator.get_longest_distance_by_type_and_year(
+                trackType, currentYear
+            )
+            values.append(value)
+            if currentYear == year:
+                longestTrack = value
+            elif currentYear == year - 1:
+                longestTrackPreviousYear = value
+
+        longestTrackDifference = longestTrack - longestTrackPreviousYear
+        longestTrackAllYearData = AllYearData(
+            year_names=yearNames,
+            values=values,
+            labels=[__format_distance(x) for x in values],
+            min=__format_distance(min(values)) if values else '-',
+            max=__format_distance(max(values)) if values else '-',
+            sum=__format_distance(sum(values)) if values else '-',
+            average=__format_distance(mean(values)) if values else '-',
+        )
+
+        return AnnualAchievement(
+            icon='route',
+            is_font_awesome_icon=False,
+            is_outlined_icon=False,
+            color=trackType.border_color,
+            title=gettext('Longest Track'),
+            description=__format_distance(longestTrack),
+            difference_to_previous_year=__format_distance(abs(longestTrackDifference)),
+            difference_type=AnnualAchievementDifferenceType.get_by_difference(
+                longestTrackDifference
+            ),
+            all_year_data=longestTrackAllYearData,
+            unit='km',
+        )
+
+    def __create_achievement_average_speed(availableYears, trackType, year, yearNames):
+        values = []
+        averageSpeed = 0.0
+        averageSpeedPreviousYear = 0.0
+
+        for currentYear in availableYears:
+            value = AchievementCalculator.get_average_speed_by_type_and_year(trackType, currentYear)
+            values.append(value)
+            if currentYear == year:
+                averageSpeed = value
+            elif currentYear == year - 1:
+                averageSpeedPreviousYear = value
+
+        averageSpeedDifference = averageSpeed - averageSpeedPreviousYear
+        averageSpeedAllYearData = AllYearData(
+            year_names=yearNames,
+            values=values,
+            labels=[__format_speed(x) for x in values],
+            min=__format_speed(min(values)) if values else '-',
+            max=__format_speed(max(values)) if values else '-',
+            sum=__format_speed(sum(values)) if values else '-',
+            average=__format_speed(mean(values)) if values else '-',
+        )
+
+        return AnnualAchievement(
+            icon='speed',
+            is_font_awesome_icon=False,
+            is_outlined_icon=False,
+            color=trackType.border_color,
+            title=gettext('Average Speed'),
+            description=__format_speed(averageSpeed),
+            difference_to_previous_year=__format_speed(abs(averageSpeedDifference)),
+            difference_type=AnnualAchievementDifferenceType.get_by_difference(
+                averageSpeedDifference
+            ),
+            all_year_data=averageSpeedAllYearData,
+            unit='km/h',
+        )
 
     return annualAchievements
 
