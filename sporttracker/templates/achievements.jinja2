@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 
-{% macro renderAchievement(icon, borderColor, title, description) -%}
+{% macro renderAchievement(achievement) -%}
     <div class="col">
         <div class="tile">
-            <div class="diamond d-flex align-items-center justify-content-center mx-auto bg-secondary-subtle {{ borderColor }} text-dark">
+            <div class="diamond d-flex align-items-center justify-content-center mx-auto bg-secondary-subtle {{ achievement.color }} text-dark">
                 <div class="label fw-bold">
-                    <span class="material-icons">{{ icon }}</span>
+                    {% if achievement.is_font_awesome_icon %}
+                        <i class="fa-solid {{ achievement.icon }} fa-fw"></i>
+                    {% elif achievement.is_outlined_icon %}
+                        <span class="material-icons-outlined">{{ achievement.icon }}</span>
+                    {% else %}
+                         <span class="material-icons">{{ achievement.icon }}</span>
+                    {% endif %}
                 </div>
             </div>
         </div>
         <div class="card height-60">
             <div class="card-body">
-                <h5 class="card-title mt-5">{{ title }}</h5>
-                <p class="card-text">{{ description }}</p>
+                <h5 class="card-title mt-5">{{ achievement.title }}</h5>
+                <p class="card-text">{{ achievement.description }}</p>
             </div>
         </div>
     </div>
@@ -45,7 +51,7 @@
 
                     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-5">
                         {% for achievement in achievements %}
-                            {{ renderAchievement(achievement.icon, achievement.color, achievement.title, achievement.description) }}
+                            {{ renderAchievement(achievement) }}
                         {% endfor %}
                     </div>
 

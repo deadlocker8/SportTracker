@@ -79,6 +79,7 @@ def construct_blueprint():
                 AnnualAchievement(
                     icon='map',
                     is_font_awesome_icon=False,
+                    is_outlined_icon=False,
                     color=trackType.border_color,
                     title=gettext('Total Distance'),
                     description=__format_distance(totalDistance),
@@ -119,6 +120,7 @@ def construct_blueprint():
                 AnnualAchievement(
                     icon='timer',
                     is_font_awesome_icon=False,
+                    is_outlined_icon=True,
                     color=trackType.border_color,
                     title=gettext('Total Duration'),
                     description=__format_duration(totalDuration),
@@ -159,6 +161,7 @@ def construct_blueprint():
                 AnnualAchievement(
                     icon='fa-route',
                     is_font_awesome_icon=True,
+                    is_outlined_icon=False,
                     color=trackType.border_color,
                     title=gettext('Number Of Tracks'),
                     description=str(totalTrackCount),
@@ -206,6 +209,7 @@ def construct_blueprint():
                 AnnualAchievement(
                     icon='route',
                     is_font_awesome_icon=False,
+                    is_outlined_icon=False,
                     color=trackType.border_color,
                     title=gettext('Longest Track'),
                     description=__format_distance(longestTrack),
@@ -246,6 +250,7 @@ def construct_blueprint():
                 AnnualAchievement(
                     icon='speed',
                     is_font_awesome_icon=False,
+                    is_outlined_icon=False,
                     color=trackType.border_color,
                     title=gettext('Average Speed'),
                     description=__format_speed(averageSpeed),

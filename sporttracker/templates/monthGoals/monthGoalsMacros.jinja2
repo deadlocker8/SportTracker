@@ -5,7 +5,9 @@
 {%- endmacro %}
 
 {% macro render_month_goal_distance(goalSummary) -%}
-    <div class="fs-5">{{ goalSummary.actual_distance | format_decimal }}/{{ goalSummary.goal_distance_perfect | format_decimal }} km</div>
+    <div class="fs-5">{{ goalSummary.actual_distance | format_decimal }}/{{ goalSummary.goal_distance_perfect | format_decimal }}
+        km
+    </div>
 {%- endmacro %}
 
 {% macro render_month_goal_count(goalSummary) -%}
@@ -13,7 +15,9 @@
 {%- endmacro %}
 
 {% macro render_month_goal_duration(goalSummary) -%}
-    <div class="fs-5">{{ goalSummary.actual_duration | format_duration }}/{{ goalSummary.goal_duration_perfect | format_duration }} h</div>
+    <div class="fs-5">{{ goalSummary.actual_duration | format_duration }}/{{ goalSummary.goal_duration_perfect | format_duration }}
+        h
+    </div>
 {%- endmacro %}
 
 {% macro render_month_goal_distance_summary_card_large(goalSummary) -%}
@@ -25,7 +29,12 @@
                 <div class="card">
                     <div class="row g-0 d-flex align-items-center p-2">
                         <div class="col col-2 d-flex align-items-center justify-content-center">
-                            <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% if goalSummary.is_outlined_icon %}
+                                <span class="material-icons-outlined fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% else %}
+                                <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% endif %}
+
                             {{ trackMacros.track_type_icon_small(goalSummary.type, fontSize='fs-3') }}
                         </div>
                         <div class="col col-3 text-start fs-4">
@@ -52,7 +61,12 @@
                 <div class="card">
                     <div class="row g-0 d-flex align-items-center pt-3 px-2">
                         <div class="col col-4 d-flex align-items-center">
-                            <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% if goalSummary.is_outlined_icon %}
+                                <span class="material-icons-outlined fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% else %}
+                                <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% endif %}
+
                             {% if goalSummary.type.is_font_awesome_icon %}
                                 <i class="fa-solid {{ goalSummary.type.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ goalSummary.type.background_color }}"></i>
                             {% else %}
@@ -86,8 +100,13 @@
                 <div class="card">
                     <div class="row g-0 d-flex align-items-center p-2">
                         <div class="col col-2 d-flex align-items-center justify-content-center">
-                            <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
-                           {{ trackMacros.track_type_icon_small(goalSummary.type, fontSize='fs-3') }}
+                            {% if goalSummary.is_outlined_icon %}
+                                <span class="material-icons-outlined fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% else %}
+                                <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% endif %}
+
+                            {{ trackMacros.track_type_icon_small(goalSummary.type, fontSize='fs-3') }}
                         </div>
                         <div class="col col-3 text-start fs-4">
                             {{ goalSummary.name }}
@@ -112,7 +131,12 @@
                 <div class="card">
                     <div class="row g-0 d-flex align-items-center pt-3 px-2">
                         <div class="col col-4 d-flex align-items-center">
-                            <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% if goalSummary.is_outlined_icon %}
+                                <span class="material-icons-outlined fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% else %}
+                                <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% endif %}
+
                             {% if goalSummary.type.is_font_awesome_icon %}
                                 <i class="fa-solid {{ goalSummary.type.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ goalSummary.type.background_color }}"></i>
                             {% else %}
@@ -146,7 +170,11 @@
                 <div class="card">
                     <div class="row g-0 d-flex align-items-center p-2">
                         <div class="col col-2 d-flex align-items-center justify-content-center">
-                            <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% if goalSummary.is_outlined_icon %}
+                                <span class="material-icons-outlined fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% else %}
+                                <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% endif %}
                             {{ trackMacros.track_type_icon_small(goalSummary.type, fontSize='fs-3') }}
                         </div>
                         <div class="col col-3 text-start fs-4">
@@ -173,7 +201,12 @@
                 <div class="card">
                     <div class="row g-0 d-flex align-items-center pt-3 px-2">
                         <div class="col col-4 d-flex align-items-center">
-                            <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% if goalSummary.is_outlined_icon %}
+                                <span class="material-icons-outlined fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% else %}
+                                <span class="material-icons fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
+                            {% endif %}
+
                             {% if goalSummary.type.is_font_awesome_icon %}
                                 <i class="fa-solid {{ goalSummary.type.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ goalSummary.type.background_color }}"></i>
                             {% else %}

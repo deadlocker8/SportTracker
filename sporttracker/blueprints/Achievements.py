@@ -44,6 +44,7 @@ def construct_blueprint():
             Achievement(
                 icon='sports_score',
                 is_font_awesome_icon=False,
+                is_outlined_icon=False,
                 color=trackType.border_color,
                 title=gettext('Month Goal Streak'),
                 description=gettext(
@@ -65,6 +66,7 @@ def construct_blueprint():
             Achievement(
                 icon='route',
                 is_font_awesome_icon=False,
+                is_outlined_icon=False,
                 color=trackType.border_color,
                 title=gettext('Longest Track'),
                 description=gettext(
@@ -80,6 +82,7 @@ def construct_blueprint():
             Achievement(
                 icon='map',
                 is_font_awesome_icon=False,
+                is_outlined_icon=False,
                 color=trackType.border_color,
                 title=gettext('Total Distance'),
                 description=gettext(
@@ -97,6 +100,7 @@ def construct_blueprint():
             Achievement(
                 icon='calendar_month',
                 is_font_awesome_icon=False,
+                is_outlined_icon=False,
                 color=trackType.border_color,
                 title=gettext('Best Month'),
                 description=gettext(
@@ -118,6 +122,7 @@ def construct_blueprint():
             Achievement(
                 icon='sports_score',
                 is_font_awesome_icon=False,
+                is_outlined_icon=False,
                 color=trackType.border_color,
                 title=gettext('Month Goal Streak'),
                 description=gettext(
@@ -139,6 +144,7 @@ def construct_blueprint():
             Achievement(
                 icon='schedule',
                 is_font_awesome_icon=False,
+                is_outlined_icon=False,
                 color=trackType.border_color,
                 title=gettext('Longest Duration'),
                 description=gettext(
@@ -154,6 +160,7 @@ def construct_blueprint():
             Achievement(
                 icon='timer',
                 is_font_awesome_icon=False,
+                is_outlined_icon=True,
                 color=trackType.border_color,
                 title=gettext('Total Duration'),
                 description=gettext(
@@ -171,6 +178,7 @@ def construct_blueprint():
             Achievement(
                 icon='calendar_month',
                 is_font_awesome_icon=False,
+                is_outlined_icon=False,
                 color=trackType.border_color,
                 title=gettext('Best Month'),
                 description=gettext(

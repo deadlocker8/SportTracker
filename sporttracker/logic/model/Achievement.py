@@ -8,6 +8,7 @@ from dataclasses import dataclass
 class Achievement:
     icon: str
     is_font_awesome_icon: bool
+    is_outlined_icon: bool
     color: str
     title: str
     description: str

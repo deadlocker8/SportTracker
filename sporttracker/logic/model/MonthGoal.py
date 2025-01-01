@@ -32,6 +32,7 @@ class MonthGoalSummary(ABC):
 class MonthGoalDistanceSummary(MonthGoalSummary):
     type_name: ClassVar[str] = 'DISTANCE'
     icon: ClassVar[str] = 'route'
+    is_outlined_icon: ClassVar[bool] = False
 
     goal_distance_minimum: float
     goal_distance_perfect: float
@@ -52,6 +53,7 @@ class MonthGoalDistanceSummary(MonthGoalSummary):
 class MonthGoalCountSummary(MonthGoalSummary):
     type_name: ClassVar[str] = 'COUNT'
     icon: ClassVar[str] = 'format_list_numbered'
+    is_outlined_icon: ClassVar[bool] = False
 
     goal_count_minimum: float
     goal_count_perfect: float
@@ -65,6 +67,7 @@ class MonthGoalCountSummary(MonthGoalSummary):
 class MonthGoalDurationSummary(MonthGoalSummary):
     type_name: ClassVar[str] = 'DURATION'
     icon: ClassVar[str] = 'timer'
+    is_outlined_icon: ClassVar[bool] = True
 
     goal_duration_minimum: float
     goal_duration_perfect: float

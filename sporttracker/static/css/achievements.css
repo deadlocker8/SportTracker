@@ -30,11 +30,15 @@
     transform-style: preserve-3d;
 }
 
-.label .material-icons {
+.diamond .label .material-icons,
+.diamond .label .material-icons-outlined,
+.diamond .label svg {
     font-size: 4rem;
 }
 
-.diamond-small .label .material-icons, .diamond-small .label svg {
+.diamond-small .label .material-icons,
+.diamond-small .label .material-icons-outlined,
+.diamond-small .label svg {
     font-size: 2rem;
 }
 

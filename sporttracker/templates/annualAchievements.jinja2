@@ -7,8 +7,10 @@
                 <div class="label fw-bold">
                     {% if achievement.is_font_awesome_icon %}
                         <i class="fa-solid {{ achievement.icon }} fa-fw"></i>
+                    {% elif achievement.is_outlined_icon %}
+                        <span class="material-icons-outlined">{{ achievement.icon }}</span>
                     {% else %}
-                        <span class="material-icons">{{ achievement.icon }}</span>
+                         <span class="material-icons">{{ achievement.icon }}</span>
                     {% endif %}
                 </div>
             </div>
