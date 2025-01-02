@@ -16,7 +16,7 @@ class Achievement:
 
 class AnnualAchievementDifferenceType(enum.Enum):
     LESS = 'LESS', 'trending_down', 'text-danger'
-    EQUAL = 'EQUAL', 'trending_up', 'text-success'
+    EQUAL = 'EQUAL', 'trending_flat', 'text-orange'
     MORE = 'MORE', 'trending_up', 'text-success'
 
     icon: str

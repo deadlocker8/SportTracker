@@ -1,3 +1,6 @@
+# 1.33.0 - (XX.XX.XX)
+- fix: annual statistics: show flat trend icon if there was no increase or decrease for aa certain value (#157)
+
 # 1.32.0 - (01.01.25)
 - add: maintenance reminders: for each maintenance an optional reminder can be activated. If a maintenance exceeds the given reminder limit you will be notified in the navbar and on the maintenance page (#149)
 - add: new track type "Workout" - In addition to the existing distance based track types a new type is now available that is duration based, e.g. for workouts (#152)
