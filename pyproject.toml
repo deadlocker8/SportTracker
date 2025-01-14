@@ -30,7 +30,7 @@ faker = "33.1.0"
 pillow = "11.0.0"
 fitdecode = "0.10.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 ruff = "0.8.4"
 pre-commit = "4.0.1"
 mypy = "1.14.1"
