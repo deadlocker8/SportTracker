@@ -206,6 +206,11 @@
                         {{ materialize_icon('is required', 'question_mark') }}
                     {% endcall %}
 
+                    {% call group('workout type') %}
+                        {{ materialize_icon('duration', 'update') }}
+                        {{ materialize_icon('repetition', 'repeat') }}
+                    {% endcall %}
+
                     {% call group('misc') %}
                         {{ fontawesome_icon('button today', 'fa-calendar-day') }}
                         {{ fontawesome_icon('button year/month chooser', 'fa-calendar-days') }}
