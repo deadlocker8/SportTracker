@@ -62,7 +62,9 @@ class Track(db.Model):  # type: ignore[name-defined]
 
     def clear_attributes_for_track_type(self) -> None:
         trackType = TrackType(self.type)  # type: ignore[call-arg]
-        if not trackType.supports_distance:
+        if trackType.supports_distance:
+            self.workout_type = None
+        else:
             self.distance = 0
             self.elevationSum = None  # type: ignore[assignment]
             self.gpx_metadata_id = None
