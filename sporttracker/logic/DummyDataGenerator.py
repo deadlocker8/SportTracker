@@ -19,6 +19,7 @@ from sporttracker.logic.model.PlannedTour import PlannedTour, TravelType, Travel
 from sporttracker.logic.model.Track import Track
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import User, create_user, Language
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -303,6 +304,7 @@ class DummyDataGenerator:
                 fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
                 duration = round(random.uniform(durationMin, durationMax), 2)
                 heartRate = random.randint(85, 160)
+                workoutType = random.choice([x for x in WorkoutType])
 
                 track = Track(
                     type=trackType,
@@ -315,6 +317,7 @@ class DummyDataGenerator:
                     user_id=user.id,
                     custom_fields={},
                     share_code=None,
+                    workout_type=workoutType,  # type: ignore[call-arg]
                 )
 
                 if index in indexesWithParticipants:
