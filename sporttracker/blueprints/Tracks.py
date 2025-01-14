@@ -41,6 +41,7 @@ from sporttracker.logic.model.Track import (
 )
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import get_user_by_id
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -60,6 +61,7 @@ class TrackModel(DateTimeAccess):
     participants: list[str]
     shareCode: str | None
     ownerName: str
+    workoutType: str | None = None
 
     @staticmethod
     def create_from_track(
@@ -78,6 +80,7 @@ class TrackModel(DateTimeAccess):
             participants=[str(item.id) for item in track.participants],
             shareCode=track.share_code,
             ownerName=get_user_by_id(track.user_id).username,
+            workoutType=track.workout_type,
         )
 
     def get_date_time(self) -> datetime:
@@ -107,6 +110,7 @@ class TrackFormModel(BaseModel):
     hasFitFile: bool = False
     participants: list[str] | str | None = None
     shareCode: str | None = None
+    workoutType: str | None = None
 
     model_config = ConfigDict(
         extra='allow',
@@ -221,6 +225,7 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             participants=participants,
             share_code=form.shareCode if form.shareCode else None,
             plannedTour=plannedTour,
+            workout_type=None if form.workoutType is None else WorkoutType(form.workoutType),  # type: ignore[call-arg]
         )
         track.clear_attributes_for_track_type()
 
@@ -270,6 +275,7 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             participants=[str(item.id) for item in track.participants],
             shareCode=track.share_code,
             plannedTourId=str(track.plannedTour.id) if track.plannedTour else '-1',
+            workoutType=track.workout_type,
             **track.custom_fields,
         )
 
@@ -313,6 +319,7 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
         track.participants = get_participants_by_ids(participantIds)
         track.share_code = form.shareCode if form.shareCode else None  # type: ignore[assignment]
         track.plannedTour = plannedTour  # type: ignore[assignment]
+        track.workout_type = None if form.workoutType is None else WorkoutType(form.workoutType)  # type: ignore[call-arg]
 
         track.clear_attributes_for_track_type()
 

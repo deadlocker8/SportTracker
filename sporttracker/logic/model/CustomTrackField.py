@@ -81,4 +81,5 @@ RESERVED_FIELD_NAMES = [
     'elevationSum',
     'gpxFileName',
     'participants',
+    'workoutType',
 ]

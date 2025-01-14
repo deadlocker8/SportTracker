@@ -11,6 +11,7 @@
         {{ macros.navbar('tracks') }}
 
         {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+        {% import 'plannedTours/plannedToursMacros.jinja2' as plannedToursMacros with context %}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
@@ -49,6 +50,13 @@
                             {{ trackMacros.track_form_start_time(track) }}
 
                             {{ trackMacros.track_form_duration(track) }}
+
+
+                            {% set selectedWorkoutType=None %}
+                            {% if track %}
+                                {% set selectedWorkoutType=track.workoutType %}
+                            {% endif %}
+                            {{ plannedToursMacros.radio_button_select(gettext('Workout Typ'), 'fitness_center', 'workout-type', 'workoutType', workoutTypes, selectedWorkoutType) }}
 
                             {{ trackMacros.track_form_average_heart_rate(track) }}
 

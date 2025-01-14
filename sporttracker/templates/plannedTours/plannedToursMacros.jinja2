@@ -36,17 +36,17 @@
 {%- endmacro %}
 
 
-{% macro radio_button_select(name, icon, identifier, inputName, availableTypes, selectedValue=none) -%}
+{% macro radio_button_select(name, icon, identifier, inputName, availableTypes, selectedValue=none, baseIdentifier='planned-tour') -%}
     <div class="mb-3">
         <div class="form-label input-field-margin">{{ name }}</div>
         <div class="d-flex align-items-center">
             <span class="material-icons me-3">{{ icon }}</span>
-            <div class="btn-group" role="group" id="planned-tour-{{ identifier }}">
+            <div class="btn-group" role="group" id="{{ baseIdentifier }}-{{ identifier }}">
                 {% for availableType in availableTypes %}
                     <input type="radio" class="btn-check" name="{{ inputName }}" id="{{ identifier }}-{{ loop.index }}"
                            autocomplete="off"
                            {% if selectedValue == availableType.name or (selectedValue is none and loop.index == 1) %}checked{% endif %}
-                    value="{{ availableType.name }}">
+                           value="{{ availableType.name }}">
                     <label class="btn btn-outline-light d-flex align-items-center"
                            for="{{ identifier }}-{{ loop.index }}">
                         <span class="material-icons me-3">{{ availableType.icon }}</span>
