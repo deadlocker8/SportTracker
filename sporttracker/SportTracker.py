@@ -62,6 +62,7 @@ from sporttracker.logic.model.User import (
     TrackInfoItem,
     TrackInfoItemType,
 )
+from sporttracker.logic.model.WorkoutCategory import WorkoutCategoryType
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db, migrate
 
@@ -160,6 +161,7 @@ class SportTracker(FlaskBaseApp):
                 'numberOfTriggeredMaintenanceReminders': get_number_of_triggered_maintenance_reminders(),
                 'currentYear': datetime.now().year,
                 'workoutTypes': [x for x in WorkoutType],
+                'workoutCategoryTypes': [x for x in WorkoutCategoryType],
             }
 
         def format_decimal(value: int | float, decimals: int = 1) -> str:

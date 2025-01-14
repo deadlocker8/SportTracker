@@ -91,6 +91,7 @@
                         {{ materialize_icon('participants', 'group') }}
                         {{ materialize_icon('gpx track', 'location_on') }}
                         {{ materialize_icon('workout type', 'fitness_center') }}
+                        {{ materialize_icon('workout category type', 'label') }}
                     {% endcall %}
 
                     {% call group('shared links') %}
@@ -210,6 +211,13 @@
                     {% call group('workout type') %}
                         {{ materialize_icon('duration', 'update') }}
                         {{ materialize_icon('repetition', 'repeat') }}
+                    {% endcall %}
+
+                    {% call group('workout category type') %}
+                        {{ materialize_icon('arms', 'humerus_alt') }}
+                        {{ materialize_icon('legs', 'femur_alt') }}
+                        {{ materialize_icon('core', 'adjust') }}
+                        {{ materialize_icon('yoga', 'self_improvement') }}
                     {% endcall %}
 
                     {% call group('misc') %}
