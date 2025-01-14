@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-01 19:59+0100\n"
-"PO-Revision-Date: 2025-01-01 20:01+0100\n"
+"POT-Creation-Date: 2025-01-14 21:58+0100\n"
+"PO-Revision-Date: 2025-01-14 21:58+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -114,7 +114,7 @@ msgstr "Anzahl Workouts"
 #: ../templates/monthGoals/monthGoalDurationForm.jinja2:105
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:95
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:113
-#: ../templates/tracks/trackMacros.jinja2:278
+#: ../templates/tracks/trackMacros.jinja2:289
 msgid "Hours"
 msgstr "Stunden"
 
@@ -139,6 +139,10 @@ msgstr "Ungültiges Passwort"
 #: ../blueprints/Charts.py:130
 msgid "Unknown"
 msgstr "Unbekannt"
+
+#: ../blueprints/Charts.py:167
+msgid "You"
+msgstr "Du"
 
 #: ../blueprints/MonthGoalsCount.py:76 ../blueprints/MonthGoalsDistance.py:76
 #: ../blueprints/MonthGoalsDuration.py:100
@@ -232,17 +236,25 @@ msgstr "Strecke"
 
 #: ../logic/model/User.py:67 ../templates/maps/mapSingleTrack.jinja2:50
 #: ../templates/maps/mapSingleTrack.jinja2:98
-#: ../templates/tracks/trackMacros.jinja2:272
+#: ../templates/tracks/trackMacros.jinja2:283
 msgid "Duration"
 msgstr "Dauer"
 
-#: ../logic/model/User.py:71 ../templates/tracks/trackMacros.jinja2:298
+#: ../logic/model/User.py:71 ../templates/tracks/trackMacros.jinja2:309
 msgid "Average Heart Rate"
 msgstr "Durchschnittliche Herzfrequenz"
 
 #: ../logic/model/User.py:73 ../templates/maps/mapSingleTrack.jinja2:126
 msgid "Elevation Sum"
 msgstr "Summe Höhenmeter"
+
+#: ../logic/model/WorkoutType.py:36
+msgid "Time-based"
+msgstr "Zeitbasiert"
+
+#: ../logic/model/WorkoutType.py:38
+msgid "Repetition-based"
+msgstr "Wiederholungsbasiert"
 
 #: ../templates/about.jinja2:6 ../templates/macros.jinja2:172
 msgid "About"
@@ -373,7 +385,7 @@ msgstr "Suche"
 
 #: ../templates/macros.jinja2:210 ../templates/settings/settings.jinja2:6
 #: ../templates/settings/settings.jinja2:18
-#: ../templates/tracks/trackMacros.jinja2:402
+#: ../templates/tracks/trackMacros.jinja2:413
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -502,12 +514,12 @@ msgstr "Neues Wartungsereignis"
 #: ../templates/tracks/trackBikingForm.jinja2:28
 #: ../templates/tracks/trackHikingForm.jinja2:24
 #: ../templates/tracks/trackHikingForm.jinja2:28
-#: ../templates/tracks/trackMacros.jinja2:367
-#: ../templates/tracks/trackMacros.jinja2:478
+#: ../templates/tracks/trackMacros.jinja2:378
+#: ../templates/tracks/trackMacros.jinja2:489
 #: ../templates/tracks/trackRunningForm.jinja2:24
 #: ../templates/tracks/trackRunningForm.jinja2:28
-#: ../templates/tracks/trackWorkoutForm.jinja2:24
-#: ../templates/tracks/trackWorkoutForm.jinja2:28
+#: ../templates/tracks/trackWorkoutForm.jinja2:25
+#: ../templates/tracks/trackWorkoutForm.jinja2:29
 #: ../templates/users/userForm.jinja2:23
 msgid "Delete"
 msgstr "Löschen"
@@ -523,7 +535,7 @@ msgstr "Willst du dieses Wartungsereignis wirklich löschen?"
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:58
 #: ../templates/maps/mapSingleTrack.jinja2:44
 #: ../templates/maps/mapSingleTrack.jinja2:90
-#: ../templates/tracks/trackMacros.jinja2:240
+#: ../templates/tracks/trackMacros.jinja2:251
 msgid "Date"
 msgstr "Datum"
 
@@ -549,7 +561,7 @@ msgstr "Uhrzeit"
 #: ../templates/tracks/trackBikingForm.jinja2:70
 #: ../templates/tracks/trackHikingForm.jinja2:70
 #: ../templates/tracks/trackRunningForm.jinja2:70
-#: ../templates/tracks/trackWorkoutForm.jinja2:61
+#: ../templates/tracks/trackWorkoutForm.jinja2:69
 #: ../templates/users/userForm.jinja2:66
 msgid "Save"
 msgstr "Speichern"
@@ -1007,7 +1019,7 @@ msgstr "Minimale Dauer"
 #: ../templates/monthGoals/monthGoalDurationForm.jinja2:112
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:102
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:120
-#: ../templates/tracks/trackMacros.jinja2:285
+#: ../templates/tracks/trackMacros.jinja2:296
 msgid "Minutes"
 msgstr "Minuten"
 
@@ -1048,7 +1060,7 @@ msgstr "Willst du diese geplante Tour wirklich löschen?"
 #: ../templates/settings/participantsForm.jinja2:50
 #: ../templates/settings/settings.jinja2:147
 #: ../templates/settings/settings.jinja2:197
-#: ../templates/tracks/trackMacros.jinja2:220
+#: ../templates/tracks/trackMacros.jinja2:231
 msgid "Name"
 msgstr "Name"
 
@@ -1137,7 +1149,7 @@ msgstr ""
 "Link wird nach dem Speichern angezeigt)"
 
 #: ../templates/settings/settings.jinja2:103
-#: ../templates/tracks/trackMacros.jinja2:469
+#: ../templates/tracks/trackMacros.jinja2:480
 msgid "Copied"
 msgstr "Kopiert"
 
@@ -1173,7 +1185,7 @@ msgid "Do you really want to delete the custom field \"%(name)s\"?"
 msgstr "Willst du das benutzerdefinierte Feld \"%(name)s\" wirklich löschen?"
 
 #: ../templates/settings/settings.jinja2:188
-#: ../templates/tracks/trackMacros.jinja2:385
+#: ../templates/tracks/trackMacros.jinja2:396
 msgid "Participants"
 msgstr "Teilnehmer"
 
@@ -1205,14 +1217,14 @@ msgstr "Neuer Fahrrad-Track"
 #: ../templates/tracks/trackBikingForm.jinja2:27
 #: ../templates/tracks/trackHikingForm.jinja2:27
 #: ../templates/tracks/trackRunningForm.jinja2:27
-#: ../templates/tracks/trackWorkoutForm.jinja2:27
+#: ../templates/tracks/trackWorkoutForm.jinja2:28
 msgid "Delete Track?"
 msgstr "Trakc löschen?"
 
 #: ../templates/tracks/trackBikingForm.jinja2:27
 #: ../templates/tracks/trackHikingForm.jinja2:27
 #: ../templates/tracks/trackRunningForm.jinja2:27
-#: ../templates/tracks/trackWorkoutForm.jinja2:27
+#: ../templates/tracks/trackWorkoutForm.jinja2:28
 #, python-format
 msgid "Do you really want to delete the track \"%(name)s\" (ID: %(id)d)?"
 msgstr "Willst du den Track \"%(name)s\" (ID: %(id)d) wirklich löschen?"
@@ -1236,7 +1248,7 @@ msgstr "Neuer Wander-Track"
 
 #: ../templates/tracks/trackChooser.jinja2:50
 #: ../templates/tracks/trackWorkoutForm.jinja2:6
-#: ../templates/tracks/trackWorkoutForm.jinja2:31
+#: ../templates/tracks/trackWorkoutForm.jinja2:32
 msgid "New Workout"
 msgstr "Neues Workout"
 
@@ -1245,67 +1257,67 @@ msgstr "Neues Workout"
 msgid "Edit Hiking Track"
 msgstr "Wander-Track bearbeiten"
 
-#: ../templates/tracks/trackMacros.jinja2:248
+#: ../templates/tracks/trackMacros.jinja2:259
 msgid "Start Time"
 msgstr "Startuhrzeit"
 
-#: ../templates/tracks/trackMacros.jinja2:261
+#: ../templates/tracks/trackMacros.jinja2:272
 msgid "Distance (in km)"
 msgstr "Strecke (in km)"
 
-#: ../templates/tracks/trackMacros.jinja2:291
+#: ../templates/tracks/trackMacros.jinja2:302
 msgid "Seconds"
 msgstr "Sekunden"
 
-#: ../templates/tracks/trackMacros.jinja2:310
+#: ../templates/tracks/trackMacros.jinja2:321
 msgid "Elevation Sum (in m)"
 msgstr "Summe Höhenmeter (in m)"
 
-#: ../templates/tracks/trackMacros.jinja2:321
+#: ../templates/tracks/trackMacros.jinja2:332
 msgid "No GPX or FIT file is linked to this track"
 msgstr "Mit diesem Track ist keine GPX- oder FIT-Datei verknüpft"
 
-#: ../templates/tracks/trackMacros.jinja2:321
+#: ../templates/tracks/trackMacros.jinja2:332
 msgid "A GPX or FIT file is linked to this track"
 msgstr "Eine GPX- oder FIT-Datei ist mit diesem Track verknüpft"
 
-#: ../templates/tracks/trackMacros.jinja2:329
+#: ../templates/tracks/trackMacros.jinja2:340
 msgid "GPX/FIT Track"
 msgstr "GPX/FIT Track"
 
-#: ../templates/tracks/trackMacros.jinja2:366
+#: ../templates/tracks/trackMacros.jinja2:377
 msgid "Delete GPX and FIT Track?"
 msgstr "GPX und FIT Track löschen?"
 
-#: ../templates/tracks/trackMacros.jinja2:366
+#: ../templates/tracks/trackMacros.jinja2:377
 msgid "Do you really want to delete this associated GPX and FIT file?"
 msgstr "Willst du die verknüpfte GPX- und FIT-Datei wirklich löschen?"
 
-#: ../templates/tracks/trackMacros.jinja2:400
+#: ../templates/tracks/trackMacros.jinja2:411
 msgid "Add participants in the "
 msgstr "Hinzufügen von Teilnehmern in den "
 
-#: ../templates/tracks/trackMacros.jinja2:455
+#: ../templates/tracks/trackMacros.jinja2:466
 msgid "Share via link"
 msgstr "Als Link teilen"
 
-#: ../templates/tracks/trackMacros.jinja2:477
+#: ../templates/tracks/trackMacros.jinja2:488
 msgid "Delete shared link?"
 msgstr "Geteilten Link löschen?"
 
-#: ../templates/tracks/trackMacros.jinja2:477
+#: ../templates/tracks/trackMacros.jinja2:488
 msgid "Do you really want to delete this shared link?"
 msgstr "Willst du diesen geteilten Link wirklich löschen?"
 
-#: ../templates/tracks/trackMacros.jinja2:484
+#: ../templates/tracks/trackMacros.jinja2:495
 msgid "Create link"
 msgstr "Link erzeugen"
 
-#: ../templates/tracks/trackMacros.jinja2:495
+#: ../templates/tracks/trackMacros.jinja2:506
 msgid "Based on Planned Tour"
 msgstr "Basiert auf geplanter Tour"
 
-#: ../templates/tracks/trackMacros.jinja2:500
+#: ../templates/tracks/trackMacros.jinja2:511
 msgid "Not based on a Planned Tour"
 msgstr "Basiert auf keiner geplanten Tour"
 
@@ -1315,9 +1327,13 @@ msgid "Edit Running Track"
 msgstr "Lauf-Track bearbeiten"
 
 #: ../templates/tracks/trackWorkoutForm.jinja2:6
-#: ../templates/tracks/trackWorkoutForm.jinja2:20
+#: ../templates/tracks/trackWorkoutForm.jinja2:21
 msgid "Edit Workout"
 msgstr "Workout bearbeiten"
+
+#: ../templates/tracks/trackWorkoutForm.jinja2:59
+msgid "Workout Typ"
+msgstr "Workouttyp"
 
 #: ../templates/tracks/tracks.jinja2:53
 msgid "Toggle months via arrow keys or press \"0\" for current month"
