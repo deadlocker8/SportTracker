@@ -17,11 +17,11 @@
                     <div class="col col-12 mx-auto">
                         {% if participant %}
                             {% call macros.headline(gettext('Edit Participant')) %}
-                                <span class="material-icons fs-1">group</span>
+                                <span class="material-symbols-outlined filled fs-1">group</span>
                             {% endcall %}
                         {% else %}
                             {% call macros.headline(gettext('New Participant')) %}
-                                <span class="material-icons fs-1">group</span>
+                                <span class="material-symbols-outlined filled fs-1">group</span>
                             {% endcall %}
                         {% endif %}
                     </div>
@@ -32,7 +32,7 @@
                         {% for message in messages %}
                             <div class="alert alert-danger mt-3 d-inline-block" role="alert">
                                 <div class="d-flex align-items-center">
-                                    <i class="material-icons">warning</i>
+                                    <i class="material-symbols-outlined filled">warning</i>
                                     <div class="ms-3">{{ message }}</div>
                                 </div>
                             </div>
@@ -49,13 +49,13 @@
                             <div class="mb-3">
                                 <label for="participant-name" class="form-label input-field-margin">{{ gettext('Name') }}</label>
                                 <div class="d-flex align-items-center">
-                                    <span class="material-icons me-3">edit</span>
+                                    <span class="material-symbols-outlined filled me-3">edit</span>
                                     <input type="text" class="form-control" id="participant-name" name="name"
                                            required="required" {% if participant %}value="{{ participant.name }}"{% endif %}>
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

@@ -160,6 +160,10 @@ body {
     max-height: 90% !important;
 }
 
+.material-symbols-outlined.filled {
+    font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 48;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

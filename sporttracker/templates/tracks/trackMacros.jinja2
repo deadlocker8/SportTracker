@@ -7,7 +7,7 @@
 
 {% macro render_track_speed_kmh(track, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
-        <span class="material-icons fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">speed</span>
+        <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">speed</span>
         {% if track.duration is none %}
             <div class="fs-5">--.- km/h</div>
         {% else %}
@@ -18,7 +18,7 @@
 
 {% macro render_track_speed_pace(track, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
-        <span class="material-icons fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">speed</span>
+        <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">speed</span>
         {% if track.duration is none %}
             <div class="fs-5">--.-- min</div>
         {% else %}
@@ -29,14 +29,14 @@
 
 {% macro render_track_distance(track, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
-        <span class="material-icons fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">route</span>
+        <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">route</span>
         <div class="fs-5 text-center">{{ (track.distance / 1000) | format_decimal(2) }} {{ render_track_unit('km') }}</div>
     </div>
 {%- endmacro %}
 
 {% macro render_track_duration(track, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
-        <span class="material-icons-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">timer</span>
+        <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">timer</span>
         <div class="fs-5 text-center">{{ track.duration | format_duration }} {{ render_track_unit('h') }}</div>
     </div>
 {%- endmacro %}
@@ -44,7 +44,7 @@
 {% macro render_track_average_heart_rate(track, renderAsRow) -%}
     {% if track.averageHeartRate is not none %}
         <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
-            <span class="material-icons-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">favorite_border</span>
+            <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">favorite_border</span>
             <div class="fs-5 text-center">{{ track.averageHeartRate }} {{ render_track_unit('bpm') }}</div>
         </div>
     {% endif %}
@@ -53,7 +53,7 @@
 {% macro render_track_elevation(track, renderAsRow) -%}
     {% if track.elevationSum is not none %}
         <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
-            <span class="material-icons-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">expand</span>
+            <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">expand</span>
             <div class="fs-5 text-center">{{ track.elevationSum }} {{ render_track_unit('m') }}</div>
         </div>
     {% endif %}
@@ -61,7 +61,7 @@
 
 {% macro render_track_workout_type(track, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
-        <span class="material-icons fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ track.workoutType.icon }}</span>
+        <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ track.workoutType.icon }}</span>
         <div class="fs-5 text-center">{{ render_track_unit(track.workoutType.get_localized_name()) }}</div>
     </div>
 {%- endmacro %}
@@ -74,7 +74,7 @@
     {% elif trackType.is_font_awesome_icon %}
         <i class="d-inline-block fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}"></i>
     {% else %}
-        <span class="d-inline-block material-icons rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}">{{ trackType.icon }}</span>
+        <span class="d-inline-block material-symbols-outlined rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}">{{ trackType.icon }}</span>
     {% endif %}
 {%- endmacro %}
 
@@ -90,8 +90,8 @@
         <i class="d-none d-lg-inline-block fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}"></i>
         <i class="d-lg-none fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ trackType.background_color }} {{ classes }}"></i>
     {% else %}
-        <span class="d-none d-lg-inline-block material-icons rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}">{{ trackType.icon }}</span>
-        <span class="d-lg-none material-icons rounded-circle fs-3 p-2 text-dark {{ trackType.background_color }} {{ classes }}">{{ trackType.icon }}</span>
+        <span class="d-none d-lg-inline-block material-symbols-outlined rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}">{{ trackType.icon }}</span>
+        <span class="d-lg-none material-symbols-outlined rounded-circle fs-3 p-2 text-dark {{ trackType.background_color }} {{ classes }}">{{ trackType.icon }}</span>
     {% endif %}
 {%- endmacro %}
 
@@ -105,7 +105,7 @@
         <i class="fa-solid {{ trackType.icon }} fa-fw rounded-circle {{ fontSize }} p-2 text-dark
                 {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} {{ classes }}"></i>
     {% else %}
-        <span class="material-icons rounded-circle {{ fontSize }} p-2 text-dark
+        <span class="material-symbols-outlined rounded-circle {{ fontSize }} p-2 text-dark
                 {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} {{ classes }}">{{ trackType.icon }}</span>
     {% endif %}
 {%- endmacro %}
@@ -113,15 +113,15 @@
 {% macro track_card_feature_icons(track) -%}
     <div class="z-2 d-flex">
         {% if track.shareCode or track.share_code %}
-            <span class="material-icons fs-4 text-body">share</span>
+            <span class="material-symbols-outlined filled fs-4 text-body">share</span>
         {% endif %}
         {% if track.participants %}
-            <span class="material-icons fs-4 text-body">group</span>
+            <span class="material-symbols-outlined filled fs-4 text-body">group</span>
         {% endif %}
         {% if track.gpxMetadata is not none %}
             <a href="{{ url_for('maps.showSingleTrack', track_id=track.id) }}"
                class="text-decoration-none ms-2">
-                <span class="material-icons fs-4 text-body">map</span>
+                <span class="material-symbols-outlined filled fs-4 text-body">map</span>
             </a>
         {% endif %}
     </div>
@@ -201,7 +201,7 @@
                                 {% if goal.type.is_font_awesome_icon %}
                                     <i class="fa-solid {{ goal.type.icon }} fa-fw fs-5 py-1 text-light"></i>
                                 {% else %}
-                                    <span class="material-icons fs-5 py-1 text-light">{{ goal.type.icon }}</span>
+                                    <span class="material-symbols-outlined fs-5 py-1 text-light">{{ goal.type.icon }}</span>
                                 {% endif %}
                                 <span class="me-3 text-end"
                                       style="white-space: nowrap; width: 4.75rem;">{{ goal.get_actual_value_formatted() }}</span>
@@ -230,7 +230,7 @@
         <div class="form-group">
             <label for="track-name" class="form-label input-field-margin">{{ gettext('Name') }}</label>
             <div class="d-flex align-items-center">
-                <span class="material-icons me-3">edit</span>
+                <span class="material-symbols-outlined filled me-3">edit</span>
                 <input type="text" class="form-control" id="track-name" name="name"
                        required="required" {% if track %}value="{{ track.name }}"{% endif %}
                        list="list-track-names">
@@ -250,7 +250,7 @@
             <div class="col col-12 col-md-6 mb-3 mb-md-0">
                 <label for="track-date" class="form-label input-field-margin">{{ gettext('Date') }}</label>
                 <div class="d-flex align-items-center">
-                    <span class="material-icons me-3">event</span>
+                    <span class="material-symbols-outlined filled me-3">event</span>
                     <input type="date" class="form-control" id="track-date" name="date"
                            required="required" {% if track %}value="{{ track.date }}"{% endif %}>
                 </div>
@@ -258,7 +258,7 @@
             <div class="col col-12 col-md-6">
                 <label for="track-time" class="form-label input-field-margin">{{ gettext('Start Time') }}</label>
                 <div class="d-flex align-items-center">
-                    <span class="material-icons me-3">schedule</span>
+                    <span class="material-symbols-outlined me-3">schedule</span>
                     <input type="time" class="form-control" id="track-time" name="time"
                            required="required" {% if track %}value="{{ track.time }}"{% endif %}>
                 </div>
@@ -271,7 +271,7 @@
     <div class="mb-3">
         <label for="track-distance" class="form-label input-field-margin">{{ gettext('Distance (in km)') }}</label>
         <div class="d-flex align-items-center">
-            <span class="material-icons me-3">route</span>
+            <span class="material-symbols-outlined me-3">route</span>
             <input type="number" step="0.01" min="0" class="form-control" id="track-distance"
                    name="distance" required="required"
                    {% if track %}value="{{ track.distance | round(2) }}"{% endif %}>
@@ -282,7 +282,7 @@
 {% macro track_form_duration(track) -%}
     <label for="track-duration-hours" class="form-label input-field-margin">{{ gettext('Duration') }}</label>
     <div class="mb-3 d-flex align-items-center">
-        <span class="material-icons-outlined me-3">timer</span>
+        <span class="material-symbols-outlined me-3">timer</span>
 
         <input type="number" step="1" min="0" class="form-control me-3"
                id="track-duration-hours" name="durationHours"
@@ -308,7 +308,7 @@
     <div class="mb-3">
         <label for="track-averageHeartRate" class="form-label input-field-margin">{{ gettext('Average Heart Rate') }}</label>
         <div class="d-flex align-items-center">
-            <span class="material-icons me-3">favorite_border</span>
+            <span class="material-symbols-outlined me-3">favorite_border</span>
             <input type="number" step="1" min="0" class="form-control" id="track-averageHeartRate"
                    name="averageHeartRate"
                    {% if track and track.averageHeartRate is not none %}value="{{ track.averageHeartRate }}"{% endif %}>
@@ -320,7 +320,7 @@
     <div class="mb-3">
         <label for="track-elevationSum" class="form-label input-field-margin">{{ gettext('Elevation Sum (in m)') }}</label>
         <div class="d-flex align-items-center">
-            <span class="material-icons me-3">expand</span>
+            <span class="material-symbols-outlined me-3">expand</span>
             <input type="number" step="1" min="0" class="form-control" id="track-elevationSum"
                    name="elevationSum"
                    {% if track and track.elevationSum is not none %}value="{{ track.elevationSum }}"{% endif %}>
@@ -336,7 +336,7 @@
     <div class="mb-3">
         <label for="track-gpxFileName" class="form-label">
             <div class="d-flex align-items-center">
-                <span class="material-icons me-3">location_on</span>
+                <span class="material-symbols-outlined filled me-3">location_on</span>
                 <span>{{ gettext('GPX/FIT Track') }}</span>
             </div>
         </label>
@@ -351,13 +351,13 @@
                         <a href="{{ mapUrl }}"
                            class="btn btn-primary btn-sm ms-0 ms-md-3 d-flex align-items-center"
                            target="_blank">
-                            <span class="material-icons fs-4">map</span>
+                            <span class="material-symbols-outlined filled fs-4">map</span>
                         </a>
                         <a href="{{ downloadUrlGpx }}"
                            class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
                            id="buttonGpxTrackDownload"
                            target="_blank">
-                            <span class="material-icons fs-4">download</span>
+                            <span class="material-symbols-outlined fs-4">download</span>
                             <span>GPX</span>
                         </a>
                         {% if hasGpxTrack and item.hasFitFile %}
@@ -365,13 +365,13 @@
                                class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
                                id="buttonFitTrackDownload"
                                target="_blank">
-                                <span class="material-icons fs-4">download</span>
+                                <span class="material-symbols-outlined fs-4">download</span>
                                 <span>FIT</span>
                             </a>
                         {% endif %}
 
                         <button type="button" class="btn btn-danger btn-sm ms-3 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete-modal-gpx">
-                            <span class="material-icons fs-4">delete</span>
+                            <span class="material-symbols-outlined filled fs-4">delete</span>
                         </button>
 
                         {% call macros.deleteModal(gettext('Delete GPX and FIT Track?'), gettext('Do you really want to delete this associated GPX and FIT file?'), 'gpx') %}
@@ -392,7 +392,7 @@
     <div class="mb-3">
         <label for="track-participants" class="form-label">
             <div class="d-flex align-items-center">
-                <span class="material-icons me-3">group</span>
+                <span class="material-symbols-outlined filled me-3">group</span>
                 <span>{{ gettext('Participants') }}</span>
             </div>
         </label>
@@ -407,7 +407,7 @@
 
         {% if not participants %}
             <div class="d-flex align-items-center input-field-margin">
-                <span class="material-icons fs-4 me-2">info_outline</span>
+                <span class="material-symbols-outlined fs-4 me-2">info</span>
                 <span>{{ gettext('Add participants in the ') }}
                     <a href="{{ url_for('settings.settingsShow') }}#headline-participants">
                         {{ gettext('Settings') }}
@@ -423,7 +423,7 @@
     <div class="mb-3">
         <label for="track-{{ escapedName }}" class="form-label input-field-margin">{{ field.name }}</label>
         <div class="d-flex align-items-center">
-            <span class="material-icons me-3">drive_file_rename_outline</span>
+            <span class="material-symbols-outlined filled me-3">drive_file_rename_outline</span>
 
             {% if field.type.name == 'STRING' %}
                 <input type="text"
@@ -462,7 +462,7 @@
     <div class="mb-3">
         <label for="track-participants" class="form-label">
             <div class="d-flex align-items-center">
-                <span class="material-icons me-3">link</span>
+                <span class="material-symbols-outlined me-3">link</span>
                 <span>{{ gettext('Share via link') }}</span>
             </div>
         </label>
@@ -478,11 +478,11 @@
                 {% endif %}
                 <div id="sharedLinkButtons" class="d-flex mt-3 mt-md-0">
                     <a class="btn btn-primary btn-sm ms-0 ms-md-3 d-flex align-items-center" id="buttonCopySharedLink" data-bs-toggle="tooltip" data-bs-title="{{ gettext('Copied') }}">
-                        <span class="material-icons fs-4">content_copy</span>
+                        <span class="material-symbols-outlined fs-4">content_copy</span>
                     </a>
 
                     <button type="button" class="btn btn-danger btn-sm ms-3 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete-modal-shared-link" id="buttonSharedLinkDeleteModal">
-                        <span class="material-icons fs-4">delete</span>
+                        <span class="material-symbols-outlined filled fs-4">delete</span>
                     </button>
 
                     {% call macros.deleteModal(gettext('Delete shared link?'), gettext('Do you really want to delete this shared link?'), 'shared-link') %}
@@ -492,7 +492,7 @@
             </div>
 
             <button type="button" class="{% if hasShareCode %}hidden{% endif %} btn btn-primary btn-sm d-flex align-items-center" id="buttonCreateSharedLink" data-url="{{ url_for(createUrl) }}">
-                <span class="material-icons fs-4 me-2">add_link</span>{{ gettext('Create link') }}
+                <span class="material-symbols-outlined fs-4 me-2">add_link</span>{{ gettext('Create link') }}
             </button>
 
             <input type="hidden" name="shareCode" value="{% if hasShareCode %}{{ item.shareCode }}{% endif %}">

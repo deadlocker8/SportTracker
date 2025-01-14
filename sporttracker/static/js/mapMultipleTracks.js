@@ -133,7 +133,7 @@ function initMap(itemSortFunction)
             states: [
                 {
                     stateName: 'collapse-layers',
-                    icon: '<i class="material-icons">layers_clear</i>',
+                    icon: '<i class="material-symbols-outlined">layers_clear</i>',
                     title: map_locale['button_collapse_layers'],
                     onClick: function(btn, map)
                     {
@@ -143,7 +143,7 @@ function initMap(itemSortFunction)
                 },
                 {
                     stateName: 'expand-layers',
-                    icon: '<i class="material-icons">layers</i>',
+                    icon: '<i class="material-symbols-outlined">layers</i>',
                     title: map_locale['button_expand_layers'],
                     onClick: function(btn, map)
                     {

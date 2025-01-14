@@ -10,7 +10,7 @@
             <div class="fw-bold fs-5">{{ gettext('Today') }}</div>
             {% if maintenance.isLimitExceeded %}
                 <div class="d-flex align-items-center badge text-bg-danger ms-3">
-                    <span class="material-icons fs-5 me-1">warning</span>
+                    <span class="material-symbols-outlined filled fs-5 me-1">warning</span>
                     <span>{{ maintenance.limitExceededDistance }} km {{ gettext('over limit') }}</span>
                 </div>
             {% endif %}
@@ -23,7 +23,7 @@
         <div class="d-flex align-items-center">
             <div class="fw-bold fs-5">{{ maintenanceEvent.eventDate | format_date() }}</div>
             <a href="{{ url_for('maintenanceEventInstances.edit', event_id=maintenanceEvent.id) }}" class="btn btn-sm d-inline-flex align-items-center ms-2">
-                <span class="material-icons text-primary fs-5">edit</span>
+                <span class="material-symbols-outlined filled text-primary fs-5">edit</span>
             </a>
         </div>
     {% endif %}
@@ -70,10 +70,10 @@
                                         </div>
                                         <div class="d-flex align-items-center">
                                             <a href="{{ url_for('maintenances.edit', maintenance_id=maintenancesWithEvent.id) }}" class="link-light text-decoration-none d-inline-flex align-items-center button-edit-maintenance me-2">
-                                                <span class="rounded-circle bg-primary p-1 fs-5 material-icons">edit</span>
+                                                <span class="rounded-circle bg-primary p-1 fs-5 material-symbols-outlined filled">edit</span>
                                             </a>
                                             <a href="{{ url_for('maintenanceEventInstances.add', maintenance_id=maintenancesWithEvent.id) }}" class="link-light text-decoration-none d-inline-flex align-items-center button-new-maintenance-event">
-                                                <span class="rounded-circle bg-primary p-1 fs-5 material-icons">add</span>
+                                                <span class="rounded-circle bg-primary p-1 fs-5 material-symbols-outlined filled">add</span>
                                             </a>
                                         </div>
                                     </div>
@@ -83,7 +83,7 @@
                                     {% for maintenanceEvent in maintenancesWithEvent.events | reverse %}
                                         {% if loop.index == 4 and maintenancesWithEvent.events | length > eventLimit %}
                                             <button class="btn btn-primary align-self-center d-flex align-items-center toggle-button-hide" type="button" data-bs-toggle="collapse" data-bs-target="#maintenance-collapse-{{ ns.index }}">
-                                                <span class="material-icons fs-5">keyboard_arrow_down</span>&nbsp;{{ gettext('Show all (+%(remaining)d)', remaining=maintenancesWithEvent.events|length - loop.index + 1) }}
+                                                <span class="material-symbols-outlined fs-5">keyboard_arrow_down</span>&nbsp;{{ gettext('Show all (+%(remaining)d)', remaining=maintenancesWithEvent.events|length - loop.index + 1) }}
                                             </button>
 
                                             <div class="collapse" id="maintenance-collapse-{{ ns.index }}">

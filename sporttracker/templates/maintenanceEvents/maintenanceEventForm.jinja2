@@ -26,7 +26,7 @@
                                 <i class="fa-solid fa-wrench fa-fw fs-2"></i>
                             {% endcall %}
                             <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
-                                <span class="material-icons text-light">delete</span>&nbsp;{{ gettext('Delete') }}
+                                <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                             </button>
 
                             {% call macros.deleteModal(gettext('Delete Maintenance Event?'), gettext('Do you really want to delete this maintenance event?')) %}
@@ -57,7 +57,7 @@
                                     <div class="col col-12 col-md-6">
                                         <label for="maintenance-event-date" class="form-label input-field-margin">{{ gettext('Date') }}</label>
                                         <div class="d-flex align-items-center">
-                                            <span class="material-icons me-3">event</span>
+                                            <span class="material-symbols-outlined filled me-3">event</span>
                                             <input type="date" class="form-control" id="maintenance-event-date" name="date"
                                                    required="required" {% if maintenanceEvent %}value="{{ maintenanceEvent.date }}"{% endif %}>
                                         </div>
@@ -65,7 +65,7 @@
                                     <div class="col col-12 col-md-6 mt-3 mt-md-0">
                                         <label for="maintenance-event-time" class="form-label input-field-margin">{{ gettext('Time') }}</label>
                                         <div class="d-flex align-items-center">
-                                            <span class="material-icons me-3">schedule</span>
+                                            <span class="material-symbols-outlined me-3">schedule</span>
                                             <input type="time" class="form-control" id="maintenance-event-time" name="time"
                                                    required="required" {% if maintenanceEvent %}value="{{ maintenanceEvent.time }}"{% endif %}>
                                         </div>
@@ -74,7 +74,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center">
-                                <span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                                <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

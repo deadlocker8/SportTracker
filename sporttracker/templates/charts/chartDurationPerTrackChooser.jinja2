@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col col-12 mx-auto">
                         {% call macros.headline(gettext('Charts')) %}
-                            <span class="material-icons fs-1">leaderboard</span>
+                            <span class="material-symbols-outlined filled fs-1">leaderboard</span>
                         {% endcall %}
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                                     <a href="{{ url_for('charts.chartDurationPerTrack', track_type=trackType.name, name=name) }}"
                                        class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
                                         {{ name }}
-                                        <span class="material-icons text-primary">send</span>
+                                        <span class="material-symbols-outlined filled text-primary">send</span>
                                     </a>
                                 {% endfor %}
                             </div>

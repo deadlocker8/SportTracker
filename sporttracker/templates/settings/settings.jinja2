@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col col-12 mx-auto">
                         {% call macros.headline(gettext('Settings')) %}
-                            <span class="material-icons fs-1">settings</span>
+                            <span class="material-symbols-outlined filled fs-1">settings</span>
                         {% endcall %}
                     </div>
                 </div>
@@ -33,14 +33,14 @@
                             <div class="mb-4">
                                 <label for="user-password" class="form-label input-field-margin">{{ gettext('Password') }}</label>
                                 <div class="d-flex align-items-center">
-                                    <span class="material-icons me-3">vpn_key</span>
+                                    <span class="material-symbols-outlined filled me-3">vpn_key</span>
                                     <input type="password" class="form-control" id="user-password"
                                            name="password" required="required">
                                 </div>
                             </div>
 
                             <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
-                                <span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                                <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
 
                         <form role="form" action="{{ url_for('settings.editSelfLanguagePost') }}" method="post"
@@ -48,7 +48,7 @@
                             <div class="mb-4">
                                 <label for="user-language" class="form-label input-field-margin">{{ gettext('Language') }}</label>
                                 <div class="d-flex align-items-center">
-                                    <span class="material-icons me-3">translate</span>
+                                    <span class="material-symbols-outlined filled me-3">translate</span>
                                     <select class="form-select" id="user-language" name="language" required="required">
                                         {% for language in languages %}
                                             <option value="{{ language.name }}" {% if userLanguage == language.name %}selected{% endif %}>{{ language.localized_name }}</option>
@@ -58,7 +58,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
-                                <span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                                <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>
@@ -68,14 +68,14 @@
                 <div class="row mt-5 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
                         {% call macros.headline(gettext('Tile Hunting'), '', 'fs-3') %}
-                            <span class="material-icons fs-2">explore</span>
+                            <span class="material-symbols-outlined fs-2">explore</span>
                         {% endcall %}
 
                         <form role="form" action="{{ url_for('settings.editSelfTileHunting') }}" method="post"
                               class="mt-5">
                             <div class="mb-4">
                                 <div class="d-flex align-items-center">
-                                    <span class="material-icons me-3">explore</span>
+                                    <span class="material-symbols-outlined me-3">explore</span>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox"
                                                id="isTileHuntingActivated"
@@ -88,7 +88,7 @@
 
                             <div class="mb-4">
                                 <div class="d-flex align-items-start">
-                                    <span class="material-icons me-3">link</span>
+                                    <span class="material-symbols-outlined filled me-3">link</span>
                                     <div class="d-flex flex-column">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox"
@@ -101,12 +101,12 @@
                                             <a id="sharedLink" class="btn btn-sm btn-secondary text-break disabled opacity-100">{{ tileRenderUrl | safe }}</a>
                                             <div id="sharedLinkButtons" class="d-flex mt-3 mt-md-0">
                                                 <a class="btn btn-primary btn-sm ms-0 ms-md-3 d-flex align-items-center" id="buttonCopySharedLink" data-bs-toggle="tooltip" data-bs-title="{{ gettext('Copied') }}">
-                                                    <span class="material-icons fs-4">content_copy</span>
+                                                    <span class="material-symbols-outlined fs-4">content_copy</span>
                                                 </a>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-center ">
-                                            <span class="material-icons fs-4 me-2">info_outline</span>
+                                            <span class="material-symbols-outlined fs-4 me-2">info</span>
                                             <span>{{ gettext('This link can be used to add an overlay to OpenStreetMap based maps, e.g. https://bikerouter.de/ to plan your next tile hunting route.') }}</span>
                                         </div>
                                     </div>
@@ -114,7 +114,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
-                                <span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                                <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
                 <div class="row mt-5 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
                         {% call macros.headline(gettext('Custom Track Fields'), '', 'fs-3') %}
-                            <span class="material-icons fs-2">drive_file_rename_outline</span>
+                            <span class="material-symbols-outlined filled fs-2">drive_file_rename_outline</span>
                         {% endcall %}
 
                         {% for trackType, customFields in customFieldsByTrackType.items() %}
@@ -135,7 +135,7 @@
                                         <span class="me-3">{{ trackType.get_localized_name() }}</span>
                                         <a href="{{ url_for('settings.customFieldsAdd', track_type=trackType.name) }}"
                                            class="link-light text-decoration-none d-inline-flex align-items-center">
-                                            <span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span>
+                                            <span class="rounded-circle bg-primary p-1 fs-3 material-symbols-outlined filled">add</span>
                                         </a>
                                     </h3>
                                 </div>
@@ -159,12 +159,12 @@
                                             <td>
                                                 <a href="{{ url_for('settings.customFieldsEdit', field_id=field.id) }}"
                                                    class="link-light text-decoration-none">
-                                                    <span class="p-1 fs-5 material-icons">edit</span>
+                                                    <span class="p-1 fs-5 material-symbols-outlined filled">edit</span>
                                                 </a>
                                                 <a href=""
                                                    class="link-light text-decoration-none"
                                                    data-bs-toggle="modal" data-bs-target="#delete-modal-{{ field.id }}">
-                                                    <span class="p-1 fs-5 material-icons">delete</span>
+                                                    <span class="p-1 fs-5 material-symbols-outlined filled">delete</span>
                                                 </a>
 
                                                 {% call macros.deleteModal(gettext('Delete Custom Field?'), gettext('Do you really want to delete the custom field "%(name)s"?', name=field.name), field.id) %}
@@ -186,7 +186,7 @@
                         <div class="row mb-3">
                             <div class="col col-12 mx-auto">
                                 {% call macros.headline(gettext('Participants'), url_for('settings.participantsAdd'), 'fs-3') %}
-                                    <span class="material-icons fs-2">group</span>
+                                    <span class="material-symbols-outlined filled fs-2">group</span>
                                 {% endcall %}
                             </div>
                         </div>
@@ -205,11 +205,11 @@
                                         <td>
                                             <a href="{{ url_for('settings.participantsEdit', participant_id=participant.id) }}"
                                                class="link-light text-decoration-none">
-                                                <span class="p-1 fs-5 material-icons">edit</span>
+                                                <span class="p-1 fs-5 material-symbols-outlined filled">edit</span>
                                             </a>
                                             <a href="" class="link-light text-decoration-none"
                                                data-bs-toggle="modal" data-bs-target="#delete-modal-participant-{{ participant.id }}">
-                                                <span class="p-1 fs-5 material-icons">delete</span>
+                                                <span class="p-1 fs-5 material-symbols-outlined filled">delete</span>
                                             </a>
 
                                             {% call macros.deleteModal(gettext('Delete Participant?'), gettext('Do you really want to delete the participant "%(name)s"?', name=participant.name), 'participant-' + participant.id|string) %}
@@ -242,7 +242,7 @@
                             {% endfor %}
 
                             <button type="submit" class="btn btn-primary mt-4 d-flex align-items-center">
-                                <span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                                <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

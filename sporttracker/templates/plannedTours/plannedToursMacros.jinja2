@@ -2,7 +2,7 @@
     <div class="mb-3">
         <label for="track-participants" class="form-label">
             <div class="d-flex align-items-center">
-                <span class="material-icons me-3">share</span>
+                <span class="material-symbols-outlined filled me-3">share</span>
                 <span>{{ gettext('Share this tour with') }}</span>
             </div>
         </label>
@@ -28,7 +28,7 @@
 
         {% if not users %}
             <div class="d-flex align-items-center input-field-margin">
-                <span class="material-icons fs-4 me-2">info_outline</span>
+                <span class="material-symbols-outlined fs-4 me-2">info</span>
                 <span>{{ gettext('No other users available') }}</span>
             </div>
         {% endif %}
@@ -40,7 +40,7 @@
     <div class="mb-3">
         <div class="form-label input-field-margin">{{ name }}</div>
         <div class="d-flex align-items-center">
-            <span class="material-icons me-3">{{ icon }}</span>
+            <span class="material-symbols-outlined filled me-3">{{ icon }}</span>
             <div class="btn-group" role="group" id="{{ baseIdentifier }}-{{ identifier }}">
                 {% for availableType in availableTypes %}
                     <input type="radio" class="btn-check" name="{{ inputName }}" id="{{ identifier }}-{{ loop.index }}"
@@ -49,7 +49,7 @@
                            value="{{ availableType.name }}">
                     <label class="btn btn-outline-light d-flex align-items-center"
                            for="{{ identifier }}-{{ loop.index }}">
-                        <span class="material-icons me-3">{{ availableType.icon }}</span>
+                        <span class="material-symbols-outlined filled me-3">{{ availableType.icon }}</span>
                         {{ availableType.get_localized_name() }}
                     </label>
                 {% endfor %}
@@ -75,7 +75,7 @@
                                 <a href="{{ url_for('maps.showSingleTrack', track_id=linkedTrack.id) }}"
                                    class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
                                     {{ linkedTrack.startTime | format_date() }}
-                                    <span class="material-icons text-primary">send</span>
+                                    <span class="material-symbols-outlined filled text-primary">send</span>
                                 </a>
                             {% endfor %}
                         </div>

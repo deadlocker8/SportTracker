@@ -20,7 +20,7 @@
                             <a href="{{ url_for('tracks.listTracks', year=previousMonthDate.year, month=previousMonthDate.month) }}"
                                class="text-decoration-none text-light me-3"
                                id="month-select-previous">
-                                <span class="material-icons fs-1">chevron_left</span>
+                                <span class="material-symbols-outlined fs-1">chevron_left</span>
                             </a>
                             {% call macros.headline(gettext('Tracks'), url_for('tracks.add')) %}
                                 <i class="fa-solid fa-route fa-fw fs-2"></i>
@@ -29,7 +29,7 @@
                                class="text-decoration-none text-light ms-3"
                                id="month-select-next">
 
-                                <span class="material-icons fs-1">chevron_right</span>
+                                <span class="material-symbols-outlined fs-1">chevron_right</span>
                             </a>
                             <a href="{{ url_for('tracks.listTracks', year=currentMonthDate.year, month=currentMonthDate.month) }}"
                                class="text-decoration-none text-light ms-2"
@@ -49,14 +49,14 @@
 
                 <div class="row mt-2 d-none d-lg-block">
                     <div class="col col-12 mx-auto d-flex align-items-center justify-content-center">
-                        <span class="material-icons fs-4 me-2">info_outline</span>
+                        <span class="material-symbols-outlined fs-4 me-2">info</span>
                         <span>{{ gettext('Toggle months via arrow keys or press "0" for current month') }}</span>
                     </div>
                 </div>
 
                 <div class="row mt-2 d-lg-none">
                     <div class="col col-12 mx-auto d-flex align-items-center justify-content-center">
-                        <span class="material-icons fs-4 me-2">info_outline</span>
+                        <span class="material-symbols-outlined fs-4 me-2">info</span>
                         <span>{{ gettext('Toggle months by swiping left or right') }}</span>
                     </div>
                 </div>

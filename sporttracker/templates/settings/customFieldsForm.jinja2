@@ -17,11 +17,11 @@
                     <div class="col col-12 mx-auto">
                         {% if field %}
                             {% call macros.headline(gettext('Edit Custom Track Field')) %}
-                                <span class="material-icons fs-1">drive_file_rename_outline</span>
+                                <span class="material-symbols-outlined filled fs-1">drive_file_rename_outline</span>
                             {% endcall %}
                         {% else %}
                             {% call macros.headline(gettext('New Custom Track Field')) %}
-                                <span class="material-icons fs-1">drive_file_rename_outline</span>
+                                <span class="material-symbols-outlined filled fs-1">drive_file_rename_outline</span>
                             {% endcall %}
                         {% endif %}
                     </div>
@@ -32,7 +32,7 @@
                         {% for message in messages %}
                             <div class="alert alert-danger mt-3 d-inline-block" role="alert">
                                 <div class="d-flex align-items-center">
-                                    <i class="material-icons">warning</i>
+                                    <i class="material-symbols-outlined filled">warning</i>
                                     <div class="ms-3">{{ message }}</div>
                                 </div>
                             </div>
@@ -51,7 +51,7 @@
                             <div class="mb-3">
                                 <label for="field-name" class="form-label input-field-margin">{{ gettext('Name') }}</label>
                                 <div class="d-flex align-items-center">
-                                    <span class="material-icons me-3">edit</span>
+                                    <span class="material-symbols-outlined filled me-3">edit</span>
                                     <input type="text" class="form-control" id="field-name" name="name"
                                            required="required" {% if field %}value="{{ field.name }}"{% endif %}>
                                 </div>
@@ -60,7 +60,7 @@
                             <div class="mb-3">
                                 <label for="field-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>
                                 <div class="d-flex align-items-center">
-                                    <span class="material-icons me-3">list</span>
+                                    <span class="material-symbols-outlined me-3">list</span>
                                     <select class="form-select" id="field-type" name="type" required="required">
                                         {% for fieldType in customTrackFieldTypes %}
                                             <option value="{{ fieldType.name }}" {% if field and field.type == fieldType.name %}selected{% endif %}>{{ fieldType.get_localized_name() }}</option>
@@ -71,7 +71,7 @@
 
                             <div class="mb-3">
                                 <div class="d-flex align-items-center">
-                                    <span class="material-icons me-3">question_mark</span>
+                                    <span class="material-symbols-outlined me-3">question_mark</span>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" {% if field and field.is_required %}checked{% endif %} id="field-is-required" name="is_required">
                                         <label class="form-check-label" for="field-is-required">
@@ -81,7 +81,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

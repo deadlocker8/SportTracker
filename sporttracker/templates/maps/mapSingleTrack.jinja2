@@ -47,10 +47,10 @@
                     {% call mapMacros.meta_info_item_small('route', track.type.text_color, gettext('Distance')) %}
                         {{ (track.distance / 1000) | format_decimal(2) }} km
                     {% endcall %}
-                    {% call mapMacros.meta_info_item_small('timer', track.type.text_color, gettext('Duration'), 'material-icons-outlined') %}
+                    {% call mapMacros.meta_info_item_small('timer', track.type.text_color, gettext('Duration'), 'material-symbols-outlined') %}
                         {{ track.duration | format_duration }} h
                     {% endcall %}
-                    {% call mapMacros.meta_info_item_small('speed', track.type.text_color, gettext('Speed')) %}
+                    {% call mapMacros.meta_info_item_small('speed', track.type.text_color, gettext('Speed'), 'material-symbols-outlined') %}
                         {% if track.type.render_speed_in_kph %}
                             {% if track.duration is none %}
                                 -
@@ -70,7 +70,7 @@
 
             <div class="card-footer text-body-secondary d-flex align-items-center justify-content-end">
                 <div class="d-flex align-items-center">
-                    <div class="material-icons fs-4 me-1">person</div>
+                    <div class="material-symbols-outlined filled fs-4 me-1">person</div>
                     <div>{{ track.ownerName }}</div>
                 </div>
             </div>
@@ -95,11 +95,11 @@
                             {{ (track.distance / 1000) | format_decimal(2) }} km
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('timer', track.type.text_color, gettext('Duration'), 'material-icons-outlined') %}
+                        {% call mapMacros.meta_info_item('timer', track.type.text_color, gettext('Duration'), 'material-symbols-outlined') %}
                             {{ track.duration | format_duration }} h
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('speed', track.type.text_color, gettext('Avg. Speed')) %}
+                        {% call mapMacros.meta_info_item('speed', track.type.text_color, gettext('Avg. Speed'), 'material-symbols-outlined') %}
                             {% if track.type.render_speed_in_kph %}
                                 {% if track.duration is none %}
                                     -
@@ -115,7 +115,7 @@
                             {% endif %}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('favorite_border', track.type.text_color, gettext('Avg. Heart Rate')) %}
+                        {% call mapMacros.meta_info_item('favorite_border', track.type.text_color, gettext('Avg. Heart Rate'), 'material-symbols-outlined') %}
                             {% if track.averageHeartRate is not none %}
                                 {{ track.averageHeartRate }} bpm
                             {% else %}
@@ -150,7 +150,7 @@
 
                     <div class="card-footer text-body-secondary d-flex align-items-center justify-content-end">
                         <div class="d-flex align-items-center">
-                            <div class="material-icons fs-4 me-1">person</div>
+                            <div class="material-symbols-outlined filled fs-4 me-1">person</div>
                             <div>{{ track.ownerName }}</div>
                         </div>
                     </div>

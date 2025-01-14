@@ -16,7 +16,7 @@
                     <div class="col col-12 mx-auto">
                         {% if user %}
                             {% call macros.headline(gettext('Edit User')) %}
-                                <span class="material-icons fs-1">groups</span>
+                                <span class="material-symbols-outlined filled fs-1">groups</span>
                             {% endcall %}
                             {% if not user.isAdmin %}
                                 <a href="{{ url_for('users.delete', user_id=user_id) }}"
@@ -24,7 +24,7 @@
                             {% endif %}
                         {% else %}
                              {% call macros.headline(gettext('New User')) %}
-                                <span class="material-icons fs-1">groups</span>
+                                <span class="material-symbols-outlined filled fs-1">groups</span>
                             {% endcall %}
                         {% endif %}
                     </div>
@@ -44,7 +44,7 @@
                             <div class="mb-3">
                                 <label for="user-name" class="form-label input-field-margin">{{ gettext('Username') }}</label>
                                 <div class="d-flex align-items-center">
-                                        <span class="material-icons me-3">person</span>
+                                        <span class="material-symbols-outlined filled me-3">person</span>
                                     <input type="text" class="form-control"
                                            id="user-name" name="username"
                                            required="required" {% if user %}value="{{ user.username }}"{% endif %}>
@@ -53,7 +53,7 @@
                             <div class="mb-3">
                                 <label for="user-password" class="form-label input-field-margin">{{ gettext('Password') }}</label>
                                 <div class="d-flex align-items-center">
-                                    <span class="material-icons me-3">vpn_key</span>
+                                    <span class="material-symbols-outlined filled me-3">vpn_key</span>
                                     <input type="password" class="form-control" id="user-password"
                                            name="password" required="required">
                                 </div>
@@ -63,7 +63,7 @@
                                 <input type="hidden" name="old_username" value="{{ user.username }}">
                             {% endif %}
 
-                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

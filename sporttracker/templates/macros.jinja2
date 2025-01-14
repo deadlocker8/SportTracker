@@ -1,7 +1,7 @@
 {% macro header() -%}
     <meta charset="UTF-8"/>
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,600,0..1,0" rel="stylesheet" />
 
     <link href="{{ url_for('static', filename="css/libs/bootstrap.min.css") }}" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/sportTracker.css") }}"/>
@@ -41,7 +41,7 @@
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center {% if activeLink == 'users' %}active {% endif %}"
                                    href="{{ url_for('users.listUsers') }}"><span class="navbar-icon"><span
-                                        class="material-icons fs-5">groups</span></span>&nbsp;{{ gettext('Users') }}
+                                        class="material-symbols-outlined filled fs-5">groups</span></span>&nbsp;{{ gettext('Users') }}
                                 </a>
                             </li>
                         </ul>
@@ -61,14 +61,14 @@
                                 <a class="nav-link d-flex align-items-center {% if activeLink == 'monthGoals' %}active {% endif %}"
                                    href="{{ url_for('monthGoals.listMonthGoals') }}">
                                     <span class="navbar-icon">
-                                        <span class="material-icons fs-5">flag</span>
+                                        <span class="material-symbols-outlined filled fs-5">flag</span>
                                     </span>&nbsp;{{ gettext('Goals') }}
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle d-flex align-items-center {% if activeLink == 'charts' or activeLink == 'achievements' or activeLink == 'annualAchievements' or activeLink == 'calendar' %}active {% endif %}" href="#" role="button" data-bs-toggle="dropdown">
                                     <span class="navbar-icon">
-                                        <span class="material-icons fs-5">leaderboard</span>
+                                        <span class="material-symbols-outlined filled fs-5">leaderboard</span>
                                     </span>&nbsp;{{ gettext('Analytics') }}
                                 </a>
                                 <ul class="dropdown-menu">
@@ -76,7 +76,7 @@
                                         <a class="dropdown-item d-flex align-items-center {% if activeLink == 'charts' %}active {% endif %}"
                                            href="{{ url_for('charts.chartChooser') }}">
                                             <span class="navbar-icon">
-                                                <span class="material-icons fs-5">leaderboard</span>
+                                                <span class="material-symbols-outlined filled fs-5">leaderboard</span>
                                             </span>&nbsp;{{ gettext('Charts') }}
                                         </a>
                                     </li>
@@ -84,7 +84,7 @@
                                         <a class="dropdown-item d-flex align-items-center {% if activeLink == 'achievements' %}active {% endif %}"
                                            href="{{ url_for('achievements.showAchievements') }}">
                                             <span class="navbar-icon">
-                                                <span class="material-icons fs-5">emoji_events</span>
+                                                <span class="material-symbols-outlined filled fs-5">emoji_events</span>
                                             </span>&nbsp;{{ gettext('Achievements') }}
                                         </a>
                                     </li>
@@ -92,7 +92,7 @@
                                         <a class="dropdown-item d-flex align-items-center {% if activeLink == 'calendar' %}active {% endif %}"
                                            href="{{ url_for('charts.chartCalendar', year=currentYear) }}">
                                             <span class="navbar-icon">
-                                                <span class="material-icons fs-5">calendar_month</span>
+                                                <span class="material-symbols-outlined filled fs-5">calendar_month</span>
                                             </span>&nbsp;{{ gettext('Calendar') }}
                                         </a>
                                     </li>
@@ -100,7 +100,7 @@
                                         <a class="dropdown-item d-flex align-items-center {% if activeLink == 'annualAchievements' %}active {% endif %}"
                                            href="{{ url_for('annualAchievements.showAnnualAchievements') }}">
                                             <span class="navbar-icon">
-                                                <span class="material-icons fs-5">stacked_line_chart</span>
+                                                <span class="material-symbols-outlined fs-5">stacked_line_chart</span>
                                             </span>&nbsp;{{ gettext('Annual Statistics') }}
                                         </a>
                                     </li>
@@ -110,14 +110,14 @@
                                 <a class="nav-link d-flex align-items-center {% if activeLink == 'map' %}active {% endif %}"
                                    href="{{ url_for('maps.showAllTracksOnMap') }}">
                                     <span class="navbar-icon">
-                                        <span class="material-icons fs-5">map</span>
+                                        <span class="material-symbols-outlined filled fs-5">map</span>
                                     </span>&nbsp;{{ gettext('Map') }}
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle d-flex align-items-center {% if activeLink == 'maintenance' or activeLink == 'plannedTours' or activeLink == 'about' %}active {% endif %}" href="#" role="button" data-bs-toggle="dropdown">
                                     <span class="navbar-icon">
-                                        <span class="material-icons fs-5">format_list_bulleted</span>
+                                        <span class="material-symbols-outlined fs-5">format_list_bulleted</span>
                                     </span>&nbsp;{{ gettext('More') }}
                                     {% set numberOfUpdatedPlannedTours = newPlannedTourIds|length + updatedPlannedTourIds|length %}
                                     {% if numberOfUpdatedPlannedTours > 0 or numberOfTriggeredMaintenanceReminders > 0 %}
@@ -159,7 +159,7 @@
                                             <a class="dropdown-item d-flex align-items-center {% if activeLink == 'tileHunting' %}active {% endif %}"
                                                href="{{ url_for('maps.showTileHuntingMap') }}">
                                                 <span class="navbar-icon">
-                                                    <span class="material-icons-outlined fs-5">explore</span>
+                                                    <span class="material-symbols-outlined fs-5">explore</span>
                                                 </span>&nbsp;{{ gettext('Tile Hunting') }}
                                             </a>
                                         </li>
@@ -168,7 +168,7 @@
                                         <a class="dropdown-item d-flex align-items-center {% if activeLink == 'about' %}active {% endif %}"
                                            href="{{ url_for('general.about') }}">
                                             <span class="navbar-icon">
-                                                <span class="material-icons fs-5">info_outline</span>
+                                                <span class="material-symbols-outlined fs-5">info</span>
                                             </span>&nbsp;{{ gettext('About') }}
                                         </a>
                                     </li>
@@ -196,7 +196,7 @@
            href="#" role="button" data-bs-toggle="dropdown">
             <div class="d-flex align-items-center">
                 <span class="navbar-icon">
-                    <span class="material-icons fs-4">person</span>
+                    <span class="material-symbols-outlined filled fs-4">person</span>
                 </span>&nbsp;<span class="user-name-max-width text-truncate">{{ current_user.username|capitalize }}</span>
             </div>
         </a>
@@ -206,7 +206,7 @@
                     <a class="dropdown-item  d-flex align-items-center justify-content-center"
                        href="{{ url_for('settings.settingsShow') }}">
                         <span class="navbar-icon">
-                            <span class="material-icons fs-5">settings</span>
+                            <span class="material-symbols-outlined filled fs-5">settings</span>
                         </span>&nbsp;{{ gettext('Settings') }}
                     </a>
                 <li>
@@ -216,7 +216,7 @@
             <li>
                 <div class="dropdown-item">
                     <a href="{{ url_for('authentication.logout') }}" class="btn btn-danger d-flex align-items-center" id="button-logout">
-                        <span class="material-icons text-light fs-5">logout</span>&nbsp;{{ gettext('Logout') }}
+                        <span class="material-symbols-outlined text-light fs-5">logout</span>&nbsp;{{ gettext('Logout') }}
                     </a>
                 </div>
             </li>
@@ -274,7 +274,7 @@
         <span class="ms-1 me-3 headline-text">{{ headline }}</span>
         {% if addUrl %}
             <a href="{{ addUrl }}" class="link-light text-decoration-none d-flex-inline align-items-center">
-                <span class="rounded-circle bg-primary p-1 fs-3 material-icons">add</span>
+                <span class="rounded-circle bg-primary p-1 fs-3 material-symbols-outlined">add</span>
             </a>
         {% endif %}
     </div>

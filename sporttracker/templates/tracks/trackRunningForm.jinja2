@@ -18,10 +18,10 @@
                     <div class="col col-12 mx-auto">
                         {% if track %}
                             {% call macros.headline(gettext('Edit Running Track')) %}
-                                <span class="material-icons fs-1">directions_run</span>
+                                <span class="material-symbols-outlined filled fs-1">directions_run</span>
                             {% endcall %}
                             <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
-                                <span class="material-icons text-light">delete</span>&nbsp;{{ gettext('Delete') }}
+                                <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                             </button>
 
                             {% call macros.deleteModal(gettext('Delete Track?'), gettext('Do you really want to delete the track "%(name)s" (ID: %(id)d)?', name=track.name, id=track_id)) %}
@@ -29,7 +29,7 @@
                             {% endcall %}
                         {% else %}
                             {% call macros.headline(gettext('New Running Track')) %}
-                                <span class="material-icons fs-1">directions_run</span>
+                                <span class="material-symbols-outlined filled fs-1">directions_run</span>
                             {% endcall %}
                         {% endif %}
                     </div>
@@ -67,7 +67,7 @@
 
                             {{ trackMacros.form_share_link(track, 'maps.showSharedSingleTrack', 'tracks.createShareCode')}}
 
-                            <button type="submit" id="buttonSaveTrack" class="btn btn-success mt-5 input-field-margin d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            <button type="submit" id="buttonSaveTrack" class="btn btn-success mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

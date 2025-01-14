@@ -16,10 +16,10 @@
                     <div class="col col-12 mx-auto">
                         {% if goal %}
                             {% call macros.headline(gettext('Edit Count Month Goal')) %}
-                                <span class="material-icons fs-1">format_list_numbered</span>
+                                <span class="material-symbols-outlined fs-1">format_list_numbered</span>
                             {% endcall %}
                             <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
-                                <span class="material-icons text-light">delete</span>&nbsp;{{ gettext('Delete') }}
+                                <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                             </button>
 
                             {% call macros.deleteModal(gettext('Delete Count Month Goal?'), gettext('Do you really want to delete this count month goal?')) %}
@@ -27,7 +27,7 @@
                             {% endcall %}
                         {% else %}
                             {% call macros.headline(gettext('New Count Month Goal')) %}
-                                <span class="material-icons fs-1">format_list_numbered</span>
+                                <span class="material-symbols-outlined  fs-1">format_list_numbered</span>
                             {% endcall %}
                         {% endif %}
                     </div>
@@ -40,7 +40,7 @@
                             <div class="mb-3">
                                 <label for="month-goal-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>
                                 <div class="d-flex align-items-center">
-                                    <span class="material-icons me-3">stars</span>
+                                    <span class="material-symbols-outlined filled me-3">stars</span>
                                     <select class="form-select" id="month-goal-type" name="type" required="required">
                                         {% for trackType in trackTypes %}
                                             <option value="{{ trackType.name }}" {% if goal and goal.type == trackType.name %}selected{% endif %}>{{ trackType.get_localized_name() }}</option>
@@ -54,7 +54,7 @@
                                     <div class="col col-6">
                                         <label for="month-goal-year" class="form-label input-field-margin">{{ gettext('Year') }}</label>
                                         <div class="d-flex align-items-center">
-                                            <span class="material-icons me-3">calendar_today</span>
+                                            <span class="material-symbols-outlined filled me-3">calendar_today</span>
                                             <input type="number" step="1" min="2000" class="form-control"
                                                    id="month-goal-year" name="year" placeholder="YYYY"
                                                    required="required" {% if goal %}value="{{ goal.year }}"{% endif %}>
@@ -63,7 +63,7 @@
                                     <div class="col col-6">
                                         <label for="month-goal-month" class="form-label input-field-margin">{{ gettext('Month') }}</label>
                                         <div class="d-flex align-items-center">
-                                            <span class="material-icons me-3">calendar_month</span>
+                                            <span class="material-symbols-outlined filled me-3">calendar_month</span>
                                             <input type="number" min="1" max="12" class="form-control" id="month-goal-month"
                                                    name="month" placeholder="MM"
                                                    required="required" {% if goal %}value="{{ goal.month }}"{% endif %}>
@@ -77,7 +77,7 @@
                                     <div class="col col-6">
                                         <label for="month-goal-minimum" class="form-label input-field-margin">{{ gettext('Minimum number of tracks') }}</label>
                                         <div class="d-flex align-items-center">
-                                            <span class="material-icons me-3">format_list_numbered</span>
+                                            <span class="material-symbols-outlined me-3">format_list_numbered</span>
                                             <input type="number" step="1" min="0" class="form-control"
                                                    id="month-goal-minimum" name="count_minimum" required="required"
                                                    {% if goal %}value="{{ goal.count_minimum }}"{% endif %}>
@@ -86,7 +86,7 @@
                                     <div class="col col-6">
                                         <label for="month-goal-perfect" class="form-label input-field-margin">{{ gettext('Perfect number of tracks') }}</label>
                                         <div class="d-flex align-items-center">
-                                            <span class="material-icons me-3">format_list_numbered</span>
+                                            <span class="material-symbols-outlined me-3">format_list_numbered</span>
                                             <input type="number" step="1" min="0" class="form-control"
                                                    id="month-goal-perfect" name="count_perfect" required="required"
                                                    {% if goal %}value="{{ goal.count_perfect }}"{% endif %}>
@@ -95,7 +95,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

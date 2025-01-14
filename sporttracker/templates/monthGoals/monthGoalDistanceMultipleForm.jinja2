@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col col-12 mx-auto">
                         {% call macros.headline(gettext('Multiple New Distance Month Goals')) %}
-                            <span class="material-icons fs-1">route</span>
+                            <span class="material-symbols-outlined fs-1">route</span>
                         {% endcall %}
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                             <div class="mb-3">
                                 <label for="month-goal-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>
                                 <div class="d-flex align-items-center">
-                                    <span class="material-icons me-3">stars</span>
+                                    <span class="material-symbols-outlined filled me-3">stars</span>
                                     <select class="form-select" id="month-goal-type" name="type" required="required">
                                         {% for trackType in trackTypes %}
                                             {% if trackType.supports_distance %}
@@ -43,7 +43,7 @@
                                     <div class="col col-6">
                                         <label for="month-goal-start-year" class="form-label input-field-margin">{{ gettext('Start Year') }}</label>
                                         <div class="d-flex align-items-center">
-                                            <span class="material-icons me-3">calendar_today</span>
+                                            <span class="material-symbols-outlined filled me-3">calendar_today</span>
                                             <input type="number" step="1" min="2000" class="form-control"
                                                    id="month-goal-start-year" name="start_year" placeholder="YYYY"
                                                    required="required">
@@ -52,7 +52,7 @@
                                     <div class="col col-6">
                                         <label for="month-goal-start-month" class="form-label input-field-margin">{{ gettext('Start Month') }}</label>
                                         <div class="d-flex align-items-center">
-                                            <span class="material-icons me-3">calendar_month</span>
+                                            <span class="material-symbols-outlined filled me-3">calendar_month</span>
                                             <input type="number" min="1" max="12" class="form-control" id="month-goal-start-month"
                                                    name="start_month" placeholder="MM"
                                                    required="required">
@@ -66,7 +66,7 @@
                                     <div class="col col-6">
                                         <label for="month-goal-end-year" class="form-label input-field-margin">{{ gettext('End Year') }}</label>
                                         <div class="d-flex align-items-center">
-                                            <span class="material-icons me-3">calendar_today</span>
+                                            <span class="material-symbols-outlined filled me-3">calendar_today</span>
                                             <input type="number" step="1" min="2000" class="form-control"
                                                    id="month-goal-end-year" name="end_year" placeholder="YYYY"
                                                    required="required">
@@ -75,7 +75,7 @@
                                     <div class="col col-6">
                                         <label for="month-goal-end-month" class="form-label input-field-margin">{{ gettext('End Month') }}</label>
                                         <div class="d-flex align-items-center">
-                                            <span class="material-icons me-3">calendar_month</span>
+                                            <span class="material-symbols-outlined filled me-3">calendar_month</span>
                                             <input type="number" min="1" max="12" class="form-control"
                                                    id="month-goal-end-month"
                                                    name="end_month" placeholder="MM"
@@ -90,7 +90,7 @@
                                     <div class="col col-6">
                                         <label for="month-goal-minimum" class="form-label input-field-margin">{{ gettext('Minimum Distance (in km)') }}</label>
                                         <div class="d-flex align-items-center">
-                                            <span class="material-icons me-3">route</span>
+                                            <span class="material-symbols-outlined me-3">route</span>
                                             <input type="number" step="0.01" min="0" class="form-control"
                                                    id="month-goal-minimum" name="distance_minimum" required="required"
                                                    {% if goal %}value="{{ goal.distance_minimum | round(1) }}"{% endif %}>
@@ -99,7 +99,7 @@
                                     <div class="col col-6">
                                         <label for="month-goal-perfect" class="form-label input-field-margin">{{ gettext('Perfect Distance (in km)') }}</label>
                                         <div class="d-flex align-items-center">
-                                            <span class="material-icons me-3">route</span>
+                                            <span class="material-symbols-outlined me-3">route</span>
                                             <input type="number" step="0.01" min="0" class="form-control"
                                                    id="month-goal-perfect" name="distance_perfect" required="required"
                                                    {% if goal %}value="{{ goal.distance_perfect | round(1) }}"{% endif %}>
@@ -109,7 +109,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center">
-                                <span class="material-icons text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                                <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

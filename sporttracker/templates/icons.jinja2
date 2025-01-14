@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-{% macro materialize_icon(name, iconName, outlined=false) -%}
+{% macro materialize_icon(name, iconName, filled=false) -%}
     <tr data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{{ iconName }}{% if outlined %} (outlined){% endif %}">
         <td class="pe-5 fs-5">{{ name }}</td>
         <td class="fs-4 icon d-flex align-items-center" data-icon="{{ iconName }}">
-            <span class="material-icons{% if outlined %}-outlined{% endif %}">{{ iconName }}</span>
+            <span class="material-symbols-outlined {% if filled %} filled{% endif %}">{{ iconName }}</span>
             <span class="count fs-5 ms-2">&nbsp;&nbsp;</span>
         </td>
     </tr>
@@ -72,24 +72,24 @@
 
                     {% call group('track properties') %}
                         {{ materialize_icon('distance', 'route') }}
-                        {{ materialize_icon('duration', 'timer', true) }}
+                        {{ materialize_icon('duration', 'timer') }}
                         {{ materialize_icon('speed', 'speed') }}
                         {{ materialize_icon('average heart rate', 'favorite_border') }}
                         {{ materialize_icon('elevation sum', 'expand') }}
-                        {{ materialize_icon('participants', 'group') }}
+                        {{ materialize_icon('participants', 'group', true) }}
                     {% endcall %}
 
                     {% call group('track form') %}
-                        {{ materialize_icon('name', 'edit') }}
-                        {{ materialize_icon('date', 'event') }}
+                        {{ materialize_icon('name', 'edit', true) }}
+                        {{ materialize_icon('date', 'event', true) }}
                         {{ materialize_icon('start time', 'schedule') }}
                         {{ materialize_icon('distance', 'route') }}
-                        {{ materialize_icon('duration', 'timer', true) }}
+                        {{ materialize_icon('duration', 'timer') }}
                         {{ materialize_icon('average heart rate', 'favorite_border') }}
                         {{ materialize_icon('elevation sum', 'expand') }}
-                        {{ materialize_icon('custom field', 'drive_file_rename_outline') }}
-                        {{ materialize_icon('participants', 'group') }}
-                        {{ materialize_icon('gpx track', 'location_on') }}
+                        {{ materialize_icon('custom field', 'drive_file_rename_outline', true) }}
+                        {{ materialize_icon('participants', 'group', true) }}
+                        {{ materialize_icon('gpx track', 'location_on', true) }}
                         {{ materialize_icon('workout type', 'fitness_center') }}
                         {{ materialize_icon('workout category type', 'label') }}
                     {% endcall %}
@@ -98,26 +98,26 @@
                         {{ materialize_icon('shared link', 'link') }}
                         {{ materialize_icon('create', 'add_link') }}
                         {{ materialize_icon('copy', 'content_copy') }}
-                        {{ materialize_icon('delete', 'delete') }}
+                        {{ materialize_icon('delete', 'delete', true) }}
                     {% endcall %}
                 </div>
 
                 <div class="d-flex flex-column justify-content-between">
                     {% call group('gpx tracks') %}
-                        {{ materialize_icon('open map', 'map') }}
+                        {{ materialize_icon('open map', 'map', true) }}
                         {{ materialize_icon('download map', 'download') }}
-                        {{ materialize_icon('delete', 'delete') }}
+                        {{ materialize_icon('delete', 'delete', true) }}
                     {% endcall %}
 
                     {% call group('month goals') %}
                         {{ materialize_icon('month goal distance', 'route') }}
                         {{ materialize_icon('month goal count', 'format_list_numbered') }}
-                        {{ materialize_icon('month goal duration', 'timer', true) }}
+                        {{ materialize_icon('month goal duration', 'timer') }}
                     {% endcall %}
 
                     {% call group('month goal form') %}
-                        {{ materialize_icon('track type', 'stars') }}
-                        {{ materialize_icon('year', 'calendar_today') }}
+                        {{ materialize_icon('track type', 'stars', true) }}
+                        {{ materialize_icon('year', 'calendar_today', true) }}
                         {{ materialize_icon('minimum distance', 'route') }}
                         {{ materialize_icon('perfect distance', 'route') }}
                         {{ materialize_icon('minimum number', 'format_list_numbered') }}
@@ -125,18 +125,18 @@
                     {% endcall %}
 
                     {% call group('user form') %}
-                        {{ materialize_icon('name', 'person') }}
-                        {{ materialize_icon('password', 'vpn_key') }}
+                        {{ materialize_icon('name', 'person', true) }}
+                        {{ materialize_icon('password', 'vpn_key', true) }}
                     {% endcall %}
 
                     {% call group('charts') %}
-                        {{ materialize_icon('bar chart', 'bar_chart') }}
-                        {{ materialize_icon('pie chart', 'pie_chart') }}
-                        {{ materialize_icon('calendar chart', 'calendar_month') }}
+                        {{ materialize_icon('bar chart', 'bar_chart', true) }}
+                        {{ materialize_icon('pie chart', 'pie_chart', true) }}
+                        {{ materialize_icon('calendar chart', 'calendar_month', true) }}
                     {% endcall %}
 
                     {% call group('participant form') %}
-                        {{ materialize_icon('name', 'edit') }}
+                        {{ materialize_icon('name', 'edit', true) }}
                     {% endcall %}
 
                     {% call group('annual statistics') %}
@@ -149,18 +149,17 @@
                 <div class="d-flex flex-column justify-content-between">
                     {% call group('maintenance form') %}
                         {{ fontawesome_icon('maintenance', 'fa-wrench') }}
-                        {{ materialize_icon('track type', 'stars') }}
-                        {{ materialize_icon('date', 'event') }}
+                        {{ materialize_icon('track type', 'stars', true) }}
                         {{ materialize_icon('time', 'schedule') }}
-                        {{ materialize_icon('description', 'article') }}
-                        {{ materialize_icon('reminder', 'notifications') }}
-                        {{ materialize_icon('warning', 'warning') }}
+                        {{ materialize_icon('description', 'article', true) }}
+                        {{ materialize_icon('reminder', 'notifications', true) }}
+                        {{ materialize_icon('warning', 'warning', true) }}
                     {% endcall %}
 
                     {% call group('planned tour travel types') %}
-                        {{ materialize_icon('none', 'home') }}
-                        {{ materialize_icon('by car', 'directions_car') }}
-                        {{ materialize_icon('by train', 'train') }}
+                        {{ materialize_icon('none', 'home', true) }}
+                        {{ materialize_icon('by car', 'directions_car', true) }}
+                        {{ materialize_icon('by train', 'train', true) }}
                     {% endcall %}
 
                     {% call group('planned tour direction types') %}
@@ -171,13 +170,13 @@
 
                     {% call group('planned tour form') %}
                         {{ fontawesome_icon('planned tours', 'fa-lightbulb') }}
-                        {{ materialize_icon('track type', 'stars') }}
-                        {{ materialize_icon('name', 'edit') }}
-                        {{ materialize_icon('gpx track', 'location_on') }}
-                        {{ materialize_icon('share', 'share') }}
+                        {{ materialize_icon('track type', 'stars', true) }}
+                        {{ materialize_icon('name', 'edit', true) }}
+                        {{ materialize_icon('gpx track', 'location_on', true) }}
+                        {{ materialize_icon('share', 'share', true) }}
                         {{ materialize_icon('arrival method', 'arrow_forward') }}
                         {{ materialize_icon('departure method', 'arrow_back') }}
-                        {{ materialize_icon('direction', 'directions') }}
+                        {{ materialize_icon('direction', 'directions', true) }}
                     {% endcall %}
 
                     {% call group('planned tour map') %}
@@ -191,19 +190,22 @@
                         {{ materialize_icon('achievement streak', 'sports_score') }}
                         {{ materialize_icon('achievement longest track', 'route') }}
                         {{ materialize_icon('achievement total distance', 'map') }}
-                        {{ materialize_icon('achievement best month', 'calendar_month') }}
+                        {{ materialize_icon('achievement best month', 'calendar_month', true) }}
                     {% endcall %}
                 </div>
 
                 <div class="d-flex flex-column justify-content-between">
                     {% call group('settings') %}
-                        {{ materialize_icon('settings', 'settings') }}
-                        {{ materialize_icon('password', 'vpn_key') }}
+                        {{ materialize_icon('settings', 'settings', true) }}
+                        {{ materialize_icon('password', 'vpn_key', true) }}
                         {{ materialize_icon('language', 'translate') }}
+                        {{ materialize_icon('link', 'link') }}
+                        {{ materialize_icon('copy', 'content_copy') }}
+                        {{ materialize_icon('info', 'info') }}
                     {% endcall %}
 
                     {% call group('custom field form') %}
-                        {{ materialize_icon('name', 'edit') }}
+                        {{ materialize_icon('name', 'edit', true) }}
                         {{ materialize_icon('type', 'list') }}
                         {{ materialize_icon('is required', 'question_mark') }}
                     {% endcall %}
@@ -224,28 +226,30 @@
                         {{ fontawesome_icon('button today', 'fa-calendar-day') }}
                         {{ fontawesome_icon('button year/month chooser', 'fa-calendar-days') }}
                         {{ fontawesome_icon('search', 'fa-magnifying-glass') }}
-                        {{ materialize_icon('save', 'save') }}
-                        {{ materialize_icon('delete', 'delete') }}
+                        {{ materialize_icon('save', 'save', true) }}
+                        {{ materialize_icon('delete', 'delete', true) }}
                         {{ materialize_icon('show all', 'keyboard_arrow_down') }}
+                        {{ materialize_icon('logout', 'logout') }}
                     {% endcall %}
 
                     {% call group('navbar/headlines') %}
                         {{ fontawesome_icon('tracks', 'fa-route') }}
-                        {{ materialize_icon('goals', 'flag') }}
-                        {{ materialize_icon('analytics', 'leaderboard') }}
-                        {{ materialize_icon('charts', 'leaderboard') }}
-                        {{ materialize_icon('achievements', 'emoji_events') }}
+                        {{ materialize_icon('goals', 'flag', true) }}
+                        {{ materialize_icon('analytics', 'leaderboard', true) }}
+                        {{ materialize_icon('charts', 'leaderboard', true) }}
+                        {{ materialize_icon('achievements', 'emoji_events', true) }}
                         {{ materialize_icon('annual statistics', 'stacked_line_chart') }}
-                        {{ materialize_icon('map', 'map') }}
+                        {{ materialize_icon('calendar chart', 'calendar_month', true) }}
+                        {{ materialize_icon('map', 'map', true) }}
                         {{ fontawesome_icon('maintenance', 'fa-wrench') }}
                         {{ fontawesome_icon('planned tours', 'fa-lightbulb') }}
                         {{ materialize_icon('more', 'format_list_bulleted') }}
-                        {{ materialize_icon('about', 'info_outline') }}
-                        {{ materialize_icon('tile hunting', 'explore', outlined=True) }}
-                        {{ materialize_icon('profile', 'person') }}
-                        {{ materialize_icon('settings', 'settings') }}
-                        {{ materialize_icon('users', 'groups') }}
-                        {{ materialize_icon('custom fields', 'drive_file_rename_outline') }}
+                        {{ materialize_icon('about', 'info') }}
+                        {{ materialize_icon('tile hunting', 'explore') }}
+                        {{ materialize_icon('profile', 'person', true) }}
+                        {{ materialize_icon('settings', 'settings', true) }}
+                        {{ materialize_icon('users', 'groups', true) }}
+                        {{ materialize_icon('custom fields', 'drive_file_rename_outline', true) }}
                     {% endcall %}
                 </div>
             </section>

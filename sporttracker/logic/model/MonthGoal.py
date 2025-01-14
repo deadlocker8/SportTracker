@@ -32,7 +32,7 @@ class MonthGoalSummary(ABC):
 class MonthGoalDistanceSummary(MonthGoalSummary):
     type_name: ClassVar[str] = 'DISTANCE'
     icon: ClassVar[str] = 'route'
-    is_outlined_icon: ClassVar[bool] = False
+    is_outlined_icon: ClassVar[bool] = True
 
     goal_distance_minimum: float
     goal_distance_perfect: float
