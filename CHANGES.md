@@ -1,4 +1,5 @@
 # 1.33.0 - (XX.XX.XX)
+- add: workouts: new field to store the workout type (duration-based or repetition-based) (#158)
 - fix: annual statistics: show flat trend icon if there was no increase or decrease for aa certain value (#157)
 
 # 1.32.0 - (01.01.25)
