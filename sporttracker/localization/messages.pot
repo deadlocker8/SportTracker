@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-14 21:58+0100\n"
+"POT-Creation-Date: 2025-01-18 22:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -99,7 +99,7 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalDurationForm.jinja2:105
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:95
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:113
-#: ../templates/tracks/trackMacros.jinja2:289
+#: ../templates/tracks/trackMacros.jinja2:305
 msgid "Hours"
 msgstr ""
 
@@ -219,16 +219,32 @@ msgstr ""
 
 #: ../logic/model/User.py:67 ../templates/maps/mapSingleTrack.jinja2:50
 #: ../templates/maps/mapSingleTrack.jinja2:98
-#: ../templates/tracks/trackMacros.jinja2:283
+#: ../templates/tracks/trackMacros.jinja2:299
 msgid "Duration"
 msgstr ""
 
-#: ../logic/model/User.py:71 ../templates/tracks/trackMacros.jinja2:309
+#: ../logic/model/User.py:71 ../templates/tracks/trackMacros.jinja2:325
 msgid "Average Heart Rate"
 msgstr ""
 
 #: ../logic/model/User.py:73 ../templates/maps/mapSingleTrack.jinja2:126
 msgid "Elevation Sum"
+msgstr ""
+
+#: ../logic/model/WorkoutCategory.py:46
+msgid "Arms"
+msgstr ""
+
+#: ../logic/model/WorkoutCategory.py:48
+msgid "Legs"
+msgstr ""
+
+#: ../logic/model/WorkoutCategory.py:50
+msgid "Core"
+msgstr ""
+
+#: ../logic/model/WorkoutCategory.py:52
+msgid "Yoga"
 msgstr ""
 
 #: ../logic/model/WorkoutType.py:36
@@ -239,7 +255,7 @@ msgstr ""
 msgid "Repetition-based"
 msgstr ""
 
-#: ../templates/about.jinja2:6 ../templates/macros.jinja2:172
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:170
 msgid "About"
 msgstr ""
 
@@ -248,7 +264,7 @@ msgid "Changelog"
 msgstr ""
 
 #: ../templates/achievements.jinja2:30
-#: ../templates/annualAchievements.jinja2:133 ../templates/macros.jinja2:88
+#: ../templates/annualAchievements.jinja2:133 ../templates/macros.jinja2:86
 msgid "Achievements"
 msgstr ""
 
@@ -290,23 +306,23 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: ../templates/macros.jinja2:44 ../templates/users/users.jinja2:6
+#: ../templates/macros.jinja2:42 ../templates/users/users.jinja2:6
 #: ../templates/users/users.jinja2:17
 msgid "Users"
 msgstr ""
 
-#: ../templates/macros.jinja2:57 ../templates/maps/mapMultipleTracks.jinja2:6
+#: ../templates/macros.jinja2:55 ../templates/maps/mapMultipleTracks.jinja2:6
 #: ../templates/maps/mapTileHunting.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:102
 #: ../templates/tracks/tracks.jinja2:5 ../templates/tracks/tracks.jinja2:25
 msgid "Tracks"
 msgstr ""
 
-#: ../templates/macros.jinja2:65 ../templates/monthGoals/monthGoals.jinja2:6
+#: ../templates/macros.jinja2:63 ../templates/monthGoals/monthGoals.jinja2:6
 msgid "Goals"
 msgstr ""
 
-#: ../templates/macros.jinja2:72
+#: ../templates/macros.jinja2:70
 msgid "Analytics"
 msgstr ""
 
@@ -323,61 +339,61 @@ msgstr ""
 #: ../templates/charts/chartMacros.jinja2:20
 #: ../templates/charts/chartSpeedPerTrackChooser.jinja2:6
 #: ../templates/charts/chartSpeedPerTrackChooser.jinja2:18
-#: ../templates/macros.jinja2:80
+#: ../templates/macros.jinja2:78
 msgid "Charts"
 msgstr ""
 
-#: ../templates/charts/chartCalendar.jinja2:16 ../templates/macros.jinja2:96
+#: ../templates/charts/chartCalendar.jinja2:16 ../templates/macros.jinja2:94
 msgid "Calendar"
 msgstr ""
 
-#: ../templates/macros.jinja2:104
+#: ../templates/macros.jinja2:102
 msgid "Annual Statistics"
 msgstr ""
 
-#: ../templates/macros.jinja2:114 ../templates/maps/mapMultipleTracks.jinja2:17
+#: ../templates/macros.jinja2:112 ../templates/maps/mapMultipleTracks.jinja2:17
 #: ../templates/maps/mapNotFound.jinja2:6
 msgid "Map"
 msgstr ""
 
-#: ../templates/macros.jinja2:121
+#: ../templates/macros.jinja2:119
 msgid "More"
 msgstr ""
 
-#: ../templates/macros.jinja2:135
+#: ../templates/macros.jinja2:133
 #: ../templates/maintenances/maintenances.jinja2:35
 #: ../templates/maintenances/maintenances.jinja2:48
 msgid "Maintenance"
 msgstr ""
 
-#: ../templates/macros.jinja2:148 ../templates/maps/mapMultipleTracks.jinja2:9
+#: ../templates/macros.jinja2:146 ../templates/maps/mapMultipleTracks.jinja2:9
 #: ../templates/maps/mapTileHunting.jinja2:9
 #: ../templates/plannedTours/plannedTours.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:19
 msgid "Planned Tours"
 msgstr ""
 
-#: ../templates/macros.jinja2:163 ../templates/maps/mapMacros.jinja2:107
+#: ../templates/macros.jinja2:161 ../templates/maps/mapMacros.jinja2:107
 #: ../templates/maps/mapTileHunting.jinja2:17
 #: ../templates/settings/settings.jinja2:70
 msgid "Tile Hunting"
 msgstr ""
 
-#: ../templates/macros.jinja2:181
+#: ../templates/macros.jinja2:179
 msgid "Search"
 msgstr ""
 
-#: ../templates/macros.jinja2:210 ../templates/settings/settings.jinja2:6
+#: ../templates/macros.jinja2:208 ../templates/settings/settings.jinja2:6
 #: ../templates/settings/settings.jinja2:18
-#: ../templates/tracks/trackMacros.jinja2:413
+#: ../templates/tracks/trackMacros.jinja2:429
 msgid "Settings"
 msgstr ""
 
-#: ../templates/macros.jinja2:219
+#: ../templates/macros.jinja2:217
 msgid "Logout"
 msgstr ""
 
-#: ../templates/macros.jinja2:262 ../templates/tracks/tracks.jinja2:95
+#: ../templates/macros.jinja2:260 ../templates/tracks/tracks.jinja2:95
 #: ../templates/tracks/tracks.jinja2:117
 msgid "Cancel"
 msgstr ""
@@ -498,8 +514,8 @@ msgstr ""
 #: ../templates/tracks/trackBikingForm.jinja2:28
 #: ../templates/tracks/trackHikingForm.jinja2:24
 #: ../templates/tracks/trackHikingForm.jinja2:28
-#: ../templates/tracks/trackMacros.jinja2:378
-#: ../templates/tracks/trackMacros.jinja2:489
+#: ../templates/tracks/trackMacros.jinja2:394
+#: ../templates/tracks/trackMacros.jinja2:505
 #: ../templates/tracks/trackRunningForm.jinja2:24
 #: ../templates/tracks/trackRunningForm.jinja2:28
 #: ../templates/tracks/trackWorkoutForm.jinja2:25
@@ -519,7 +535,7 @@ msgstr ""
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:58
 #: ../templates/maps/mapSingleTrack.jinja2:44
 #: ../templates/maps/mapSingleTrack.jinja2:90
-#: ../templates/tracks/trackMacros.jinja2:251
+#: ../templates/tracks/trackMacros.jinja2:267
 msgid "Date"
 msgstr ""
 
@@ -545,7 +561,7 @@ msgstr ""
 #: ../templates/tracks/trackBikingForm.jinja2:70
 #: ../templates/tracks/trackHikingForm.jinja2:70
 #: ../templates/tracks/trackRunningForm.jinja2:70
-#: ../templates/tracks/trackWorkoutForm.jinja2:69
+#: ../templates/tracks/trackWorkoutForm.jinja2:74
 #: ../templates/users/userForm.jinja2:66
 msgid "Save"
 msgstr ""
@@ -999,7 +1015,7 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalDurationForm.jinja2:112
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:102
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:120
-#: ../templates/tracks/trackMacros.jinja2:296
+#: ../templates/tracks/trackMacros.jinja2:312
 msgid "Minutes"
 msgstr ""
 
@@ -1040,7 +1056,7 @@ msgstr ""
 #: ../templates/settings/participantsForm.jinja2:50
 #: ../templates/settings/settings.jinja2:147
 #: ../templates/settings/settings.jinja2:197
-#: ../templates/tracks/trackMacros.jinja2:231
+#: ../templates/tracks/trackMacros.jinja2:247
 msgid "Name"
 msgstr ""
 
@@ -1127,7 +1143,7 @@ msgid ""
 msgstr ""
 
 #: ../templates/settings/settings.jinja2:103
-#: ../templates/tracks/trackMacros.jinja2:480
+#: ../templates/tracks/trackMacros.jinja2:496
 msgid "Copied"
 msgstr ""
 
@@ -1160,7 +1176,7 @@ msgid "Do you really want to delete the custom field \"%(name)s\"?"
 msgstr ""
 
 #: ../templates/settings/settings.jinja2:188
-#: ../templates/tracks/trackMacros.jinja2:396
+#: ../templates/tracks/trackMacros.jinja2:412
 msgid "Participants"
 msgstr ""
 
@@ -1231,67 +1247,71 @@ msgstr ""
 msgid "Edit Hiking Track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:259
+#: ../templates/tracks/trackMacros.jinja2:76
+msgid "Mixed"
+msgstr ""
+
+#: ../templates/tracks/trackMacros.jinja2:275
 msgid "Start Time"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:272
+#: ../templates/tracks/trackMacros.jinja2:288
 msgid "Distance (in km)"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:302
+#: ../templates/tracks/trackMacros.jinja2:318
 msgid "Seconds"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:321
+#: ../templates/tracks/trackMacros.jinja2:337
 msgid "Elevation Sum (in m)"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:332
+#: ../templates/tracks/trackMacros.jinja2:348
 msgid "No GPX or FIT file is linked to this track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:332
+#: ../templates/tracks/trackMacros.jinja2:348
 msgid "A GPX or FIT file is linked to this track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:340
+#: ../templates/tracks/trackMacros.jinja2:356
 msgid "GPX/FIT Track"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:377
+#: ../templates/tracks/trackMacros.jinja2:393
 msgid "Delete GPX and FIT Track?"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:377
+#: ../templates/tracks/trackMacros.jinja2:393
 msgid "Do you really want to delete this associated GPX and FIT file?"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:411
+#: ../templates/tracks/trackMacros.jinja2:427
 msgid "Add participants in the "
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:466
+#: ../templates/tracks/trackMacros.jinja2:482
 msgid "Share via link"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:488
+#: ../templates/tracks/trackMacros.jinja2:504
 msgid "Delete shared link?"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:488
+#: ../templates/tracks/trackMacros.jinja2:504
 msgid "Do you really want to delete this shared link?"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:495
+#: ../templates/tracks/trackMacros.jinja2:511
 msgid "Create link"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:506
+#: ../templates/tracks/trackMacros.jinja2:522
 msgid "Based on Planned Tour"
 msgstr ""
 
-#: ../templates/tracks/trackMacros.jinja2:511
+#: ../templates/tracks/trackMacros.jinja2:527
 msgid "Not based on a Planned Tour"
 msgstr ""
 
@@ -1305,8 +1325,12 @@ msgstr ""
 msgid "Edit Workout"
 msgstr ""
 
-#: ../templates/tracks/trackWorkoutForm.jinja2:59
-msgid "Workout Typ"
+#: ../templates/tracks/trackWorkoutForm.jinja2:58
+msgid "Workout Type"
+msgstr ""
+
+#: ../templates/tracks/trackWorkoutForm.jinja2:64
+msgid "Workout Categories"
 msgstr ""
 
 #: ../templates/tracks/tracks.jinja2:53
