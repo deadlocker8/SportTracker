@@ -12,36 +12,32 @@ class WorkoutCategoryType(enum.Enum):
         'ARMS',
         'humerus_alt',
         0,
+        False,
     )
     LEGS = (
         'LEGS',
         'femur_alt',
         1,
+        False,
     )
     CORE = (
         'CORE',
         'adjust',
         2,
+        True,
     )
-    YOGA = (
-        'YOGA',
-        'self_improvement',
-        3,
-    )
+    YOGA = ('YOGA', 'self_improvement', 3, False)
 
     icon: str
     order: int
+    is_outlined_icon: bool
 
-    def __new__(
-        cls,
-        name: str,
-        icon: str,
-        order: int,
-    ):
+    def __new__(cls, name: str, icon: str, order: int, is_outlined_icon: bool):
         member = object.__new__(cls)
         member._value_ = name
         member.icon = icon
         member.order = order
+        member.is_outlined_icon = is_outlined_icon
         return member
 
     def get_localized_name(self) -> str:
@@ -65,3 +61,14 @@ class WorkoutCategory(db.Model):  # type: ignore[name-defined]
     workout_category_type = db.Column(
         db.Enum(WorkoutCategoryType), nullable=False, primary_key=True
     )
+
+
+def update_workout_categories_by_track_id(
+    trackId: int, newWorkoutCategories: list[WorkoutCategoryType]
+) -> None:
+    WorkoutCategory.query.filter(WorkoutCategory.track_id == trackId).delete()
+
+    for category in newWorkoutCategories:
+        db.session.add(WorkoutCategory(track_id=trackId, workout_category_type=category))
+
+    db.session.commit()

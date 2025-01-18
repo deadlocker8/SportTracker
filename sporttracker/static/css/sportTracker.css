@@ -78,6 +78,17 @@ body {
     border-color: #AB87FF !important;
 }
 
+.btn-outline-light.btn-outline-purple {
+    --bs-btn-color: #AB87FF;
+    --bs-btn-border-color: #AB87FF;
+    --bs-btn-hover-bg: #AB87FF;
+    --bs-btn-hover-border-color: #AB87FF;
+    --bs-btn-active-bg: #AB87FF;
+    --bs-btn-active-border-color: #AB87FF;
+    --bs-btn-disabled-color: #AB87FF;
+    --bs-btn-disabled-border-color: #AB87FF;
+}
+
 .bg-orange {
     background-color: #FD7E14;
 }

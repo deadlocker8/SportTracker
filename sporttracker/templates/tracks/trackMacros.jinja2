@@ -544,3 +544,25 @@
         </div>
     </div>
 {%- endmacro %}
+
+{% macro check_button_select(name, icon, identifier, inputName, availableTypes, selectedValues, baseIdentifier='planned-tour') -%}
+    <div class="mb-3">
+        <div class="form-label input-field-margin">{{ name }}</div>
+        <div class="d-flex align-items-center">
+            <span class="material-symbols-outlined filled me-3">{{ icon }}</span>
+            <div class="btn-group" role="group" id="{{ baseIdentifier }}-{{ identifier }}">
+                {% for availableType in availableTypes %}
+                    <input type="checkbox" class="btn-check" name="{{ inputName }}-{{ loop.index }}" id="{{ identifier }}-{{ loop.index }}"
+                           autocomplete="off"
+                           {% if availableType.name in selectedValues %}checked{% endif %}
+                           value="{{ availableType.name }}">
+                    <label class="btn btn-outline-light btn-outline-purple d-flex align-items-center"
+                           for="{{ identifier }}-{{ loop.index }}">
+                        <span class="material-symbols-outlined {% if not availableType.is_outlined_icon %}filled{% endif %} me-3">{{ availableType.icon }}</span>
+                        {{ availableType.get_localized_name() }}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{%- endmacro %}

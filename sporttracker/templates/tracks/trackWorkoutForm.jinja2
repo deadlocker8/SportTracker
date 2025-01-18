@@ -22,7 +22,7 @@
                                 <span class="material-symbols-outlined fs-1">fitness_center</span>
                             {% endcall %}
                             <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
-                                <span class="material-symbols-outlined text-light">delete</span>&nbsp;{{ gettext('Delete') }}
+                                <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                             </button>
 
                             {% call macros.deleteModal(gettext('Delete Track?'), gettext('Do you really want to delete the track "%(name)s" (ID: %(id)d)?', name=track.name, id=track_id)) %}
@@ -51,12 +51,17 @@
 
                             {{ trackMacros.track_form_duration(track) }}
 
-
                             {% set selectedWorkoutType=None %}
                             {% if track %}
                                 {% set selectedWorkoutType=track.workoutType %}
                             {% endif %}
-                            {{ plannedToursMacros.radio_button_select(gettext('Workout Typ'), 'fitness_center', 'workout-type', 'workoutType', workoutTypes, selectedWorkoutType) }}
+                            {{ plannedToursMacros.radio_button_select(gettext('Workout Type'), 'fitness_center', 'workout-type', 'workoutType', workoutTypes, selectedWorkoutType, 'track') }}
+
+                            {% set selectedWorkoutCategories=[] %}
+                            {% if track %}
+                                {% set selectedWorkoutCategories=track.workoutCategories %}
+                            {% endif %}
+                            {{ trackMacros.check_button_select(gettext('Workout Categories'), 'label', 'workout-category', 'workoutCategories', workoutCategoryTypes, selectedWorkoutCategories, 'track') }}
 
                             {{ trackMacros.track_form_average_heart_rate(track) }}
 
@@ -66,7 +71,7 @@
 
                             {{ trackMacros.track_form_participants(track, participants) }}
 
-                            <button type="submit" id="buttonSaveTrack" class="btn btn-success mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            <button type="submit" id="buttonSaveTrack" class="btn btn-success mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

@@ -41,6 +41,10 @@ from sporttracker.logic.model.Track import (
 )
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import get_user_by_id
+from sporttracker.logic.model.WorkoutCategory import (
+    update_workout_categories_by_track_id,
+    WorkoutCategoryType,
+)
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
@@ -61,6 +65,7 @@ class TrackModel(DateTimeAccess):
     participants: list[str]
     shareCode: str | None
     ownerName: str
+    workoutCategories: list[str]
     workoutType: str | None = None
 
     @staticmethod
@@ -80,6 +85,7 @@ class TrackModel(DateTimeAccess):
             participants=[str(item.id) for item in track.participants],
             shareCode=track.share_code,
             ownerName=get_user_by_id(track.user_id).username,
+            workoutCategories=track.get_workout_categories(),
             workoutType=track.workout_type,
         )
 
@@ -110,6 +116,7 @@ class TrackFormModel(BaseModel):
     hasFitFile: bool = False
     participants: list[str] | str | None = None
     shareCode: str | None = None
+    workoutCategories: list[str] | None = None
     workoutType: str | None = None
 
     model_config = ConfigDict(
@@ -238,6 +245,13 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
                 track, tileHuntingSettings['baseZoomLevel'], current_user.id
             )
 
+        workoutCategories = [
+            WorkoutCategoryType(value)  # type: ignore[call-arg]
+            for key, value in request.form.items()
+            if key.startswith('workoutCategories')
+        ]
+        update_workout_categories_by_track_id(track.id, workoutCategories)
+
         return redirect(
             url_for(
                 'tracks.listTracks',
@@ -275,6 +289,7 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             participants=[str(item.id) for item in track.participants],
             shareCode=track.share_code,
             plannedTourId=str(track.plannedTour.id) if track.plannedTour else '-1',
+            workoutCategories=track.get_workout_categories(),
             workoutType=track.workout_type,
             **track.custom_fields,
         )
@@ -343,6 +358,13 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
                 track, tileHuntingSettings['baseZoomLevel'], current_user.id
             )
 
+        workoutCategories = [
+            WorkoutCategoryType(value)  # type: ignore[call-arg]
+            for key, value in request.form.items()
+            if key.startswith('workoutCategories')
+        ]
+        update_workout_categories_by_track_id(track.id, workoutCategories)
+
         LOGGER.debug(f'Updated track: {track}')
 
         return redirect(
@@ -362,6 +384,8 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             abort(404)
 
         gpxService.delete_gpx(track, current_user.id)
+
+        update_workout_categories_by_track_id(track.id, [])
 
         LOGGER.debug(f'Deleted track: {track}')
         db.session.delete(track)

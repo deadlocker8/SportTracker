@@ -11,6 +11,7 @@ from sporttracker.logic.model.Participant import Participant, track_participant_
 from sporttracker.logic.model.PlannedTour import PlannedTour, track_planned_tour_association
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import User
+from sporttracker.logic.model.WorkoutCategory import WorkoutCategory
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
@@ -70,6 +71,12 @@ class Track(db.Model):  # type: ignore[name-defined]
             self.gpx_metadata_id = None
             self.plannedTour = None  # type: ignore[assignment]
             self.share_code = None  # type: ignore[assignment]
+
+    def get_workout_categories(self) -> list[str]:
+        return [
+            c.workout_category_type
+            for c in WorkoutCategory.query.filter(WorkoutCategory.track_id == self.id).all()
+        ]
 
 
 def get_track_names_by_track_type(trackType: TrackType) -> list[str]:
