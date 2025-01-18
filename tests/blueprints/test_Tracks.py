@@ -102,7 +102,16 @@ class TestTracks(SeleniumTestBaseClass):
 
     @staticmethod
     def __fill_duration_based_form(
-        selenium, name, date, startTime, hours, minutes, seconds, averageHeartRate, workoutType
+        selenium,
+        name,
+        date,
+        startTime,
+        hours,
+        minutes,
+        seconds,
+        averageHeartRate,
+        workoutType,
+        workoutCategories,
     ):
         selenium.find_element(By.ID, 'track-name').send_keys(name)
         selenium.find_element(By.ID, 'track-date').send_keys(date)
@@ -113,6 +122,9 @@ class TestTracks(SeleniumTestBaseClass):
         selenium.find_element(By.ID, 'track-averageHeartRate').send_keys(averageHeartRate)
 
         selenium.find_element(By.XPATH, f'//label[@for="{workoutType}"]').click()
+
+        for category in workoutCategories:
+            selenium.find_element(By.XPATH, f'//label[@for="{category}"]').click()
 
     def test_add_track_valid(self, server, selenium: WebDriver):
         self.login(selenium)
@@ -455,7 +467,16 @@ class TestTracks(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium, buttonIndex=3, expectedHeadline='New Workout')
         self.__fill_duration_based_form(
-            selenium, 'My Track', '2023-02-01', '15:30', 0, 1, 13, 46, 'workout-type-2'
+            selenium,
+            'My Track',
+            '2023-02-01',
+            '15:30',
+            0,
+            1,
+            13,
+            46,
+            'workout-type-2',
+            ['workout-category-1', 'workout-category-2'],
         )
         self.click_button_by_id(selenium, 'buttonSaveTrack')
 
@@ -470,7 +491,7 @@ class TestTracks(SeleniumTestBaseClass):
     def test_add_duration_based_track_all_empty(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium, buttonIndex=3, expectedHeadline='New Workout')
-        self.__fill_duration_based_form(selenium, '', '', '', '', '', '', '', 'workout-type-1')
+        self.__fill_duration_based_form(selenium, '', '', '', '', '', '', '', 'workout-type-1', [])
         self.click_button_by_id(selenium, 'buttonSaveTrack')
 
         assert selenium.current_url.endswith('/tracks/add/WORKOUT')
