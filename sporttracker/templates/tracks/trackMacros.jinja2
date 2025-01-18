@@ -66,6 +66,18 @@
     </div>
 {%- endmacro %}
 
+{% macro render_track_workout_category_type(track, renderAsRow) -%}
+    <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
+        {% if track.workoutCategories|length == 1 %}
+            <span class="material-symbols-outlined {% if not track.workoutCategories[0].is_outlined_icon %}filled{% endif %} fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ track.workoutCategories[0].icon }}</span>
+            <div class="fs-5 text-center">{{ render_track_unit(track.workoutCategories[0].get_localized_name()) }}</div>
+        {% elif track.workoutCategories|length > 1 %}
+            <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">fitness_center</span>
+            <div class="fs-5 text-center">{{ gettext('Mixed') }}</div>
+        {% endif %}
+    </div>
+{%- endmacro %}
+
 {% macro track_type_icon_non_responsive(trackType, classes='') -%}
     {% if trackType.is_easter_egg_activated() %}
         <div class="d-inline-block rounded-circle p-3 {{ trackType.background_color }} {{ classes }}">
@@ -169,6 +181,10 @@
 
                                 {% if not track.type.supports_distance %}
                                     {{ render_track_workout_type(track, renderAsRow) }}
+                                {% endif %}
+
+                                {% if not track.type.supports_distance %}
+                                    {{ render_track_workout_category_type(track, renderAsRow) }}
                                 {% endif %}
 
                                 {% if is_track_info_item_activated('AVERAGE_HEART_RATE') or not track.type.supports_distance %}

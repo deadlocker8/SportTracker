@@ -12,13 +12,13 @@ class WorkoutCategoryType(enum.Enum):
         'ARMS',
         'humerus_alt',
         0,
-        False,
+        True,
     )
     LEGS = (
         'LEGS',
         'femur_alt',
         1,
-        False,
+        True,
     )
     CORE = (
         'CORE',
