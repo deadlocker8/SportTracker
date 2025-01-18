@@ -19,6 +19,10 @@ from sporttracker.logic.model.PlannedTour import PlannedTour, TravelType, Travel
 from sporttracker.logic.model.Track import Track
 from sporttracker.logic.model.TrackType import TrackType
 from sporttracker.logic.model.User import User, create_user, Language
+from sporttracker.logic.model.WorkoutCategory import (
+    update_workout_categories_by_track_id,
+    WorkoutCategoryType,
+)
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
@@ -305,6 +309,7 @@ class DummyDataGenerator:
                 duration = round(random.uniform(durationMin, durationMax), 2)
                 heartRate = random.randint(85, 160)
                 workoutType = random.choice([x for x in WorkoutType])
+                workoutCategory = random.choice([x for x in WorkoutCategoryType])
 
                 track = Track(
                     type=trackType,
@@ -325,6 +330,8 @@ class DummyDataGenerator:
 
                 db.session.add(track)
                 db.session.commit()
+
+                update_workout_categories_by_track_id(track.id, [workoutCategory])
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 
