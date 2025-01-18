@@ -1,5 +1,6 @@
 # 1.33.0 - (XX.XX.XX)
 - add: workouts: new field to store the workout type (duration-based or repetition-based) (#158)
+- add: workouts: new field to store one or more workout categories (arms, legs, core, etc.) (#159)
 - add: update icons to google material symbols (#162)
 - add: self-host icons (#162)
 - fix: annual statistics: show flat trend icon if there was no increase or decrease for aa certain value (#157)
