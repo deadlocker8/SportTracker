@@ -163,7 +163,7 @@ Python dependencies can be found in `pyproject.toml` and corresponding `poetry.l
 - jQuery https://jquery.com/
 
 ### Additional dependencies
-- Google Material Icons https://fonts.googleapis.com/icon?family=Material+Icons
+- Google Material Symbols https://fonts.google.com/icons
 - Font Awesome Icons https://fontawesome.com/
 
 ### Icons / Images
