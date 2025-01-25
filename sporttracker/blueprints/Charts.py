@@ -85,12 +85,9 @@ def construct_blueprint():
     @charts.route('/chartDistancePerCustomFieldChooser')
     @login_required
     def chartDistancePerCustomFieldChooser():
-        customFieldsBySportType = get_custom_fields_by_sport_type()
-        # TODO only show chart for distance sports
-        for sportType in SportType:
-            if not sportType.supports_distance:
-                del customFieldsBySportType[sportType]
-
+        customFieldsBySportType = get_custom_fields_by_sport_type(
+            SportType.get_distance_sport_types()
+        )
         return render_template(
             'charts/chartDistancePerCustomFieldChooser.jinja2',
             customFieldsBySportType=customFieldsBySportType,

@@ -18,7 +18,6 @@ class SportType(enum.Enum):
         '#FFC10796',
         True,
         0,
-        True,
     )
     RUNNING = (
         'RUNNING',
@@ -31,7 +30,6 @@ class SportType(enum.Enum):
         '#0DCAF080',
         False,
         1,
-        True,
     )
     HIKING = (
         'HIKING',
@@ -44,7 +42,6 @@ class SportType(enum.Enum):
         '#39B856AA',
         True,
         2,
-        True,
     )
     WORKOUT = (
         'WORKOUT',
@@ -57,7 +54,6 @@ class SportType(enum.Enum):
         '#39B856AA',
         True,
         3,
-        False,
     )
 
     icon: str
@@ -69,7 +65,6 @@ class SportType(enum.Enum):
     tile_color: str
     render_speed_in_kph: bool
     order: int
-    supports_distance: bool
 
     def __new__(
         cls,
@@ -83,7 +78,6 @@ class SportType(enum.Enum):
         tile_color: str,
         render_speed_in_kph: bool,
         order: int,
-        supports_distance: bool,
     ):
         member = object.__new__(cls)
         member._value_ = name
@@ -96,7 +90,6 @@ class SportType(enum.Enum):
         member.tile_color = tile_color
         member.render_speed_in_kph = render_speed_in_kph
         member.order = order
-        member.supports_distance = supports_distance
         return member
 
     def get_localized_name(self) -> str:

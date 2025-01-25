@@ -25,22 +25,20 @@
                     <div class="col col-12 mx-auto">
                         <h3>{{ gettext('Choose track type') }}</h3>
 
-                        {% for sportType in sportTypes %}
-                            {% if sportType.supports_distance %}
-                                <div class="row mt-5 mb-3">
-                                    <div class="col col-12 mx-auto">
-                                        <h3 class="d-flex align-items-center justify-content-center">
-                                            {{ sportMacros.sport_type_icon_small(sportType, classes='me-3') }}
-                                            <span class="me-3">{{ sportType.get_localized_name() }}</span>
+                        {% for sportType in distanceSportTypes %}
+                            <div class="row mt-5 mb-3">
+                                <div class="col col-12 mx-auto">
+                                    <h3 class="d-flex align-items-center justify-content-center">
+                                        {{ sportMacros.sport_type_icon_small(sportType, classes='me-3') }}
+                                        <span class="me-3">{{ sportType.get_localized_name() }}</span>
 
-                                            <a href="{{ url_for('charts.chartDistancePerParticipant', sport_type=sportType.name) }}"
-                                               class="btn btn-sm btn-primary">
-                                                <span class="fs-5 text-light">{{ gettext('Select') }}</span>
-                                            </a>
-                                        </h3>
-                                    </div>
+                                        <a href="{{ url_for('charts.chartDistancePerParticipant', sport_type=sportType.name) }}"
+                                           class="btn btn-sm btn-primary">
+                                            <span class="fs-5 text-light">{{ gettext('Select') }}</span>
+                                        </a>
+                                    </h3>
                                 </div>
-                            {% endif %}
+                            </div>
                         {% endfor %}
                     </div>
                 </div>

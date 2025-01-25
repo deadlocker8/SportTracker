@@ -48,10 +48,8 @@
                                 <div class="d-flex align-items-center">
                                     <span class="material-symbols-outlined filled me-3">stars</span>
                                     <select class="form-select" id="planned-tour-type" name="type" required="required">
-                                        {% for sportType in sportTypes %}
-                                            {% if sportType.supports_distance %}
-                                                <option value="{{ sportType.name }}" {% if plannedTour and plannedTour.type == sportType.name %}selected{% endif %}>{{ sportType.get_localized_name() }}</option>
-                                            {% endif %}
+                                        {% for sportType in distanceSportTypes %}
+                                            <option value="{{ sportType.name }}" {% if plannedTour and plannedTour.type == sportType.name %}selected{% endif %}>{{ sportType.get_localized_name() }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>

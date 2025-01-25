@@ -225,7 +225,7 @@
 {% macro sport_type_quick_filter(redirectUrl, onlyDistanceBasedTypes) -%}
     <div class="d-flex flex-row align-items-center justify-content-center">
         {% for sportType, isActive in quickFilterState.get_states().items() %}
-            {% if (onlyDistanceBasedTypes and sportType.supports_distance) or not onlyDistanceBasedTypes %}
+            {% if (onlyDistanceBasedTypes and sportType in distanceSportTypes) or not onlyDistanceBasedTypes %}
                 <a href="{{ url_for('quickFilter.toggleQuickFilter', sportType=sportType.name, redirectUrl=redirectUrl) }}" class="quick-filter lh-1 {% if not loop.first %}ms-3{% endif %}">
                     {{ sport_type_quick_filter_button(sportType, isActive) }}
                 </a>

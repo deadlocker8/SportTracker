@@ -58,9 +58,14 @@ class CustomSportField(db.Model):  # type: ignore[name-defined]
         )
 
 
-def get_custom_fields_by_sport_type() -> dict[SportType, list[CustomSportField]]:
+def get_custom_fields_by_sport_type(
+    sportTypes: list[SportType] = None,
+) -> dict[SportType, list[CustomSportField]]:
+    if sportTypes is None:
+        sportTypes = [s for s in SportType]
+
     customFieldsBySportType = {}
-    for sportType in SportType:
+    for sportType in sportTypes:
         customFieldsBySportType[sportType] = (
             CustomSportField.query.filter(CustomSportField.user_id == current_user.id)
             .filter(CustomSportField.sport_type == sportType)

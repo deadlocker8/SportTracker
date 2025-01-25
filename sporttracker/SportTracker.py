@@ -150,6 +150,7 @@ class SportTracker(FlaskBaseApp):
             return {
                 'versionName': self._version['name'],
                 'sportTypes': [x for x in SportType],
+                'distanceSportTypes': [x for x in SportType.get_distance_sport_types()],
                 'sportTypesByName': {x.name: x for x in SportType},
                 'languages': [x for x in Language],
                 'customTrackFieldTypes': [x for x in CustomSportFieldType],
