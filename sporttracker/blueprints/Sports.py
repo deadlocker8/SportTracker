@@ -213,7 +213,7 @@ def __get_month_model(
         quickFilterState.get_active_types(),
     )
 
-    sportModels = []
+    sportModels: list[DistanceSportModel | WorkoutSportModel] = []
     for sport in sports:
         if sport.type in SportType.get_distance_sport_types():
             sportModels.append(DistanceSportModel.create_from_sport(sport))

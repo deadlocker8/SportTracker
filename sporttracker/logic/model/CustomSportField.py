@@ -59,7 +59,7 @@ class CustomSportField(db.Model):  # type: ignore[name-defined]
 
 
 def get_custom_fields_by_sport_type(
-    sportTypes: list[SportType] = None,
+    sportTypes: list[SportType] | None = None,
 ) -> dict[SportType, list[CustomSportField]]:
     if sportTypes is None:
         sportTypes = [s for s in SportType]
@@ -78,8 +78,7 @@ def get_custom_fields_by_sport_type(
 # Otherwise, the HTML form would include multiple inputs with the same name leading to unexpected behaviour.
 # The actual inputs will be prefixed with "sport-" in the HTML form.
 RESERVED_FIELD_NAMES = [
-    'type'
-    'name',
+    'type' 'name',
     'date',
     'time',
     'distance',
@@ -90,7 +89,6 @@ RESERVED_FIELD_NAMES = [
     'elevationSum',
     'gpxFileName',
     'participants',
-    'shareCode'
-    'workoutType',
-    'workoutCategories'
+    'shareCode' 'workoutType',
+    'workoutCategories',
 ]

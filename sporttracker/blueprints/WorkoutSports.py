@@ -54,7 +54,7 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             custom_fields=form.model_extra,
             user_id=current_user.id,
             participants=participants,
-            workout_type=WorkoutType(form.workoutType),
+            workout_type=WorkoutType(form.workoutType),  # type: ignore[call-arg]
         )
 
         workoutCategories = [

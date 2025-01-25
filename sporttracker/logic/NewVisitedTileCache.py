@@ -96,6 +96,6 @@ class NewVisitedTileCache:
         ).fetchall()
 
         return [
-            NewTilesPerDistanceSport(row[0], SportType(row[1]), row[2], row[3], row[4])
+            NewTilesPerDistanceSport(row[0], SportType(row[1]), row[2], row[3], row[4])  # type: ignore[call-arg]
             for row in rows
-        ]  # type: ignore[call-arg]
+        ]

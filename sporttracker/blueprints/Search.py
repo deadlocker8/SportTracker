@@ -64,7 +64,7 @@ def construct_blueprint():
 
         resultModelItems = {}
         for month, sports in results.items():
-            itemsPerMonth = []
+            itemsPerMonth: list[DistanceSportModel | WorkoutSportModel] = []
 
             for sport in sports:
                 if sport.type in SportType.get_distance_sport_types():
