@@ -31,9 +31,11 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     password: Mapped[str] = mapped_column(String, nullable=False)
     isAdmin: Mapped[bool] = mapped_column(Boolean, nullable=False)
     language = db.Column(db.Enum(Language))
-    tracks = db.relationship('Track', backref='user', lazy=True, cascade='delete')
-    customFields = db.relationship('CustomTrackField', backref='user', lazy=True, cascade='delete')
-    trackInfoItems = db.relationship('TrackInfoItem', backref='user', lazy=True, cascade='delete')
+    sports = db.relationship('Sport', backref='user', lazy=True, cascade='delete')
+    customFields = db.relationship('CustomSportField', backref='user', lazy=True, cascade='delete')
+    distance_sport_info_items = db.relationship(
+        'DistanceSportInfoItem', backref='user', lazy=True, cascade='delete'
+    )
     planned_tours_last_viewed_date: Mapped[DateTime] = mapped_column(DateTime)
     isTileHuntingActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     isTileHuntingAccessActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
@@ -53,7 +55,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
         )
 
 
-class TrackInfoItemType(enum.Enum):
+class DistanceSportInfoItemType(enum.Enum):
     DISTANCE = 'DISTANCE'
     DURATION = 'DURATION'
     SPEED = 'SPEED'
@@ -72,12 +74,14 @@ class TrackInfoItemType(enum.Enum):
         elif self == self.ELEVATION_SUM:
             return gettext('Elevation Sum')
 
-        raise ValueError(f'Could not get localized name for unsupported TrackInfoItemType: {self}')
+        raise ValueError(
+            f'Could not get localized name for unsupported DistanceSportInfoItemType: {self}'
+        )
 
 
-class TrackInfoItem(db.Model):  # type: ignore[name-defined]
+class DistanceSportInfoItem(db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    type = db.Column(db.Enum(TrackInfoItemType))
+    type = db.Column(db.Enum(DistanceSportInfoItemType))
     is_activated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
@@ -96,9 +100,11 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
     db.session.add(user)
     db.session.commit()
 
-    for itemType in TrackInfoItemType:
-        trackInfoItem = TrackInfoItem(type=itemType, is_activated=True, user_id=user.id)
-        db.session.add(trackInfoItem)
+    for itemType in DistanceSportInfoItemType:
+        distanceSportInfoItem = DistanceSportInfoItem(
+            type=itemType, is_activated=True, user_id=user.id
+        )
+        db.session.add(distanceSportInfoItem)
     db.session.commit()
 
     return user

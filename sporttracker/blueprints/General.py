@@ -19,7 +19,7 @@ def construct_blueprint():
         if current_user.isAdmin:
             return redirect(url_for('users.listUsers'))
 
-        return redirect(url_for('tracks.listTracks'))
+        return redirect(url_for('sports.listSports'))
 
     @general.route('/about')
     @login_required

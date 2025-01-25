@@ -9,20 +9,22 @@ from faker import Faker
 
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.model.CustomTrackField import CustomTrackField, CustomTrackFieldType
+from sporttracker.logic.model.CustomSportField import CustomSportField, CustomSportFieldType
+from sporttracker.logic.model.DistanceSport import DistanceSport
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.Maintenance import Maintenance
 from sporttracker.logic.model.MaintenanceEventInstance import MaintenanceEventInstance
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.PlannedTour import PlannedTour, TravelType, TravelDirection
-from sporttracker.logic.model.Track import Track
-from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.Sport import Sport
+from sporttracker.logic.model.SportType import SportType
 from sporttracker.logic.model.User import User, create_user, Language
 from sporttracker.logic.model.WorkoutCategory import (
-    update_workout_categories_by_track_id,
+    update_workout_categories_by_sport_id,
     WorkoutCategoryType,
 )
+from sporttracker.logic.model.WorkoutSport import WorkoutSport
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
@@ -53,7 +55,7 @@ class DummyDataGenerator:
         user = self.__generate_demo_user('demo', 'demo')
         user2 = self.__generate_demo_user('john', '123')
 
-        if Track.query.count() == 0:
+        if Sport.query.count() == 0:
             self.__generate_demo_participants(user)
 
             self.__generate_demo_custom_field(user)
@@ -62,7 +64,7 @@ class DummyDataGenerator:
 
             self.__generate_demo_tracks(
                 user=user,
-                trackType=TrackType.BIKING,
+                sportType=SportType.BIKING,
                 numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_BIKING,
                 numberOfTracksWithGpx=2,
                 numberOfTracksWithParticipants=2,
@@ -76,7 +78,7 @@ class DummyDataGenerator:
 
             self.__generate_demo_tracks(
                 user=user,
-                trackType=TrackType.RUNNING,
+                sportType=SportType.RUNNING,
                 numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_RUNNING,
                 numberOfTracksWithGpx=2,
                 numberOfTracksWithParticipants=0,
@@ -90,7 +92,7 @@ class DummyDataGenerator:
 
             self.__generate_demo_tracks(
                 user=user,
-                trackType=TrackType.HIKING,
+                sportType=SportType.HIKING,
                 numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_HIKING,
                 numberOfTracksWithGpx=1,
                 numberOfTracksWithParticipants=1,
@@ -104,7 +106,7 @@ class DummyDataGenerator:
 
             self.__generate_demo_duration_based_tracks(
                 user=user,
-                trackType=TrackType.WORKOUT,
+                sportType=SportType.WORKOUT,
                 numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_WORKOUT,
                 numberOfTracksWithParticipants=1,
                 durationMin=20 * 60,
@@ -130,7 +132,7 @@ class DummyDataGenerator:
     def __generate_demo_month_goals(self, user) -> None:
         db.session.add(
             MonthGoalDistance(
-                type=TrackType.BIKING,
+                type=SportType.BIKING,
                 year=self._now.year,
                 month=self._now.month,
                 distance_minimum=100 * 1000,
@@ -141,7 +143,7 @@ class DummyDataGenerator:
 
         db.session.add(
             MonthGoalDistance(
-                type=TrackType.BIKING,
+                type=SportType.BIKING,
                 year=self._previousMonth.year,
                 month=self._previousMonth.month,
                 distance_minimum=200 * 1000,
@@ -152,7 +154,7 @@ class DummyDataGenerator:
 
         db.session.add(
             MonthGoalDistance(
-                type=TrackType.BIKING,
+                type=SportType.BIKING,
                 year=self._previousPreviousMonth.year,
                 month=self._previousPreviousMonth.month,
                 distance_minimum=400 * 1000,
@@ -163,7 +165,7 @@ class DummyDataGenerator:
 
         db.session.add(
             MonthGoalCount(
-                type=TrackType.RUNNING,
+                type=SportType.RUNNING,
                 year=self._now.year,
                 month=self._now.month,
                 count_minimum=1,
@@ -174,7 +176,7 @@ class DummyDataGenerator:
 
         db.session.add(
             MonthGoalDuration(
-                type=TrackType.WORKOUT,
+                type=SportType.WORKOUT,
                 year=self._now.year,
                 month=self._now.month,
                 duration_minimum=2 * 60 * 60,
@@ -188,7 +190,7 @@ class DummyDataGenerator:
     def __generate_demo_tracks(
         self,
         user: User,
-        trackType: TrackType,
+        sportType: SportType,
         numberOfTracksPerMonth: int,
         numberOfTracksWithGpx: int,
         numberOfTracksWithParticipants: int,
@@ -199,7 +201,7 @@ class DummyDataGenerator:
         distanceMin: float,
         distanceMax: float,
     ) -> None:
-        LOGGER.debug(f'Generate dummy tracks {trackType.name}...')
+        LOGGER.debug(f'Generate dummy tracks {sportType.name}...')
 
         fake = Faker()
 
@@ -226,14 +228,14 @@ class DummyDataGenerator:
                 heartRate = random.randint(85, 160)
                 elevationSum = random.randint(17, 650)
 
-                track = Track(
-                    type=trackType,
+                track = DistanceSport(
+                    type=sportType,
                     name=random.choice(self.TRACK_NAMES),
-                    startTime=fakeTime,
+                    start_time=fakeTime,
                     duration=duration,
                     distance=distance * 1000,
-                    averageHeartRate=heartRate,
-                    elevationSum=elevationSum,
+                    average_heart_rate=heartRate,
+                    elevation_sum=elevationSum,
                     user_id=user.id,
                     custom_fields={},
                     share_code=None,
@@ -249,17 +251,17 @@ class DummyDataGenerator:
                     track.share_code = uuid.uuid4().hex
 
                 if index in indexesWithLinkedPlannedTour:
-                    track.plannedTour = plannedTour
+                    track.planned_tour = plannedTour
 
                 db.session.add(track)
                 db.session.commit()
 
                 if index in indexesWithGpx:
-                    self._gpxService.add_visited_tiles_for_track(track, 14, user.id)
+                    self._gpxService.add_visited_tiles_for_sport(track, 14, user.id)
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 
-    def __append_gpx(self, item: Track | PlannedTour) -> None:
+    def __append_gpx(self, item: DistanceSport | PlannedTour) -> None:
         currentDirectory = os.path.abspath(os.path.dirname(__file__))
         dummyDataDirectory = os.path.join(os.path.dirname(currentDirectory), 'dummyData')
         sourcePath = os.path.join(dummyDataDirectory, random.choice(self.GPX_FILE_NAMES))
@@ -285,13 +287,13 @@ class DummyDataGenerator:
     def __generate_demo_duration_based_tracks(
         self,
         user: User,
-        trackType: TrackType,
+        sportType: SportType,
         numberOfTracksPerMonth: int,
         numberOfTracksWithParticipants: int,
         durationMin: int,
         durationMax: int,
     ) -> None:
-        LOGGER.debug(f'Generate dummy duration-based tracks {trackType.name}...')
+        LOGGER.debug(f'Generate dummy duration-based tracks {sportType.name}...')
 
         fake = Faker()
 
@@ -307,21 +309,16 @@ class DummyDataGenerator:
             for index in range(numberOfTracksPerMonth):
                 fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
                 duration = round(random.uniform(durationMin, durationMax), 2)
-                heartRate = random.randint(85, 160)
                 workoutType = random.choice([x for x in WorkoutType])
                 workoutCategory = random.choice([x for x in WorkoutCategoryType])
 
-                track = Track(
-                    type=trackType,
+                track = WorkoutSport(
                     name=random.choice(self.WORKOUT_NAMES),
-                    startTime=fakeTime,
+                    type=sportType,
+                    start_time=fakeTime,
                     duration=duration,
-                    distance=0,
-                    averageHeartRate=heartRate,
-                    elevationSum=None,
                     user_id=user.id,
                     custom_fields={},
-                    share_code=None,
                     workout_type=workoutType,  # type: ignore[call-arg]
                 )
 
@@ -331,7 +328,7 @@ class DummyDataGenerator:
                 db.session.add(track)
                 db.session.commit()
 
-                update_workout_categories_by_track_id(track.id, [workoutCategory])
+                update_workout_categories_by_sport_id(track.id, [workoutCategory])
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 
@@ -343,7 +340,7 @@ class DummyDataGenerator:
         maintenances = []
         for name in self.MAINTENANCE_EVENT_NAMES:
             maintenance = Maintenance(
-                type=TrackType.BIKING,
+                type=SportType.BIKING,
                 description=name,
                 user_id=user.id,
                 is_reminder_active=True,
@@ -380,9 +377,9 @@ class DummyDataGenerator:
 
     def __generate_demo_custom_field(self, user) -> None:
         db.session.add(
-            CustomTrackField(
-                type=CustomTrackFieldType.STRING,
-                track_type=TrackType.BIKING,
+            CustomSportField(
+                type=CustomSportFieldType.STRING,
+                sport_type=SportType.BIKING,
                 name='Bike',
                 is_required=False,
                 user_id=user.id,
@@ -409,7 +406,7 @@ class DummyDataGenerator:
                 share_code = uuid.uuid4().hex
 
             plannedTour = PlannedTour(
-                type=TrackType.BIKING,
+                type=SportType.BIKING,
                 creation_date=fakeTime,
                 last_edit_date=fakeTime,
                 last_edit_user_id=user.id,

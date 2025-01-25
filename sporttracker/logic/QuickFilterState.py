@@ -4,35 +4,42 @@ import json
 
 from flask import session
 
-from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.SportType import SportType
 
 
 class QuickFilterState:
     def __init__(self) -> None:
-        self._states = {trackType: True for trackType in TrackType}
+        self._states = {sportType: True for sportType in SportType}
 
-    def toggle_state(self, trackType):
-        self._states[trackType] = not self._states[trackType]
+    def toggle_state(self, sportType):
+        self._states[sportType] = not self._states[sportType]
 
-    def get_states(self) -> dict[TrackType, bool]:
+    def get_states(self) -> dict[SportType, bool]:
         return dict(sorted(self._states.items(), key=lambda entry: entry[0].order))
 
-    def set_states(self, states: dict[TrackType, bool]) -> None:
+    def set_states(self, states: dict[SportType, bool]) -> None:
         self._states = states
 
-    def get_active_types(self) -> list[TrackType]:
-        return [trackType for trackType, isActive in self._states.items() if isActive]
+    def get_active_types(self) -> list[SportType]:
+        return [sportType for sportType, isActive in self._states.items() if isActive]
+
+    def get_active_distance_sport_types(self) -> list[SportType]:
+        return [
+            sportType
+            for sportType, isActive in self._states.items()
+            if isActive and sportType in SportType.get_distance_sport_types()
+        ]
 
     def to_json(self) -> str:
         return json.dumps(
-            {trackType.name: isActive for trackType, isActive in self._states.items()}
+            {sportType.name: isActive for sportType, isActive in self._states.items()}
         )
 
     @staticmethod
     def from_json(jsonString: str) -> QuickFilterState:
         states = {
-            TrackType(trackType): isActive  # type: ignore[call-arg]
-            for trackType, isActive in json.loads(jsonString).items()
+            SportType(sportType): isActive  # type: ignore[call-arg]
+            for sportType, isActive in json.loads(jsonString).items()
         }
         quickFilterState = QuickFilterState()
         quickFilterState.set_states(states)
@@ -45,7 +52,7 @@ def get_quick_filter_state_from_session() -> QuickFilterState:
 
     quickFilterState = QuickFilterState.from_json(session['quickFilterState'])
 
-    # check if any track types are missing and update session accordingly
+    # check if any sport types are missing and update session accordingly
     if quickFilterState.get_states().keys() != QuickFilterState().get_states().keys():
         session['quickFilterState'] = QuickFilterState().to_json()
 

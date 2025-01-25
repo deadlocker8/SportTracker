@@ -9,22 +9,19 @@ import click
 import flask_babel
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils import FlaskBaseApp
-from alembic.runtime.migration import MigrationContext
 from flask import Flask, request
 from flask_babel import Babel
 from flask_login import LoginManager, current_user
-from flask_migrate import upgrade, stamp
 
 from sporttracker.blueprints import (
     General,
     Authentication,
-    Tracks,
+    Sports,
     MonthGoals,
     Charts,
     Users,
     MonthGoalsDistance,
     MonthGoalsCount,
-    Api,
     Achievements,
     Search,
     Maps,
@@ -36,6 +33,8 @@ from sporttracker.blueprints import (
     PlannedTours,
     AnnualAchievements,
     MonthGoalsDuration,
+    DistanceSports,
+    WorkoutSports,
 )
 from sporttracker.helpers import Helpers
 from sporttracker.helpers.SettingsChecker import SettingsChecker
@@ -46,25 +45,25 @@ from sporttracker.logic.MaintenanceEventsCollector import (
     get_number_of_triggered_maintenance_reminders,
 )
 from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
-from sporttracker.logic.model.CustomTrackField import CustomTrackFieldType
+from sporttracker.logic.model.CustomSportField import CustomSportFieldType
+from sporttracker.logic.model.DistanceSport import DistanceSport
 from sporttracker.logic.model.PlannedTour import (
     TravelType,
     TravelDirection,
     get_new_planned_tour_ids,
     get_updated_planned_tour_ids,
 )
-from sporttracker.logic.model.Track import Track
-from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.SportType import SportType
 from sporttracker.logic.model.User import (
     User,
     Language,
     create_user,
-    TrackInfoItem,
-    TrackInfoItemType,
+    DistanceSportInfoItem,
+    DistanceSportInfoItemType,
 )
 from sporttracker.logic.model.WorkoutCategory import WorkoutCategoryType
 from sporttracker.logic.model.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db, migrate
+from sporttracker.logic.model.db import db
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 LOGGER.propagate = False
@@ -108,7 +107,7 @@ class SportTracker(FlaskBaseApp):
         app.config['SQLALCHEMY_DATABASE_URI'] = self._settings['database']['uri']
 
         db.init_app(app)
-        migrate.init_app(app, db)
+        # migrate.init_app(app, db)
 
         rootDirectory = os.path.dirname(currentDirectory)
         app.config['DATA_FOLDER'] = os.path.join(rootDirectory, 'data')
@@ -121,17 +120,17 @@ class SportTracker(FlaskBaseApp):
         if self._prepareDatabase:
             self.__prepare_database(app)
 
-        with app.app_context():
-            context = MigrationContext.configure(db.engine.connect())
-            currentDatabaseRevision = context.get_current_revision()
-            if currentDatabaseRevision is None:
-                stamp(revision=Constants.LATEST_DATABASE_REVISION)
-            elif currentDatabaseRevision == Constants.LATEST_DATABASE_REVISION:
-                LOGGER.info('No database upgrade needed')
-            else:
-                LOGGER.info('Upgrading database...')
-                upgrade()
-                LOGGER.info('Upgrading database DONE')
+        # with app.app_context():
+        #     context = MigrationContext.configure(db.engine.connect())
+        #     currentDatabaseRevision = context.get_current_revision()
+        #     if currentDatabaseRevision is None:
+        #         stamp(revision=Constants.LATEST_DATABASE_REVISION)
+        #     elif currentDatabaseRevision == Constants.LATEST_DATABASE_REVISION:
+        #         LOGGER.info('No database upgrade needed')
+        #     else:
+        #         LOGGER.info('Upgrading database...')
+        #         upgrade()
+        #         LOGGER.info('Upgrading database DONE')
 
         if self._prepareDatabase:
             with app.app_context():
@@ -150,10 +149,10 @@ class SportTracker(FlaskBaseApp):
         def inject_static_access() -> dict[str, Any]:
             return {
                 'versionName': self._version['name'],
-                'trackTypes': [x for x in TrackType],
-                'trackTypesByName': {x.name: x for x in TrackType},
+                'sportTypes': [x for x in SportType],
+                'sportTypesByName': {x.name: x for x in SportType},
                 'languages': [x for x in Language],
-                'customTrackFieldTypes': [x for x in CustomTrackFieldType],
+                'customTrackFieldTypes': [x for x in CustomSportFieldType],
                 'travelTypes': [x for x in TravelType],
                 'travelDirections': [x for x in TravelDirection],
                 'newPlannedTourIds': get_new_planned_tour_ids(),
@@ -173,8 +172,8 @@ class SportTracker(FlaskBaseApp):
         def format_duration(value: int | None) -> str:
             return Helpers.format_duration(value)
 
-        def format_pace(track: Track) -> str:
-            speed = int(track.duration / (track.distance / 1000))
+        def format_pace(distanceSport: DistanceSport) -> str:
+            speed = int(distanceSport.duration / (distanceSport.distance / 1000))
 
             minutes = speed // 60
             seconds = speed % 60
@@ -183,12 +182,14 @@ class SportTracker(FlaskBaseApp):
         @app.context_processor
         def utility_processor():
             def is_track_info_item_activated(name: str) -> bool:
-                trackInfoItem = (
-                    TrackInfoItem.query.filter(TrackInfoItem.user_id == current_user.id)
-                    .filter(TrackInfoItem.type == TrackInfoItemType(name))
+                distanceSportInfoItem = (
+                    DistanceSportInfoItem.query.filter(
+                        DistanceSportInfoItem.user_id == current_user.id
+                    )
+                    .filter(DistanceSportInfoItem.type == DistanceSportInfoItemType(name))
                     .first()
                 )
-                return trackInfoItem.is_activated
+                return distanceSportInfoItem.is_activated
 
             return {'is_track_info_item_activated': is_track_info_item_activated}
 
@@ -243,7 +244,17 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Authentication.construct_blueprint())
         app.register_blueprint(General.construct_blueprint())
         app.register_blueprint(
-            Tracks.construct_blueprint(app.config['GPX_SERVICE'], self._settings['tileHunting'])
+            Sports.construct_blueprint(app.config['GPX_SERVICE'], self._settings['tileHunting'])
+        )
+        app.register_blueprint(
+            DistanceSports.construct_blueprint(
+                app.config['GPX_SERVICE'], self._settings['tileHunting']
+            )
+        )
+        app.register_blueprint(
+            WorkoutSports.construct_blueprint(
+                app.config['GPX_SERVICE'], self._settings['tileHunting']
+            )
         )
         app.register_blueprint(MonthGoals.construct_blueprint())
         app.register_blueprint(MonthGoalsDistance.construct_blueprint())
@@ -252,13 +263,14 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Charts.construct_blueprint())
         app.register_blueprint(Users.construct_blueprint())
         app.register_blueprint(Settings.construct_blueprint())
-        app.register_blueprint(
-            Api.construct_blueprint(
-                self._version,
-                app.config['GPX_SERVICE'],
-                self._settings['tileHunting'],
-            )
-        )
+        # TODO: API
+        # app.register_blueprint(
+        #     Api.construct_blueprint(
+        #         self._version,
+        #         app.config['GPX_SERVICE'],
+        #         self._settings['tileHunting'],
+        #     )
+        # )
         app.register_blueprint(Achievements.construct_blueprint())
         app.register_blueprint(Search.construct_blueprint())
         app.register_blueprint(GpxTracks.construct_blueprint(app.config['GPX_SERVICE']))

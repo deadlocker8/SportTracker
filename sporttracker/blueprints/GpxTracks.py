@@ -6,11 +6,15 @@ from flask_login import login_required, current_user
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.logic.GpxService import GpxService
+from sporttracker.logic.model.DistanceSport import (
+    get_distance_sport_by_id,
+    get_distance_sport_by_share_code,
+    DistanceSport,
+)
 from sporttracker.logic.model.PlannedTour import (
     get_planned_tour_by_id,
     get_planned_tour_by_share_code,
 )
-from sporttracker.logic.model.Track import get_track_by_id, get_track_by_share_code, Track
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -18,10 +22,10 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 def construct_blueprint(gpxService: GpxService):
     gpxTracks = Blueprint('gpxTracks', __name__, static_folder='static', url_prefix='/gpxTracks')
 
-    @gpxTracks.route('/track/<string:file_format>/<int:track_id>')
+    @gpxTracks.route('/track/<string:file_format>/<int:sport_id>')
     @login_required
-    def downloadGpxTrackByTrackId(track_id: int, file_format: str):
-        track = get_track_by_id(track_id)
+    def downloadGpxTrackBySportId(sport_id: int, file_format: str):
+        track = get_distance_sport_by_id(sport_id)
 
         if track is None:
             abort(404)
@@ -34,7 +38,7 @@ def construct_blueprint(gpxService: GpxService):
 
     @gpxTracks.route('/track/shared/<string:shareCode>/<string:file_format>')
     def downloadGpxTrackBySharedTrack(shareCode: str, file_format: str):
-        track = get_track_by_share_code(shareCode)
+        track = get_distance_sport_by_share_code(shareCode)
         if track is None:
             abort(404)
 
@@ -71,10 +75,10 @@ def construct_blueprint(gpxService: GpxService):
 
         abort(404)
 
-    @gpxTracks.route('/delete/track/<int:track_id>')
+    @gpxTracks.route('/delete/track/<int:sport_id>')
     @login_required
-    def deleteGpxTrackByTrackId(track_id: int):
-        track = get_track_by_id(track_id)
+    def deleteGpxTrackBySportId(sport_id: int):
+        track = get_distance_sport_by_id(sport_id)
 
         if track is None:
             return Response(status=204)
@@ -119,7 +123,9 @@ def construct_blueprint(gpxService: GpxService):
     return gpxTracks
 
 
-def __downloadTrackFile(gpxService: GpxService, item: Track, fileFormat: str) -> Response | None:
+def __downloadTrackFile(
+    gpxService: GpxService, item: DistanceSport, fileFormat: str
+) -> Response | None:
     if fileFormat == GpxService.GPX_FILE_EXTENSION:
         return __downloadGpxTrack(gpxService, item, item.get_download_name())
     elif fileFormat == GpxService.FIT_FILE_EXTENSION:
@@ -128,7 +134,9 @@ def __downloadTrackFile(gpxService: GpxService, item: Track, fileFormat: str) ->
     return None
 
 
-def __downloadGpxTrack(gpxService: GpxService, item: Track, downloadName: str) -> Response | None:
+def __downloadGpxTrack(
+    gpxService: GpxService, item: DistanceSport, downloadName: str
+) -> Response | None:
     gpxMetadata = item.get_gpx_metadata()
     if gpxMetadata is None:
         return None
@@ -142,7 +150,9 @@ def __downloadGpxTrack(gpxService: GpxService, item: Track, downloadName: str) -
     )
 
 
-def __downloadFitTrack(gpxService: GpxService, item: Track, downloadName: str) -> Response | None:
+def __downloadFitTrack(
+    gpxService: GpxService, item: DistanceSport, downloadName: str
+) -> Response | None:
     gpxMetadata = item.get_gpx_metadata()
     if gpxMetadata is None:
         return None

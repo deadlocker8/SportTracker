@@ -3,13 +3,13 @@ from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
-from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.SportType import SportType
 from sporttracker.logic.model.db import db
 
 
 class Maintenance(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    type = db.Column(db.Enum(TrackType))
+    type = db.Column(db.Enum(SportType))
     description: Mapped[String] = mapped_column(String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     is_reminder_active: Mapped[bool] = mapped_column(Boolean, nullable=False)

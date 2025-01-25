@@ -14,10 +14,10 @@ class Participant(db.Model):  # type: ignore[name-defined]
         return f'Participant(' f'id: {self.id}, ' f'name: {self.name}, ' f'user_id: {self.user_id})'
 
 
-track_participant_association = Table(
-    'track_participant_association',
+sport_participant_association = Table(
+    'sport_participant_association',
     db.Model.metadata,
-    Column('track_id', ForeignKey('track.id')),
+    Column('sport_id', ForeignKey('sport.id')),
     Column('participant_id', ForeignKey('participant.id')),
 )
 

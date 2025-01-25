@@ -8,10 +8,10 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
-from sporttracker.logic.model.CustomTrackField import CustomTrackField, CustomTrackFieldType
+from sporttracker.logic.model.CustomSportField import CustomSportField, CustomSportFieldType
 from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.PlannedTour import PlannedTour, TravelType, TravelDirection
-from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.SportType import SportType
 from sporttracker.logic.model.User import create_user, Language, User
 from sporttracker.logic.model.db import db
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
@@ -25,7 +25,7 @@ def prepare_test_data(app):
 
         plannedTour = PlannedTour(
             id=1,
-            type=TrackType.BIKING,
+            type=SportType.BIKING,
             name='Megatour',
             creation_date=datetime.now(),
             last_edit_date=datetime.now(),
@@ -42,9 +42,9 @@ def prepare_test_data(app):
         db.session.commit()
 
 
-class TestTracks(SeleniumTestBaseClass):
+class TestSports(SeleniumTestBaseClass):
     def __open_form(self, selenium, buttonIndex=0, expectedHeadline='New Biking Track'):
-        selenium.get(self.build_url('/tracks'))
+        selenium.get(self.build_url('/sports'))
 
         selenium.find_element(By.CLASS_NAME, 'headline').find_element(By.TAG_NAME, 'a').click()
         WebDriverWait(selenium, 5).until(
@@ -62,7 +62,7 @@ class TestTracks(SeleniumTestBaseClass):
         )
 
     def __open_edit_form(self, selenium):
-        selenium.get(self.build_url('/tracks/edit/1'))
+        selenium.get(self.build_url('/distanceSports/edit/1'))
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -134,32 +134,32 @@ class TestTracks(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+                (By.CLASS_NAME, 'headline-text'), 'Exercises'
             )
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
 
-    def test_add_track_all_empty(self, server, selenium: WebDriver):
+    def test_add_sport_all_empty(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, '', '', '', '', '', '', '', '', '')
         self.click_button_by_id(selenium, 'buttonSaveTrack')
 
-        assert selenium.current_url.endswith('/tracks/add/BIKING')
+        assert selenium.current_url.endswith('/sports/add/BIKING')
 
-    def test_add_track_mandatory_custom_field_not_filled(self, server, selenium: WebDriver, app):
+    def test_add_sport_mandatory_custom_field_not_filled(self, server, selenium: WebDriver, app):
         user = User.query.filter(User.username == TEST_USERNAME).first()
 
         with app.app_context():
-            customTrackField = CustomTrackField(
-                type=CustomTrackFieldType.INTEGER,
-                track_type=TrackType.BIKING,
+            customSportField = CustomSportField(
+                type=CustomSportFieldType.INTEGER,
+                sport_type=SportType.BIKING,
                 name='my_custom_field',
                 is_required=True,
                 user_id=user.id,
             )
-            db.session.add(customTrackField)
+            db.session.add(customSportField)
             db.session.commit()
 
         self.login(selenium)
@@ -167,20 +167,20 @@ class TestTracks(SeleniumTestBaseClass):
         self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         self.click_button_by_id(selenium, 'buttonSaveTrack')
 
-        assert selenium.current_url.endswith('/tracks/add/BIKING')
+        assert selenium.current_url.endswith('/sports/add/BIKING')
 
-    def test_add_track_mandatory_custom_field_filled(self, server, selenium: WebDriver, app):
+    def test_add_sport_mandatory_custom_field_filled(self, server, selenium: WebDriver, app):
         user = User.query.filter(User.username == TEST_USERNAME).first()
 
         with app.app_context():
-            customTrackField = CustomTrackField(
-                type=CustomTrackFieldType.INTEGER,
-                track_type=TrackType.BIKING,
+            customSportField = CustomSportField(
+                type=CustomSportFieldType.INTEGER,
+                sport_type=SportType.BIKING,
                 name='my_custom_field',
                 is_required=True,
                 user_id=user.id,
             )
-            db.session.add(customTrackField)
+            db.session.add(customSportField)
             db.session.commit()
 
         self.login(selenium)
@@ -191,26 +191,26 @@ class TestTracks(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+                (By.CLASS_NAME, 'headline-text'), 'Exercises'
             )
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
 
-    def test_add_track_non_mandatory_custom_field_not_filled(
+    def test_add_sport_non_mandatory_custom_field_not_filled(
         self, server, selenium: WebDriver, app
     ):
         user = User.query.filter(User.username == TEST_USERNAME).first()
 
         with app.app_context():
-            customTrackField = CustomTrackField(
-                type=CustomTrackFieldType.INTEGER,
-                track_type=TrackType.BIKING,
+            customSportField = CustomSportField(
+                type=CustomSportFieldType.INTEGER,
+                sport_type=SportType.BIKING,
                 name='my_custom_field',
                 is_required=False,
                 user_id=user.id,
             )
-            db.session.add(customTrackField)
+            db.session.add(customSportField)
             db.session.commit()
 
         self.login(selenium)
@@ -220,13 +220,13 @@ class TestTracks(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+                (By.CLASS_NAME, 'headline-text'), 'Exercises'
             )
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
 
-    def test_add_track_one_participant_selected(self, server, selenium: WebDriver, app):
+    def test_add_sport_one_participant_selected(self, server, selenium: WebDriver, app):
         user = User.query.filter(User.username == TEST_USERNAME).first()
 
         with app.app_context():
@@ -245,7 +245,7 @@ class TestTracks(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+                (By.CLASS_NAME, 'headline-text'), 'Exercises'
             )
         )
 
@@ -254,7 +254,7 @@ class TestTracks(SeleniumTestBaseClass):
         # check participants icon is displayed
         assert cards[0].find_element(By.XPATH, '//span[text()="group"]')
 
-    def test_add_track_multiple_participant_selected(self, server, selenium: WebDriver, app):
+    def test_add_sport_multiple_participant_selected(self, server, selenium: WebDriver, app):
         user = User.query.filter(User.username == TEST_USERNAME).first()
 
         with app.app_context():
@@ -279,7 +279,7 @@ class TestTracks(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+                (By.CLASS_NAME, 'headline-text'), 'Exercises'
             )
         )
 
@@ -288,7 +288,7 @@ class TestTracks(SeleniumTestBaseClass):
         # check participants icon is displayed
         assert cards[0].find_element(By.XPATH, '//span[text()="group"]')
 
-    def test_quick_filter_only_show_activated_track_types(self, server, selenium: WebDriver):
+    def test_quick_filter_only_show_activated_sport_types(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(
@@ -298,7 +298,7 @@ class TestTracks(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+                (By.CLASS_NAME, 'headline-text'), 'Exercises'
             )
         )
 
@@ -310,7 +310,7 @@ class TestTracks(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+                (By.CLASS_NAME, 'headline-text'), 'Exercises'
             )
         )
 
@@ -345,9 +345,9 @@ class TestTracks(SeleniumTestBaseClass):
             expected_conditions.invisibility_of_element_located((By.ID, 'headline-months'))
         )
 
-        assert selenium.current_url.endswith(f'/tracks/{year}/{monthIndex + 1}')
+        assert selenium.current_url.endswith(f'/sports/{year}/{monthIndex + 1}')
 
-    def test_new_track_share_via_link(self, server, selenium: WebDriver):
+    def test_new_sport_share_via_link(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
 
@@ -364,7 +364,7 @@ class TestTracks(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+                (By.CLASS_NAME, 'headline-text'), 'Exercises'
             )
         )
 
@@ -382,7 +382,7 @@ class TestTracks(SeleniumTestBaseClass):
             )
         )
 
-    def test_edit_track_remove_shared_link(self, server, selenium: WebDriver):
+    def test_edit_sport_remove_shared_link(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
 
@@ -399,7 +399,7 @@ class TestTracks(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+                (By.CLASS_NAME, 'headline-text'), 'Exercises'
             )
         )
 
@@ -420,7 +420,7 @@ class TestTracks(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSaveTrack')
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+                (By.CLASS_NAME, 'headline-text'), 'Exercises'
             )
         )
 
@@ -451,19 +451,19 @@ class TestTracks(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+                (By.CLASS_NAME, 'headline-text'), 'Exercises'
             )
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
 
-        # check number of linked tracks is shown
+        # check number of linked sports is shown
         selenium.get(self.build_url('/plannedTours'))
         pills = selenium.find_elements(By.CSS_SELECTOR, '.badge.rounded-pill.bg-orange')
         assert len(pills) == 1
         assert pills[0].text == '1 Tracks'
 
-    def test_add_duration_based_track_valid(self, server, selenium: WebDriver):
+    def test_add_duration_based_sport_valid(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium, buttonIndex=3, expectedHeadline='New Workout')
         self.__fill_duration_based_form(
@@ -482,16 +482,16 @@ class TestTracks(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Tracks'
+                (By.CLASS_NAME, 'headline-text'), 'Exercises'
             )
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
 
-    def test_add_duration_based_track_all_empty(self, server, selenium: WebDriver):
+    def test_add_duration_based_sport_all_empty(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium, buttonIndex=3, expectedHeadline='New Workout')
         self.__fill_duration_based_form(selenium, '', '', '', '', '', '', '', 'workout-type-1', [])
         self.click_button_by_id(selenium, 'buttonSaveTrack')
 
-        assert selenium.current_url.endswith('/tracks/add/WORKOUT')
+        assert selenium.current_url.endswith('/sports/add/WORKOUT')

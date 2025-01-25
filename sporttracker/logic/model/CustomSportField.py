@@ -5,11 +5,11 @@ from flask_login import current_user
 from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
-from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.SportType import SportType
 from sporttracker.logic.model.db import db
 
 
-class CustomTrackFieldType(enum.Enum):
+class CustomSportFieldType(enum.Enum):
     STRING = 'STRING'
     INTEGER = 'INTEGER'
     FLOAT = 'FLOAT'
@@ -31,14 +31,14 @@ class CustomTrackFieldType(enum.Enum):
             return gettext('Float')
 
         raise ValueError(
-            f'Could not get localized name for unsupported CustomTrackFieldType: {self}'
+            f'Could not get localized name for unsupported CustomSportFieldType: {self}'
         )
 
 
-class CustomTrackField(db.Model):  # type: ignore[name-defined]
+class CustomSportField(db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    type = db.Column(db.Enum(CustomTrackFieldType))
-    track_type = db.Column(db.Enum(TrackType))
+    type = db.Column(db.Enum(CustomSportFieldType))
+    sport_type = db.Column(db.Enum(SportType))
     name: Mapped[String] = mapped_column(String, nullable=False)
     is_required: Mapped[bool] = mapped_column(Boolean, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -48,27 +48,28 @@ class CustomTrackField(db.Model):  # type: ignore[name-defined]
 
     def __repr__(self):
         return (
-            f'CustomTrackField('
+            f'CustomSportField('
             f'id: {self.id}, '
             f'type: {self.type}, '
-            f'track_type: {self.track_type}, '
+            f'sport_type: {self.sport_type}, '
             f'name: {self.name}, '
             f'is_required: {self.is_required}, '
             f'user_id: {self.user_id})'
         )
 
 
-def get_custom_fields_by_track_type() -> dict[TrackType, list[CustomTrackField]]:
-    customFieldsByTrackType = {}
-    for trackType in TrackType:
-        customFieldsByTrackType[trackType] = (
-            CustomTrackField.query.filter(CustomTrackField.user_id == current_user.id)
-            .filter(CustomTrackField.track_type == trackType)
+def get_custom_fields_by_sport_type() -> dict[SportType, list[CustomSportField]]:
+    customFieldsBySportType = {}
+    for sportType in SportType:
+        customFieldsBySportType[sportType] = (
+            CustomSportField.query.filter(CustomSportField.user_id == current_user.id)
+            .filter(CustomSportField.sport_type == sportType)
             .all()
         )
-    return customFieldsByTrackType
+    return customFieldsBySportType
 
 
+# TODO reserved_field_names
 RESERVED_FIELD_NAMES = [
     'name',
     'date',

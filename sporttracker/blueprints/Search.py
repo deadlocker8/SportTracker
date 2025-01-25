@@ -5,10 +5,11 @@ from flask import Blueprint, render_template, request
 from flask_babel import format_datetime
 from flask_login import login_required, current_user
 
-from sporttracker.blueprints.Tracks import TrackModel
+from sporttracker.blueprints.Sports import DistanceSportModel, WorkoutSportModel
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.Track import Track
+from sporttracker.logic.model.Sport import Sport
+from sporttracker.logic.model.SportType import SportType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 
@@ -44,11 +45,11 @@ def construct_blueprint():
             pageNumberValue = 1
 
         pagination = db.paginate(
-            Track.query.join(User)
+            Sport.query.join(User)
             .filter(User.username == current_user.username)
-            .filter(Track.name.icontains(searchText))
-            .filter(Track.type.in_(quickFilterState.get_active_types()))
-            .order_by(Track.startTime.desc()),
+            .filter(Sport.name.icontains(searchText))
+            .filter(Sport.type.in_(quickFilterState.get_active_types()))
+            .order_by(Sport.start_time.desc()),
             per_page=10,
             page=pageNumberValue,
         )
@@ -57,13 +58,21 @@ def construct_blueprint():
             k: list(g)
             for k, g in groupby(
                 pagination.items,
-                key=lambda track: format_datetime(track.startTime, format='MMMM yyyy'),
+                key=lambda track: format_datetime(track.start_time, format='MMMM yyyy'),
             )
         }
 
         resultModelItems = {}
-        for month, tracks in results.items():
-            resultModelItems[month] = [TrackModel.create_from_track(t) for t in tracks]
+        for month, sports in results.items():
+            itemsPerMonth = []
+
+            for sport in sports:
+                if sport.type in SportType.get_distance_sport_types():
+                    itemsPerMonth.append(DistanceSportModel.create_from_sport(sport))
+                elif sport.type in SportType.get_workout_sport_types():
+                    itemsPerMonth.append(WorkoutSportModel.create_from_sport(sport))
+
+            resultModelItems[month] = itemsPerMonth
 
         return render_template(
             'search.jinja2',

@@ -52,7 +52,7 @@
                                    href="/">
                                     <span class="navbar-icon">
                                         <i class="fa-solid fa-route fa-fw fs-6"></i>
-                                    </span>&nbsp;{{ gettext('Tracks') }}
+                                    </span>&nbsp;{{ gettext('Exercises') }}
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -222,27 +222,27 @@
     </div>
 {%- endmacro %}
 
-{% macro track_type_quick_filter(redirectUrl, onlyDistanceBasedTypes) -%}
+{% macro sport_type_quick_filter(redirectUrl, onlyDistanceBasedTypes) -%}
     <div class="d-flex flex-row align-items-center justify-content-center">
-        {% for trackType, isActive in quickFilterState.get_states().items() %}
-            {% if (onlyDistanceBasedTypes and trackType.supports_distance) or not onlyDistanceBasedTypes %}
-                <a href="{{ url_for('quickFilter.toggleQuickFilter', trackType=trackType.name, redirectUrl=redirectUrl) }}" class="quick-filter lh-1 {% if not loop.first %}ms-3{% endif %}">
-                    {{ track_type_quick_filter_button(trackType, isActive) }}
+        {% for sportType, isActive in quickFilterState.get_states().items() %}
+            {% if (onlyDistanceBasedTypes and sportType.supports_distance) or not onlyDistanceBasedTypes %}
+                <a href="{{ url_for('quickFilter.toggleQuickFilter', sportType=sportType.name, redirectUrl=redirectUrl) }}" class="quick-filter lh-1 {% if not loop.first %}ms-3{% endif %}">
+                    {{ sport_type_quick_filter_button(sportType, isActive) }}
                 </a>
             {% endif %}
         {% endfor %}
     </div>
 {%- endmacro %}
 
-{% macro track_type_quick_filter_button(trackType, isActive) -%}
+{% macro sport_type_quick_filter_button(sportType, isActive) -%}
     {% if isActive %}
-        {% set backgroundColor=trackType.background_color %}
+        {% set backgroundColor=sportType.background_color %}
     {% else %}
         {% set backgroundColor='bg-secondary' %}
     {% endif %}
 
-    {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
-    {{ trackMacros.track_type_icon_small(trackType, fontSize='fs-4', backgroundColorOverride=backgroundColor) }}
+    {% import 'sports/sportMacros.jinja2' as sportMacros with context %}
+    {{ sportMacros.sport_type_icon_small(sportType, fontSize='fs-4', backgroundColorOverride=backgroundColor) }}
 {%- endmacro %}
 
 {% macro deleteModal(title, text, idSuffix='0') -%}

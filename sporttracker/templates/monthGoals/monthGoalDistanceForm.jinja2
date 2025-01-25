@@ -42,9 +42,9 @@
                                 <div class="d-flex align-items-center">
                                     <span class="material-symbols-outlined filled me-3">stars</span>
                                     <select class="form-select" id="month-goal-type" name="type" required="required">
-                                        {% for trackType in trackTypes %}
-                                            {% if trackType.supports_distance %}
-                                                <option value="{{ trackType.name }}" {% if goal and goal.type == trackType.name %}selected{% endif %}>{{ trackType.get_localized_name() }}</option>
+                                        {% for sportType in sportTypes %}
+                                            {% if sportType.supports_distance %}
+                                                <option value="{{ sportType.name }}" {% if goal and goal.type == sportType.name %}selected{% endif %}>{{ sportType.get_localized_name() }}</option>
                                             {% endif %}
                                         {% endfor %}
                                     </select>

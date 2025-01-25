@@ -57,18 +57,18 @@ class WorkoutCategoryType(enum.Enum):
 
 
 class WorkoutCategory(db.Model):  # type: ignore[name-defined]
-    track_id: Mapped[int] = mapped_column(Integer, nullable=False, primary_key=True)
+    sport_id: Mapped[int] = mapped_column(Integer, nullable=False, primary_key=True)
     workout_category_type = db.Column(
         db.Enum(WorkoutCategoryType), nullable=False, primary_key=True
     )
 
 
-def update_workout_categories_by_track_id(
-    trackId: int, newWorkoutCategories: list[WorkoutCategoryType]
+def update_workout_categories_by_sport_id(
+    sportId: int, newWorkoutCategories: list[WorkoutCategoryType]
 ) -> None:
-    WorkoutCategory.query.filter(WorkoutCategory.track_id == trackId).delete()
+    WorkoutCategory.query.filter(WorkoutCategory.sport_id == sportId).delete()
 
     for category in newWorkoutCategories:
-        db.session.add(WorkoutCategory(track_id=trackId, workout_category_type=category))
+        db.session.add(WorkoutCategory(sport_id=sportId, workout_category_type=category))
 
     db.session.commit()

@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {{ gettext('Tracks') }}</title>
+        <title>SportTracker - {{ gettext('Exercises') }}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -10,35 +10,35 @@
         {{ macros.navbar('tracks') }}
 
         {% import 'monthGoals/monthGoalsMacros.jinja2' as monthGoalsMacros with context %}
-        {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+        {% import 'sports/sportMacros.jinja2' as sportMacros with context %}
 
         <div id="main" class="center-align">
             <section class="pt-5 px-4 px-sm-5 text-center">
                 <div class="row">
                     <div class="col col-12 mx-auto">
                         <div class="d-flex align-items-center justify-content-center">
-                            <a href="{{ url_for('tracks.listTracks', year=previousMonthDate.year, month=previousMonthDate.month) }}"
+                            <a href="{{ url_for('sports.listSports', year=previousMonthDate.year, month=previousMonthDate.month) }}"
                                class="text-decoration-none text-light me-3"
                                id="month-select-previous">
                                 <span class="material-symbols-outlined fs-1">chevron_left</span>
                             </a>
-                            {% call macros.headline(gettext('Tracks'), url_for('tracks.add')) %}
+                            {% call macros.headline(gettext('Exercises'), url_for('sports.add')) %}
                                 <i class="fa-solid fa-route fa-fw fs-2"></i>
                             {% endcall %}
-                            <a href="{{ url_for('tracks.listTracks', year=nextMonthDate.year, month=nextMonthDate.month) }}"
+                            <a href="{{ url_for('sports.listSports', year=nextMonthDate.year, month=nextMonthDate.month) }}"
                                class="text-decoration-none text-light ms-3"
                                id="month-select-next">
 
                                 <span class="material-symbols-outlined fs-1">chevron_right</span>
                             </a>
-                            <a href="{{ url_for('tracks.listTracks', year=currentMonthDate.year, month=currentMonthDate.month) }}"
+                            <a href="{{ url_for('sports.listSports', year=currentMonthDate.year, month=currentMonthDate.month) }}"
                                class="text-decoration-none text-light ms-2"
                                id="month-select"
                                data-bs-toggle="modal"
                                data-bs-target="#modalYearSelect">
                                 <i class="fa-solid fa-calendar-days fs-3"></i>
                             </a>
-                            <a href="{{ url_for('tracks.listTracks', year=currentMonthDate.year, month=currentMonthDate.month) }}"
+                            <a href="{{ url_for('sports.listSports', year=currentMonthDate.year, month=currentMonthDate.month) }}"
                                class="text-decoration-none text-light ms-3"
                                id="month-select-current">
                                 <i class="fa-solid fa-calendar-day fs-3"></i>
@@ -62,21 +62,21 @@
                 </div>
 
                 <div class="mt-3">
-                    {{ macros.track_type_quick_filter(url_for('tracks.listTracks', year=year, month=month), false) }}
+                    {{ macros.sport_type_quick_filter(url_for('sports.listSports', year=year, month=month), false) }}
                 </div>
 
                 <div class="row px-xxl-5 px-xl-4 px-lg-3">
                     <div class="col col-lg-6 col-sm-12 px-xxl-5 px-xl-4 px-lg-3 d-none d-lg-block">
-                        {{ trackMacros.render_month(monthLeftSide) }}
+                        {{ sportMacros.render_month(monthLeftSide) }}
                     </div>
                     <div class="col col-lg-6 col-sm-12 px-xxl-5 px-xl-4 px-lg-3">
-                        {{ trackMacros.render_month(monthRightSide) }}
+                        {{ sportMacros.render_month(monthRightSide) }}
                     </div>
                 </div>
             </section>
         </div>
 
-        <div class="modal fade" id="modalYearSelect" tabindex="-1" data-url="{{ url_for('tracks.listTracks') }}">
+        <div class="modal fade" id="modalYearSelect" tabindex="-1" data-url="{{ url_for('sports.listSports') }}">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content bg-dark">
                     <div class="modal-header">
@@ -98,7 +98,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modalMonthSelect" tabindex="-1" data-url="{{ url_for('tracks.listTracks') }}">
+        <div class="modal fade" id="modalMonthSelect" tabindex="-1" data-url="{{ url_for('sports.listSports') }}">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content bg-dark">
                     <div class="modal-header">

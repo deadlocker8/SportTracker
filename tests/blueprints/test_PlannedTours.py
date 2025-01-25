@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
-from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.SportType import SportType
 from sporttracker.logic.model.User import create_user, Language
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
@@ -47,14 +47,14 @@ class TestPlannedTours(SeleniumTestBaseClass):
     @staticmethod
     def __fill_form(
         selenium,
-        trackType,
+        sportType,
         name,
         arrivalMethod: str | None,
         departureMethod: str | None,
         direction: str | None,
     ):
         select = Select(selenium.find_element(By.ID, 'planned-tour-type'))
-        select.select_by_visible_text(trackType.name.capitalize())
+        select.select_by_visible_text(sportType.name.capitalize())
 
         nameInput = selenium.find_element(By.ID, 'planned-tour-name')
         nameInput.clear()
@@ -74,7 +74,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.__open_form(selenium)
         self.__fill_form(
             selenium,
-            TrackType.BIKING,
+            SportType.BIKING,
             'Awesome Tour',
             'arrival-method-2',
             'departure-method-2',
@@ -93,15 +93,15 @@ class TestPlannedTours(SeleniumTestBaseClass):
     def test_add_tour_all_empty(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, TrackType.BIKING, '', None, None, None)
+        self.__fill_form(selenium, SportType.BIKING, '', None, None, None)
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         assert selenium.current_url.endswith('/plannedTours/add')
 
-    def test_quick_filter_only_show_activated_track_types(self, server, selenium: WebDriver):
+    def test_quick_filter_only_show_activated_sport_types(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', None, None, None)
+        self.__fill_form(selenium, SportType.BIKING, 'Awesome Tour', None, None, None)
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
@@ -111,7 +111,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         )
 
         self.__open_form(selenium)
-        self.__fill_form(selenium, TrackType.RUNNING, 'Run away', None, None, None)
+        self.__fill_form(selenium, SportType.RUNNING, 'Run away', None, None, None)
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
@@ -135,7 +135,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.__open_form(selenium)
         self.__fill_form(
             selenium,
-            TrackType.BIKING,
+            SportType.BIKING,
             'Awesome Tour',
             'arrival-method-2',
             'departure-method-2',
@@ -162,7 +162,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
         self.__fill_form(
             selenium,
-            TrackType.BIKING,
+            SportType.BIKING,
             'Better Tour',
             'arrival-method-3',
             'departure-method-3',
@@ -182,7 +182,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
 
-        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', None, None, None)
+        self.__fill_form(selenium, SportType.BIKING, 'Awesome Tour', None, None, None)
 
         selenium.find_element(By.XPATH, '//label[@for="sharedUser-3"]').click()
 
@@ -226,7 +226,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         assert sharedUsers[1].is_enabled()
 
         # check other user can edit planned tour
-        self.__fill_form(selenium, TrackType.BIKING, 'Mega Tour', None, None, None)
+        self.__fill_form(selenium, SportType.BIKING, 'Mega Tour', None, None, None)
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
@@ -254,7 +254,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
 
-        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', None, None, None)
+        self.__fill_form(selenium, SportType.BIKING, 'Awesome Tour', None, None, None)
 
         self.click_button_by_id(selenium, 'buttonCreateSharedLink')
         WebDriverWait(selenium, 5).until(
@@ -287,7 +287,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
 
-        self.__fill_form(selenium, TrackType.BIKING, 'Awesome Tour', None, None, None)
+        self.__fill_form(selenium, SportType.BIKING, 'Awesome Tour', None, None, None)
 
         self.click_button_by_id(selenium, 'buttonCreateSharedLink')
         WebDriverWait(selenium, 5).until(

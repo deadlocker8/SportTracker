@@ -12,15 +12,11 @@ from sqlalchemy import extract, func, String, asc
 
 from sporttracker.helpers.Helpers import format_duration
 from sporttracker.logic import Constants
-from sporttracker.logic.model.CustomTrackField import get_custom_fields_by_track_type
+from sporttracker.logic.model.CustomSportField import get_custom_fields_by_sport_type
+from sporttracker.logic.model.DistanceSport import DistanceSport, get_distance_per_month_by_type
 from sporttracker.logic.model.Participant import Participant
-from sporttracker.logic.model.Track import (
-    Track,
-    get_distance_per_month_by_type,
-    get_tracks_by_year_and_month_by_type,
-    get_available_years,
-)
-from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.Sport import Sport, get_sports_by_year_and_month, get_available_years
+from sporttracker.logic.model.SportType import SportType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -43,12 +39,9 @@ def construct_blueprint():
         if minYear is None or maxYear is None:
             return chartDataDistancePerYear
         else:
-            for trackType in TrackType:
-                if not trackType.supports_distance:
-                    continue
-
+            for sportType in SportType.get_distance_sport_types():
                 chartDataDistancePerYear.append(
-                    __get_distance_per_year_by_type(trackType, minYear, maxYear)
+                    __get_distance_per_year_by_type(sportType, minYear, maxYear)
                 )
 
         return render_template(
@@ -64,12 +57,9 @@ def construct_blueprint():
         if minYear is None or maxYear is None:
             return chartDataDistancePerMonth
         else:
-            for trackType in TrackType:
-                if not trackType.supports_distance:
-                    continue
-
+            for sportType in SportType.get_distance_sport_types():
                 chartDataDistancePerMonth.append(
-                    __get_distance_per_month_by_type(trackType, minYear, maxYear)
+                    __get_distance_per_month_by_type(sportType, minYear, maxYear)
                 )
 
         return render_template(
@@ -79,8 +69,8 @@ def construct_blueprint():
 
     def __get_min_and_max_year() -> tuple[int | None, int | None]:
         result = db.session.query(
-            func.min(Track.startTime),
-            func.max(Track.startTime).filter(Track.user_id == current_user.id),
+            func.min(DistanceSport.start_time),
+            func.max(DistanceSport.start_time).filter(DistanceSport.user_id == current_user.id),
         ).first()
 
         if result is None:
@@ -95,27 +85,28 @@ def construct_blueprint():
     @charts.route('/chartDistancePerCustomFieldChooser')
     @login_required
     def chartDistancePerCustomFieldChooser():
-        customFieldsByTrackType = get_custom_fields_by_track_type()
-        for trackType in TrackType:
-            if not trackType.supports_distance:
-                del customFieldsByTrackType[trackType]
+        customFieldsBySportType = get_custom_fields_by_sport_type()
+        # TODO only show chart for distance sports
+        for sportType in SportType:
+            if not sportType.supports_distance:
+                del customFieldsBySportType[sportType]
 
         return render_template(
             'charts/chartDistancePerCustomFieldChooser.jinja2',
-            customFieldsByTrackType=customFieldsByTrackType,
+            customFieldsBySportType=customFieldsBySportType,
         )
 
-    @charts.route('/chartDistancePerCustomField/<string:track_type>/<string:name>')
+    @charts.route('/chartDistancePerCustomField/<string:sport_type>/<string:name>')
     @login_required
-    def chartDistancePerCustomField(track_type: str, name: str):
-        trackType = TrackType(track_type)  # type: ignore[call-arg]
+    def chartDistancePerCustomField(sport_type: str, name: str):
+        sportType = SportType(sport_type)  # type: ignore[call-arg]
 
-        customField = Track.custom_fields[name].astext.cast(String)
+        customField = DistanceSport.custom_fields[name].astext.cast(String)
 
         rows = (
-            Track.query.with_entities(func.sum(Track.distance) / 1000, customField)
-            .filter(Track.user_id == current_user.id)
-            .filter(Track.type == trackType)
+            DistanceSport.query.with_entities(func.sum(DistanceSport.distance) / 1000, customField)
+            .filter(DistanceSport.user_id == current_user.id)
+            .filter(DistanceSport.type == sportType)
             .group_by(customField)
             .order_by(asc(func.lower(customField)))
             .all()
@@ -144,9 +135,9 @@ def construct_blueprint():
     def chartDistancePerParticipantChooser():
         return render_template('charts/chartDistancePerParticipantChooser.jinja2')
 
-    @charts.route('/chartDistancePerParticipantChooser/<string:track_type>')
+    @charts.route('/chartDistancePerParticipantChooser/<string:sport_type>')
     @login_required
-    def chartDistancePerParticipant(track_type: str):
+    def chartDistancePerParticipant(sport_type: str):
         keys = []
         values = []
 
@@ -155,10 +146,10 @@ def construct_blueprint():
             keys.append(participant.name)
 
             distance = (
-                Track.query.with_entities(func.sum(Track.distance) / 1000)
-                .filter(Track.user_id == current_user.id)
-                .filter(Track.type == track_type)
-                .filter(Track.participants.any(id=participant.id))
+                DistanceSport.query.with_entities(func.sum(DistanceSport.distance) / 1000)
+                .filter(DistanceSport.user_id == current_user.id)
+                .filter(DistanceSport.type == sport_type)
+                .filter(DistanceSport.participants.any(id=participant.id))
                 .scalar()
                 or 0
             )
@@ -166,10 +157,10 @@ def construct_blueprint():
 
         keys.append(gettext('You'))
         distance = (
-            Track.query.with_entities(func.sum(Track.distance) / 1000)
-            .filter(Track.user_id == current_user.id)
-            .filter(Track.type == track_type)
-            .filter(~Track.participants.any())
+            DistanceSport.query.with_entities(func.sum(DistanceSport.distance) / 1000)
+            .filter(DistanceSport.user_id == current_user.id)
+            .filter(DistanceSport.type == sport_type)
+            .filter(~DistanceSport.participants.any())
             .scalar()
             or 0
         )
@@ -180,7 +171,7 @@ def construct_blueprint():
         return render_template(
             'charts/chartDistancePerParticipant.jinja2',
             chartDistancePerParticipantData=chartDistancePerParticipantData,
-            track_type=track_type,
+            sport_type=sport_type,
         )
 
     @charts.route('/chartAverageSpeed')
@@ -188,18 +179,15 @@ def construct_blueprint():
     def chartAverageSpeed():
         minYear, maxYear = __get_min_and_max_year()
 
-        chartDataAverageSpeed: list[dict[str, list | TrackType]] = []
+        chartDataAverageSpeed: list[dict[str, list | SportType]] = []
         if minYear is None or maxYear is None:
             return chartDataAverageSpeed
         else:
-            for trackType in TrackType:
-                if not trackType.supports_distance:
-                    continue
-
+            for sportType in SportType.get_distance_sport_types():
                 tracks = (
-                    Track.query.filter(Track.user_id == current_user.id)
-                    .filter(Track.type == trackType)
-                    .order_by(Track.startTime.asc())
+                    DistanceSport.query.filter(DistanceSport.user_id == current_user.id)
+                    .filter(DistanceSport.type == sportType)
+                    .order_by(DistanceSport.start_time.asc())
                     .all()
                 )
 
@@ -209,11 +197,11 @@ def construct_blueprint():
                     if track.duration is None:
                         continue
 
-                    dates.append(track.startTime.isoformat())
+                    dates.append(track.start_time.isoformat())
                     speedData.append(round(track.distance / track.duration * 3.6, 2))
 
                 chartDataAverageSpeed.append(
-                    {'dates': dates, 'values': speedData, 'type': trackType}
+                    {'dates': dates, 'values': speedData, 'type': sportType}
                 )
 
         return render_template(
@@ -225,20 +213,20 @@ def construct_blueprint():
     def chartDurationPerTrackChooser():
         return render_template(
             'charts/chartDurationPerTrackChooser.jinja2',
-            trackNamesByTrackType=__get_track_names_by_type(False),
+            sportNamesBySportType=__get_sport_names_by_type(False),
         )
 
-    @charts.route('/durationPerTrack/<string:track_type>/<string:name>')
+    @charts.route('/durationPerTrack/<string:distance_sport_type>/<string:name>')
     @login_required
-    def chartDurationPerTrack(track_type: str, name: str):
-        trackType = TrackType(track_type)  # type: ignore[call-arg]
+    def chartDurationPerTrack(distance_sport_type: str, name: str):
+        sportType = SportType(distance_sport_type)  # type: ignore[call-arg]
 
         tracks = (
-            Track.query.filter(Track.user_id == current_user.id)
-            .filter(Track.type == trackType)
-            .filter(Track.name == name)
-            .filter(Track.duration.is_not(None))
-            .order_by(Track.startTime.asc())
+            DistanceSport.query.filter(DistanceSport.user_id == current_user.id)
+            .filter(DistanceSport.type == sportType)
+            .filter(DistanceSport.name == name)
+            .filter(DistanceSport.duration.is_not(None))
+            .order_by(DistanceSport.start_time.asc())
             .all()
         )
 
@@ -249,7 +237,7 @@ def construct_blueprint():
             if track.duration is None:
                 continue
 
-            dates.append(format_datetime(track.startTime, format='short'))
+            dates.append(format_datetime(track.start_time, format='short'))
             values.append(track.duration)
             texts.append(f'{format_duration(track.duration)} h')
 
@@ -257,7 +245,7 @@ def construct_blueprint():
             'dates': dates,
             'values': values,
             'texts': texts,
-            'type': trackType,
+            'type': sportType,
             'min': min(values, default=0) - 300,
             'max': max(values, default=0) + 300,
         }
@@ -272,39 +260,42 @@ def construct_blueprint():
     def chartSpeedPerTrackChooser():
         return render_template(
             'charts/chartSpeedPerTrackChooser.jinja2',
-            trackNamesByTrackType=__get_track_names_by_type(True),
+            sportNamesBySportType=__get_sport_names_by_type(True),
         )
 
-    def __get_track_names_by_type(onlyDistanceBasedTrackTypes: bool) -> dict[TrackType, list[str]]:
-        trackNamesByTrackType = {}
-        for trackType in TrackType:
-            if onlyDistanceBasedTrackTypes and not trackType.supports_distance:
+    def __get_sport_names_by_type(onlyDistanceBasedSportTypes: bool) -> dict[SportType, list[str]]:
+        trackNamesBySportType = {}
+        for sportType in SportType:
+            if (
+                onlyDistanceBasedSportTypes
+                and sportType not in SportType.get_distance_sport_types()
+            ):
                 continue
 
             rows = (
-                Track.query.with_entities(Track.name)
-                .filter(Track.user_id == current_user.id)
-                .filter(Track.type == trackType)
-                .group_by(Track.name)
-                .having(func.count(Track.name) >= 2)
-                .order_by(asc(func.lower(Track.name)))
+                DistanceSport.query.with_entities(DistanceSport.name)
+                .filter(DistanceSport.user_id == current_user.id)
+                .filter(DistanceSport.type == sportType)
+                .group_by(DistanceSport.name)
+                .having(func.count(DistanceSport.name) >= 2)
+                .order_by(asc(func.lower(DistanceSport.name)))
                 .all()
             )
 
-            trackNamesByTrackType[trackType] = [row[0] for row in rows]
-        return trackNamesByTrackType
+            trackNamesBySportType[sportType] = [row[0] for row in rows]
+        return trackNamesBySportType
 
-    @charts.route('/speedPerTrack/<string:track_type>/<string:name>')
+    @charts.route('/speedPerTrack/<string:sport_type>/<string:name>')
     @login_required
-    def chartSpeedPerTrack(track_type: str, name: str):
-        trackType = TrackType(track_type)  # type: ignore[call-arg]
+    def chartSpeedPerTrack(sport_type: str, name: str):
+        sportType = SportType(sport_type)  # type: ignore[call-arg]
 
         tracks = (
-            Track.query.filter(Track.user_id == current_user.id)
-            .filter(Track.type == trackType)
-            .filter(Track.name == name)
-            .filter(Track.duration.is_not(None))
-            .order_by(Track.startTime.asc())
+            DistanceSport.query.filter(DistanceSport.user_id == current_user.id)
+            .filter(DistanceSport.type == sportType)
+            .filter(DistanceSport.name == name)
+            .filter(DistanceSport.duration.is_not(None))
+            .order_by(DistanceSport.start_time.asc())
             .all()
         )
 
@@ -315,7 +306,7 @@ def construct_blueprint():
             if track.duration is None:
                 continue
 
-            dates.append(format_datetime(track.startTime, format='short'))
+            dates.append(format_datetime(track.start_time, format='short'))
             speed = round(track.distance / track.duration * 3.6, 2)
             values.append(speed)
             texts.append(f'{speed} km/h')
@@ -324,7 +315,7 @@ def construct_blueprint():
             'dates': dates,
             'values': values,
             'texts': texts,
-            'type': trackType,
+            'type': sportType,
             'min': 0,
             'max': max(values, default=0) + 5,
         }
@@ -348,19 +339,19 @@ def construct_blueprint():
             currentMonthDate = date(year=year, month=monthNumber, day=1)
             __, numberOfDays = calendar.monthrange(year, monthNumber)
 
-            tracks = get_tracks_by_year_and_month_by_type(year, monthNumber, [t for t in TrackType])
+            tracks = get_sports_by_year_and_month(year, monthNumber)
 
             days = []
             for dayNumber in range(1, numberOfDays + 1):
                 numberOfTracksPerType = {}
                 colors = []
-                for trackType in TrackType:
+                for sportType in SportType:
                     numberOfTracks = __get_number_of_tracks_per_day_by_type(
-                        tracks, trackType, year, monthNumber, dayNumber
+                        tracks, sportType, year, monthNumber, dayNumber
                     )
-                    numberOfTracksPerType[trackType] = numberOfTracks
+                    numberOfTracksPerType[sportType] = numberOfTracks
                     if numberOfTracks > 0:
-                        colors.append(trackType.background_color_hex)
+                        colors.append(sportType.background_color_hex)
 
                 gradient = __determine_gradient(colors)
                 isWeekend = date(year=year, month=monthNumber, day=dayNumber).weekday() in [5, 6]
@@ -393,20 +384,20 @@ def construct_blueprint():
         )
 
     def __get_number_of_tracks_per_day_by_type(
-        tracks: list[Track], trackType: TrackType, year: int, month: int, day: int
+        sports: list[Sport], sportType: SportType, year: int, month: int, day: int
     ) -> int:
         counter = 0
-        for track in tracks:
-            if track.type != trackType:
+        for sport in sports:
+            if sport.type != sportType:
                 continue
 
-            if track.startTime.year != year:  # type: ignore[attr-defined]
+            if sport.start_time.year != year:  # type: ignore[attr-defined]
                 continue
 
-            if track.startTime.month != month:  # type: ignore[attr-defined]
+            if sport.start_time.month != month:  # type: ignore[attr-defined]
                 continue
 
-            if track.startTime.day != day:  # type: ignore[attr-defined]
+            if sport.start_time.day != day:  # type: ignore[attr-defined]
                 continue
 
             counter += 1
@@ -435,9 +426,9 @@ def construct_blueprint():
         return patternWithMondayAsFirstDay
 
     def __get_distance_per_month_by_type(
-        trackType: TrackType, minYear: int, maxYear: int
+        sportType: SportType, minYear: int, maxYear: int
     ) -> dict[str, Any]:
-        monthDistanceSums = get_distance_per_month_by_type(trackType, minYear, maxYear)
+        monthDistanceSums = get_distance_per_month_by_type(sportType, minYear, maxYear)
         monthNames = []
         values = []
         texts = []
@@ -448,19 +439,19 @@ def construct_blueprint():
             values.append(monthDistanceSum.distanceSum)
             texts.append(f'{monthDistanceSum.distanceSum} km')
 
-        return {'monthNames': monthNames, 'values': values, 'texts': texts, 'type': trackType}
+        return {'monthNames': monthNames, 'values': values, 'texts': texts, 'type': sportType}
 
     def __get_distance_per_year_by_type(
-        trackType: TrackType, minYear: int, maxYear: int
+        sportType: SportType, minYear: int, maxYear: int
     ) -> dict[str, Any]:
-        year = extract('year', Track.startTime)
+        year = extract('year', DistanceSport.start_time)
 
         rows = (
-            Track.query.with_entities(
-                func.sum(Track.distance / 1000).label('distanceSum'), year.label('year')
+            DistanceSport.query.with_entities(
+                func.sum(DistanceSport.distance / 1000).label('distanceSum'), year.label('year')
             )
-            .filter(Track.type == trackType)
-            .filter(Track.user_id == current_user.id)
+            .filter(DistanceSport.type == sportType)
+            .filter(DistanceSport.user_id == current_user.id)
             .group_by(year)
             .order_by(year)
             .all()
@@ -481,6 +472,6 @@ def construct_blueprint():
                 values.append(0.0)
                 texts.append('0.0 km')
 
-        return {'yearNames': yearNames, 'values': values, 'texts': texts, 'type': trackType}
+        return {'yearNames': yearNames, 'values': values, 'texts': texts, 'type': sportType}
 
     return charts

@@ -42,19 +42,19 @@
 {%- endmacro %}
 
 {% macro render_track_average_heart_rate(track, renderAsRow) -%}
-    {% if track.averageHeartRate is not none %}
+    {% if track.average_heart_rate is not none %}
         <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
             <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">favorite_border</span>
-            <div class="fs-5 text-center">{{ track.averageHeartRate }} {{ render_track_unit('bpm') }}</div>
+            <div class="fs-5 text-center">{{ track.average_heart_rate }} {{ render_track_unit('bpm') }}</div>
         </div>
     {% endif %}
 {%- endmacro %}
 
 {% macro render_track_elevation(track, renderAsRow) -%}
-    {% if track.elevationSum is not none %}
+    {% if track.elevation_sum is not none %}
         <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
             <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">expand</span>
-            <div class="fs-5 text-center">{{ track.elevationSum }} {{ render_track_unit('m') }}</div>
+            <div class="fs-5 text-center">{{ track.elevation_sum }} {{ render_track_unit('m') }}</div>
         </div>
     {% endif %}
 {%- endmacro %}
@@ -78,60 +78,60 @@
     </div>
 {%- endmacro %}
 
-{% macro track_type_icon_non_responsive(trackType, classes='') -%}
-    {% if trackType.is_easter_egg_activated() %}
-        <div class="d-inline-block rounded-circle p-3 {{ trackType.background_color }} {{ classes }}">
-            <img class="track-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + trackType.name.lower() + "_easter_egg.svg") }}"/>
+{% macro sport_type_icon_non_responsive(sportType, classes='') -%}
+    {% if sportType.is_easter_egg_activated() %}
+        <div class="d-inline-block rounded-circle p-3 {{ sportType.background_color }} {{ classes }}">
+            <img class="track-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
         </div>
-    {% elif trackType.is_font_awesome_icon %}
-        <i class="d-inline-block fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}"></i>
+    {% elif sportType.is_font_awesome_icon %}
+        <i class="d-inline-block fa-solid {{ sportType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ sportType.background_color }} {{ classes }}"></i>
     {% else %}
-        <span class="d-inline-block material-symbols-outlined rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}">{{ trackType.icon }}</span>
+        <span class="d-inline-block material-symbols-outlined rounded-circle fs-1 p-3 text-dark {{ sportType.background_color }} {{ classes }}">{{ sportType.icon }}</span>
     {% endif %}
 {%- endmacro %}
 
-{% macro track_type_icon(trackType, classes='') -%}
-    {% if trackType.is_easter_egg_activated() %}
-        <div class="d-none d-lg-inline-block rounded-circle p-3 {{ trackType.background_color }} {{ classes }}">
-            <img class="track-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + trackType.name.lower() + "_easter_egg.svg") }}"/>
+{% macro sport_type_icon(sportType, classes='') -%}
+    {% if sportType.is_easter_egg_activated() %}
+        <div class="d-none d-lg-inline-block rounded-circle p-3 {{ sportType.background_color }} {{ classes }}">
+            <img class="track-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
         </div>
-        <div class="d-lg-none d-inline-block rounded-circle p-2 {{ trackType.background_color }} {{ classes }}">
-            <img class="track-type-icon-easter-egg fs-2" src="{{ url_for('static', filename="images/easterEggs/" + trackType.name.lower() + "_easter_egg.svg") }}"/>
+        <div class="d-lg-none d-inline-block rounded-circle p-2 {{ sportType.background_color }} {{ classes }}">
+            <img class="track-type-icon-easter-egg fs-2" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
         </div>
-    {% elif trackType.is_font_awesome_icon %}
-        <i class="d-none d-lg-inline-block fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}"></i>
-        <i class="d-lg-none fa-solid {{ trackType.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ trackType.background_color }} {{ classes }}"></i>
+    {% elif sportType.is_font_awesome_icon %}
+        <i class="d-none d-lg-inline-block fa-solid {{ sportType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ sportType.background_color }} {{ classes }}"></i>
+        <i class="d-lg-none fa-solid {{ sportType.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ sportType.background_color }} {{ classes }}"></i>
     {% else %}
-        <span class="d-none d-lg-inline-block material-symbols-outlined rounded-circle fs-1 p-3 text-dark {{ trackType.background_color }} {{ classes }}">{{ trackType.icon }}</span>
-        <span class="d-lg-none material-symbols-outlined rounded-circle fs-3 p-2 text-dark {{ trackType.background_color }} {{ classes }}">{{ trackType.icon }}</span>
+        <span class="d-none d-lg-inline-block material-symbols-outlined rounded-circle fs-1 p-3 text-dark {{ sportType.background_color }} {{ classes }}">{{ sportType.icon }}</span>
+        <span class="d-lg-none material-symbols-outlined rounded-circle fs-3 p-2 text-dark {{ sportType.background_color }} {{ classes }}">{{ sportType.icon }}</span>
     {% endif %}
 {%- endmacro %}
 
-{% macro track_type_icon_small(trackType, fontSize='fs-2', classes='', backgroundColorOverride='') -%}
-    {% if trackType.is_easter_egg_activated() %}
+{% macro sport_type_icon_small(sportType, fontSize='fs-2', classes='', backgroundColorOverride='') -%}
+    {% if sportType.is_easter_egg_activated() %}
         <div class="rounded-circle p-2
-                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} d-flex align-items-center {{ classes }}">
-            <img class="track-type-icon-easter-egg {{ fontSize }}" src="{{ url_for('static', filename="images/easterEggs/" + trackType.name.lower() + "_easter_egg.svg") }}"/>
+                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ sportType.background_color }}{% endif %} d-flex align-items-center {{ classes }}">
+            <img class="track-type-icon-easter-egg {{ fontSize }}" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
         </div>
-    {% elif trackType.is_font_awesome_icon %}
-        <i class="fa-solid {{ trackType.icon }} fa-fw rounded-circle {{ fontSize }} p-2 text-dark
-                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} {{ classes }}"></i>
+    {% elif sportType.is_font_awesome_icon %}
+        <i class="fa-solid {{ sportType.icon }} fa-fw rounded-circle {{ fontSize }} p-2 text-dark
+                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ sportType.background_color }}{% endif %} {{ classes }}"></i>
     {% else %}
         <span class="material-symbols-outlined rounded-circle {{ fontSize }} p-2 text-dark
-                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ trackType.background_color }}{% endif %} {{ classes }}">{{ trackType.icon }}</span>
+                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ sportType.background_color }}{% endif %} {{ classes }}">{{ sportType.icon }}</span>
     {% endif %}
 {%- endmacro %}
 
-{% macro track_card_feature_icons(track) -%}
+{% macro track_card_feature_icons(sport) -%}
     <div class="z-2 d-flex">
-        {% if track.shareCode or track.share_code %}
+        {% if sport.shareCode or sport.share_code %}
             <span class="material-symbols-outlined filled fs-4 text-body">share</span>
         {% endif %}
-        {% if track.participants %}
+        {% if sport.participants %}
             <span class="material-symbols-outlined filled fs-4 text-body">group</span>
         {% endif %}
-        {% if track.gpxMetadata is not none %}
-            <a href="{{ url_for('maps.showSingleTrack', track_id=track.id) }}"
+        {% if sport.gpxMetadata is not undefined and sport.gpxMetadata is not none %}
+            <a href="{{ url_for('maps.showSingleTrack', sport_id=sport.id) }}"
                class="text-decoration-none ms-2">
                 <span class="material-symbols-outlined filled fs-4 text-body">map</span>
             </a>
@@ -139,65 +139,99 @@
     </div>
 {%- endmacro %}
 
-{% macro render_track_card(track, renderAsRow=false, useSmallIcon=false) -%}
+{% macro render_distance_sport_card(sport, renderAsRow=false, useSmallIcon=false) -%}
     <div class="row py-2">
         <div class="col col-12 mx-auto">
             <div class="card">
                 <div class="row g-0">
                     <div class="col col-3 col-md-3 d-flex flex-column align-items-center justify-content-center my-3 ps-1">
                         {% if useSmallIcon %}
-                            {{ track_type_icon_small(track.type) }}
+                            {{ sport_type_icon_small(sport.type) }}
                         {% else %}
-                            {{ track_type_icon(track.type) }}
+                            {{ sport_type_icon(sport.type) }}
                         {% endif %}
-                        <div class="fs-6 text-body text-start mt-2 d-lg-none">{{ track.startTime | format_date }}</div>
-                        <div class="fs-5 text-body text-start mt-2 d-none d-lg-block">{{ track.startTime | format_date }}</div>
+                        <div class="fs-6 text-body text-start mt-2 d-lg-none">{{ sport.startTime | format_date }}</div>
+                        <div class="fs-5 text-body text-start mt-2 d-none d-lg-block">{{ sport.startTime | format_date }}</div>
                     </div>
 
                     <div class="col col-9 col-md-9">
                         <div class="card-body ps-1 ps-md-3 d-flex flex-column justify-content-between h-100">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h4 class="card-title text-truncate text-start">{{ track.name }}</h4>
+                                <h4 class="card-title text-truncate text-start">{{ sport.name }}</h4>
 
-                                {{ track_card_feature_icons(track) }}
+                                {{ track_card_feature_icons(sport) }}
                             </div>
 
                             <div class="d-flex align-items-center justify-content-around me-1 me-md-3">
-                                {% if track.type.supports_distance and is_track_info_item_activated('DISTANCE') %}
-                                    {{ render_track_distance(track, renderAsRow) }}
+                                {% if is_track_info_item_activated('DISTANCE') %}
+                                    {{ render_track_distance(sport, renderAsRow) }}
                                 {% endif %}
 
-                                {% if is_track_info_item_activated('DURATION') or not track.type.supports_distance %}
-                                    {{ render_track_duration(track, renderAsRow) }}
+                                {% if is_track_info_item_activated('DURATION') %}
+                                    {{ render_track_duration(sport, renderAsRow) }}
                                 {% endif %}
 
-                                {% if track.type.supports_distance and is_track_info_item_activated('SPEED') %}
-                                    {% if track.type.render_speed_in_kph %}
-                                        {{ render_track_speed_kmh(track, renderAsRow) }}
+                                {% if is_track_info_item_activated('SPEED') %}
+                                    {% if sport.type.render_speed_in_kph %}
+                                        {{ render_track_speed_kmh(sport, renderAsRow) }}
                                     {% else %}
-                                        {{ render_track_speed_pace(track, renderAsRow) }}
+                                        {{ render_track_speed_pace(sport, renderAsRow) }}
                                     {% endif %}
                                 {% endif %}
 
-                                {% if not track.type.supports_distance %}
-                                    {{ render_track_workout_type(track, renderAsRow) }}
+                                {% if is_track_info_item_activated('AVERAGE_HEART_RATE') %}
+                                    {{ render_track_average_heart_rate(sport, renderAsRow) }}
                                 {% endif %}
 
-                                {% if not track.type.supports_distance %}
-                                    {{ render_track_workout_category_type(track, renderAsRow) }}
-                                {% endif %}
-
-                                {% if is_track_info_item_activated('AVERAGE_HEART_RATE') or not track.type.supports_distance %}
-                                    {{ render_track_average_heart_rate(track, renderAsRow) }}
-                                {% endif %}
-
-                                {% if track.type.supports_distance and is_track_info_item_activated('ELEVATION_SUM') %}
-                                    {{ render_track_elevation(track, renderAsRow) }}
+                                {% if is_track_info_item_activated('ELEVATION_SUM') %}
+                                    {{ render_track_elevation(sport, renderAsRow) }}
                                 {% endif %}
                             </div>
                         </div>
 
-                        <a href="{{ url_for('tracks.edit', track_id=track.id) }}" class="text-decoration-none stretched-link"></a>
+                        <a href="{{ url_for('distanceSports.edit', sport_id=sport.id) }}" class="text-decoration-none stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro render_workout_sport_card(sport, renderAsRow=false, useSmallIcon=false) -%}
+    <div class="row py-2">
+        <div class="col col-12 mx-auto">
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col col-3 col-md-3 d-flex flex-column align-items-center justify-content-center my-3 ps-1">
+                        {% if useSmallIcon %}
+                            {{ sport_type_icon_small(sport.type) }}
+                        {% else %}
+                            {{ sport_type_icon(sport.type) }}
+                        {% endif %}
+                        <div class="fs-6 text-body text-start mt-2 d-lg-none">{{ sport.startTime | format_date }}</div>
+                        <div class="fs-5 text-body text-start mt-2 d-none d-lg-block">{{ sport.startTime | format_date }}</div>
+                    </div>
+
+                    <div class="col col-9 col-md-9">
+                        <div class="card-body ps-1 ps-md-3 d-flex flex-column justify-content-between h-100">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h4 class="card-title text-truncate text-start">{{ sport.name }}</h4>
+
+                                {{ track_card_feature_icons(sport) }}
+                            </div>
+
+                            <div class="d-flex align-items-center justify-content-around me-1 me-md-3">
+                                {{ render_track_duration(sport, renderAsRow) }}
+
+                                {{ render_track_workout_type(sport, renderAsRow) }}
+
+                                {{ render_track_workout_category_type(sport, renderAsRow) }}
+
+                                {{ render_track_average_heart_rate(sport, renderAsRow) }}
+                            </div>
+                        </div>
+
+                        <a href="{{ url_for('workoutSports.edit', sport_id=sport.id) }}" class="text-decoration-none stretched-link"></a>
                     </div>
                 </div>
             </div>
@@ -232,8 +266,10 @@
         </div>
 
         {% for entry in monthModel.entries %}
-            {% if entry.__class__.__name__ == 'TrackModel' %}
-                {{ render_track_card(entry) }}
+            {% if entry.__class__.__name__ == 'DistanceSportModel' %}
+                {{ render_distance_sport_card(entry) }}
+            {% elif entry.__class__.__name__ == 'WorkoutSportModel' %}
+                {{ render_workout_sport_card(entry) }}
             {% elif entry.__class__.__name__ == 'MaintenanceEvent' %}
                 {{ render_maintenance_event_card(entry) }}
             {% endif %}
@@ -327,7 +363,7 @@
             <span class="material-symbols-outlined me-3">favorite_border</span>
             <input type="number" step="1" min="0" class="form-control" id="track-averageHeartRate"
                    name="averageHeartRate"
-                   {% if track and track.averageHeartRate is not none %}value="{{ track.averageHeartRate }}"{% endif %}>
+                   {% if track and track.average_heart_rate is not none %}value="{{ track.average_heart_rate }}"{% endif %}>
         </div>
     </div>
 {%- endmacro %}
@@ -339,13 +375,13 @@
             <span class="material-symbols-outlined me-3">expand</span>
             <input type="number" step="1" min="0" class="form-control" id="track-elevationSum"
                    name="elevationSum"
-                   {% if track and track.elevationSum is not none %}value="{{ track.elevationSum }}"{% endif %}>
+                   {% if track and track.elevation_sum is not none %}value="{{ track.elevation_sum }}"{% endif %}>
         </div>
     </div>
 {%- endmacro %}
 
-{% macro track_form_gpx(track, track_id) -%}
-    {{ form_gpx(track, url_for('maps.showSingleTrack', track_id=track_id or -1 ), url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id  or -1, file_format='gpx'), url_for('gpxTracks.downloadGpxTrackByTrackId', track_id=track_id  or -1, file_format='fit'), url_for('gpxTracks.deleteGpxTrackByTrackId', track_id=track_id or -1), gettext('No GPX or FIT file is linked to this track'), gettext('A GPX or FIT file is linked to this track') ) }}
+{% macro track_form_gpx(track, sport_id) -%}
+    {{ form_gpx(track, url_for('maps.showSingleTrack', sport_id=sport_id or -1 ), url_for('gpxTracks.downloadGpxTrackBySportId', sport_id=sport_id  or -1, file_format='gpx'), url_for('gpxTracks.downloadGpxTrackBySportId', sport_id=sport_id  or -1, file_format='fit'), url_for('gpxTracks.deleteGpxTrackBySportId', sport_id=sport_id or -1), gettext('No GPX or FIT file is linked to this track'), gettext('A GPX or FIT file is linked to this track') ) }}
 {%- endmacro %}
 
 {% macro form_gpx(item, mapUrl, downloadUrlGpx, downloadUrlFit, deleteUrl, placeholderText, gpxFileLinkedText) -%}
@@ -539,7 +575,7 @@
             <div class="card border-0">
                 <div class="row g-0 border-start border-danger border-10 rounded-start">
                     <div class="col col-3 d-flex flex-row align-items-center justify-content-center margin-maintenance">
-                        {{ track_type_icon_small(event.type, 'fs-3') }}
+                        {{ sport_type_icon_small(event.type, 'fs-3') }}
                     </div>
 
                     <div class="col col-9">

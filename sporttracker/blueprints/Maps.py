@@ -10,38 +10,38 @@ from flask_login import login_required, current_user
 from sqlalchemy import func, extract, or_
 
 from sporttracker.blueprints.PlannedTours import PlannedTourModel
-from sporttracker.blueprints.Tracks import TrackModel
+from sporttracker.blueprints.Sports import DistanceSportModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.TileRenderService import TileRenderService
 from sporttracker.logic.VisitedTileService import VisitedTileService
+from sporttracker.logic.model.DistanceSport import (
+    get_available_years,
+    DistanceSport,
+    get_distance_sport_by_id,
+    get_distance_sport_by_share_code,
+)
 from sporttracker.logic.model.PlannedTour import (
     get_planned_tour_by_id,
     PlannedTour,
     get_planned_tour_by_share_code,
-)
-from sporttracker.logic.model.Track import (
-    Track,
-    get_available_years,
-    get_track_by_id,
-    get_track_by_share_code,
 )
 from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def createGpxInfo(trackId: int, trackName: str, trackStartTime: datetime) -> dict[str, str | int]:
+def createGpxInfo(sportId: int, trackName: str, trackStartTime: datetime) -> dict[str, str | int]:
     return {
-        'trackId': trackId,
+        'trackId': sportId,
         'gpxUrl': url_for(
             'gpxTracks.downloadGpxTrackByTrackId',
-            track_id=trackId,
+            sport_id=sportId,
             file_format=GpxService.GPX_FILE_EXTENSION,
         ),
-        'trackUrl': url_for('tracks.edit', track_id=trackId),
+        'trackUrl': url_for('tracks.edit', sport_id=sportId),
         'trackName': f'{trackStartTime.strftime("%Y-%m-%d")} - {trackName}',
     }
 
@@ -73,21 +73,23 @@ def construct_blueprint(
 
         gpxInfo = []
 
-        funcStartTime = func.max(Track.startTime)
-        tracks = (
-            Track.query.with_entities(func.max(Track.id), Track.name, funcStartTime)
-            .filter(Track.user_id == current_user.id)
-            .filter(Track.gpx_metadata_id.isnot(None))
-            .filter(Track.type.in_(quickFilterState.get_active_types()))
-            .filter(extract('year', Track.startTime).in_(yearFilterState))
-            .group_by(Track.name)
+        funcStartTime = func.max(DistanceSport.start_time)
+        sports = (
+            DistanceSport.query.with_entities(
+                func.max(DistanceSport.id), DistanceSport.name, funcStartTime
+            )
+            .filter(DistanceSport.user_id == current_user.id)
+            .filter(DistanceSport.gpx_metadata_id.isnot(None))
+            .filter(DistanceSport.type.in_(quickFilterState.get_active_distance_sport_types()))
+            .filter(extract('year', DistanceSport.start_time).in_(yearFilterState))
+            .group_by(DistanceSport.name)
             .order_by(funcStartTime.desc())
             .all()
         )
 
-        for track in tracks:
-            trackId, trackName, trackStartTime = track
-            gpxInfo.append(createGpxInfo(trackId, trackName, trackStartTime))
+        for sport in sports:
+            sportId, sportName, sportStartTime = sport
+            gpxInfo.append(createGpxInfo(sportId, sportName, sportStartTime))
 
         return render_template(
             'maps/mapMultipleTracks.jinja2',
@@ -99,17 +101,17 @@ def construct_blueprint(
             redirectUrl='maps.showAllTracksOnMap',
         )
 
-    @maps.route('/map/<int:track_id>')
+    @maps.route('/map/<int:sport_id>')
     @login_required
-    def showSingleTrack(track_id: int):
-        track = get_track_by_id(track_id)
+    def showSingleTrack(sport_id: int):
+        sport = get_distance_sport_by_id(sport_id)
 
-        if track is None:
+        if sport is None:
             abort(404)
 
         tileRenderUrl = url_for(
             'maps.renderTile',
-            track_id=track_id,
+            sport_id=sport_id,
             user_id=current_user.id,
             zoom=0,
             x=0,
@@ -120,13 +122,13 @@ def construct_blueprint(
 
         return render_template(
             'maps/mapSingleTrack.jinja2',
-            track=TrackModel.create_from_track(track),
+            track=DistanceSportModel.create_from_sport(sport),
             gpxUrl=url_for(
                 'gpxTracks.downloadGpxTrackByTrackId',
-                track_id=track_id,
+                sport_id=sport_id,
                 file_format=GpxService.GPX_FILE_EXTENSION,
             ),
-            editUrl=url_for('tracks.edit', track_id=track_id),
+            editUrl=url_for('distanceSports.edit', sport_id=sport_id),
             tileRenderUrl=tileRenderUrl,
             tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
             tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
@@ -134,14 +136,14 @@ def construct_blueprint(
 
     @maps.route('/map/shared/<string:shareCode>')
     def showSharedSingleTrack(shareCode: str):
-        track = get_track_by_share_code(shareCode)
+        sport = get_distance_sport_by_share_code(shareCode)
 
-        if track is None:
+        if sport is None:
             return render_template('maps/mapNotFound.jinja2')
 
         return render_template(
             'maps/mapSingleTrack.jinja2',
-            track=TrackModel.create_from_track(track),
+            track=DistanceSportModel.create_from_sport(sport),
             gpxUrl=url_for(
                 'gpxTracks.downloadGpxTrackBySharedTrack',
                 shareCode=shareCode,
@@ -209,7 +211,7 @@ def construct_blueprint(
                     PlannedTour.shared_users.any(id=current_user.id),
                 )
             )
-            .filter(PlannedTour.type.in_(quickFilterState.get_active_types()))
+            .filter(PlannedTour.type.in_(quickFilterState.get_active_distance_sport_types()))
             .order_by(PlannedTour.name.asc())
             .all()
         )
@@ -225,17 +227,17 @@ def construct_blueprint(
             redirectUrl='maps.showAllPlannedToursOnMap',
         )
 
-    @maps.route('/map/<int:track_id>/renderTile/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')
-    def renderTile(track_id: int, user_id: int, zoom: int, x: int, y: int):
+    @maps.route('/map/<int:sport_id>/renderTile/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')
+    def renderTile(sport_id: int, user_id: int, zoom: int, x: int, y: int):
         if not current_user.is_authenticated:
             abort(401)
 
         if current_user.id != user_id:
             abort(403)
 
-        track = get_track_by_id(track_id)
+        sport = get_distance_sport_by_id(sport_id)
 
-        if track is None:
+        if sport is None:
             abort(404)
 
         quickFilterState = get_quick_filter_state_from_session()
@@ -243,7 +245,7 @@ def construct_blueprint(
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         visitedTileService = VisitedTileService(
-            newVisitedTileCache, quickFilterState, yearFilterState, trackId=track.id
+            newVisitedTileCache, quickFilterState, yearFilterState, sportId=sport.id
         )
 
         tileRenderService = TileRenderService(

@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 from sporttracker.logic import Constants
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, get_month_goal_distance_by_id
-from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.SportType import SportType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -47,7 +47,7 @@ def construct_blueprint():
     @validate()
     def addPost(form: MonthGoalDistanceFormModel):
         monthGoal = MonthGoalDistance(
-            type=TrackType(form.type),  # type: ignore[call-arg]
+            type=SportType(form.type),  # type: ignore[call-arg]
             year=form.year,
             month=form.month,
             distance_minimum=form.distance_minimum * 1000,
@@ -84,7 +84,7 @@ def construct_blueprint():
         ):
             monthGoals.append(
                 MonthGoalDistance(
-                    type=TrackType(form.type),  # type: ignore[call-arg]
+                    type=SportType(form.type),  # type: ignore[call-arg]
                     year=currentYear,
                     month=currentMonth,
                     distance_minimum=form.distance_minimum * 1000,
@@ -135,7 +135,7 @@ def construct_blueprint():
         if monthGoal is None:
             abort(404)
 
-        monthGoal.type = TrackType(form.type)  # type: ignore[call-arg]
+        monthGoal.type = SportType(form.type)  # type: ignore[call-arg]
         monthGoal.year = form.year
         monthGoal.month = form.month
         monthGoal.distance_minimum = form.distance_minimum * 1000  # type: ignore[assignment]

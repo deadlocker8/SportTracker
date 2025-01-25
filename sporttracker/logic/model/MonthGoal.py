@@ -9,8 +9,8 @@ from sqlalchemy import Integer
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.helpers.Helpers import format_duration
-from sporttracker.logic.model.Track import get_tracks_by_year_and_month_by_type
-from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.Sport import get_sports_by_year_and_month_by_type
+from sporttracker.logic.model.SportType import SportType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 
@@ -18,7 +18,7 @@ from sporttracker.logic.model.db import db
 @dataclass
 class MonthGoalSummary(ABC):
     id: int
-    type: TrackType
+    type: SportType
     name: str
     percentage: float
     color: str
@@ -80,7 +80,7 @@ class MonthGoalDurationSummary(MonthGoalSummary):
 class MonthGoal(db.Model):  # type: ignore[name-defined]
     __abstract__ = True
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    type = db.Column(db.Enum(TrackType))
+    type = db.Column(db.Enum(SportType))
     year: Mapped[int] = mapped_column(Integer, nullable=False)
     month: Mapped[int] = mapped_column(Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -95,7 +95,7 @@ class MonthGoalDistance(MonthGoal):
     distance_perfect: Mapped[int] = mapped_column(Integer, nullable=False)
 
     def get_summary(self) -> MonthGoalDistanceSummary:
-        tracks = get_tracks_by_year_and_month_by_type(self.year, self.month, [self.type])
+        tracks = get_sports_by_year_and_month_by_type(self.year, self.month, [self.type])
 
         actualDistance = 0
         if tracks:
@@ -141,7 +141,7 @@ class MonthGoalCount(MonthGoal):
     count_perfect: Mapped[int] = mapped_column(Integer, nullable=False)
 
     def get_summary(self) -> MonthGoalCountSummary:
-        tracks = get_tracks_by_year_and_month_by_type(self.year, self.month, [self.type])
+        tracks = get_sports_by_year_and_month_by_type(self.year, self.month, [self.type])
 
         actualCount = 0
         if tracks:
@@ -187,7 +187,10 @@ class MonthGoalDuration(MonthGoal):
     duration_perfect: Mapped[int] = mapped_column(Integer, nullable=False)
 
     def get_summary(self) -> MonthGoalDurationSummary:
-        tracks = get_tracks_by_year_and_month_by_type(self.year, self.month, [self.type])
+        try:
+            tracks = get_sports_by_year_and_month_by_type(self.year, self.month, [self.type])
+        except ValueError:
+            tracks = []
 
         actualDuration = 0
         if tracks:
@@ -229,14 +232,14 @@ class MonthGoalDuration(MonthGoal):
 
 
 def get_goal_summaries_by_year_and_month_and_types(
-    year: int, month: int, trackTypes: list[TrackType]
+    year: int, month: int, sportTypes: list[SportType]
 ) -> list[MonthGoalSummary]:
     goalsDistance = (
         MonthGoalDistance.query.join(User)
         .filter(User.username == current_user.username)
         .filter(MonthGoalDistance.year == year)
         .filter(MonthGoalDistance.month == month)
-        .filter(MonthGoalDistance.type.in_(trackTypes))
+        .filter(MonthGoalDistance.type.in_(sportTypes))
         .all()
     )
     goalsCount = (
@@ -244,7 +247,7 @@ def get_goal_summaries_by_year_and_month_and_types(
         .filter(User.username == current_user.username)
         .filter(MonthGoalCount.year == year)
         .filter(MonthGoalCount.month == month)
-        .filter(MonthGoalCount.type.in_(trackTypes))
+        .filter(MonthGoalCount.type.in_(sportTypes))
         .all()
     )
     goalsDuration = (
@@ -252,7 +255,7 @@ def get_goal_summaries_by_year_and_month_and_types(
         .filter(User.username == current_user.username)
         .filter(MonthGoalDuration.year == year)
         .filter(MonthGoalDuration.month == month)
-        .filter(MonthGoalDuration.type.in_(trackTypes))
+        .filter(MonthGoalDuration.type.in_(sportTypes))
         .all()
     )
 

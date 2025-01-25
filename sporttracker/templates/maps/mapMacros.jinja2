@@ -89,7 +89,7 @@
         <div class="collapse {{ classes }}" id="{{ collapsibleId }}">
             <div class="list-group text-start">
                 {% for linkedTrack in linkedTracks %}
-                    <a href="{{ url_for('maps.showSingleTrack', track_id=linkedTrack.id) }}"
+                    <a href="{{ url_for('maps.showSingleTrack', sport_id=linkedTrack.id) }}"
                        class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
                         {{ linkedTrack.startTime | format_date() }}
                         <span class="material-symbols-outlined filled text-primary">send</span>
@@ -100,7 +100,7 @@
     </div>
 {%- endmacro %}
 
-{% macro tileHuntingMapSettings(isShowTilesActive, isGridActive, trackId) -%}
+{% macro tileHuntingMapSettings(isShowTilesActive, isGridActive, sportId) -%}
     <div class="dropdown ms-3">
         <button class="btn btn-sm btn-primary dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="material-symbols-outlined fs-5">explore</span>
@@ -111,7 +111,7 @@
                 <input class="form-check-input tileHuntingCheckbox" type="checkbox"
                        id="tileHuntingEnableTiles"
                        {% if isShowTilesActive %}checked{% endif %}
-                       data-url="{{ url_for('maps.toggleTileHuntingViewTiles', redirectUrl=url_for('maps.showSingleTrack', track_id=trackId)) }}">
+                       data-url="{{ url_for('maps.toggleTileHuntingViewTiles', redirectUrl=url_for('maps.showSingleTrack', sport_id=sportId)) }}">
                 <label class="form-check-label" for="tileHuntingEnableTiles">{{ gettext('Show visited tiles') }}</label>
             </div>
             <div class="form-check text-nowrap">
@@ -119,7 +119,7 @@
                        id="tileHuntingEnableGrid"
                        {% if isGridActive %}checked{% endif %}
                        {% if not isShowTilesActive %}disabled{% endif %}
-                       data-url="{{ url_for('maps.toggleTileHuntingViewGrid', redirectUrl=url_for('maps.showSingleTrack', track_id=trackId)) }}">
+                       data-url="{{ url_for('maps.toggleTileHuntingViewGrid', redirectUrl=url_for('maps.showSingleTrack', sport_id=sportId)) }}">
                 <label class="form-check-label" for="tileHuntingEnableGrid">{{ gettext('Show grid') }}</label>
             </div>
         </div>

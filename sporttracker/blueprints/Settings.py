@@ -10,19 +10,19 @@ from pydantic import BaseModel, field_validator, ConfigDict
 
 from sporttracker.logic import Constants
 from sporttracker.logic.Constants import MIN_PASSWORD_LENGTH
-from sporttracker.logic.model.CustomTrackField import (
-    get_custom_fields_by_track_type,
-    CustomTrackField,
-    CustomTrackFieldType,
+from sporttracker.logic.model.CustomSportField import (
+    get_custom_fields_by_sport_type,
+    CustomSportField,
+    CustomSportFieldType,
     RESERVED_FIELD_NAMES,
 )
 from sporttracker.logic.model.Participant import Participant, get_participants
-from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.SportType import SportType
 from sporttracker.logic.model.User import (
     User,
     Language,
-    TrackInfoItem,
-    TrackInfoItemType,
+    DistanceSportInfoItem,
+    DistanceSportInfoItemType,
 )
 from sporttracker.logic.model.db import db
 
@@ -42,16 +42,16 @@ class EditSelfTileHuntingFormModel(BaseModel):
     isTileHuntingAccessActivated: bool | None = None
 
 
-class EditSelfTrackInfoItemsModel(BaseModel):
+class EditDistanceSportInfoItemsModel(BaseModel):
     model_config = ConfigDict(
         extra='allow',
     )
 
 
-class CustomTrackFieldFormModel(BaseModel):
+class CustomSportFieldFormModel(BaseModel):
     name: str
     type: str
-    track_type: str
+    sport_type: str
     is_required: bool = False
 
     @field_validator(
@@ -78,8 +78,8 @@ def construct_blueprint():
     @settings.route('/settings')
     @login_required
     def settingsShow():
-        infoItems: list[TrackInfoItem] = TrackInfoItem.query.filter(
-            TrackInfoItem.user_id == current_user.id
+        infoItems: list[DistanceSportInfoItem] = DistanceSportInfoItem.query.filter(
+            DistanceSportInfoItem.user_id == current_user.id
         ).all()
 
         infoItems.sort(key=lambda item: item.type.get_localized_name().lower())
@@ -89,7 +89,7 @@ def construct_blueprint():
         return render_template(
             'settings/settings.jinja2',
             userLanguage=current_user.language.name,
-            customFieldsByTrackType=get_custom_fields_by_track_type(),
+            customFieldsBySportType=get_custom_fields_by_sport_type(),
             participants=get_participants(),
             infoItems=infoItems,
             tileRenderUrl=tileRenderUrl,
@@ -127,7 +127,7 @@ def construct_blueprint():
                 'settings/settings.jinja2',
                 errorMessage='Password must not be empty',
                 userLanguage=current_user.language.name,
-                customFieldsByTrackType=get_custom_fields_by_track_type(),
+                customFieldsBySportType=get_custom_fields_by_sport_type(),
             )
 
         if len(password) < MIN_PASSWORD_LENGTH:
@@ -135,7 +135,7 @@ def construct_blueprint():
                 'settings/settings.jinja2',
                 errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long',
                 userLanguage=current_user.language.name,
-                customFieldsByTrackType=get_custom_fields_by_track_type(),
+                customFieldsBySportType=get_custom_fields_by_sport_type(),
             )
 
         user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
@@ -189,19 +189,19 @@ def construct_blueprint():
 
         return redirect(url_for('settings.settingsShow'))
 
-    @settings.route('/editSelfTrackInfoItems', methods=['POST'])
+    @settings.route('/editDistanceSportInfoItems', methods=['POST'])
     @login_required
     @validate()
-    def editSelfTrackInfoItems(form: EditSelfTrackInfoItemsModel):
+    def editDistanceSportInfoItems(form: EditDistanceSportInfoItemsModel):
         user = User.query.filter(User.id == current_user.id).first()
 
         if user is None:
             abort(404)
 
-        for itemType in TrackInfoItemType:
-            trackInfoItem = (
-                TrackInfoItem.query.filter(TrackInfoItem.user_id == current_user.id)
-                .filter(TrackInfoItem.type == itemType)
+        for itemType in DistanceSportInfoItemType:
+            distanceSportInfoItem = (
+                DistanceSportInfoItem.query.filter(DistanceSportInfoItem.user_id == current_user.id)
+                .filter(DistanceSportInfoItem.type == itemType)
                 .first()
             )
 
@@ -210,10 +210,10 @@ def construct_blueprint():
 
             for itemName, itemValue in form.model_extra.items():
                 if itemType.name == itemName:
-                    trackInfoItem.is_activated = itemValue.strip().lower() == 'on'
+                    distanceSportInfoItem.is_activated = itemValue.strip().lower() == 'on'
                     break
             else:
-                trackInfoItem.is_activated = False
+                distanceSportInfoItem.is_activated = False
 
         db.session.commit()
 
@@ -221,28 +221,28 @@ def construct_blueprint():
 
         return redirect(url_for('settings.settingsShow'))
 
-    @settings.route('/customFields/add/<string:track_type>')
+    @settings.route('/customFields/add/<string:sport_type>')
     @login_required
-    def customFieldsAdd(track_type: str):
-        trackType = TrackType(track_type)  # type: ignore[call-arg]
-        return render_template('settings/customFieldsForm.jinja2', trackType=trackType)
+    def customFieldsAdd(sport_type: str):
+        sportType = SportType(sport_type)  # type: ignore[call-arg]
+        return render_template('settings/customFieldsForm.jinja2', sportType=sportType)
 
     @settings.route('/customFields/post', methods=['POST'])
     @login_required
     @validate()
-    def customFieldsAddPost(form: CustomTrackFieldFormModel):
+    def customFieldsAddPost(form: CustomSportFieldFormModel):
         if not __is_allowed_custom_field_name(form):
-            return redirect(url_for('settings.customFieldsAdd', track_type=form.track_type))
+            return redirect(url_for('settings.customFieldsAdd', sport_type=form.sport_type))
 
-        track = CustomTrackField(
+        customSportField = CustomSportField(
             name=form.name,
-            type=CustomTrackFieldType(form.type),  # type: ignore[call-arg]
-            track_type=TrackType(form.track_type),  # type: ignore[call-arg]
+            type=CustomSportFieldType(form.type),  # type: ignore[call-arg]
+            sport_type=SportType(form.sport_type),  # type: ignore[call-arg]
             is_required=form.is_required,
             user_id=current_user.id,
         )
-        LOGGER.debug(f'Saved new custom field: {track}')
-        db.session.add(track)
+        LOGGER.debug(f'Saved new custom field: {customSportField}')
+        db.session.add(customSportField)
         db.session.commit()
 
         return redirect(url_for('settings.settingsShow'))
@@ -250,20 +250,20 @@ def construct_blueprint():
     @settings.route('/customFields/edit/<int:field_id>')
     @login_required
     def customFieldsEdit(field_id: int):
-        field: CustomTrackField | None = (
-            CustomTrackField.query.join(User)
+        field: CustomSportField | None = (
+            CustomSportField.query.join(User)
             .filter(User.username == current_user.username)
-            .filter(CustomTrackField.id == field_id)
+            .filter(CustomSportField.id == field_id)
             .first()
         )
 
         if field is None:
             abort(404)
 
-        fieldModel = CustomTrackFieldFormModel(
+        fieldModel = CustomSportFieldFormModel(
             name=field.name,  # type: ignore[arg-type]
             type=field.type,
-            track_type=field.track_type.name,
+            sport_type=field.sport_type.name,
             is_required=field.is_required,
         )
 
@@ -274,11 +274,11 @@ def construct_blueprint():
     @settings.route('/customFields/edit/<int:field_id>', methods=['POST'])
     @login_required
     @validate()
-    def customFieldsEditPost(field_id: int, form: CustomTrackFieldFormModel):
-        field: CustomTrackField | None = (
-            CustomTrackField.query.join(User)
+    def customFieldsEditPost(field_id: int, form: CustomSportFieldFormModel):
+        field: CustomSportField | None = (
+            CustomSportField.query.join(User)
             .filter(User.username == current_user.username)
-            .filter(CustomTrackField.id == field_id)
+            .filter(CustomSportField.id == field_id)
             .first()
         )
 
@@ -291,7 +291,7 @@ def construct_blueprint():
 
         field.name = form.name  # type: ignore[assignment]
         field.type = form.type
-        field.track_type = form.track_type
+        field.sport_type = form.sport_type
         field.is_required = form.is_required
 
         LOGGER.debug(f'Updated custom field: {field}')
@@ -302,10 +302,10 @@ def construct_blueprint():
     @settings.route('/customFields/delete/<int:field_id>')
     @login_required
     def customFieldsDelete(field_id: int):
-        field: CustomTrackField | None = (
-            CustomTrackField.query.join(User)
+        field: CustomSportField | None = (
+            CustomSportField.query.join(User)
             .filter(User.username == current_user.username)
-            .filter(CustomTrackField.id == field_id)
+            .filter(CustomSportField.id == field_id)
             .first()
         )
 
@@ -402,7 +402,7 @@ def construct_blueprint():
 
         return redirect(url_for('settings.settingsShow'))
 
-    def __is_allowed_custom_field_name(form: CustomTrackFieldFormModel):
+    def __is_allowed_custom_field_name(form: CustomSportFieldFormModel):
         if form.name.lower() in RESERVED_FIELD_NAMES:
             flash(
                 gettext(
@@ -413,8 +413,8 @@ def construct_blueprint():
             return False
 
         existingCustomFields = (
-            CustomTrackField.query.filter(CustomTrackField.user_id == current_user.id)
-            .filter(CustomTrackField.track_type == form.track_type)
+            CustomSportField.query.filter(CustomSportField.user_id == current_user.id)
+            .filter(CustomSportField.sport_type == form.sport_type)
             .all()
         )
         existingCustomFieldNames = [item.name.lower() for item in existingCustomFields]

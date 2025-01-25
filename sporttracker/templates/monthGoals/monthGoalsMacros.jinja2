@@ -21,7 +21,7 @@
 {%- endmacro %}
 
 {% macro render_month_goal_distance_summary_card_large(goalSummary) -%}
-    {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+    {% import 'sports/sportMacros.jinja2' as sportMacros with context %}
 
     <div class="row py-3 d-none d-lg-block">
         <div class="col col-xxl-8 col-lg-10 col-sm-12 mx-auto px-xxl-5 px-xl-4 px-lg-3">
@@ -35,7 +35,7 @@
                                 <span class="material-symbols-outlined filled fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
                             {% endif %}
 
-                            {{ trackMacros.track_type_icon_small(goalSummary.type, fontSize='fs-3') }}
+                            {{ sportMacros.sport_type_icon_small(goalSummary.type, fontSize='fs-3') }}
                         </div>
                         <div class="col col-3 text-start fs-4">
                             {{ goalSummary.name }}
@@ -92,7 +92,7 @@
 {%- endmacro %}
 
 {% macro render_month_goal_count_summary_card_large(goalSummary) -%}
-    {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+    {% import 'sports/sportMacros.jinja2' as sportMacros with context %}
 
     <div class="row py-3 d-none d-lg-block">
         <div class="col col-xxl-8 col-lg-10 col-sm-12 mx-auto px-xxl-5 px-xl-4 px-lg-3">
@@ -106,7 +106,7 @@
                                 <span class="material-symbols-outlined filled fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
                             {% endif %}
 
-                            {{ trackMacros.track_type_icon_small(goalSummary.type, fontSize='fs-3') }}
+                            {{ sportMacros.sport_type_icon_small(goalSummary.type, fontSize='fs-3') }}
                         </div>
                         <div class="col col-3 text-start fs-4">
                             {{ goalSummary.name }}
@@ -162,7 +162,7 @@
 {%- endmacro %}
 
 {% macro render_month_goal_duration_summary_card_large(goalSummary) -%}
-    {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+    {% import 'sports/sportMacros.jinja2' as sportMacros with context %}
 
     <div class="row py-3 d-none d-lg-block">
         <div class="col col-xxl-8 col-lg-10 col-sm-12 mx-auto px-xxl-5 px-xl-4 px-lg-3">
@@ -175,7 +175,7 @@
                             {% else %}
                                 <span class="material-symbols-outlined filled fs-3 p-2 text-secondary me-3">{{ goalSummary.icon }}</span>
                             {% endif %}
-                            {{ trackMacros.track_type_icon_small(goalSummary.type, fontSize='fs-3') }}
+                            {{ sportMacros.sport_type_icon_small(goalSummary.type, fontSize='fs-3') }}
                         </div>
                         <div class="col col-3 text-start fs-4">
                             {{ goalSummary.name }}

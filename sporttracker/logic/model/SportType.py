@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 import enum
 from datetime import datetime
 
 from flask_babel import gettext
 
 
-class TrackType(enum.Enum):
+class SportType(enum.Enum):
     BIKING = (
         'BIKING',
         'directions_bike',
@@ -108,9 +110,17 @@ class TrackType(enum.Enum):
         elif self == self.WORKOUT:
             return gettext('Workout')
 
-        raise ValueError(f'Could not get localized name for unsupported TrackType: {self}')
+        raise ValueError(f'Could not get localized name for unsupported SportType: {self}')
 
     @staticmethod
     def is_easter_egg_activated() -> bool:
         now = datetime.now()
         return now.month == 4 and now.day == 1
+
+    @staticmethod
+    def get_distance_sport_types() -> list[SportType]:
+        return [SportType.BIKING, SportType.RUNNING, SportType.HIKING]
+
+    @staticmethod
+    def get_workout_sport_types() -> list[SportType]:
+        return [SportType.WORKOUT]

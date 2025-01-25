@@ -10,7 +10,7 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('plannedTours') }}
 
-        {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+        {% import 'sports/sportMacros.jinja2' as sportMacros with context %}
         {% import 'plannedTours/plannedToursMacros.jinja2' as plannedToursMacros with context %}
 
         <div id="main" class="center-align">
@@ -48,9 +48,9 @@
                                 <div class="d-flex align-items-center">
                                     <span class="material-symbols-outlined filled me-3">stars</span>
                                     <select class="form-select" id="planned-tour-type" name="type" required="required">
-                                        {% for trackType in trackTypes %}
-                                            {% if trackType.supports_distance %}
-                                                <option value="{{ trackType.name }}" {% if plannedTour and plannedTour.type == trackType.name %}selected{% endif %}>{{ trackType.get_localized_name() }}</option>
+                                        {% for sportType in sportTypes %}
+                                            {% if sportType.supports_distance %}
+                                                <option value="{{ sportType.name }}" {% if plannedTour and plannedTour.type == sportType.name %}selected{% endif %}>{{ sportType.get_localized_name() }}</option>
                                             {% endif %}
                                         {% endfor %}
                                     </select>
@@ -86,11 +86,11 @@
                             {% endif %}
                             {{ plannedToursMacros.radio_button_select(gettext('Direction'), 'directions', 'direction', 'direction', travelDirections, selectedDirection) }}
 
-                            {{ trackMacros.form_gpx(plannedTour, url_for('maps.showPlannedTour', tour_id=tour_id or -1), url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id or -1, file_format='gpx'), url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id or -1, file_format='fit'), url_for('gpxTracks.deleteGpxTrackByPlannedTourId', tour_id=tour_id or -1), gettext('No GPX or FIT file is linked to this planned tour'), gettext('A GPX or FIT file is linked to this planned tour') ) }}
+                            {{ sportMacros.form_gpx(plannedTour, url_for('maps.showPlannedTour', tour_id=tour_id or -1), url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id or -1, file_format='gpx'), url_for('gpxTracks.downloadGpxTrackByPlannedTourId', tour_id=tour_id or -1, file_format='fit'), url_for('gpxTracks.deleteGpxTrackByPlannedTourId', tour_id=tour_id or -1), gettext('No GPX or FIT file is linked to this planned tour'), gettext('A GPX or FIT file is linked to this planned tour') ) }}
 
                             {{ plannedToursMacros.planned_tour_form_shared_users(plannedTour, users)}}
 
-                            {{ trackMacros.form_share_link(plannedTour, 'maps.showSharedPlannedTour', 'plannedTours.createShareCode')}}
+                            {{ sportMacros.form_share_link(plannedTour, 'maps.showSharedPlannedTour', 'plannedTours.createShareCode')}}
 
                             <button type="submit" id="buttonSavePlannedTour" class="btn btn-success mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>

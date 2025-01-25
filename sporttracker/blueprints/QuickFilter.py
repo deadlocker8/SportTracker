@@ -5,7 +5,7 @@ from flask_login import login_required
 
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.SportType import SportType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -15,15 +15,15 @@ def construct_blueprint():
         'quickFilter', __name__, static_folder='static', url_prefix='/quickFilter'
     )
 
-    @quickFilter.route('/toggle/<string:trackType>')
+    @quickFilter.route('/toggle/<string:sportType>')
     @login_required
-    def toggleQuickFilter(trackType):
+    def toggleQuickFilter(sportType):
         redirectUrl = request.args['redirectUrl']
 
-        trackType = TrackType(trackType)  # type: ignore[call-arg]
+        sportType = SportType(sportType)  # type: ignore[call-arg]
 
         quickFilterState = get_quick_filter_state_from_session()
-        quickFilterState.toggle_state(trackType)
+        quickFilterState.toggle_state(sportType)
         session['quickFilterState'] = quickFilterState.to_json()
 
         return redirect(redirectUrl)

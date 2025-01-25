@@ -7,14 +7,14 @@ from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
 from sporttracker.logic.model.Maintenance import Maintenance
-from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.SportType import SportType
 from sporttracker.logic.model.db import db
 
 
 @dataclass
 class MaintenanceEvent(DateTimeAccess):
     id: int
-    type: TrackType
+    type: SportType
     description: str
     event_date: datetime
 
@@ -43,7 +43,7 @@ class MaintenanceEventInstance(db.Model):  # type: ignore[name-defined]
 
 
 def get_maintenance_events_by_year_and_month_by_type(
-    year: int, month: int, trackTypes: list[TrackType]
+    year: int, month: int, sportTypes: list[SportType]
 ) -> list[MaintenanceEvent]:
     rows = (
         MaintenanceEventInstance.query.join(Maintenance)
@@ -54,7 +54,7 @@ def get_maintenance_events_by_year_and_month_by_type(
             MaintenanceEventInstance.event_date,
         )
         .filter(Maintenance.user_id == current_user.id)
-        .filter(Maintenance.type.in_(trackTypes))
+        .filter(Maintenance.type.in_(sportTypes))
         .filter(extract('year', MaintenanceEventInstance.event_date) == year)
         .filter(extract('month', MaintenanceEventInstance.event_date) == month)
         .all()

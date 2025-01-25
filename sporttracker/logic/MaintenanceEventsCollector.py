@@ -5,20 +5,20 @@ from flask_login import current_user
 
 from sporttracker.blueprints.MaintenanceEventInstances import MaintenanceEventInstanceModel
 from sporttracker.logic.QuickFilterState import QuickFilterState
+from sporttracker.logic.model.DistanceSport import get_distance_between_dates
 from sporttracker.logic.model.Maintenance import Maintenance
 from sporttracker.logic.model.MaintenanceEventInstance import (
     MaintenanceEventInstance,
     get_maintenance_events_by_maintenance_id,
     get_latest_maintenance_event_by_maintenance_id,
 )
-from sporttracker.logic.model.Track import get_distance_between_dates
-from sporttracker.logic.model.TrackType import TrackType
+from sporttracker.logic.model.SportType import SportType
 
 
 @dataclass
 class MaintenanceWithEventsModel:
     id: int
-    type: TrackType
+    type: SportType
     description: str
     isLimitExceeded: bool
     limitExceededDistance: int | None

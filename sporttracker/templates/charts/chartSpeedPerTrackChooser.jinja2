@@ -9,7 +9,7 @@
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('charts') }}
-        {% import 'tracks/trackMacros.jinja2' as trackMacros with context %}
+        {% import 'sports/sportMacros.jinja2' as sportMacros with context %}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
@@ -26,19 +26,19 @@
                         <h3>{{ gettext('Choose track by name') }}</h3>
                         <p>{{ gettext('Note: Only names with at least two tracks are listed') }}</p>
 
-                        {% for trackType, trackNames in trackNamesByTrackType.items() %}
+                        {% for sportType, sportNames in sportNamesBySportType.items() %}
                             <div class="row mt-5 mb-3">
                                 <div class="col col-12 mx-auto">
                                     <h3 class="d-flex align-items-center justify-content-center">
-                                        {{ trackMacros.track_type_icon_small(trackType, classes='me-3') }}
-                                        <span class="me-3">{{ trackType.get_localized_name() }}</span>
+                                        {{ sportMacros.sport_type_icon_small(sportType, classes='me-3') }}
+                                        <span class="me-3">{{ sportType.get_localized_name() }}</span>
                                     </h3>
                                 </div>
                             </div>
 
                             <div class="list-group text-start">
-                                {% for name in trackNames %}
-                                    <a href="{{ url_for('charts.chartSpeedPerTrack', track_type=trackType.name, name=name) }}"
+                                {% for name in sportNames %}
+                                    <a href="{{ url_for('charts.chartSpeedPerTrack', sport_type=sportType.name, name=name) }}"
                                        class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
                                         {{ name }}
                                         <span class="material-symbols-outlined filled text-primary">send</span>
