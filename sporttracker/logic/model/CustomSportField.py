@@ -74,8 +74,11 @@ def get_custom_fields_by_sport_type(
     return customFieldsBySportType
 
 
-# TODO reserved_field_names
+# List of reserved names that are not allowed to be used as custom field names.
+# Otherwise, the HTML form would include multiple inputs with the same name leading to unexpected behaviour.
+# The actual inputs will be prefixed with "sport-" in the HTML form.
 RESERVED_FIELD_NAMES = [
+    'type'
     'name',
     'date',
     'time',
@@ -87,5 +90,7 @@ RESERVED_FIELD_NAMES = [
     'elevationSum',
     'gpxFileName',
     'participants',
+    'shareCode'
     'workoutType',
+    'workoutCategories'
 ]
