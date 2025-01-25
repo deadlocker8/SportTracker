@@ -2,14 +2,14 @@
 {% call chartMacros.chart() %}
      const data = [
         {
-            x: {{ chartDataDurationPerTrack['dates'] }},
-            y: {{ chartDataDurationPerTrack['values'] }},
+            x: {{ chartDataDurationPerSport['dates'] }},
+            y: {{ chartDataDurationPerSport['values'] }},
             type: 'bar',
             marker: {
-                color: '{{ chartDataDurationPerTrack.type.background_color_hex }}'
+                color: '{{ chartDataDurationPerSport.type.background_color_hex }}'
             },
-            name: '{{ chartDataDurationPerTrack.type.name | capitalize }}',
-            text: {{ chartDataDurationPerTrack['texts'] }}
+            name: '{{ chartDataDurationPerSport.type.name | capitalize }}',
+            text: {{ chartDataDurationPerSport['texts'] }}
         },
     ];
 
@@ -33,7 +33,7 @@
             tickformat: '.0f',
             showline: true,
             color: '#FFFFFF',
-            range: [{{ chartDataDurationPerTrack.min }}, {{ chartDataDurationPerTrack.max }}]
+            range: [{{ chartDataDurationPerSport.min }}, {{ chartDataDurationPerSport.max }}]
         },
         barmode: 'group',
         legend: {

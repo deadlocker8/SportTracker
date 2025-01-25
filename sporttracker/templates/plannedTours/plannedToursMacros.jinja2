@@ -58,7 +58,7 @@
     </div>
 {%- endmacro %}
 
-{% macro linkedTracksMacro(idSuffix, plannedTour) -%}
+{% macro linkedSportsMacro(idSuffix, plannedTour) -%}
     <div class="modal fade" tabindex="-1" id="linked-tracks-modal-{{ idSuffix }}">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark">
@@ -71,10 +71,10 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="list-group text-start">
-                            {% for linkedTrack in plannedTour.linkedTracks %}
-                                <a href="{{ url_for('maps.showSingleTrack', sport_id=linkedTrack.id) }}"
+                            {% for linkedSport in plannedTour.linkedSports %}
+                                <a href="{{ url_for('maps.showSingleTrack', sport_id=linkedSport.id) }}"
                                    class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
-                                    {{ linkedTrack.startTime | format_date() }}
+                                    {{ linkedSport.startTime | format_date() }}
                                     <span class="material-symbols-outlined filled text-primary">send</span>
                                 </a>
                             {% endfor %}

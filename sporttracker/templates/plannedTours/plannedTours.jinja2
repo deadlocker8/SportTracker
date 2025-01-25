@@ -95,11 +95,11 @@
                                             </div>
                                         {% endif %}
 
-                                        {% if plannedTour.linkedTracks %}
+                                        {% if plannedTour.linkedSports %}
                                             <div class="btn btn-orange badge rounded-pill bg-orange text-black d-flex align-items-center me-2"
                                                  data-bs-toggle="modal"
                                                  data-bs-target="#linked-tracks-modal-{{ ns.index }}">
-                                                <div class="fs-6 fw-normal lh-sm">{{ plannedTour.linkedTracks|length }} {{ gettext('Tracks') }}</div>
+                                                <div class="fs-6 fw-normal lh-sm">{{ plannedTour.linkedSports|length }} {{ gettext('Tracks') }}</div>
                                             </div>
                                         {% endif %}
 
@@ -113,8 +113,8 @@
                             </div>
                         </div>
 
-                        {% if plannedTour.linkedTracks %}
-                            {{ plannedTourMacros.linkedTracksMacro(ns.index, plannedTour) }}
+                        {% if plannedTour.linkedSports %}
+                            {{ plannedTourMacros.linkedSportsMacro(ns.index, plannedTour) }}
                         {% endif %}
                         {% set ns.index = ns.index + 1 %}
                     {% endfor %}

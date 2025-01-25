@@ -81,17 +81,17 @@
 {%- endmacro %}
 
 
-{% macro showLinkedTracksButton(linkedTracks, collapsibleId, classes) -%}
+{% macro showLinkedSportsButton(linkedSports, collapsibleId, classes) -%}
     <div class="d-flex flex-column align-items-center">
         <button class="btn btn-orange mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#{{ collapsibleId }}">
-            {% trans length=linkedTracks|length %}Show {{ length }} linked Tracks{% endtrans %}
+            {% trans length=linkedSports|length %}Show {{ length }} linked Tracks{% endtrans %}
         </button>
         <div class="collapse {{ classes }}" id="{{ collapsibleId }}">
             <div class="list-group text-start">
-                {% for linkedTrack in linkedTracks %}
-                    <a href="{{ url_for('maps.showSingleTrack', sport_id=linkedTrack.id) }}"
+                {% for linkedSport in linkedSports %}
+                    <a href="{{ url_for('maps.showSingleTrack', sport_id=linkedSport.id) }}"
                        class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
-                        {{ linkedTrack.startTime | format_date() }}
+                        {{ linkedSport.startTime | format_date() }}
                         <span class="material-symbols-outlined filled text-primary">send</span>
                     </a>
                 {% endfor %}

@@ -38,7 +38,7 @@
 
                             <div class="list-group text-start">
                                 {% for name in sportNames %}
-                                    <a href="{{ url_for('charts.chartDurationPerTrack', sport_type=sportType.name, name=name) }}"
+                                    <a href="{{ url_for('charts.chartDurationPerSport', sport_type=sportType.name, name=name) }}"
                                        class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
                                         {{ name }}
                                         <span class="material-symbols-outlined filled text-primary">send</span>

@@ -63,9 +63,9 @@
             </div>
         </div>
 
-        {% if plannedTour.linkedTracks|length != 0 %}
+        {% if plannedTour.linkedSports|length != 0 %}
             <div class="card bg-body-secondary mx-3 mb-3 d-xl-none pt-3" data-bs-theme="dark">
-                {{ mapMacros.showLinkedTracksButton(plannedTour.linkedTracks, 'collapseLinkedTracksSmall', 'w-50 mb-3') }}
+                {{ mapMacros.showLinkedSportsButton(plannedTour.linkedSports, 'collapseLinkedSportsSmall', 'w-50 mb-3') }}
             </div>
         {% endif %}
 
@@ -131,8 +131,8 @@
                             {% endif %}
                         {% endcall %}
 
-                        {% if plannedTour.linkedTracks|length != 0 %}
-                            {{ mapMacros.showLinkedTracksButton(plannedTour.linkedTracks, 'collapseLinkedTracksLarge', 'w-100') }}
+                        {% if plannedTour.linkedSports|length != 0 %}
+                            {{ mapMacros.showLinkedSportsButton(plannedTour.linkedSports, 'collapseLinkedSportsLarge', 'w-100') }}
                         {% endif %}
                     </div>
 

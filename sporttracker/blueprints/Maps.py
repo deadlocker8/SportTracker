@@ -122,7 +122,7 @@ def construct_blueprint(
 
         return render_template(
             'maps/mapSingleTrack.jinja2',
-            track=DistanceSportModel.create_from_sport(sport),
+            sport=DistanceSportModel.create_from_sport(sport),
             gpxUrl=url_for(
                 'gpxTracks.downloadGpxTrackByTrackId',
                 sport_id=sport_id,
@@ -143,7 +143,7 @@ def construct_blueprint(
 
         return render_template(
             'maps/mapSingleTrack.jinja2',
-            track=DistanceSportModel.create_from_sport(sport),
+            sport=DistanceSportModel.create_from_sport(sport),
             gpxUrl=url_for(
                 'gpxTracks.downloadGpxTrackBySharedTrack',
                 shareCode=shareCode,

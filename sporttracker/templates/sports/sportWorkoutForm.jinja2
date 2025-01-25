@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {% if track %}{{ gettext('Edit Workout') }}{% else %}{{ gettext('New Workout') }}{% endif %}</title>
+        <title>SportTracker - {% if sport %}{{ gettext('Edit Workout') }}{% else %}{{ gettext('New Workout') }}{% endif %}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>

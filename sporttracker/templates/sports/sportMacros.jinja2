@@ -5,73 +5,73 @@
     <span class="d-none d-lg-inline">{{ unit }}</span>
 {%- endmacro %}
 
-{% macro render_track_speed_kmh(track, renderAsRow) -%}
+{% macro render_track_speed_kmh(sport, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
         <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">speed</span>
-        {% if track.duration is none %}
+        {% if sport.duration is none %}
             <div class="fs-5">--.- km/h</div>
         {% else %}
-            <div class="fs-5 text-center">{{ (track.distance / track.duration * 3.6) | round(1) | format_decimal }} {{ render_track_unit('km/h') }}</div>
+            <div class="fs-5 text-center">{{ (sport.distance / sport.duration * 3.6) | round(1) | format_decimal }} {{ render_track_unit('km/h') }}</div>
         {% endif %}
     </div>
 {%- endmacro %}
 
-{% macro render_track_speed_pace(track, renderAsRow) -%}
+{% macro render_track_speed_pace(sport, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
         <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">speed</span>
-        {% if track.duration is none %}
+        {% if sport.duration is none %}
             <div class="fs-5">--.-- min</div>
         {% else %}
-            <div class="fs-5 text-center">{{ track | format_pace }} {{ render_track_unit('min') }}</div>
+            <div class="fs-5 text-center">{{ sport | format_pace }} {{ render_track_unit('min') }}</div>
         {% endif %}
     </div>
 {%- endmacro %}
 
-{% macro render_track_distance(track, renderAsRow) -%}
+{% macro render_track_distance(sport, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
         <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">route</span>
-        <div class="fs-5 text-center">{{ (track.distance / 1000) | format_decimal(2) }} {{ render_track_unit('km') }}</div>
+        <div class="fs-5 text-center">{{ (sport.distance / 1000) | format_decimal(2) }} {{ render_track_unit('km') }}</div>
     </div>
 {%- endmacro %}
 
-{% macro render_track_duration(track, renderAsRow) -%}
+{% macro render_track_duration(sport, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
         <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">timer</span>
-        <div class="fs-5 text-center">{{ track.duration | format_duration }} {{ render_track_unit('h') }}</div>
+        <div class="fs-5 text-center">{{ sport.duration | format_duration }} {{ render_track_unit('h') }}</div>
     </div>
 {%- endmacro %}
 
-{% macro render_track_average_heart_rate(track, renderAsRow) -%}
-    {% if track.average_heart_rate is not none %}
+{% macro render_track_average_heart_rate(sport, renderAsRow) -%}
+    {% if sport.average_heart_rate is not none %}
         <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
             <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">favorite_border</span>
-            <div class="fs-5 text-center">{{ track.average_heart_rate }} {{ render_track_unit('bpm') }}</div>
+            <div class="fs-5 text-center">{{ sport.average_heart_rate }} {{ render_track_unit('bpm') }}</div>
         </div>
     {% endif %}
 {%- endmacro %}
 
-{% macro render_track_elevation(track, renderAsRow) -%}
-    {% if track.elevation_sum is not none %}
+{% macro render_track_elevation(sport, renderAsRow) -%}
+    {% if sport.elevation_sum is not none %}
         <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
             <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">expand</span>
-            <div class="fs-5 text-center">{{ track.elevation_sum }} {{ render_track_unit('m') }}</div>
+            <div class="fs-5 text-center">{{ sport.elevation_sum }} {{ render_track_unit('m') }}</div>
         </div>
     {% endif %}
 {%- endmacro %}
 
-{% macro render_track_workout_type(track, renderAsRow) -%}
+{% macro render_track_workout_type(sport, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
-        <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ track.workoutType.icon }}</span>
-        <div class="fs-5 text-center">{{ render_track_unit(track.workoutType.get_localized_name()) }}</div>
+        <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ sport.workoutType.icon }}</span>
+        <div class="fs-5 text-center">{{ render_track_unit(sport.workoutType.get_localized_name()) }}</div>
     </div>
 {%- endmacro %}
 
-{% macro render_track_workout_category_type(track, renderAsRow) -%}
+{% macro render_track_workout_category_type(sport, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
-        {% if track.workoutCategories|length == 1 %}
-            <span class="material-symbols-outlined {% if not track.workoutCategories[0].is_outlined_icon %}filled{% endif %} fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ track.workoutCategories[0].icon }}</span>
-            <div class="fs-5 text-center">{{ render_track_unit(track.workoutCategories[0].get_localized_name()) }}</div>
-        {% elif track.workoutCategories|length > 1 %}
+        {% if sport.workoutCategories|length == 1 %}
+            <span class="material-symbols-outlined {% if not sport.workoutCategories[0].is_outlined_icon %}filled{% endif %} fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ sport.workoutCategories[0].icon }}</span>
+            <div class="fs-5 text-center">{{ render_track_unit(sport.workoutCategories[0].get_localized_name()) }}</div>
+        {% elif sport.workoutCategories|length > 1 %}
             <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">fitness_center</span>
             <div class="fs-5 text-center">{{ gettext('Mixed') }}</div>
         {% endif %}
@@ -81,7 +81,7 @@
 {% macro sport_type_icon_non_responsive(sportType, classes='') -%}
     {% if sportType.is_easter_egg_activated() %}
         <div class="d-inline-block rounded-circle p-3 {{ sportType.background_color }} {{ classes }}">
-            <img class="track-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
+            <img class="sport-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
         </div>
     {% elif sportType.is_font_awesome_icon %}
         <i class="d-inline-block fa-solid {{ sportType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ sportType.background_color }} {{ classes }}"></i>
@@ -93,10 +93,10 @@
 {% macro sport_type_icon(sportType, classes='') -%}
     {% if sportType.is_easter_egg_activated() %}
         <div class="d-none d-lg-inline-block rounded-circle p-3 {{ sportType.background_color }} {{ classes }}">
-            <img class="track-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
+            <img class="sport-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
         </div>
         <div class="d-lg-none d-inline-block rounded-circle p-2 {{ sportType.background_color }} {{ classes }}">
-            <img class="track-type-icon-easter-egg fs-2" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
+            <img class="sport-type-icon-easter-egg fs-2" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
         </div>
     {% elif sportType.is_font_awesome_icon %}
         <i class="d-none d-lg-inline-block fa-solid {{ sportType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ sportType.background_color }} {{ classes }}"></i>
@@ -111,7 +111,7 @@
     {% if sportType.is_easter_egg_activated() %}
         <div class="rounded-circle p-2
                 {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ sportType.background_color }}{% endif %} d-flex align-items-center {{ classes }}">
-            <img class="track-type-icon-easter-egg {{ fontSize }}" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
+            <img class="sport-type-icon-easter-egg {{ fontSize }}" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
         </div>
     {% elif sportType.is_font_awesome_icon %}
         <i class="fa-solid {{ sportType.icon }} fa-fw rounded-circle {{ fontSize }} p-2 text-dark
@@ -277,14 +277,14 @@
     </div>
 {%- endmacro %}
 
-{% macro track_form_name(track, trackNames) -%}
+{% macro track_form_name(sport, trackNames) -%}
     <div class="mb-3">
         <div class="form-group">
             <label for="track-name" class="form-label input-field-margin">{{ gettext('Name') }}</label>
             <div class="d-flex align-items-center">
                 <span class="material-symbols-outlined filled me-3">edit</span>
                 <input type="text" class="form-control" id="track-name" name="name"
-                       required="required" {% if track %}value="{{ track.name }}"{% endif %}
+                       required="required" {% if sport %}value="{{ sport.name }}"{% endif %}
                        list="list-track-names">
                 <datalist id="list-track-names">
                     {% for trackName in trackNames %}
@@ -296,7 +296,7 @@
     </div>
 {%- endmacro %}
 
-{% macro track_form_start_time(track) -%}
+{% macro track_form_start_time(sport) -%}
     <div class="mb-3">
         <div class="row">
             <div class="col col-12 col-md-6 mb-3 mb-md-0">
@@ -304,7 +304,7 @@
                 <div class="d-flex align-items-center">
                     <span class="material-symbols-outlined filled me-3">event</span>
                     <input type="date" class="form-control" id="track-date" name="date"
-                           required="required" {% if track %}value="{{ track.date }}"{% endif %}>
+                           required="required" {% if sport %}value="{{ sport.date }}"{% endif %}>
                 </div>
             </div>
             <div class="col col-12 col-md-6">
@@ -312,26 +312,26 @@
                 <div class="d-flex align-items-center">
                     <span class="material-symbols-outlined me-3">schedule</span>
                     <input type="time" class="form-control" id="track-time" name="time"
-                           required="required" {% if track %}value="{{ track.time }}"{% endif %}>
+                           required="required" {% if sport %}value="{{ sport.time }}"{% endif %}>
                 </div>
             </div>
         </div>
     </div>
 {%- endmacro %}
 
-{% macro track_form_distance(track) -%}
+{% macro track_form_distance(sport) -%}
     <div class="mb-3">
         <label for="track-distance" class="form-label input-field-margin">{{ gettext('Distance (in km)') }}</label>
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined me-3">route</span>
             <input type="number" step="0.01" min="0" class="form-control" id="track-distance"
                    name="distance" required="required"
-                   {% if track %}value="{{ track.distance | round(2) }}"{% endif %}>
+                   {% if sport %}value="{{ sport.distance | round(2) }}"{% endif %}>
         </div>
     </div>
 {%- endmacro %}
 
-{% macro track_form_duration(track) -%}
+{% macro track_form_duration(sport) -%}
     <label for="track-duration-hours" class="form-label input-field-margin">{{ gettext('Duration') }}</label>
     <div class="mb-3 d-flex align-items-center">
         <span class="material-symbols-outlined me-3">timer</span>
@@ -340,48 +340,48 @@
                id="track-duration-hours" name="durationHours"
                placeholder="{{ gettext('Hours') }}"
                required="required"
-               {% if track %}value="{{ track.durationHours }}"{% endif %}>
+               {% if sport %}value="{{ sport.durationHours }}"{% endif %}>
 
         <label for="track-duration-minutes" class="form-label">&nbsp;</label>
         <input type="number" step="1" min="0" max="59" class="form-control me-3"
                id="track-duration-minutes" name="durationMinutes"
                placeholder="{{ gettext('Minutes') }}" required="required"
-               {% if track %}value="{{ track.durationMinutes }}"{% endif %}>
+               {% if sport %}value="{{ sport.durationMinutes }}"{% endif %}>
 
         <label for="track-duration-seconds" class="form-label">&nbsp;</label>
         <input type="number" step="1" min="0" max="59" class="form-control"
                id="track-duration-seconds" name="durationSeconds"
                placeholder="{{ gettext('Seconds') }}" required="required"
-               {% if track %}value="{{ track.durationSeconds }}"{% endif %}>
+               {% if sport %}value="{{ sport.durationSeconds }}"{% endif %}>
     </div>
 {%- endmacro %}
 
-{% macro track_form_average_heart_rate(track) -%}
+{% macro track_form_average_heart_rate(sport) -%}
     <div class="mb-3">
         <label for="track-averageHeartRate" class="form-label input-field-margin">{{ gettext('Average Heart Rate') }}</label>
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined me-3">favorite_border</span>
             <input type="number" step="1" min="0" class="form-control" id="track-averageHeartRate"
                    name="averageHeartRate"
-                   {% if track and track.average_heart_rate is not none %}value="{{ track.average_heart_rate }}"{% endif %}>
+                   {% if sport and sport.average_heart_rate is not none %}value="{{ sport.average_heart_rate }}"{% endif %}>
         </div>
     </div>
 {%- endmacro %}
 
-{% macro track_form_elevation_sum(track) -%}
+{% macro track_form_elevation_sum(sport) -%}
     <div class="mb-3">
         <label for="track-elevationSum" class="form-label input-field-margin">{{ gettext('Elevation Sum (in m)') }}</label>
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined me-3">expand</span>
             <input type="number" step="1" min="0" class="form-control" id="track-elevationSum"
                    name="elevationSum"
-                   {% if track and track.elevation_sum is not none %}value="{{ track.elevation_sum }}"{% endif %}>
+                   {% if sport and sport.elevation_sum is not none %}value="{{ sport.elevation_sum }}"{% endif %}>
         </div>
     </div>
 {%- endmacro %}
 
-{% macro track_form_gpx(track, sport_id) -%}
-    {{ form_gpx(track, url_for('maps.showSingleTrack', sport_id=sport_id or -1 ), url_for('gpxTracks.downloadGpxTrackBySportId', sport_id=sport_id  or -1, file_format='gpx'), url_for('gpxTracks.downloadGpxTrackBySportId', sport_id=sport_id  or -1, file_format='fit'), url_for('gpxTracks.deleteGpxTrackBySportId', sport_id=sport_id or -1), gettext('No GPX or FIT file is linked to this track'), gettext('A GPX or FIT file is linked to this track') ) }}
+{% macro track_form_gpx(sport, sport_id) -%}
+    {{ form_gpx(sport, url_for('maps.showSingleTrack', sport_id=sport_id or -1 ), url_for('gpxTracks.downloadGpxTrackBySportId', sport_id=sport_id  or -1, file_format='gpx'), url_for('gpxTracks.downloadGpxTrackBySportId', sport_id=sport_id  or -1, file_format='fit'), url_for('gpxTracks.deleteGpxTrackBySportId', sport_id=sport_id or -1), gettext('No GPX or FIT file is linked to this track'), gettext('A GPX or FIT file is linked to this track') ) }}
 {%- endmacro %}
 
 {% macro form_gpx(item, mapUrl, downloadUrlGpx, downloadUrlFit, deleteUrl, placeholderText, gpxFileLinkedText) -%}
@@ -440,7 +440,7 @@
     </div>
 {%- endmacro %}
 
-{% macro track_form_participants(track, participants) -%}
+{% macro track_form_participants(sport, participants) -%}
     <div class="mb-3">
         <label for="track-participants" class="form-label">
             <div class="d-flex align-items-center">
@@ -450,7 +450,7 @@
         </label>
         {% for participant in participants %}
             <div class="form-check input-field-margin">
-                <input class="form-check-input participant-checkbox" type="checkbox" {% if track and participant.id|string in track.participants %}checked{% endif %} id="participant-{{ participant.id }}" name="participants" value="{{ participant.id }}">
+                <input class="form-check-input participant-checkbox" type="checkbox" {% if sport and participant.id|string in sport.participants %}checked{% endif %} id="participant-{{ participant.id }}" name="participants" value="{{ participant.id }}">
                 <label class="form-check-label" for="participant-{{ participant.id }}">
                     {{ participant.name }}
                 </label>
@@ -482,7 +482,7 @@
                        class="form-control"
                        id="track-{{ escapedName }}"
                        name="{{ field.name }}"
-                       {% if track and track.model_extra[field.name] is not none %}value="{{ track.model_extra[field.name] }}"{% endif %}
+                       {% if sport and sport.model_extra[field.name] is not none %}value="{{ sport.model_extra[field.name] }}"{% endif %}
                         {% if field.is_required %} required="required"{% endif %}
                 >
             {% elif field.type.name == 'INTEGER' %}
@@ -492,7 +492,7 @@
                        class="form-control"
                        id="track-{{ escapedName }}"
                        name="{{ field.name }}"
-                       {% if track and track.model_extra[field.name] is not none %}value="{{ track.model_extra[field.name] }}"{% endif %}
+                       {% if sport and sport.model_extra[field.name] is not none %}value="{{ sport.model_extra[field.name] }}"{% endif %}
                         {% if field.is_required %} required="required"{% endif %}
                 >
             {% elif field.type.name == 'FLOAT' %}
@@ -502,7 +502,7 @@
                        class="form-control"
                        id="track-{{ escapedName }}"
                        name="{{ field.name }}"
-                       {% if track and track.model_extra[field.name] is not none %}value="{{ track.model_extra[field.name] }}"{% endif %}
+                       {% if sport and sport.model_extra[field.name] is not none %}value="{{ sport.model_extra[field.name] }}"{% endif %}
                         {% if field.is_required %} required="required"{% endif %}
                 >
             {% endif %}
@@ -553,16 +553,16 @@
     </div>
 {%- endmacro %}
 
-{% macro form_linked_planned_tour(track, plannedTours) -%}
+{% macro form_linked_planned_tour(sport, plannedTours) -%}
     <div class="mb-3">
         <label for="track-plannedTour" class="form-label input-field-margin">{{ gettext('Based on Planned Tour') }}</label>
         <div class="d-flex align-items-center">
             <i class="fa-solid fa-lightbulb fa-fw fs-4 me-3"></i>
             <select class="form-select" id="track-plannedTour" name="plannedTourId">
                 <option value="-1"
-                        {% if not track %} selected{% endif %}>{{ gettext('Not based on a Planned Tour') }}</option>
+                        {% if not sport %} selected{% endif %}>{{ gettext('Not based on a Planned Tour') }}</option>
                 {% for plannedTour in plannedTours %}
-                    <option value="{{ plannedTour.id }}" {% if track and track.plannedTourId != '-1' and track.plannedTourId == plannedTour.id|string %}selected{% endif %}>{{ plannedTour.name }}</option>
+                    <option value="{{ plannedTour.id }}" {% if sport and sport.plannedTourId != '-1' and sport.plannedTourId == plannedTour.id|string %}selected{% endif %}>{{ plannedTour.name }}</option>
                 {% endfor %}
             </select>
         </div>

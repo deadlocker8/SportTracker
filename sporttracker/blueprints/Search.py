@@ -58,7 +58,7 @@ def construct_blueprint():
             k: list(g)
             for k, g in groupby(
                 pagination.items,
-                key=lambda track: format_datetime(track.start_time, format='MMMM yyyy'),
+                key=lambda sport: format_datetime(sport.start_time, format='MMMM yyyy'),
             )
         }
 

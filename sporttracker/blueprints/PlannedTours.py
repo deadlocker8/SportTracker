@@ -43,7 +43,7 @@ class SharedUserModel:
 
 
 @dataclass
-class LinkedTrack:
+class LinkedSport:
     id: int
     startTime: datetime
 
@@ -63,36 +63,36 @@ class PlannedTourModel:
     departureMethod: TravelType
     direction: TravelDirection
     shareCode: str | None
-    linkedTracks: list[LinkedTrack]
+    linkedSports: list[LinkedSport]
 
     @staticmethod
-    def __get_linked_tracks_by_planned_tour(plannedTour: PlannedTour) -> list[LinkedTrack]:
-        linkedTrack = (
+    def __get_linked_sports_by_planned_tour(plannedTour: PlannedTour) -> list[LinkedSport]:
+        linkedSport = (
             DistanceSport.query.filter(DistanceSport.user_id == current_user.id)
             .filter(DistanceSport.planned_tour == plannedTour)
             .order_by(DistanceSport.start_time.asc())
             .all()
         )
 
-        if linkedTrack is None:
+        if linkedSport is None:
             return []
 
         result = []
-        for track in linkedTrack:
-            result.append(LinkedTrack(int(track.id), track.start_time))
+        for sport in linkedSport:
+            result.append(LinkedSport(int(sport.id), sport.start_time))
 
         return result
 
     @staticmethod
     def create_from_tour(
         plannedTour: PlannedTour,
-        includeLinkedTracks: bool,
+        includeLinkedSports: bool,
     ) -> 'PlannedTourModel':
         gpxMetadata = plannedTour.get_gpx_metadata()
 
-        linkedTracks = []
-        if includeLinkedTracks:
-            linkedTracks = PlannedTourModel.__get_linked_tracks_by_planned_tour(plannedTour)
+        linkedSports = []
+        if includeLinkedSports:
+            linkedSports = PlannedTourModel.__get_linked_sports_by_planned_tour(plannedTour)
 
         return PlannedTourModel(
             id=plannedTour.id,
@@ -108,7 +108,7 @@ class PlannedTourModel:
             departureMethod=plannedTour.departure_method,
             direction=plannedTour.direction,
             shareCode=plannedTour.share_code,
-            linkedTracks=linkedTracks,
+            linkedSports=linkedSports,
         )
 
 
@@ -267,18 +267,18 @@ def construct_blueprint(
         plannedTour.shared_users = sharedUsers
 
         # The list of shared users may have changed.
-        # All tracks that link to this planned tour must be checked, whether they are owned by the owner of the
-        # planned tour or if the planned tour is still shared to the owner of the track.
+        # All sports that link to this planned tour must be checked, whether they are owned by the owner of the
+        # planned tour or if the planned tour is still shared to the owner of the sport.
         linkedIds = get_distance_sport_ids_by_planned_tour(plannedTour)
         for sportId in linkedIds:
-            track = DistanceSport.query.filter().filter(DistanceSport.id == sportId).first()
-            if track.user_id == plannedTour.user_id:
+            sport = DistanceSport.query.filter().filter(DistanceSport.id == sportId).first()
+            if sport.user_id == plannedTour.user_id:
                 continue
 
-            if track.user_id in sharedUserIds:
+            if sport.user_id in sharedUserIds:
                 continue
 
-            track.planned_tour = None
+            sport.planned_tour = None
             LOGGER.debug(f'Removed linked planned tour from sport: {sportId}')
             db.session.commit()
 
@@ -302,8 +302,8 @@ def construct_blueprint(
 
         linkedIds = get_distance_sport_ids_by_planned_tour(plannedTour)
         for sportId in linkedIds:
-            track = DistanceSport.query.filter().filter(DistanceSport.id == sportId).first()
-            track.planned_tour = None
+            sport = DistanceSport.query.filter().filter(DistanceSport.id == sportId).first()
+            sport.planned_tour = None
             LOGGER.debug(f'Removed linked planned tour from sport: {sportId}')
             db.session.commit()
 

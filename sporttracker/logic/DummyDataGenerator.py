@@ -228,7 +228,7 @@ class DummyDataGenerator:
                 heartRate = random.randint(85, 160)
                 elevationSum = random.randint(17, 650)
 
-                track = DistanceSport(
+                sport = DistanceSport(
                     type=sportType,
                     name=random.choice(self.TRACK_NAMES),
                     start_time=fakeTime,
@@ -242,22 +242,22 @@ class DummyDataGenerator:
                 )
 
                 if index in indexesWithGpx:
-                    self.__append_gpx(track)
+                    self.__append_gpx(sport)
 
                 if index in indexesWithParticipants:
-                    track.participants = [self.__get_participant()]
+                    sport.participants = [self.__get_participant()]
 
                 if index in indexesWithSharedLink:
-                    track.share_code = uuid.uuid4().hex
+                    sport.share_code = uuid.uuid4().hex
 
                 if index in indexesWithLinkedPlannedTour:
-                    track.planned_tour = plannedTour
+                    sport.planned_tour = plannedTour
 
-                db.session.add(track)
+                db.session.add(sport)
                 db.session.commit()
 
                 if index in indexesWithGpx:
-                    self._gpxService.add_visited_tiles_for_sport(track, 14, user.id)
+                    self._gpxService.add_visited_tiles_for_sport(sport, 14, user.id)
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 
@@ -312,7 +312,7 @@ class DummyDataGenerator:
                 workoutType = random.choice([x for x in WorkoutType])
                 workoutCategory = random.choice([x for x in WorkoutCategoryType])
 
-                track = WorkoutSport(
+                sport = WorkoutSport(
                     name=random.choice(self.WORKOUT_NAMES),
                     type=sportType,
                     start_time=fakeTime,
@@ -323,12 +323,12 @@ class DummyDataGenerator:
                 )
 
                 if index in indexesWithParticipants:
-                    track.participants = [self.__get_participant()]
+                    sport.participants = [self.__get_participant()]
 
-                db.session.add(track)
+                db.session.add(sport)
                 db.session.commit()
 
-                update_workout_categories_by_sport_id(track.id, [workoutCategory])
+                update_workout_categories_by_sport_id(sport.id, [workoutCategory])
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 

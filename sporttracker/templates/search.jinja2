@@ -74,12 +74,12 @@
 
                     {% for monthName, tracks in results.items() %}
                         <h3 class="mt-4">{{ monthName }}</h3>
-                        {% for track in tracks %}
+                        {% for sport in sport %}
                             <div class="d-none d-lg-block">
-                                {{ sportMacros.render_track_card(track, renderAsRow=true, useSmallIcon=true) }}
+                                {{ sportMacros.render_track_card(sport, renderAsRow=true, useSmallIcon=true) }}
                             </div>
                             <div class="d-lg-none">
-                                {{ sportMacros.render_track_card(track, renderAsRow=false, useSmallIcon=true) }}
+                                {{ sportMacros.render_track_card(sport, renderAsRow=false, useSmallIcon=true) }}
                             </div>
                         {% endfor %}
                     {% endfor %}

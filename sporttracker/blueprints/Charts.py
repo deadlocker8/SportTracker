@@ -181,7 +181,7 @@ def construct_blueprint():
             return chartDataAverageSpeed
         else:
             for sportType in SportType.get_distance_sport_types():
-                tracks = (
+                sports = (
                     DistanceSport.query.filter(DistanceSport.user_id == current_user.id)
                     .filter(DistanceSport.type == sportType)
                     .order_by(DistanceSport.start_time.asc())
@@ -190,12 +190,12 @@ def construct_blueprint():
 
                 dates = []
                 speedData = []
-                for track in tracks:
-                    if track.duration is None:
+                for sport in sports:
+                    if sport.duration is None:
                         continue
 
-                    dates.append(track.start_time.isoformat())
-                    speedData.append(round(track.distance / track.duration * 3.6, 2))
+                    dates.append(sport.start_time.isoformat())
+                    speedData.append(round(sport.distance / sport.duration * 3.6, 2))
 
                 chartDataAverageSpeed.append(
                     {'dates': dates, 'values': speedData, 'type': sportType}
@@ -205,20 +205,20 @@ def construct_blueprint():
             'charts/chartAverageSpeed.jinja2', chartDataAverageSpeed=chartDataAverageSpeed
         )
 
-    @charts.route('/durationPerTrackChooser')
+    @charts.route('/durationPerSportChooser')
     @login_required
-    def chartDurationPerTrackChooser():
+    def chartDurationPerSportChooser():
         return render_template(
-            'charts/chartDurationPerTrackChooser.jinja2',
+            'charts/chartDurationPerSportChooser.jinja2',
             sportNamesBySportType=__get_sport_names_by_type(False),
         )
 
-    @charts.route('/durationPerTrack/<string:distance_sport_type>/<string:name>')
+    @charts.route('/durationPerSport/<string:sport_type>/<string:name>')
     @login_required
-    def chartDurationPerTrack(distance_sport_type: str, name: str):
-        sportType = SportType(distance_sport_type)  # type: ignore[call-arg]
+    def chartDurationPerSport(sport_type: str, name: str):
+        sportType = SportType(sport_type)  # type: ignore[call-arg]
 
-        tracks = (
+        sports = (
             DistanceSport.query.filter(DistanceSport.user_id == current_user.id)
             .filter(DistanceSport.type == sportType)
             .filter(DistanceSport.name == name)
@@ -230,15 +230,15 @@ def construct_blueprint():
         dates = []
         values = []
         texts = []
-        for track in tracks:
-            if track.duration is None:
+        for sport in sports:
+            if sport.duration is None:
                 continue
 
-            dates.append(format_datetime(track.start_time, format='short'))
-            values.append(track.duration)
-            texts.append(f'{format_duration(track.duration)} h')
+            dates.append(format_datetime(sport.start_time, format='short'))
+            values.append(sport.duration)
+            texts.append(f'{format_duration(sport.duration)} h')
 
-        chartDataDurationPerTrack = {
+        chartDataDurationPerSport = {
             'dates': dates,
             'values': values,
             'texts': texts,
@@ -248,20 +248,20 @@ def construct_blueprint():
         }
 
         return render_template(
-            'charts/chartDurationPerTrack.jinja2',
-            chartDataDurationPerTrack=chartDataDurationPerTrack,
+            'charts/chartDurationPerSport.jinja2',
+            chartDataDurationPerSport=chartDataDurationPerSport,
         )
 
-    @charts.route('/speedPerTrackChooser')
+    @charts.route('/speedPerSportChooser')
     @login_required
-    def chartSpeedPerTrackChooser():
+    def chartSpeedPerSportChooser():
         return render_template(
-            'charts/chartSpeedPerTrackChooser.jinja2',
+            'charts/chartSpeedPerSportChooser.jinja2',
             sportNamesBySportType=__get_sport_names_by_type(True),
         )
 
     def __get_sport_names_by_type(onlyDistanceBasedSportTypes: bool) -> dict[SportType, list[str]]:
-        trackNamesBySportType = {}
+        sportNamesBySportType = {}
         for sportType in SportType:
             if (
                 onlyDistanceBasedSportTypes
@@ -279,15 +279,15 @@ def construct_blueprint():
                 .all()
             )
 
-            trackNamesBySportType[sportType] = [row[0] for row in rows]
-        return trackNamesBySportType
+            sportNamesBySportType[sportType] = [row[0] for row in rows]
+        return sportNamesBySportType
 
-    @charts.route('/speedPerTrack/<string:sport_type>/<string:name>')
+    @charts.route('/speedPerSport/<string:sport_type>/<string:name>')
     @login_required
-    def chartSpeedPerTrack(sport_type: str, name: str):
+    def chartSpeedPerSport(sport_type: str, name: str):
         sportType = SportType(sport_type)  # type: ignore[call-arg]
 
-        tracks = (
+        sports = (
             DistanceSport.query.filter(DistanceSport.user_id == current_user.id)
             .filter(DistanceSport.type == sportType)
             .filter(DistanceSport.name == name)
@@ -299,16 +299,16 @@ def construct_blueprint():
         dates = []
         values = []
         texts = []
-        for track in tracks:
-            if track.duration is None:
+        for sport in sports:
+            if sport.duration is None:
                 continue
 
-            dates.append(format_datetime(track.start_time, format='short'))
-            speed = round(track.distance / track.duration * 3.6, 2)
+            dates.append(format_datetime(sport.start_time, format='short'))
+            speed = round(sport.distance / sport.duration * 3.6, 2)
             values.append(speed)
             texts.append(f'{speed} km/h')
 
-        chartDataSpeedPerTrack = {
+        chartDataSpeedPerSport = {
             'dates': dates,
             'values': values,
             'texts': texts,
@@ -318,8 +318,8 @@ def construct_blueprint():
         }
 
         return render_template(
-            'charts/chartSpeedPerTrack.jinja2',
-            chartDataSpeedPerTrack=chartDataSpeedPerTrack,
+            'charts/chartSpeedPerSport.jinja2',
+            chartDataSpeedPerSport=chartDataSpeedPerSport,
         )
 
     @charts.route('/calendar/<int:year>')
@@ -336,18 +336,18 @@ def construct_blueprint():
             currentMonthDate = date(year=year, month=monthNumber, day=1)
             __, numberOfDays = calendar.monthrange(year, monthNumber)
 
-            tracks = get_sports_by_year_and_month(year, monthNumber)
+            sports = get_sports_by_year_and_month(year, monthNumber)
 
             days = []
             for dayNumber in range(1, numberOfDays + 1):
-                numberOfTracksPerType = {}
+                numberOfSportsPerType = {}
                 colors = []
                 for sportType in SportType:
-                    numberOfTracks = __get_number_of_tracks_per_day_by_type(
-                        tracks, sportType, year, monthNumber, dayNumber
+                    numberOfSports = __get_number_of_sports_per_day_by_type(
+                        sports, sportType, year, monthNumber, dayNumber
                     )
-                    numberOfTracksPerType[sportType] = numberOfTracks
-                    if numberOfTracks > 0:
+                    numberOfSportsPerType[sportType] = numberOfSports
+                    if numberOfSports > 0:
                         colors.append(sportType.background_color_hex)
 
                 gradient = __determine_gradient(colors)
@@ -356,7 +356,7 @@ def construct_blueprint():
                 days.append(
                     {
                         'number': dayNumber,
-                        'numberOfTracksPerType': numberOfTracksPerType,
+                        'numberOfSportsPerType': numberOfSportsPerType,
                         'gradient': gradient,
                         'isWeekend': isWeekend,
                     }
@@ -380,7 +380,7 @@ def construct_blueprint():
             selectedYear=year,
         )
 
-    def __get_number_of_tracks_per_day_by_type(
+    def __get_number_of_sports_per_day_by_type(
         sports: list[Sport], sportType: SportType, year: int, month: int, day: int
     ) -> int:
         counter = 0
