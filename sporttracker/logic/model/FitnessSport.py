@@ -8,18 +8,18 @@ from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCatego
 from sporttracker.logic.model.db import db
 
 
-class WorkoutSport(Sport):  # type: ignore[name-defined]
-    __tablename__ = 'workout_sport'
+class FitnessSport(Sport):  # type: ignore[name-defined]
+    __tablename__ = 'fitness_sport'
     id: Mapped[int] = mapped_column(ForeignKey('sport.id'), primary_key=True)
     workout_type = db.Column(db.Enum(FitnessWorkoutType), nullable=True)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'workout_sport',
+        'polymorphic_identity': 'fitness_sport',
     }
 
     def __repr__(self):
         return (
-            f'WorkoutSport('
+            f'FitnessSport('
             f'name: {self.name}, '
             f'start_time: {self.start_time}, '
             f'duration: {self.duration}, '
@@ -38,9 +38,9 @@ class WorkoutSport(Sport):  # type: ignore[name-defined]
         ]
 
 
-def get_workout_sport_by_id(distance_sport_id: int) -> WorkoutSport | None:
+def get_fitness_sport_by_id(distance_sport_id: int) -> FitnessSport | None:
     return (
-        WorkoutSport.query.filter(WorkoutSport.user_id == current_user.id)
-        .filter(WorkoutSport.id == distance_sport_id)
+        FitnessSport.query.filter(FitnessSport.user_id == current_user.id)
+        .filter(FitnessSport.id == distance_sport_id)
         .first()
     )

@@ -38,7 +38,7 @@ from sporttracker.logic.model.Sport import (
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import get_user_by_id
-from sporttracker.logic.model.WorkoutSport import WorkoutSport
+from sporttracker.logic.model.FitnessSport import FitnessSport
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -86,15 +86,15 @@ class DistanceSportModel(BaseSportModel):
 
 
 @dataclass
-class WorkoutSportModel(BaseSportModel):
+class FitnessSportModel(BaseSportModel):
     workoutCategories: list[str]
     workoutType: str | None = None
 
     @staticmethod
     def create_from_sport(
-        sport: WorkoutSport,
-    ) -> 'WorkoutSportModel':
-        return WorkoutSportModel(
+        sport: FitnessSport,
+    ) -> 'FitnessSportModel':
+        return FitnessSportModel(
             id=sport.id,
             name=sport.name,  # type: ignore[arg-type]
             type=sport.type,
@@ -110,7 +110,7 @@ class WorkoutSportModel(BaseSportModel):
 @dataclass
 class MonthModel:
     name: str
-    entries: list[DistanceSportModel | WorkoutSportModel | MaintenanceEvent]
+    entries: list[DistanceSportModel | FitnessSportModel | MaintenanceEvent]
     goals: list[MonthGoalSummary]
 
 
@@ -211,12 +211,12 @@ def __get_month_model(
         quickFilterState.get_active_types(),
     )
 
-    sportModels: list[DistanceSportModel | WorkoutSportModel] = []
+    sportModels: list[DistanceSportModel | FitnessSportModel] = []
     for sport in sports:
         if sport.type in WorkoutType.get_distance_sport_types():
             sportModels.append(DistanceSportModel.create_from_sport(sport))
         elif sport.type in WorkoutType.get_workout_sport_types():
-            sportModels.append(WorkoutSportModel.create_from_sport(sport))
+            sportModels.append(FitnessSportModel.create_from_sport(sport))
 
     maintenanceEvents = get_maintenance_events_by_year_and_month_by_type(
         monthDate.year, monthDate.month, quickFilterState.get_active_types()

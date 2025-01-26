@@ -26,7 +26,7 @@
                             </button>
 
                             {% call macros.deleteModal(gettext('Delete Track?'), gettext('Do you really want to delete the track "%(name)s" (ID: %(id)d)?', name=sport.name, id=sport_id)) %}
-                                <a href="{{ url_for('workoutSports.delete', sport_id=sport_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                                <a href="{{ url_for('fitnessSports.delete', sport_id=sport_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
                             {% endcall %}
                         {% else %}
                             {% call macros.headline(gettext('New Workout')) %}
@@ -38,7 +38,7 @@
 
                 <div class="row mt-5 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
-                        <form role="form" action="{% if sport %}{{ url_for('workoutSports.editPost', sport_id=sport_id) }}{% else %}{{ url_for('workoutSports.addPost') }}{% endif %}"
+                        <form role="form" action="{% if sport %}{{ url_for('fitnessSports.editPost', sport_id=sport_id) }}{% else %}{{ url_for('fitnessSports.addPost') }}{% endif %}"
                               method="post"
                               enctype=multipart/form-data>
 

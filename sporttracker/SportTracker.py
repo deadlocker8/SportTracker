@@ -34,7 +34,7 @@ from sporttracker.blueprints import (
     AnnualAchievements,
     MonthGoalsDuration,
     DistanceSports,
-    WorkoutSports,
+    FitnessSports,
 )
 from sporttracker.helpers import Helpers
 from sporttracker.helpers.SettingsChecker import SettingsChecker
@@ -250,7 +250,7 @@ class SportTracker(FlaskBaseApp):
                 app.config['GPX_SERVICE'], self._settings['tileHunting']
             )
         )
-        app.register_blueprint(WorkoutSports.construct_blueprint())
+        app.register_blueprint(FitnessSports.construct_blueprint())
         app.register_blueprint(MonthGoals.construct_blueprint())
         app.register_blueprint(MonthGoalsDistance.construct_blueprint())
         app.register_blueprint(MonthGoalsCount.construct_blueprint())

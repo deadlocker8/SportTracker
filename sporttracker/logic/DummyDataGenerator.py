@@ -24,7 +24,7 @@ from sporttracker.logic.model.FitnessWorkoutCategory import (
     update_workout_categories_by_sport_id,
     FitnessWorkoutCategoryType,
 )
-from sporttracker.logic.model.WorkoutSport import WorkoutSport
+from sporttracker.logic.model.FitnessSport import FitnessSport
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.db import db
 
@@ -312,7 +312,7 @@ class DummyDataGenerator:
                 fitnessWorkoutType = random.choice([x for x in FitnessWorkoutType])
                 fitnessWorkoutCategory = random.choice([x for x in FitnessWorkoutCategoryType])
 
-                sport = WorkoutSport(
+                sport = FitnessSport(
                     name=random.choice(self.FITNESS_NAMES),
                     type=WorkoutType.FITNESS,
                     start_time=fakeTime,

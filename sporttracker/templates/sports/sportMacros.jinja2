@@ -231,7 +231,7 @@
                             </div>
                         </div>
 
-                        <a href="{{ url_for('workoutSports.edit', sport_id=sport.id) }}" class="text-decoration-none stretched-link"></a>
+                        <a href="{{ url_for('fitnessSports.edit', sport_id=sport.id) }}" class="text-decoration-none stretched-link"></a>
                     </div>
                 </div>
             </div>
@@ -268,7 +268,7 @@
         {% for entry in monthModel.entries %}
             {% if entry.__class__.__name__ == 'DistanceSportModel' %}
                 {{ render_distance_sport_card(entry) }}
-            {% elif entry.__class__.__name__ == 'WorkoutSportModel' %}
+            {% elif entry.__class__.__name__ == 'FitnessSportModel' %}
                 {{ render_workout_sport_card(entry) }}
             {% elif entry.__class__.__name__ == 'MaintenanceEvent' %}
                 {{ render_maintenance_event_card(entry) }}

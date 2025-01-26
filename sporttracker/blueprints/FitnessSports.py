@@ -8,22 +8,22 @@ from pydantic import ConfigDict
 from sporttracker.blueprints.Sports import BaseSportFormModel
 from sporttracker.logic import Constants
 from sporttracker.logic.model.CustomSportField import CustomSportField
+from sporttracker.logic.model.FitnessSport import FitnessSport, get_fitness_sport_by_id
+from sporttracker.logic.model.FitnessWorkoutCategory import (
+    update_workout_categories_by_sport_id,
+    FitnessWorkoutCategoryType,
+)
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.Participant import get_participants_by_ids, get_participants
 from sporttracker.logic.model.PlannedTour import get_planned_tours
 from sporttracker.logic.model.Sport import get_sport_names_by_type
 from sporttracker.logic.model.WorkoutType import WorkoutType
-from sporttracker.logic.model.FitnessWorkoutCategory import (
-    update_workout_categories_by_sport_id,
-    FitnessWorkoutCategoryType,
-)
-from sporttracker.logic.model.WorkoutSport import WorkoutSport, get_workout_sport_by_id
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-class WorkoutSportFormModel(BaseSportFormModel):
+class FitnessSportFormModel(BaseSportFormModel):
     workoutType: str
     workoutCategories: list[str] | None = None
 
@@ -33,18 +33,18 @@ class WorkoutSportFormModel(BaseSportFormModel):
 
 
 def construct_blueprint():
-    workoutSports = Blueprint(
-        'workoutSports', __name__, static_folder='static', url_prefix='/workoutSports'
+    fitnessSports = Blueprint(
+        'fitnessSports', __name__, static_folder='static', url_prefix='/fitnessSports'
     )
 
-    @workoutSports.route('/post', methods=['POST'])
+    @fitnessSports.route('/post', methods=['POST'])
     @login_required
     @validate()
-    def addPost(form: WorkoutSportFormModel):
+    def addPost(form: FitnessSportFormModel):
         participantIds = [int(item) for item in request.form.getlist('participants')]
         participants = get_participants_by_ids(participantIds)
 
-        sport = WorkoutSport(
+        sport = FitnessSport(
             name=form.name,
             type=WorkoutType(form.type),  # type: ignore[call-arg]
             start_time=form.calculate_start_time(),
@@ -74,15 +74,15 @@ def construct_blueprint():
             )
         )
 
-    @workoutSports.route('/edit/<int:sport_id>')
+    @fitnessSports.route('/edit/<int:sport_id>')
     @login_required
     def edit(sport_id: int):
-        sport = get_workout_sport_by_id(sport_id)
+        sport = get_fitness_sport_by_id(sport_id)
 
         if sport is None:
             abort(404)
 
-        sportModel = WorkoutSportFormModel(
+        sportModel = FitnessSportFormModel(
             name=sport.name,  # type: ignore[arg-type]
             type=sport.type,
             date=sport.start_time.strftime('%Y-%m-%d'),  # type: ignore[attr-defined]
@@ -112,11 +112,11 @@ def construct_blueprint():
             plannedTours=get_planned_tours([sport.type]),
         )
 
-    @workoutSports.route('/edit/<int:sport_id>', methods=['POST'])
+    @fitnessSports.route('/edit/<int:sport_id>', methods=['POST'])
     @login_required
     @validate()
-    def editPost(sport_id: int, form: WorkoutSportFormModel):
-        sport = get_workout_sport_by_id(sport_id)
+    def editPost(sport_id: int, form: FitnessSportFormModel):
+        sport = get_fitness_sport_by_id(sport_id)
 
         if sport is None:
             abort(404)
@@ -151,10 +151,10 @@ def construct_blueprint():
             )
         )
 
-    @workoutSports.route('/delete/<int:sport_id>')
+    @fitnessSports.route('/delete/<int:sport_id>')
     @login_required
     def delete(sport_id: int):
-        sport = get_workout_sport_by_id(sport_id)
+        sport = get_fitness_sport_by_id(sport_id)
 
         if sport is None:
             abort(404)
@@ -165,4 +165,4 @@ def construct_blueprint():
 
         return redirect(url_for('sports.listSports'))
 
-    return workoutSports
+    return fitnessSports
