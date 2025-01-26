@@ -20,9 +20,9 @@ from sporttracker.logic.model.PlannedTour import PlannedTour, TravelType, Travel
 from sporttracker.logic.model.Sport import Sport
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User, create_user, Language
-from sporttracker.logic.model.WorkoutCategory import (
+from sporttracker.logic.model.FitnessWorkoutCategory import (
     update_workout_categories_by_sport_id,
-    WorkoutCategoryType,
+    FitnessWorkoutCategoryType,
 )
 from sporttracker.logic.model.WorkoutSport import WorkoutSport
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
@@ -310,7 +310,7 @@ class DummyDataGenerator:
                 fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
                 duration = round(random.uniform(durationMin, durationMax), 2)
                 fitnessWorkoutType = random.choice([x for x in FitnessWorkoutType])
-                workoutCategory = random.choice([x for x in WorkoutCategoryType])
+                fitnessWorkoutCategory = random.choice([x for x in FitnessWorkoutCategoryType])
 
                 sport = WorkoutSport(
                     name=random.choice(self.FITNESS_NAMES),
@@ -328,7 +328,7 @@ class DummyDataGenerator:
                 db.session.add(sport)
                 db.session.commit()
 
-                update_workout_categories_by_sport_id(sport.id, [workoutCategory])
+                update_workout_categories_by_sport_id(sport.id, [fitnessWorkoutCategory])
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 

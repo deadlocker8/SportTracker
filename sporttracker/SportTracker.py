@@ -47,13 +47,14 @@ from sporttracker.logic.MaintenanceEventsCollector import (
 from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.model.CustomSportField import CustomSportFieldType
 from sporttracker.logic.model.DistanceSport import DistanceSport
+from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCategoryType
+from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.PlannedTour import (
     TravelType,
     TravelDirection,
     get_new_planned_tour_ids,
     get_updated_planned_tour_ids,
 )
-from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import (
     User,
     Language,
@@ -61,8 +62,7 @@ from sporttracker.logic.model.User import (
     DistanceSportInfoItem,
     DistanceSportInfoItemType,
 )
-from sporttracker.logic.model.WorkoutCategory import WorkoutCategoryType
-from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
@@ -161,7 +161,7 @@ class SportTracker(FlaskBaseApp):
                 'numberOfTriggeredMaintenanceReminders': get_number_of_triggered_maintenance_reminders(),
                 'currentYear': datetime.now().year,
                 'fitnessWorkoutTypes': [x for x in FitnessWorkoutType],
-                'workoutCategoryTypes': [x for x in WorkoutCategoryType],
+                'fitnessWorkoutCategoryTypes': [x for x in FitnessWorkoutCategoryType],
             }
 
         def format_decimal(value: int | float, decimals: int = 1) -> str:

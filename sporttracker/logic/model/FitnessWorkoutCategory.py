@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from sporttracker.logic.model.db import db
 
 
-class WorkoutCategoryType(enum.Enum):
+class FitnessWorkoutCategoryType(enum.Enum):
     ARMS = (
         'ARMS',
         'humerus_alt',
@@ -52,23 +52,23 @@ class WorkoutCategoryType(enum.Enum):
             return gettext('Yoga')
 
         raise ValueError(
-            f'Could not get localized name for unsupported WorkoutCategoryType: {self}'
+            f'Could not get localized name for unsupported FitnessWorkoutCategoryType: {self}'
         )
 
 
-class WorkoutCategory(db.Model):  # type: ignore[name-defined]
+class FitnessWorkoutCategory(db.Model):  # type: ignore[name-defined]
     sport_id: Mapped[int] = mapped_column(Integer, nullable=False, primary_key=True)
     workout_category_type = db.Column(
-        db.Enum(WorkoutCategoryType), nullable=False, primary_key=True
+        db.Enum(FitnessWorkoutCategoryType), nullable=False, primary_key=True
     )
 
 
 def update_workout_categories_by_sport_id(
-    sportId: int, newWorkoutCategories: list[WorkoutCategoryType]
+    sportId: int, newWorkoutCategories: list[FitnessWorkoutCategoryType]
 ) -> None:
-    WorkoutCategory.query.filter(WorkoutCategory.sport_id == sportId).delete()
+    FitnessWorkoutCategory.query.filter(FitnessWorkoutCategory.sport_id == sportId).delete()
 
     for category in newWorkoutCategories:
-        db.session.add(WorkoutCategory(sport_id=sportId, workout_category_type=category))
+        db.session.add(FitnessWorkoutCategory(sport_id=sportId, workout_category_type=category))
 
     db.session.commit()

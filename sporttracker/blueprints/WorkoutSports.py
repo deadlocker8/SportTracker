@@ -13,9 +13,9 @@ from sporttracker.logic.model.Participant import get_participants_by_ids, get_pa
 from sporttracker.logic.model.PlannedTour import get_planned_tours
 from sporttracker.logic.model.Sport import get_sport_names_by_type
 from sporttracker.logic.model.WorkoutType import WorkoutType
-from sporttracker.logic.model.WorkoutCategory import (
+from sporttracker.logic.model.FitnessWorkoutCategory import (
     update_workout_categories_by_sport_id,
-    WorkoutCategoryType,
+    FitnessWorkoutCategoryType,
 )
 from sporttracker.logic.model.WorkoutSport import WorkoutSport, get_workout_sport_by_id
 from sporttracker.logic.model.db import db
@@ -56,7 +56,7 @@ def construct_blueprint():
         )
 
         workoutCategories = [
-            WorkoutCategoryType(value)  # type: ignore[call-arg]
+            FitnessWorkoutCategoryType(value)  # type: ignore[call-arg]
             for key, value in request.form.items()
             if key.startswith('workoutCategories')
         ]
@@ -133,7 +133,7 @@ def construct_blueprint():
         sport.custom_fields = form.model_extra
 
         workoutCategories = [
-            WorkoutCategoryType(value)  # type: ignore[call-arg]
+            FitnessWorkoutCategoryType(value)  # type: ignore[call-arg]
             for key, value in request.form.items()
             if key.startswith('workoutCategories')
         ]

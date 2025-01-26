@@ -60,7 +60,7 @@
                             {% if sport %}
                                 {% set selectedWorkoutCategories=sport.workoutCategories %}
                             {% endif %}
-                            {{ sportMacros.check_button_select(gettext('Workout Categories'), 'label', 'workout-category', 'workoutCategories', workoutCategoryTypes, selectedWorkoutCategories, 'sport') }}
+                            {{ sportMacros.check_button_select(gettext('Workout Categories'), 'label', 'workout-category', 'workoutCategories', fitnessWorkoutCategoryTypes, selectedWorkoutCategories, 'sport') }}
 
                             {{ sportMacros.track_form_average_heart_rate(sport) }}
 

@@ -4,7 +4,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.model.Sport import Sport
-from sporttracker.logic.model.WorkoutCategory import WorkoutCategory
+from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCategory
 from sporttracker.logic.model.db import db
 
 
@@ -32,7 +32,9 @@ class WorkoutSport(Sport):  # type: ignore[name-defined]
     def get_workout_categories(self) -> list[str]:
         return [
             c.workout_category_type
-            for c in WorkoutCategory.query.filter(WorkoutCategory.sport_id == self.id).all()
+            for c in FitnessWorkoutCategory.query.filter(
+                FitnessWorkoutCategory.sport_id == self.id
+            ).all()
         ]
 
 
