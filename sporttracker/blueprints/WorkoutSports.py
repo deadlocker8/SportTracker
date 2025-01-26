@@ -1,5 +1,4 @@
 import logging
-from typing import Any
 
 from flask import Blueprint, render_template, abort, redirect, url_for, request
 from flask_login import login_required, current_user
@@ -8,8 +7,8 @@ from pydantic import ConfigDict
 
 from sporttracker.blueprints.Sports import BaseSportFormModel
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.CustomSportField import CustomSportField
+from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.Participant import get_participants_by_ids, get_participants
 from sporttracker.logic.model.PlannedTour import get_planned_tours
 from sporttracker.logic.model.Sport import get_sport_names_by_type
@@ -19,7 +18,6 @@ from sporttracker.logic.model.WorkoutCategory import (
     WorkoutCategoryType,
 )
 from sporttracker.logic.model.WorkoutSport import WorkoutSport, get_workout_sport_by_id
-from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -34,7 +32,7 @@ class WorkoutSportFormModel(BaseSportFormModel):
     )
 
 
-def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, Any]):
+def construct_blueprint():
     workoutSports = Blueprint(
         'workoutSports', __name__, static_folder='static', url_prefix='/workoutSports'
     )
@@ -160,8 +158,6 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
 
         if sport is None:
             abort(404)
-
-        gpxService.delete_gpx(sport, current_user.id)
 
         LOGGER.debug(f'Deleted workout sport: {sport}')
         db.session.delete(sport)

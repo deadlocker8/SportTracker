@@ -1,7 +1,6 @@
 import logging
 from dataclasses import dataclass
 from datetime import datetime, date
-from typing import Any
 
 import flask_babel
 from babel.dates import get_month_names
@@ -13,7 +12,6 @@ from pydantic import BaseModel
 
 from sporttracker.logic import Constants
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
-from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
     QuickFilterState,
@@ -133,7 +131,7 @@ class BaseSportFormModel(BaseModel):
         return 3600 * self.durationHours + 60 * self.durationMinutes + self.durationSeconds
 
 
-def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, Any]):
+def construct_blueprint():
     sports = Blueprint('sports', __name__, static_folder='static', url_prefix='/sports')
 
     @sports.route('/', defaults={'year': None, 'month': None})

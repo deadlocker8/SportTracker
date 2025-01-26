@@ -244,19 +244,13 @@ class SportTracker(FlaskBaseApp):
     def _register_blueprints(self, app):
         app.register_blueprint(Authentication.construct_blueprint())
         app.register_blueprint(General.construct_blueprint())
-        app.register_blueprint(
-            Sports.construct_blueprint(app.config['GPX_SERVICE'], self._settings['tileHunting'])
-        )
+        app.register_blueprint(Sports.construct_blueprint())
         app.register_blueprint(
             DistanceSports.construct_blueprint(
                 app.config['GPX_SERVICE'], self._settings['tileHunting']
             )
         )
-        app.register_blueprint(
-            WorkoutSports.construct_blueprint(
-                app.config['GPX_SERVICE'], self._settings['tileHunting']
-            )
-        )
+        app.register_blueprint(WorkoutSports.construct_blueprint())
         app.register_blueprint(MonthGoals.construct_blueprint())
         app.register_blueprint(MonthGoalsDistance.construct_blueprint())
         app.register_blueprint(MonthGoalsCount.construct_blueprint())
