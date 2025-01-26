@@ -62,7 +62,7 @@ from sporttracker.logic.model.User import (
     DistanceSportInfoItemType,
 )
 from sporttracker.logic.model.WorkoutCategory import WorkoutCategoryType
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
@@ -160,7 +160,7 @@ class SportTracker(FlaskBaseApp):
                 'updatedPlannedTourIds': get_updated_planned_tour_ids(),
                 'numberOfTriggeredMaintenanceReminders': get_number_of_triggered_maintenance_reminders(),
                 'currentYear': datetime.now().year,
-                'workoutTypes': [x for x in WorkoutType],
+                'fitnessWorkoutTypes': [x for x in FitnessWorkoutType],
                 'workoutCategoryTypes': [x for x in WorkoutCategoryType],
             }
 

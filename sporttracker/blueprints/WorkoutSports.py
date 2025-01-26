@@ -19,15 +19,15 @@ from sporttracker.logic.model.WorkoutCategory import (
     WorkoutCategoryType,
 )
 from sporttracker.logic.model.WorkoutSport import WorkoutSport, get_workout_sport_by_id
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 class WorkoutSportFormModel(BaseSportFormModel):
-    workoutCategories: list[str]
     workoutType: str
+    workoutCategories: list[str] | None = None
 
     model_config = ConfigDict(
         extra='allow',
@@ -54,7 +54,7 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             custom_fields=form.model_extra,
             user_id=current_user.id,
             participants=participants,
-            workout_type=WorkoutType(form.workoutType),  # type: ignore[call-arg]
+            workout_type=FitnessWorkoutType(form.workoutType),  # type: ignore[call-arg]
         )
 
         workoutCategories = [
@@ -128,7 +128,9 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
         sport.duration = form.calculate_duration()  # type: ignore[assignment]
         participantIds = [int(item) for item in request.form.getlist('participants')]
         sport.participants = get_participants_by_ids(participantIds)
-        sport.workout_type = None if form.workoutType is None else WorkoutType(form.workoutType)  # type: ignore[call-arg]
+        sport.workout_type = (
+            None if form.workoutType is None else FitnessWorkoutType(form.workoutType)  # type: ignore[call-arg]
+        )
 
         sport.custom_fields = form.model_extra
 

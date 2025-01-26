@@ -1,17 +1,17 @@
 from flask_login import current_user
+from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.model.Sport import Sport
 from sporttracker.logic.model.WorkoutCategory import WorkoutCategory
-from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 
 class WorkoutSport(Sport):  # type: ignore[name-defined]
     __tablename__ = 'workout_sport'
     id: Mapped[int] = mapped_column(ForeignKey('sport.id'), primary_key=True)
-    workout_type = db.Column(db.Enum(WorkoutType), nullable=True)
+    workout_type = db.Column(db.Enum(FitnessWorkoutType), nullable=True)
 
     __mapper_args__ = {
         'polymorphic_identity': 'workout_sport',

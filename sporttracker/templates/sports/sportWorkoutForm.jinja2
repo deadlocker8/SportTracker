@@ -54,7 +54,7 @@
                             {% if sport %}
                                 {% set selectedWorkoutType=sport.workoutType %}
                             {% endif %}
-                            {{ plannedToursMacros.radio_button_select(gettext('Workout Type'), 'fitness_center', 'workout-type', 'workoutType', workoutTypes, selectedWorkoutType, 'sport') }}
+                            {{ plannedToursMacros.radio_button_select(gettext('Workout Type'), 'fitness_center', 'workout-type', 'workoutType', fitnessWorkoutTypes, selectedWorkoutType, 'sport') }}
 
                             {% set selectedWorkoutCategories=[] %}
                             {% if sport %}

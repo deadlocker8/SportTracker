@@ -3,7 +3,7 @@ import enum
 from flask_babel import gettext
 
 
-class WorkoutType(enum.Enum):
+class FitnessWorkoutType(enum.Enum):
     DURATION_BASED = (
         'DURATION_BASED',
         'update',
@@ -37,4 +37,4 @@ class WorkoutType(enum.Enum):
         elif self == self.REPETITION_BASED:
             return gettext('Repetition-based')
 
-        raise ValueError(f'Could not get localized name for unsupported WorkoutType: {self}')
+        raise ValueError(f'Could not get localized name for unsupported FitnessWorkoutType: {self}')

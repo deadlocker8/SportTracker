@@ -25,7 +25,7 @@ from sporttracker.logic.model.WorkoutCategory import (
     WorkoutCategoryType,
 )
 from sporttracker.logic.model.WorkoutSport import WorkoutSport
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -309,7 +309,7 @@ class DummyDataGenerator:
             for index in range(numberOfTracksPerMonth):
                 fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
                 duration = round(random.uniform(durationMin, durationMax), 2)
-                workoutType = random.choice([x for x in WorkoutType])
+                workoutType = random.choice([x for x in FitnessWorkoutType])
                 workoutCategory = random.choice([x for x in WorkoutCategoryType])
 
                 sport = WorkoutSport(
