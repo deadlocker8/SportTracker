@@ -43,8 +43,8 @@ class SportType(enum.Enum):
         True,
         2,
     )
-    WORKOUT = (
-        'WORKOUT',
+    FITNESS = (
+        'FITNESS',
         'fitness_center',
         False,
         'bg-purple',
@@ -100,7 +100,7 @@ class SportType(enum.Enum):
             return gettext('Running')
         elif self == self.HIKING:
             return gettext('Hiking')
-        elif self == self.WORKOUT:
+        elif self == self.FITNESS:
             return gettext('Workout')
 
         raise ValueError(f'Could not get localized name for unsupported SportType: {self}')
@@ -116,4 +116,4 @@ class SportType(enum.Enum):
 
     @staticmethod
     def get_workout_sport_types() -> list[SportType]:
-        return [SportType.WORKOUT]
+        return [SportType.FITNESS]

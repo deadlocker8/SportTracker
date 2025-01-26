@@ -36,12 +36,12 @@ class DummyDataGenerator:
     NUMBER_OF_TRACKS_PER_MONTH_BIKING = 7
     NUMBER_OF_TRACKS_PER_MONTH_RUNNING = 2
     NUMBER_OF_TRACKS_PER_MONTH_HIKING = 1
-    NUMBER_OF_TRACKS_PER_MONTH_WORKOUT = 2
+    NUMBER_OF_TRACKS_PER_MONTH_FITNESS = 2
     AVERAGE_SPEED_IN_KMH_BIKING = 22
     AVERAGE_SPEED_IN_KMH_RUNNING = 10
     AVERAGE_SPEED_IN_KMH_HIKING = 4
     TRACK_NAMES = ['Short trip', 'Afterwork I', 'Afterwork II', 'Berlin + Potsdam', 'Megatour']
-    WORKOUT_NAMES = ['Core Workout', 'HIIT', 'Leg Day', 'Biceps']
+    FITNESS_NAMES = ['Core Workout', 'HIIT', 'Leg Day', 'Biceps']
     GPX_FILE_NAMES = ['gpxTrack_1.gpx', 'gpxTrack_2.gpx']
     MAINTENANCE_EVENT_NAMES = ['chain oiled', 'new pedals', 'new front tire']
 
@@ -106,8 +106,8 @@ class DummyDataGenerator:
 
             self.__generate_demo_duration_based_tracks(
                 user=user,
-                sportType=SportType.WORKOUT,
-                numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_WORKOUT,
+                sportType=SportType.FITNESS,
+                numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_FITNESS,
                 numberOfTracksWithParticipants=1,
                 durationMin=20 * 60,
                 durationMax=90 * 60,
@@ -176,7 +176,7 @@ class DummyDataGenerator:
 
         db.session.add(
             MonthGoalDuration(
-                type=SportType.WORKOUT,
+                type=SportType.FITNESS,
                 year=self._now.year,
                 month=self._now.month,
                 duration_minimum=2 * 60 * 60,
@@ -313,7 +313,7 @@ class DummyDataGenerator:
                 workoutCategory = random.choice([x for x in WorkoutCategoryType])
 
                 sport = WorkoutSport(
-                    name=random.choice(self.WORKOUT_NAMES),
+                    name=random.choice(self.FITNESS_NAMES),
                     type=sportType,
                     start_time=fakeTime,
                     duration=duration,

@@ -494,4 +494,4 @@ class TestSports(SeleniumTestBaseClass):
         self.__fill_duration_based_form(selenium, '', '', '', '', '', '', '', 'workout-type-1', [])
         self.click_button_by_id(selenium, 'buttonSaveTrack')
 
-        assert selenium.current_url.endswith('/sports/add/WORKOUT')
+        assert selenium.current_url.endswith('/sports/add/FITNESS')
