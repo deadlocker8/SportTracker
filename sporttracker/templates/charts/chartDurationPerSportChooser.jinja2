@@ -9,7 +9,7 @@
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('charts') }}
-        {% import 'sports/sportMacros.jinja2' as sportMacros with context %}
+        {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
@@ -26,19 +26,19 @@
                         <h3>{{ gettext('Choose track by name') }}</h3>
                         <p>{{ gettext('Note: Only names with at least two tracks are listed') }}</p>
 
-                        {% for workoutType, sportNames in sportNamesByWorkoutType.items() %}
+                        {% for workoutType, workoutNames in workoutNamesByWorkoutType.items() %}
                             <div class="row mt-5 mb-3">
                                 <div class="col col-12 mx-auto">
                                     <h3 class="d-flex align-items-center justify-content-center">
-                                        {{ sportMacros.sport_type_icon_small(workoutType, classes='me-3') }}
+                                        {{ workoutMacros.workout_type_icon_small(workoutType, classes='me-3') }}
                                         <span class="me-3">{{ workoutType.get_localized_name() }}</span>
                                     </h3>
                                 </div>
                             </div>
 
                             <div class="list-group text-start">
-                                {% for name in sportNames %}
-                                    <a href="{{ url_for('charts.chartDurationPerSport', sport_type=workoutType.name, name=name) }}"
+                                {% for name in workoutNames %}
+                                    <a href="{{ url_for('charts.chartDurationPerWorkout', workout_type=workoutType.name, name=name) }}"
                                        class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
                                         {{ name }}
                                         <span class="material-symbols-outlined filled text-primary">send</span>

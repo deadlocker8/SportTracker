@@ -27,7 +27,7 @@ class SeleniumTestBaseClass(ABC):
         selenium.find_elements(By.TAG_NAME, 'button')[0].click()
 
         now = datetime.now()
-        assert selenium.current_url.endswith(f'/sports/{now.year}/{now.month}')
+        assert selenium.current_url.endswith(f'/workouts/{now.year}/{now.month}')
 
     @staticmethod
     def logout(selenium) -> None:

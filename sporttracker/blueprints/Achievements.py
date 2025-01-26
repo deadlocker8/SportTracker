@@ -27,11 +27,11 @@ def construct_blueprint():
     def __get_achievements() -> dict[WorkoutType, list[Achievement]]:
         result = {}
 
-        for workoutType in WorkoutType.get_distance_sport_types():
+        for workoutType in WorkoutType.get_distance_workout_types():
             achievementList = __create_distance_based_achievements(workoutType)
             result[workoutType] = achievementList
 
-        for workoutType in WorkoutType.get_workout_sport_types():
+        for workoutType in WorkoutType.get_workout_workout_types():
             achievementList = __create_duration_based_achievements(workoutType)
             result[workoutType] = achievementList
 
@@ -56,11 +56,11 @@ def construct_blueprint():
 
         longestDistance = 0.0
         longestTrackDate = gettext('no date')
-        longestTrack = AchievementCalculator.get_sport_with_longest_distance_by_type(workoutType)
+        longestTrack = AchievementCalculator.get_workout_with_longest_distance_by_type(workoutType)
         if longestTrack is not None:
             longestDistance = longestTrack.distance / 1000
             longestTrackDate = format_datetime(longestTrack.start_time, format='dd.MM.yyyy')
-            longestTrackDate = f'<a href="{url_for("maps.showSingleTrack", sport_id=longestTrack.id)}">{longestTrackDate}</a>'
+            longestTrackDate = f'<a href="{url_for("maps.showSingleTrack", workout_id=longestTrack.id)}">{longestTrackDate}</a>'
 
         achievementList.append(
             Achievement(
@@ -134,11 +134,11 @@ def construct_blueprint():
 
         longestDuration = 0
         longestDurationDate = gettext('no date')
-        longestTrack = AchievementCalculator.get_sport_with_longest_duration_by_type(workoutType)
+        longestTrack = AchievementCalculator.get_workout_with_longest_duration_by_type(workoutType)
         if longestTrack is not None:
             longestDuration = longestTrack.duration
             longestDurationDate = format_datetime(longestTrack.start_time, format='dd.MM.yyyy')
-            longestDurationDate = f'<a href="{url_for("tracks.edit", sport_id=longestTrack.id)}">{longestDurationDate}</a>'
+            longestDurationDate = f'<a href="{url_for("tracks.edit", workout_id=longestTrack.id)}">{longestDurationDate}</a>'
 
         achievementList.append(
             Achievement(

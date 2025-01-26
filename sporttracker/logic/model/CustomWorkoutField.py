@@ -9,7 +9,7 @@ from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 
-class CustomSportFieldType(enum.Enum):
+class CustomWorkoutFieldType(enum.Enum):
     STRING = 'STRING'
     INTEGER = 'INTEGER'
     FLOAT = 'FLOAT'
@@ -31,14 +31,14 @@ class CustomSportFieldType(enum.Enum):
             return gettext('Float')
 
         raise ValueError(
-            f'Could not get localized name for unsupported CustomSportFieldType: {self}'
+            f'Could not get localized name for unsupported CustomWorkoutFieldType: {self}'
         )
 
 
-class CustomSportField(db.Model):  # type: ignore[name-defined]
+class CustomWorkoutField(db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    type = db.Column(db.Enum(CustomSportFieldType))
-    sport_type = db.Column(db.Enum(WorkoutType))
+    type = db.Column(db.Enum(CustomWorkoutFieldType))
+    workout_type = db.Column(db.Enum(WorkoutType))
     name: Mapped[String] = mapped_column(String, nullable=False)
     is_required: Mapped[bool] = mapped_column(Boolean, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -48,27 +48,27 @@ class CustomSportField(db.Model):  # type: ignore[name-defined]
 
     def __repr__(self):
         return (
-            f'CustomSportField('
+            f'CustomWorkoutField('
             f'id: {self.id}, '
             f'type: {self.type}, '
-            f'sport_type: {self.sport_type}, '
+            f'workout_type: {self.workout_type}, '
             f'name: {self.name}, '
             f'is_required: {self.is_required}, '
             f'user_id: {self.user_id})'
         )
 
 
-def get_custom_fields_by_sport_type(
+def get_custom_fields_by_workout_type(
     workoutTypes: list[WorkoutType] | None = None,
-) -> dict[WorkoutType, list[CustomSportField]]:
+) -> dict[WorkoutType, list[CustomWorkoutField]]:
     if workoutTypes is None:
         workoutTypes = [s for s in WorkoutType]
 
     customFieldsByWorkoutType = {}
     for workoutType in workoutTypes:
         customFieldsByWorkoutType[workoutType] = (
-            CustomSportField.query.filter(CustomSportField.user_id == current_user.id)
-            .filter(CustomSportField.sport_type == workoutType)
+            CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
+            .filter(CustomWorkoutField.workout_type == workoutType)
             .all()
         )
     return customFieldsByWorkoutType
@@ -76,7 +76,7 @@ def get_custom_fields_by_sport_type(
 
 # List of reserved names that are not allowed to be used as custom field names.
 # Otherwise, the HTML form would include multiple inputs with the same name leading to unexpected behaviour.
-# The actual inputs will be prefixed with "sport-" in the HTML form.
+# The actual inputs will be prefixed with "workout-" in the HTML form.
 RESERVED_FIELD_NAMES = [
     'type' 'name',
     'date',
@@ -89,6 +89,8 @@ RESERVED_FIELD_NAMES = [
     'elevationSum',
     'gpxFileName',
     'participants',
-    'shareCode' 'workoutType',
+    'shareCode',
+    # TODO
+    'workoutType',
     'workoutCategories',
 ]

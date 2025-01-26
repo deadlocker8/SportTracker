@@ -3,20 +3,20 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {% if sport %}{{ gettext('Edit Biking Track') }}{% else %}{{ gettext('New Biking Track') }}{% endif %}</title>
+        <title>SportTracker - {% if workout %}{{ gettext('Edit Biking Track') }}{% else %}{{ gettext('New Biking Track') }}{% endif %}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('tracks') }}
 
-        {% import 'sports/sportMacros.jinja2' as sportMacros with context %}
+        {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col col-12 mx-auto">
-                        {% if sport %}
+                        {% if workout %}
                             {% call macros.headline(gettext('Edit Biking Track')) %}
                                 <span class="material-symbols-outlined filled fs-1">directions_bike</span>
                             {% endcall %}
@@ -24,8 +24,8 @@
                                 <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                             </button>
 
-                            {% call macros.deleteModal(gettext('Delete Track?'), gettext('Do you really want to delete the track "%(name)s" (ID: %(id)d)?', name=sport.name, id=sport_id)) %}
-                                <a href="{{ url_for('distanceSports.delete', sport_id=sport_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                            {% call macros.deleteModal(gettext('Delete Track?'), gettext('Do you really want to delete the track "%(name)s" (ID: %(id)d)?', name=workout.name, id=workout_id)) %}
+                                <a href="{{ url_for('distanceWorkouts.delete', workout_id=workout_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
                             {% endcall %}
                         {% else %}
                             {% call macros.headline(gettext('New Biking Track')) %}
@@ -37,35 +37,35 @@
 
                 <div class="row mt-5 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
-                        <form role="form" action="{% if sport %}{{ url_for('distanceSports.editPost', sport_id=sport_id) }}{% else %}{{ url_for('distanceSports.addPost') }}{% endif %}"
+                        <form role="form" action="{% if workout %}{{ url_for('distanceWorkouts.editPost', workout_id=workout_id) }}{% else %}{{ url_for('distanceWorkouts.addPost') }}{% endif %}"
                               method="post"
                               enctype=multipart/form-data>
 
                             <input type="hidden" class="form-control" id="track-type" name="type" value="BIKING">
 
-                            {{ sportMacros.track_form_name(sport, sportNames) }}
+                            {{ workoutMacros.track_form_name(workout, workoutNames) }}
 
-                            {{ sportMacros.track_form_start_time(sport) }}
+                            {{ workoutMacros.track_form_start_time(workout) }}
 
-                            {{ sportMacros.track_form_distance(sport) }}
+                            {{ workoutMacros.track_form_distance(workout) }}
 
-                            {{ sportMacros.track_form_duration(sport) }}
+                            {{ workoutMacros.track_form_duration(workout) }}
 
-                            {{ sportMacros.track_form_average_heart_rate(sport) }}
+                            {{ workoutMacros.track_form_average_heart_rate(workout) }}
 
-                            {{ sportMacros.track_form_elevation_sum(sport) }}
+                            {{ workoutMacros.track_form_elevation_sum(workout) }}
 
                             {% for field in customFields %}
-                                {{ sportMacros.track_form_custom_field_input(field) }}
+                                {{ workoutMacros.track_form_custom_field_input(field) }}
                             {% endfor %}
 
-                            {{ sportMacros.track_form_participants(sport, participants) }}
+                            {{ workoutMacros.track_form_participants(workout, participants) }}
 
-                            {{ sportMacros.track_form_gpx(sport, sport_id) }}
+                            {{ workoutMacros.track_form_gpx(workout, workout_id) }}
 
-                            {{ sportMacros.form_linked_planned_tour(sport, plannedTours) }}
+                            {{ workoutMacros.form_linked_planned_tour(workout, plannedTours) }}
 
-                            {{ sportMacros.form_share_link(sport, 'maps.showSharedSingleTrack', 'distanceSports.createShareCode')}}
+                            {{ workoutMacros.form_share_link(workout, 'maps.showSharedSingleTrack', 'distanceWorkouts.createShareCode')}}
 
                             <button type="submit" id="buttonSaveTrack" class="btn btn-success mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>

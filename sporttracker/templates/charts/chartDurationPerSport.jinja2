@@ -2,14 +2,14 @@
 {% call chartMacros.chart() %}
      const data = [
         {
-            x: {{ chartDataDurationPerSport['dates'] }},
-            y: {{ chartDataDurationPerSport['values'] }},
+            x: {{ chartDataDurationPerWorkout['dates'] }},
+            y: {{ chartDataDurationPerWorkout['values'] }},
             type: 'bar',
             marker: {
-                color: '{{ chartDataDurationPerSport.type.background_color_hex }}'
+                color: '{{ chartDataDurationPerWorkout.type.background_color_hex }}'
             },
-            name: '{{ chartDataDurationPerSport.type.name | capitalize }}',
-            text: {{ chartDataDurationPerSport['texts'] }}
+            name: '{{ chartDataDurationPerWorkout.type.name | capitalize }}',
+            text: {{ chartDataDurationPerWorkout['texts'] }}
         },
     ];
 
@@ -33,7 +33,7 @@
             tickformat: '.0f',
             showline: true,
             color: '#FFFFFF',
-            range: [{{ chartDataDurationPerSport.min }}, {{ chartDataDurationPerSport.max }}]
+            range: [{{ chartDataDurationPerWorkout.min }}, {{ chartDataDurationPerWorkout.max }}]
         },
         barmode: 'group',
         legend: {

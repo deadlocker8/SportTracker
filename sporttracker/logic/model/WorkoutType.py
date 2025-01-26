@@ -111,9 +111,9 @@ class WorkoutType(enum.Enum):
         return now.month == 4 and now.day == 1
 
     @staticmethod
-    def get_distance_sport_types() -> list[WorkoutType]:
+    def get_distance_workout_types() -> list[WorkoutType]:
         return [WorkoutType.BIKING, WorkoutType.RUNNING, WorkoutType.HIKING]
 
     @staticmethod
-    def get_workout_sport_types() -> list[WorkoutType]:
+    def get_workout_workout_types() -> list[WorkoutType]:
         return [WorkoutType.FITNESS]

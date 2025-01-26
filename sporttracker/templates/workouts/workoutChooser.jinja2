@@ -9,7 +9,7 @@
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('tracks') }}
-        {% import 'sports/sportMacros.jinja2' as sportMacros with context %}
+        {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
@@ -23,30 +23,30 @@
 
                 <div class="row mt-5">
                     <div class="col col-12 col-md-6 mb-5">
-                        <a href="{{ url_for('sports.addType', sport_type='BIKING') }}"
+                        <a href="{{ url_for('workouts.addType', workout_type='BIKING') }}"
                            class="btn btn-link text-decoration-none">
-                            {{ sportMacros.sport_type_icon_non_responsive(workoutTypesByName['BIKING'], classes='mb-3') }}
+                            {{ workoutMacros.workout_type_icon_non_responsive(workoutTypesByName['BIKING'], classes='mb-3') }}
                             <div class="fs-3 text-light">{{ gettext('New Biking Track') }}</div>
                         </a>
                     </div>
                     <div class="col col-12 col-md-6 mb-5">
-                        <a href="{{ url_for('sports.addType', sport_type='RUNNING') }}"
+                        <a href="{{ url_for('workouts.addType', workout_type='RUNNING') }}"
                            class="btn btn-link text-decoration-none">
-                            {{ sportMacros.sport_type_icon_non_responsive(workoutTypesByName['RUNNING'], classes='mb-3') }}
+                            {{ workoutMacros.workout_type_icon_non_responsive(workoutTypesByName['RUNNING'], classes='mb-3') }}
                             <div class="fs-3 text-light">{{ gettext('New Running Track') }}</div>
                         </a>
                     </div>
                     <div class="col col-12 col-md-6 mb-5">
-                        <a href="{{ url_for('sports.addType', sport_type='HIKING') }}"
+                        <a href="{{ url_for('workouts.addType', workout_type='HIKING') }}"
                            class="btn btn-link text-decoration-none">
-                            {{ sportMacros.sport_type_icon_non_responsive(workoutTypesByName['HIKING'], classes='mb-3') }}
+                            {{ workoutMacros.workout_type_icon_non_responsive(workoutTypesByName['HIKING'], classes='mb-3') }}
                             <div class="fs-3 text-light">{{ gettext('New Hiking Track') }}</div>
                         </a>
                     </div>
                     <div class="col col-12 col-md-6 mb-5">
-                        <a href="{{ url_for('sports.addType', sport_type='FITNESS') }}"
+                        <a href="{{ url_for('workouts.addType', workout_type='FITNESS') }}"
                            class="btn btn-link text-decoration-none">
-                            {{ sportMacros.sport_type_icon_non_responsive(workoutTypesByName['FITNESS'], classes='mb-3') }}
+                            {{ workoutMacros.workout_type_icon_non_responsive(workoutTypesByName['FITNESS'], classes='mb-3') }}
                             <div class="fs-3 text-light">{{ gettext('New Workout') }}</div>
                         </a>
                     </div>

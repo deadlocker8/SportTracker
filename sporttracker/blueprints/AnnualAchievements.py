@@ -14,7 +14,7 @@ from sporttracker.logic.model.Achievement import (
     AnnualAchievementDifferenceType,
     AllYearData,
 )
-from sporttracker.logic.model.Sport import get_available_years
+from sporttracker.logic.model.Workout import get_available_years
 from sporttracker.logic.model.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -48,7 +48,7 @@ def construct_blueprint():
         availableYears = get_available_years(current_user.id)
         yearNames = [str(year) for year in availableYears]
 
-        for workoutType in WorkoutType.get_distance_sport_types():
+        for workoutType in WorkoutType.get_distance_workout_types():
             achievementList = []
 
             achievementList.append(
@@ -81,7 +81,7 @@ def construct_blueprint():
 
             result[workoutType] = achievementList
 
-        for workoutType in WorkoutType.get_workout_sport_types():
+        for workoutType in WorkoutType.get_workout_workout_types():
             achievementList = []
 
             achievementList.append(
@@ -208,7 +208,7 @@ def construct_blueprint():
         totalTrackCountPreviousYear = 0
 
         for currentYear in availableYears:
-            value = AchievementCalculator.get_total_number_of_sports_by_type_and_year(
+            value = AchievementCalculator.get_total_number_of_workouts_by_type_and_year(
                 workoutType, currentYear
             )
             values.append(value)

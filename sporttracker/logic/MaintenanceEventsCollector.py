@@ -5,7 +5,7 @@ from flask_login import current_user
 
 from sporttracker.blueprints.MaintenanceEventInstances import MaintenanceEventInstanceModel
 from sporttracker.logic.QuickFilterState import QuickFilterState
-from sporttracker.logic.model.DistanceSport import get_distance_between_dates
+from sporttracker.logic.model.DistanceWorkout import get_distance_between_dates
 from sporttracker.logic.model.Maintenance import Maintenance
 from sporttracker.logic.model.MaintenanceEventInstance import (
     MaintenanceEventInstance,

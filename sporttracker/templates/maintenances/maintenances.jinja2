@@ -39,7 +39,7 @@
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('maintenance') }}
-        {% import 'sports/sportMacros.jinja2' as sportMacros with context %}
+        {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="mb-4">
-                    {{ macros.sport_type_quick_filter(url_for('maintenances.listMaintenances'), false) }}
+                    {{ macros.workout_type_quick_filter(url_for('maintenances.listMaintenances'), false) }}
                 </div>
 
                 <div class="row py-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
@@ -65,7 +65,7 @@
                                 <div class="card-header mb-0">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div class="d-flex align-items-center text-truncate">
-                                            {{ sportMacros.sport_type_icon_small(maintenancesWithEvent.type, fontSize='fs-3') }}
+                                            {{ workoutMacros.workout_type_icon_small(maintenancesWithEvent.type, fontSize='fs-3') }}
                                             <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">{{ maintenancesWithEvent.description }}</div>
                                         </div>
                                         <div class="d-flex align-items-center">

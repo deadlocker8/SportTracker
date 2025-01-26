@@ -31,10 +31,12 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     password: Mapped[str] = mapped_column(String, nullable=False)
     isAdmin: Mapped[bool] = mapped_column(Boolean, nullable=False)
     language = db.Column(db.Enum(Language))
-    sports = db.relationship('Sport', backref='user', lazy=True, cascade='delete')
-    customFields = db.relationship('CustomSportField', backref='user', lazy=True, cascade='delete')
-    distance_sport_info_items = db.relationship(
-        'DistanceSportInfoItem', backref='user', lazy=True, cascade='delete'
+    workouts = db.relationship('Workout', backref='user', lazy=True, cascade='delete')
+    customFields = db.relationship(
+        'CustomWorkoutField', backref='user', lazy=True, cascade='delete'
+    )
+    distance_workout_info_items = db.relationship(
+        'DistanceWorkoutInfoItem', backref='user', lazy=True, cascade='delete'
     )
     planned_tours_last_viewed_date: Mapped[DateTime] = mapped_column(DateTime)
     isTileHuntingActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
@@ -55,7 +57,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
         )
 
 
-class DistanceSportInfoItemType(enum.Enum):
+class DistanceWorkoutInfoItemType(enum.Enum):
     DISTANCE = 'DISTANCE'
     DURATION = 'DURATION'
     SPEED = 'SPEED'
@@ -75,13 +77,13 @@ class DistanceSportInfoItemType(enum.Enum):
             return gettext('Elevation Sum')
 
         raise ValueError(
-            f'Could not get localized name for unsupported DistanceSportInfoItemType: {self}'
+            f'Could not get localized name for unsupported DistanceWorkoutInfoItemType: {self}'
         )
 
 
-class DistanceSportInfoItem(db.Model):  # type: ignore[name-defined]
+class DistanceWorkoutInfoItem(db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    type = db.Column(db.Enum(DistanceSportInfoItemType))
+    type = db.Column(db.Enum(DistanceWorkoutInfoItemType))
     is_activated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
@@ -100,11 +102,11 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
     db.session.add(user)
     db.session.commit()
 
-    for itemType in DistanceSportInfoItemType:
-        distanceSportInfoItem = DistanceSportInfoItem(
+    for itemType in DistanceWorkoutInfoItemType:
+        distanceWorkoutInfoItem = DistanceWorkoutInfoItem(
             type=itemType, is_activated=True, user_id=user.id
         )
-        db.session.add(distanceSportInfoItem)
+        db.session.add(distanceWorkoutInfoItem)
     db.session.commit()
 
     return user

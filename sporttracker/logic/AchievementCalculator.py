@@ -5,33 +5,35 @@ from flask_babel import format_datetime, gettext
 from flask_login import current_user
 from sqlalchemy import asc, func, extract
 
-from sporttracker.logic.model.DistanceSport import (
+from sporttracker.logic.model.DistanceWorkout import (
     get_distance_per_month_by_type,
-    DistanceSport,
+    DistanceWorkout,
 )
 from sporttracker.logic.model.MonthGoal import get_goal_summaries_by_year_and_month_and_types
-from sporttracker.logic.model.Sport import Sport, get_duration_per_month_by_type
+from sporttracker.logic.model.Workout import Workout, get_duration_per_month_by_type
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 
 class AchievementCalculator:
     @staticmethod
-    def get_sport_with_longest_distance_by_type(workoutType: WorkoutType) -> DistanceSport | None:
+    def get_workout_with_longest_distance_by_type(
+        workoutType: WorkoutType,
+    ) -> DistanceWorkout | None:
         return (
-            DistanceSport.query.filter(DistanceSport.type == workoutType)
-            .filter(DistanceSport.user_id == current_user.id)
-            .order_by(DistanceSport.distance.desc())
+            DistanceWorkout.query.filter(DistanceWorkout.type == workoutType)
+            .filter(DistanceWorkout.user_id == current_user.id)
+            .order_by(DistanceWorkout.distance.desc())
             .first()
         )
 
     @staticmethod
     def get_longest_distance_by_type_and_year(workoutType: WorkoutType, year: int) -> float:
         value = (
-            db.session.query(func.max(DistanceSport.distance))
-            .filter(DistanceSport.type == workoutType)
-            .filter(DistanceSport.user_id == current_user.id)
-            .filter(extract('year', DistanceSport.start_time) == year)
+            db.session.query(func.max(DistanceWorkout.distance))
+            .filter(DistanceWorkout.type == workoutType)
+            .filter(DistanceWorkout.user_id == current_user.id)
+            .filter(extract('year', DistanceWorkout.start_time) == year)
             .scalar()
             or 0
         )
@@ -40,9 +42,9 @@ class AchievementCalculator:
     @staticmethod
     def get_total_distance_by_type(workoutType: WorkoutType) -> float:
         value = (
-            db.session.query(func.sum(DistanceSport.distance))
-            .filter(DistanceSport.type == workoutType)
-            .filter(DistanceSport.user_id == current_user.id)
+            db.session.query(func.sum(DistanceWorkout.distance))
+            .filter(DistanceWorkout.type == workoutType)
+            .filter(DistanceWorkout.user_id == current_user.id)
             .scalar()
             or 0
         )
@@ -51,10 +53,10 @@ class AchievementCalculator:
     @staticmethod
     def get_total_distance_by_type_and_year(workoutType: WorkoutType, year: int) -> float:
         value = (
-            db.session.query(func.sum(DistanceSport.distance))
-            .filter(DistanceSport.type == workoutType)
-            .filter(DistanceSport.user_id == current_user.id)
-            .filter(extract('year', DistanceSport.start_time) == year)
+            db.session.query(func.sum(DistanceWorkout.distance))
+            .filter(DistanceWorkout.type == workoutType)
+            .filter(DistanceWorkout.user_id == current_user.id)
+            .filter(extract('year', DistanceWorkout.start_time) == year)
             .scalar()
             or 0
         )
@@ -80,15 +82,15 @@ class AchievementCalculator:
 
     @staticmethod
     def get_streaks_by_type(workoutType: WorkoutType, currentDate: date) -> tuple[int, int]:
-        firstSport = AchievementCalculator._get_first_sport(workoutType)
-        if firstSport is None:
+        firstWorkout = AchievementCalculator._get_first_workout(workoutType)
+        if firstWorkout is None:
             return 0, 0
 
         currentYear = currentDate.year
         currentMonth = currentDate.month
 
-        year = firstSport.start_time.year  # type: ignore[attr-defined]
-        month = firstSport.start_time.month  # type: ignore[attr-defined]
+        year = firstWorkout.start_time.year  # type: ignore[attr-defined]
+        month = firstWorkout.start_time.month  # type: ignore[attr-defined]
 
         highestStreak = 0
         currentStreak = 0
@@ -118,21 +120,21 @@ class AchievementCalculator:
         return highestStreak, currentStreak
 
     @staticmethod
-    def get_sport_with_longest_duration_by_type(workoutType: WorkoutType) -> Sport | None:
+    def get_workout_with_longest_duration_by_type(workoutType: WorkoutType) -> Workout | None:
         return (
-            Sport.query.filter(Sport.type == workoutType)
-            .filter(Sport.user_id == current_user.id)
-            .order_by(Sport.duration.desc())
+            Workout.query.filter(Workout.type == workoutType)
+            .filter(Workout.user_id == current_user.id)
+            .order_by(Workout.duration.desc())
             .first()
         )
 
     @staticmethod
     def get_longest_duration_by_type_and_year(workoutType: WorkoutType, year: int) -> int:
         value = (
-            db.session.query(func.max(Sport.duration))
-            .filter(Sport.type == workoutType)
-            .filter(Sport.user_id == current_user.id)
-            .filter(extract('year', Sport.start_time) == year)
+            db.session.query(func.max(Workout.duration))
+            .filter(Workout.type == workoutType)
+            .filter(Workout.user_id == current_user.id)
+            .filter(extract('year', Workout.start_time) == year)
             .scalar()
             or 0
         )
@@ -141,9 +143,9 @@ class AchievementCalculator:
     @staticmethod
     def get_total_duration_by_type(workoutType: WorkoutType) -> int:
         value = (
-            db.session.query(func.sum(Sport.duration))
-            .filter(Sport.type == workoutType)
-            .filter(Sport.user_id == current_user.id)
+            db.session.query(func.sum(Workout.duration))
+            .filter(Workout.type == workoutType)
+            .filter(Workout.user_id == current_user.id)
             .scalar()
             or 0
         )
@@ -170,10 +172,10 @@ class AchievementCalculator:
     @staticmethod
     def _get_min_and_max_date(workoutType: WorkoutType) -> tuple[datetime | None, datetime | None]:
         result = db.session.query(
-            func.min(Sport.start_time),
-            func.max(Sport.start_time)
-            .filter(Sport.type == workoutType)
-            .filter(Sport.user_id == current_user.id),
+            func.min(Workout.start_time),
+            func.max(Workout.start_time)
+            .filter(Workout.type == workoutType)
+            .filter(Workout.user_id == current_user.id),
         ).first()
         if result is None:
             return None, None
@@ -182,45 +184,47 @@ class AchievementCalculator:
         return maxDate, minDate
 
     @staticmethod
-    def _get_first_sport(workoutType: WorkoutType) -> Sport | None:
+    def _get_first_workout(workoutType: WorkoutType) -> Workout | None:
         return (
-            Sport.query.filter(Sport.type == workoutType)
-            .filter(Sport.user_id == current_user.id)
-            .order_by(asc(Sport.start_time))
+            Workout.query.filter(Workout.type == workoutType)
+            .filter(Workout.user_id == current_user.id)
+            .order_by(asc(Workout.start_time))
             .first()
         )
 
     @staticmethod
     def get_total_duration_by_type_and_year(workoutType: WorkoutType, year: int) -> int:
         value = (
-            db.session.query(func.sum(Sport.duration))
-            .filter(Sport.type == workoutType)
-            .filter(Sport.user_id == current_user.id)
-            .filter(extract('year', Sport.start_time) == year)
+            db.session.query(func.sum(Workout.duration))
+            .filter(Workout.type == workoutType)
+            .filter(Workout.user_id == current_user.id)
+            .filter(extract('year', Workout.start_time) == year)
             .scalar()
             or 0
         )
         return value
 
     @staticmethod
-    def get_total_number_of_sports_by_type_and_year(workoutType: WorkoutType, year: int) -> int:
+    def get_total_number_of_workouts_by_type_and_year(workoutType: WorkoutType, year: int) -> int:
         return (
-            Sport.query.filter(Sport.type == workoutType)
-            .filter(Sport.user_id == current_user.id)
-            .filter(extract('year', Sport.start_time) == year)
+            Workout.query.filter(Workout.type == workoutType)
+            .filter(Workout.user_id == current_user.id)
+            .filter(extract('year', Workout.start_time) == year)
             .count()
         )
 
     @staticmethod
     def get_average_speed_by_type_and_year(workoutType: WorkoutType, year: int) -> float:
-        sports = (
-            DistanceSport.query.filter(DistanceSport.user_id == current_user.id)
-            .filter(DistanceSport.type == workoutType)
-            .filter(extract('year', DistanceSport.start_time) == year)
+        workouts = (
+            DistanceWorkout.query.filter(DistanceWorkout.user_id == current_user.id)
+            .filter(DistanceWorkout.type == workoutType)
+            .filter(extract('year', DistanceWorkout.start_time) == year)
             .all()
         )
 
         speedData = [
-            sport.distance / sport.duration * 3.6 for sport in sports if sport.duration is not None
+            workout.distance / workout.duration * 3.6
+            for workout in workouts
+            if workout.duration is not None
         ]
         return round(mean(speedData), 2) if speedData else 0.0

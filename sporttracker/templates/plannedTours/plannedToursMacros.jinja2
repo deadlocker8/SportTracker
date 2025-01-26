@@ -58,12 +58,12 @@
     </div>
 {%- endmacro %}
 
-{% macro linkedSportsMacro(idSuffix, plannedTour) -%}
+{% macro linkedWorkoutsMacro(idSuffix, plannedTour) -%}
     <div class="modal fade" tabindex="-1" id="linked-tracks-modal-{{ idSuffix }}">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark">
                 <div class="modal-header d-flex align-items-center justify-content-start">
-                    {{ sportMacros.sport_type_icon_small(plannedTour.type, fontSize='fs-3') }}
+                    {{ workoutMacros.workout_type_icon_small(plannedTour.type, fontSize='fs-3') }}
                     <div class="fs-5 ms-3 text-truncate">
                         {{ plannedTour.name }}
                     </div>
@@ -71,10 +71,10 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="list-group text-start">
-                            {% for linkedSport in plannedTour.linkedSports %}
-                                <a href="{{ url_for('maps.showSingleTrack', sport_id=linkedSport.id) }}"
+                            {% for linkedWorkout in plannedTour.linkedWorkouts %}
+                                <a href="{{ url_for('maps.showSingleTrack', workout_id=linkedWorkout.id) }}"
                                    class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
-                                    {{ linkedSport.startTime | format_date() }}
+                                    {{ linkedWorkout.startTime | format_date() }}
                                     <span class="material-symbols-outlined filled text-primary">send</span>
                                 </a>
                             {% endfor %}

@@ -23,11 +23,11 @@ class QuickFilterState:
     def get_active_types(self) -> list[WorkoutType]:
         return [workoutType for workoutType, isActive in self._states.items() if isActive]
 
-    def get_active_distance_sport_types(self) -> list[WorkoutType]:
+    def get_active_distance_workout_types(self) -> list[WorkoutType]:
         return [
             workoutType
             for workoutType, isActive in self._states.items()
-            if isActive and workoutType in WorkoutType.get_distance_sport_types()
+            if isActive and workoutType in WorkoutType.get_distance_workout_types()
         ]
 
     def to_json(self) -> str:
@@ -52,7 +52,7 @@ def get_quick_filter_state_from_session() -> QuickFilterState:
 
     quickFilterState = QuickFilterState.from_json(session['quickFilterState'])
 
-    # check if any sport types are missing and update session accordingly
+    # check if any workout types are missing and update session accordingly
     if quickFilterState.get_states().keys() != QuickFilterState().get_states().keys():
         session['quickFilterState'] = QuickFilterState().to_json()
 

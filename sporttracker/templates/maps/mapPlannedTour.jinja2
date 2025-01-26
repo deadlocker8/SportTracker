@@ -17,11 +17,11 @@
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('map') }}
-        {% import 'sports/sportMacros.jinja2' as sportMacros with context %}
+        {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
         {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
 
         <div class="d-flex align-items-center text-truncate justify-content-center mx-5 my-3">
-            {{ sportMacros.sport_type_icon_small(plannedTour.type, fontSize='fs-3') }}
+            {{ workoutMacros.workout_type_icon_small(plannedTour.type, fontSize='fs-3') }}
             <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">
                 {{ plannedTour.name }}
             </div>
@@ -63,9 +63,9 @@
             </div>
         </div>
 
-        {% if plannedTour.linkedSports|length != 0 %}
+        {% if plannedTour.linkedWorkouts|length != 0 %}
             <div class="card bg-body-secondary mx-3 mb-3 d-xl-none pt-3" data-bs-theme="dark">
-                {{ mapMacros.showLinkedSportsButton(plannedTour.linkedSports, 'collapseLinkedSportsSmall', 'w-50 mb-3') }}
+                {{ mapMacros.showLinkedWorkoutsButton(plannedTour.linkedWorkouts, 'collapseLinkedWorkoutsSmall', 'w-50 mb-3') }}
             </div>
         {% endif %}
 
@@ -131,8 +131,8 @@
                             {% endif %}
                         {% endcall %}
 
-                        {% if plannedTour.linkedSports|length != 0 %}
-                            {{ mapMacros.showLinkedSportsButton(plannedTour.linkedSports, 'collapseLinkedSportsLarge', 'w-100') }}
+                        {% if plannedTour.linkedWorkouts|length != 0 %}
+                            {{ mapMacros.showLinkedWorkoutsButton(plannedTour.linkedWorkouts, 'collapseLinkedWorkoutsLarge', 'w-100') }}
                         {% endif %}
                     </div>
 

@@ -202,9 +202,9 @@ def get_planned_tours(workoutTypes: list[WorkoutType]) -> list[PlannedTour]:
     )
 
 
-distance_sport_planned_tour_association = Table(
-    'distance_sport_planned_tour_association',
+distance_workout_planned_tour_association = Table(
+    'distance_workout_planned_tour_association',
     db.Model.metadata,
-    Column('distance_sport_id', ForeignKey('distance_sport.id')),
+    Column('distance_workout_id', ForeignKey('distance_workout.id')),
     Column('planned_tour_id', ForeignKey('planned_tour.id')),
 )

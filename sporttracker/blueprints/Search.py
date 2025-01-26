@@ -5,10 +5,10 @@ from flask import Blueprint, render_template, request
 from flask_babel import format_datetime
 from flask_login import login_required, current_user
 
-from sporttracker.blueprints.Sports import DistanceSportModel, FitnessSportModel
+from sporttracker.blueprints.Workouts import DistanceWorkoutModel, FitnessWorkoutModel
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.Sport import Sport
+from sporttracker.logic.model.Workout import Workout
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
@@ -45,11 +45,11 @@ def construct_blueprint():
             pageNumberValue = 1
 
         pagination = db.paginate(
-            Sport.query.join(User)
+            Workout.query.join(User)
             .filter(User.username == current_user.username)
-            .filter(Sport.name.icontains(searchText))
-            .filter(Sport.type.in_(quickFilterState.get_active_types()))
-            .order_by(Sport.start_time.desc()),
+            .filter(Workout.name.icontains(searchText))
+            .filter(Workout.type.in_(quickFilterState.get_active_types()))
+            .order_by(Workout.start_time.desc()),
             per_page=10,
             page=pageNumberValue,
         )
@@ -58,19 +58,19 @@ def construct_blueprint():
             k: list(g)
             for k, g in groupby(
                 pagination.items,
-                key=lambda sport: format_datetime(sport.start_time, format='MMMM yyyy'),
+                key=lambda workout: format_datetime(workout.start_time, format='MMMM yyyy'),
             )
         }
 
         resultModelItems = {}
-        for month, sports in results.items():
-            itemsPerMonth: list[DistanceSportModel | FitnessSportModel] = []
+        for month, workouts in results.items():
+            itemsPerMonth: list[DistanceWorkoutModel | FitnessWorkoutModel] = []
 
-            for sport in sports:
-                if sport.type in WorkoutType.get_distance_sport_types():
-                    itemsPerMonth.append(DistanceSportModel.create_from_sport(sport))
-                elif sport.type in WorkoutType.get_workout_sport_types():
-                    itemsPerMonth.append(FitnessSportModel.create_from_sport(sport))
+            for workout in workouts:
+                if workout.type in WorkoutType.get_distance_workout_types():
+                    itemsPerMonth.append(DistanceWorkoutModel.create_from_workout(workout))
+                elif workout.type in WorkoutType.get_workout_workout_types():
+                    itemsPerMonth.append(FitnessWorkoutModel.create_from_workout(workout))
 
             resultModelItems[month] = itemsPerMonth
 

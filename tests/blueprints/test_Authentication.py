@@ -23,7 +23,7 @@ class TestAuthentication:
         assert 'Login' in response.data.decode('utf-8')
 
     def test_url_not_logged_in_should_redirect_to_login(self, client):
-        response = client.get('/sports', follow_redirects=True)
+        response = client.get('/workouts', follow_redirects=True)
         assert response.status_code == 200
         assert 'Login' in response.data.decode('utf-8')
 

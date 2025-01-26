@@ -162,7 +162,7 @@ class TestMaintenances(SeleniumTestBaseClass):
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card')) == 1
 
-    def test_quick_filter_only_show_activated_sport_types(self, server, selenium: WebDriver):
+    def test_quick_filter_only_show_activated_workout_types(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_maintenance_form(selenium)
         self.__fill_maintenance_form(selenium, WorkoutType.BIKING, 'chain oiled')

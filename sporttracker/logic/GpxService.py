@@ -21,7 +21,7 @@ from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
 from sporttracker.logic.model.PlannedTour import PlannedTour
-from sporttracker.logic.model.DistanceSport import DistanceSport
+from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -82,7 +82,7 @@ class GpxService:
     def get_joined_tracks_and_segments(self, gpxFileName: str) -> str:
         return GpxParser(self.get_gpx_content(gpxFileName)).join_tracks_and_segments()
 
-    def handle_gpx_upload_for_sport(self, files: dict[str, FileStorage]) -> int | None:
+    def handle_gpx_upload_for_workout(self, files: dict[str, FileStorage]) -> int | None:
         gpxFileName = self.__handle_gpx_upload(files, False, {})
         if gpxFileName is None:
             return None
@@ -188,7 +188,7 @@ class GpxService:
 
         return gpxMetadata.id
 
-    def delete_gpx(self, item: DistanceSport | PlannedTour, userId: int) -> None:
+    def delete_gpx(self, item: DistanceWorkout | PlannedTour, userId: int) -> None:
         gpxMetadata = item.get_gpx_metadata()
         if gpxMetadata is not None:
             item.gpx_metadata_id = None
@@ -196,8 +196,10 @@ class GpxService:
             LOGGER.debug(f'Deleted gpx metadata {gpxMetadata.id}')
             db.session.commit()
 
-            if isinstance(item, DistanceSport):
-                db.session.execute(delete(GpxVisitedTile).where(GpxVisitedTile.sport_id == item.id))
+            if isinstance(item, DistanceWorkout):
+                db.session.execute(
+                    delete(GpxVisitedTile).where(GpxVisitedTile.workout_id == item.id)
+                )
                 LOGGER.debug(f'Deleted gpx visited tiles for track with id {item.id}')
                 db.session.commit()
 
@@ -211,12 +213,14 @@ class GpxService:
             except OSError as e:
                 LOGGER.error(e)
 
-    def add_visited_tiles_for_sport(self, track: DistanceSport, baseZoomLevel: int, userId: int):
+    def add_visited_tiles_for_workout(
+        self, track: DistanceWorkout, baseZoomLevel: int, userId: int
+    ):
         gpxParser = GpxParser(self.get_gpx_content(track.get_gpx_metadata().gpx_file_name))  # type: ignore[union-attr]
         visitedTiles = gpxParser.get_visited_tiles(baseZoomLevel)
 
         for tile in visitedTiles:
-            gpxVisitedTile = GpxVisitedTile(sport_id=track.id, x=tile.x, y=tile.y)
+            gpxVisitedTile = GpxVisitedTile(workout_id=track.id, x=tile.x, y=tile.y)
             db.session.add(gpxVisitedTile)
             db.session.commit()
 

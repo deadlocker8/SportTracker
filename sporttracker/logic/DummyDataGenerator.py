@@ -9,22 +9,22 @@ from faker import Faker
 
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.model.CustomSportField import CustomSportField, CustomSportFieldType
-from sporttracker.logic.model.DistanceSport import DistanceSport
+from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutField, CustomWorkoutFieldType
+from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.Maintenance import Maintenance
 from sporttracker.logic.model.MaintenanceEventInstance import MaintenanceEventInstance
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.PlannedTour import PlannedTour, TravelType, TravelDirection
-from sporttracker.logic.model.Sport import Sport
+from sporttracker.logic.model.Workout import Workout
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User, create_user, Language
 from sporttracker.logic.model.FitnessWorkoutCategory import (
-    update_workout_categories_by_sport_id,
+    update_workout_categories_by_workout_id,
     FitnessWorkoutCategoryType,
 )
-from sporttracker.logic.model.FitnessSport import FitnessSport
+from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.db import db
 
@@ -55,7 +55,7 @@ class DummyDataGenerator:
         user = self.__generate_demo_user('demo', 'demo')
         user2 = self.__generate_demo_user('john', '123')
 
-        if Sport.query.count() == 0:
+        if Workout.query.count() == 0:
             self.__generate_demo_participants(user)
 
             self.__generate_demo_custom_field(user)
@@ -228,7 +228,7 @@ class DummyDataGenerator:
                 heartRate = random.randint(85, 160)
                 elevationSum = random.randint(17, 650)
 
-                sport = DistanceSport(
+                workout = DistanceWorkout(
                     type=workoutType,
                     name=random.choice(self.TRACK_NAMES),
                     start_time=fakeTime,
@@ -242,26 +242,26 @@ class DummyDataGenerator:
                 )
 
                 if index in indexesWithGpx:
-                    self.__append_gpx(sport)
+                    self.__append_gpx(workout)
 
                 if index in indexesWithParticipants:
-                    sport.participants = [self.__get_participant()]
+                    workout.participants = [self.__get_participant()]
 
                 if index in indexesWithSharedLink:
-                    sport.share_code = uuid.uuid4().hex
+                    workout.share_code = uuid.uuid4().hex
 
                 if index in indexesWithLinkedPlannedTour:
-                    sport.planned_tour = plannedTour
+                    workout.planned_tour = plannedTour
 
-                db.session.add(sport)
+                db.session.add(workout)
                 db.session.commit()
 
                 if index in indexesWithGpx:
-                    self._gpxService.add_visited_tiles_for_sport(sport, 14, user.id)
+                    self._gpxService.add_visited_tiles_for_workout(workout, 14, user.id)
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 
-    def __append_gpx(self, item: DistanceSport | PlannedTour) -> None:
+    def __append_gpx(self, item: DistanceWorkout | PlannedTour) -> None:
         currentDirectory = os.path.abspath(os.path.dirname(__file__))
         dummyDataDirectory = os.path.join(os.path.dirname(currentDirectory), 'dummyData')
         sourcePath = os.path.join(dummyDataDirectory, random.choice(self.GPX_FILE_NAMES))
@@ -312,7 +312,7 @@ class DummyDataGenerator:
                 fitnessWorkoutType = random.choice([x for x in FitnessWorkoutType])
                 fitnessWorkoutCategory = random.choice([x for x in FitnessWorkoutCategoryType])
 
-                sport = FitnessSport(
+                workout = FitnessWorkout(
                     name=random.choice(self.FITNESS_NAMES),
                     type=WorkoutType.FITNESS,
                     start_time=fakeTime,
@@ -323,12 +323,12 @@ class DummyDataGenerator:
                 )
 
                 if index in indexesWithParticipants:
-                    sport.participants = [self.__get_participant()]
+                    workout.participants = [self.__get_participant()]
 
-                db.session.add(sport)
+                db.session.add(workout)
                 db.session.commit()
 
-                update_workout_categories_by_sport_id(sport.id, [fitnessWorkoutCategory])
+                update_workout_categories_by_workout_id(workout.id, [fitnessWorkoutCategory])
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 
@@ -377,9 +377,9 @@ class DummyDataGenerator:
 
     def __generate_demo_custom_field(self, user) -> None:
         db.session.add(
-            CustomSportField(
-                type=CustomSportFieldType.STRING,
-                sport_type=WorkoutType.BIKING,
+            CustomWorkoutField(
+                type=CustomWorkoutFieldType.STRING,
+                workout_type=WorkoutType.BIKING,
                 name='Bike',
                 is_required=False,
                 user_id=user.id,

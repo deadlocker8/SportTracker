@@ -8,32 +8,32 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.PlannedTour import (
     PlannedTour,
-    distance_sport_planned_tour_association,
+    distance_workout_planned_tour_association,
 )
-from sporttracker.logic.model.Sport import Sport
+from sporttracker.logic.model.Workout import Workout
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 
-class DistanceSport(Sport):  # type: ignore[name-defined]
-    __tablename__ = 'distance_sport'
-    id: Mapped[int] = mapped_column(ForeignKey('sport.id'), primary_key=True)
+class DistanceWorkout(Workout):  # type: ignore[name-defined]
+    __tablename__ = 'distance_workout'
+    id: Mapped[int] = mapped_column(ForeignKey('workout.id'), primary_key=True)
     distance: Mapped[int] = mapped_column(Integer, nullable=False)
     average_heart_rate: Mapped[int] = mapped_column(Integer, nullable=True)
     elevation_sum: Mapped[int] = mapped_column(Integer, nullable=True)
     share_code: Mapped[str] = mapped_column(String, nullable=True)
     gpx_metadata_id = db.Column(db.Integer, db.ForeignKey('gpx_metadata.id'), nullable=True)
     planned_tour: Mapped[PlannedTour] = relationship(
-        secondary=distance_sport_planned_tour_association
+        secondary=distance_workout_planned_tour_association
     )
 
     __mapper_args__ = {
-        'polymorphic_identity': 'distance_sport',
+        'polymorphic_identity': 'distance_workout',
     }
 
     def __repr__(self):
         return (
-            f'DistanceSport('
+            f'DistanceWorkout('
             f'name: {self.name}, '
             f'start_time: {self.start_time}, '
             f'duration: {self.duration}, '
@@ -61,8 +61,8 @@ class DistanceSport(Sport):  # type: ignore[name-defined]
         return f'{self.id} - {escapedName}'
 
 
-def get_number_of_all_distance_sports() -> int:
-    return DistanceSport.query.count()
+def get_number_of_all_distance_workouts() -> int:
+    return DistanceWorkout.query.count()
 
 
 @dataclass
@@ -75,17 +75,17 @@ class MonthDistanceSum:
 def get_distance_per_month_by_type(
     workoutType: WorkoutType, minYear: int, maxYear: int
 ) -> list[MonthDistanceSum]:
-    year = extract('year', DistanceSport.start_time)
-    month = extract('month', DistanceSport.start_time)
+    year = extract('year', DistanceWorkout.start_time)
+    month = extract('month', DistanceWorkout.start_time)
 
     rows = (
-        DistanceSport.query.with_entities(
-            func.sum(DistanceSport.distance / 1000).label('distanceSum'),
+        DistanceWorkout.query.with_entities(
+            func.sum(DistanceWorkout.distance / 1000).label('distanceSum'),
             year.label('year'),
             month.label('month'),
         )
-        .filter(DistanceSport.type == workoutType)
-        .filter(DistanceSport.user_id == current_user.id)
+        .filter(DistanceWorkout.type == workoutType)
+        .filter(DistanceWorkout.user_id == current_user.id)
         .group_by(year, month)
         .order_by(year, month)
         .all()
@@ -111,11 +111,11 @@ def get_distance_per_month_by_type(
 
 
 def get_available_years(userId) -> list[int]:
-    year = extract('year', DistanceSport.start_time)
+    year = extract('year', DistanceWorkout.start_time)
 
     rows = (
-        DistanceSport.query.with_entities(year.label('year'))
-        .filter(DistanceSport.user_id == userId)
+        DistanceWorkout.query.with_entities(year.label('year'))
+        .filter(DistanceWorkout.user_id == userId)
         .group_by(year)
         .order_by(year)
         .all()
@@ -133,32 +133,32 @@ def get_distance_between_dates(
     workoutTypes: list[WorkoutType],
 ) -> int:
     return int(
-        DistanceSport.query.with_entities(func.sum(DistanceSport.distance))
-        .filter(DistanceSport.type.in_(workoutTypes))
-        .filter(DistanceSport.user_id == current_user.id)
-        .filter(DistanceSport.start_time.between(startDateTime, endDateTime))
+        DistanceWorkout.query.with_entities(func.sum(DistanceWorkout.distance))
+        .filter(DistanceWorkout.type.in_(workoutTypes))
+        .filter(DistanceWorkout.user_id == current_user.id)
+        .filter(DistanceWorkout.start_time.between(startDateTime, endDateTime))
         .scalar()
         or 0
     )
 
 
-def get_distance_sport_by_id(distance_sport_id: int) -> DistanceSport | None:
+def get_distance_workout_by_id(distance_workout_id: int) -> DistanceWorkout | None:
     return (
-        DistanceSport.query.filter(DistanceSport.user_id == current_user.id)
-        .filter(DistanceSport.id == distance_sport_id)
+        DistanceWorkout.query.filter(DistanceWorkout.user_id == current_user.id)
+        .filter(DistanceWorkout.id == distance_workout_id)
         .first()
     )
 
 
-def get_distance_sport_by_share_code(shareCode: str) -> DistanceSport | None:
-    return DistanceSport.query.filter(DistanceSport.share_code == shareCode).first()
+def get_distance_workout_by_share_code(shareCode: str) -> DistanceWorkout | None:
+    return DistanceWorkout.query.filter(DistanceWorkout.share_code == shareCode).first()
 
 
-def get_distance_sport_ids_by_planned_tour(plannedTour: PlannedTour) -> list[int]:
+def get_distance_workout_ids_by_planned_tour(plannedTour: PlannedTour) -> list[int]:
     linkedIds = (
-        DistanceSport.query.with_entities(DistanceSport.id)
-        .filter(DistanceSport.user_id == current_user.id)
-        .filter(DistanceSport.planned_tour == plannedTour)
+        DistanceWorkout.query.with_entities(DistanceWorkout.id)
+        .filter(DistanceWorkout.user_id == current_user.id)
+        .filter(DistanceWorkout.planned_tour == plannedTour)
         .all()
     )
 

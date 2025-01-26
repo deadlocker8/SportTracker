@@ -12,8 +12,8 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 @dataclass
-class NewTilesPerDistanceSport:
-    distance_sport_id: int
+class NewTilesPerDistanceWorkout:
+    distance_workout_id: int
     type: WorkoutType
     name: str
     startTime: datetime
@@ -22,7 +22,7 @@ class NewTilesPerDistanceSport:
 
 class NewVisitedTileCache:
     def __init__(self) -> None:
-        self._newVisitedTilesPerUser: dict[str, list[NewTilesPerDistanceSport]] = {}
+        self._newVisitedTilesPerUser: dict[str, list[NewTilesPerDistanceWorkout]] = {}
 
     @staticmethod
     def __calculate_cache_key(
@@ -34,7 +34,7 @@ class NewVisitedTileCache:
 
     def get_new_visited_tiles_per_track_by_user(
         self, userId: int, workoutTypes: list[WorkoutType], years: list[int]
-    ) -> list[NewTilesPerDistanceSport]:
+    ) -> list[NewTilesPerDistanceWorkout]:
         cacheKey = self.__calculate_cache_key(userId, workoutTypes, years)
 
         if cacheKey not in self._newVisitedTilesPerUser:
@@ -54,7 +54,7 @@ class NewVisitedTileCache:
     @staticmethod
     def __determine_new_tiles_per_track(
         userId: int, workoutTypes: list[WorkoutType], years: list[int]
-    ) -> list[NewTilesPerDistanceSport]:
+    ) -> list[NewTilesPerDistanceWorkout]:
         workoutTypeOperator = ''
         workoutTypeOperator2 = ''
         if workoutTypes:
@@ -76,11 +76,11 @@ class NewVisitedTileCache:
                sp."start_time",
                (SELECT count(*)
                 FROM gpx_visited_tile
-                WHERE gpx_visited_tile."sport_id" = t."id"
+                WHERE gpx_visited_tile."workout_id" = t."id"
                   AND NOT EXISTS (SELECT
-                                  FROM distance_sport AS prev
-                                           join gpx_visited_tile AS visitied ON prev."id" = visitied."sport_id"
-                                  JOIN sport sp_inner ON prev."id" = sp_inner."id"
+                                  FROM distance_workout AS prev
+                                           join gpx_visited_tile AS visitied ON prev."id" = visitied."workout_id"
+                                  JOIN workout sp_inner ON prev."id" = sp_inner."id"
                                   WHERE sp_inner."start_time" < sp."start_time"
                                     AND sp_inner."user_id" = sp."user_id"
                                     AND gpx_visited_tile."x" = visitied."x"
@@ -88,8 +88,8 @@ class NewVisitedTileCache:
                                     {workoutTypeOperator}
                                     {yearOperator}
                                     )) AS newTiles
-        FROM distance_sport AS t
-        JOIN sport sp ON t."id" = sp."id"
+        FROM distance_workout AS t
+        JOIN workout sp ON t."id" = sp."id"
         WHERE t."gpx_metadata_id" IS NOT NULL
         AND sp."user_id" = {userId}
         {workoutTypeOperator2}
@@ -98,6 +98,6 @@ class NewVisitedTileCache:
         ).fetchall()
 
         return [
-            NewTilesPerDistanceSport(row[0], WorkoutType(row[1]), row[2], row[3], row[4])  # type: ignore[call-arg]
+            NewTilesPerDistanceWorkout(row[0], WorkoutType(row[1]), row[2], row[3], row[4])  # type: ignore[call-arg]
             for row in rows
         ]

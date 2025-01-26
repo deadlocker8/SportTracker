@@ -9,7 +9,7 @@ from sqlalchemy import Integer
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.helpers.Helpers import format_duration
-from sporttracker.logic.model.Sport import get_sports_by_year_and_month_by_type
+from sporttracker.logic.model.Workout import get_workouts_by_year_and_month_by_type
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
@@ -95,7 +95,7 @@ class MonthGoalDistance(MonthGoal):
     distance_perfect: Mapped[int] = mapped_column(Integer, nullable=False)
 
     def get_summary(self) -> MonthGoalDistanceSummary:
-        tracks = get_sports_by_year_and_month_by_type(self.year, self.month, [self.type])
+        tracks = get_workouts_by_year_and_month_by_type(self.year, self.month, [self.type])
 
         actualDistance = 0
         if tracks:
@@ -141,7 +141,7 @@ class MonthGoalCount(MonthGoal):
     count_perfect: Mapped[int] = mapped_column(Integer, nullable=False)
 
     def get_summary(self) -> MonthGoalCountSummary:
-        tracks = get_sports_by_year_and_month_by_type(self.year, self.month, [self.type])
+        tracks = get_workouts_by_year_and_month_by_type(self.year, self.month, [self.type])
 
         actualCount = 0
         if tracks:
@@ -188,7 +188,7 @@ class MonthGoalDuration(MonthGoal):
 
     def get_summary(self) -> MonthGoalDurationSummary:
         try:
-            tracks = get_sports_by_year_and_month_by_type(self.year, self.month, [self.type])
+            tracks = get_workouts_by_year_and_month_by_type(self.year, self.month, [self.type])
         except ValueError:
             tracks = []
 

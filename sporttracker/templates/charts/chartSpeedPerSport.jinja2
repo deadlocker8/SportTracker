@@ -2,14 +2,14 @@
 {% call chartMacros.chart() %}
      const data = [
         {
-            x: {{ chartDataSpeedPerSport['dates'] }},
-            y: {{ chartDataSpeedPerSport['values'] }},
+            x: {{ chartDataSpeedPerWorkout['dates'] }},
+            y: {{ chartDataSpeedPerWorkout['values'] }},
             type: 'bar',
             marker: {
-                color: '{{ chartDataSpeedPerSport.type.background_color_hex }}'
+                color: '{{ chartDataSpeedPerWorkout.type.background_color_hex }}'
             },
-            name: '{{ chartDataSpeedPerSport.type.name | capitalize }}',
-            text: {{ chartDataSpeedPerSport['texts'] }}
+            name: '{{ chartDataSpeedPerWorkout.type.name | capitalize }}',
+            text: {{ chartDataSpeedPerWorkout['texts'] }}
         },
     ];
 
@@ -33,7 +33,7 @@
             tickformat: '.0f',
             showline: true,
             color: '#FFFFFF',
-            range: [{{ chartDataSpeedPerSport.min }}, {{ chartDataSpeedPerSport.max }}]
+            range: [{{ chartDataSpeedPerWorkout.min }}, {{ chartDataSpeedPerWorkout.max }}]
         },
         barmode: 'group',
         legend: {

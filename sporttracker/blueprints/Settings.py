@@ -10,10 +10,10 @@ from pydantic import BaseModel, field_validator, ConfigDict
 
 from sporttracker.logic import Constants
 from sporttracker.logic.Constants import MIN_PASSWORD_LENGTH
-from sporttracker.logic.model.CustomSportField import (
-    get_custom_fields_by_sport_type,
-    CustomSportField,
-    CustomSportFieldType,
+from sporttracker.logic.model.CustomWorkoutField import (
+    get_custom_fields_by_workout_type,
+    CustomWorkoutField,
+    CustomWorkoutFieldType,
     RESERVED_FIELD_NAMES,
 )
 from sporttracker.logic.model.Participant import Participant, get_participants
@@ -21,8 +21,8 @@ from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import (
     User,
     Language,
-    DistanceSportInfoItem,
-    DistanceSportInfoItemType,
+    DistanceWorkoutInfoItem,
+    DistanceWorkoutInfoItemType,
 )
 from sporttracker.logic.model.db import db
 
@@ -42,16 +42,16 @@ class EditSelfTileHuntingFormModel(BaseModel):
     isTileHuntingAccessActivated: bool | None = None
 
 
-class EditDistanceSportInfoItemsModel(BaseModel):
+class EditDistanceWorkoutInfoItemsModel(BaseModel):
     model_config = ConfigDict(
         extra='allow',
     )
 
 
-class CustomSportFieldFormModel(BaseModel):
+class CustomWorkoutFieldFormModel(BaseModel):
     name: str
     type: str
-    sport_type: str
+    workout_type: str
     is_required: bool = False
 
     @field_validator(
@@ -78,8 +78,8 @@ def construct_blueprint():
     @settings.route('/settings')
     @login_required
     def settingsShow():
-        infoItems: list[DistanceSportInfoItem] = DistanceSportInfoItem.query.filter(
-            DistanceSportInfoItem.user_id == current_user.id
+        infoItems: list[DistanceWorkoutInfoItem] = DistanceWorkoutInfoItem.query.filter(
+            DistanceWorkoutInfoItem.user_id == current_user.id
         ).all()
 
         infoItems.sort(key=lambda item: item.type.get_localized_name().lower())
@@ -89,7 +89,7 @@ def construct_blueprint():
         return render_template(
             'settings/settings.jinja2',
             userLanguage=current_user.language.name,
-            customFieldsByWorkoutType=get_custom_fields_by_sport_type(),
+            customFieldsByWorkoutType=get_custom_fields_by_workout_type(),
             participants=get_participants(),
             infoItems=infoItems,
             tileRenderUrl=tileRenderUrl,
@@ -127,7 +127,7 @@ def construct_blueprint():
                 'settings/settings.jinja2',
                 errorMessage='Password must not be empty',
                 userLanguage=current_user.language.name,
-                customFieldsByWorkoutType=get_custom_fields_by_sport_type(),
+                customFieldsByWorkoutType=get_custom_fields_by_workout_type(),
             )
 
         if len(password) < MIN_PASSWORD_LENGTH:
@@ -135,7 +135,7 @@ def construct_blueprint():
                 'settings/settings.jinja2',
                 errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long',
                 userLanguage=current_user.language.name,
-                customFieldsByWorkoutType=get_custom_fields_by_sport_type(),
+                customFieldsByWorkoutType=get_custom_fields_by_workout_type(),
             )
 
         user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
@@ -189,19 +189,21 @@ def construct_blueprint():
 
         return redirect(url_for('settings.settingsShow'))
 
-    @settings.route('/editDistanceSportInfoItems', methods=['POST'])
+    @settings.route('/editDistanceWorkoutInfoItems', methods=['POST'])
     @login_required
     @validate()
-    def editDistanceSportInfoItems(form: EditDistanceSportInfoItemsModel):
+    def editDistanceWorkoutInfoItems(form: EditDistanceWorkoutInfoItemsModel):
         user = User.query.filter(User.id == current_user.id).first()
 
         if user is None:
             abort(404)
 
-        for itemType in DistanceSportInfoItemType:
-            distanceSportInfoItem = (
-                DistanceSportInfoItem.query.filter(DistanceSportInfoItem.user_id == current_user.id)
-                .filter(DistanceSportInfoItem.type == itemType)
+        for itemType in DistanceWorkoutInfoItemType:
+            distanceWorkoutInfoItem = (
+                DistanceWorkoutInfoItem.query.filter(
+                    DistanceWorkoutInfoItem.user_id == current_user.id
+                )
+                .filter(DistanceWorkoutInfoItem.type == itemType)
                 .first()
             )
 
@@ -210,10 +212,10 @@ def construct_blueprint():
 
             for itemName, itemValue in form.model_extra.items():
                 if itemType.name == itemName:
-                    distanceSportInfoItem.is_activated = itemValue.strip().lower() == 'on'
+                    distanceWorkoutInfoItem.is_activated = itemValue.strip().lower() == 'on'
                     break
             else:
-                distanceSportInfoItem.is_activated = False
+                distanceWorkoutInfoItem.is_activated = False
 
         db.session.commit()
 
@@ -221,28 +223,28 @@ def construct_blueprint():
 
         return redirect(url_for('settings.settingsShow'))
 
-    @settings.route('/customFields/add/<string:sport_type>')
+    @settings.route('/customFields/add/<string:workout_type>')
     @login_required
-    def customFieldsAdd(sport_type: str):
-        workoutType = WorkoutType(sport_type)  # type: ignore[call-arg]
+    def customFieldsAdd(workout_type: str):
+        workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
         return render_template('settings/customFieldsForm.jinja2', workoutType=workoutType)
 
     @settings.route('/customFields/post', methods=['POST'])
     @login_required
     @validate()
-    def customFieldsAddPost(form: CustomSportFieldFormModel):
+    def customFieldsAddPost(form: CustomWorkoutFieldFormModel):
         if not __is_allowed_custom_field_name(form):
-            return redirect(url_for('settings.customFieldsAdd', sport_type=form.sport_type))
+            return redirect(url_for('settings.customFieldsAdd', workout_type=form.workout_type))
 
-        customSportField = CustomSportField(
+        customWorkoutField = CustomWorkoutField(
             name=form.name,
-            type=CustomSportFieldType(form.type),  # type: ignore[call-arg]
-            sport_type=WorkoutType(form.sport_type),  # type: ignore[call-arg]
+            type=CustomWorkoutFieldType(form.type),  # type: ignore[call-arg]
+            workout_type=WorkoutType(form.workout_type),  # type: ignore[call-arg]
             is_required=form.is_required,
             user_id=current_user.id,
         )
-        LOGGER.debug(f'Saved new custom field: {customSportField}')
-        db.session.add(customSportField)
+        LOGGER.debug(f'Saved new custom field: {customWorkoutField}')
+        db.session.add(customWorkoutField)
         db.session.commit()
 
         return redirect(url_for('settings.settingsShow'))
@@ -250,20 +252,20 @@ def construct_blueprint():
     @settings.route('/customFields/edit/<int:field_id>')
     @login_required
     def customFieldsEdit(field_id: int):
-        field: CustomSportField | None = (
-            CustomSportField.query.join(User)
+        field: CustomWorkoutField | None = (
+            CustomWorkoutField.query.join(User)
             .filter(User.username == current_user.username)
-            .filter(CustomSportField.id == field_id)
+            .filter(CustomWorkoutField.id == field_id)
             .first()
         )
 
         if field is None:
             abort(404)
 
-        fieldModel = CustomSportFieldFormModel(
+        fieldModel = CustomWorkoutFieldFormModel(
             name=field.name,  # type: ignore[arg-type]
             type=field.type,
-            sport_type=field.sport_type.name,
+            workout_type=field.workout_type.name,
             is_required=field.is_required,
         )
 
@@ -274,11 +276,11 @@ def construct_blueprint():
     @settings.route('/customFields/edit/<int:field_id>', methods=['POST'])
     @login_required
     @validate()
-    def customFieldsEditPost(field_id: int, form: CustomSportFieldFormModel):
-        field: CustomSportField | None = (
-            CustomSportField.query.join(User)
+    def customFieldsEditPost(field_id: int, form: CustomWorkoutFieldFormModel):
+        field: CustomWorkoutField | None = (
+            CustomWorkoutField.query.join(User)
             .filter(User.username == current_user.username)
-            .filter(CustomSportField.id == field_id)
+            .filter(CustomWorkoutField.id == field_id)
             .first()
         )
 
@@ -291,7 +293,7 @@ def construct_blueprint():
 
         field.name = form.name  # type: ignore[assignment]
         field.type = form.type
-        field.sport_type = form.sport_type
+        field.workout_type = form.workout_type
         field.is_required = form.is_required
 
         LOGGER.debug(f'Updated custom field: {field}')
@@ -302,10 +304,10 @@ def construct_blueprint():
     @settings.route('/customFields/delete/<int:field_id>')
     @login_required
     def customFieldsDelete(field_id: int):
-        field: CustomSportField | None = (
-            CustomSportField.query.join(User)
+        field: CustomWorkoutField | None = (
+            CustomWorkoutField.query.join(User)
             .filter(User.username == current_user.username)
-            .filter(CustomSportField.id == field_id)
+            .filter(CustomWorkoutField.id == field_id)
             .first()
         )
 
@@ -402,7 +404,7 @@ def construct_blueprint():
 
         return redirect(url_for('settings.settingsShow'))
 
-    def __is_allowed_custom_field_name(form: CustomSportFieldFormModel):
+    def __is_allowed_custom_field_name(form: CustomWorkoutFieldFormModel):
         if form.name.lower() in RESERVED_FIELD_NAMES:
             flash(
                 gettext(
@@ -413,8 +415,8 @@ def construct_blueprint():
             return False
 
         existingCustomFields = (
-            CustomSportField.query.filter(CustomSportField.user_id == current_user.id)
-            .filter(CustomSportField.sport_type == form.sport_type)
+            CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
+            .filter(CustomWorkoutField.workout_type == form.workout_type)
             .all()
         )
         existingCustomFieldNames = [item.name.lower() for item in existingCustomFields]

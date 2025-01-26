@@ -4,9 +4,9 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from sporttracker.logic.model.CustomSportField import (
-    CustomSportField,
-    CustomSportFieldType,
+from sporttracker.logic.model.CustomWorkoutField import (
+    CustomWorkoutField,
+    CustomWorkoutFieldType,
     RESERVED_FIELD_NAMES,
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
@@ -29,7 +29,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'New Custom Sport Field'
+                (By.CLASS_NAME, 'headline-text'), 'New Custom Workout Field'
             )
         )
 
@@ -39,24 +39,24 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Edit Custom Sport Field'
+                (By.CLASS_NAME, 'headline-text'), 'Edit Custom Workout Field'
             )
         )
 
     def __create_custom_field(self, app, name):
         user = User.query.filter(User.username == TEST_USERNAME).first()
         with app.app_context():
-            customSportField = CustomSportField(
-                type=CustomSportFieldType.INTEGER,
-                sport_type=WorkoutType.BIKING,
+            customWorkoutField = CustomWorkoutField(
+                type=CustomWorkoutFieldType.INTEGER,
+                workout_type=WorkoutType.BIKING,
                 name=name,
                 is_required=False,
                 user_id=user.id,
             )
-            db.session.add(customSportField)
+            db.session.add(customWorkoutField)
             db.session.commit()
 
-    def test_add_custom_sport_field_valid(self, server, selenium: WebDriver):
+    def test_add_custom_workout_field_valid(self, server, selenium: WebDriver):
         self.__open_add_form(selenium)
 
         selenium.find_element(By.ID, 'field-name').send_keys('my_custom_field')
@@ -70,7 +70,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
 
         assert len(selenium.find_elements(By.XPATH, '//td[text()="String"]')) == 1
 
-    def test_add_custom_sport_field_reserved_name(self, server, selenium: WebDriver):
+    def test_add_custom_workout_field_reserved_name(self, server, selenium: WebDriver):
         self.__open_add_form(selenium)
 
         selenium.find_element(By.ID, 'field-name').send_keys(RESERVED_FIELD_NAMES[0])
@@ -79,7 +79,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
         assert selenium.current_url.endswith('/settings/customFields/add/BIKING')
         assert selenium.find_element(By.CLASS_NAME, 'alert-danger') is not None
 
-    def test_add_custom_sport_field_name_already_used(self, server, selenium: WebDriver, app):
+    def test_add_custom_workout_field_name_already_used(self, server, selenium: WebDriver, app):
         self.__create_custom_field(app, 'my_custom_field')
         self.__open_add_form(selenium)
 
@@ -89,7 +89,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
         assert selenium.current_url.endswith('/settings/customFields/add/BIKING')
         assert selenium.find_element(By.CLASS_NAME, 'alert-danger') is not None
 
-    def test_edit_custom_sport_field_valid(self, server, selenium: WebDriver, app):
+    def test_edit_custom_workout_field_valid(self, server, selenium: WebDriver, app):
         self.__create_custom_field(app, 'my_custom_field')
         self.__open_edit_form(selenium)
 
@@ -106,7 +106,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
 
         assert len(selenium.find_elements(By.XPATH, '//td[text()="True"]')) == 1
 
-    def test_edit_custom_sport_field_reserved_name(self, server, selenium: WebDriver, app):
+    def test_edit_custom_workout_field_reserved_name(self, server, selenium: WebDriver, app):
         self.__create_custom_field(app, 'my_custom_field')
         self.__open_edit_form(selenium)
 
@@ -117,7 +117,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
         assert selenium.current_url.endswith('/settings/customFields/edit/1')
         assert selenium.find_element(By.CLASS_NAME, 'alert-danger') is not None
 
-    def test_edit_custom_sport_field_name_already_used(self, server, selenium: WebDriver, app):
+    def test_edit_custom_workout_field_name_already_used(self, server, selenium: WebDriver, app):
         self.__create_custom_field(app, 'my_custom_field')
         self.__create_custom_field(app, 'abc')
         self.__open_edit_form(selenium)

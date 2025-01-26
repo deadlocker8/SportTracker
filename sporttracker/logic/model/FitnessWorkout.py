@@ -3,23 +3,23 @@ from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped
 
-from sporttracker.logic.model.Sport import Sport
+from sporttracker.logic.model.Workout import Workout
 from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCategory
 from sporttracker.logic.model.db import db
 
 
-class FitnessSport(Sport):  # type: ignore[name-defined]
-    __tablename__ = 'fitness_sport'
-    id: Mapped[int] = mapped_column(ForeignKey('sport.id'), primary_key=True)
+class FitnessWorkout(Workout):  # type: ignore[name-defined]
+    __tablename__ = 'fitness_workout'
+    id: Mapped[int] = mapped_column(ForeignKey('workout.id'), primary_key=True)
     workout_type = db.Column(db.Enum(FitnessWorkoutType), nullable=True)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'fitness_sport',
+        'polymorphic_identity': 'fitness_workout',
     }
 
     def __repr__(self):
         return (
-            f'FitnessSport('
+            f'FitnessWorkout('
             f'name: {self.name}, '
             f'start_time: {self.start_time}, '
             f'duration: {self.duration}, '
@@ -33,14 +33,14 @@ class FitnessSport(Sport):  # type: ignore[name-defined]
         return [
             c.workout_category_type
             for c in FitnessWorkoutCategory.query.filter(
-                FitnessWorkoutCategory.sport_id == self.id
+                FitnessWorkoutCategory.workout_id == self.id
             ).all()
         ]
 
 
-def get_fitness_sport_by_id(distance_sport_id: int) -> FitnessSport | None:
+def get_fitness_workout_by_id(distance_workout_id: int) -> FitnessWorkout | None:
     return (
-        FitnessSport.query.filter(FitnessSport.user_id == current_user.id)
-        .filter(FitnessSport.id == distance_sport_id)
+        FitnessWorkout.query.filter(FitnessWorkout.user_id == current_user.id)
+        .filter(FitnessWorkout.id == distance_workout_id)
         .first()
     )

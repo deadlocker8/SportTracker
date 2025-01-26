@@ -16,7 +16,7 @@ from flask_login import LoginManager, current_user
 from sporttracker.blueprints import (
     General,
     Authentication,
-    Sports,
+    Workouts,
     MonthGoals,
     Charts,
     Users,
@@ -33,8 +33,8 @@ from sporttracker.blueprints import (
     PlannedTours,
     AnnualAchievements,
     MonthGoalsDuration,
-    DistanceSports,
-    FitnessSports,
+    DistanceWorkouts,
+    FitnessWorkouts,
 )
 from sporttracker.helpers import Helpers
 from sporttracker.helpers.SettingsChecker import SettingsChecker
@@ -45,8 +45,8 @@ from sporttracker.logic.MaintenanceEventsCollector import (
     get_number_of_triggered_maintenance_reminders,
 )
 from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
-from sporttracker.logic.model.CustomSportField import CustomSportFieldType
-from sporttracker.logic.model.DistanceSport import DistanceSport
+from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutFieldType
+from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCategoryType
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.PlannedTour import (
@@ -59,8 +59,8 @@ from sporttracker.logic.model.User import (
     User,
     Language,
     create_user,
-    DistanceSportInfoItem,
-    DistanceSportInfoItemType,
+    DistanceWorkoutInfoItem,
+    DistanceWorkoutInfoItemType,
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
@@ -150,10 +150,10 @@ class SportTracker(FlaskBaseApp):
             return {
                 'versionName': self._version['name'],
                 'workoutTypes': [x for x in WorkoutType],
-                'distanceWorkoutTypes': [x for x in WorkoutType.get_distance_sport_types()],
+                'distanceWorkoutTypes': [x for x in WorkoutType.get_distance_workout_types()],
                 'workoutTypesByName': {x.name: x for x in WorkoutType},
                 'languages': [x for x in Language],
-                'customTrackFieldTypes': [x for x in CustomSportFieldType],
+                'customTrackFieldTypes': [x for x in CustomWorkoutFieldType],
                 'travelTypes': [x for x in TravelType],
                 'travelDirections': [x for x in TravelDirection],
                 'newPlannedTourIds': get_new_planned_tour_ids(),
@@ -173,8 +173,8 @@ class SportTracker(FlaskBaseApp):
         def format_duration(value: int | None) -> str:
             return Helpers.format_duration(value)
 
-        def format_pace(distanceSport: DistanceSport) -> str:
-            speed = int(distanceSport.duration / (distanceSport.distance / 1000))
+        def format_pace(distanceWorkout: DistanceWorkout) -> str:
+            speed = int(distanceWorkout.duration / (distanceWorkout.distance / 1000))
 
             minutes = speed // 60
             seconds = speed % 60
@@ -183,14 +183,14 @@ class SportTracker(FlaskBaseApp):
         @app.context_processor
         def utility_processor():
             def is_track_info_item_activated(name: str) -> bool:
-                distanceSportInfoItem = (
-                    DistanceSportInfoItem.query.filter(
-                        DistanceSportInfoItem.user_id == current_user.id
+                distanceWorkoutInfoItem = (
+                    DistanceWorkoutInfoItem.query.filter(
+                        DistanceWorkoutInfoItem.user_id == current_user.id
                     )
-                    .filter(DistanceSportInfoItem.type == DistanceSportInfoItemType(name))
+                    .filter(DistanceWorkoutInfoItem.type == DistanceWorkoutInfoItemType(name))
                     .first()
                 )
-                return distanceSportInfoItem.is_activated
+                return distanceWorkoutInfoItem.is_activated
 
             return {'is_track_info_item_activated': is_track_info_item_activated}
 
@@ -244,13 +244,13 @@ class SportTracker(FlaskBaseApp):
     def _register_blueprints(self, app):
         app.register_blueprint(Authentication.construct_blueprint())
         app.register_blueprint(General.construct_blueprint())
-        app.register_blueprint(Sports.construct_blueprint())
+        app.register_blueprint(Workouts.construct_blueprint())
         app.register_blueprint(
-            DistanceSports.construct_blueprint(
+            DistanceWorkouts.construct_blueprint(
                 app.config['GPX_SERVICE'], self._settings['tileHunting']
             )
         )
-        app.register_blueprint(FitnessSports.construct_blueprint())
+        app.register_blueprint(FitnessWorkouts.construct_blueprint())
         app.register_blueprint(MonthGoals.construct_blueprint())
         app.register_blueprint(MonthGoalsDistance.construct_blueprint())
         app.register_blueprint(MonthGoalsCount.construct_blueprint())

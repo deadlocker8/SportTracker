@@ -3,8 +3,8 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {% if field %}{{ gettext('Edit Custom Track Field') }}{% else %}
-            {{ gettext('New Custom Track Field') }}{% endif %}</title>
+        <title>SportTracker - {% if field %}{{ gettext('Edit Custom Workout Field') }}{% else %}
+            {{ gettext('New Custom Workout Field') }}{% endif %}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -16,11 +16,11 @@
                 <div class="row">
                     <div class="col col-12 mx-auto">
                         {% if field %}
-                            {% call macros.headline(gettext('Edit Custom Track Field')) %}
+                            {% call macros.headline(gettext('Edit Custom Workout Field')) %}
                                 <span class="material-symbols-outlined filled fs-1">drive_file_rename_outline</span>
                             {% endcall %}
                         {% else %}
-                            {% call macros.headline(gettext('New Custom Track Field')) %}
+                            {% call macros.headline(gettext('New Custom Workout Field')) %}
                                 <span class="material-symbols-outlined filled fs-1">drive_file_rename_outline</span>
                             {% endcall %}
                         {% endif %}
@@ -46,7 +46,7 @@
                                 {% if field %}{{ url_for('settings.customFieldsEditPost', field_id=field_id) }}{% else %}{{ url_for('settings.customFieldsAddPost') }}{% endif %}"
                               method="post">
 
-                            <input type="hidden" class="form-control" id="field-track-type" name="sport_type" value="{% if field %}{{ field.sport_type }}{% else %}{{ workoutType.name }}{% endif %}">
+                            <input type="hidden" class="form-control" id="field-track-type" name="workout_type" value="{% if field %}{{ field.workout_type }}{% else %}{{ workoutType.name }}{% endif %}">
 
                             <div class="mb-3">
                                 <label for="field-name" class="form-label input-field-margin">{{ gettext('Name') }}</label>

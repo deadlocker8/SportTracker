@@ -12,9 +12,9 @@ from pydantic import BaseModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.DistanceSport import (
-    DistanceSport,
-    get_distance_sport_ids_by_planned_tour,
+from sporttracker.logic.model.DistanceWorkout import (
+    DistanceWorkout,
+    get_distance_workout_ids_by_planned_tour,
 )
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.PlannedTour import (
@@ -43,7 +43,7 @@ class SharedUserModel:
 
 
 @dataclass
-class LinkedSport:
+class LinkedWorkout:
     id: int
     startTime: datetime
 
@@ -63,36 +63,36 @@ class PlannedTourModel:
     departureMethod: TravelType
     direction: TravelDirection
     shareCode: str | None
-    linkedSports: list[LinkedSport]
+    linkedWorkouts: list[LinkedWorkout]
 
     @staticmethod
-    def __get_linked_sports_by_planned_tour(plannedTour: PlannedTour) -> list[LinkedSport]:
-        linkedSport = (
-            DistanceSport.query.filter(DistanceSport.user_id == current_user.id)
-            .filter(DistanceSport.planned_tour == plannedTour)
-            .order_by(DistanceSport.start_time.asc())
+    def __get_linked_workouts_by_planned_tour(plannedTour: PlannedTour) -> list[LinkedWorkout]:
+        linkedWorkout = (
+            DistanceWorkout.query.filter(DistanceWorkout.user_id == current_user.id)
+            .filter(DistanceWorkout.planned_tour == plannedTour)
+            .order_by(DistanceWorkout.start_time.asc())
             .all()
         )
 
-        if linkedSport is None:
+        if linkedWorkout is None:
             return []
 
         result = []
-        for sport in linkedSport:
-            result.append(LinkedSport(int(sport.id), sport.start_time))
+        for workout in linkedWorkout:
+            result.append(LinkedWorkout(int(workout.id), workout.start_time))
 
         return result
 
     @staticmethod
     def create_from_tour(
         plannedTour: PlannedTour,
-        includeLinkedSports: bool,
+        includeLinkedWorkouts: bool,
     ) -> 'PlannedTourModel':
         gpxMetadata = plannedTour.get_gpx_metadata()
 
-        linkedSports = []
-        if includeLinkedSports:
-            linkedSports = PlannedTourModel.__get_linked_sports_by_planned_tour(plannedTour)
+        linkedWorkouts = []
+        if includeLinkedWorkouts:
+            linkedWorkouts = PlannedTourModel.__get_linked_workouts_by_planned_tour(plannedTour)
 
         return PlannedTourModel(
             id=plannedTour.id,
@@ -108,7 +108,7 @@ class PlannedTourModel:
             departureMethod=plannedTour.departure_method,
             direction=plannedTour.direction,
             shareCode=plannedTour.share_code,
-            linkedSports=linkedSports,
+            linkedWorkouts=linkedWorkouts,
         )
 
 
@@ -148,7 +148,7 @@ def construct_blueprint(
     def listPlannedTours():
         quickFilterState = get_quick_filter_state_from_session()
 
-        tours = get_planned_tours(quickFilterState.get_active_distance_sport_types())
+        tours = get_planned_tours(quickFilterState.get_active_distance_workout_types())
 
         plannedTourList: list[PlannedTourModel] = []
         for tour in tours:
@@ -267,19 +267,19 @@ def construct_blueprint(
         plannedTour.shared_users = sharedUsers
 
         # The list of shared users may have changed.
-        # All sports that link to this planned tour must be checked, whether they are owned by the owner of the
-        # planned tour or if the planned tour is still shared to the owner of the sport.
-        linkedIds = get_distance_sport_ids_by_planned_tour(plannedTour)
-        for sportId in linkedIds:
-            sport = DistanceSport.query.filter().filter(DistanceSport.id == sportId).first()
-            if sport.user_id == plannedTour.user_id:
+        # All workouts that link to this planned tour must be checked, whether they are owned by the owner of the
+        # planned tour or if the planned tour is still shared to the owner of the workout.
+        linkedIds = get_distance_workout_ids_by_planned_tour(plannedTour)
+        for workoutId in linkedIds:
+            workout = DistanceWorkout.query.filter().filter(DistanceWorkout.id == workoutId).first()
+            if workout.user_id == plannedTour.user_id:
                 continue
 
-            if sport.user_id in sharedUserIds:
+            if workout.user_id in sharedUserIds:
                 continue
 
-            sport.planned_tour = None
-            LOGGER.debug(f'Removed linked planned tour from sport: {sportId}')
+            workout.planned_tour = None
+            LOGGER.debug(f'Removed linked planned tour from workout: {workoutId}')
             db.session.commit()
 
         LOGGER.debug(f'Updated planned tour: {plannedTour}')
@@ -300,11 +300,11 @@ def construct_blueprint(
 
         gpxService.delete_gpx(plannedTour, current_user.id)
 
-        linkedIds = get_distance_sport_ids_by_planned_tour(plannedTour)
-        for sportId in linkedIds:
-            sport = DistanceSport.query.filter().filter(DistanceSport.id == sportId).first()
-            sport.planned_tour = None
-            LOGGER.debug(f'Removed linked planned tour from sport: {sportId}')
+        linkedIds = get_distance_workout_ids_by_planned_tour(plannedTour)
+        for workoutId in linkedIds:
+            workout = DistanceWorkout.query.filter().filter(DistanceWorkout.id == workoutId).first()
+            workout.planned_tour = None
+            LOGGER.debug(f'Removed linked planned tour from workout: {workoutId}')
             db.session.commit()
 
         LOGGER.debug(f'Deleted planned tour: {plannedTour}')

@@ -16,9 +16,9 @@ from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
     QuickFilterState,
 )
-from sporttracker.logic.model.CustomSportField import CustomSportField
-from sporttracker.logic.model.DistanceSport import (
-    DistanceSport,
+from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutField
+from sporttracker.logic.model.DistanceWorkout import (
+    DistanceWorkout,
     get_available_years,
 )
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
@@ -32,19 +32,19 @@ from sporttracker.logic.model.MonthGoal import (
 )
 from sporttracker.logic.model.Participant import get_participants
 from sporttracker.logic.model.PlannedTour import get_planned_tours
-from sporttracker.logic.model.Sport import (
-    get_sport_names_by_type,
-    get_sports_by_year_and_month_by_type,
+from sporttracker.logic.model.Workout import (
+    get_workout_names_by_type,
+    get_workouts_by_year_and_month_by_type,
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import get_user_by_id
-from sporttracker.logic.model.FitnessSport import FitnessSport
+from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 @dataclass
-class BaseSportModel(DateTimeAccess):
+class BaseWorkoutModel(DateTimeAccess):
     id: int
     name: str
     type: str
@@ -58,7 +58,7 @@ class BaseSportModel(DateTimeAccess):
 
 
 @dataclass
-class DistanceSportModel(BaseSportModel):
+class DistanceWorkoutModel(BaseWorkoutModel):
     distance: int
     averageHeartRate: int | None
     elevationSum: int | None
@@ -66,55 +66,55 @@ class DistanceSportModel(BaseSportModel):
     shareCode: str | None
 
     @staticmethod
-    def create_from_sport(
-        sport: DistanceSport,
-    ) -> 'DistanceSportModel':
-        return DistanceSportModel(
-            id=sport.id,
-            name=sport.name,  # type: ignore[arg-type]
-            type=sport.type,
-            startTime=sport.start_time,  # type: ignore[arg-type]
-            distance=sport.distance,
-            duration=sport.duration,
-            averageHeartRate=sport.average_heart_rate,
-            elevationSum=sport.elevation_sum,
-            gpxMetadata=sport.get_gpx_metadata(),
-            participants=[str(item.id) for item in sport.participants],
-            shareCode=sport.share_code,
-            ownerName=get_user_by_id(sport.user_id).username,
+    def create_from_workout(
+        workout: DistanceWorkout,
+    ) -> 'DistanceWorkoutModel':
+        return DistanceWorkoutModel(
+            id=workout.id,
+            name=workout.name,  # type: ignore[arg-type]
+            type=workout.type,
+            startTime=workout.start_time,  # type: ignore[arg-type]
+            distance=workout.distance,
+            duration=workout.duration,
+            averageHeartRate=workout.average_heart_rate,
+            elevationSum=workout.elevation_sum,
+            gpxMetadata=workout.get_gpx_metadata(),
+            participants=[str(item.id) for item in workout.participants],
+            shareCode=workout.share_code,
+            ownerName=get_user_by_id(workout.user_id).username,
         )
 
 
 @dataclass
-class FitnessSportModel(BaseSportModel):
+class FitnessWorkoutModel(BaseWorkoutModel):
     workoutCategories: list[str]
     workoutType: str | None = None
 
     @staticmethod
-    def create_from_sport(
-        sport: FitnessSport,
-    ) -> 'FitnessSportModel':
-        return FitnessSportModel(
-            id=sport.id,
-            name=sport.name,  # type: ignore[arg-type]
-            type=sport.type,
-            startTime=sport.start_time,  # type: ignore[arg-type]
-            duration=sport.duration,
-            participants=[str(item.id) for item in sport.participants],
-            ownerName=get_user_by_id(sport.user_id).username,
-            workoutCategories=sport.get_workout_categories(),
-            workoutType=sport.workout_type,
+    def create_from_workout(
+        workout: FitnessWorkout,
+    ) -> 'FitnessWorkoutModel':
+        return FitnessWorkoutModel(
+            id=workout.id,
+            name=workout.name,  # type: ignore[arg-type]
+            type=workout.type,
+            startTime=workout.start_time,  # type: ignore[arg-type]
+            duration=workout.duration,
+            participants=[str(item.id) for item in workout.participants],
+            ownerName=get_user_by_id(workout.user_id).username,
+            workoutCategories=workout.get_workout_categories(),
+            workoutType=workout.workout_type,
         )
 
 
 @dataclass
 class MonthModel:
     name: str
-    entries: list[DistanceSportModel | FitnessSportModel | MaintenanceEvent]
+    entries: list[DistanceWorkoutModel | FitnessWorkoutModel | MaintenanceEvent]
     goals: list[MonthGoalSummary]
 
 
-class BaseSportFormModel(BaseModel):
+class BaseWorkoutFormModel(BaseModel):
     name: str
     type: str
     date: str
@@ -132,15 +132,15 @@ class BaseSportFormModel(BaseModel):
 
 
 def construct_blueprint():
-    sports = Blueprint('sports', __name__, static_folder='static', url_prefix='/sports')
+    workouts = Blueprint('workouts', __name__, static_folder='static', url_prefix='/workouts')
 
-    @sports.route('/', defaults={'year': None, 'month': None})
-    @sports.route('/<int:year>/<int:month>')
+    @workouts.route('/', defaults={'year': None, 'month': None})
+    @workouts.route('/<int:year>/<int:month>')
     @login_required
-    def listSports(year: int, month: int):
+    def listWorkouts(year: int, month: int):
         if year is None or month is None:
             now = datetime.now().date()
-            return redirect(url_for('sports.listSports', year=now.year, month=now.month))
+            return redirect(url_for('workouts.listWorkouts', year=now.year, month=now.month))
         else:
             monthRightSideDate = date(year=year, month=month, day=1)
 
@@ -157,7 +157,7 @@ def construct_blueprint():
         nextMonthDate = monthRightSideDate + relativedelta(months=1)
 
         return render_template(
-            'sports/sports.jinja2',
+            'workouts/workouts.jinja2',
             monthLeftSide=monthLeftSide,
             monthRightSide=monthRightSide,
             previousMonthDate=monthLeftSideDate,
@@ -172,57 +172,57 @@ def construct_blueprint():
             ),
         )
 
-    @sports.route('/add')
+    @workouts.route('/add')
     @login_required
     def add():
         return render_template(
-            'sports/sportChooser.jinja2',
+            'workouts/workoutChooser.jinja2',
         )
 
-    @sports.route('/add/<string:sport_type>')
+    @workouts.route('/add/<string:workout_type>')
     @login_required
-    def addType(sport_type: str):
-        workoutType = WorkoutType(sport_type)  # type: ignore[call-arg]
+    def addType(workout_type: str):
+        workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
 
         customFields = (
-            CustomSportField.query.filter(CustomSportField.user_id == current_user.id)
-            .filter(CustomSportField.sport_type == workoutType)
+            CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
+            .filter(CustomWorkoutField.workout_type == workoutType)
             .all()
         )
 
         return render_template(
-            f'sports/sport{sport_type.capitalize()}Form.jinja2',
+            f'workouts/workout{workout_type.capitalize()}Form.jinja2',
             customFields=customFields,
             participants=get_participants(),
-            trackNames=get_sport_names_by_type(workoutType),
+            trackNames=get_workout_names_by_type(workoutType),
             plannedTours=get_planned_tours([workoutType]),
         )
 
-    return sports
+    return workouts
 
 
 def __get_month_model(
     monthDate: date,
     quickFilterState: QuickFilterState,
 ) -> MonthModel:
-    sports = get_sports_by_year_and_month_by_type(
+    workouts = get_workouts_by_year_and_month_by_type(
         monthDate.year,
         monthDate.month,
         quickFilterState.get_active_types(),
     )
 
-    sportModels: list[DistanceSportModel | FitnessSportModel] = []
-    for sport in sports:
-        if sport.type in WorkoutType.get_distance_sport_types():
-            sportModels.append(DistanceSportModel.create_from_sport(sport))
-        elif sport.type in WorkoutType.get_workout_sport_types():
-            sportModels.append(FitnessSportModel.create_from_sport(sport))
+    workoutModels: list[DistanceWorkoutModel | FitnessWorkoutModel] = []
+    for workout in workouts:
+        if workout.type in WorkoutType.get_distance_workout_types():
+            workoutModels.append(DistanceWorkoutModel.create_from_workout(workout))
+        elif workout.type in WorkoutType.get_workout_workout_types():
+            workoutModels.append(FitnessWorkoutModel.create_from_workout(workout))
 
     maintenanceEvents = get_maintenance_events_by_year_and_month_by_type(
         monthDate.year, monthDate.month, quickFilterState.get_active_types()
     )
 
-    entries = sportModels + maintenanceEvents
+    entries = workoutModels + maintenanceEvents
     entries.sort(key=lambda entry: entry.get_date_time(), reverse=True)
 
     return MonthModel(

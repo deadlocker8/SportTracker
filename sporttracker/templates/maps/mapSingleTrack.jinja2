@@ -3,9 +3,9 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        {% if sport.shareCode and sport.ownerName != current_user.username %}
+        {% if workout.shareCode and workout.ownerName != current_user.username %}
             <title>SportTracker - {{ gettext('Shared Track') }}</title>
-            <meta name="description" content="{{ sport.ownerName|capitalize }} is sharing a track with you!">
+            <meta name="description" content="{{ workout.ownerName|capitalize }} is sharing a track with you!">
         {% else %}
             <title>SportTracker - {{ gettext('Track') }}</title>
         {% endif %}
@@ -18,19 +18,19 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('map') }}
 
-        {% import 'sports/sportMacros.jinja2' as sportMacros with context %}
+        {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
         {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
 
         <div class="d-flex flex-row align-items-center justify-content-center my-3 px-3">
             <div class="d-flex align-items-center text-truncate justify-content-center">
-                {{ sportMacros.sport_type_icon_small(sport.type, fontSize='fs-3') }}
+                {{ workoutMacros.workout_type_icon_small(workout.type, fontSize='fs-3') }}
                 <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">
-                    {{ sport.name }}
+                    {{ workout.name }}
                 </div>
             </div>
 
             {% if editUrl and current_user.isTileHuntingActivated %}
-                {{ mapMacros.tileHuntingMapSettings(tileHuntingIsShowTilesActive, tileHuntingIsGridActive, sport.id) }}
+                {{ mapMacros.tileHuntingMapSettings(tileHuntingIsShowTilesActive, tileHuntingIsGridActive, workout.id) }}
             {% endif %}
         </div>
 
@@ -41,27 +41,27 @@
 
             <div class="card-body ps-4 pt-4 pb-0">
                 <div class="row row-cols-4 gy-3 pb-3 overflow-x-auto">
-                    {% call mapMacros.meta_info_item_small('event', sport.type.text_color, gettext('Date')) %}
-                        {{ sport.startTime | format_date }}
+                    {% call mapMacros.meta_info_item_small('event', workout.type.text_color, gettext('Date')) %}
+                        {{ workout.startTime | format_date }}
                     {% endcall %}
-                    {% call mapMacros.meta_info_item_small('route', sport.type.text_color, gettext('Distance')) %}
-                        {{ (sport.distance / 1000) | format_decimal(2) }} km
+                    {% call mapMacros.meta_info_item_small('route', workout.type.text_color, gettext('Distance')) %}
+                        {{ (workout.distance / 1000) | format_decimal(2) }} km
                     {% endcall %}
-                    {% call mapMacros.meta_info_item_small('timer', sport.type.text_color, gettext('Duration'), 'material-symbols-outlined') %}
-                        {{ sport.duration | format_duration }} h
+                    {% call mapMacros.meta_info_item_small('timer', workout.type.text_color, gettext('Duration'), 'material-symbols-outlined') %}
+                        {{ workout.duration | format_duration }} h
                     {% endcall %}
-                    {% call mapMacros.meta_info_item_small('speed', sport.type.text_color, gettext('Speed'), 'material-symbols-outlined') %}
-                        {% if sport.type.render_speed_in_kph %}
-                            {% if sport.duration is none %}
+                    {% call mapMacros.meta_info_item_small('speed', workout.type.text_color, gettext('Speed'), 'material-symbols-outlined') %}
+                        {% if workout.type.render_speed_in_kph %}
+                            {% if workout.duration is none %}
                                 -
                             {% else %}
-                                {{ (sport.distance / sport.duration * 3.6) | round(1) | format_decimal }} km/h
+                                {{ (workout.distance / workout.duration * 3.6) | round(1) | format_decimal }} km/h
                             {% endif %}
                         {% else %}
-                            {% if sport.duration is none %}
+                            {% if workout.duration is none %}
                                 -
                             {% else %}
-                                {{ sport | format_pace }} min
+                                {{ workout | format_pace }} min
                             {% endif %}
                         {% endif %}
                     {% endcall %}
@@ -71,7 +71,7 @@
             <div class="card-footer text-body-secondary d-flex align-items-center justify-content-end">
                 <div class="d-flex align-items-center">
                     <div class="material-symbols-outlined filled fs-4 me-1">person</div>
-                    <div>{{ sport.ownerName }}</div>
+                    <div>{{ workout.ownerName }}</div>
                 </div>
             </div>
         </div>
@@ -87,61 +87,61 @@
                     {{ mapMacros.gpxDownloadButton(gettext('Track'), gpxUrl, 'fa-route', 'flex-column flex-xxl-row', editUrl=editUrl) }}
 
                     <div class="card-body ps-4 pt-4">
-                        {% call mapMacros.meta_info_item('event', sport.type.text_color, gettext('Date')) %}
-                            {{ sport.startTime | format_date }}
+                        {% call mapMacros.meta_info_item('event', workout.type.text_color, gettext('Date')) %}
+                            {{ workout.startTime | format_date }}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('route', sport.type.text_color, gettext('Distance')) %}
-                            {{ (sport.distance / 1000) | format_decimal(2) }} km
+                        {% call mapMacros.meta_info_item('route', workout.type.text_color, gettext('Distance')) %}
+                            {{ (workout.distance / 1000) | format_decimal(2) }} km
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('timer', sport.type.text_color, gettext('Duration'), 'material-symbols-outlined') %}
-                            {{ sport.duration | format_duration }} h
+                        {% call mapMacros.meta_info_item('timer', workout.type.text_color, gettext('Duration'), 'material-symbols-outlined') %}
+                            {{ workout.duration | format_duration }} h
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('speed', sport.type.text_color, gettext('Avg. Speed'), 'material-symbols-outlined') %}
-                            {% if sport.type.render_speed_in_kph %}
-                                {% if sport.duration is none %}
+                        {% call mapMacros.meta_info_item('speed', workout.type.text_color, gettext('Avg. Speed'), 'material-symbols-outlined') %}
+                            {% if workout.type.render_speed_in_kph %}
+                                {% if workout.duration is none %}
                                     -
                                 {% else %}
-                                    {{ (sport.distance / sport.duration * 3.6) | round(1) | format_decimal }} km/h
+                                    {{ (workout.distance / workout.duration * 3.6) | round(1) | format_decimal }} km/h
                                 {% endif %}
                             {% else %}
-                                {% if sport.duration is none %}
+                                {% if workout.duration is none %}
                                     -
                                 {% else %}
-                                    {{ sport | format_pace }} min
+                                    {{ workout | format_pace }} min
                                 {% endif %}
                             {% endif %}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('favorite_border', sport.type.text_color, gettext('Avg. Heart Rate'), 'material-symbols-outlined') %}
-                            {% if sport.average_heart_rate is not none %}
-                                {{ sport.average_heart_rate }} bpm
+                        {% call mapMacros.meta_info_item('favorite_border', workout.type.text_color, gettext('Avg. Heart Rate'), 'material-symbols-outlined') %}
+                            {% if workout.average_heart_rate is not none %}
+                                {{ workout.average_heart_rate }} bpm
                             {% else %}
                                 -
                             {% endif %}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('expand', sport.type.text_color, gettext('Elevation Sum')) %}
-                            {% if sport.elevation_sum is not none %}
-                                {{ sport.elevation_sum }} m
+                        {% call mapMacros.meta_info_item('expand', workout.type.text_color, gettext('Elevation Sum')) %}
+                            {% if workout.elevation_sum is not none %}
+                                {{ workout.elevation_sum }} m
                             {% else %}
                                 -
                             {% endif %}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('vertical_align_bottom', sport.type.text_color, gettext('Min Height')) %}
-                            {% if sport.gpxMetadata is not none %}
-                                {{ (sport.gpxMetadata.elevation_minimum) }} m
+                        {% call mapMacros.meta_info_item('vertical_align_bottom', workout.type.text_color, gettext('Min Height')) %}
+                            {% if workout.gpxMetadata is not none %}
+                                {{ (workout.gpxMetadata.elevation_minimum) }} m
                             {% else %}
                                 -
                             {% endif %}
                         {% endcall %}
 
-                        {% call mapMacros.meta_info_item('vertical_align_top', sport.type.text_color, gettext('Max Height')) %}
-                            {% if sport.gpxMetadata is not none %}
-                                {{ (sport.gpxMetadata.elevation_maximum) }} m
+                        {% call mapMacros.meta_info_item('vertical_align_top', workout.type.text_color, gettext('Max Height')) %}
+                            {% if workout.gpxMetadata is not none %}
+                                {{ (workout.gpxMetadata.elevation_maximum) }} m
                             {% else %}
                                 -
                             {% endif %}
@@ -151,7 +151,7 @@
                     <div class="card-footer text-body-secondary d-flex align-items-center justify-content-end">
                         <div class="d-flex align-items-center">
                             <div class="material-symbols-outlined filled fs-4 me-1">person</div>
-                            <div>{{ sport.ownerName }}</div>
+                            <div>{{ workout.ownerName }}</div>
                         </div>
                     </div>
                 </div>

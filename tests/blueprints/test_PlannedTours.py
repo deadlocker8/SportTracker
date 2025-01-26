@@ -98,7 +98,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
         assert selenium.current_url.endswith('/plannedTours/add')
 
-    def test_quick_filter_only_show_activated_sport_types(self, server, selenium: WebDriver):
+    def test_quick_filter_only_show_activated_workout_types(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, WorkoutType.BIKING, 'Awesome Tour', None, None, None)

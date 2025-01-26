@@ -5,6 +5,6 @@ from sporttracker.logic.model.db import db
 
 
 class GpxVisitedTile(db.Model):  # type: ignore[name-defined]
-    sport_id: Mapped[int] = mapped_column(Integer, nullable=False, primary_key=True)
+    workout_id: Mapped[int] = mapped_column(Integer, nullable=False, primary_key=True)
     x: Mapped[int] = mapped_column(Integer, nullable=False, primary_key=True)
     y: Mapped[int] = mapped_column(Integer, nullable=False, primary_key=True)

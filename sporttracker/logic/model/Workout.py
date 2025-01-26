@@ -5,14 +5,14 @@ from sqlalchemy import Integer, String, DateTime, extract, func
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from sporttracker.logic.model.Participant import Participant, sport_participant_association
+from sporttracker.logic.model.Participant import Participant, workout_participant_association
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 
 
-class Sport(db.Model):  # type: ignore[name-defined]
-    __tablename__ = 'sport'
+class Workout(db.Model):  # type: ignore[name-defined]
+    __tablename__ = 'workout'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     type = db.Column(db.Enum(WorkoutType))
     class_type = db.Column(db.String)
@@ -20,17 +20,19 @@ class Sport(db.Model):  # type: ignore[name-defined]
     start_time: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     duration: Mapped[int] = mapped_column(Integer, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    participants: Mapped[list[Participant]] = relationship(secondary=sport_participant_association)
+    participants: Mapped[list[Participant]] = relationship(
+        secondary=workout_participant_association
+    )
     custom_fields = db.Column(JSON)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'sport',
+        'polymorphic_identity': 'workout',
         'polymorphic_on': 'class_type',
     }
 
     def __repr__(self):
         return (
-            f'Sport('
+            f'Workout('
             f'id: {self.id}, '
             f'type: {self.type}, '
             f'name: {self.name}, '
@@ -49,26 +51,26 @@ class MonthDurationSum:
     durationSum: int
 
 
-def get_sports_by_year_and_month(
+def get_workouts_by_year_and_month(
     year: int,
     month: int,
-) -> list[Sport]:
+) -> list[Workout]:
     return (
-        Sport.query.join(User)
+        Workout.query.join(User)
         .filter(User.username == current_user.username)
-        .filter(extract('year', Sport.start_time) == year)
-        .filter(extract('month', Sport.start_time) == month)
-        .order_by(Sport.start_time.desc())
+        .filter(extract('year', Workout.start_time) == year)
+        .filter(extract('month', Workout.start_time) == month)
+        .order_by(Workout.start_time.desc())
         .all()
     )
 
 
 def get_available_years(userId) -> list[int]:
-    year = extract('year', Sport.start_time)
+    year = extract('year', Workout.start_time)
 
     rows = (
-        Sport.query.with_entities(year.label('year'))
-        .filter(Sport.user_id == userId)
+        Workout.query.with_entities(year.label('year'))
+        .filter(Workout.user_id == userId)
         .group_by(year)
         .order_by(year)
         .all()
@@ -83,17 +85,17 @@ def get_available_years(userId) -> list[int]:
 def get_duration_per_month_by_type(
     workoutType: WorkoutType, minYear: int, maxYear: int
 ) -> list[MonthDurationSum]:
-    year = extract('year', Sport.start_time)
-    month = extract('month', Sport.start_time)
+    year = extract('year', Workout.start_time)
+    month = extract('month', Workout.start_time)
 
     rows = (
-        Sport.query.with_entities(
-            func.sum(Sport.duration).label('durationSum'),
+        Workout.query.with_entities(
+            func.sum(Workout.duration).label('durationSum'),
             year.label('year'),
             month.label('month'),
         )
-        .filter(Sport.type == workoutType)
-        .filter(Sport.user_id == current_user.id)
+        .filter(Workout.type == workoutType)
+        .filter(Workout.user_id == current_user.id)
         .group_by(year, month)
         .order_by(year, month)
         .all()
@@ -116,28 +118,28 @@ def get_duration_per_month_by_type(
     return result
 
 
-def get_sport_names_by_type(workoutType: WorkoutType) -> list[str]:
+def get_workout_names_by_type(workoutType: WorkoutType) -> list[str]:
     rows = (
-        Sport.query.with_entities(Sport.name)
-        .filter(Sport.user_id == current_user.id)
-        .filter(Sport.type == workoutType)
+        Workout.query.with_entities(Workout.name)
+        .filter(Workout.user_id == current_user.id)
+        .filter(Workout.type == workoutType)
         .distinct()
-        .order_by(Sport.name.asc())
+        .order_by(Workout.name.asc())
         .all()
     )
 
     return [row[0] for row in rows]
 
 
-def get_sports_by_year_and_month_by_type(
+def get_workouts_by_year_and_month_by_type(
     year: int, month: int, workoutTypes: list[WorkoutType]
-) -> list[Sport]:
+) -> list[Workout]:
     return (
-        Sport.query.join(User)
-        .filter(Sport.type.in_(workoutTypes))
+        Workout.query.join(User)
+        .filter(Workout.type.in_(workoutTypes))
         .filter(User.username == current_user.username)
-        .filter(extract('year', Sport.start_time) == year)
-        .filter(extract('month', Sport.start_time) == month)
-        .order_by(Sport.start_time.desc())
+        .filter(extract('year', Workout.start_time) == year)
+        .filter(extract('month', Workout.start_time) == month)
+        .order_by(Workout.start_time.desc())
         .all()
     )
