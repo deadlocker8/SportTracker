@@ -9,7 +9,7 @@ from sporttracker.logic.model.CustomSportField import (
     CustomSportFieldType,
     RESERVED_FIELD_NAMES,
 )
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import create_user, Language, User
 from sporttracker.logic.model.db import db
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
@@ -48,7 +48,7 @@ class TestCustomFieldTypes(SeleniumTestBaseClass):
         with app.app_context():
             customSportField = CustomSportField(
                 type=CustomSportFieldType.INTEGER,
-                sport_type=SportType.BIKING,
+                sport_type=WorkoutType.BIKING,
                 name=name,
                 is_required=False,
                 user_id=user.id,

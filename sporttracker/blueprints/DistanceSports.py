@@ -18,7 +18,7 @@ from sporttracker.logic.model.DistanceSport import (
 from sporttracker.logic.model.Participant import get_participants_by_ids, get_participants
 from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_tour_by_id
 from sporttracker.logic.model.Sport import get_sport_names_by_type
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -66,7 +66,7 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
 
         sport = DistanceSport(
             name=form.name,
-            type=SportType(form.type),  # type: ignore[call-arg]
+            type=WorkoutType(form.type),  # type: ignore[call-arg]
             start_time=form.calculate_start_time(),
             duration=form.calculate_duration(),
             distance=form.distance * 1000,

@@ -10,7 +10,7 @@ from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.helpers.Helpers import format_duration
 from sporttracker.logic.model.Sport import get_sports_by_year_and_month_by_type
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 
@@ -18,7 +18,7 @@ from sporttracker.logic.model.db import db
 @dataclass
 class MonthGoalSummary(ABC):
     id: int
-    type: SportType
+    type: WorkoutType
     name: str
     percentage: float
     color: str
@@ -80,7 +80,7 @@ class MonthGoalDurationSummary(MonthGoalSummary):
 class MonthGoal(db.Model):  # type: ignore[name-defined]
     __abstract__ = True
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    type = db.Column(db.Enum(SportType))
+    type = db.Column(db.Enum(WorkoutType))
     year: Mapped[int] = mapped_column(Integer, nullable=False)
     month: Mapped[int] = mapped_column(Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -232,14 +232,14 @@ class MonthGoalDuration(MonthGoal):
 
 
 def get_goal_summaries_by_year_and_month_and_types(
-    year: int, month: int, sportTypes: list[SportType]
+    year: int, month: int, workoutTypes: list[WorkoutType]
 ) -> list[MonthGoalSummary]:
     goalsDistance = (
         MonthGoalDistance.query.join(User)
         .filter(User.username == current_user.username)
         .filter(MonthGoalDistance.year == year)
         .filter(MonthGoalDistance.month == month)
-        .filter(MonthGoalDistance.type.in_(sportTypes))
+        .filter(MonthGoalDistance.type.in_(workoutTypes))
         .all()
     )
     goalsCount = (
@@ -247,7 +247,7 @@ def get_goal_summaries_by_year_and_month_and_types(
         .filter(User.username == current_user.username)
         .filter(MonthGoalCount.year == year)
         .filter(MonthGoalCount.month == month)
-        .filter(MonthGoalCount.type.in_(sportTypes))
+        .filter(MonthGoalCount.type.in_(workoutTypes))
         .all()
     )
     goalsDuration = (
@@ -255,7 +255,7 @@ def get_goal_summaries_by_year_and_month_and_types(
         .filter(User.username == current_user.username)
         .filter(MonthGoalDuration.year == year)
         .filter(MonthGoalDuration.month == month)
-        .filter(MonthGoalDuration.type.in_(sportTypes))
+        .filter(MonthGoalDuration.type.in_(workoutTypes))
         .all()
     )
 

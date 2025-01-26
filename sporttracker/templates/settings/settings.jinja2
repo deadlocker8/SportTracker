@@ -127,13 +127,13 @@
                             <span class="material-symbols-outlined filled fs-2">drive_file_rename_outline</span>
                         {% endcall %}
 
-                        {% for sportType, customFields in customFieldsBySportType.items() %}
+                        {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
                             <div class="row mt-5 mb-3">
                                 <div class="col col-12 mx-auto">
                                     <h3 class="d-flex align-items-center justify-content-center">
-                                        {{ sportMacros.sport_type_icon_small(sportType, classes='me-3') }}
-                                        <span class="me-3">{{ sportType.get_localized_name() }}</span>
-                                        <a href="{{ url_for('settings.customFieldsAdd', sport_type=sportType.name) }}"
+                                        {{ sportMacros.sport_type_icon_small(workoutType, classes='me-3') }}
+                                        <span class="me-3">{{ workoutType.get_localized_name() }}</span>
+                                        <a href="{{ url_for('settings.customFieldsAdd', sport_type=workoutType.name) }}"
                                            class="link-light text-decoration-none d-inline-flex align-items-center">
                                             <span class="rounded-circle bg-primary p-1 fs-3 material-symbols-outlined filled">add</span>
                                         </a>

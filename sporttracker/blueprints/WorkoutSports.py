@@ -12,7 +12,7 @@ from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.Participant import get_participants_by_ids, get_participants
 from sporttracker.logic.model.PlannedTour import get_planned_tours
 from sporttracker.logic.model.Sport import get_sport_names_by_type
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.WorkoutCategory import (
     update_workout_categories_by_sport_id,
     WorkoutCategoryType,
@@ -46,7 +46,7 @@ def construct_blueprint():
 
         sport = WorkoutSport(
             name=form.name,
-            type=SportType(form.type),  # type: ignore[call-arg]
+            type=WorkoutType(form.type),  # type: ignore[call-arg]
             start_time=form.calculate_start_time(),
             duration=form.calculate_duration(),
             custom_fields=form.model_extra,

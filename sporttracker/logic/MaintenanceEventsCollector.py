@@ -12,13 +12,13 @@ from sporttracker.logic.model.MaintenanceEventInstance import (
     get_maintenance_events_by_maintenance_id,
     get_latest_maintenance_event_by_maintenance_id,
 )
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 
 
 @dataclass
 class MaintenanceWithEventsModel:
     id: int
-    type: SportType
+    type: WorkoutType
     description: str
     isLimitExceeded: bool
     limitExceededDistance: int | None

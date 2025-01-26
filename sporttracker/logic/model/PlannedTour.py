@@ -8,7 +8,7 @@ from sqlalchemy.sql import or_
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 
@@ -87,7 +87,7 @@ planned_tour_user_association = Table(
 
 class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    type = db.Column(db.Enum(SportType))
+    type = db.Column(db.Enum(WorkoutType))
     name: Mapped[String] = mapped_column(String, nullable=False)
     creation_date: Mapped[DateTime] = mapped_column(DateTime)
     last_edit_date: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
@@ -188,7 +188,7 @@ def get_updated_planned_tour_ids() -> list[int]:
     return [int(row[0]) for row in rows]
 
 
-def get_planned_tours(sportTypes: list[SportType]) -> list[PlannedTour]:
+def get_planned_tours(workoutTypes: list[WorkoutType]) -> list[PlannedTour]:
     return (
         PlannedTour.query.filter(
             or_(
@@ -196,7 +196,7 @@ def get_planned_tours(sportTypes: list[SportType]) -> list[PlannedTour]:
                 PlannedTour.shared_users.any(id=current_user.id),
             )
         )
-        .filter(PlannedTour.type.in_(sportTypes))
+        .filter(PlannedTour.type.in_(workoutTypes))
         .order_by(PlannedTour.name.asc())
         .all()
     )

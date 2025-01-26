@@ -25,18 +25,18 @@
                     <div class="col col-12 mx-auto">
                         <h3>{{ gettext('Choose custom field') }}</h3>
 
-                        {% for sportType, customFields in customFieldsBySportType.items() %}
+                        {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
                             <div class="row mt-5 mb-3">
                                 <div class="col col-12 mx-auto">
                                     <h3 class="d-flex align-items-center justify-content-center">
-                                        {{ sportMacros.sport_type_icon_small(sportType, classes='me-3') }}
-                                        <span class="me-3">{{ sportType.get_localized_name() }}</span>
+                                        {{ sportMacros.sport_type_icon_small(workoutType, classes='me-3') }}
+                                        <span class="me-3">{{ workoutType.get_localized_name() }}</span>
                                     </h3>
                                 </div>
                             </div>
 
                             {% for field in customFields %}
-                                <a href="{{ url_for('charts.chartDistancePerCustomField', sport_type=sportType.name, name=field.name) }}" class="btn btn-primary">
+                                <a href="{{ url_for('charts.chartDistancePerCustomField', sport_type=workoutType.name, name=field.name) }}" class="btn btn-primary">
                                     <span class="fs-5 text-light">{{ field.name }}</span>
                                 </a>
                             {% endfor %}

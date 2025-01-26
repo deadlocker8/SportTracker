@@ -78,47 +78,47 @@
     </div>
 {%- endmacro %}
 
-{% macro sport_type_icon_non_responsive(sportType, classes='') -%}
-    {% if sportType.is_easter_egg_activated() %}
-        <div class="d-inline-block rounded-circle p-3 {{ sportType.background_color }} {{ classes }}">
-            <img class="sport-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
+{% macro sport_type_icon_non_responsive(workoutType, classes='') -%}
+    {% if workoutType.is_easter_egg_activated() %}
+        <div class="d-inline-block rounded-circle p-3 {{ workoutType.background_color }} {{ classes }}">
+            <img class="sport-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + workoutType.name.lower() + "_easter_egg.svg") }}"/>
         </div>
-    {% elif sportType.is_font_awesome_icon %}
-        <i class="d-inline-block fa-solid {{ sportType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ sportType.background_color }} {{ classes }}"></i>
+    {% elif workoutType.is_font_awesome_icon %}
+        <i class="d-inline-block fa-solid {{ workoutType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ workoutType.background_color }} {{ classes }}"></i>
     {% else %}
-        <span class="d-inline-block material-symbols-outlined rounded-circle fs-1 p-3 text-dark {{ sportType.background_color }} {{ classes }}">{{ sportType.icon }}</span>
+        <span class="d-inline-block material-symbols-outlined rounded-circle fs-1 p-3 text-dark {{ workoutType.background_color }} {{ classes }}">{{ workoutType.icon }}</span>
     {% endif %}
 {%- endmacro %}
 
-{% macro sport_type_icon(sportType, classes='') -%}
-    {% if sportType.is_easter_egg_activated() %}
-        <div class="d-none d-lg-inline-block rounded-circle p-3 {{ sportType.background_color }} {{ classes }}">
-            <img class="sport-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
+{% macro sport_type_icon(workoutType, classes='') -%}
+    {% if workoutType.is_easter_egg_activated() %}
+        <div class="d-none d-lg-inline-block rounded-circle p-3 {{ workoutType.background_color }} {{ classes }}">
+            <img class="sport-type-icon-easter-egg fs-1" src="{{ url_for('static', filename="images/easterEggs/" + workoutType.name.lower() + "_easter_egg.svg") }}"/>
         </div>
-        <div class="d-lg-none d-inline-block rounded-circle p-2 {{ sportType.background_color }} {{ classes }}">
-            <img class="sport-type-icon-easter-egg fs-2" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
+        <div class="d-lg-none d-inline-block rounded-circle p-2 {{ workoutType.background_color }} {{ classes }}">
+            <img class="sport-type-icon-easter-egg fs-2" src="{{ url_for('static', filename="images/easterEggs/" + workoutType.name.lower() + "_easter_egg.svg") }}"/>
         </div>
-    {% elif sportType.is_font_awesome_icon %}
-        <i class="d-none d-lg-inline-block fa-solid {{ sportType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ sportType.background_color }} {{ classes }}"></i>
-        <i class="d-lg-none fa-solid {{ sportType.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ sportType.background_color }} {{ classes }}"></i>
+    {% elif workoutType.is_font_awesome_icon %}
+        <i class="d-none d-lg-inline-block fa-solid {{ workoutType.icon }} fa-fw rounded-circle fs-1 p-3 text-dark {{ workoutType.background_color }} {{ classes }}"></i>
+        <i class="d-lg-none fa-solid {{ workoutType.icon }} fa-fw rounded-circle fs-3 p-2 text-dark {{ workoutType.background_color }} {{ classes }}"></i>
     {% else %}
-        <span class="d-none d-lg-inline-block material-symbols-outlined rounded-circle fs-1 p-3 text-dark {{ sportType.background_color }} {{ classes }}">{{ sportType.icon }}</span>
-        <span class="d-lg-none material-symbols-outlined rounded-circle fs-3 p-2 text-dark {{ sportType.background_color }} {{ classes }}">{{ sportType.icon }}</span>
+        <span class="d-none d-lg-inline-block material-symbols-outlined rounded-circle fs-1 p-3 text-dark {{ workoutType.background_color }} {{ classes }}">{{ workoutType.icon }}</span>
+        <span class="d-lg-none material-symbols-outlined rounded-circle fs-3 p-2 text-dark {{ workoutType.background_color }} {{ classes }}">{{ workoutType.icon }}</span>
     {% endif %}
 {%- endmacro %}
 
-{% macro sport_type_icon_small(sportType, fontSize='fs-2', classes='', backgroundColorOverride='') -%}
-    {% if sportType.is_easter_egg_activated() %}
+{% macro sport_type_icon_small(workoutType, fontSize='fs-2', classes='', backgroundColorOverride='') -%}
+    {% if workoutType.is_easter_egg_activated() %}
         <div class="rounded-circle p-2
-                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ sportType.background_color }}{% endif %} d-flex align-items-center {{ classes }}">
-            <img class="sport-type-icon-easter-egg {{ fontSize }}" src="{{ url_for('static', filename="images/easterEggs/" + sportType.name.lower() + "_easter_egg.svg") }}"/>
+                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ workoutType.background_color }}{% endif %} d-flex align-items-center {{ classes }}">
+            <img class="sport-type-icon-easter-egg {{ fontSize }}" src="{{ url_for('static', filename="images/easterEggs/" + workoutType.name.lower() + "_easter_egg.svg") }}"/>
         </div>
-    {% elif sportType.is_font_awesome_icon %}
-        <i class="fa-solid {{ sportType.icon }} fa-fw rounded-circle {{ fontSize }} p-2 text-dark
-                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ sportType.background_color }}{% endif %} {{ classes }}"></i>
+    {% elif workoutType.is_font_awesome_icon %}
+        <i class="fa-solid {{ workoutType.icon }} fa-fw rounded-circle {{ fontSize }} p-2 text-dark
+                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ workoutType.background_color }}{% endif %} {{ classes }}"></i>
     {% else %}
         <span class="material-symbols-outlined rounded-circle {{ fontSize }} p-2 text-dark
-                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ sportType.background_color }}{% endif %} {{ classes }}">{{ sportType.icon }}</span>
+                {% if backgroundColorOverride %}{{ backgroundColorOverride }}{% else %}{{ workoutType.background_color }}{% endif %} {{ classes }}">{{ workoutType.icon }}</span>
     {% endif %}
 {%- endmacro %}
 

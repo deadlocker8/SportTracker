@@ -39,12 +39,12 @@
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
-                {% for sportType, achievements in achievements.items() %}
+                {% for workoutType, achievements in achievements.items() %}
                     <div class="row mt-3 mb-3">
                         <div class="col col-12 mx-auto">
                             <h3 class="d-flex align-items-center justify-content-center">
-                                {{ sportMacros.sport_type_icon_small(sportType, classes='me-3')}}
-                                <span>{{ sportType.get_localized_name() }}</span>
+                                {{ sportMacros.sport_type_icon_small(workoutType, classes='me-3')}}
+                                <span>{{ workoutType.get_localized_name() }}</span>
                             </h3>
                         </div>
                     </div>

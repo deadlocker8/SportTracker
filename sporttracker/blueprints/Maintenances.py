@@ -15,7 +15,7 @@ from sporttracker.logic.model.Maintenance import Maintenance, get_maintenance_by
 from sporttracker.logic.model.MaintenanceEventInstance import (
     get_maintenance_events_by_maintenance_id,
 )
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -24,7 +24,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 @dataclass
 class MaintenanceModel:
     id: int | None
-    type: SportType
+    type: WorkoutType
     description: str
     is_reminder_active: bool
     reminder_limit: int | None
@@ -69,7 +69,7 @@ def construct_blueprint():
             reminderLimit = form.reminder_limit * 1000
 
         maintenance = Maintenance(
-            type=SportType(form.type),  # type: ignore[call-arg]
+            type=WorkoutType(form.type),  # type: ignore[call-arg]
             description=form.description,
             user_id=current_user.id,
             is_reminder_active=bool(form.is_reminder_active),
@@ -119,7 +119,7 @@ def construct_blueprint():
         if form.reminder_limit is not None:
             reminderLimit = form.reminder_limit * 1000
 
-        maintenance.type = SportType(form.type)  # type: ignore[call-arg]
+        maintenance.type = WorkoutType(form.type)  # type: ignore[call-arg]
         maintenance.description = form.description  # type: ignore[assignment]
         maintenance.user_id = current_user.id
         maintenance.is_reminder_active = bool(form.is_reminder_active)

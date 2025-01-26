@@ -5,7 +5,7 @@ from flask_login import current_user
 from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 
@@ -38,7 +38,7 @@ class CustomSportFieldType(enum.Enum):
 class CustomSportField(db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     type = db.Column(db.Enum(CustomSportFieldType))
-    sport_type = db.Column(db.Enum(SportType))
+    sport_type = db.Column(db.Enum(WorkoutType))
     name: Mapped[String] = mapped_column(String, nullable=False)
     is_required: Mapped[bool] = mapped_column(Boolean, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -59,19 +59,19 @@ class CustomSportField(db.Model):  # type: ignore[name-defined]
 
 
 def get_custom_fields_by_sport_type(
-    sportTypes: list[SportType] | None = None,
-) -> dict[SportType, list[CustomSportField]]:
-    if sportTypes is None:
-        sportTypes = [s for s in SportType]
+    workoutTypes: list[WorkoutType] | None = None,
+) -> dict[WorkoutType, list[CustomSportField]]:
+    if workoutTypes is None:
+        workoutTypes = [s for s in WorkoutType]
 
-    customFieldsBySportType = {}
-    for sportType in sportTypes:
-        customFieldsBySportType[sportType] = (
+    customFieldsByWorkoutType = {}
+    for workoutType in workoutTypes:
+        customFieldsByWorkoutType[workoutType] = (
             CustomSportField.query.filter(CustomSportField.user_id == current_user.id)
-            .filter(CustomSportField.sport_type == sportType)
+            .filter(CustomSportField.sport_type == workoutType)
             .all()
         )
-    return customFieldsBySportType
+    return customFieldsByWorkoutType
 
 
 # List of reserved names that are not allowed to be used as custom field names.

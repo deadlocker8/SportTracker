@@ -6,7 +6,7 @@ from datetime import datetime
 from flask_babel import gettext
 
 
-class SportType(enum.Enum):
+class WorkoutType(enum.Enum):
     BIKING = (
         'BIKING',
         'directions_bike',
@@ -103,7 +103,7 @@ class SportType(enum.Enum):
         elif self == self.FITNESS:
             return gettext('Workout')
 
-        raise ValueError(f'Could not get localized name for unsupported SportType: {self}')
+        raise ValueError(f'Could not get localized name for unsupported WorkoutType: {self}')
 
     @staticmethod
     def is_easter_egg_activated() -> bool:
@@ -111,9 +111,9 @@ class SportType(enum.Enum):
         return now.month == 4 and now.day == 1
 
     @staticmethod
-    def get_distance_sport_types() -> list[SportType]:
-        return [SportType.BIKING, SportType.RUNNING, SportType.HIKING]
+    def get_distance_sport_types() -> list[WorkoutType]:
+        return [WorkoutType.BIKING, WorkoutType.RUNNING, WorkoutType.HIKING]
 
     @staticmethod
-    def get_workout_sport_types() -> list[SportType]:
-        return [SportType.FITNESS]
+    def get_workout_sport_types() -> list[WorkoutType]:
+        return [WorkoutType.FITNESS]

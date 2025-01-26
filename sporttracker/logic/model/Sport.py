@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from sporttracker.logic.model.Participant import Participant, sport_participant_association
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 
@@ -14,7 +14,7 @@ from sporttracker.logic.model.db import db
 class Sport(db.Model):  # type: ignore[name-defined]
     __tablename__ = 'sport'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    type = db.Column(db.Enum(SportType))
+    type = db.Column(db.Enum(WorkoutType))
     class_type = db.Column(db.String)
     name: Mapped[String] = mapped_column(String, nullable=False)
     start_time: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
@@ -81,7 +81,7 @@ def get_available_years(userId) -> list[int]:
 
 
 def get_duration_per_month_by_type(
-    sportType: SportType, minYear: int, maxYear: int
+    workoutType: WorkoutType, minYear: int, maxYear: int
 ) -> list[MonthDurationSum]:
     year = extract('year', Sport.start_time)
     month = extract('month', Sport.start_time)
@@ -92,7 +92,7 @@ def get_duration_per_month_by_type(
             year.label('year'),
             month.label('month'),
         )
-        .filter(Sport.type == sportType)
+        .filter(Sport.type == workoutType)
         .filter(Sport.user_id == current_user.id)
         .group_by(year, month)
         .order_by(year, month)
@@ -116,11 +116,11 @@ def get_duration_per_month_by_type(
     return result
 
 
-def get_sport_names_by_type(sportType: SportType) -> list[str]:
+def get_sport_names_by_type(workoutType: WorkoutType) -> list[str]:
     rows = (
         Sport.query.with_entities(Sport.name)
         .filter(Sport.user_id == current_user.id)
-        .filter(Sport.type == sportType)
+        .filter(Sport.type == workoutType)
         .distinct()
         .order_by(Sport.name.asc())
         .all()
@@ -130,11 +130,11 @@ def get_sport_names_by_type(sportType: SportType) -> list[str]:
 
 
 def get_sports_by_year_and_month_by_type(
-    year: int, month: int, sportTypes: list[SportType]
+    year: int, month: int, workoutTypes: list[WorkoutType]
 ) -> list[Sport]:
     return (
         Sport.query.join(User)
-        .filter(Sport.type.in_(sportTypes))
+        .filter(Sport.type.in_(workoutTypes))
         .filter(User.username == current_user.username)
         .filter(extract('year', Sport.start_time) == year)
         .filter(extract('month', Sport.start_time) == month)

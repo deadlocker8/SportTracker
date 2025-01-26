@@ -35,23 +35,23 @@
     </div>
 {%- endmacro %}
 
-{% macro annualAchievementModal(idSuffix, sportType, achievement) -%}
+{% macro annualAchievementModal(idSuffix, workoutType, achievement) -%}
     <div class="modal fade" tabindex="-1" id="annual-achievement-modal-{{ idSuffix }}">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content bg-dark max-height-90">
                 <div class="modal-header d-flex align-items-center justify-content-start">
-                    {{ sportMacros.sport_type_icon_small(sportType, fontSize='fs-3') }}
+                    {{ sportMacros.sport_type_icon_small(workoutType, fontSize='fs-3') }}
                     <div class="fs-5 ms-3">
-                        {{ sportType.get_localized_name() }} - {{ achievement.title }}
+                        {{ workoutType.get_localized_name() }} - {{ achievement.title }}
                     </div>
                 </div>
                 <div class="modal-body">
                     <div id="annual-achievement-chart-container-{{ idSuffix }}" class="w-100"></div>
                     <div class="row">
-                        {{ annualAchievementStatisticCard(gettext('Min'), sportType, achievement.all_year_data.min) }}
-                        {{ annualAchievementStatisticCard(gettext('Max'), sportType, achievement.all_year_data.max) }}
-                        {{ annualAchievementStatisticCard(gettext('Total'), sportType, achievement.all_year_data.sum) }}
-                        {{ annualAchievementStatisticCard(gettext('Average'), sportType, achievement.all_year_data.average) }}
+                        {{ annualAchievementStatisticCard(gettext('Min'), workoutType, achievement.all_year_data.min) }}
+                        {{ annualAchievementStatisticCard(gettext('Max'), workoutType, achievement.all_year_data.max) }}
+                        {{ annualAchievementStatisticCard(gettext('Total'), workoutType, achievement.all_year_data.sum) }}
+                        {{ annualAchievementStatisticCard(gettext('Average'), workoutType, achievement.all_year_data.average) }}
                     </div>
                 </div>
                 <div class="modal-footer overflow-y-auto">
@@ -62,18 +62,18 @@
     </div>
 {%- endmacro %}
 
-{% macro annualAchievementStatisticCard(title, sportType, value) -%}
+{% macro annualAchievementStatisticCard(title, workoutType, value) -%}
     <div class="col-6 mb-3">
         <div class="card bg-body-secondary border-0 h-100" data-bs-theme="dark">
             <div class="card-body">
                 <div class="card-title">{{ title }}</div>
-                <h5 class="card-title {{ sportType.text_color }} fw-bold">{{ value }}</h5>
+                <h5 class="card-title {{ workoutType.text_color }} fw-bold">{{ value }}</h5>
             </div>
         </div>
     </div>
 {%- endmacro %}
 
-{% macro annualAchievementChart(index, sportType, achievement) -%}
+{% macro annualAchievementChart(index, workoutType, achievement) -%}
     <script>
         document.getElementById('annual-achievement-modal-{{ index }}').addEventListener('shown.bs.modal', event =>
         {
@@ -84,7 +84,7 @@
                         y: {{ achievement.all_year_data.values }},
                         type: 'bar',
                         marker: {
-                            color: '{{ sportType.background_color_hex }}'
+                            color: '{{ workoutType.background_color_hex }}'
                         },
                         text: {{ achievement.all_year_data.labels }},
                         insidetextfont: {
@@ -154,12 +154,12 @@
                 </div>
 
                 {% set ns = namespace(index = 0) %}
-                {% for sportType, achievements in achievements.items() %}
+                {% for workoutType, achievements in achievements.items() %}
                     <div class="row mt-3 mb-3">
                         <div class="col col-12 mx-auto">
                             <h3 class="d-flex align-items-center justify-content-center">
-                                {{ sportMacros.sport_type_icon_small(sportType, classes='me-3') }}
-                                <span>{{ sportType.get_localized_name() }} - {{ selectedYear | string }}</span>
+                                {{ sportMacros.sport_type_icon_small(workoutType, classes='me-3') }}
+                                <span>{{ workoutType.get_localized_name() }} - {{ selectedYear | string }}</span>
                             </h3>
                         </div>
                     </div>
@@ -168,8 +168,8 @@
                         {% for achievement in achievements %}
                             {% set ns.index = ns.index + 2 %}
                             {{ renderAnnualAchievement(achievement, ns.index) }}
-                            {{ annualAchievementModal(ns.index, sportType, achievement) }}
-                            {{ annualAchievementChart(ns.index, sportType, achievement) }}
+                            {{ annualAchievementModal(ns.index, workoutType, achievement) }}
+                            {{ annualAchievementChart(ns.index, workoutType, achievement) }}
                         {% endfor %}
                     </div>
 

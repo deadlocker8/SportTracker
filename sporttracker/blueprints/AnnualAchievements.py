@@ -15,7 +15,7 @@ from sporttracker.logic.model.Achievement import (
     AllYearData,
 )
 from sporttracker.logic.model.Sport import get_available_years
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -42,27 +42,27 @@ def construct_blueprint():
             availableYears=get_available_years(current_user.id),
         )
 
-    def __get_annual_achievements(year: int) -> dict[SportType, list[AnnualAchievement]]:
+    def __get_annual_achievements(year: int) -> dict[WorkoutType, list[AnnualAchievement]]:
         result = {}
 
         availableYears = get_available_years(current_user.id)
         yearNames = [str(year) for year in availableYears]
 
-        for sportType in SportType.get_distance_sport_types():
+        for workoutType in WorkoutType.get_distance_sport_types():
             achievementList = []
 
             achievementList.append(
-                __create_achievement_total_distance(availableYears, sportType, year, yearNames)
+                __create_achievement_total_distance(availableYears, workoutType, year, yearNames)
             )
 
             achievementList.append(
-                __create_achievement_total_duration(availableYears, sportType, year, yearNames)
+                __create_achievement_total_duration(availableYears, workoutType, year, yearNames)
             )
 
             achievementList.append(
                 __create_achievement_track_count(
                     availableYears,
-                    sportType,
+                    workoutType,
                     year,
                     yearNames,
                     gettext('Number Of Tracks'),
@@ -72,26 +72,26 @@ def construct_blueprint():
             )
 
             achievementList.append(
-                __create_achievement_longest_track(availableYears, sportType, year, yearNames)
+                __create_achievement_longest_track(availableYears, workoutType, year, yearNames)
             )
 
             achievementList.append(
-                __create_achievement_average_speed(availableYears, sportType, year, yearNames)
+                __create_achievement_average_speed(availableYears, workoutType, year, yearNames)
             )
 
-            result[sportType] = achievementList
+            result[workoutType] = achievementList
 
-        for sportType in SportType.get_workout_sport_types():
+        for workoutType in WorkoutType.get_workout_sport_types():
             achievementList = []
 
             achievementList.append(
-                __create_achievement_total_duration(availableYears, sportType, year, yearNames)
+                __create_achievement_total_duration(availableYears, workoutType, year, yearNames)
             )
 
             achievementList.append(
                 __create_achievement_track_count(
                     availableYears,
-                    sportType,
+                    workoutType,
                     year,
                     yearNames,
                     gettext('Number Of Workouts'),
@@ -101,15 +101,15 @@ def construct_blueprint():
             )
 
             achievementList.append(
-                __create_achievement_longest_duration(availableYears, sportType, year, yearNames)
+                __create_achievement_longest_duration(availableYears, workoutType, year, yearNames)
             )
 
-            result[sportType] = achievementList
+            result[workoutType] = achievementList
 
         return result
 
     def __create_achievement_total_distance(
-        availableYears: list[int], sportType: SportType, year: int, yearNames: list[str]
+        availableYears: list[int], workoutType: WorkoutType, year: int, yearNames: list[str]
     ) -> AnnualAchievement:
         values = []
         totalDistance = 0.0
@@ -117,7 +117,7 @@ def construct_blueprint():
 
         for currentYear in availableYears:
             value = AchievementCalculator.get_total_distance_by_type_and_year(
-                sportType, currentYear
+                workoutType, currentYear
             )
             values.append(value)
 
@@ -141,7 +141,7 @@ def construct_blueprint():
             icon='map',
             is_font_awesome_icon=False,
             is_outlined_icon=False,
-            color=sportType.border_color,
+            color=workoutType.border_color,
             title=gettext('Total Distance'),
             description=__format_distance(totalDistance),
             difference_to_previous_year=__format_distance(abs(totalDistanceDifference)),
@@ -153,7 +153,7 @@ def construct_blueprint():
         )
 
     def __create_achievement_total_duration(
-        availableYears: list[int], sportType: SportType, year: int, yearNames: list[str]
+        availableYears: list[int], workoutType: WorkoutType, year: int, yearNames: list[str]
     ) -> AnnualAchievement:
         values = []
         totalDuration = 0
@@ -161,7 +161,7 @@ def construct_blueprint():
 
         for currentYear in availableYears:
             value = AchievementCalculator.get_total_duration_by_type_and_year(
-                sportType, currentYear
+                workoutType, currentYear
             )
             values.append(value)
             if currentYear == year:
@@ -183,7 +183,7 @@ def construct_blueprint():
             icon='timer',
             is_font_awesome_icon=False,
             is_outlined_icon=True,
-            color=sportType.border_color,
+            color=workoutType.border_color,
             title=gettext('Total Duration'),
             description=__format_duration(totalDuration),
             difference_to_previous_year=__format_duration(abs(totalDurationDifference)),
@@ -196,7 +196,7 @@ def construct_blueprint():
 
     def __create_achievement_track_count(
         availableYears: list[int],
-        sportType: SportType,
+        workoutType: WorkoutType,
         year: int,
         yearNames: list[str],
         title: str,
@@ -209,7 +209,7 @@ def construct_blueprint():
 
         for currentYear in availableYears:
             value = AchievementCalculator.get_total_number_of_sports_by_type_and_year(
-                sportType, currentYear
+                workoutType, currentYear
             )
             values.append(value)
             if currentYear == year:
@@ -231,7 +231,7 @@ def construct_blueprint():
             icon=icon,
             is_font_awesome_icon=is_font_awesome_icon,
             is_outlined_icon=False,
-            color=sportType.border_color,
+            color=workoutType.border_color,
             title=title,
             description=str(totalTrackCount),
             difference_to_previous_year=str(abs(totalTrackCountDifference)),
@@ -243,7 +243,7 @@ def construct_blueprint():
         )
 
     def __create_achievement_longest_track(
-        availableYears: list[int], sportType: SportType, year: int, yearNames: list[str]
+        availableYears: list[int], workoutType: WorkoutType, year: int, yearNames: list[str]
     ) -> AnnualAchievement:
         values = []
         longestTrack = 0.0
@@ -251,7 +251,7 @@ def construct_blueprint():
 
         for currentYear in availableYears:
             value = AchievementCalculator.get_longest_distance_by_type_and_year(
-                sportType, currentYear
+                workoutType, currentYear
             )
             values.append(value)
             if currentYear == year:
@@ -274,7 +274,7 @@ def construct_blueprint():
             icon='route',
             is_font_awesome_icon=False,
             is_outlined_icon=False,
-            color=sportType.border_color,
+            color=workoutType.border_color,
             title=gettext('Longest Track'),
             description=__format_distance(longestTrack),
             difference_to_previous_year=__format_distance(abs(longestTrackDifference)),
@@ -286,14 +286,16 @@ def construct_blueprint():
         )
 
     def __create_achievement_average_speed(
-        availableYears: list[int], sportType: SportType, year: int, yearNames: list[str]
+        availableYears: list[int], workoutType: WorkoutType, year: int, yearNames: list[str]
     ) -> AnnualAchievement:
         values = []
         averageSpeed = 0.0
         averageSpeedPreviousYear = 0.0
 
         for currentYear in availableYears:
-            value = AchievementCalculator.get_average_speed_by_type_and_year(sportType, currentYear)
+            value = AchievementCalculator.get_average_speed_by_type_and_year(
+                workoutType, currentYear
+            )
             values.append(value)
             if currentYear == year:
                 averageSpeed = value
@@ -315,7 +317,7 @@ def construct_blueprint():
             icon='speed',
             is_font_awesome_icon=False,
             is_outlined_icon=False,
-            color=sportType.border_color,
+            color=workoutType.border_color,
             title=gettext('Average Speed'),
             description=__format_speed(averageSpeed),
             difference_to_previous_year=__format_speed(abs(averageSpeedDifference)),
@@ -327,7 +329,7 @@ def construct_blueprint():
         )
 
     def __create_achievement_longest_duration(
-        availableYears: list[int], sportType: SportType, year: int, yearNames: list[str]
+        availableYears: list[int], workoutType: WorkoutType, year: int, yearNames: list[str]
     ) -> AnnualAchievement:
         values = []
         longestDuration = 0
@@ -335,7 +337,7 @@ def construct_blueprint():
 
         for currentYear in availableYears:
             value = AchievementCalculator.get_longest_duration_by_type_and_year(
-                sportType, currentYear
+                workoutType, currentYear
             )
             values.append(value)
             if currentYear == year:
@@ -358,7 +360,7 @@ def construct_blueprint():
             icon='schedule',
             is_font_awesome_icon=False,
             is_outlined_icon=False,
-            color=sportType.border_color,
+            color=workoutType.border_color,
             title=gettext('Longest Duration'),
             description=__format_duration(longestDuration),
             difference_to_previous_year=__format_duration(abs(longestDurationDifference)),

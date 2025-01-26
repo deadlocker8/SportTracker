@@ -17,7 +17,7 @@ from sporttracker.logic.model.CustomSportField import (
     RESERVED_FIELD_NAMES,
 )
 from sporttracker.logic.model.Participant import Participant, get_participants
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import (
     User,
     Language,
@@ -89,7 +89,7 @@ def construct_blueprint():
         return render_template(
             'settings/settings.jinja2',
             userLanguage=current_user.language.name,
-            customFieldsBySportType=get_custom_fields_by_sport_type(),
+            customFieldsByWorkoutType=get_custom_fields_by_sport_type(),
             participants=get_participants(),
             infoItems=infoItems,
             tileRenderUrl=tileRenderUrl,
@@ -127,7 +127,7 @@ def construct_blueprint():
                 'settings/settings.jinja2',
                 errorMessage='Password must not be empty',
                 userLanguage=current_user.language.name,
-                customFieldsBySportType=get_custom_fields_by_sport_type(),
+                customFieldsByWorkoutType=get_custom_fields_by_sport_type(),
             )
 
         if len(password) < MIN_PASSWORD_LENGTH:
@@ -135,7 +135,7 @@ def construct_blueprint():
                 'settings/settings.jinja2',
                 errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long',
                 userLanguage=current_user.language.name,
-                customFieldsBySportType=get_custom_fields_by_sport_type(),
+                customFieldsByWorkoutType=get_custom_fields_by_sport_type(),
             )
 
         user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
@@ -224,8 +224,8 @@ def construct_blueprint():
     @settings.route('/customFields/add/<string:sport_type>')
     @login_required
     def customFieldsAdd(sport_type: str):
-        sportType = SportType(sport_type)  # type: ignore[call-arg]
-        return render_template('settings/customFieldsForm.jinja2', sportType=sportType)
+        workoutType = WorkoutType(sport_type)  # type: ignore[call-arg]
+        return render_template('settings/customFieldsForm.jinja2', workoutType=workoutType)
 
     @settings.route('/customFields/post', methods=['POST'])
     @login_required
@@ -237,7 +237,7 @@ def construct_blueprint():
         customSportField = CustomSportField(
             name=form.name,
             type=CustomSportFieldType(form.type),  # type: ignore[call-arg]
-            sport_type=SportType(form.sport_type),  # type: ignore[call-arg]
+            sport_type=WorkoutType(form.sport_type),  # type: ignore[call-arg]
             is_required=form.is_required,
             user_id=current_user.id,
         )

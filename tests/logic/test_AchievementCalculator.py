@@ -6,7 +6,7 @@ from flask_login import FlaskLoginClient, login_user
 from sporttracker.logic.AchievementCalculator import AchievementCalculator
 from sporttracker.logic.model.DistanceSport import DistanceSport
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import create_user, Language, User
 from sporttracker.logic.model.db import db
 from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME
@@ -21,10 +21,10 @@ def prepare_test_data(app):
 
 
 def create_dummy_sport(
-    sportType: SportType, date: datetime.date, distance: int, duration: int = 2000
+    workoutType: WorkoutType, date: datetime.date, distance: int, duration: int = 2000
 ) -> DistanceSport:
     return DistanceSport(
-        type=sportType,
+        type=workoutType,
         name='Dummy Sport',
         start_time=datetime.datetime(
             year=date.year, month=date.month, day=date.day, hour=12, minute=0, second=0
@@ -38,9 +38,9 @@ def create_dummy_sport(
     )
 
 
-def create_distance_goal(year, month, distanceMinimum=10, sportType=SportType.BIKING):
+def create_distance_goal(year, month, distanceMinimum=10, workoutType=WorkoutType.BIKING):
     return MonthGoalDistance(
-        type=sportType,
+        type=workoutType,
         year=year,
         month=month,
         distance_minimum=distanceMinimum * 1000,
@@ -51,7 +51,7 @@ def create_distance_goal(year, month, distanceMinimum=10, sportType=SportType.BI
 
 def create_count_goal(year, month, countMinimum=1):
     return MonthGoalCount(
-        type=SportType.BIKING,
+        type=WorkoutType.BIKING,
         year=year,
         month=month,
         count_minimum=countMinimum,
@@ -66,7 +66,9 @@ class TestAchievementCalculatorGetLongestDistanceByType:
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            result = AchievementCalculator.get_sport_with_longest_distance_by_type(SportType.BIKING)
+            result = AchievementCalculator.get_sport_with_longest_distance_by_type(
+                WorkoutType.BIKING
+            )
             assert result is None
 
     def test_get_sport_with_longest_distance_by_type_multiple_sports_should_return_max_distance(
@@ -76,12 +78,14 @@ class TestAchievementCalculatorGetLongestDistanceByType:
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 2, 1), 50))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 3, 1), 22))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 2, 1), 50))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 3, 1), 22))
             db.session.commit()
 
-            result = AchievementCalculator.get_sport_with_longest_distance_by_type(SportType.BIKING)
+            result = AchievementCalculator.get_sport_with_longest_distance_by_type(
+                WorkoutType.BIKING
+            )
             assert result is not None
             assert 2 == result.id
             assert 50000 == result.distance
@@ -94,7 +98,7 @@ class TestAchievementCalculatorGetLongestDurationByType:
             login_user(user, remember=False)
 
             result = AchievementCalculator.get_sport_with_longest_duration_by_type(
-                SportType.FITNESS
+                WorkoutType.FITNESS
             )
             assert result is None
 
@@ -106,18 +110,24 @@ class TestAchievementCalculatorGetLongestDurationByType:
             login_user(user, remember=False)
 
             db.session.add(
-                create_dummy_sport(SportType.FITNESS, datetime.date(2023, 1, 1), 30, duration=2000)
+                create_dummy_sport(
+                    WorkoutType.FITNESS, datetime.date(2023, 1, 1), 30, duration=2000
+                )
             )
             db.session.add(
-                create_dummy_sport(SportType.FITNESS, datetime.date(2023, 2, 1), 50, duration=4000)
+                create_dummy_sport(
+                    WorkoutType.FITNESS, datetime.date(2023, 2, 1), 50, duration=4000
+                )
             )
             db.session.add(
-                create_dummy_sport(SportType.FITNESS, datetime.date(2023, 3, 1), 22, duration=3000)
+                create_dummy_sport(
+                    WorkoutType.FITNESS, datetime.date(2023, 3, 1), 22, duration=3000
+                )
             )
             db.session.commit()
 
             result = AchievementCalculator.get_sport_with_longest_duration_by_type(
-                SportType.FITNESS
+                WorkoutType.FITNESS
             )
             assert result is not None
             assert 2 == result.id
@@ -130,7 +140,7 @@ class TestAchievementCalculatorGetTotalDistanceByType:
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            result = AchievementCalculator.get_total_distance_by_type(SportType.BIKING)
+            result = AchievementCalculator.get_total_distance_by_type(WorkoutType.BIKING)
             assert 0 == result
 
     def test_get_total_distance_by_type_multiple_sports_should_return_max_distance(self, app):
@@ -139,17 +149,23 @@ class TestAchievementCalculatorGetTotalDistanceByType:
             login_user(user, remember=False)
 
             db.session.add(
-                create_dummy_sport(SportType.FITNESS, datetime.date(2023, 1, 1), 30, duration=2000)
+                create_dummy_sport(
+                    WorkoutType.FITNESS, datetime.date(2023, 1, 1), 30, duration=2000
+                )
             )
             db.session.add(
-                create_dummy_sport(SportType.FITNESS, datetime.date(2023, 2, 1), 50, duration=4000)
+                create_dummy_sport(
+                    WorkoutType.FITNESS, datetime.date(2023, 2, 1), 50, duration=4000
+                )
             )
             db.session.add(
-                create_dummy_sport(SportType.FITNESS, datetime.date(2023, 3, 1), 22, duration=3000)
+                create_dummy_sport(
+                    WorkoutType.FITNESS, datetime.date(2023, 3, 1), 22, duration=3000
+                )
             )
             db.session.commit()
 
-            result = AchievementCalculator.get_total_duration_by_type(SportType.FITNESS)
+            result = AchievementCalculator.get_total_duration_by_type(WorkoutType.FITNESS)
             assert 9000 == result
 
 
@@ -159,7 +175,7 @@ class TestAchievementCalculatorGetTotalDurationByType:
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            result = AchievementCalculator.get_total_distance_by_type(SportType.FITNESS)
+            result = AchievementCalculator.get_total_distance_by_type(WorkoutType.FITNESS)
             assert 0 == result
 
     def test_get_total_duration_by_type_multiple_sports_should_return_max_duration(self, app):
@@ -167,12 +183,12 @@ class TestAchievementCalculatorGetTotalDurationByType:
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 2, 1), 50))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 3, 1), 22))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 2, 1), 50))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 3, 1), 22))
             db.session.commit()
 
-            result = AchievementCalculator.get_total_distance_by_type(SportType.BIKING)
+            result = AchievementCalculator.get_total_distance_by_type(WorkoutType.BIKING)
             assert 102 == result
 
 
@@ -182,7 +198,7 @@ class TestAchievementCalculatorGetBestDistanceMonthByType:
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            result = AchievementCalculator.get_best_distance_month_by_type(SportType.BIKING)
+            result = AchievementCalculator.get_best_distance_month_by_type(WorkoutType.BIKING)
             assert ('No month', 0) == result
 
     def test_get_best_distance_month_by_type_single_months(self, app):
@@ -190,10 +206,10 @@ class TestAchievementCalculatorGetBestDistanceMonthByType:
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 30))
             db.session.commit()
 
-            result = AchievementCalculator.get_best_distance_month_by_type(SportType.BIKING)
+            result = AchievementCalculator.get_best_distance_month_by_type(WorkoutType.BIKING)
             assert ('January 2023', 30) == result
 
     def test_get_best_distance_month_by_type_multiple_months(self, app):
@@ -201,13 +217,13 @@ class TestAchievementCalculatorGetBestDistanceMonthByType:
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 2, 1), 22))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 2, 5), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 3, 1), 22))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 2, 1), 22))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 2, 5), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 3, 1), 22))
             db.session.commit()
 
-            result = AchievementCalculator.get_best_distance_month_by_type(SportType.BIKING)
+            result = AchievementCalculator.get_best_distance_month_by_type(WorkoutType.BIKING)
             assert ('February 2023', 52) == result
 
 
@@ -217,7 +233,7 @@ class TestAchievementCalculatorGetBestDurationMonthByType:
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            result = AchievementCalculator.get_best_duration_month_by_type(SportType.FITNESS)
+            result = AchievementCalculator.get_best_duration_month_by_type(WorkoutType.FITNESS)
             assert ('No month', 0) == result
 
     def test_get_best_duration_month_by_type_single_months(self, app):
@@ -226,11 +242,13 @@ class TestAchievementCalculatorGetBestDurationMonthByType:
             login_user(user, remember=False)
 
             db.session.add(
-                create_dummy_sport(SportType.FITNESS, datetime.date(2023, 1, 1), 30, duration=3000)
+                create_dummy_sport(
+                    WorkoutType.FITNESS, datetime.date(2023, 1, 1), 30, duration=3000
+                )
             )
             db.session.commit()
 
-            result = AchievementCalculator.get_best_duration_month_by_type(SportType.FITNESS)
+            result = AchievementCalculator.get_best_duration_month_by_type(WorkoutType.FITNESS)
             assert ('January 2023', 3000) == result
 
     def test_get_best_duration_month_by_type_multiple_months(self, app):
@@ -239,20 +257,28 @@ class TestAchievementCalculatorGetBestDurationMonthByType:
             login_user(user, remember=False)
 
             db.session.add(
-                create_dummy_sport(SportType.FITNESS, datetime.date(2023, 1, 1), 30, duration=2000)
+                create_dummy_sport(
+                    WorkoutType.FITNESS, datetime.date(2023, 1, 1), 30, duration=2000
+                )
             )
             db.session.add(
-                create_dummy_sport(SportType.FITNESS, datetime.date(2023, 2, 1), 22, duration=4000)
+                create_dummy_sport(
+                    WorkoutType.FITNESS, datetime.date(2023, 2, 1), 22, duration=4000
+                )
             )
             db.session.add(
-                create_dummy_sport(SportType.FITNESS, datetime.date(2023, 2, 5), 30, duration=3000)
+                create_dummy_sport(
+                    WorkoutType.FITNESS, datetime.date(2023, 2, 5), 30, duration=3000
+                )
             )
             db.session.add(
-                create_dummy_sport(SportType.FITNESS, datetime.date(2023, 3, 1), 22, duration=3500)
+                create_dummy_sport(
+                    WorkoutType.FITNESS, datetime.date(2023, 3, 1), 22, duration=3500
+                )
             )
             db.session.commit()
 
-            result = AchievementCalculator.get_best_duration_month_by_type(SportType.FITNESS)
+            result = AchievementCalculator.get_best_duration_month_by_type(WorkoutType.FITNESS)
             assert ('February 2023', 7000) == result
 
 
@@ -263,7 +289,7 @@ class TestAchievementCalculatorGetStreaksByType:
             login_user(user, remember=False)
 
             result = AchievementCalculator.get_streaks_by_type(
-                SportType.BIKING, datetime.datetime.now().date()
+                WorkoutType.BIKING, datetime.datetime.now().date()
             )
             assert (0, 0) == result
 
@@ -274,11 +300,11 @@ class TestAchievementCalculatorGetStreaksByType:
 
             db.session.add(create_distance_goal(2023, 1))
 
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 30))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
-                SportType.BIKING, datetime.datetime.now().date()
+                WorkoutType.BIKING, datetime.datetime.now().date()
             )
             assert (1, 1) == result
 
@@ -290,12 +316,12 @@ class TestAchievementCalculatorGetStreaksByType:
             db.session.add(create_distance_goal(2023, 1))
             db.session.add(create_distance_goal(2023, 2))
 
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 2, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 2, 1), 30))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
-                SportType.BIKING, datetime.datetime.now().date()
+                WorkoutType.BIKING, datetime.datetime.now().date()
             )
             assert (2, 2) == result
 
@@ -309,14 +335,14 @@ class TestAchievementCalculatorGetStreaksByType:
             db.session.add(create_distance_goal(2023, 3))
             db.session.add(create_distance_goal(2023, 4))
 
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 2, 1), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 3, 1), 10))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 4, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 2, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 3, 1), 10))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 4, 1), 30))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
-                SportType.BIKING, datetime.datetime.now().date()
+                WorkoutType.BIKING, datetime.datetime.now().date()
             )
             assert (2, 1) == result
 
@@ -330,14 +356,14 @@ class TestAchievementCalculatorGetStreaksByType:
             db.session.add(create_distance_goal(2024, 1))
             db.session.add(create_distance_goal(2024, 2))
 
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 11, 1), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 12, 1), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2024, 1, 1), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2024, 2, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 11, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 12, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2024, 1, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2024, 2, 1), 30))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
-                SportType.BIKING, datetime.datetime.now().date()
+                WorkoutType.BIKING, datetime.datetime.now().date()
             )
             assert (4, 4) == result
 
@@ -349,12 +375,12 @@ class TestAchievementCalculatorGetStreaksByType:
             db.session.add(create_distance_goal(2023, 1))
             db.session.add(create_distance_goal(2023, 1, distanceMinimum=50))
 
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 80))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 80))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
-                SportType.BIKING, datetime.datetime.now().date()
+                WorkoutType.BIKING, datetime.datetime.now().date()
             )
             assert (1, 1) == result
 
@@ -368,12 +394,12 @@ class TestAchievementCalculatorGetStreaksByType:
             db.session.add(create_distance_goal(2023, 1))
             db.session.add(create_count_goal(2023, 1))
 
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 80))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 80))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
-                SportType.BIKING, datetime.datetime.now().date()
+                WorkoutType.BIKING, datetime.datetime.now().date()
             )
             assert (1, 1) == result
 
@@ -386,13 +412,13 @@ class TestAchievementCalculatorGetStreaksByType:
             db.session.add(create_distance_goal(2023, 2))
             db.session.add(create_distance_goal(2023, 3))
 
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 2, 1), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 3, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 2, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 3, 1), 30))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
-                SportType.BIKING, datetime.date(2023, 3, 1)
+                WorkoutType.BIKING, datetime.date(2023, 3, 1)
             )
             assert (3, 3) == result
 
@@ -405,12 +431,12 @@ class TestAchievementCalculatorGetStreaksByType:
             db.session.add(create_distance_goal(2023, 2))
             db.session.add(create_distance_goal(2023, 3))
 
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 30))
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 2, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 2, 1), 30))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
-                SportType.BIKING, datetime.date(2023, 3, 1)
+                WorkoutType.BIKING, datetime.date(2023, 3, 1)
             )
             assert (2, 2) == result
 
@@ -421,14 +447,14 @@ class TestAchievementCalculatorGetStreaksByType:
 
             db.session.add(create_distance_goal(2023, 1))
             db.session.add(
-                create_distance_goal(2023, 1, distanceMinimum=50, sportType=SportType.RUNNING)
+                create_distance_goal(2023, 1, distanceMinimum=50, workoutType=WorkoutType.RUNNING)
             )
 
-            db.session.add(create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 30))
+            db.session.add(create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 30))
             db.session.commit()
 
             result = AchievementCalculator.get_streaks_by_type(
-                SportType.BIKING, datetime.datetime.now().date()
+                WorkoutType.BIKING, datetime.datetime.now().date()
             )
             assert (1, 1) == result
 
@@ -440,7 +466,7 @@ class TestAchievementCalculatorGetAverageSpeedByType:
             login_user(user, remember=False)
 
             result = AchievementCalculator.get_average_speed_by_type_and_year(
-                SportType.BIKING, 2023
+                WorkoutType.BIKING, 2023
             )
             assert 0.0 == result
 
@@ -449,10 +475,10 @@ class TestAchievementCalculatorGetAverageSpeedByType:
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            sport_1 = create_dummy_sport(SportType.BIKING, datetime.date(2023, 1, 1), 30)
-            sport_2 = create_dummy_sport(SportType.BIKING, datetime.date(2023, 2, 1), 50)
-            sport_3 = create_dummy_sport(SportType.BIKING, datetime.date(2023, 3, 1), 22)
-            sport_4 = create_dummy_sport(SportType.BIKING, datetime.date(2022, 1, 1), 20)
+            sport_1 = create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 1, 1), 30)
+            sport_2 = create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 2, 1), 50)
+            sport_3 = create_dummy_sport(WorkoutType.BIKING, datetime.date(2023, 3, 1), 22)
+            sport_4 = create_dummy_sport(WorkoutType.BIKING, datetime.date(2022, 1, 1), 20)
             db.session.add(sport_1)
             db.session.add(sport_2)
             db.session.add(sport_3)
@@ -460,7 +486,7 @@ class TestAchievementCalculatorGetAverageSpeedByType:
             db.session.commit()
 
             result = AchievementCalculator.get_average_speed_by_type_and_year(
-                SportType.BIKING, 2023
+                WorkoutType.BIKING, 2023
             )
 
             speed_1 = sport_1.distance / sport_1.duration * 3.6
@@ -471,6 +497,6 @@ class TestAchievementCalculatorGetAverageSpeedByType:
             assert expectedSpeed == pytest.approx(result)
 
             result = AchievementCalculator.get_average_speed_by_type_and_year(
-                SportType.BIKING, 2022
+                WorkoutType.BIKING, 2022
             )
             assert sport_4.distance / sport_4.duration * 3.6 == pytest.approx(result)

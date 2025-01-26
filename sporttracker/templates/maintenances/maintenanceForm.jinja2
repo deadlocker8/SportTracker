@@ -51,9 +51,9 @@
                                 <div class="d-flex align-items-center">
                                     <span class="material-symbols-outlined filled me-3">stars</span>
                                     <select class="form-select" id="maintenance-event-type" name="type" required="required">
-                                        {% for sportType in sportTypes %}
-                                            <option value="{{ sportType.name }}"
-                                                    {% if maintenance and maintenance.type == sportType.name %}selected{% endif %}>{{ sportType.get_localized_name() }}</option>
+                                        {% for workoutType in workoutTypes %}
+                                            <option value="{{ workoutType.name }}"
+                                                    {% if maintenance and maintenance.type == workoutType.name %}selected{% endif %}>{{ workoutType.get_localized_name() }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>

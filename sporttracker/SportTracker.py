@@ -53,7 +53,7 @@ from sporttracker.logic.model.PlannedTour import (
     get_new_planned_tour_ids,
     get_updated_planned_tour_ids,
 )
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import (
     User,
     Language,
@@ -149,9 +149,9 @@ class SportTracker(FlaskBaseApp):
         def inject_static_access() -> dict[str, Any]:
             return {
                 'versionName': self._version['name'],
-                'sportTypes': [x for x in SportType],
-                'distanceSportTypes': [x for x in SportType.get_distance_sport_types()],
-                'sportTypesByName': {x.name: x for x in SportType},
+                'workoutTypes': [x for x in WorkoutType],
+                'distanceWorkoutTypes': [x for x in WorkoutType.get_distance_sport_types()],
+                'workoutTypesByName': {x.name: x for x in WorkoutType},
                 'languages': [x for x in Language],
                 'customTrackFieldTypes': [x for x in CustomSportFieldType],
                 'travelTypes': [x for x in TravelType],

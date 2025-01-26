@@ -9,7 +9,7 @@ from sporttracker.blueprints.Sports import DistanceSportModel, WorkoutSportModel
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.Sport import Sport
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 
@@ -67,9 +67,9 @@ def construct_blueprint():
             itemsPerMonth: list[DistanceSportModel | WorkoutSportModel] = []
 
             for sport in sports:
-                if sport.type in SportType.get_distance_sport_types():
+                if sport.type in WorkoutType.get_distance_sport_types():
                     itemsPerMonth.append(DistanceSportModel.create_from_sport(sport))
-                elif sport.type in SportType.get_workout_sport_types():
+                elif sport.type in WorkoutType.get_workout_sport_types():
                     itemsPerMonth.append(WorkoutSportModel.create_from_sport(sport))
 
             resultModelItems[month] = itemsPerMonth

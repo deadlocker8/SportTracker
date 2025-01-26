@@ -11,7 +11,7 @@ from sporttracker.logic.model.PlannedTour import (
     distance_sport_planned_tour_association,
 )
 from sporttracker.logic.model.Sport import Sport
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 
@@ -73,7 +73,7 @@ class MonthDistanceSum:
 
 
 def get_distance_per_month_by_type(
-    sportType: SportType, minYear: int, maxYear: int
+    workoutType: WorkoutType, minYear: int, maxYear: int
 ) -> list[MonthDistanceSum]:
     year = extract('year', DistanceSport.start_time)
     month = extract('month', DistanceSport.start_time)
@@ -84,7 +84,7 @@ def get_distance_per_month_by_type(
             year.label('year'),
             month.label('month'),
         )
-        .filter(DistanceSport.type == sportType)
+        .filter(DistanceSport.type == workoutType)
         .filter(DistanceSport.user_id == current_user.id)
         .group_by(year, month)
         .order_by(year, month)
@@ -130,11 +130,11 @@ def get_available_years(userId) -> list[int]:
 def get_distance_between_dates(
     startDateTime: datetime | DateTime,
     endDateTime: datetime | DateTime,
-    sportTypes: list[SportType],
+    workoutTypes: list[WorkoutType],
 ) -> int:
     return int(
         DistanceSport.query.with_entities(func.sum(DistanceSport.distance))
-        .filter(DistanceSport.type.in_(sportTypes))
+        .filter(DistanceSport.type.in_(workoutTypes))
         .filter(DistanceSport.user_id == current_user.id)
         .filter(DistanceSport.start_time.between(startDateTime, endDateTime))
         .scalar()

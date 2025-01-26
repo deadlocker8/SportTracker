@@ -36,7 +36,7 @@ from sporttracker.logic.model.Sport import (
     get_sport_names_by_type,
     get_sports_by_year_and_month_by_type,
 )
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import get_user_by_id
 from sporttracker.logic.model.WorkoutSport import WorkoutSport
 
@@ -182,11 +182,11 @@ def construct_blueprint():
     @sports.route('/add/<string:sport_type>')
     @login_required
     def addType(sport_type: str):
-        sportType = SportType(sport_type)  # type: ignore[call-arg]
+        workoutType = WorkoutType(sport_type)  # type: ignore[call-arg]
 
         customFields = (
             CustomSportField.query.filter(CustomSportField.user_id == current_user.id)
-            .filter(CustomSportField.sport_type == sportType)
+            .filter(CustomSportField.sport_type == workoutType)
             .all()
         )
 
@@ -194,8 +194,8 @@ def construct_blueprint():
             f'sports/sport{sport_type.capitalize()}Form.jinja2',
             customFields=customFields,
             participants=get_participants(),
-            trackNames=get_sport_names_by_type(sportType),
-            plannedTours=get_planned_tours([sportType]),
+            trackNames=get_sport_names_by_type(workoutType),
+            plannedTours=get_planned_tours([workoutType]),
         )
 
     return sports
@@ -213,9 +213,9 @@ def __get_month_model(
 
     sportModels: list[DistanceSportModel | WorkoutSportModel] = []
     for sport in sports:
-        if sport.type in SportType.get_distance_sport_types():
+        if sport.type in WorkoutType.get_distance_sport_types():
             sportModels.append(DistanceSportModel.create_from_sport(sport))
-        elif sport.type in SportType.get_workout_sport_types():
+        elif sport.type in WorkoutType.get_workout_sport_types():
             sportModels.append(WorkoutSportModel.create_from_sport(sport))
 
     maintenanceEvents = get_maintenance_events_by_year_and_month_by_type(

@@ -11,7 +11,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from sporttracker.logic.model.CustomSportField import CustomSportField, CustomSportFieldType
 from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.PlannedTour import PlannedTour, TravelType, TravelDirection
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import create_user, Language, User
 from sporttracker.logic.model.db import db
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
@@ -25,7 +25,7 @@ def prepare_test_data(app):
 
         plannedTour = PlannedTour(
             id=1,
-            type=SportType.BIKING,
+            type=WorkoutType.BIKING,
             name='Megatour',
             creation_date=datetime.now(),
             last_edit_date=datetime.now(),
@@ -154,7 +154,7 @@ class TestSports(SeleniumTestBaseClass):
         with app.app_context():
             customSportField = CustomSportField(
                 type=CustomSportFieldType.INTEGER,
-                sport_type=SportType.BIKING,
+                sport_type=WorkoutType.BIKING,
                 name='my_custom_field',
                 is_required=True,
                 user_id=user.id,
@@ -175,7 +175,7 @@ class TestSports(SeleniumTestBaseClass):
         with app.app_context():
             customSportField = CustomSportField(
                 type=CustomSportFieldType.INTEGER,
-                sport_type=SportType.BIKING,
+                sport_type=WorkoutType.BIKING,
                 name='my_custom_field',
                 is_required=True,
                 user_id=user.id,
@@ -205,7 +205,7 @@ class TestSports(SeleniumTestBaseClass):
         with app.app_context():
             customSportField = CustomSportField(
                 type=CustomSportFieldType.INTEGER,
-                sport_type=SportType.BIKING,
+                sport_type=WorkoutType.BIKING,
                 name='my_custom_field',
                 is_required=False,
                 user_id=user.id,

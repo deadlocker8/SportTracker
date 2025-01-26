@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import text
 
 from sporttracker.logic import Constants
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -14,7 +14,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 @dataclass
 class NewTilesPerDistanceSport:
     distance_sport_id: int
-    type: SportType
+    type: WorkoutType
     name: str
     startTime: datetime
     numberOfNewTiles: int
@@ -25,20 +25,22 @@ class NewVisitedTileCache:
         self._newVisitedTilesPerUser: dict[str, list[NewTilesPerDistanceSport]] = {}
 
     @staticmethod
-    def __calculate_cache_key(userId: int, sportTypes: list[SportType], years: list[int]) -> str:
-        activeTypes = '_'.join(sorted([t.name for t in sportTypes]))
+    def __calculate_cache_key(
+        userId: int, workoutTypes: list[WorkoutType], years: list[int]
+    ) -> str:
+        activeTypes = '_'.join(sorted([t.name for t in workoutTypes]))
         activeYears = '_'.join(sorted([str(y) for y in years]))
         return f'{userId}_{activeTypes}_{activeYears}'
 
     def get_new_visited_tiles_per_track_by_user(
-        self, userId: int, sportTypes: list[SportType], years: list[int]
+        self, userId: int, workoutTypes: list[WorkoutType], years: list[int]
     ) -> list[NewTilesPerDistanceSport]:
-        cacheKey = self.__calculate_cache_key(userId, sportTypes, years)
+        cacheKey = self.__calculate_cache_key(userId, workoutTypes, years)
 
         if cacheKey not in self._newVisitedTilesPerUser:
             LOGGER.debug(f'Creating entry in NewVisitedTileCache with key {cacheKey}')
             self._newVisitedTilesPerUser[cacheKey] = self.__determine_new_tiles_per_track(
-                userId, sportTypes, years
+                userId, workoutTypes, years
             )
 
         return self._newVisitedTilesPerUser[cacheKey]
@@ -51,14 +53,14 @@ class NewVisitedTileCache:
 
     @staticmethod
     def __determine_new_tiles_per_track(
-        userId: int, sportTypes: list[SportType], years: list[int]
+        userId: int, workoutTypes: list[WorkoutType], years: list[int]
     ) -> list[NewTilesPerDistanceSport]:
-        sportTypeOperator = ''
-        sportTypeOperator2 = ''
-        if sportTypes:
-            activeSportTypes = ','.join([f"'{x.name}'" for x in sportTypes])
-            sportTypeOperator = f'AND sp_inner."type" in ({activeSportTypes})'
-            sportTypeOperator2 = f'AND sp."type" in ({activeSportTypes})'
+        workoutTypeOperator = ''
+        workoutTypeOperator2 = ''
+        if workoutTypes:
+            activeWorkoutTypes = ','.join([f"'{x.name}'" for x in workoutTypes])
+            workoutTypeOperator = f'AND sp_inner."type" in ({activeWorkoutTypes})'
+            workoutTypeOperator2 = f'AND sp."type" in ({activeWorkoutTypes})'
 
         yearOperator = ''
         yearOperator2 = ''
@@ -83,19 +85,19 @@ class NewVisitedTileCache:
                                     AND sp_inner."user_id" = sp."user_id"
                                     AND gpx_visited_tile."x" = visitied."x"
                                     AND gpx_visited_tile."y" = visitied."y"
-                                    {sportTypeOperator}
+                                    {workoutTypeOperator}
                                     {yearOperator}
                                     )) AS newTiles
         FROM distance_sport AS t
         JOIN sport sp ON t."id" = sp."id"
         WHERE t."gpx_metadata_id" IS NOT NULL
         AND sp."user_id" = {userId}
-        {sportTypeOperator2}
+        {workoutTypeOperator2}
         {yearOperator2}
         ORDER BY sp."start_time\"""")
         ).fetchall()
 
         return [
-            NewTilesPerDistanceSport(row[0], SportType(row[1]), row[2], row[3], row[4])  # type: ignore[call-arg]
+            NewTilesPerDistanceSport(row[0], WorkoutType(row[1]), row[2], row[3], row[4])  # type: ignore[call-arg]
             for row in rows
         ]

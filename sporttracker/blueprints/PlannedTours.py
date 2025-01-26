@@ -24,7 +24,7 @@ from sporttracker.logic.model.PlannedTour import (
     TravelDirection,
     get_planned_tours,
 )
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import (
     get_users_by_ids,
     User,
@@ -54,7 +54,7 @@ class PlannedTourModel:
     name: str
     creationDate: datetime
     lastEditDate: datetime
-    type: SportType
+    type: WorkoutType
     gpxMetadata: GpxMetadata | None
     sharedUsers: list[str]
     ownerId: str
@@ -181,7 +181,7 @@ def construct_blueprint(
 
         plannedTour = PlannedTour(
             name=form.name,
-            type=SportType(form.type),  # type: ignore[call-arg]
+            type=WorkoutType(form.type),  # type: ignore[call-arg]
             user_id=current_user.id,
             creation_date=datetime.now(),
             last_edit_date=datetime.now(),
@@ -243,7 +243,7 @@ def construct_blueprint(
         if plannedTour is None:
             abort(404)
 
-        plannedTour.type = SportType(form.type)  # type: ignore[call-arg]
+        plannedTour.type = WorkoutType(form.type)  # type: ignore[call-arg]
         plannedTour.name = form.name  # type: ignore[assignment]
         plannedTour.last_edit_date = datetime.now()  # type: ignore[assignment]
         plannedTour.last_edit_user_id = current_user.id

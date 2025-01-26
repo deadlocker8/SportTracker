@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
-from sporttracker.logic.model.SportType import SportType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import create_user, Language
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
@@ -40,9 +40,9 @@ class TestMaintenances(SeleniumTestBaseClass):
         )
 
     @staticmethod
-    def __fill_maintenance_form(selenium, sportType, description, reminderLimit=None):
+    def __fill_maintenance_form(selenium, workoutType, description, reminderLimit=None):
         select = Select(selenium.find_element(By.ID, 'maintenance-event-type'))
-        select.select_by_visible_text(sportType.name.capitalize())
+        select.select_by_visible_text(workoutType.name.capitalize())
 
         descriptionInput = selenium.find_element(By.ID, 'maintenance-event-description')
         descriptionInput.clear()
@@ -105,7 +105,7 @@ class TestMaintenances(SeleniumTestBaseClass):
     def test_add_maintenance_valid(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_maintenance_form(selenium)
-        self.__fill_maintenance_form(selenium, SportType.BIKING, 'chain oiled', '100')
+        self.__fill_maintenance_form(selenium, WorkoutType.BIKING, 'chain oiled', '100')
         self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
@@ -119,7 +119,7 @@ class TestMaintenances(SeleniumTestBaseClass):
     def test_add_maintenance_all_empty(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_maintenance_form(selenium)
-        self.__fill_maintenance_form(selenium, SportType.BIKING, '')
+        self.__fill_maintenance_form(selenium, WorkoutType.BIKING, '')
         self.__click_submit_button(selenium)
 
         assert selenium.current_url.endswith('/maintenances/add')
@@ -127,7 +127,7 @@ class TestMaintenances(SeleniumTestBaseClass):
     def test_edit_maintenance_valid(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_maintenance_form(selenium)
-        self.__fill_maintenance_form(selenium, SportType.BIKING, 'chain oiled', '500')
+        self.__fill_maintenance_form(selenium, WorkoutType.BIKING, 'chain oiled', '500')
         self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
@@ -150,7 +150,7 @@ class TestMaintenances(SeleniumTestBaseClass):
             == 'chain oiled'
         )
 
-        self.__fill_maintenance_form(selenium, SportType.BIKING, 'chain replaced', '200')
+        self.__fill_maintenance_form(selenium, WorkoutType.BIKING, 'chain replaced', '200')
 
         self.__click_submit_button(selenium)
 
@@ -165,7 +165,7 @@ class TestMaintenances(SeleniumTestBaseClass):
     def test_quick_filter_only_show_activated_sport_types(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_maintenance_form(selenium)
-        self.__fill_maintenance_form(selenium, SportType.BIKING, 'chain oiled')
+        self.__fill_maintenance_form(selenium, WorkoutType.BIKING, 'chain oiled')
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
@@ -175,7 +175,7 @@ class TestMaintenances(SeleniumTestBaseClass):
         )
 
         self.__open_maintenance_form(selenium)
-        self.__fill_maintenance_form(selenium, SportType.RUNNING, 'new shoes')
+        self.__fill_maintenance_form(selenium, WorkoutType.RUNNING, 'new shoes')
         selenium.find_element(By.CSS_SELECTOR, 'section form button').click()
 
         WebDriverWait(selenium, 5).until(
@@ -198,7 +198,7 @@ class TestMaintenances(SeleniumTestBaseClass):
         self.login(selenium)
 
         self.__open_maintenance_form(selenium)
-        self.__fill_maintenance_form(selenium, SportType.BIKING, 'chain oiled')
+        self.__fill_maintenance_form(selenium, WorkoutType.BIKING, 'chain oiled')
         self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
@@ -225,7 +225,7 @@ class TestMaintenances(SeleniumTestBaseClass):
         self.login(selenium)
 
         self.__open_maintenance_form(selenium)
-        self.__fill_maintenance_form(selenium, SportType.BIKING, 'chain oiled')
+        self.__fill_maintenance_form(selenium, WorkoutType.BIKING, 'chain oiled')
         self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
@@ -246,7 +246,7 @@ class TestMaintenances(SeleniumTestBaseClass):
         self.login(selenium)
 
         self.__open_maintenance_form(selenium)
-        self.__fill_maintenance_form(selenium, SportType.BIKING, 'chain oiled')
+        self.__fill_maintenance_form(selenium, WorkoutType.BIKING, 'chain oiled')
         self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
@@ -293,7 +293,7 @@ class TestMaintenances(SeleniumTestBaseClass):
         self.login(selenium)
 
         self.__open_maintenance_form(selenium)
-        self.__fill_maintenance_form(selenium, SportType.BIKING, 'chain oiled', '0')
+        self.__fill_maintenance_form(selenium, WorkoutType.BIKING, 'chain oiled', '0')
         self.__click_submit_button(selenium)
 
         WebDriverWait(selenium, 5).until(
