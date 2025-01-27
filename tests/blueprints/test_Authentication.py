@@ -59,7 +59,7 @@ class TestAuthentication:
         assert response.status_code == 200
         responseData = response.data.decode('utf-8')
         assert 'Login' not in responseData
-        assert 'Exercises' in responseData
+        assert 'Workouts' in responseData
 
     def test_login_post_correct_credentials_case_insensitive_username_should_redirect_to_index(
         self, client
@@ -72,7 +72,7 @@ class TestAuthentication:
         assert response.status_code == 200
         responseData = response.data.decode('utf-8')
         assert 'Login' not in responseData
-        assert 'Exercises' in responseData
+        assert 'Workouts' in responseData
 
     def test_logout_should_redirect_to_index(self, client):
         with client:

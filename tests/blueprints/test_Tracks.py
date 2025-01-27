@@ -134,7 +134,7 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Exercises'
+                (By.CLASS_NAME, 'headline-text'), 'Workouts'
             )
         )
 
@@ -191,7 +191,7 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Exercises'
+                (By.CLASS_NAME, 'headline-text'), 'Workouts'
             )
         )
 
@@ -220,7 +220,7 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Exercises'
+                (By.CLASS_NAME, 'headline-text'), 'Workouts'
             )
         )
 
@@ -245,7 +245,7 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Exercises'
+                (By.CLASS_NAME, 'headline-text'), 'Workouts'
             )
         )
 
@@ -279,7 +279,7 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Exercises'
+                (By.CLASS_NAME, 'headline-text'), 'Workouts'
             )
         )
 
@@ -298,7 +298,7 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Exercises'
+                (By.CLASS_NAME, 'headline-text'), 'Workouts'
             )
         )
 
@@ -310,7 +310,7 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Exercises'
+                (By.CLASS_NAME, 'headline-text'), 'Workouts'
             )
         )
 
@@ -364,7 +364,7 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Exercises'
+                (By.CLASS_NAME, 'headline-text'), 'Workouts'
             )
         )
 
@@ -399,7 +399,7 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Exercises'
+                (By.CLASS_NAME, 'headline-text'), 'Workouts'
             )
         )
 
@@ -420,7 +420,7 @@ class TestWorkouts(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSaveTrack')
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Exercises'
+                (By.CLASS_NAME, 'headline-text'), 'Workouts'
             )
         )
 
@@ -451,7 +451,7 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Exercises'
+                (By.CLASS_NAME, 'headline-text'), 'Workouts'
             )
         )
 
@@ -482,7 +482,7 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Exercises'
+                (By.CLASS_NAME, 'headline-text'), 'Workouts'
             )
         )
 

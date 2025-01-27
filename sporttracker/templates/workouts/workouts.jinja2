@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {{ gettext('Exercises') }}</title>
+        <title>SportTracker - {{ gettext('Workouts') }}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -22,7 +22,7 @@
                                id="month-select-previous">
                                 <span class="material-symbols-outlined fs-1">chevron_left</span>
                             </a>
-                            {% call macros.headline(gettext('Exercises'), url_for('workouts.add')) %}
+                            {% call macros.headline(gettext('Workouts'), url_for('workouts.add')) %}
                                 <i class="fa-solid fa-route fa-fw fs-2"></i>
                             {% endcall %}
                             <a href="{{ url_for('workouts.listWorkouts', year=nextMonthDate.year, month=nextMonthDate.month) }}"
