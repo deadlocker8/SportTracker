@@ -90,7 +90,6 @@ RESERVED_FIELD_NAMES = [
     'gpxFileName',
     'participants',
     'shareCode',
-    # TODO
-    'workoutType',
-    'workoutCategories',
+    'fitnessWorkoutType',
+    'fitnessWorkoutCategories',
 ]

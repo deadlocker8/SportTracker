@@ -54,13 +54,13 @@
                             {% if workout %}
                                 {% set selectedWorkoutType=workout.workoutType %}
                             {% endif %}
-                            {{ plannedToursMacros.radio_button_select(gettext('Workout Type'), 'fitness_center', 'workout-type', 'workoutType', fitnessWorkoutTypes, selectedWorkoutType, 'workout') }}
+                            {{ plannedToursMacros.radio_button_select(gettext('Workout Type'), 'fitness_center', 'workout-type', 'fitnessWorkoutType', fitnessWorkoutTypes, selectedWorkoutType, 'workout') }}
 
                             {% set selectedWorkoutCategories=[] %}
                             {% if workout %}
                                 {% set selectedWorkoutCategories=workout.workoutCategories %}
                             {% endif %}
-                            {{ workoutMacros.check_button_select(gettext('Workout Categories'), 'label', 'workout-category', 'workoutCategories', fitnessWorkoutCategoryTypes, selectedWorkoutCategories, 'workout') }}
+                            {{ workoutMacros.check_button_select(gettext('Workout Categories'), 'label', 'workout-category', 'fitnessWorkoutCategories', fitnessWorkoutCategoryTypes, selectedWorkoutCategories, 'workout') }}
 
                             {{ workoutMacros.track_form_average_heart_rate(workout) }}
 
