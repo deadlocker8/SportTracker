@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function()
 
     if(mapMode === 'tracks')
     {
-        initMap(sortTracksByName);
+        initMap(sortWorkoutsByName);
     }
     else
     {
@@ -47,10 +47,10 @@ function initMap(itemSortFunction)
                 if(geojson)
                 {
                     const trackId = fallbackName;
-                    const gpxInfoForTrack = getGpxInfoById(trackId);
+                    const gpxInfoForWorkout = getGpxInfoById(trackId);
 
-                    geojson.name = '<a href="' + gpxInfoForTrack.trackUrl + '">' + gpxInfoForTrack.trackName + '</a>'
-                    this._loadRoute(geojson, gpxInfoForTrack.gpxUrl);
+                    geojson.name = '<a href="' + gpxInfoForWorkout.trackUrl + '">' + gpxInfoForWorkout.trackName + '</a>'
+                    this._loadRoute(geojson, gpxInfoForWorkout.gpxUrl);
                 }
             },
             _loadRoute: function(data, gpxUrl)
@@ -159,7 +159,7 @@ function initMap(itemSortFunction)
 const PATTERN_TRACK_NAME = /(\d{4}-\d{2}-\d{2} - .*)<\/a>/;
 const PATTERN_PLANNED_TOUR_NAME = /<a.*>(.*)<\/a>/;
 
-function sortTracksByName(layerA, layerB, nameA, nameB)
+function sortWorkoutsByName(layerA, layerB, nameA, nameB)
 {
     let realNameA = PATTERN_TRACK_NAME.exec(nameA)[1];
     let realNameB = PATTERN_TRACK_NAME.exec(nameB)[1];

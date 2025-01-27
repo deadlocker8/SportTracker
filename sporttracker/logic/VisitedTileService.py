@@ -33,14 +33,16 @@ class VisitedTileService:
     def calculate_total_number_of_visited_tiles(
         self,
     ) -> int:
-        newVisitedTilesPerTrack = self._newVisitedTileCache.get_new_visited_tiles_per_track_by_user(
-            current_user.id,
-            self._quickFilterState.get_active_distance_workout_types(),
-            self._yearFilterState,
+        newVisitedTilesPerWorkout = (
+            self._newVisitedTileCache.get_new_visited_tiles_per_track_by_user(
+                current_user.id,
+                self._quickFilterState.get_active_distance_workout_types(),
+                self._yearFilterState,
+            )
         )
 
         totalNumberOfTiles = 0
-        for t in newVisitedTilesPerTrack:
+        for t in newVisitedTilesPerWorkout:
             totalNumberOfTiles += t.numberOfNewTiles
 
         return totalNumberOfTiles

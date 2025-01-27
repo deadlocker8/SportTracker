@@ -65,11 +65,11 @@ class DummyDataGenerator:
             self.__generate_demo_tracks(
                 user=user,
                 workoutType=WorkoutType.BIKING,
-                numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_BIKING,
-                numberOfTracksWithGpx=2,
-                numberOfTracksWithParticipants=2,
-                numberOfTracksWithSharedLink=1,
-                numberOfTracksWithLinkedPlannedTour=1,
+                numberOfWorkoutsPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_BIKING,
+                numberOfWorkoutsWithGpx=2,
+                numberOfWorkoutsWithParticipants=2,
+                numberOfWorkoutsWithSharedLink=1,
+                numberOfWorkoutsWithLinkedPlannedTour=1,
                 plannedTour=plannedTour,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_BIKING,
                 distanceMin=15.0,
@@ -79,11 +79,11 @@ class DummyDataGenerator:
             self.__generate_demo_tracks(
                 user=user,
                 workoutType=WorkoutType.RUNNING,
-                numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_RUNNING,
-                numberOfTracksWithGpx=2,
-                numberOfTracksWithParticipants=0,
-                numberOfTracksWithSharedLink=1,
-                numberOfTracksWithLinkedPlannedTour=0,
+                numberOfWorkoutsPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_RUNNING,
+                numberOfWorkoutsWithGpx=2,
+                numberOfWorkoutsWithParticipants=0,
+                numberOfWorkoutsWithSharedLink=1,
+                numberOfWorkoutsWithLinkedPlannedTour=0,
                 plannedTour=plannedTour,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_RUNNING,
                 distanceMin=2.0,
@@ -93,11 +93,11 @@ class DummyDataGenerator:
             self.__generate_demo_tracks(
                 user=user,
                 workoutType=WorkoutType.HIKING,
-                numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_HIKING,
-                numberOfTracksWithGpx=1,
-                numberOfTracksWithParticipants=1,
-                numberOfTracksWithSharedLink=1,
-                numberOfTracksWithLinkedPlannedTour=0,
+                numberOfWorkoutsPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_HIKING,
+                numberOfWorkoutsWithGpx=1,
+                numberOfWorkoutsWithParticipants=1,
+                numberOfWorkoutsWithSharedLink=1,
+                numberOfWorkoutsWithLinkedPlannedTour=0,
                 plannedTour=plannedTour,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_HIKING,
                 distanceMin=6.0,
@@ -107,8 +107,8 @@ class DummyDataGenerator:
             self.__generate_demo_duration_based_tracks(
                 user=user,
                 workoutType=WorkoutType.FITNESS,
-                numberOfTracksPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_FITNESS,
-                numberOfTracksWithParticipants=1,
+                numberOfWorkoutsPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_FITNESS,
+                numberOfWorkoutsWithParticipants=1,
                 durationMin=20 * 60,
                 durationMax=90 * 60,
             )
@@ -191,11 +191,11 @@ class DummyDataGenerator:
         self,
         user: User,
         workoutType: WorkoutType,
-        numberOfTracksPerMonth: int,
-        numberOfTracksWithGpx: int,
-        numberOfTracksWithParticipants: int,
-        numberOfTracksWithSharedLink: int,
-        numberOfTracksWithLinkedPlannedTour: int,
+        numberOfWorkoutsPerMonth: int,
+        numberOfWorkoutsWithGpx: int,
+        numberOfWorkoutsWithParticipants: int,
+        numberOfWorkoutsWithSharedLink: int,
+        numberOfWorkoutsWithLinkedPlannedTour: int,
         plannedTour: PlannedTour,
         averageSpeed: int,
         distanceMin: float,
@@ -210,18 +210,20 @@ class DummyDataGenerator:
         for monthIndex in range(self.NUMBER_OF_MONTHS):
             firstDay = date(year=lastDayCurrentMonth.year, month=lastDayCurrentMonth.month, day=1)
 
-            indexesWithGpx = random.choices(range(numberOfTracksPerMonth), k=numberOfTracksWithGpx)
+            indexesWithGpx = random.choices(
+                range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithGpx
+            )
             indexesWithParticipants = random.choices(
-                range(numberOfTracksPerMonth), k=numberOfTracksWithParticipants
+                range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithParticipants
             )
             indexesWithSharedLink = random.choices(
-                range(numberOfTracksPerMonth), k=numberOfTracksWithSharedLink
+                range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithSharedLink
             )
             indexesWithLinkedPlannedTour = random.choices(
-                range(numberOfTracksPerMonth), k=numberOfTracksWithLinkedPlannedTour
+                range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithLinkedPlannedTour
             )
 
-            for index in range(numberOfTracksPerMonth):
+            for index in range(numberOfWorkoutsPerMonth):
                 fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
                 distance = round(random.uniform(distanceMin, distanceMax), 2)
                 duration = distance / averageSpeed * 60 * 60
@@ -288,8 +290,8 @@ class DummyDataGenerator:
         self,
         user: User,
         workoutType: WorkoutType,
-        numberOfTracksPerMonth: int,
-        numberOfTracksWithParticipants: int,
+        numberOfWorkoutsPerMonth: int,
+        numberOfWorkoutsWithParticipants: int,
         durationMin: int,
         durationMax: int,
     ) -> None:
@@ -303,10 +305,10 @@ class DummyDataGenerator:
             firstDay = date(year=lastDayCurrentMonth.year, month=lastDayCurrentMonth.month, day=1)
 
             indexesWithParticipants = random.choices(
-                range(numberOfTracksPerMonth), k=numberOfTracksWithParticipants
+                range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithParticipants
             )
 
-            for index in range(numberOfTracksPerMonth):
+            for index in range(numberOfWorkoutsPerMonth):
                 fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
                 duration = round(random.uniform(durationMin, durationMax), 2)
                 fitnessWorkoutType = random.choice([x for x in FitnessWorkoutType])

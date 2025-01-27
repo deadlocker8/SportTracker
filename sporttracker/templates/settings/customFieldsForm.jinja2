@@ -62,7 +62,7 @@
                                 <div class="d-flex align-items-center">
                                     <span class="material-symbols-outlined me-3">list</span>
                                     <select class="form-select" id="field-type" name="type" required="required">
-                                        {% for fieldType in customTrackFieldTypes %}
+                                        {% for fieldType in customWorkoutFieldTypes %}
                                             <option value="{{ fieldType.name }}" {% if field and field.type == fieldType.name %}selected{% endif %}>{{ fieldType.get_localized_name() }}</option>
                                         {% endfor %}
                                     </select>

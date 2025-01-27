@@ -220,7 +220,7 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
     def createShareCode():
         shareCode = uuid.uuid4().hex
         return {
-            'url': url_for('maps.showSharedSingleTrack', shareCode=shareCode, _external=True),
+            'url': url_for('maps.showSharedSingleWorkout', shareCode=shareCode, _external=True),
             'shareCode': shareCode,
         }
 

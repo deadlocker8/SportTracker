@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
-{% macro toggleTracksAndPlannedTours(margin) -%}
+{% macro toggleWorkoutsAndPlannedTours(margin) -%}
     <div class="btn-group {{ margin }}" role="group">
-        <a href="{{ url_for('maps.showAllTracksOnMap') }}" class="btn btn-sm btn-primary d-flex flex-row align-items-center justify-content-center {% if mapMode == 'plannedTours' %}btn-available-year{% endif %}">
-            <i class="fa-solid fa-route fa-fw fs-6"></i>&nbsp;{{ gettext('Tracks') }}
+        <a href="{{ url_for('maps.showAllWorkoutsOnMap') }}" class="btn btn-sm btn-primary d-flex flex-row align-items-center justify-content-center {% if mapMode == 'plannedTours' %}btn-available-year{% endif %}">
+            <i class="fa-solid fa-route fa-fw fs-6"></i>&nbsp;{{ gettext('Workouts') }}
         </a>
         <a href="{{ url_for('maps.showAllPlannedToursOnMap') }}" class="btn btn-sm btn-primary d-flex flex-row align-items-center justify-content-center {% if mapMode == 'tracks' %}btn-available-year{% endif %}">
             <i class="fa-solid fa-lightbulb fa-fw fs-6"></i>&nbsp;{{ gettext('Planned Tours') }}
@@ -28,14 +28,14 @@
          <div class="row my-3">
             <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center">
                 <div class="d-none d-lg-block">
-                    {{ toggleTracksAndPlannedTours('me-5') }}
+                    {{ toggleWorkoutsAndPlannedTours('me-5') }}
                 </div>
                 <div class="d-none d-lg-block">
                     {{ macros.workout_type_quick_filter(url_for(redirectUrl), true) }}
                 </div>
                 <div class="d-lg-none">
                     <div class="d-flex flex-column align-items-center justify-content-center ms-3">
-                        {{ toggleTracksAndPlannedTours('mb-3') }}
+                        {{ toggleWorkoutsAndPlannedTours('mb-3') }}
                         {{ macros.workout_type_quick_filter(url_for(redirectUrl), true) }}
                     </div>
                 </div>
@@ -83,7 +83,7 @@
         <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
         <script defer src="{{ url_for('static', filename='js/mapCommon.js') }}" type="text/javascript"></script>
-        <script defer src="{{ url_for('static', filename='js/mapMultipleTracks.js') }}" type="text/javascript"></script>
+        <script defer src="{{ url_for('static', filename='js/mapMultipleWorkouts.js') }}" type="text/javascript"></script>
     </body>
 </html>
 

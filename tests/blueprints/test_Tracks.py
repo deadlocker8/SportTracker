@@ -43,13 +43,13 @@ def prepare_test_data(app):
 
 
 class TestWorkouts(SeleniumTestBaseClass):
-    def __open_form(self, selenium, buttonIndex=0, expectedHeadline='New Biking Track'):
+    def __open_form(self, selenium, buttonIndex=0, expectedHeadline='New Biking Workout'):
         selenium.get(self.build_url('/workouts'))
 
         selenium.find_element(By.CLASS_NAME, 'headline').find_element(By.TAG_NAME, 'a').click()
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'New Track'
+                (By.CLASS_NAME, 'headline-text'), 'New Workout'
             )
         )
 
@@ -66,7 +66,7 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Edit Biking Track'
+                (By.CLASS_NAME, 'headline-text'), 'Edit Biking Workout'
             )
         )
 
@@ -94,7 +94,7 @@ class TestWorkouts(SeleniumTestBaseClass):
         selenium.find_element(By.ID, 'track-averageHeartRate').send_keys(averageHeartRate)
         selenium.find_element(By.ID, 'track-elevationSum').send_keys(elevationSum)
 
-        buttonSave = selenium.find_element(By.ID, 'buttonSaveTrack')
+        buttonSave = selenium.find_element(By.ID, 'buttonSaveWorkout')
         selenium.execute_script('arguments[0].scrollIntoView();', buttonSave)
         time.sleep(1)
         select = Select(selenium.find_element(By.ID, 'track-plannedTour'))
@@ -129,8 +129,8 @@ class TestWorkouts(SeleniumTestBaseClass):
     def test_add_track_valid(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.__fill_form(selenium, 'My Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -144,7 +144,7 @@ class TestWorkouts(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, '', '', '', '', '', '', '', '', '')
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         assert selenium.current_url.endswith('/workouts/add/BIKING')
 
@@ -164,8 +164,8 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.__fill_form(selenium, 'My Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         assert selenium.current_url.endswith('/workouts/add/BIKING')
 
@@ -185,9 +185,9 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
+        self.__fill_form(selenium, 'My Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         selenium.find_element(By.ID, 'track-my_custom_field').send_keys('15')
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -215,8 +215,8 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.__fill_form(selenium, 'My Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -239,9 +239,9 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
+        self.__fill_form(selenium, 'My Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         selenium.find_element(By.XPATH, '//label[@for="participant-1"]').click()
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -272,10 +272,10 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(selenium, 'My Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
+        self.__fill_form(selenium, 'My Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         selenium.find_element(By.XPATH, '//label[@for="participant-1"]').click()
         selenium.find_element(By.XPATH, '//label[@for="participant-2"]').click()
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -292,9 +292,9 @@ class TestWorkouts(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(
-            selenium, 'My Biking Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
+            selenium, 'My Biking Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
         )
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -302,11 +302,11 @@ class TestWorkouts(SeleniumTestBaseClass):
             )
         )
 
-        self.__open_form(selenium, buttonIndex=1, expectedHeadline='New Running Track')
+        self.__open_form(selenium, buttonIndex=1, expectedHeadline='New Running Workout')
         self.__fill_form(
-            selenium, 'My Running Track', '2023-02-01', '16:30', 5.5, 0, 20, 12, 188, 15
+            selenium, 'My Running Workout', '2023-02-01', '16:30', 5.5, 0, 20, 12, 188, 15
         )
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -318,7 +318,7 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.invisibility_of_element_located(
-                (By.XPATH, '//h4[text()="New Biking Track"]')
+                (By.XPATH, '//h4[text()="New Biking Workout"]')
             )
         )
 
@@ -352,7 +352,7 @@ class TestWorkouts(SeleniumTestBaseClass):
         self.__open_form(selenium)
 
         self.__fill_form(
-            selenium, 'My Biking Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
+            selenium, 'My Biking Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
         )
 
         self.click_button_by_id(selenium, 'buttonCreateSharedLink')
@@ -360,7 +360,7 @@ class TestWorkouts(SeleniumTestBaseClass):
             expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
         )
         sharedLink = selenium.find_element(By.ID, 'sharedLink').text
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -378,7 +378,7 @@ class TestWorkouts(SeleniumTestBaseClass):
         selenium.get(sharedLink)
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'planned-tour-name'), 'My Biking Track'
+                (By.CLASS_NAME, 'planned-tour-name'), 'My Biking Workout'
             )
         )
 
@@ -387,7 +387,7 @@ class TestWorkouts(SeleniumTestBaseClass):
         self.__open_form(selenium)
 
         self.__fill_form(
-            selenium, 'My Biking Track', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
+            selenium, 'My Biking Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
         )
 
         self.click_button_by_id(selenium, 'buttonCreateSharedLink')
@@ -395,7 +395,7 @@ class TestWorkouts(SeleniumTestBaseClass):
             expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
         )
         sharedLink = selenium.find_element(By.ID, 'sharedLink').text
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -417,7 +417,7 @@ class TestWorkouts(SeleniumTestBaseClass):
         WebDriverWait(selenium, 5).until(
             expected_conditions.invisibility_of_element_located((By.ID, 'sharedLink'))
         )
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
                 (By.CLASS_NAME, 'headline-text'), 'Workouts'
@@ -436,7 +436,7 @@ class TestWorkouts(SeleniumTestBaseClass):
         self.__open_form(selenium)
         self.__fill_form(
             selenium,
-            'My Track',
+            'My Workout',
             '2023-02-01',
             '15:30',
             22.5,
@@ -447,7 +447,7 @@ class TestWorkouts(SeleniumTestBaseClass):
             650,
             plannedTourName='Megatour',
         )
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -461,14 +461,14 @@ class TestWorkouts(SeleniumTestBaseClass):
         selenium.get(self.build_url('/plannedTours'))
         pills = selenium.find_elements(By.CSS_SELECTOR, '.badge.rounded-pill.bg-orange')
         assert len(pills) == 1
-        assert pills[0].text == '1 Tracks'
+        assert pills[0].text == '1 Workouts'
 
     def test_add_duration_based_workout_valid(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium, buttonIndex=3, expectedHeadline='New Workout')
         self.__fill_duration_based_form(
             selenium,
-            'My Track',
+            'My Workout',
             '2023-02-01',
             '15:30',
             0,
@@ -478,7 +478,7 @@ class TestWorkouts(SeleniumTestBaseClass):
             'workout-type-2',
             ['workout-category-1', 'workout-category-2'],
         )
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element(
@@ -492,6 +492,6 @@ class TestWorkouts(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium, buttonIndex=3, expectedHeadline='New Workout')
         self.__fill_duration_based_form(selenium, '', '', '', '', '', '', '', 'workout-type-1', [])
-        self.click_button_by_id(selenium, 'buttonSaveTrack')
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         assert selenium.current_url.endswith('/workouts/add/FITNESS')

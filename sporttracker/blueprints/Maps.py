@@ -37,7 +37,7 @@ def createGpxInfo(workoutId: int, trackName: str, trackStartTime: datetime) -> d
     return {
         'trackId': workoutId,
         'gpxUrl': url_for(
-            'gpxTracks.downloadGpxTrackByTrackId',
+            'gpxTracks.downloadGpxTrackByWorkoutId',
             workout_id=workoutId,
             file_format=GpxService.GPX_FILE_EXTENSION,
         ),
@@ -66,7 +66,7 @@ def construct_blueprint(
 
     @maps.route('/map')
     @login_required
-    def showAllTracksOnMap():
+    def showAllWorkoutsOnMap():
         quickFilterState = get_quick_filter_state_from_session()
         availableYears = get_available_years(current_user.id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
@@ -92,18 +92,18 @@ def construct_blueprint(
             gpxInfo.append(createGpxInfo(workoutId, workoutName, workoutStartTime))
 
         return render_template(
-            'maps/mapMultipleTracks.jinja2',
+            'maps/mapMultipleWorkouts.jinja2',
             gpxInfo=gpxInfo,
             quickFilterState=quickFilterState,
             yearFilterState=yearFilterState,
             availableYears=availableYears,
             mapMode='tracks',
-            redirectUrl='maps.showAllTracksOnMap',
+            redirectUrl='maps.showAllWorkoutsOnMap',
         )
 
     @maps.route('/map/<int:workout_id>')
     @login_required
-    def showSingleTrack(workout_id: int):
+    def showSingleWorkout(workout_id: int):
         workout = get_distance_workout_by_id(workout_id)
 
         if workout is None:
@@ -121,10 +121,10 @@ def construct_blueprint(
         tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
 
         return render_template(
-            'maps/mapSingleTrack.jinja2',
+            'maps/mapSingleWorkout.jinja2',
             workout=DistanceWorkoutModel.create_from_workout(workout),
             gpxUrl=url_for(
-                'gpxTracks.downloadGpxTrackByTrackId',
+                'gpxTracks.downloadGpxTrackByWorkoutId',
                 workout_id=workout_id,
                 file_format=GpxService.GPX_FILE_EXTENSION,
             ),
@@ -135,17 +135,17 @@ def construct_blueprint(
         )
 
     @maps.route('/map/shared/<string:shareCode>')
-    def showSharedSingleTrack(shareCode: str):
+    def showSharedSingleWorkout(shareCode: str):
         workout = get_distance_workout_by_share_code(shareCode)
 
         if workout is None:
             return render_template('maps/mapNotFound.jinja2')
 
         return render_template(
-            'maps/mapSingleTrack.jinja2',
+            'maps/mapSingleWorkout.jinja2',
             workout=DistanceWorkoutModel.create_from_workout(workout),
             gpxUrl=url_for(
-                'gpxTracks.downloadGpxTrackBySharedTrack',
+                'gpxTracks.downloadGpxTrackBySharedWorkout',
                 shareCode=shareCode,
                 file_format=GpxService.GPX_FILE_EXTENSION,
             ),
@@ -220,7 +220,7 @@ def construct_blueprint(
             gpxInfo.append(createGpxInfoPlannedTour(tour.id, tour.name))  # type: ignore[arg-type]
 
         return render_template(
-            'maps/mapMultipleTracks.jinja2',
+            'maps/mapMultipleWorkouts.jinja2',
             gpxInfo=gpxInfo,
             quickFilterState=quickFilterState,
             mapMode='plannedTours',
@@ -348,7 +348,7 @@ def construct_blueprint(
             colors.append(entry.type.background_color_hex)
             names.append(entry.name)
 
-        chartDataNewTilesPerTrack = {
+        chartDataNewTilesPerWorkout = {
             'dates': dates,
             'values': values,
             'colors': colors,
@@ -363,7 +363,7 @@ def construct_blueprint(
             redirectUrl='maps.showTileHuntingMap',
             tileRenderUrl=tileRenderUrl,
             totalNumberOfTiles=totalNumberOfTiles,
-            chartDataNewTilesPerTrack=chartDataNewTilesPerTrack,
+            chartDataNewTilesPerWorkout=chartDataNewTilesPerWorkout,
             tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
         )
 

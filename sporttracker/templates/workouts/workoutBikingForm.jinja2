@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {% if workout %}{{ gettext('Edit Biking Track') }}{% else %}{{ gettext('New Biking Track') }}{% endif %}</title>
+        <title>SportTracker - {% if workout %}{{ gettext('Edit Biking Workout') }}{% else %}{{ gettext('New Biking Workout') }}{% endif %}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -17,18 +17,18 @@
                 <div class="row">
                     <div class="col col-12 mx-auto">
                         {% if workout %}
-                            {% call macros.headline(gettext('Edit Biking Track')) %}
+                            {% call macros.headline(gettext('Edit Biking Workout')) %}
                                 <span class="material-symbols-outlined filled fs-1">directions_bike</span>
                             {% endcall %}
                             <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
                                 <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                             </button>
 
-                            {% call macros.deleteModal(gettext('Delete Track?'), gettext('Do you really want to delete the track "%(name)s" (ID: %(id)d)?', name=workout.name, id=workout_id)) %}
+                            {% call macros.deleteModal(gettext('Delete Workout?'), gettext('Do you really want to delete the track "%(name)s" (ID: %(id)d)?', name=workout.name, id=workout_id)) %}
                                 <a href="{{ url_for('distanceWorkouts.delete', workout_id=workout_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
                             {% endcall %}
                         {% else %}
-                            {% call macros.headline(gettext('New Biking Track')) %}
+                            {% call macros.headline(gettext('New Biking Workout')) %}
                                 <span class="material-symbols-outlined filled fs-1">directions_bike</span>
                             {% endcall %}
                         {% endif %}
@@ -65,9 +65,9 @@
 
                             {{ workoutMacros.form_linked_planned_tour(workout, plannedTours) }}
 
-                            {{ workoutMacros.form_share_link(workout, 'maps.showSharedSingleTrack', 'distanceWorkouts.createShareCode')}}
+                            {{ workoutMacros.form_share_link(workout, 'maps.showSharedSingleWorkout', 'distanceWorkouts.createShareCode')}}
 
-                            <button type="submit" id="buttonSaveTrack" class="btn btn-success mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            <button type="submit" id="buttonSaveWorkout" class="btn btn-success mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>
                     </div>
                 </div>

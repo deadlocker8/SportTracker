@@ -72,7 +72,7 @@
                     <div class="row">
                         <div class="list-group text-start">
                             {% for linkedWorkout in plannedTour.linkedWorkouts %}
-                                <a href="{{ url_for('maps.showSingleTrack', workout_id=linkedWorkout.id) }}"
+                                <a href="{{ url_for('maps.showSingleWorkout', workout_id=linkedWorkout.id) }}"
                                    class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
                                     {{ linkedWorkout.startTime | format_date() }}
                                     <span class="material-symbols-outlined filled text-primary">send</span>

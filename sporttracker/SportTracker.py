@@ -153,7 +153,7 @@ class SportTracker(FlaskBaseApp):
                 'distanceWorkoutTypes': [x for x in WorkoutType.get_distance_workout_types()],
                 'workoutTypesByName': {x.name: x for x in WorkoutType},
                 'languages': [x for x in Language],
-                'customTrackFieldTypes': [x for x in CustomWorkoutFieldType],
+                'customWorkoutFieldTypes': [x for x in CustomWorkoutFieldType],
                 'travelTypes': [x for x in TravelType],
                 'travelDirections': [x for x in TravelDirection],
                 'newPlannedTourIds': get_new_planned_tour_ids(),

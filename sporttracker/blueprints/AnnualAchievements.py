@@ -65,7 +65,7 @@ def construct_blueprint():
                     workoutType,
                     year,
                     yearNames,
-                    gettext('Number Of Tracks'),
+                    gettext('Number Of Workouts'),
                     'fa-route',
                     True,
                 )
@@ -204,8 +204,8 @@ def construct_blueprint():
         is_font_awesome_icon: bool,
     ) -> AnnualAchievement:
         values = []
-        totalTrackCount = 0
-        totalTrackCountPreviousYear = 0
+        totalWorkoutCount = 0
+        totalWorkoutCountPreviousYear = 0
 
         for currentYear in availableYears:
             value = AchievementCalculator.get_total_number_of_workouts_by_type_and_year(
@@ -213,12 +213,12 @@ def construct_blueprint():
             )
             values.append(value)
             if currentYear == year:
-                totalTrackCount = value
+                totalWorkoutCount = value
             elif currentYear == year - 1:
-                totalTrackCountPreviousYear = value
+                totalWorkoutCountPreviousYear = value
 
-        totalTrackCountDifference = totalTrackCount - totalTrackCountPreviousYear
-        totalTrackCountAllYearData = AllYearData(
+        totalWorkoutCountDifference = totalWorkoutCount - totalWorkoutCountPreviousYear
+        totalWorkoutCountAllYearData = AllYearData(
             year_names=yearNames,
             values=values,
             labels=[__format_count(x) for x in values],
@@ -233,12 +233,12 @@ def construct_blueprint():
             is_outlined_icon=False,
             color=workoutType.border_color,
             title=title,
-            description=str(totalTrackCount),
-            difference_to_previous_year=str(abs(totalTrackCountDifference)),
+            description=str(totalWorkoutCount),
+            difference_to_previous_year=str(abs(totalWorkoutCountDifference)),
             difference_type=AnnualAchievementDifferenceType.get_by_difference(
-                totalTrackCountDifference
+                totalWorkoutCountDifference
             ),
-            all_year_data=totalTrackCountAllYearData,
+            all_year_data=totalWorkoutCountAllYearData,
             unit='',
         )
 
@@ -246,8 +246,8 @@ def construct_blueprint():
         availableYears: list[int], workoutType: WorkoutType, year: int, yearNames: list[str]
     ) -> AnnualAchievement:
         values = []
-        longestTrack = 0.0
-        longestTrackPreviousYear = 0.0
+        longestWorkout = 0.0
+        longestWorkoutPreviousYear = 0.0
 
         for currentYear in availableYears:
             value = AchievementCalculator.get_longest_distance_by_type_and_year(
@@ -255,12 +255,12 @@ def construct_blueprint():
             )
             values.append(value)
             if currentYear == year:
-                longestTrack = value
+                longestWorkout = value
             elif currentYear == year - 1:
-                longestTrackPreviousYear = value
+                longestWorkoutPreviousYear = value
 
-        longestTrackDifference = longestTrack - longestTrackPreviousYear
-        longestTrackAllYearData = AllYearData(
+        longestWorkoutDifference = longestWorkout - longestWorkoutPreviousYear
+        longestWorkoutAllYearData = AllYearData(
             year_names=yearNames,
             values=values,
             labels=[__format_distance(x) for x in values],
@@ -275,13 +275,13 @@ def construct_blueprint():
             is_font_awesome_icon=False,
             is_outlined_icon=False,
             color=workoutType.border_color,
-            title=gettext('Longest Track'),
-            description=__format_distance(longestTrack),
-            difference_to_previous_year=__format_distance(abs(longestTrackDifference)),
+            title=gettext('Longest Workout'),
+            description=__format_distance(longestWorkout),
+            difference_to_previous_year=__format_distance(abs(longestWorkoutDifference)),
             difference_type=AnnualAchievementDifferenceType.get_by_difference(
-                longestTrackDifference
+                longestWorkoutDifference
             ),
-            all_year_data=longestTrackAllYearData,
+            all_year_data=longestWorkoutAllYearData,
             unit='km',
         )
 

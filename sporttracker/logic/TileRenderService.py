@@ -86,13 +86,15 @@ class TileRenderService:
         If a tile was visited by exactly one gpx track, the color of the corresponding track type is returned.
         If a tile was visited by multiple gpx tracks, COLOR_MULTIPLE_MATCHES is returned.
         """
-        colorsOfMatchingTracks = [t.tile_color for t in tileColorPositions if t.x == x and t.y == y]
+        colorsOfMatchingWorkouts = [
+            t.tile_color for t in tileColorPositions if t.x == x and t.y == y
+        ]
 
-        if len(colorsOfMatchingTracks) == 0:
+        if len(colorsOfMatchingWorkouts) == 0:
             return TileRenderService.COLOR_TRANSPARENT
 
-        if len(colorsOfMatchingTracks) == 1:
-            return ImageColor.getcolor(colorsOfMatchingTracks[0], 'RGBA')  # type: ignore[return-value]
+        if len(colorsOfMatchingWorkouts) == 1:
+            return ImageColor.getcolor(colorsOfMatchingWorkouts[0], 'RGBA')  # type: ignore[return-value]
 
         return TileRenderService.COLOR_MULTIPLE_MATCHES
 
