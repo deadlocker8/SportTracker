@@ -22,27 +22,27 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 def construct_blueprint(gpxService: GpxService):
     gpxTracks = Blueprint('gpxTracks', __name__, static_folder='static', url_prefix='/gpxTracks')
 
-    @gpxTracks.route('/track/<string:file_format>/<int:workout_id>')
+    @gpxTracks.route('/workout/<string:file_format>/<int:workout_id>')
     @login_required
     def downloadGpxTrackByWorkoutId(workout_id: int, file_format: str):
-        track = get_distance_workout_by_id(workout_id)
+        workout = get_distance_workout_by_id(workout_id)
 
-        if track is None:
+        if workout is None:
             abort(404)
 
-        response = __downloadTrackFile(gpxService, track, file_format)
+        response = __downloadTrackFile(gpxService, workout, file_format)
         if response is not None:
             return response
 
         abort(404)
 
-    @gpxTracks.route('/track/shared/<string:shareCode>/<string:file_format>')
+    @gpxTracks.route('/workout/shared/<string:shareCode>/<string:file_format>')
     def downloadGpxTrackBySharedTrack(shareCode: str, file_format: str):
-        track = get_distance_workout_by_share_code(shareCode)
-        if track is None:
+        workout = get_distance_workout_by_share_code(shareCode)
+        if workout is None:
             abort(404)
 
-        response = __downloadTrackFile(gpxService, track, file_format)
+        response = __downloadTrackFile(gpxService, workout, file_format)
         if response is not None:
             return response
 
@@ -75,15 +75,15 @@ def construct_blueprint(gpxService: GpxService):
 
         abort(404)
 
-    @gpxTracks.route('/delete/track/<int:workout_id>')
+    @gpxTracks.route('/delete/workout/<int:workout_id>')
     @login_required
     def deleteGpxTrackByWorkoutId(workout_id: int):
-        track = get_distance_workout_by_id(workout_id)
+        workout = get_distance_workout_by_id(workout_id)
 
-        if track is None:
+        if workout is None:
             return Response(status=204)
 
-        gpxService.delete_gpx(track, current_user.id)
+        gpxService.delete_gpx(workout, current_user.id)
         return Response(status=204)
 
     @gpxTracks.route('/delete/plannedTour/<int:tour_id>')

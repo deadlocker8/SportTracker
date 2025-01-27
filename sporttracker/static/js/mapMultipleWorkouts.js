@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function()
 {
 
-    if(mapMode === 'tracks')
+    if(mapMode === 'workouts')
     {
         initMap(sortWorkoutsByName);
     }
@@ -20,11 +20,11 @@ function initMap(itemSortFunction)
         return;
     }
 
-    let tracks = [];
+    let workouts = [];
     for(let i = 0; i < gpxInfo.length; i++)
     {
         const info = gpxInfo[i];
-        tracks.push(info['gpxUrl'])
+        workouts.push(info['gpxUrl'])
     }
 
     map.on('plugins_loaded', function(e)
@@ -46,10 +46,10 @@ function initMap(itemSortFunction)
             {
                 if(geojson)
                 {
-                    const trackId = fallbackName;
-                    const gpxInfoForWorkout = getGpxInfoById(trackId);
+                    const workoutId = fallbackName;
+                    const gpxInfoForWorkout = getGpxInfoById(workoutId);
 
-                    geojson.name = '<a href="' + gpxInfoForWorkout.trackUrl + '">' + gpxInfoForWorkout.trackName + '</a>'
+                    geojson.name = '<a href="' + gpxInfoForWorkout.workoutUrl + '">' + gpxInfoForWorkout.workoutName + '</a>'
                     this._loadRoute(geojson, gpxInfoForWorkout.gpxUrl);
                 }
             },
@@ -61,7 +61,7 @@ function initMap(itemSortFunction)
                 }
 
                 var line_style = {
-                    color: this._uniqueColors(this._tracks.length)[this._tracks.indexOf(gpxUrl)],  // access color by real index in tracks array instead of count of loaded elements
+                    color: this._uniqueColors(this._workouts.length)[this._workouts.indexOf(gpxUrl)],  // access color by real index in workouts array instead of count of loaded elements
                     opacity: 0.75,
                     weight: 5,
                     distanceMarkers: this.options.distanceMarkers_options,
@@ -85,15 +85,15 @@ function initMap(itemSortFunction)
             },
         });
 
-        function getGpxInfoById(trackId)
+        function getGpxInfoById(workoutId)
         {
             return gpxInfo.find(info =>
             {
-                return info.trackId === parseInt(trackId);
+                return info.workoutId === parseInt(workoutId);
             });
         }
 
-        let routes = L.gpxGroup(tracks, {
+        let routes = L.gpxGroup(workouts, {
             points: [],
             point_options: {},
             elevation: true,
@@ -116,7 +116,7 @@ function initMap(itemSortFunction)
                 numberOfLoadedLayers++;
             }
 
-            if(numberOfLoadedLayers === tracks.length && !legendItemAlreadyClicked)
+            if(numberOfLoadedLayers === workouts.length && !legendItemAlreadyClicked)
             {
                 setTimeout(function()
                 {
@@ -156,13 +156,13 @@ function initMap(itemSortFunction)
     });
 }
 
-const PATTERN_TRACK_NAME = /(\d{4}-\d{2}-\d{2} - .*)<\/a>/;
+const PATTERN_WORKOUT_NAME = /(\d{4}-\d{2}-\d{2} - .*)<\/a>/;
 const PATTERN_PLANNED_TOUR_NAME = /<a.*>(.*)<\/a>/;
 
 function sortWorkoutsByName(layerA, layerB, nameA, nameB)
 {
-    let realNameA = PATTERN_TRACK_NAME.exec(nameA)[1];
-    let realNameB = PATTERN_TRACK_NAME.exec(nameB)[1];
+    let realNameA = PATTERN_WORKOUT_NAME.exec(nameA)[1];
+    let realNameB = PATTERN_WORKOUT_NAME.exec(nameB)[1];
     if(realNameA < realNameB)
     {
         return 1;

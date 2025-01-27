@@ -84,20 +84,20 @@ class TestWorkouts(SeleniumTestBaseClass):
         elevationSum,
         plannedTourName='Not based on a Planned Tour',
     ):
-        selenium.find_element(By.ID, 'track-name').send_keys(name)
-        selenium.find_element(By.ID, 'track-date').send_keys(date)
-        selenium.find_element(By.ID, 'track-time').send_keys(startTime)
-        selenium.find_element(By.ID, 'track-distance').send_keys(distance)
-        selenium.find_element(By.ID, 'track-duration-hours').send_keys(hours)
-        selenium.find_element(By.ID, 'track-duration-minutes').send_keys(minutes)
-        selenium.find_element(By.ID, 'track-duration-seconds').send_keys(seconds)
-        selenium.find_element(By.ID, 'track-averageHeartRate').send_keys(averageHeartRate)
-        selenium.find_element(By.ID, 'track-elevationSum').send_keys(elevationSum)
+        selenium.find_element(By.ID, 'workout-name').send_keys(name)
+        selenium.find_element(By.ID, 'workout-date').send_keys(date)
+        selenium.find_element(By.ID, 'workout-time').send_keys(startTime)
+        selenium.find_element(By.ID, 'workout-distance').send_keys(distance)
+        selenium.find_element(By.ID, 'workout-duration-hours').send_keys(hours)
+        selenium.find_element(By.ID, 'workout-duration-minutes').send_keys(minutes)
+        selenium.find_element(By.ID, 'workout-duration-seconds').send_keys(seconds)
+        selenium.find_element(By.ID, 'workout-averageHeartRate').send_keys(averageHeartRate)
+        selenium.find_element(By.ID, 'workout-elevationSum').send_keys(elevationSum)
 
         buttonSave = selenium.find_element(By.ID, 'buttonSaveWorkout')
         selenium.execute_script('arguments[0].scrollIntoView();', buttonSave)
         time.sleep(1)
-        select = Select(selenium.find_element(By.ID, 'track-plannedTour'))
+        select = Select(selenium.find_element(By.ID, 'workout-plannedTour'))
         select.select_by_visible_text(plannedTourName)
 
     @staticmethod
@@ -113,20 +113,20 @@ class TestWorkouts(SeleniumTestBaseClass):
         workoutType,
         workoutCategories,
     ):
-        selenium.find_element(By.ID, 'track-name').send_keys(name)
-        selenium.find_element(By.ID, 'track-date').send_keys(date)
-        selenium.find_element(By.ID, 'track-time').send_keys(startTime)
-        selenium.find_element(By.ID, 'track-duration-hours').send_keys(hours)
-        selenium.find_element(By.ID, 'track-duration-minutes').send_keys(minutes)
-        selenium.find_element(By.ID, 'track-duration-seconds').send_keys(seconds)
-        selenium.find_element(By.ID, 'track-averageHeartRate').send_keys(averageHeartRate)
+        selenium.find_element(By.ID, 'workout-name').send_keys(name)
+        selenium.find_element(By.ID, 'workout-date').send_keys(date)
+        selenium.find_element(By.ID, 'workout-time').send_keys(startTime)
+        selenium.find_element(By.ID, 'workout-duration-hours').send_keys(hours)
+        selenium.find_element(By.ID, 'workout-duration-minutes').send_keys(minutes)
+        selenium.find_element(By.ID, 'workout-duration-seconds').send_keys(seconds)
+        selenium.find_element(By.ID, 'workout-averageHeartRate').send_keys(averageHeartRate)
 
         selenium.find_element(By.XPATH, f'//label[@for="{workoutType}"]').click()
 
         for category in workoutCategories:
             selenium.find_element(By.XPATH, f'//label[@for="{category}"]').click()
 
-    def test_add_track_valid(self, server, selenium: WebDriver):
+    def test_add_workout_valid(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
@@ -186,7 +186,7 @@ class TestWorkouts(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
         self.__fill_form(selenium, 'My Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
-        selenium.find_element(By.ID, 'track-my_custom_field').send_keys('15')
+        selenium.find_element(By.ID, 'workout-my_custom_field').send_keys('15')
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(

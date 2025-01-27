@@ -95,11 +95,11 @@ class MonthGoalDistance(MonthGoal):
     distance_perfect: Mapped[int] = mapped_column(Integer, nullable=False)
 
     def get_summary(self) -> MonthGoalDistanceSummary:
-        tracks = get_workouts_by_year_and_month_by_type(self.year, self.month, [self.type])
+        workouts = get_workouts_by_year_and_month_by_type(self.year, self.month, [self.type])
 
         actualDistance = 0
-        if tracks:
-            actualDistance = sum([t.distance for t in tracks])
+        if workouts:
+            actualDistance = sum([t.distance for t in workouts])
 
         color = self.__determine_color(actualDistance)
         name = format_datetime(date(year=self.year, month=self.month, day=1), format='MMMM yyyy')
@@ -141,11 +141,11 @@ class MonthGoalCount(MonthGoal):
     count_perfect: Mapped[int] = mapped_column(Integer, nullable=False)
 
     def get_summary(self) -> MonthGoalCountSummary:
-        tracks = get_workouts_by_year_and_month_by_type(self.year, self.month, [self.type])
+        workouts = get_workouts_by_year_and_month_by_type(self.year, self.month, [self.type])
 
         actualCount = 0
-        if tracks:
-            actualCount = len(tracks)
+        if workouts:
+            actualCount = len(workouts)
 
         color = self.__determine_color(actualCount)
         name = format_datetime(date(year=self.year, month=self.month, day=1), format='MMMM yyyy')
@@ -188,13 +188,13 @@ class MonthGoalDuration(MonthGoal):
 
     def get_summary(self) -> MonthGoalDurationSummary:
         try:
-            tracks = get_workouts_by_year_and_month_by_type(self.year, self.month, [self.type])
+            workouts = get_workouts_by_year_and_month_by_type(self.year, self.month, [self.type])
         except ValueError:
-            tracks = []
+            workouts = []
 
         actualDuration = 0
-        if tracks:
-            actualDuration = sum([t.duration for t in tracks])
+        if workouts:
+            actualDuration = sum([t.duration for t in workouts])
 
         color = self.__determine_color(actualDuration)
         name = format_datetime(date(year=self.year, month=self.month, day=1), format='MMMM yyyy')

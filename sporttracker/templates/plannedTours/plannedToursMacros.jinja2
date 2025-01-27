@@ -1,6 +1,6 @@
 {% macro planned_tour_form_shared_users(plannedTour, users) -%}
     <div class="mb-3">
-        <label for="track-participants" class="form-label">
+        <label for="workout-participants" class="form-label">
             <div class="d-flex align-items-center">
                 <span class="material-symbols-outlined filled me-3">share</span>
                 <span>{{ gettext('Share this tour with') }}</span>
@@ -59,7 +59,7 @@
 {%- endmacro %}
 
 {% macro linkedWorkoutsMacro(idSuffix, plannedTour) -%}
-    <div class="modal fade" tabindex="-1" id="linked-tracks-modal-{{ idSuffix }}">
+    <div class="modal fade" tabindex="-1" id="linked-workouts-modal-{{ idSuffix }}">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark">
                 <div class="modal-header d-flex align-items-center justify-content-start">

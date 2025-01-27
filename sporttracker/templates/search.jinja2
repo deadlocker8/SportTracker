@@ -72,14 +72,14 @@
                         </div>
                     </div>
 
-                    {% for monthName, tracks in results.items() %}
+                    {% for monthName, workouts in results.items() %}
                         <h3 class="mt-4">{{ monthName }}</h3>
                         {% for workout in workout %}
                             <div class="d-none d-lg-block">
-                                {{ workoutMacros.render_track_card(workout, renderAsRow=true, useSmallIcon=true) }}
+                                {{ workoutMacros.render_workout_card(workout, renderAsRow=true, useSmallIcon=true) }}
                             </div>
                             <div class="d-lg-none">
-                                {{ workoutMacros.render_track_card(workout, renderAsRow=false, useSmallIcon=true) }}
+                                {{ workoutMacros.render_workout_card(workout, renderAsRow=false, useSmallIcon=true) }}
                             </div>
                         {% endfor %}
                     {% endfor %}

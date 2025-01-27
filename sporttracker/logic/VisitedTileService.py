@@ -34,7 +34,7 @@ class VisitedTileService:
         self,
     ) -> int:
         newVisitedTilesPerWorkout = (
-            self._newVisitedTileCache.get_new_visited_tiles_per_track_by_user(
+            self._newVisitedTileCache.get_new_visited_tiles_per_workout_by_user(
                 current_user.id,
                 self._quickFilterState.get_active_distance_workout_types(),
                 self._yearFilterState,
@@ -47,19 +47,19 @@ class VisitedTileService:
 
         return totalNumberOfTiles
 
-    def determine_tile_colors_of_tracks_that_visit_tiles(
+    def determine_tile_colors_of_workouts_that_visit_tiles(
         self, min_x: int, max_x: int, min_y: int, max_y: int, user_id: int
     ) -> list[TileColorPosition]:
         if self._workoutId is None:
-            return self.__determine_tile_colors_of_all_tracks_that_visit_tiles(
+            return self.__determine_tile_colors_of_all_workouts_that_visit_tiles(
                 min_x, max_x, min_y, max_y, user_id
             )
 
-        return self.__determine_tile_colors_of_single_track(
+        return self.__determine_tile_colors_of_single_workout(
             min_x, max_x, min_y, max_y, self._workoutId
         )
 
-    def __determine_tile_colors_of_all_tracks_that_visit_tiles(
+    def __determine_tile_colors_of_all_workouts_that_visit_tiles(
         self, min_x: int, max_x: int, min_y: int, max_y: int, user_id: int
     ) -> list[TileColorPosition]:
         distanceWorkoutAlias = aliased(DistanceWorkout)
@@ -86,7 +86,7 @@ class VisitedTileService:
 
         return [TileColorPosition(r[0].tile_color, r[1], r[2]) for r in rows]
 
-    def __determine_tile_colors_of_single_track(
+    def __determine_tile_colors_of_single_workout(
         self, min_x: int, max_x: int, min_y: int, max_y: int, workoutId: int
     ) -> list[TileColorPosition]:
         distanceWorkoutAlias = aliased(DistanceWorkout)
@@ -108,8 +108,8 @@ class VisitedTileService:
 
         return [TileColorPosition(r[0].tile_color, r[1], r[2]) for r in rows]
 
-    def get_new_tiles_per_track(self) -> list[NewTilesPerDistanceWorkout]:
-        return self._newVisitedTileCache.get_new_visited_tiles_per_track_by_user(
+    def get_new_tiles_per_workout(self) -> list[NewTilesPerDistanceWorkout]:
+        return self._newVisitedTileCache.get_new_visited_tiles_per_workout_by_user(
             current_user.id,
             self._quickFilterState.get_active_distance_workout_types(),
             self._yearFilterState,

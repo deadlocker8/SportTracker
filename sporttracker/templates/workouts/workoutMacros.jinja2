@@ -1,76 +1,76 @@
 <!DOCTYPE html>
 
-{% macro render_track_unit(unit) -%}
+{% macro render_workout_unit(unit) -%}
     <div class="fs-6 d-lg-none">{{ unit }}</div>
     <span class="d-none d-lg-inline">{{ unit }}</span>
 {%- endmacro %}
 
-{% macro render_track_speed_kmh(workout, renderAsRow) -%}
+{% macro render_workout_speed_kmh(workout, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
         <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">speed</span>
         {% if workout.duration is none %}
             <div class="fs-5">--.- km/h</div>
         {% else %}
-            <div class="fs-5 text-center">{{ (workout.distance / workout.duration * 3.6) | round(1) | format_decimal }} {{ render_track_unit('km/h') }}</div>
+            <div class="fs-5 text-center">{{ (workout.distance / workout.duration * 3.6) | round(1) | format_decimal }} {{ render_workout_unit('km/h') }}</div>
         {% endif %}
     </div>
 {%- endmacro %}
 
-{% macro render_track_speed_pace(workout, renderAsRow) -%}
+{% macro render_workout_speed_pace(workout, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
         <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">speed</span>
         {% if workout.duration is none %}
             <div class="fs-5">--.-- min</div>
         {% else %}
-            <div class="fs-5 text-center">{{ workout | format_pace }} {{ render_track_unit('min') }}</div>
+            <div class="fs-5 text-center">{{ workout | format_pace }} {{ render_workout_unit('min') }}</div>
         {% endif %}
     </div>
 {%- endmacro %}
 
-{% macro render_track_distance(workout, renderAsRow) -%}
+{% macro render_workout_distance(workout, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
         <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">route</span>
-        <div class="fs-5 text-center">{{ (workout.distance / 1000) | format_decimal(2) }} {{ render_track_unit('km') }}</div>
+        <div class="fs-5 text-center">{{ (workout.distance / 1000) | format_decimal(2) }} {{ render_workout_unit('km') }}</div>
     </div>
 {%- endmacro %}
 
-{% macro render_track_duration(workout, renderAsRow) -%}
+{% macro render_workout_duration(workout, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
         <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">timer</span>
-        <div class="fs-5 text-center">{{ workout.duration | format_duration }} {{ render_track_unit('h') }}</div>
+        <div class="fs-5 text-center">{{ workout.duration | format_duration }} {{ render_workout_unit('h') }}</div>
     </div>
 {%- endmacro %}
 
-{% macro render_track_average_heart_rate(workout, renderAsRow) -%}
+{% macro render_workout_average_heart_rate(workout, renderAsRow) -%}
     {% if workout.average_heart_rate is not none %}
         <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
             <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">favorite_border</span>
-            <div class="fs-5 text-center">{{ workout.average_heart_rate }} {{ render_track_unit('bpm') }}</div>
+            <div class="fs-5 text-center">{{ workout.average_heart_rate }} {{ render_workout_unit('bpm') }}</div>
         </div>
     {% endif %}
 {%- endmacro %}
 
-{% macro render_track_elevation(workout, renderAsRow) -%}
+{% macro render_workout_elevation(workout, renderAsRow) -%}
     {% if workout.elevation_sum is not none %}
         <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
             <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">expand</span>
-            <div class="fs-5 text-center">{{ workout.elevation_sum }} {{ render_track_unit('m') }}</div>
+            <div class="fs-5 text-center">{{ workout.elevation_sum }} {{ render_workout_unit('m') }}</div>
         </div>
     {% endif %}
 {%- endmacro %}
 
-{% macro render_track_workout_type(workout, renderAsRow) -%}
+{% macro render_workout_workout_type(workout, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
         <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ workout.workoutType.icon }}</span>
-        <div class="fs-5 text-center">{{ render_track_unit(workout.workoutType.get_localized_name()) }}</div>
+        <div class="fs-5 text-center">{{ render_workout_unit(workout.workoutType.get_localized_name()) }}</div>
     </div>
 {%- endmacro %}
 
-{% macro render_track_workout_category_type(workout, renderAsRow) -%}
+{% macro render_workout_workout_category_type(workout, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
         {% if workout.workoutCategories|length == 1 %}
             <span class="material-symbols-outlined {% if not workout.workoutCategories[0].is_outlined_icon %}filled{% endif %} fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ workout.workoutCategories[0].icon }}</span>
-            <div class="fs-5 text-center">{{ render_track_unit(workout.workoutCategories[0].get_localized_name()) }}</div>
+            <div class="fs-5 text-center">{{ render_workout_unit(workout.workoutCategories[0].get_localized_name()) }}</div>
         {% elif workout.workoutCategories|length > 1 %}
             <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">fitness_center</span>
             <div class="fs-5 text-center">{{ gettext('Mixed') }}</div>
@@ -122,7 +122,7 @@
     {% endif %}
 {%- endmacro %}
 
-{% macro track_card_feature_icons(workout) -%}
+{% macro workout_card_feature_icons(workout) -%}
     <div class="z-2 d-flex">
         {% if workout.shareCode or workout.share_code %}
             <span class="material-symbols-outlined filled fs-4 text-body">share</span>
@@ -159,32 +159,32 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <h4 class="card-title text-truncate text-start">{{ workout.name }}</h4>
 
-                                {{ track_card_feature_icons(workout) }}
+                                {{ workout_card_feature_icons(workout) }}
                             </div>
 
                             <div class="d-flex align-items-center justify-content-around me-1 me-md-3">
-                                {% if is_track_info_item_activated('DISTANCE') %}
-                                    {{ render_track_distance(workout, renderAsRow) }}
+                                {% if is_workout_info_item_activated('DISTANCE') %}
+                                    {{ render_workout_distance(workout, renderAsRow) }}
                                 {% endif %}
 
-                                {% if is_track_info_item_activated('DURATION') %}
-                                    {{ render_track_duration(workout, renderAsRow) }}
+                                {% if is_workout_info_item_activated('DURATION') %}
+                                    {{ render_workout_duration(workout, renderAsRow) }}
                                 {% endif %}
 
-                                {% if is_track_info_item_activated('SPEED') %}
+                                {% if is_workout_info_item_activated('SPEED') %}
                                     {% if workout.type.render_speed_in_kph %}
-                                        {{ render_track_speed_kmh(workout, renderAsRow) }}
+                                        {{ render_workout_speed_kmh(workout, renderAsRow) }}
                                     {% else %}
-                                        {{ render_track_speed_pace(workout, renderAsRow) }}
+                                        {{ render_workout_speed_pace(workout, renderAsRow) }}
                                     {% endif %}
                                 {% endif %}
 
-                                {% if is_track_info_item_activated('AVERAGE_HEART_RATE') %}
-                                    {{ render_track_average_heart_rate(workout, renderAsRow) }}
+                                {% if is_workout_info_item_activated('AVERAGE_HEART_RATE') %}
+                                    {{ render_workout_average_heart_rate(workout, renderAsRow) }}
                                 {% endif %}
 
-                                {% if is_track_info_item_activated('ELEVATION_SUM') %}
-                                    {{ render_track_elevation(workout, renderAsRow) }}
+                                {% if is_workout_info_item_activated('ELEVATION_SUM') %}
+                                    {{ render_workout_elevation(workout, renderAsRow) }}
                                 {% endif %}
                             </div>
                         </div>
@@ -217,17 +217,17 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <h4 class="card-title text-truncate text-start">{{ workout.name }}</h4>
 
-                                {{ track_card_feature_icons(workout) }}
+                                {{ workout_card_feature_icons(workout) }}
                             </div>
 
                             <div class="d-flex align-items-center justify-content-around me-1 me-md-3">
-                                {{ render_track_duration(workout, renderAsRow) }}
+                                {{ render_workout_duration(workout, renderAsRow) }}
 
-                                {{ render_track_workout_type(workout, renderAsRow) }}
+                                {{ render_workout_workout_type(workout, renderAsRow) }}
 
-                                {{ render_track_workout_category_type(workout, renderAsRow) }}
+                                {{ render_workout_workout_category_type(workout, renderAsRow) }}
 
-                                {{ render_track_average_heart_rate(workout, renderAsRow) }}
+                                {{ render_workout_average_heart_rate(workout, renderAsRow) }}
                             </div>
                         </div>
 
@@ -277,18 +277,18 @@
     </div>
 {%- endmacro %}
 
-{% macro track_form_name(workout, trackNames) -%}
+{% macro workout_form_name(workout, workoutNames) -%}
     <div class="mb-3">
         <div class="form-group">
-            <label for="track-name" class="form-label input-field-margin">{{ gettext('Name') }}</label>
+            <label for="workout-name" class="form-label input-field-margin">{{ gettext('Name') }}</label>
             <div class="d-flex align-items-center">
                 <span class="material-symbols-outlined filled me-3">edit</span>
-                <input type="text" class="form-control" id="track-name" name="name"
+                <input type="text" class="form-control" id="workout-name" name="name"
                        required="required" {% if workout %}value="{{ workout.name }}"{% endif %}
-                       list="list-track-names">
-                <datalist id="list-track-names">
-                    {% for trackName in trackNames %}
-                        <option>{{ trackName }}</option>
+                       list="list-workout-names">
+                <datalist id="list-workout-names">
+                    {% for workoutName in workoutNames %}
+                        <option>{{ workoutName }}</option>
                     {% endfor %}
                 </datalist>
             </div>
@@ -296,22 +296,22 @@
     </div>
 {%- endmacro %}
 
-{% macro track_form_start_time(workout) -%}
+{% macro workout_form_start_time(workout) -%}
     <div class="mb-3">
         <div class="row">
             <div class="col col-12 col-md-6 mb-3 mb-md-0">
-                <label for="track-date" class="form-label input-field-margin">{{ gettext('Date') }}</label>
+                <label for="workout-date" class="form-label input-field-margin">{{ gettext('Date') }}</label>
                 <div class="d-flex align-items-center">
                     <span class="material-symbols-outlined filled me-3">event</span>
-                    <input type="date" class="form-control" id="track-date" name="date"
+                    <input type="date" class="form-control" id="workout-date" name="date"
                            required="required" {% if workout %}value="{{ workout.date }}"{% endif %}>
                 </div>
             </div>
             <div class="col col-12 col-md-6">
-                <label for="track-time" class="form-label input-field-margin">{{ gettext('Start Time') }}</label>
+                <label for="workout-time" class="form-label input-field-margin">{{ gettext('Start Time') }}</label>
                 <div class="d-flex align-items-center">
                     <span class="material-symbols-outlined me-3">schedule</span>
-                    <input type="time" class="form-control" id="track-time" name="time"
+                    <input type="time" class="form-control" id="workout-time" name="time"
                            required="required" {% if workout %}value="{{ workout.time }}"{% endif %}>
                 </div>
             </div>
@@ -319,74 +319,74 @@
     </div>
 {%- endmacro %}
 
-{% macro track_form_distance(workout) -%}
+{% macro workout_form_distance(workout) -%}
     <div class="mb-3">
-        <label for="track-distance" class="form-label input-field-margin">{{ gettext('Distance (in km)') }}</label>
+        <label for="workout-distance" class="form-label input-field-margin">{{ gettext('Distance (in km)') }}</label>
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined me-3">route</span>
-            <input type="number" step="0.01" min="0" class="form-control" id="track-distance"
+            <input type="number" step="0.01" min="0" class="form-control" id="workout-distance"
                    name="distance" required="required"
                    {% if workout %}value="{{ workout.distance | round(2) }}"{% endif %}>
         </div>
     </div>
 {%- endmacro %}
 
-{% macro track_form_duration(workout) -%}
-    <label for="track-duration-hours" class="form-label input-field-margin">{{ gettext('Duration') }}</label>
+{% macro workout_form_duration(workout) -%}
+    <label for="workout-duration-hours" class="form-label input-field-margin">{{ gettext('Duration') }}</label>
     <div class="mb-3 d-flex align-items-center">
         <span class="material-symbols-outlined me-3">timer</span>
 
         <input type="number" step="1" min="0" class="form-control me-3"
-               id="track-duration-hours" name="durationHours"
+               id="workout-duration-hours" name="durationHours"
                placeholder="{{ gettext('Hours') }}"
                required="required"
                {% if workout %}value="{{ workout.durationHours }}"{% endif %}>
 
-        <label for="track-duration-minutes" class="form-label">&nbsp;</label>
+        <label for="workout-duration-minutes" class="form-label">&nbsp;</label>
         <input type="number" step="1" min="0" max="59" class="form-control me-3"
-               id="track-duration-minutes" name="durationMinutes"
+               id="workout-duration-minutes" name="durationMinutes"
                placeholder="{{ gettext('Minutes') }}" required="required"
                {% if workout %}value="{{ workout.durationMinutes }}"{% endif %}>
 
-        <label for="track-duration-seconds" class="form-label">&nbsp;</label>
+        <label for="workout-duration-seconds" class="form-label">&nbsp;</label>
         <input type="number" step="1" min="0" max="59" class="form-control"
-               id="track-duration-seconds" name="durationSeconds"
+               id="workout-duration-seconds" name="durationSeconds"
                placeholder="{{ gettext('Seconds') }}" required="required"
                {% if workout %}value="{{ workout.durationSeconds }}"{% endif %}>
     </div>
 {%- endmacro %}
 
-{% macro track_form_average_heart_rate(workout) -%}
+{% macro workout_form_average_heart_rate(workout) -%}
     <div class="mb-3">
-        <label for="track-averageHeartRate" class="form-label input-field-margin">{{ gettext('Average Heart Rate') }}</label>
+        <label for="workout-averageHeartRate" class="form-label input-field-margin">{{ gettext('Average Heart Rate') }}</label>
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined me-3">favorite_border</span>
-            <input type="number" step="1" min="0" class="form-control" id="track-averageHeartRate"
+            <input type="number" step="1" min="0" class="form-control" id="workout-averageHeartRate"
                    name="averageHeartRate"
                    {% if workout and workout.average_heart_rate is not none %}value="{{ workout.average_heart_rate }}"{% endif %}>
         </div>
     </div>
 {%- endmacro %}
 
-{% macro track_form_elevation_sum(workout) -%}
+{% macro workout_form_elevation_sum(workout) -%}
     <div class="mb-3">
-        <label for="track-elevationSum" class="form-label input-field-margin">{{ gettext('Elevation Sum (in m)') }}</label>
+        <label for="workout-elevationSum" class="form-label input-field-margin">{{ gettext('Elevation Sum (in m)') }}</label>
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined me-3">expand</span>
-            <input type="number" step="1" min="0" class="form-control" id="track-elevationSum"
+            <input type="number" step="1" min="0" class="form-control" id="workout-elevationSum"
                    name="elevationSum"
                    {% if workout and workout.elevation_sum is not none %}value="{{ workout.elevation_sum }}"{% endif %}>
         </div>
     </div>
 {%- endmacro %}
 
-{% macro track_form_gpx(workout, workout_id) -%}
-    {{ form_gpx(workout, url_for('maps.showSingleWorkout', workout_id=workout_id or -1 ), url_for('gpxTracks.downloadGpxTrackByWorkoutId', workout_id=workout_id  or -1, file_format='gpx'), url_for('gpxTracks.downloadGpxTrackByWorkoutId', workout_id=workout_id  or -1, file_format='fit'), url_for('gpxTracks.deleteGpxTrackByWorkoutId', workout_id=workout_id or -1), gettext('No GPX or FIT file is linked to this track'), gettext('A GPX or FIT file is linked to this track') ) }}
+{% macro workout_form_gpx(workout, workout_id) -%}
+    {{ form_gpx(workout, url_for('maps.showSingleWorkout', workout_id=workout_id or -1 ), url_for('gpxTracks.downloadGpxTrackByWorkoutId', workout_id=workout_id  or -1, file_format='gpx'), url_for('gpxTracks.downloadGpxTrackByWorkoutId', workout_id=workout_id  or -1, file_format='fit'), url_for('gpxTracks.deleteGpxTrackByWorkoutId', workout_id=workout_id or -1), gettext('No GPX or FIT file is linked to this workout'), gettext('A GPX or FIT file is linked to this workout') ) }}
 {%- endmacro %}
 
 {% macro form_gpx(item, mapUrl, downloadUrlGpx, downloadUrlFit, deleteUrl, placeholderText, gpxFileLinkedText) -%}
     <div class="mb-3">
-        <label for="track-gpxFileName" class="form-label">
+        <label for="workout-gpxFileName" class="form-label">
             <div class="d-flex align-items-center">
                 <span class="material-symbols-outlined filled me-3">location_on</span>
                 <span>{{ gettext('GPX/FIT Track') }}</span>
@@ -435,14 +435,14 @@
             <div class="{% if hasGpxTrack %}hidden{% endif %}" id="gpxControlsDisabled">
                 <span class="mb-3 badge bg-secondary lh-lg rounded-pill px-3 text-wrap">{{ placeholderText }}</span>
             </div>
-            <input class="form-control" type="file" id="track-gpxFileName" name="gpxTrack" accept=".gpx,.fit">
+            <input class="form-control" type="file" id="workout-gpxFileName" name="gpxTrack" accept=".gpx,.fit">
         </div>
     </div>
 {%- endmacro %}
 
-{% macro track_form_participants(workout, participants) -%}
+{% macro workout_form_participants(workout, participants) -%}
     <div class="mb-3">
-        <label for="track-participants" class="form-label">
+        <label for="workout-participants" class="form-label">
             <div class="d-flex align-items-center">
                 <span class="material-symbols-outlined filled me-3">group</span>
                 <span>{{ gettext('Participants') }}</span>
@@ -470,17 +470,17 @@
     </div>
 {%- endmacro %}
 
-{% macro track_form_custom_field_input(field) -%}
+{% macro workout_form_custom_field_input(field) -%}
     {% set escapedName=field.get_escaped_name() %}
     <div class="mb-3">
-        <label for="track-{{ escapedName }}" class="form-label input-field-margin">{{ field.name }}</label>
+        <label for="workout-{{ escapedName }}" class="form-label input-field-margin">{{ field.name }}</label>
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined filled me-3">drive_file_rename_outline</span>
 
             {% if field.type.name == 'STRING' %}
                 <input type="text"
                        class="form-control"
-                       id="track-{{ escapedName }}"
+                       id="workout-{{ escapedName }}"
                        name="{{ field.name }}"
                        {% if workout and workout.model_extra[field.name] is not none %}value="{{ workout.model_extra[field.name] }}"{% endif %}
                         {% if field.is_required %} required="required"{% endif %}
@@ -490,7 +490,7 @@
                        step="1"
                        min="0"
                        class="form-control"
-                       id="track-{{ escapedName }}"
+                       id="workout-{{ escapedName }}"
                        name="{{ field.name }}"
                        {% if workout and workout.model_extra[field.name] is not none %}value="{{ workout.model_extra[field.name] }}"{% endif %}
                         {% if field.is_required %} required="required"{% endif %}
@@ -500,7 +500,7 @@
                        step="0.01"
                        min="0"
                        class="form-control"
-                       id="track-{{ escapedName }}"
+                       id="workout-{{ escapedName }}"
                        name="{{ field.name }}"
                        {% if workout and workout.model_extra[field.name] is not none %}value="{{ workout.model_extra[field.name] }}"{% endif %}
                         {% if field.is_required %} required="required"{% endif %}
@@ -512,7 +512,7 @@
 
 {% macro form_share_link(item, mapUrl, createUrl) -%}
     <div class="mb-3">
-        <label for="track-participants" class="form-label">
+        <label for="workout-participants" class="form-label">
             <div class="d-flex align-items-center">
                 <span class="material-symbols-outlined me-3">link</span>
                 <span>{{ gettext('Share via link') }}</span>
@@ -555,10 +555,10 @@
 
 {% macro form_linked_planned_tour(workout, plannedTours) -%}
     <div class="mb-3">
-        <label for="track-plannedTour" class="form-label input-field-margin">{{ gettext('Based on Planned Tour') }}</label>
+        <label for="workout-plannedTour" class="form-label input-field-margin">{{ gettext('Based on Planned Tour') }}</label>
         <div class="d-flex align-items-center">
             <i class="fa-solid fa-lightbulb fa-fw fs-4 me-3"></i>
-            <select class="form-select" id="track-plannedTour" name="plannedTourId">
+            <select class="form-select" id="workout-plannedTour" name="plannedTourId">
                 <option value="-1"
                         {% if not workout %} selected{% endif %}>{{ gettext('Not based on a Planned Tour') }}</option>
                 {% for plannedTour in plannedTours %}

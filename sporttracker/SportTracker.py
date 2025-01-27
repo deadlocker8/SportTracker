@@ -182,7 +182,7 @@ class SportTracker(FlaskBaseApp):
 
         @app.context_processor
         def utility_processor():
-            def is_track_info_item_activated(name: str) -> bool:
+            def is_workout_info_item_activated(name: str) -> bool:
                 distanceWorkoutInfoItem = (
                     DistanceWorkoutInfoItem.query.filter(
                         DistanceWorkoutInfoItem.user_id == current_user.id
@@ -192,7 +192,7 @@ class SportTracker(FlaskBaseApp):
                 )
                 return distanceWorkoutInfoItem.is_activated
 
-            return {'is_track_info_item_activated': is_track_info_item_activated}
+            return {'is_workout_info_item_activated': is_workout_info_item_activated}
 
         app.add_template_filter(format_decimal)
         app.add_template_filter(format_date)
@@ -312,7 +312,7 @@ def create_app():
 
 @click.command()
 @click.option('--debug', '-d', is_flag=True, help='Enable debug mode')
-@click.option('--dummy', '-dummy', is_flag=True, help='Generate dummy tracks')
+@click.option('--dummy', '-dummy', is_flag=True, help='Generate dummy workouts')
 def start(debug, dummy):
     sportTracker = SportTracker(
         Constants.APP_NAME, os.path.dirname(__file__), LOGGER, debug, dummy, True

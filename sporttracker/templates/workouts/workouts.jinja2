@@ -7,7 +7,7 @@
         {{ macros.header() }}
     </head>
     <body class="bg-dark text-light">
-        {{ macros.navbar('tracks') }}
+        {{ macros.navbar('workouts') }}
 
         {% import 'monthGoals/monthGoalsMacros.jinja2' as monthGoalsMacros with context %}
         {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
@@ -123,6 +123,6 @@
 
         {{ macros.scripts() }}
         <script defer src="{{ url_for('static', filename='js/monthSelect.js') }}" type="text/javascript"></script>
-        <script defer src="{{ url_for('static', filename='js/tracks.js') }}" type="text/javascript"></script>
+        <script defer src="{{ url_for('static', filename='js/workouts.js') }}" type="text/javascript"></script>
     </body>
 </html>

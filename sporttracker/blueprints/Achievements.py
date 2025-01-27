@@ -142,7 +142,8 @@ def construct_blueprint():
         if longestWorkout is not None:
             longestDuration = longestWorkout.duration
             longestDurationDate = format_datetime(longestWorkout.start_time, format='dd.MM.yyyy')
-            longestDurationDate = f'<a href="{url_for("tracks.edit", workout_id=longestWorkout.id)}">{longestDurationDate}</a>'
+            # TODO: handle distance or fitness workout
+            longestDurationDate = f'<a href="{url_for("workouts.edit", workout_id=longestWorkout.id)}">{longestDurationDate}</a>'
 
         achievementList.append(
             Achievement(

@@ -59,7 +59,7 @@
         <div id="main" class="center-align">
             <section class="py-5 d-flex justify-content-around">
                 <div class="d-flex flex-column justify-content-between">
-                    {% call group('track types') %}
+                    {% call group('workout types') %}
                         {{ materialize_icon('biking', 'directions_bike') }}
                         {{ materialize_icon('running', 'directions_run') }}
                         {{ materialize_icon('hiking', 'hiking') }}
@@ -70,7 +70,7 @@
                         {{ easter_egg_icon('workout easter egg', 'workout_easter_egg') }}
                     {% endcall %}
 
-                    {% call group('track properties') %}
+                    {% call group('workout properties') %}
                         {{ materialize_icon('distance', 'route') }}
                         {{ materialize_icon('duration', 'timer') }}
                         {{ materialize_icon('speed', 'speed') }}
@@ -79,7 +79,7 @@
                         {{ materialize_icon('participants', 'group', true) }}
                     {% endcall %}
 
-                    {% call group('track form') %}
+                    {% call group('workout form') %}
                         {{ materialize_icon('name', 'edit', true) }}
                         {{ materialize_icon('date', 'event', true) }}
                         {{ materialize_icon('start time', 'schedule') }}
@@ -116,7 +116,7 @@
                     {% endcall %}
 
                     {% call group('month goal form') %}
-                        {{ materialize_icon('track type', 'stars', true) }}
+                        {{ materialize_icon('workout type', 'stars', true) }}
                         {{ materialize_icon('year', 'calendar_today', true) }}
                         {{ materialize_icon('minimum distance', 'route') }}
                         {{ materialize_icon('perfect distance', 'route') }}
@@ -149,7 +149,7 @@
                 <div class="d-flex flex-column justify-content-between">
                     {% call group('maintenance form') %}
                         {{ fontawesome_icon('maintenance', 'fa-wrench') }}
-                        {{ materialize_icon('track type', 'stars', true) }}
+                        {{ materialize_icon('workout type', 'stars', true) }}
                         {{ materialize_icon('time', 'schedule') }}
                         {{ materialize_icon('description', 'article', true) }}
                         {{ materialize_icon('reminder', 'notifications', true) }}
@@ -170,7 +170,7 @@
 
                     {% call group('planned tour form') %}
                         {{ fontawesome_icon('planned tours', 'fa-lightbulb') }}
-                        {{ materialize_icon('track type', 'stars', true) }}
+                        {{ materialize_icon('workout type', 'stars', true) }}
                         {{ materialize_icon('name', 'edit', true) }}
                         {{ materialize_icon('gpx track', 'location_on', true) }}
                         {{ materialize_icon('share', 'share', true) }}
@@ -188,7 +188,7 @@
 
                     {% call group('achievements') %}
                         {{ materialize_icon('achievement streak', 'sports_score') }}
-                        {{ materialize_icon('achievement longest track', 'route') }}
+                        {{ materialize_icon('achievement longest workout', 'route') }}
                         {{ materialize_icon('achievement total distance', 'map') }}
                         {{ materialize_icon('achievement best month', 'calendar_month', true) }}
                     {% endcall %}
@@ -233,7 +233,7 @@
                     {% endcall %}
 
                     {% call group('navbar/headlines') %}
-                        {{ fontawesome_icon('tracks', 'fa-route') }}
+                        {{ fontawesome_icon('workouts', 'fa-route') }}
                         {{ materialize_icon('goals', 'flag', true) }}
                         {{ materialize_icon('analytics', 'leaderboard', true) }}
                         {{ materialize_icon('charts', 'leaderboard', true) }}

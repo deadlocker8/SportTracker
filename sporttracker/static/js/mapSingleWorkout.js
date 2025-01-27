@@ -54,8 +54,8 @@ function initMap()
                                                               // END MODIFICATION: extract speed data for hotline
 
                                                               let line = L.hotline(speedData, {
-                                                                  min: isFinite(this.track_info[prop + '_min']) ? this.track_info[prop + '_min'] : 0,
-                                                                  max: isFinite(this.track_info[prop + '_max']) ? this.track_info[prop + '_max'] : 1,
+                                                                  min: isFinite(this.workout_info[prop + '_min']) ? this.workout_info[prop + '_min'] : 0,
+                                                                  max: isFinite(this.workout_info[prop + '_max']) ? this.workout_info[prop + '_max'] : 1,
                                                                   palette: {
                                                                       0.0: '#008800',
                                                                       0.5: '#ffff00',

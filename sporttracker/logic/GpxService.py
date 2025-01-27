@@ -200,7 +200,7 @@ class GpxService:
                 db.session.execute(
                     delete(GpxVisitedTile).where(GpxVisitedTile.workout_id == item.id)
                 )
-                LOGGER.debug(f'Deleted gpx visited tiles for track with id {item.id}')
+                LOGGER.debug(f'Deleted gpx visited tiles for workout with id {item.id}')
                 db.session.commit()
 
                 self._newVisitedTileCache.invalidate_cache_entry_by_user(userId)
@@ -214,13 +214,13 @@ class GpxService:
                 LOGGER.error(e)
 
     def add_visited_tiles_for_workout(
-        self, track: DistanceWorkout, baseZoomLevel: int, userId: int
+        self, workout: DistanceWorkout, baseZoomLevel: int, userId: int
     ):
-        gpxParser = GpxParser(self.get_gpx_content(track.get_gpx_metadata().gpx_file_name))  # type: ignore[union-attr]
+        gpxParser = GpxParser(self.get_gpx_content(workout.get_gpx_metadata().gpx_file_name))  # type: ignore[union-attr]
         visitedTiles = gpxParser.get_visited_tiles(baseZoomLevel)
 
         for tile in visitedTiles:
-            gpxVisitedTile = GpxVisitedTile(workout_id=track.id, x=tile.x, y=tile.y)
+            gpxVisitedTile = GpxVisitedTile(workout_id=workout.id, x=tile.x, y=tile.y)
             db.session.add(gpxVisitedTile)
             db.session.commit()
 

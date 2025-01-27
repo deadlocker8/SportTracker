@@ -40,7 +40,7 @@ class DummyDataGenerator:
     AVERAGE_SPEED_IN_KMH_BIKING = 22
     AVERAGE_SPEED_IN_KMH_RUNNING = 10
     AVERAGE_SPEED_IN_KMH_HIKING = 4
-    TRACK_NAMES = ['Short trip', 'Afterwork I', 'Afterwork II', 'Berlin + Potsdam', 'Megatour']
+    WORKOUT_NAMES = ['Short trip', 'Afterwork I', 'Afterwork II', 'Berlin + Potsdam', 'Megatour']
     FITNESS_NAMES = ['Core Workout', 'HIIT', 'Leg Day', 'Biceps']
     GPX_FILE_NAMES = ['gpxTrack_1.gpx', 'gpxTrack_2.gpx']
     MAINTENANCE_EVENT_NAMES = ['chain oiled', 'new pedals', 'new front tire']
@@ -62,7 +62,7 @@ class DummyDataGenerator:
 
             plannedTour = self.__generate_demo_planned_tours(user, user2)
 
-            self.__generate_demo_tracks(
+            self.__generate_demo_workouts(
                 user=user,
                 workoutType=WorkoutType.BIKING,
                 numberOfWorkoutsPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_BIKING,
@@ -76,7 +76,7 @@ class DummyDataGenerator:
                 distanceMax=50.0,
             )
 
-            self.__generate_demo_tracks(
+            self.__generate_demo_workouts(
                 user=user,
                 workoutType=WorkoutType.RUNNING,
                 numberOfWorkoutsPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_RUNNING,
@@ -90,7 +90,7 @@ class DummyDataGenerator:
                 distanceMax=6.0,
             )
 
-            self.__generate_demo_tracks(
+            self.__generate_demo_workouts(
                 user=user,
                 workoutType=WorkoutType.HIKING,
                 numberOfWorkoutsPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_HIKING,
@@ -104,9 +104,8 @@ class DummyDataGenerator:
                 distanceMax=18.0,
             )
 
-            self.__generate_demo_duration_based_tracks(
+            self.__generate_demo_fitness_workouts(
                 user=user,
-                workoutType=WorkoutType.FITNESS,
                 numberOfWorkoutsPerMonth=self.NUMBER_OF_TRACKS_PER_MONTH_FITNESS,
                 numberOfWorkoutsWithParticipants=1,
                 durationMin=20 * 60,
@@ -187,7 +186,7 @@ class DummyDataGenerator:
 
         db.session.commit()
 
-    def __generate_demo_tracks(
+    def __generate_demo_workouts(
         self,
         user: User,
         workoutType: WorkoutType,
@@ -201,7 +200,7 @@ class DummyDataGenerator:
         distanceMin: float,
         distanceMax: float,
     ) -> None:
-        LOGGER.debug(f'Generate dummy tracks {workoutType.name}...')
+        LOGGER.debug(f'Generate dummy workouts {workoutType.name}...')
 
         fake = Faker()
 
@@ -232,7 +231,7 @@ class DummyDataGenerator:
 
                 workout = DistanceWorkout(
                     type=workoutType,
-                    name=random.choice(self.TRACK_NAMES),
+                    name=random.choice(self.WORKOUT_NAMES),
                     start_time=fakeTime,
                     duration=duration,
                     distance=distance * 1000,
@@ -286,16 +285,15 @@ class DummyDataGenerator:
 
         item.gpx_metadata_id = gpxMetadata.id
 
-    def __generate_demo_duration_based_tracks(
+    def __generate_demo_fitness_workouts(
         self,
         user: User,
-        workoutType: WorkoutType,
         numberOfWorkoutsPerMonth: int,
         numberOfWorkoutsWithParticipants: int,
         durationMin: int,
         durationMax: int,
     ) -> None:
-        LOGGER.debug(f'Generate dummy duration-based tracks {workoutType.name}...')
+        LOGGER.debug('Generate dummy fitness workouts...')
 
         fake = Faker()
 
@@ -412,7 +410,7 @@ class DummyDataGenerator:
                 creation_date=fakeTime,
                 last_edit_date=fakeTime,
                 last_edit_user_id=user.id,
-                name=random.choice(self.TRACK_NAMES),
+                name=random.choice(self.WORKOUT_NAMES),
                 user_id=user.id,
                 shared_users=shared_users,
                 arrival_method=TravelType.TRAIN,

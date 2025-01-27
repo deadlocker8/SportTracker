@@ -219,7 +219,7 @@ def construct_blueprint():
 
         db.session.commit()
 
-        LOGGER.debug(f'Updated track info items for user: {user.username}')
+        LOGGER.debug(f'Updated workout info items for user: {user.username}')
 
         return redirect(url_for('settings.settingsShow'))
 

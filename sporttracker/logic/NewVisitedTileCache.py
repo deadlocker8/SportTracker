@@ -32,14 +32,14 @@ class NewVisitedTileCache:
         activeYears = '_'.join(sorted([str(y) for y in years]))
         return f'{userId}_{activeTypes}_{activeYears}'
 
-    def get_new_visited_tiles_per_track_by_user(
+    def get_new_visited_tiles_per_workout_by_user(
         self, userId: int, workoutTypes: list[WorkoutType], years: list[int]
     ) -> list[NewTilesPerDistanceWorkout]:
         cacheKey = self.__calculate_cache_key(userId, workoutTypes, years)
 
         if cacheKey not in self._newVisitedTilesPerUser:
             LOGGER.debug(f'Creating entry in NewVisitedTileCache with key {cacheKey}')
-            self._newVisitedTilesPerUser[cacheKey] = self.__determine_new_tiles_per_track(
+            self._newVisitedTilesPerUser[cacheKey] = self.__determine_new_tiles_per_workout(
                 userId, workoutTypes, years
             )
 
@@ -52,7 +52,7 @@ class NewVisitedTileCache:
                 del self._newVisitedTilesPerUser[key]
 
     @staticmethod
-    def __determine_new_tiles_per_track(
+    def __determine_new_tiles_per_workout(
         userId: int, workoutTypes: list[WorkoutType], years: list[int]
     ) -> list[NewTilesPerDistanceWorkout]:
         workoutTypeOperator = ''

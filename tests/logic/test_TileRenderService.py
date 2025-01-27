@@ -85,7 +85,7 @@ class TestTileRenderService:
             ]
 
         visitedTileService = Mock()
-        visitedTileService.determine_tile_colors_of_tracks_that_visit_tiles.side_effect = (
+        visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles.side_effect = (
             mocked_color_method
         )
 
@@ -123,7 +123,7 @@ class TestTileRenderService:
             ]
 
         visitedTileService = Mock()
-        visitedTileService.determine_tile_colors_of_tracks_that_visit_tiles.side_effect = (
+        visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles.side_effect = (
             mocked_color_method
         )
 
@@ -160,7 +160,7 @@ class TestTileRenderService:
             ]
 
         visitedTileService = Mock()
-        visitedTileService.determine_tile_colors_of_tracks_that_visit_tiles.side_effect = (
+        visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles.side_effect = (
             mocked_color_method
         )
         service = TileRenderService(15, 4, visitedTileService)

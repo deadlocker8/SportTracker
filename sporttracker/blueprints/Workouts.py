@@ -204,7 +204,7 @@ def construct_blueprint():
             f'workouts/workout{workout_type.capitalize()}Form.jinja2',
             customFields=customFields,
             participants=get_participants(),
-            trackNames=get_workout_names_by_type(workoutType),
+            workoutNames=get_workout_names_by_type(workoutType),
             plannedTours=get_planned_tours([workoutType]),
         )
 

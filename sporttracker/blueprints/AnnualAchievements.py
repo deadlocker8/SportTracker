@@ -60,7 +60,7 @@ def construct_blueprint():
             )
 
             achievementList.append(
-                __create_achievement_track_count(
+                __create_achievement_workout_count(
                     availableYears,
                     workoutType,
                     year,
@@ -72,7 +72,7 @@ def construct_blueprint():
             )
 
             achievementList.append(
-                __create_achievement_longest_track(availableYears, workoutType, year, yearNames)
+                __create_achievement_longest_workout(availableYears, workoutType, year, yearNames)
             )
 
             achievementList.append(
@@ -89,7 +89,7 @@ def construct_blueprint():
             )
 
             achievementList.append(
-                __create_achievement_track_count(
+                __create_achievement_workout_count(
                     availableYears,
                     workoutType,
                     year,
@@ -194,7 +194,7 @@ def construct_blueprint():
             unit=gettext('Hours'),
         )
 
-    def __create_achievement_track_count(
+    def __create_achievement_workout_count(
         availableYears: list[int],
         workoutType: WorkoutType,
         year: int,
@@ -242,7 +242,7 @@ def construct_blueprint():
             unit='',
         )
 
-    def __create_achievement_longest_track(
+    def __create_achievement_longest_workout(
         availableYears: list[int], workoutType: WorkoutType, year: int, yearNames: list[str]
     ) -> AnnualAchievement:
         values = []

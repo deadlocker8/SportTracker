@@ -148,7 +148,7 @@ class TileRenderService:
         max_x, max_y, min_x, min_y = self.__calculate_min_and_max(positions)
 
         tileColorPositions = (
-            self._visitedTileService.determine_tile_colors_of_tracks_that_visit_tiles(
+            self._visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles(
                 min_x,  # type: ignore[arg-type]
                 max_x,  # type: ignore[arg-type]
                 min_y,  # type: ignore[arg-type]

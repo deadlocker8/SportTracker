@@ -33,29 +33,32 @@ from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def createGpxInfo(workoutId: int, trackName: str, trackStartTime: datetime) -> dict[str, str | int]:
+def createGpxInfo(
+    workoutId: int, workoutName: str, workoutStartTime: datetime
+) -> dict[str, str | int]:
     return {
-        'trackId': workoutId,
+        'workoutId': workoutId,
         'gpxUrl': url_for(
             'gpxTracks.downloadGpxTrackByWorkoutId',
             workout_id=workoutId,
             file_format=GpxService.GPX_FILE_EXTENSION,
         ),
-        'trackUrl': url_for('tracks.edit', workout_id=workoutId),
-        'trackName': f'{trackStartTime.strftime("%Y-%m-%d")} - {trackName}',
+        # TODO handle distance and fitness workouts
+        'workoutUrl': url_for('workouts.edit', workout_id=workoutId),
+        'workoutName': f'{workoutStartTime.strftime("%Y-%m-%d")} - {workoutName}',
     }
 
 
 def createGpxInfoPlannedTour(tourId: int, tourName: str) -> dict[str, str | int]:
     return {
-        'trackId': tourId,
+        'workoutId': tourId,
         'gpxUrl': url_for(
             'gpxTracks.downloadGpxTrackByPlannedTourId',
             tour_id=tourId,
             file_format=GpxService.GPX_FILE_EXTENSION,
         ),
-        'trackUrl': url_for('plannedTours.edit', tour_id=tourId),
-        'trackName': tourName,
+        'workoutUrl': url_for('plannedTours.edit', tour_id=tourId),
+        'workoutName': tourName,
     }
 
 
@@ -97,7 +100,7 @@ def construct_blueprint(
             quickFilterState=quickFilterState,
             yearFilterState=yearFilterState,
             availableYears=availableYears,
-            mapMode='tracks',
+            mapMode='workouts',
             redirectUrl='maps.showAllWorkoutsOnMap',
         )
 
@@ -342,7 +345,7 @@ def construct_blueprint(
         values = []
         colors = []
         names = []
-        for entry in visitedTileService.get_new_tiles_per_track():
+        for entry in visitedTileService.get_new_tiles_per_workout():
             dates.append(flask_babel.format_date(entry.startTime, 'short'))
             values.append(entry.numberOfNewTiles)
             colors.append(entry.type.background_color_hex)

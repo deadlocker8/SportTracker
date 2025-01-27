@@ -5,7 +5,7 @@
         <a href="{{ url_for('maps.showAllWorkoutsOnMap') }}" class="btn btn-sm btn-primary d-flex flex-row align-items-center justify-content-center {% if mapMode == 'plannedTours' %}btn-available-year{% endif %}">
             <i class="fa-solid fa-route fa-fw fs-6"></i>&nbsp;{{ gettext('Workouts') }}
         </a>
-        <a href="{{ url_for('maps.showAllPlannedToursOnMap') }}" class="btn btn-sm btn-primary d-flex flex-row align-items-center justify-content-center {% if mapMode == 'tracks' %}btn-available-year{% endif %}">
+        <a href="{{ url_for('maps.showAllPlannedToursOnMap') }}" class="btn btn-sm btn-primary d-flex flex-row align-items-center justify-content-center {% if mapMode == 'workouts' %}btn-available-year{% endif %}">
             <i class="fa-solid fa-lightbulb fa-fw fs-6"></i>&nbsp;{{ gettext('Planned Tours') }}
         </a>
     </div>

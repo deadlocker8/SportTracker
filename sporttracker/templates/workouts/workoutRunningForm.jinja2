@@ -8,7 +8,7 @@
         {{ macros.header() }}
     </head>
     <body class="bg-dark text-light">
-        {{ macros.navbar('tracks') }}
+        {{ macros.navbar('workouts') }}
 
         {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
 
@@ -24,7 +24,7 @@
                                 <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                             </button>
 
-                            {% call macros.deleteModal(gettext('Delete Workout?'), gettext('Do you really want to delete the track "%(name)s" (ID: %(id)d)?', name=workout.name, id=workout_id)) %}
+                            {% call macros.deleteModal(gettext('Delete Workout?'), gettext('Do you really want to delete the workout "%(name)s" (ID: %(id)d)?', name=workout.name, id=workout_id)) %}
                                 <a href="{{ url_for('distanceWorkouts.delete', workout_id=workout_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
                             {% endcall %}
                         {% else %}
@@ -41,27 +41,27 @@
                               method="post"
                               enctype=multipart/form-data>
 
-                            <input type="hidden" class="form-control" id="track-type" name="type" value="RUNNING">
+                            <input type="hidden" class="form-control" id="workout-type" name="type" value="RUNNING">
 
-                            {{ workoutMacros.track_form_name(workout, trackNames) }}
+                            {{ workoutMacros.workout_form_name(workout, workoutNames) }}
 
-                            {{ workoutMacros.track_form_start_time(workout) }}
+                            {{ workoutMacros.workout_form_start_time(workout) }}
 
-                            {{ workoutMacros.track_form_distance(workout) }}
+                            {{ workoutMacros.workout_form_distance(workout) }}
 
-                            {{ workoutMacros.track_form_duration(workout) }}
+                            {{ workoutMacros.workout_form_duration(workout) }}
 
-                            {{ workoutMacros.track_form_average_heart_rate(workout) }}
+                            {{ workoutMacros.workout_form_average_heart_rate(workout) }}
 
-                            {{ workoutMacros.track_form_elevation_sum(workout) }}
+                            {{ workoutMacros.workout_form_elevation_sum(workout) }}
 
                             {% for field in customFields %}
-                                {{ workoutMacros.track_form_custom_field_input(field) }}
+                                {{ workoutMacros.workout_form_custom_field_input(field) }}
                             {% endfor %}
 
-                            {{ workoutMacros.track_form_participants(workout, participants) }}
+                            {{ workoutMacros.workout_form_participants(workout, participants) }}
 
-                            {{ workoutMacros.track_form_gpx(workout, workout_id) }}
+                            {{ workoutMacros.workout_form_gpx(workout, workout_id) }}
 
                             {{ workoutMacros.form_linked_planned_tour(workout, plannedTours) }}
 
@@ -78,7 +78,7 @@
         <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}" type="text/javascript"></script>
         <script src="{{ url_for('static', filename='js/libs/bootstrap-autocomplete.min.js') }}" type="text/javascript"></script>
         <script>
-             $('#track-name').autocomplete()
+             $('#workout-name').autocomplete()
         </script>
     </body>
 </html>

@@ -46,7 +46,7 @@
                                 {% if field %}{{ url_for('settings.customFieldsEditPost', field_id=field_id) }}{% else %}{{ url_for('settings.customFieldsAddPost') }}{% endif %}"
                               method="post">
 
-                            <input type="hidden" class="form-control" id="field-track-type" name="workout_type" value="{% if field %}{{ field.workout_type }}{% else %}{{ workoutType.name }}{% endif %}">
+                            <input type="hidden" class="form-control" id="field-workout-type" name="workout_type" value="{% if field %}{{ field.workout_type }}{% else %}{{ workoutType.name }}{% endif %}">
 
                             <div class="mb-3">
                                 <label for="field-name" class="form-label input-field-margin">{{ gettext('Name') }}</label>
