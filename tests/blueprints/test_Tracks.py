@@ -101,7 +101,7 @@ class TestWorkouts(SeleniumTestBaseClass):
         select.select_by_visible_text(plannedTourName)
 
     @staticmethod
-    def __fill_duration_based_form(
+    def __fill_fitness_form(
         selenium,
         name,
         date,
@@ -463,10 +463,10 @@ class TestWorkouts(SeleniumTestBaseClass):
         assert len(pills) == 1
         assert pills[0].text == '1 Workouts'
 
-    def test_add_duration_based_workout_valid(self, server, selenium: WebDriver):
+    def test_add_fitness_workout_valid(self, server, selenium: WebDriver):
         self.login(selenium)
-        self.__open_form(selenium, buttonIndex=3, expectedHeadline='New Workout')
-        self.__fill_duration_based_form(
+        self.__open_form(selenium, buttonIndex=3, expectedHeadline='New Fitness Workout')
+        self.__fill_fitness_form(
             selenium,
             'My Workout',
             '2023-02-01',
@@ -488,10 +488,10 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
 
-    def test_add_duration_based_workout_all_empty(self, server, selenium: WebDriver):
+    def test_add_fitness_workout_all_empty(self, server, selenium: WebDriver):
         self.login(selenium)
-        self.__open_form(selenium, buttonIndex=3, expectedHeadline='New Workout')
-        self.__fill_duration_based_form(selenium, '', '', '', '', '', '', '', 'workout-type-1', [])
+        self.__open_form(selenium, buttonIndex=3, expectedHeadline='New Fitness Workout')
+        self.__fill_fitness_form(selenium, '', '', '', '', '', '', '', 'workout-type-1', [])
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         assert selenium.current_url.endswith('/workouts/add/FITNESS')

@@ -24,8 +24,8 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 class FitnessWorkoutFormModel(BaseWorkoutFormModel):
-    workoutType: str
-    workoutCategories: list[str] | None = None
+    fitnessWorkoutType: str
+    fitnessWorkoutCategories: list[str] | None = None
 
     model_config = ConfigDict(
         extra='allow',
@@ -53,7 +53,7 @@ def construct_blueprint():
             custom_fields=form.model_extra,
             user_id=current_user.id,
             participants=participants,
-            workout_type=FitnessWorkoutType(form.workoutType),  # type: ignore[call-arg]
+            workout_type=FitnessWorkoutType(form.fitnessWorkoutType),  # type: ignore[call-arg]
         )
 
         workoutCategories = [
@@ -93,8 +93,8 @@ def construct_blueprint():
             durationSeconds=workout.duration % 3600 % 60,
             averageHeartRate=workout.average_heart_rate,
             participants=[str(item.id) for item in workout.participants],
-            workoutCategories=workout.get_workout_categories(),
-            workoutType=workout.workout_type,
+            fitnessWorkoutCategories=workout.get_workout_categories(),
+            fitnessWorkoutType=workout.workout_type,
             **workout.custom_fields,
         )
 
@@ -130,7 +130,7 @@ def construct_blueprint():
         participantIds = [int(item) for item in request.form.getlist('participants')]
         workout.participants = get_participants_by_ids(participantIds)
         workout.workout_type = (
-            None if form.workoutType is None else FitnessWorkoutType(form.workoutType)  # type: ignore[call-arg]
+            None if form.fitnessWorkoutType is None else FitnessWorkoutType(form.fitnessWorkoutType)  # type: ignore[call-arg]
         )
 
         workout.custom_fields = form.model_extra
