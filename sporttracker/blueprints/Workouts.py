@@ -8,7 +8,7 @@ from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template, redirect, url_for
 from flask_babel import format_datetime
 from flask_login import login_required, current_user
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from sporttracker.logic import Constants
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
@@ -21,6 +21,7 @@ from sporttracker.logic.model.DistanceWorkout import (
     DistanceWorkout,
     get_available_years,
 )
+from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.MaintenanceEventInstance import (
     MaintenanceEvent,
@@ -32,13 +33,12 @@ from sporttracker.logic.model.MonthGoal import (
 )
 from sporttracker.logic.model.Participant import get_participants
 from sporttracker.logic.model.PlannedTour import get_planned_tours
+from sporttracker.logic.model.User import get_user_by_id
 from sporttracker.logic.model.Workout import (
     get_workout_names_by_type,
     get_workouts_by_year_and_month_by_type,
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
-from sporttracker.logic.model.User import get_user_by_id
-from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -52,6 +52,7 @@ class BaseWorkoutModel(DateTimeAccess):
     duration: int
     participants: list[str]
     ownerName: str
+    averageHeartRate: int | None
 
     def get_date_time(self) -> datetime:
         return self.startTime
@@ -60,7 +61,6 @@ class BaseWorkoutModel(DateTimeAccess):
 @dataclass
 class DistanceWorkoutModel(BaseWorkoutModel):
     distance: int
-    averageHeartRate: int | None
     elevationSum: int | None
     gpxMetadata: GpxMetadata | None
     shareCode: str | None
@@ -100,6 +100,7 @@ class FitnessWorkoutModel(BaseWorkoutModel):
             type=workout.type,
             startTime=workout.start_time,  # type: ignore[arg-type]
             duration=workout.duration,
+            averageHeartRate=workout.average_heart_rate,
             participants=[str(item.id) for item in workout.participants],
             ownerName=get_user_by_id(workout.user_id).username,
             workoutCategories=workout.get_workout_categories(),
@@ -123,12 +124,21 @@ class BaseWorkoutFormModel(BaseModel):
     durationMinutes: int
     durationSeconds: int
     participants: list[str] | str | None = None
+    averageHeartRate: int | None = None
 
     def calculate_start_time(self) -> datetime:
         return datetime.strptime(f'{self.date} {self.time}', '%Y-%m-%d %H:%M')
 
     def calculate_duration(self) -> int:
         return 3600 * self.durationHours + 60 * self.durationMinutes + self.durationSeconds
+
+    @field_validator(*['averageHeartRate'], mode='before')
+    def averageHeartRateCheck(cls, value: str, info) -> str | None:
+        if isinstance(value, str):
+            value = value.strip()
+        if value == '':
+            return None
+        return value
 
 
 def construct_blueprint():

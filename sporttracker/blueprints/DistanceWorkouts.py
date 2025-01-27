@@ -27,7 +27,6 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 class DistanceWorkoutFormModel(BaseWorkoutFormModel):
     distance: float
     plannedTourId: str = '-1'
-    averageHeartRate: int | None = None
     elevationSum: int | None = None
     gpxFileName: str | None = None
     hasFitFile: bool = False
@@ -37,8 +36,8 @@ class DistanceWorkoutFormModel(BaseWorkoutFormModel):
         extra='allow',
     )
 
-    @field_validator(*['averageHeartRate', 'elevationSum'], mode='before')
-    def averageHeartRateCheck(cls, value: str, info) -> str | None:
+    @field_validator(*['elevationSum'], mode='before')
+    def elevationSumCheck(cls, value: str, info) -> str | None:
         if isinstance(value, str):
             value = value.strip()
         if value == '':

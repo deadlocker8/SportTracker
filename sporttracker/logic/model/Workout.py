@@ -18,8 +18,9 @@ class Workout(db.Model):  # type: ignore[name-defined]
     class_type = db.Column(db.String)
     name: Mapped[String] = mapped_column(String, nullable=False)
     start_time: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
-    duration: Mapped[int] = mapped_column(Integer, nullable=True)
+    duration: Mapped[int] = mapped_column(Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    average_heart_rate: Mapped[int] = mapped_column(Integer, nullable=True)
     participants: Mapped[list[Participant]] = relationship(
         secondary=workout_participant_association
     )
@@ -40,7 +41,8 @@ class Workout(db.Model):  # type: ignore[name-defined]
             f'duration: {self.duration}, '
             f'custom_fields: {self.custom_fields}, '
             f'participants: {self.participants}, '
-            f'user_id: {self.user_id})'
+            f'user_id: {self.user_id}, '
+            f'average_heart_rate: {self.average_heart_rate})'
         )
 
 

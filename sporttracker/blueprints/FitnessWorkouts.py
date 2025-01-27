@@ -49,6 +49,7 @@ def construct_blueprint():
             type=WorkoutType(form.type),  # type: ignore[call-arg]
             start_time=form.calculate_start_time(),
             duration=form.calculate_duration(),
+            average_heart_rate=form.averageHeartRate,
             custom_fields=form.model_extra,
             user_id=current_user.id,
             participants=participants,
@@ -90,6 +91,7 @@ def construct_blueprint():
             durationHours=workout.duration // 3600,
             durationMinutes=workout.duration % 3600 // 60,
             durationSeconds=workout.duration % 3600 % 60,
+            averageHeartRate=workout.average_heart_rate,
             participants=[str(item.id) for item in workout.participants],
             workoutCategories=workout.get_workout_categories(),
             workoutType=workout.workout_type,
@@ -124,6 +126,7 @@ def construct_blueprint():
         workout.name = form.name  # type: ignore[assignment]
         workout.start_time = form.calculate_start_time()  # type: ignore[assignment]
         workout.duration = form.calculate_duration()  # type: ignore[assignment]
+        workout.average_heart_rate = form.averageHeartRate  # type: ignore[assignment]
         participantIds = [int(item) for item in request.form.getlist('participants')]
         workout.participants = get_participants_by_ids(participantIds)
         workout.workout_type = (

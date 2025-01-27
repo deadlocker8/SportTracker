@@ -19,7 +19,6 @@ class DistanceWorkout(Workout):  # type: ignore[name-defined]
     __tablename__ = 'distance_workout'
     id: Mapped[int] = mapped_column(ForeignKey('workout.id'), primary_key=True)
     distance: Mapped[int] = mapped_column(Integer, nullable=False)
-    average_heart_rate: Mapped[int] = mapped_column(Integer, nullable=True)
     elevation_sum: Mapped[int] = mapped_column(Integer, nullable=True)
     share_code: Mapped[str] = mapped_column(String, nullable=True)
     gpx_metadata_id = db.Column(db.Integer, db.ForeignKey('gpx_metadata.id'), nullable=True)
@@ -41,7 +40,6 @@ class DistanceWorkout(Workout):  # type: ignore[name-defined]
             f'participants: {self.participants}, '
             f'user_id: {self.user_id})'
             f'distance: {self.distance}, '
-            f'average_heart_rate: {self.average_heart_rate}, '
             f'elevation_sum: {self.elevation_sum}, '
             f'custom_fields: {self.custom_fields}, '
             f'participants: {self.participants}, '
