@@ -60,7 +60,7 @@ class CustomWorkoutFieldFormModel(BaseModel):
         ],
         mode='before',
     )
-    def averageHeartRateCheck(cls, value: str, info) -> str | None:
+    def customFieldCheck(cls, value: str, info) -> str | None:
         if isinstance(value, str):
             value = value.strip()
         if value == '':

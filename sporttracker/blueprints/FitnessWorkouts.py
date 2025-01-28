@@ -56,12 +56,12 @@ def construct_blueprint():
             fitness_workout_type=FitnessWorkoutType(form.fitnessWorkoutType),  # type: ignore[call-arg]
         )
 
-        workoutCategories = [
+        fitnessWorkoutCategories = [
             FitnessWorkoutCategoryType(value)  # type: ignore[call-arg]
             for key, value in request.form.items()
-            if key.startswith('workoutCategories')
+            if key.startswith('fitnessWorkoutCategories')
         ]
-        update_workout_categories_by_workout_id(workout.id, workoutCategories)
+        update_workout_categories_by_workout_id(workout.id, fitnessWorkoutCategories)
 
         LOGGER.debug(f'Saved new workout workout: {workout}')
         db.session.add(workout)
@@ -135,12 +135,12 @@ def construct_blueprint():
 
         workout.custom_fields = form.model_extra
 
-        workoutCategories = [
+        fitnessWorkoutCategories = [
             FitnessWorkoutCategoryType(value)  # type: ignore[call-arg]
             for key, value in request.form.items()
-            if key.startswith('workoutCategories')
+            if key.startswith('fitnessWorkoutCategories')
         ]
-        update_workout_categories_by_workout_id(workout.id, workoutCategories)
+        update_workout_categories_by_workout_id(workout.id, fitnessWorkoutCategories)
 
         db.session.commit()
 

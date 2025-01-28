@@ -81,7 +81,7 @@ def construct_blueprint():
 
             result[workoutType] = achievementList
 
-        for workoutType in WorkoutType.get_workout_workout_types():
+        for workoutType in WorkoutType.get_fitness_workout_types():
             achievementList = []
 
             achievementList.append(

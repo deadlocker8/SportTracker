@@ -61,7 +61,7 @@ function initMap(itemSortFunction)
                 }
 
                 var line_style = {
-                    color: this._uniqueColors(this._workouts.length)[this._workouts.indexOf(gpxUrl)],  // access color by real index in workouts array instead of count of loaded elements
+                    color: this._uniqueColors(this._tracks.length)[this._tracks.indexOf(gpxUrl)],  // access color by real index in workouts array instead of count of loaded elements
                     opacity: 0.75,
                     weight: 5,
                     distanceMarkers: this.options.distanceMarkers_options,

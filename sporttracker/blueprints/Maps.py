@@ -29,13 +29,19 @@ from sporttracker.logic.model.PlannedTour import (
     get_planned_tour_by_share_code,
 )
 from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
+from sporttracker.logic.model.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 def createGpxInfo(
-    workoutId: int, workoutName: str, workoutStartTime: datetime
+    workoutId: int, workoutName: str, workoutStartTime: datetime, workoutType: WorkoutType
 ) -> dict[str, str | int]:
+    if workoutType == WorkoutType.FITNESS:
+        workoutUrl = url_for('fitnessWorkouts.edit', workout_id=workoutId)
+    else:
+        workoutUrl = url_for('distanceWorkouts.edit', workout_id=workoutId)
+
     return {
         'workoutId': workoutId,
         'gpxUrl': url_for(
@@ -43,8 +49,7 @@ def createGpxInfo(
             workout_id=workoutId,
             file_format=GpxService.GPX_FILE_EXTENSION,
         ),
-        # TODO handle distance and fitness workouts
-        'workoutUrl': url_for('workouts.edit', workout_id=workoutId),
+        'workoutUrl': workoutUrl,
         'workoutName': f'{workoutStartTime.strftime("%Y-%m-%d")} - {workoutName}',
     }
 
@@ -79,7 +84,10 @@ def construct_blueprint(
         funcStartTime = func.max(DistanceWorkout.start_time)
         workouts = (
             DistanceWorkout.query.with_entities(
-                func.max(DistanceWorkout.id), DistanceWorkout.name, funcStartTime
+                func.max(DistanceWorkout.id),
+                DistanceWorkout.name,
+                funcStartTime,
+                func.max(DistanceWorkout.type),
             )
             .filter(DistanceWorkout.user_id == current_user.id)
             .filter(DistanceWorkout.gpx_metadata_id.isnot(None))
@@ -91,8 +99,8 @@ def construct_blueprint(
         )
 
         for workout in workouts:
-            workoutId, workoutName, workoutStartTime = workout
-            gpxInfo.append(createGpxInfo(workoutId, workoutName, workoutStartTime))
+            workoutId, workoutName, workoutStartTime, workoutType = workout
+            gpxInfo.append(createGpxInfo(workoutId, workoutName, workoutStartTime, workoutType))
 
         return render_template(
             'maps/mapMultipleWorkouts.jinja2',

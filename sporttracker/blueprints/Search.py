@@ -69,7 +69,7 @@ def construct_blueprint():
             for workout in workouts:
                 if workout.type in WorkoutType.get_distance_workout_types():
                     itemsPerMonth.append(DistanceWorkoutModel.create_from_workout(workout))
-                elif workout.type in WorkoutType.get_workout_workout_types():
+                elif workout.type in WorkoutType.get_fitness_workout_types():
                     itemsPerMonth.append(FitnessWorkoutModel.create_from_workout(workout))
 
             resultModelItems[month] = itemsPerMonth

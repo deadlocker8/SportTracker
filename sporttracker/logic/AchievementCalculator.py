@@ -225,6 +225,6 @@ class AchievementCalculator:
         speedData = [
             workout.distance / workout.duration * 3.6
             for workout in workouts
-            if workout.duration is not None
+            if workout.duration is not None and workout.duration > 0
         ]
         return round(mean(speedData), 2) if speedData else 0.0

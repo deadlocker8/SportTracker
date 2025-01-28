@@ -48,21 +48,21 @@ class BaseWorkoutModel(DateTimeAccess):
     id: int
     name: str
     type: str
-    startTime: datetime
+    start_time: datetime
     duration: int
     participants: list[str]
     ownerName: str
-    averageHeartRate: int | None
+    average_heart_rate: int | None
 
     def get_date_time(self) -> datetime:
-        return self.startTime
+        return self.start_time
 
 
 @dataclass
 class DistanceWorkoutModel(BaseWorkoutModel):
     distance: int
-    elevationSum: int | None
-    gpxMetadata: GpxMetadata | None
+    elevation_sum: int | None
+    gpx_metadata: GpxMetadata | None
     shareCode: str | None
 
     @staticmethod
@@ -73,12 +73,12 @@ class DistanceWorkoutModel(BaseWorkoutModel):
             id=workout.id,
             name=workout.name,  # type: ignore[arg-type]
             type=workout.type,
-            startTime=workout.start_time,  # type: ignore[arg-type]
+            start_time=workout.start_time,  # type: ignore[arg-type]
             distance=workout.distance,
             duration=workout.duration,
-            averageHeartRate=workout.average_heart_rate,
-            elevationSum=workout.elevation_sum,
-            gpxMetadata=workout.get_gpx_metadata(),
+            average_heart_rate=workout.average_heart_rate,
+            elevation_sum=workout.elevation_sum,
+            gpx_metadata=workout.get_gpx_metadata(),
             participants=[str(item.id) for item in workout.participants],
             shareCode=workout.share_code,
             ownerName=get_user_by_id(workout.user_id).username,
@@ -87,8 +87,8 @@ class DistanceWorkoutModel(BaseWorkoutModel):
 
 @dataclass
 class FitnessWorkoutModel(BaseWorkoutModel):
-    workoutCategories: list[str]
-    workoutType: str | None = None
+    fitnessWorkoutCategories: list[str]
+    fitnessWorkoutType: str | None = None
 
     @staticmethod
     def create_from_workout(
@@ -98,13 +98,13 @@ class FitnessWorkoutModel(BaseWorkoutModel):
             id=workout.id,
             name=workout.name,  # type: ignore[arg-type]
             type=workout.type,
-            startTime=workout.start_time,  # type: ignore[arg-type]
+            start_time=workout.start_time,  # type: ignore[arg-type]
             duration=workout.duration,
-            averageHeartRate=workout.average_heart_rate,
+            average_heart_rate=workout.average_heart_rate,
             participants=[str(item.id) for item in workout.participants],
             ownerName=get_user_by_id(workout.user_id).username,
-            workoutCategories=workout.get_workout_categories(),
-            workoutType=workout.fitness_workout_type,
+            fitnessWorkoutCategories=workout.get_workout_categories(),
+            fitnessWorkoutType=workout.fitness_workout_type,
         )
 
 
@@ -225,7 +225,7 @@ def __get_month_model(
     for workout in workouts:
         if workout.type in WorkoutType.get_distance_workout_types():
             workoutModels.append(DistanceWorkoutModel.create_from_workout(workout))
-        elif workout.type in WorkoutType.get_workout_workout_types():
+        elif workout.type in WorkoutType.get_fitness_workout_types():
             workoutModels.append(FitnessWorkoutModel.create_from_workout(workout))
 
     maintenanceEvents = get_maintenance_events_by_year_and_month_by_type(

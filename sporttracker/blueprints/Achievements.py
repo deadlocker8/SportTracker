@@ -31,7 +31,7 @@ def construct_blueprint():
             achievementList = __create_distance_based_achievements(workoutType)
             result[workoutType] = achievementList
 
-        for workoutType in WorkoutType.get_workout_workout_types():
+        for workoutType in WorkoutType.get_fitness_workout_types():
             achievementList = __create_duration_based_achievements(workoutType)
             result[workoutType] = achievementList
 
@@ -142,8 +142,11 @@ def construct_blueprint():
         if longestWorkout is not None:
             longestDuration = longestWorkout.duration
             longestDurationDate = format_datetime(longestWorkout.start_time, format='dd.MM.yyyy')
-            # TODO: handle distance or fitness workout
-            longestDurationDate = f'<a href="{url_for("workouts.edit", workout_id=longestWorkout.id)}">{longestDurationDate}</a>'
+
+            if longestWorkout.type == WorkoutType.FITNESS:
+                longestDurationDate = f'<a href="{url_for("fitnessWorkouts.edit", workout_id=longestWorkout.id)}">{longestDurationDate}</a>'
+            else:
+                longestDurationDate = f'<a href="{url_for("distanceWorkouts.edit", workout_id=longestWorkout.id)}">{longestDurationDate}</a>'
 
         achievementList.append(
             Achievement(

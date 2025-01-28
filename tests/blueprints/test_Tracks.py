@@ -111,7 +111,7 @@ class TestWorkouts(SeleniumTestBaseClass):
         seconds,
         averageHeartRate,
         workoutType,
-        workoutCategories,
+        fitnessWorkoutCategories,
     ):
         selenium.find_element(By.ID, 'workout-name').send_keys(name)
         selenium.find_element(By.ID, 'workout-date').send_keys(date)
@@ -123,7 +123,7 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         selenium.find_element(By.XPATH, f'//label[@for="{workoutType}"]').click()
 
-        for category in workoutCategories:
+        for category in fitnessWorkoutCategories:
             selenium.find_element(By.XPATH, f'//label[@for="{category}"]').click()
 
     def test_add_workout_valid(self, server, selenium: WebDriver):

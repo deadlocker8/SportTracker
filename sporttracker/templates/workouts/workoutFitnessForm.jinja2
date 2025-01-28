@@ -52,13 +52,13 @@
 
                             {% set selectedWorkoutType=None %}
                             {% if workout %}
-                                {% set selectedWorkoutType=workout.workoutType %}
+                                {% set selectedWorkoutType=workout.fitnessWorkoutType %}
                             {% endif %}
                             {{ plannedToursMacros.radio_button_select(gettext('Workout Type'), 'fitness_center', 'workout-type', 'fitnessWorkoutType', fitnessWorkoutTypes, selectedWorkoutType, 'workout') }}
 
                             {% set selectedWorkoutCategories=[] %}
                             {% if workout %}
-                                {% set selectedWorkoutCategories=workout.workoutCategories %}
+                                {% set selectedWorkoutCategories=workout.fitnessWorkoutCategories %}
                             {% endif %}
                             {{ workoutMacros.check_button_select(gettext('Workout Categories'), 'label', 'workout-category', 'fitnessWorkoutCategories', fitnessWorkoutCategoryTypes, selectedWorkoutCategories, 'workout') }}
 

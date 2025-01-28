@@ -197,7 +197,7 @@ def construct_blueprint():
                 dates = []
                 speedData = []
                 for workout in workouts:
-                    if workout.duration is None:
+                    if workout.duration is None or workout.duration == 0:
                         continue
 
                     dates.append(workout.start_time.isoformat())
@@ -237,7 +237,7 @@ def construct_blueprint():
         values = []
         texts = []
         for workout in workouts:
-            if workout.duration is None:
+            if workout.duration is None or workout.duration == 0:
                 continue
 
             dates.append(format_datetime(workout.start_time, format='short'))
@@ -308,7 +308,7 @@ def construct_blueprint():
         values = []
         texts = []
         for workout in workouts:
-            if workout.duration is None:
+            if workout.duration is None or workout.duration == 0:
                 continue
 
             dates.append(format_datetime(workout.start_time, format='short'))

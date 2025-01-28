@@ -69,7 +69,7 @@
 {% macro render_fitness_workout_category_type(workout, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
         {% if workout.fitnessWorkoutCategories|length == 1 %}
-            <span class="material-symbols-outlined {% if not workout.fitnessWorkoutCategories[0].is_outlined_icon %}filled{% endif %} fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ workout.workoutCategories[0].icon }}</span>
+            <span class="material-symbols-outlined {% if not workout.fitnessWorkoutCategories[0].is_outlined_icon %}filled{% endif %} fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ workout.fitnessWorkoutCategories[0].icon }}</span>
             <div class="fs-5 text-center">{{ render_workout_unit(workout.fitnessWorkoutCategories[0].get_localized_name()) }}</div>
         {% elif workout.fitnessWorkoutCategories|length > 1 %}
             <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">fitness_center</span>
@@ -130,7 +130,7 @@
         {% if workout.participants %}
             <span class="material-symbols-outlined filled fs-4 text-body">group</span>
         {% endif %}
-        {% if workout.gpxMetadata is not undefined and workout.gpxMetadata is not none %}
+        {% if workout.gpx_metadata is not undefined and workout.gpx_metadata is not none %}
             <a href="{{ url_for('maps.showSingleWorkout', workout_id=workout.id) }}"
                class="text-decoration-none ms-2">
                 <span class="material-symbols-outlined filled fs-4 text-body">map</span>
@@ -150,8 +150,8 @@
                         {% else %}
                             {{ workout_type_icon(workout.type) }}
                         {% endif %}
-                        <div class="fs-6 text-body text-start mt-2 d-lg-none">{{ workout.startTime | format_date }}</div>
-                        <div class="fs-5 text-body text-start mt-2 d-none d-lg-block">{{ workout.startTime | format_date }}</div>
+                        <div class="fs-6 text-body text-start mt-2 d-lg-none">{{ workout.start_time | format_date }}</div>
+                        <div class="fs-5 text-body text-start mt-2 d-none d-lg-block">{{ workout.start_time | format_date }}</div>
                     </div>
 
                     <div class="col col-9 col-md-9">
@@ -197,7 +197,7 @@
     </div>
 {%- endmacro %}
 
-{% macro render_workout_workout_card(workout, renderAsRow=false, useSmallIcon=false) -%}
+{% macro render_fitness_workout_card(workout, renderAsRow=false, useSmallIcon=false) -%}
     <div class="row py-2">
         <div class="col col-12 mx-auto">
             <div class="card">
@@ -208,8 +208,8 @@
                         {% else %}
                             {{ workout_type_icon(workout.type) }}
                         {% endif %}
-                        <div class="fs-6 text-body text-start mt-2 d-lg-none">{{ workout.startTime | format_date }}</div>
-                        <div class="fs-5 text-body text-start mt-2 d-none d-lg-block">{{ workout.startTime | format_date }}</div>
+                        <div class="fs-6 text-body text-start mt-2 d-lg-none">{{ workout.start_time | format_date }}</div>
+                        <div class="fs-5 text-body text-start mt-2 d-none d-lg-block">{{ workout.start_time | format_date }}</div>
                     </div>
 
                     <div class="col col-9 col-md-9">
@@ -269,7 +269,7 @@
             {% if entry.__class__.__name__ == 'DistanceWorkoutModel' %}
                 {{ render_distance_workout_card(entry) }}
             {% elif entry.__class__.__name__ == 'FitnessWorkoutModel' %}
-                {{ render_workout_workout_card(entry) }}
+                {{ render_fitness_workout_card(entry) }}
             {% elif entry.__class__.__name__ == 'MaintenanceEvent' %}
                 {{ render_maintenance_event_card(entry) }}
             {% endif %}

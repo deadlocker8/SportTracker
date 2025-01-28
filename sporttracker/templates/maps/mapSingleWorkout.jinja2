@@ -42,7 +42,7 @@
             <div class="card-body ps-4 pt-4 pb-0">
                 <div class="row row-cols-4 gy-3 pb-3 overflow-x-auto">
                     {% call mapMacros.meta_info_item_small('event', workout.type.text_color, gettext('Date')) %}
-                        {{ workout.startTime | format_date }}
+                        {{ workout.start_time | format_date }}
                     {% endcall %}
                     {% call mapMacros.meta_info_item_small('route', workout.type.text_color, gettext('Distance')) %}
                         {{ (workout.distance / 1000) | format_decimal(2) }} km
@@ -88,7 +88,7 @@
 
                     <div class="card-body ps-4 pt-4">
                         {% call mapMacros.meta_info_item('event', workout.type.text_color, gettext('Date')) %}
-                            {{ workout.startTime | format_date }}
+                            {{ workout.start_time | format_date }}
                         {% endcall %}
 
                         {% call mapMacros.meta_info_item('route', workout.type.text_color, gettext('Distance')) %}
@@ -132,16 +132,16 @@
                         {% endcall %}
 
                         {% call mapMacros.meta_info_item('vertical_align_bottom', workout.type.text_color, gettext('Min Height')) %}
-                            {% if workout.gpxMetadata is not none %}
-                                {{ (workout.gpxMetadata.elevation_minimum) }} m
+                            {% if workout.gpx_metadata is not none %}
+                                {{ (workout.gpx_metadata.elevation_minimum) }} m
                             {% else %}
                                 -
                             {% endif %}
                         {% endcall %}
 
                         {% call mapMacros.meta_info_item('vertical_align_top', workout.type.text_color, gettext('Max Height')) %}
-                            {% if workout.gpxMetadata is not none %}
-                                {{ (workout.gpxMetadata.elevation_maximum) }} m
+                            {% if workout.gpx_metadata is not none %}
+                                {{ (workout.gpx_metadata.elevation_maximum) }} m
                             {% else %}
                                 -
                             {% endif %}
