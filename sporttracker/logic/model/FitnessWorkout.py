@@ -31,7 +31,7 @@ class FitnessWorkout(Workout):  # type: ignore[name-defined]
 
     def get_workout_categories(self) -> list[str]:
         return [
-            c.workout_category_type
+            c.fitness_workout_category_type
             for c in FitnessWorkoutCategory.query.filter(
                 FitnessWorkoutCategory.workout_id == self.id
             ).all()

@@ -58,7 +58,7 @@ class FitnessWorkoutCategoryType(enum.Enum):
 
 class FitnessWorkoutCategory(db.Model):  # type: ignore[name-defined]
     workout_id: Mapped[int] = mapped_column(Integer, nullable=False, primary_key=True)
-    workout_category_type = db.Column(
+    fitness_workout_category_type = db.Column(
         db.Enum(FitnessWorkoutCategoryType), nullable=False, primary_key=True
     )
 
@@ -69,6 +69,8 @@ def update_workout_categories_by_workout_id(
     FitnessWorkoutCategory.query.filter(FitnessWorkoutCategory.workout_id == workoutId).delete()
 
     for category in newWorkoutCategories:
-        db.session.add(FitnessWorkoutCategory(workout_id=workoutId, workout_category_type=category))
+        db.session.add(
+            FitnessWorkoutCategory(workout_id=workoutId, fitness_workout_category_type=category)
+        )
 
     db.session.commit()
