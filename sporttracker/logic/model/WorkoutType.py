@@ -115,5 +115,5 @@ class WorkoutType(enum.Enum):
         return [WorkoutType.BIKING, WorkoutType.RUNNING, WorkoutType.HIKING]
 
     @staticmethod
-    def get_workout_workout_types() -> list[WorkoutType]:
+    def get_fitness_workout_types() -> list[WorkoutType]:
         return [WorkoutType.FITNESS]

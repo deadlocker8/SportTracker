@@ -11,7 +11,7 @@ from sporttracker.logic.model.db import db
 class FitnessWorkout(Workout):  # type: ignore[name-defined]
     __tablename__ = 'fitness_workout'
     id: Mapped[int] = mapped_column(ForeignKey('workout.id'), primary_key=True)
-    fitness_workout_type = db.Column(db.Enum(FitnessWorkoutType), nullable=True)
+    fitness_workout_type = db.Column(db.Enum(FitnessWorkoutType), nullable=False)
 
     __mapper_args__ = {
         'polymorphic_identity': 'fitness_workout',
@@ -25,7 +25,8 @@ class FitnessWorkout(Workout):  # type: ignore[name-defined]
             f'duration: {self.duration}, '
             f'custom_fields: {self.custom_fields}, '
             f'participants: {self.participants}, '
-            f'user_id: {self.user_id})'
+            f'user_id: {self.user_id}, '
+            f'average_heart_rate: {self.average_heart_rate}, '
             f'fitness_workout_type: {self.fitness_workout_type})'
         )
 
