@@ -53,7 +53,7 @@ def construct_blueprint():
             custom_fields=form.model_extra,
             user_id=current_user.id,
             participants=participants,
-            workout_type=FitnessWorkoutType(form.fitnessWorkoutType),  # type: ignore[call-arg]
+            fitness_workout_type=FitnessWorkoutType(form.fitnessWorkoutType),  # type: ignore[call-arg]
         )
 
         workoutCategories = [
@@ -94,7 +94,7 @@ def construct_blueprint():
             averageHeartRate=workout.average_heart_rate,
             participants=[str(item.id) for item in workout.participants],
             fitnessWorkoutCategories=workout.get_workout_categories(),
-            fitnessWorkoutType=workout.workout_type,
+            fitnessWorkoutType=workout.fitness_workout_type,
             **workout.custom_fields,
         )
 
@@ -129,7 +129,7 @@ def construct_blueprint():
         workout.average_heart_rate = form.averageHeartRate  # type: ignore[assignment]
         participantIds = [int(item) for item in request.form.getlist('participants')]
         workout.participants = get_participants_by_ids(participantIds)
-        workout.workout_type = (
+        workout.fitness_workout_type = (
             None if form.fitnessWorkoutType is None else FitnessWorkoutType(form.fitnessWorkoutType)  # type: ignore[call-arg]
         )
 

@@ -319,7 +319,7 @@ class DummyDataGenerator:
                     duration=duration,
                     user_id=user.id,
                     custom_fields={},
-                    workout_type=fitnessWorkoutType,  # type: ignore[call-arg]
+                    fitness_workout_type=fitnessWorkoutType,  # type: ignore[call-arg]
                 )
 
                 if index in indexesWithParticipants:

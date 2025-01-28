@@ -59,19 +59,19 @@
     {% endif %}
 {%- endmacro %}
 
-{% macro render_workout_workout_type(workout, renderAsRow) -%}
+{% macro render_fitness_workout_type(workout, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
-        <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ workout.workoutType.icon }}</span>
-        <div class="fs-5 text-center">{{ render_workout_unit(workout.workoutType.get_localized_name()) }}</div>
+        <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ workout.fitnessWorkoutType.icon }}</span>
+        <div class="fs-5 text-center">{{ render_workout_unit(workout.fitnessWorkoutType.get_localized_name()) }}</div>
     </div>
 {%- endmacro %}
 
-{% macro render_workout_workout_category_type(workout, renderAsRow) -%}
+{% macro render_fitness_workout_category_type(workout, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
-        {% if workout.workoutCategories|length == 1 %}
-            <span class="material-symbols-outlined {% if not workout.workoutCategories[0].is_outlined_icon %}filled{% endif %} fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ workout.workoutCategories[0].icon }}</span>
-            <div class="fs-5 text-center">{{ render_workout_unit(workout.workoutCategories[0].get_localized_name()) }}</div>
-        {% elif workout.workoutCategories|length > 1 %}
+        {% if workout.fitnessWorkoutCategories|length == 1 %}
+            <span class="material-symbols-outlined {% if not workout.fitnessWorkoutCategories[0].is_outlined_icon %}filled{% endif %} fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ workout.workoutCategories[0].icon }}</span>
+            <div class="fs-5 text-center">{{ render_workout_unit(workout.fitnessWorkoutCategories[0].get_localized_name()) }}</div>
+        {% elif workout.fitnessWorkoutCategories|length > 1 %}
             <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">fitness_center</span>
             <div class="fs-5 text-center">{{ gettext('Mixed') }}</div>
         {% endif %}
@@ -223,9 +223,9 @@
                             <div class="d-flex align-items-center justify-content-around me-1 me-md-3">
                                 {{ render_workout_duration(workout, renderAsRow) }}
 
-                                {{ render_workout_workout_type(workout, renderAsRow) }}
+                                {{ render_fitness_workout_type(workout, renderAsRow) }}
 
-                                {{ render_workout_workout_category_type(workout, renderAsRow) }}
+                                {{ render_fitness_workout_category_type(workout, renderAsRow) }}
 
                                 {{ render_workout_average_heart_rate(workout, renderAsRow) }}
                             </div>

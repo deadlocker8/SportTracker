@@ -104,7 +104,7 @@ class FitnessWorkoutModel(BaseWorkoutModel):
             participants=[str(item.id) for item in workout.participants],
             ownerName=get_user_by_id(workout.user_id).username,
             workoutCategories=workout.get_workout_categories(),
-            workoutType=workout.workout_type,
+            workoutType=workout.fitness_workout_type,
         )
 
 
