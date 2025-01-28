@@ -9,9 +9,11 @@ import click
 import flask_babel
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils import FlaskBaseApp
+from alembic.runtime.migration import MigrationContext
 from flask import Flask, request
 from flask_babel import Babel
 from flask_login import LoginManager, current_user
+from flask_migrate import upgrade, stamp
 
 from sporttracker.blueprints import (
     General,
@@ -63,7 +65,7 @@ from sporttracker.logic.model.User import (
     DistanceWorkoutInfoItemType,
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.logic.model.db import db, migrate
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 LOGGER.propagate = False
@@ -107,7 +109,7 @@ class SportTracker(FlaskBaseApp):
         app.config['SQLALCHEMY_DATABASE_URI'] = self._settings['database']['uri']
 
         db.init_app(app)
-        # migrate.init_app(app, db)
+        migrate.init_app(app, db)
 
         rootDirectory = os.path.dirname(currentDirectory)
         app.config['DATA_FOLDER'] = os.path.join(rootDirectory, 'data')
@@ -120,17 +122,17 @@ class SportTracker(FlaskBaseApp):
         if self._prepareDatabase:
             self.__prepare_database(app)
 
-        # with app.app_context():
-        #     context = MigrationContext.configure(db.engine.connect())
-        #     currentDatabaseRevision = context.get_current_revision()
-        #     if currentDatabaseRevision is None:
-        #         stamp(revision=Constants.LATEST_DATABASE_REVISION)
-        #     elif currentDatabaseRevision == Constants.LATEST_DATABASE_REVISION:
-        #         LOGGER.info('No database upgrade needed')
-        #     else:
-        #         LOGGER.info('Upgrading database...')
-        #         upgrade()
-        #         LOGGER.info('Upgrading database DONE')
+        with app.app_context():
+            context = MigrationContext.configure(db.engine.connect())
+            currentDatabaseRevision = context.get_current_revision()
+            if currentDatabaseRevision is None:
+                stamp(revision=Constants.LATEST_DATABASE_REVISION)
+            elif currentDatabaseRevision == Constants.LATEST_DATABASE_REVISION:
+                LOGGER.info('No database upgrade needed')
+            else:
+                LOGGER.info('Upgrading database...')
+                upgrade()
+                LOGGER.info('Upgrading database DONE')
 
         if self._prepareDatabase:
             with app.app_context():
