@@ -59,10 +59,14 @@
 {%- endmacro %}
 
 
-{% macro gpxDownloadButton(title, gpxUrl, icon, classes='', editUrl='') -%}
+{% macro gpxDownloadButton(title, gpxUrl, icon, isSvgIcon=false, classes='', editUrl='') -%}
     <div class="card-header d-flex align-items-center {{ classes }} justify-content-between">
         <div class="d-flex align-items-center">
-            <i class="fa-solid {{ icon }} fa-fw fs-5 me-2"></i>
+            {% if isSvgIcon %}
+                <img class="icon-svg-small" src="{{ url_for('static', filename="images/icon_workouts.svg") }}" />
+            {% else %}
+                <i class="fa-solid {{ icon }} fa-fw fs-5 me-2"></i>
+            {% endif %}
             <div class="fs-5 text-truncate">
                 {{ title }}
             </div>

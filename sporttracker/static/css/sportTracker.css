@@ -161,9 +161,24 @@ body {
     justify-content: center;
 }
 
+.navbar-icon-svg {
+    height: 1.25rem;
+    width: 1.25rem;
+}
+
 .headline-icon {
     width: 3rem !important;
     height: 3rem !important;
+}
+
+.headline-icon-svg {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.icon-svg-small {
+    height: 1.2rem;
+    width: 1.2rem;
 }
 
 .input-field-margin {

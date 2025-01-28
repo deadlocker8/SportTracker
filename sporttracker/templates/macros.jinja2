@@ -51,7 +51,7 @@
                                 <a class="nav-link d-flex align-items-center {% if activeLink == 'workouts' %}active {% endif %}"
                                    href="/">
                                     <span class="navbar-icon">
-                                        <i class="fa-solid fa-route fa-fw fs-6"></i>
+                                        <img class="navbar-icon-svg" src="{{ url_for('static', filename="images/icon_workouts.svg") }}" />
                                     </span>&nbsp;{{ gettext('Workouts') }}
                                 </a>
                             </li>

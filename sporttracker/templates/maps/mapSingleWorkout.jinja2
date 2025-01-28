@@ -37,7 +37,7 @@
 
         <!-- small displays -->
         <div class="card bg-body-secondary mx-3 mb-3 d-xl-none" data-bs-theme="dark">
-            {{ mapMacros.gpxDownloadButton(gettext('Workout'), gpxUrl, 'fa-route', editUrl=editUrl) }}
+            {{ mapMacros.gpxDownloadButton(gettext('Workout'), gpxUrl, 'icon_workouts', true, editUrl=editUrl) }}
 
             <div class="card-body ps-4 pt-4 pb-0">
                 <div class="row row-cols-4 gy-3 pb-3 overflow-x-auto">
@@ -84,7 +84,7 @@
             <!-- large displays -->
             <div class="col col-2 p-0 ps-4 d-none d-xl-block">
                 <div class="card bg-body-secondary" data-bs-theme="dark">
-                    {{ mapMacros.gpxDownloadButton(gettext('Workout'), gpxUrl, 'fa-route', 'flex-column flex-xxl-row', editUrl=editUrl) }}
+                    {{ mapMacros.gpxDownloadButton(gettext('Workout'), gpxUrl, 'icon_workouts', true, 'flex-column flex-xxl-row', editUrl=editUrl) }}
 
                     <div class="card-body ps-4 pt-4">
                         {% call mapMacros.meta_info_item('event', workout.type.text_color, gettext('Date')) %}

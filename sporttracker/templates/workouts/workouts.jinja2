@@ -23,7 +23,7 @@
                                 <span class="material-symbols-outlined fs-1">chevron_left</span>
                             </a>
                             {% call macros.headline(gettext('Workouts'), url_for('workouts.add')) %}
-                                <i class="fa-solid fa-route fa-fw fs-2"></i>
+                                <img class="headline-icon-svg" src="{{ url_for('static', filename="images/icon_workouts.svg") }}" />
                             {% endcall %}
                             <a href="{{ url_for('workouts.listWorkouts', year=nextMonthDate.year, month=nextMonthDate.month) }}"
                                class="text-decoration-none text-light ms-3"
