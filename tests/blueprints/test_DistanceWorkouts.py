@@ -11,8 +11,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutField, CustomWorkoutFieldType
 from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.PlannedTour import PlannedTour, TravelType, TravelDirection
-from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import create_user, Language, User
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
@@ -42,7 +42,7 @@ def prepare_test_data(app):
         db.session.commit()
 
 
-class TestWorkouts(SeleniumTestBaseClass):
+class TestDistanceWorkouts(SeleniumTestBaseClass):
     def __open_form(self, selenium, buttonIndex=0, expectedHeadline='New Biking Workout'):
         selenium.get(self.build_url('/workouts'))
 
@@ -99,32 +99,6 @@ class TestWorkouts(SeleniumTestBaseClass):
         time.sleep(1)
         select = Select(selenium.find_element(By.ID, 'workout-plannedTour'))
         select.select_by_visible_text(plannedTourName)
-
-    @staticmethod
-    def __fill_fitness_form(
-        selenium,
-        name,
-        date,
-        startTime,
-        hours,
-        minutes,
-        seconds,
-        averageHeartRate,
-        workoutType,
-        fitnessWorkoutCategories,
-    ):
-        selenium.find_element(By.ID, 'workout-name').send_keys(name)
-        selenium.find_element(By.ID, 'workout-date').send_keys(date)
-        selenium.find_element(By.ID, 'workout-time').send_keys(startTime)
-        selenium.find_element(By.ID, 'workout-duration-hours').send_keys(hours)
-        selenium.find_element(By.ID, 'workout-duration-minutes').send_keys(minutes)
-        selenium.find_element(By.ID, 'workout-duration-seconds').send_keys(seconds)
-        selenium.find_element(By.ID, 'workout-averageHeartRate').send_keys(averageHeartRate)
-
-        selenium.find_element(By.XPATH, f'//label[@for="{workoutType}"]').click()
-
-        for category in fitnessWorkoutCategories:
-            selenium.find_element(By.XPATH, f'//label[@for="{category}"]').click()
 
     def test_add_workout_valid(self, server, selenium: WebDriver):
         self.login(selenium)
@@ -288,65 +262,6 @@ class TestWorkouts(SeleniumTestBaseClass):
         # check participants icon is displayed
         assert cards[0].find_element(By.XPATH, '//span[text()="group"]')
 
-    def test_quick_filter_only_show_activated_workout_types(self, server, selenium: WebDriver):
-        self.login(selenium)
-        self.__open_form(selenium)
-        self.__fill_form(
-            selenium, 'My Biking Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
-        )
-        self.click_button_by_id(selenium, 'buttonSaveWorkout')
-
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
-        )
-
-        self.__open_form(selenium, buttonIndex=1, expectedHeadline='New Running Workout')
-        self.__fill_form(
-            selenium, 'My Running Workout', '2023-02-01', '16:30', 5.5, 0, 20, 12, 188, 15
-        )
-        self.click_button_by_id(selenium, 'buttonSaveWorkout')
-
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
-        )
-
-        selenium.find_elements(By.CLASS_NAME, 'quick-filter')[0].click()
-
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.invisibility_of_element_located(
-                (By.XPATH, '//h4[text()="New Biking Workout"]')
-            )
-        )
-
-        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
-
-    def test_month_select(self, server, selenium: WebDriver):
-        self.login(selenium)
-
-        selenium.find_element(By.CSS_SELECTOR, '#month-select').click()
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.visibility_of_element_located((By.ID, 'headline-years'))
-        )
-
-        yearButton = selenium.find_elements(By.CLASS_NAME, 'btn-select-year')[0]
-        year = yearButton.get_attribute('data-year')
-        yearButton.click()
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.visibility_of_element_located((By.ID, 'headline-months'))
-        )
-
-        monthIndex = 4
-        selenium.find_elements(By.CLASS_NAME, 'btn-select-month')[monthIndex].click()
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.invisibility_of_element_located((By.ID, 'headline-months'))
-        )
-
-        assert selenium.current_url.endswith(f'/workouts/{year}/{monthIndex + 1}')
-
     def test_new_workout_share_via_link(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
@@ -462,36 +377,3 @@ class TestWorkouts(SeleniumTestBaseClass):
         pills = selenium.find_elements(By.CSS_SELECTOR, '.badge.rounded-pill.bg-orange')
         assert len(pills) == 1
         assert pills[0].text == '1 Workouts'
-
-    def test_add_fitness_workout_valid(self, server, selenium: WebDriver):
-        self.login(selenium)
-        self.__open_form(selenium, buttonIndex=3, expectedHeadline='New Fitness Workout')
-        self.__fill_fitness_form(
-            selenium,
-            'My Workout',
-            '2023-02-01',
-            '15:30',
-            0,
-            1,
-            13,
-            46,
-            'workout-type-2',
-            ['workout-category-1', 'workout-category-2'],
-        )
-        self.click_button_by_id(selenium, 'buttonSaveWorkout')
-
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
-        )
-
-        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
-
-    def test_add_fitness_workout_all_empty(self, server, selenium: WebDriver):
-        self.login(selenium)
-        self.__open_form(selenium, buttonIndex=3, expectedHeadline='New Fitness Workout')
-        self.__fill_fitness_form(selenium, '', '', '', '', '', '', '', 'workout-type-1', [])
-        self.click_button_by_id(selenium, 'buttonSaveWorkout')
-
-        assert selenium.current_url.endswith('/workouts/add/FITNESS')
