@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-27 23:51+0100\n"
+"POT-Creation-Date: 2025-01-30 00:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,7 +52,7 @@ msgid ""
 "km</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:107 ../blueprints/Achievements.py:188
+#: ../blueprints/Achievements.py:107 ../blueprints/Achievements.py:191
 msgid "Best Month"
 msgstr ""
 
@@ -62,25 +62,25 @@ msgid ""
 "<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:154 ../blueprints/AnnualAchievements.py:364
+#: ../blueprints/Achievements.py:157 ../blueprints/AnnualAchievements.py:364
 msgid "Longest Duration"
 msgstr ""
 
-#: ../blueprints/Achievements.py:155
+#: ../blueprints/Achievements.py:158
 msgid ""
 "You completed <span class=\"fw-bold\">{longestDuration} h </span> in one "
 "workout on <span class=\"fw-bold\">{longestDurationDate}</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:170 ../blueprints/AnnualAchievements.py:187
+#: ../blueprints/Achievements.py:173 ../blueprints/AnnualAchievements.py:187
 msgid "Total Duration"
 msgstr ""
 
-#: ../blueprints/Achievements.py:171
+#: ../blueprints/Achievements.py:174
 msgid "You completed a total of <span class=\"fw-bold\">{totalDuration} h</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:189
+#: ../blueprints/Achievements.py:192
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
 "<span class=\"fw-bold\">{bestMonthDuration} h</span>!"
@@ -249,10 +249,7 @@ msgid "Hiking"
 msgstr ""
 
 #: ../logic/model/WorkoutType.py:104
-#: ../templates/maps/mapSingleWorkout.jinja2:10
-#: ../templates/maps/mapSingleWorkout.jinja2:40
-#: ../templates/maps/mapSingleWorkout.jinja2:87
-msgid "Workout"
+msgid "Fitness Workout"
 msgstr ""
 
 #: ../templates/about.jinja2:6 ../templates/macros.jinja2:170
@@ -293,7 +290,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: ../templates/icons.jinja2:45
+#: ../templates/icons.jinja2:55
 msgid "Icons"
 msgstr ""
 
@@ -312,7 +309,6 @@ msgid "Users"
 msgstr ""
 
 #: ../templates/macros.jinja2:55 ../templates/maps/mapMultipleWorkouts.jinja2:6
-#: ../templates/maps/mapTileHunting.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:102
 #: ../templates/workouts/workouts.jinja2:5
 #: ../templates/workouts/workouts.jinja2:25
@@ -370,14 +366,13 @@ msgstr ""
 
 #: ../templates/macros.jinja2:146
 #: ../templates/maps/mapMultipleWorkouts.jinja2:9
-#: ../templates/maps/mapTileHunting.jinja2:9
 #: ../templates/plannedTours/plannedTours.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:19
 msgid "Planned Tours"
 msgstr ""
 
-#: ../templates/macros.jinja2:161 ../templates/maps/mapMacros.jinja2:108
-#: ../templates/maps/mapTileHunting.jinja2:17
+#: ../templates/macros.jinja2:161 ../templates/maps/mapMacros.jinja2:111
+#: ../templates/maps/mapTileHunting.jinja2:6
 #: ../templates/settings/settings.jinja2:70
 msgid "Tile Hunting"
 msgstr ""
@@ -748,22 +743,22 @@ msgstr ""
 msgid "Collapse Legend"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:88
+#: ../templates/maps/mapMacros.jinja2:91
 #, python-format
 msgid "Show %(length)s linked Workouts"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:116
+#: ../templates/maps/mapMacros.jinja2:119
 msgid "Show visited tiles"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:124
-#: ../templates/maps/mapTileHunting.jinja2:90
+#: ../templates/maps/mapMacros.jinja2:127
+#: ../templates/maps/mapTileHunting.jinja2:79
 msgid "Show grid"
 msgstr ""
 
 #: ../templates/maps/mapMultipleWorkouts.jinja2:61
-#: ../templates/maps/mapTileHunting.jinja2:63
+#: ../templates/maps/mapTileHunting.jinja2:52
 msgid "Apply"
 msgstr ""
 
@@ -827,6 +822,12 @@ msgstr ""
 msgid "Shared Workout"
 msgstr ""
 
+#: ../templates/maps/mapSingleWorkout.jinja2:10
+#: ../templates/maps/mapSingleWorkout.jinja2:40
+#: ../templates/maps/mapSingleWorkout.jinja2:87
+msgid "Workout"
+msgstr ""
+
 #: ../templates/maps/mapSingleWorkout.jinja2:102
 msgid "Avg. Speed"
 msgstr ""
@@ -835,22 +836,22 @@ msgstr ""
 msgid "Avg. Heart Rate"
 msgstr ""
 
-#: ../templates/maps/mapTileHunting.jinja2:75
+#: ../templates/maps/mapTileHunting.jinja2:64
 msgid "Tiles visited"
 msgstr ""
 
-#: ../templates/maps/mapTileHunting.jinja2:80
+#: ../templates/maps/mapTileHunting.jinja2:69
 msgid ""
 "Tiles are shown in their corresponding workout type color. If different "
 "workout types had visited a tile, it will be shown in <span class=&quot"
 ";text-danger fw-bold&quot;>red</span>."
 msgstr ""
 
-#: ../templates/maps/mapTileHunting.jinja2:94
+#: ../templates/maps/mapTileHunting.jinja2:83
 msgid "Zoom in to view visited tiles."
 msgstr ""
 
-#: ../templates/maps/mapTileHunting.jinja2:149
+#: ../templates/maps/mapTileHunting.jinja2:138
 msgid "Number of new tiles"
 msgstr ""
 

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-27 23:51+0100\n"
-"PO-Revision-Date: 2025-01-27 23:57+0100\n"
+"POT-Creation-Date: 2025-01-30 00:15+0100\n"
+"PO-Revision-Date: 2025-01-30 00:15+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -60,7 +60,7 @@ msgstr ""
 "Du hast insgesamt <span class=\"fw-bold\">{totalDistance} km</span> "
 "zurückgelegt!"
 
-#: ../blueprints/Achievements.py:107 ../blueprints/Achievements.py:188
+#: ../blueprints/Achievements.py:107 ../blueprints/Achievements.py:191
 msgid "Best Month"
 msgstr "Bester Monat"
 
@@ -72,11 +72,11 @@ msgstr ""
 "<span class=\"fw-bold\">{bestMonthName}</span> war dein bester Monat mit <span "
 "class=\"fw-bold\">{bestMonthDistance} km</span>!"
 
-#: ../blueprints/Achievements.py:154 ../blueprints/AnnualAchievements.py:364
+#: ../blueprints/Achievements.py:157 ../blueprints/AnnualAchievements.py:364
 msgid "Longest Duration"
 msgstr "Längste Dauer"
 
-#: ../blueprints/Achievements.py:155
+#: ../blueprints/Achievements.py:158
 msgid ""
 "You completed <span class=\"fw-bold\">{longestDuration} h </span> in one "
 "workout on <span class=\"fw-bold\">{longestDurationDate}</span>!"
@@ -84,16 +84,16 @@ msgstr ""
 "Du hast am <span class=\"fw-bold\">{longestDurationDate}</span> in einem "
 "Workout <span class=\"fw-bold\">{longestDuration} h</span> trainiert!"
 
-#: ../blueprints/Achievements.py:170 ../blueprints/AnnualAchievements.py:187
+#: ../blueprints/Achievements.py:173 ../blueprints/AnnualAchievements.py:187
 msgid "Total Duration"
 msgstr "Gesamtdauer"
 
-#: ../blueprints/Achievements.py:171
+#: ../blueprints/Achievements.py:174
 msgid "You completed a total of <span class=\"fw-bold\">{totalDuration} h</span>!"
 msgstr ""
 "Du hast insgesamt <span class=\"fw-bold\">{totalDuration} h</span> trainiert!"
 
-#: ../blueprints/Achievements.py:189
+#: ../blueprints/Achievements.py:192
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with <span "
 "class=\"fw-bold\">{bestMonthDuration} h</span>!"
@@ -264,11 +264,9 @@ msgstr "Laufen"
 msgid "Hiking"
 msgstr "Wandern"
 
-#: ../logic/model/WorkoutType.py:104 ../templates/maps/mapSingleWorkout.jinja2:10
-#: ../templates/maps/mapSingleWorkout.jinja2:40
-#: ../templates/maps/mapSingleWorkout.jinja2:87
-msgid "Workout"
-msgstr "Workout"
+#: ../logic/model/WorkoutType.py:104
+msgid "Fitness Workout"
+msgstr "Fitness Workout"
 
 #: ../templates/about.jinja2:6 ../templates/macros.jinja2:170
 msgid "About"
@@ -308,7 +306,7 @@ msgstr "Durchschnitt"
 msgid "Close"
 msgstr "Schließen"
 
-#: ../templates/icons.jinja2:45
+#: ../templates/icons.jinja2:55
 msgid "Icons"
 msgstr "Icons"
 
@@ -327,7 +325,6 @@ msgid "Users"
 msgstr "Benutzer"
 
 #: ../templates/macros.jinja2:55 ../templates/maps/mapMultipleWorkouts.jinja2:6
-#: ../templates/maps/mapTileHunting.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:102
 #: ../templates/workouts/workouts.jinja2:5
 #: ../templates/workouts/workouts.jinja2:25
@@ -382,14 +379,13 @@ msgid "Maintenance"
 msgstr "Wartung"
 
 #: ../templates/macros.jinja2:146 ../templates/maps/mapMultipleWorkouts.jinja2:9
-#: ../templates/maps/mapTileHunting.jinja2:9
 #: ../templates/plannedTours/plannedTours.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:19
 msgid "Planned Tours"
 msgstr "Geplante Touren"
 
-#: ../templates/macros.jinja2:161 ../templates/maps/mapMacros.jinja2:108
-#: ../templates/maps/mapTileHunting.jinja2:17
+#: ../templates/macros.jinja2:161 ../templates/maps/mapMacros.jinja2:111
+#: ../templates/maps/mapTileHunting.jinja2:6
 #: ../templates/settings/settings.jinja2:70
 msgid "Tile Hunting"
 msgstr "Tile Hunting"
@@ -760,22 +756,22 @@ msgstr "Legende einblenden"
 msgid "Collapse Legend"
 msgstr "Legende ausblenden"
 
-#: ../templates/maps/mapMacros.jinja2:88
+#: ../templates/maps/mapMacros.jinja2:91
 #, python-format
 msgid "Show %(length)s linked Workouts"
 msgstr "Zeige %(length)s verlinkte Workouts"
 
-#: ../templates/maps/mapMacros.jinja2:116
+#: ../templates/maps/mapMacros.jinja2:119
 msgid "Show visited tiles"
 msgstr "Besuchte Kacheln anzeigen"
 
-#: ../templates/maps/mapMacros.jinja2:124
-#: ../templates/maps/mapTileHunting.jinja2:90
+#: ../templates/maps/mapMacros.jinja2:127
+#: ../templates/maps/mapTileHunting.jinja2:79
 msgid "Show grid"
 msgstr "Gitter anzeigen"
 
 #: ../templates/maps/mapMultipleWorkouts.jinja2:61
-#: ../templates/maps/mapTileHunting.jinja2:63
+#: ../templates/maps/mapTileHunting.jinja2:52
 msgid "Apply"
 msgstr "Übernehmen"
 
@@ -839,6 +835,12 @@ msgstr "Bergab"
 msgid "Shared Workout"
 msgstr "Geteiltes Workout"
 
+#: ../templates/maps/mapSingleWorkout.jinja2:10
+#: ../templates/maps/mapSingleWorkout.jinja2:40
+#: ../templates/maps/mapSingleWorkout.jinja2:87
+msgid "Workout"
+msgstr "Workout"
+
 #: ../templates/maps/mapSingleWorkout.jinja2:102
 msgid "Avg. Speed"
 msgstr "Duchschn. Geschwindigkeit"
@@ -847,11 +849,11 @@ msgstr "Duchschn. Geschwindigkeit"
 msgid "Avg. Heart Rate"
 msgstr "Durchschn. Herzfrequenz"
 
-#: ../templates/maps/mapTileHunting.jinja2:75
+#: ../templates/maps/mapTileHunting.jinja2:64
 msgid "Tiles visited"
 msgstr "Besuchte Kacheln"
 
-#: ../templates/maps/mapTileHunting.jinja2:80
+#: ../templates/maps/mapTileHunting.jinja2:69
 msgid ""
 "Tiles are shown in their corresponding workout type color. If different workout "
 "types had visited a tile, it will be shown in <span class=&quot;text-danger fw-"
@@ -861,11 +863,11 @@ msgstr ""
 "eine Kachel von verschiedenen Workouttypen besucht wurde, wird sie <span "
 "class=&quot;text-danger fw-bold&quot;>rot</span> dargestellt."
 
-#: ../templates/maps/mapTileHunting.jinja2:94
+#: ../templates/maps/mapTileHunting.jinja2:83
 msgid "Zoom in to view visited tiles."
 msgstr "Hineinzoomen, um besuchte Kacheln anzuzeigen."
 
-#: ../templates/maps/mapTileHunting.jinja2:149
+#: ../templates/maps/mapTileHunting.jinja2:138
 msgid "Number of new tiles"
 msgstr "Anzahl neuer Kacheln"
 

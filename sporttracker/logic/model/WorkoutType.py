@@ -101,7 +101,7 @@ class WorkoutType(enum.Enum):
         elif self == self.HIKING:
             return gettext('Hiking')
         elif self == self.FITNESS:
-            return gettext('Workout')
+            return gettext('Fitness Workout')
 
         raise ValueError(f'Could not get localized name for unsupported WorkoutType: {self}')
 
