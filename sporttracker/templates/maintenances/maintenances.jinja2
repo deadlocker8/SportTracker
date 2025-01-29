@@ -99,9 +99,11 @@
                                                         <span class="text-secondary">{{ maintenanceEvent.numberOfDaysSinceEvent }} {{ gettext('days') }}</span>
                                                     </div>
 
-                                                    <div class="mt-3 mb-4 text-start">
-                                                        {{ (maintenanceEvent.distanceSinceEvent // 1000) }} km
-                                                    </div>
+                                                        <div class="mt-3 mb-4 text-start">
+                                                            {% if maintenancesWithEvent.type.name != 'FITNESS' %}
+                                                                {{ (maintenanceEvent.distanceSinceEvent // 1000) }} km
+                                                            {% endif %}
+                                                        </div>
                                                 {% endif %}
                                             </li>
                                         </ul>
