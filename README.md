@@ -1,18 +1,18 @@
 # SportTracker
 
-Self-hosted sport data tracking server.
+Self-hosted workout data tracking server.
 
 <img src="sporttracker/static/images/SportTracker.png" alt="drawing" width="150" height="150"/>
 
 ## Key Features
 
 ### Multi-user support
-Multiple users can track their sport data using different accounts.
+Multiple users can track their workout data using different accounts.
 
-### Record your sport data
-Record the data of your training sessions after you have finished them.
+### Record your workout data
+Record the data of your workout sessions after you have finished them.
 
-Supported types of sports:
+Supported workout types:
 
 Distance-based:
 - Biking
@@ -20,22 +20,22 @@ Distance-based:
 - Hiking
 
 Duration-based:
-- Workouts
+- Fitness Workouts
 
-You can fill in a lot of information for each training session. If the pre-defined inputs are not enough, it is possible to set custom fields for each type of sports.
+You can fill in a lot of information for each workout session. If the pre-defined inputs are not enough, it is possible to set custom fields for each type of workout.
 
-You can share your tracks via public links.
+You can share your workouts via public links.
 
 ![](screenshots/tracks.png)
 
 ### Month goals
-Set custom month goals (either distance, duration or number of tracks).
+Set custom month goals (either distance, duration or number of workouts).
 The current status of each month goal is visualized via progress bars.
 
 ![](screenshots/goals.png)
 
 ### GPX tracks / Map
-A GPX recoding can be attached to every distance-based track. The GPX recordings can be viewed on a map.
+A GPX recoding can be attached to every distance-based workout. The GPX recordings can be viewed on a map.
 
 View all gpx tracks on a map:
 ![](screenshots/map_all.jpg)
@@ -45,7 +45,7 @@ View a single gpx track on a map, with additional information (e.g. track line i
 
 ### FIT tracks
 SportTracker also supports .fit files in addition to gpx. Those files will be stored in the `data` folder as well.  
-During upload of a .fit file for a track or planned tour, a gpx file is automatically generated from the .fit file.
+During upload of a .fit file for a workout or planned tour, a gpx file is automatically generated from the .fit file.
 
 __NOTE__: The converted gpx file will only contain basic data like latitude, longitude, timestamps and altitude information. 
 
@@ -58,7 +58,7 @@ Tile hunting can be useful to discover new areas in your surrounding or gain som
 Overall tile hunting map:
 ![](screenshots/tile_hunting_map.jpg)
 
-Map for a single track:
+Map for a single workout:
 ![](screenshots/tile_hunting_single.jpg)
 
 #### Tile hunting overlay access
@@ -72,7 +72,7 @@ This can be useful to add a custom overlay to OpenStreetMap based maps, e.g. htt
 Tracked data is visualized in charts, e.g.:
 - Distance per month
 - Average speed
-- Duration per Track
+- Duration per workout
 - etc.
 
 Example charts:
@@ -81,24 +81,24 @@ Example charts:
 ![](screenshots/chart_distance_per_month.png)
 
 ### Annual Statistics
-Every year is summarized for each sport type.
+Every year is summarized for each workout type.
 
 ![](screenshots/annual_statistics_1.png)
 ![](screenshots/annual_statistics_2.png)
 
 
 ### Achievements
-The achievement page shows aggregated information about all your tracks.
+The achievement page shows aggregated information about all your workouts.
 
 ![](screenshots/achievements.png)
 
 ### Maintenance Events
-Record your maintenance events for each sport type. You can optionally set reminders for each maintenance.
+Record your maintenance events for each workout type. You can optionally set reminders for each maintenance.
 
 ![](screenshots/maintenance.png)
 
 ### Planned Tours
-Save your planned tours for each sport type (distance-based types) and view them on a map. Once you actually took a planned tour you can link the corresponding track to the tour.
+Save your planned tours for each workout type (distance-based types) and view them on a map. Once you actually took a planned tour you can link the corresponding workout to the tour.
 
 ![](screenshots/planned_tours.jpg)
 
@@ -140,7 +140,7 @@ Where http://localhost:3000 is the address and port number of your georender ins
 
 ## Command line arguments
 - `--debug`, `-d` = Enable debug mode
-- `--dummy`, `-dummy` = Generate dummy tracks and demo user
+- `--dummy`, `-dummy` = Generate dummy workouts and demo user
 
 
 ## Database migration
