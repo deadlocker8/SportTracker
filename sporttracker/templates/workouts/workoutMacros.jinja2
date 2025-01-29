@@ -604,7 +604,7 @@
             <span class="material-symbols-outlined filled me-3">{{ icon }}</span>
             <div class="btn-group" role="group" id="{{ baseIdentifier }}-{{ identifier }}">
                 {% for availableType in availableTypes %}
-                    <input type="checkbox" class="btn-check" name="{{ inputName }}-{{ loop.index }}" id="{{ identifier }}-{{ loop.index }}"
+                    <input type="checkbox" class="btn-check" name="{{ inputName }}" id="{{ identifier }}-{{ loop.index }}"
                            autocomplete="off"
                            {% if availableType.name in selectedValues %}checked{% endif %}
                            value="{{ availableType.name }}">

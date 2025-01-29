@@ -37,7 +37,7 @@ def construct_blueprint(gpxService: GpxService):
         abort(404)
 
     @gpxTracks.route('/workout/shared/<string:shareCode>/<string:file_format>')
-    def downloadGpxTrackBySharedTrack(shareCode: str, file_format: str):
+    def downloadGpxTrackBySharedWorkout(shareCode: str, file_format: str):
         workout = get_distance_workout_by_share_code(shareCode)
         if workout is None:
             abort(404)

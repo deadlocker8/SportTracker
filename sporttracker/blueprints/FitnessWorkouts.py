@@ -25,7 +25,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 class FitnessWorkoutFormModel(BaseWorkoutFormModel):
     fitnessWorkoutType: str
-    fitnessWorkoutCategories: list[str] | None = None
+    fitnessWorkoutCategories: list[str] | str | None = None
 
     model_config = ConfigDict(
         extra='allow',
@@ -56,16 +56,15 @@ def construct_blueprint():
             fitness_workout_type=FitnessWorkoutType(form.fitnessWorkoutType),  # type: ignore[call-arg]
         )
 
-        fitnessWorkoutCategories = [
-            FitnessWorkoutCategoryType(value)  # type: ignore[call-arg]
-            for key, value in request.form.items()
-            if key.startswith('fitnessWorkoutCategories')
-        ]
-        update_workout_categories_by_workout_id(workout.id, fitnessWorkoutCategories)
-
         LOGGER.debug(f'Saved new workout workout: {workout}')
         db.session.add(workout)
         db.session.commit()
+
+        fitnessWorkoutCategories = [
+            FitnessWorkoutCategoryType(item)  # type: ignore[call-arg]
+            for item in request.form.getlist('fitnessWorkoutCategories')
+        ]
+        update_workout_categories_by_workout_id(workout.id, fitnessWorkoutCategories)
 
         return redirect(
             url_for(
@@ -136,9 +135,8 @@ def construct_blueprint():
         workout.custom_fields = form.model_extra
 
         fitnessWorkoutCategories = [
-            FitnessWorkoutCategoryType(value)  # type: ignore[call-arg]
-            for key, value in request.form.items()
-            if key.startswith('fitnessWorkoutCategories')
+            FitnessWorkoutCategoryType(item)  # type: ignore[call-arg]
+            for item in request.form.getlist('fitnessWorkoutCategories')
         ]
         update_workout_categories_by_workout_id(workout.id, fitnessWorkoutCategories)
 
