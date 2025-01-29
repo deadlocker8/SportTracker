@@ -135,8 +135,9 @@ def __handle_custom_track_field():
     if 'custom_track_field' in tableNames:
         LOGGER.debug('  Migrate data from "custom_track_field" to "custom_workout_field')
         connection = op.get_bind()
-        rows = connection.execute(text('SELECT * FROM custom_track_field;')).fetchall()
+        rows = connection.execute(text('SELECT * FROM custom_track_field ORDER BY id;')).fetchall()
 
+        highestId = 0
         for row in rows:
             LOGGER.debug(f'  Migrate custom_track_field: {row}')
             entryId, fieldType, trackType, name, isRequired, userId = row
@@ -147,8 +148,11 @@ def __handle_custom_track_field():
                     f"INSERT INTO custom_workout_field (id, type, workout_type, name, is_required, user_id) VALUES ('{entryId}', '{fieldType}', '{trackType}', '{name}', '{isRequired}', '{userId}');"
                 )
             )
+            highestId = entryId
 
         op.drop_table('custom_track_field')
+
+        __restart_sequence(connection, 'custom_workout_field_id_seq', highestId)
 
 
 def __handle_track_info_item():
@@ -184,8 +188,9 @@ def __handle_track_info_item():
     if 'track_info_item' in tableNames:
         LOGGER.debug('  Migrate data from "track_info_item" to "distance_workout_info_item')
         connection = op.get_bind()
-        rows = connection.execute(text('SELECT * FROM track_info_item;')).fetchall()
+        rows = connection.execute(text('SELECT * FROM track_info_item ORDER BY id;')).fetchall()
 
+        highestId = 0
         for row in rows:
             LOGGER.debug(f'  Migrate track_info_item: {row}')
             entryId, trackType, isActivated, userId = row
@@ -195,8 +200,11 @@ def __handle_track_info_item():
                     f"INSERT INTO distance_workout_info_item (id, type, is_activated, user_id) VALUES ('{entryId}', '{trackType}', '{isActivated}', '{userId}');"
                 )
             )
+            highestId = entryId
 
         op.drop_table('track_info_item')
+
+        __restart_sequence(connection, 'distance_workout_info_item_id_seq', highestId)
 
 
 def __update_type_column(tableName: str):
@@ -386,10 +394,11 @@ def __handle_tracks():
         connection = op.get_bind()
         rows = connection.execute(
             text(
-                'SELECT track."id", track."type", track."name", track."startTime", track."duration", track."distance", track."averageHeartRate", track."elevationSum", track."user_id", track."share_code", track."gpx_metadata_id", track."custom_fields" FROM track;'
+                'SELECT track."id", track."type", track."name", track."startTime", track."duration", track."distance", track."averageHeartRate", track."elevationSum", track."user_id", track."share_code", track."gpx_metadata_id", track."custom_fields" FROM track ORDER BY track."id";'
             )
         ).fetchall()
 
+        highestId = 0
         for row in rows:
             LOGGER.debug(f'  Migrate track: {row}')
             (
@@ -420,6 +429,7 @@ def __handle_tracks():
                     f"INSERT INTO workout (id, type, class_type, name, start_time, duration, user_id, average_heart_rate, custom_fields) VALUES ('{entryId}', '{trackType}', '{classType}', '{name}', '{startTime}', '{duration}', '{userId}', {averageHeartRate}, '{custom_fields}');"
                 )
             )
+            highestId = entryId
 
             if trackType == 'FITNESS':
                 connection.execute(
@@ -434,12 +444,19 @@ def __handle_tracks():
                     )
                 )
 
+        __restart_sequence(connection, 'workout_id_seq', highestId)
+
 
 def __get_class_type(workoutType: str) -> str:
     if workoutType == 'FITNESS':
         return 'fitness_workout'
 
     return 'distance_workout'
+
+
+def __restart_sequence(connection, sequenceName, lastId):
+    LOGGER.debug(f'  Set {sequenceName} to {lastId + 1}')
+    connection.execute(text(f'ALTER SEQUENCE {sequenceName} RESTART WITH {lastId + 1};'))
 
 
 def downgrade():
