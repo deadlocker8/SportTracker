@@ -1,4 +1,5 @@
 # 1.33.0 - (XX.XX.XX)
+- BREAKING CHANGE: Big refactoring for cleaner database structure. All data is automatically migrated upon start. (#160)
 - add: workouts: new field to store the workout type (duration-based or repetition-based) (#158)
 - add: workouts: new field to store one or more workout categories (arms, legs, core, etc.) (#159)
 - add: update icons to google material symbols (#162)
