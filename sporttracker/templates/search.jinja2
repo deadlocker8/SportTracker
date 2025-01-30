@@ -74,13 +74,22 @@
 
                     {% for monthName, workouts in results.items() %}
                         <h3 class="mt-4">{{ monthName }}</h3>
-                        {% for workout in workout %}
-                            <div class="d-none d-lg-block">
-                                {{ workoutMacros.render_workout_card(workout, renderAsRow=true, useSmallIcon=true) }}
-                            </div>
-                            <div class="d-lg-none">
-                                {{ workoutMacros.render_workout_card(workout, renderAsRow=false, useSmallIcon=true) }}
-                            </div>
+                        {% for workout in workouts %}
+                            {% if workout.__class__.__name__ == 'DistanceWorkoutModel' %}
+                                <div class="d-none d-lg-block">
+                                    {{ workoutMacros.render_distance_workout_card(workout, renderAsRow=true, useSmallIcon=true) }}
+                                </div>
+                                <div class="d-lg-none">
+                                    {{ workoutMacros.render_distance_workout_card(workout, renderAsRow=false, useSmallIcon=true) }}
+                                </div>
+                            {% elif workout.__class__.__name__ == 'FitnessWorkoutModel' %}
+                                <div class="d-none d-lg-block">
+                                    {{ workoutMacros.render_fitness_workout_card(workout, renderAsRow=true, useSmallIcon=true) }}
+                                </div>
+                                <div class="d-lg-none">
+                                    {{ workoutMacros.render_fitness_workout_card(workout, renderAsRow=false, useSmallIcon=true) }}
+                                </div>
+                            {% endif %}
                         {% endfor %}
                     {% endfor %}
 
