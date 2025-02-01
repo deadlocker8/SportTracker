@@ -68,13 +68,23 @@ def construct_blueprint():
         if form.reminder_limit is not None:
             reminderLimit = form.reminder_limit * 1000
 
-        maintenance = Maintenance(
-            type=WorkoutType(form.type),  # type: ignore[call-arg]
-            description=form.description,
-            user_id=current_user.id,
-            is_reminder_active=bool(form.is_reminder_active),
-            reminder_limit=reminderLimit,
-        )
+        workoutType = WorkoutType(form.type)  # type: ignore[call-arg]
+        if workoutType in WorkoutType.get_distance_workout_types():
+            maintenance = Maintenance(
+                type=workoutType,
+                description=form.description,
+                user_id=current_user.id,
+                is_reminder_active=bool(form.is_reminder_active),
+                reminder_limit=reminderLimit,
+            )
+        else:
+            maintenance = Maintenance(
+                type=workoutType,
+                description=form.description,
+                user_id=current_user.id,
+                is_reminder_active=False,
+                reminder_limit=None,
+            )
 
         LOGGER.debug(f'Saved new maintenance: {maintenance}')
         db.session.add(maintenance)
@@ -119,11 +129,17 @@ def construct_blueprint():
         if form.reminder_limit is not None:
             reminderLimit = form.reminder_limit * 1000
 
-        maintenance.type = WorkoutType(form.type)  # type: ignore[call-arg]
+        workoutType = WorkoutType(form.type)  # type: ignore[call-arg]
+        maintenance.type = workoutType
         maintenance.description = form.description  # type: ignore[assignment]
         maintenance.user_id = current_user.id
-        maintenance.is_reminder_active = bool(form.is_reminder_active)
-        maintenance.reminder_limit = reminderLimit  # type: ignore[assignment]
+
+        if workoutType in WorkoutType.get_distance_workout_types():
+            maintenance.is_reminder_active = bool(form.is_reminder_active)
+            maintenance.reminder_limit = reminderLimit  # type: ignore[assignment]
+        else:
+            maintenance.is_reminder_active = False
+            maintenance.reminder_limit = None  # type: ignore[assignment]
 
         LOGGER.debug(f'Updated maintenance: {maintenance}')
         db.session.commit()

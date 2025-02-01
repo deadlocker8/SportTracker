@@ -6,6 +6,7 @@
 - add: self-host icons (#162)
 - fix: annual statistics: show flat trend icon if there was no increase or decrease for aa certain value (#157)
 - fix: maintenance events for fitness workouts now only show dates and time difference and no distances (#163)
+- fix: maintenance reminders are now only allowed for distance-based workouts (#170)
 - fix: charts are now shown correctly even if no workouts exist (#169)
 - chore: update dependencies (#167)
 

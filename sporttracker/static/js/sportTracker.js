@@ -81,4 +81,17 @@ document.addEventListener('DOMContentLoaded', function()
             document.getElementById('maintenance-event-reminder').classList.toggle('hidden', !checkboxMaintenanceReminder.checked);
         });
     }
+
+    let maintenanceEventTypeSelect = document.getElementById('maintenance-event-type');
+    if(maintenanceEventTypeSelect !== null)
+    {
+        maintenanceEventTypeSelect.addEventListener('change', function()
+        {
+            let selectedValue = maintenanceEventTypeSelect.value;
+            document.getElementById('maintenance-event-reminder-container').classList.toggle('hidden', selectedValue === 'FITNESS');
+        });
+
+        let selectedValue = maintenanceEventTypeSelect.value;
+        document.getElementById('maintenance-event-reminder-container').classList.toggle('hidden', selectedValue === 'FITNESS');
+    }
 });
