@@ -40,9 +40,7 @@ def construct_blueprint():
         minYear, maxYear = __get_min_and_max_year()
 
         chartDataDistancePerYear: list[dict[str, Any]] = []
-        if minYear is None or maxYear is None:
-            return chartDataDistancePerYear
-        else:
+        if minYear is not None and maxYear is not None:
             for workoutType in WorkoutType.get_distance_workout_types():
                 chartDataDistancePerYear.append(
                     __get_distance_per_year_by_type(workoutType, minYear, maxYear)
@@ -58,9 +56,7 @@ def construct_blueprint():
         minYear, maxYear = __get_min_and_max_year()
 
         chartDataDistancePerMonth: list[dict[str, Any]] = []
-        if minYear is None or maxYear is None:
-            return chartDataDistancePerMonth
-        else:
+        if minYear is not None and maxYear is not None:
             for workoutType in WorkoutType.get_distance_workout_types():
                 chartDataDistancePerMonth.append(
                     __get_distance_per_month_by_type(workoutType, minYear, maxYear)
@@ -183,9 +179,7 @@ def construct_blueprint():
         minYear, maxYear = __get_min_and_max_year()
 
         chartDataAverageSpeed: list[dict[str, list | WorkoutType]] = []
-        if minYear is None or maxYear is None:
-            return chartDataAverageSpeed
-        else:
+        if minYear is not None and maxYear is not None:
             for workoutType in WorkoutType.get_distance_workout_types():
                 workouts = (
                     DistanceWorkout.query.filter(DistanceWorkout.user_id == current_user.id)
