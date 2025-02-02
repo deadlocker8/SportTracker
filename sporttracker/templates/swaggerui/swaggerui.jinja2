@@ -1,0 +1,39 @@
+<!-- HTML for static distribution bundle build -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Swagger UI</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/swaggerui/swaggerui.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/swaggerui/index.css') }}" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/libs/swaggerui/favicon-32x32.png') }}" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/libs/swaggerui/favicon-16x16.png') }}" sizes="16x16" />
+  </head>
+
+  <body>
+    <div id="swagger-ui"></div>
+    <script src="{{ url_for('static', filename='js/libs/swaggerui/swagger-ui-bundle.js') }}" charset="UTF-8"> </script>
+    <script src="{{ url_for('static', filename='js/libs/swaggerui/swagger-ui-standalone-preset.js') }}" charset="UTF-8"> </script>
+    <script src="{{ url_for('static', filename='js/libs/swaggerui/swagger-initializer.js') }}" charset="UTF-8"> </script>
+      <script>
+          window.onload = function()
+          {
+              const ui = SwaggerUIBundle({
+                  url: "{{ url_for('static', filename='openapi.yaml') }}",
+                  dom_id: '#swagger-ui',
+                  deepLinking: true,
+                  presets: [
+                      SwaggerUIBundle.presets.apis,
+                      SwaggerUIStandalonePreset
+                  ],
+                  plugins: [
+                      SwaggerUIBundle.plugins.DownloadUrl
+                  ],
+                  layout: "StandaloneLayout"
+              })
+
+              window.ui = ui
+          }
+      </script>
+  </body>
+</html>

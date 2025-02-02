@@ -21,6 +21,18 @@ paths:
         200:
           description: "Okay"
 
+  /api/version:
+    get:
+     responses:
+        200:
+          description: "Okay"
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  $ref: '#/components/schemas/Version'
+
   /api/workouts/distanceWorkout:
     get:
       summary: Lists all distance-based workouts
@@ -720,4 +732,11 @@ components:
           description: Distance in meter for the reminder
         is_reminder_triggered:
           type: boolean
-          description: Is the reminder triggered at the moment (the limit exceeded)?
+          description: Is the reminder triggered at the moment (the limit exceeded)?#
+
+    Version:
+      type: object
+      properties:
+        version:
+          type: string
+          example: 2.0.0
