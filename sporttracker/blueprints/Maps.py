@@ -357,18 +357,24 @@ def construct_blueprint(
         dates = []
         values = []
         colors = []
-        names = []
+        customData = []
         for entry in visitedTileService.get_number_of_new_tiles_per_workout():
             dates.append(flask_babel.format_date(entry.startTime, 'short'))
             values.append(entry.numberOfNewTiles)
             colors.append(entry.type.background_color_hex)
-            names.append(entry.name)
+
+            customData.append(
+                {
+                    'name': entry.name,
+                    'url': url_for('maps.showSingleWorkout', workout_id=entry.distance_workout_id),
+                }
+            )
 
         chartDataNewTilesPerWorkout = {
             'dates': dates,
             'values': values,
             'colors': colors,
-            'names': names,
+            'names': customData,
         }
 
         return render_template(

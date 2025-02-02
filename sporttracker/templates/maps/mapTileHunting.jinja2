@@ -80,7 +80,8 @@
                 </div>
 
                 <h5 class="mt-3 mt-md-0 ms-0 ms-md-5 mb-0" id="warning-zoom">
-                    <span class="badge text-bg-warning text-wrap">{{ gettext('Zoom in to view visited tiles.') }}</span></h5>
+                    <span class="badge text-bg-warning text-wrap">{{ gettext('Zoom in to view visited tiles.') }}</span>
+                </h5>
             </div>
         </div>
 
@@ -122,7 +123,7 @@
                         color: {{ chartDataNewTilesPerWorkout['colors'] }}
                     },
                     customdata: {{ chartDataNewTilesPerWorkout['names'] }},
-                    hovertemplate: '+%{y} "%{customdata}<extra></extra>"'
+                    hovertemplate: '+%{y} "%{customdata.name}<br>({{ gettext("Click bar to open in new tab") }})<extra></extra>'
                 },
             ];
 
@@ -156,6 +157,14 @@
             };
 
             Plotly.newPlot('chartContainer', data, plotlyLayout, plotlyConfig);
+
+            document.getElementById('chartContainer').on('plotly_click', function(data)
+            {
+                for(let i = 0; i < data.points.length; i++)
+                {
+                    window.open(data.points[i].customdata.url, '_blank');
+                }
+            });
         </script>
     </body>
 </html>
