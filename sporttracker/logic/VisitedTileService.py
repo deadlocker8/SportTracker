@@ -1,13 +1,14 @@
 from dataclasses import dataclass
 
 from flask_login import current_user
-from sqlalchemy import extract
+from sqlalchemy import extract, text
 from sqlalchemy.orm import aliased
 
 from sporttracker.logic.NewVisitedTileCache import NewTilesPerDistanceWorkout, NewVisitedTileCache
 from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
-from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
+from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_workout_by_id
+from sporttracker.logic.model.db import db
 
 
 @dataclass
@@ -18,23 +19,27 @@ class TileColorPosition:
 
 
 class VisitedTileService:
+    COLOR_NOT_NEW = '#00000055'
+
     def __init__(
         self,
         newVisitedTileCache: NewVisitedTileCache,
         quickFilterState: QuickFilterState,
         yearFilterState: list[int],
         workoutId: int | None = None,
+        onlyHighlightNewTiles: bool = False,
     ) -> None:
         self._newVisitedTileCache = newVisitedTileCache
         self._quickFilterState = quickFilterState
         self._yearFilterState = yearFilterState
         self._workoutId = workoutId
+        self._onlyHighlightNewTiles = onlyHighlightNewTiles
 
     def calculate_total_number_of_visited_tiles(
         self,
     ) -> int:
         newVisitedTilesPerWorkout = (
-            self._newVisitedTileCache.get_new_visited_tiles_per_workout_by_user(
+            self._newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
                 current_user.id,
                 self._quickFilterState.get_active_distance_workout_types(),
                 self._yearFilterState,
@@ -56,7 +61,7 @@ class VisitedTileService:
             )
 
         return self.__determine_tile_colors_of_single_workout(
-            min_x, max_x, min_y, max_y, self._workoutId
+            min_x, max_x, min_y, max_y, self._workoutId, self._onlyHighlightNewTiles
         )
 
     def __determine_tile_colors_of_all_workouts_that_visit_tiles(
@@ -86,8 +91,9 @@ class VisitedTileService:
 
         return [TileColorPosition(r[0].tile_color, r[1], r[2]) for r in rows]
 
+    @staticmethod
     def __determine_tile_colors_of_single_workout(
-        self, min_x: int, max_x: int, min_y: int, max_y: int, workoutId: int
+        min_x: int, max_x: int, min_y: int, max_y: int, workoutId: int, onlyHighlightNewTiles: bool
     ) -> list[TileColorPosition]:
         distanceWorkoutAlias = aliased(DistanceWorkout)
         gpxVisitedTileAlias = aliased(GpxVisitedTile)
@@ -106,11 +112,45 @@ class VisitedTileService:
             .all()
         )
 
-        return [TileColorPosition(r[0].tile_color, r[1], r[2]) for r in rows]
+        workout = get_distance_workout_by_id(workoutId)
+        newVisitedTiles = []
+        if workout is not None:
+            newVisitedTiles = VisitedTileService.__get_new_visited_tiles_by_workout(workout)
 
-    def get_new_tiles_per_workout(self) -> list[NewTilesPerDistanceWorkout]:
-        return self._newVisitedTileCache.get_new_visited_tiles_per_workout_by_user(
+        result = []
+        for row in rows:
+            if onlyHighlightNewTiles:
+                tileColor = VisitedTileService.COLOR_NOT_NEW
+                if (row[1], row[2]) in newVisitedTiles:
+                    tileColor = row[0].tile_color
+            else:
+                tileColor = row[0].tile_color
+
+            result.append(TileColorPosition(tileColor, row[1], row[2]))
+
+        return result
+
+    def get_number_of_new_tiles_per_workout(self) -> list[NewTilesPerDistanceWorkout]:
+        return self._newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
             current_user.id,
             self._quickFilterState.get_active_distance_workout_types(),
             self._yearFilterState,
         )
+
+    @staticmethod
+    def __get_new_visited_tiles_by_workout(workout: DistanceWorkout) -> list[tuple[int, int]]:
+        rows = db.session.execute(
+            text(f"""SELECT *
+            FROM gpx_visited_tile
+            WHERE gpx_visited_tile."workout_id" = {workout.id}
+              AND NOT EXISTS (SELECT
+                              FROM distance_workout AS prev
+                                       join gpx_visited_tile AS visitied ON prev."id" = visitied."workout_id"
+                                       JOIN workout w_inner ON prev."id" = w_inner."id"
+                              WHERE w_inner."start_time" < '{workout.start_time}'
+                                AND w_inner."user_id" = {workout.user.id}
+                                AND gpx_visited_tile."x" = visitied."x"
+                                AND gpx_visited_tile."y" = visitied."y")""")
+        ).fetchall()
+
+        return [(row[1], row[2]) for row in rows]

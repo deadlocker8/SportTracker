@@ -2,6 +2,7 @@
 - BREAKING CHANGE: Big refactoring for cleaner database structure. All data is automatically migrated upon start. (#160)
 - add: workouts: new field to store the workout type (duration-based or repetition-based) (#158)
 - add: workouts: new field to store one or more workout categories (arms, legs, core, etc.) (#159)
+- add: single workout map: add option to only highlight new visited tiles (#144)
 - add: update icons to google material symbols (#162)
 - add: self-host icons (#162)
 - fix: annual statistics: show flat trend icon if there was no increase or decrease for aa certain value (#157)

@@ -30,7 +30,7 @@
             </div>
 
             {% if editUrl and current_user.isTileHuntingActivated %}
-                {{ mapMacros.tileHuntingMapSettings(tileHuntingIsShowTilesActive, tileHuntingIsGridActive, workout.id) }}
+                {{ mapMacros.tileHuntingMapSettings(tileHuntingIsShowTilesActive, tileHuntingIsGridActive, tileHuntingIsOnlyHighlightNewTilesActive, workout.id) }}
             {% endif %}
         </div>
 

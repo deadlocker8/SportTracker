@@ -143,6 +143,7 @@ def construct_blueprint(
             tileRenderUrl=tileRenderUrl,
             tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
             tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
+            tileHuntingIsOnlyHighlightNewTilesActive=__get_tile_hunting_is_only_highlight_new_tiles(),
         )
 
     @maps.route('/map/shared/<string:shareCode>')
@@ -256,7 +257,11 @@ def construct_blueprint(
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         visitedTileService = VisitedTileService(
-            newVisitedTileCache, quickFilterState, yearFilterState, workoutId=workout.id
+            newVisitedTileCache,
+            quickFilterState,
+            yearFilterState,
+            workoutId=workout.id,
+            onlyHighlightNewTiles=__get_tile_hunting_is_only_highlight_new_tiles(),
         )
 
         tileRenderService = TileRenderService(
@@ -353,7 +358,7 @@ def construct_blueprint(
         values = []
         colors = []
         names = []
-        for entry in visitedTileService.get_new_tiles_per_workout():
+        for entry in visitedTileService.get_number_of_new_tiles_per_workout():
             dates.append(flask_babel.format_date(entry.startTime, 'short'))
             values.append(entry.numberOfNewTiles)
             colors.append(entry.type.background_color_hex)
@@ -392,6 +397,15 @@ def construct_blueprint(
         session['tileHuntingIsGridActive'] = not __get_tile_hunting_is_grid_active()
         return redirect(redirectUrl)
 
+    @maps.route('/toggleTileHuntingOnlyHighlightNewTiles')
+    @login_required
+    def toggleTileHuntingOnlyHighlightNewTiles():
+        redirectUrl = request.args['redirectUrl']
+        session[
+            'tileHuntingIsOnlyHighlightNewTilesActive'
+        ] = not __get_tile_hunting_is_only_highlight_new_tiles()
+        return redirect(redirectUrl)
+
     return maps
 
 
@@ -414,3 +428,10 @@ def __get_tile_hunting_is_grid_active() -> bool:
         session['tileHuntingIsGridActive'] = False
 
     return session['tileHuntingIsGridActive']
+
+
+def __get_tile_hunting_is_only_highlight_new_tiles() -> bool:
+    if 'tileHuntingIsOnlyHighlightNewTilesActive' not in session:
+        session['tileHuntingIsOnlyHighlightNewTilesActive'] = False
+
+    return session['tileHuntingIsOnlyHighlightNewTilesActive']
