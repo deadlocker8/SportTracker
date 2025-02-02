@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Sport-Tracker-API
-  version: 1.0.0
+  version: 2.0.0
 servers:
   - url: 'http://localhost:10022'
 paths:
@@ -20,13 +20,30 @@ paths:
       responses:
         200:
           description: "Okay"
-  /api/addTrack:
+
+  /api/workouts/distanceWorkout:
+    get:
+      summary: Lists all distance-based workouts
+      tags:
+        - distanceWorkout
+      responses:
+        200:
+          description: "Okay"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DistanceWorkoutModel'
     post:
+      summary: Adds a new distance-based workout
+      tags:
+        - distanceWorkout
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TrackFormModel'
+              $ref: '#/components/schemas/DistanceWorkoutFormModel'
       responses:
         200:
           description: "Okay"
@@ -34,8 +51,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseId'
-  /api/addMonthGoalDistance:
+
+  /api/workouts/fitnessWorkout:
+    get:
+      summary: Lists all fitness workouts
+      tags:
+        - fitnessWorkout
+      responses:
+        200:
+          description: "Okay"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FitnessWorkoutModel'
     post:
+      summary: Adds a new fitness workout
+      tags:
+        - fitnessWorkout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FitnessWorkoutFormModel'
+      responses:
+        200:
+          description: "Okay"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseId'
+
+  /api/monthGoals/monthGoalDistance:
+    get:
+      summary: Lists all distance-based month goals
+      tags:
+        - monthGoalDistance
+      responses:
+        200:
+          description: "Okay"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MonthGoalDistanceModel'
+    post:
+      summary: Adds a new distance-based month goal
+      tags:
+        - monthGoalDistance
       requestBody:
         content:
           application/json:
@@ -48,13 +113,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseId'
-  /api/addMonthGoalCount:
+
+  /api/monthGoals/addMonthGoalCount:
+    get:
+      summary: Lists all count-based month goals
+      tags:
+        - monthGoalCount
+      responses:
+        200:
+          description: "Okay"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MonthGoalCountModel'
     post:
+      summary: Adds a new count-based month goal
+      tags:
+        - monthGoalCount
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MonthGoalDistanceFormModel'
+              $ref: '#/components/schemas/MonthGoalCountFormModel'
       responses:
         200:
           description: "Okay"
@@ -62,11 +144,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseId'
-  /api/addGpxTrack/{track_id}:
+  /api/monthGoals/addMonthGoalDuration:
+    get:
+      summary: Lists all duration-based month goals
+      tags:
+        - monthGoalDuration
+      responses:
+        200:
+          description: "Okay"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MonthGoalDurationModel'
     post:
+      summary: Adds a new duration-based month goal
+      tags:
+        - monthGoalDuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MonthGoalDurationFormModel'
+      responses:
+        200:
+          description: "Okay"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseId'
+
+  /api/workouts/distanceWorkout/{workout_id}/addGpxTrack:
+    post:
+      summary: Adds a gpx track to a distance-based workout
+      tags:
+        - distanceWorkout
       parameters:
         - in: path
-          name: track_id
+          name: workout_id
           schema:
             type: integer
           required: true
@@ -82,19 +198,12 @@ paths:
       responses:
         200:
           description: "Okay"
-  /api/tracks:
+
+  /api/settings/participants:
+    summary: Lists all available participants
     get:
-      responses:
-        200:
-          description: "Okay"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TrackModel'
-  /api/participants:
-    get:
+      tags:
+       - settings
       responses:
         200:
           description: "Okay"
@@ -105,54 +214,278 @@ paths:
                 items:
                   $ref: '#/components/schemas/Participant'
 
+  /api/settings/customFields:
+    get:
+      summary: Lists all custom fields per workout type
+      tags:
+       - settings
+      responses:
+        200:
+          description: "Okay"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  BIKING:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CustomField'
+                  RUNNING:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CustomField'
+                  HIKING:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CustomField'
+                  FITNESS:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CustomField'
+
+  /api/plannedTours:
+    get:
+      summary: Lists all planned tours
+      tags:
+       - plannedTour
+      responses:
+        200:
+          description: "Okay"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlannedTour'
+
+  /api/maintenances:
+    get:
+      summary: Lists all maintenances and if their reminder is triggered
+      tags:
+       - maintenance
+      responses:
+        200:
+          description: "Okay"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Maintenance'
+
 components:
   schemas:
-    TrackFormModel:
+    DistanceWorkoutFormModel:
       type: object
       required:
         - name
         - type
         - date
-        - time
+        - start_time
         - distance
-        - durationHours
-        - durationMinutes
-        - durationSeconds
-        - customFields
+        - duration
       properties:
         name:
           type: string
-        type:
-           type: string
-           example: BIKING or RUNNING
+          description: Name of the workout
+        workout_type:
+          example: BIKING
+          type: string
+          enum: [BIKING, RUNNING, HIKING]
+          description: Distance workout type
         date:
           type: string
           example: 2023-11-19
-        time:
+          description: Workout date in the format YYYY-MM-DD
+        start_time:
           type: string
           example: 11:23
+          description: Workout start time in the format HH:MM
         distance:
           type: number
           format: float
-        durationHours:
+          description: Workout distance in meters
+        duration:
           type: integer
-        durationMinutes:
+          description: Workout duration in seconds
+        average_heart_rate:
           type: integer
-        durationSeconds:
+          description: Average heart rate in bpm
+        elevation_sum:
           type: integer
-        averageHeartRate:
-          type: integer
-        elevationSum:
-          type: integer
+          description: Elevation gain in meters
         participants:
           type: array
-          description: participant ids
+          description: Optional list of IDs of participants
           items:
             type: integer
           example: []
-        customFields:
+        planned_tour_id:
+          type: integer
+          description: Optional id of a planned tour this workout is based on.
+        custom_fields:
           type: object
           example: {'bike': 'Cube'}
+          description: Optional map of custom field names and their corresponding values. Available custom fields can be queried via API. Some custom fields may be required.
+
+    DistanceWorkoutModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the workout
+        name:
+          type: string
+          description: Name of the workout
+        workout_type:
+          example: BIKING
+          type: string
+          enum: [BIKING, RUNNING, HIKING]
+          description: Distance workout type
+        date:
+          type: string
+          example: 2023-11-19
+          description: Workout date in the format YYYY-MM-DD
+        start_time:
+          type: string
+          example: 11:23
+          description: Workout start time in the format HH:MM
+        distance:
+          type: number
+          format: float
+          description: Workout distance in meters
+        duration:
+          type: integer
+          description: Workout duration in seconds
+        average_heart_rate:
+          type: integer
+          description: Average heart rate in bpm
+        elevation_sum:
+          type: integer
+          description: Elevation gain in meters
+        participants:
+          type: array
+          description: Optional list of IDs of participants
+          items:
+            type: integer
+          example: []
+        planned_tour_id:
+          type: integer
+          description: Optional id of a planned tour this workout is based on.
+        custom_fields:
+          type: object
+          example: {'bike': 'Cube'}
+          description: Optional map of custom field names and their corresponding values.
+        has_gpx:
+          type: boolean
+          description: Does this workout have an associated gpx track?
+
+    FitnessWorkoutFormModel:
+      type: object
+      required:
+        - name
+        - type
+        - date
+        - start_time
+        - duration
+        - fitness_workout_type
+      properties:
+        name:
+          type: string
+          description: Name of the workout
+        workout_type:
+         example: FITNESS
+         type: string
+         enum: [FITNESS]
+         description: Fitness workout type
+        date:
+          type: string
+          example: 2023-11-19
+          description: Workout date in the format YYYY-MM-DD
+        start_time:
+          type: string
+          example: 11:23
+          description: Workout start time in the format HH:MM
+        duration:
+          type: integer
+          description: Workout duration in seconds
+        average_heart_rate:
+          type: integer
+          description: Average heart rate in bpm
+        fitness_workout_type:
+          example: DURATION_BASED
+          type: string
+          enum: [DURATION_BASED, REPETITION_BASED]
+          description: Workout type
+        fitness_workout_categories:
+          type: array
+          description: Optional list of workout categories
+          example: []
+          items:
+            type: string
+            enum: [ARMS, LEGS, CORE, YOGA]
+        participants:
+          type: array
+          description: Optional list of IDs of participants
+          items:
+            type: integer
+          example: []
+        custom_fields:
+          type: object
+          example: {'bike': 'Cube'}
+          description: Optional map of custom field names and their corresponding values. Available custom fields can be queried via API. Some custom fields may be required.
+
+    FitnessWorkoutModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the workout
+        name:
+          type: string
+          description: Name of the workout
+        workout_type:
+         example: FITNESS
+         type: string
+         enum: [FITNESS]
+         description: Fitness workout type
+        date:
+          type: string
+          example: 2023-11-19
+          description: Workout date in the format YYYY-MM-DD
+        start_time:
+          type: string
+          example: 11:23
+          description: Workout start time in the format HH:MM
+        duration:
+          type: integer
+          description: Workout duration in seconds
+        average_heart_rate:
+          type: integer
+          description: Average heart rate in bpm
+        fitness_workout_type:
+          example: DURATION_BASED
+          type: string
+          enum: [DURATION_BASED, REPETITION_BASED]
+          description: Workout type
+        fitness_workout_categories:
+          type: array
+          description: Optional list of workout categories
+          example: []
+          items:
+            type: string
+            enum: [ARMS, LEGS, CORE, YOGA]
+        participants:
+          type: array
+          description: Optional list of IDs of participants
+          items:
+            type: integer
+          example: []
+        custom_fields:
+          type: object
+          example: {'bike': 'Cube'}
+          description: Optional map of custom field names and their corresponding values.
 
     MonthGoalDistanceFormModel:
       type: object
@@ -163,9 +496,37 @@ components:
         - distance_minimum
         - distance_perfect
       properties:
-        type:
+        workout_type:
+          example: BIKING
           type: string
-          example: BIKING or RUNNING
+          enum: [BIKING, RUNNING, HIKING]
+          description: Distance workout type
+        year:
+          type: integer
+          example: 2024
+        month:
+          type: integer
+          example: 1
+        distance_minimum:
+          type: number
+          format: float
+          example: 100.0
+        distance_perfect:
+          type: number
+          format: float
+          example: 200.0
+
+    MonthGoalDistanceModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the month goal
+        workout_type:
+          example: BIKING
+          type: string
+          enum: [BIKING, RUNNING, HIKING]
+          description: Distance workout type
         year:
           type: integer
           example: 2024
@@ -190,9 +551,11 @@ components:
         - count_minimum
         - count_perfect
       properties:
-        type:
+        workout_type:
+          example: BIKING
           type: string
-          example: BIKING or RUNNING
+          enum: [BIKING, RUNNING, HIKING, FITNESS]
+          description: Distance or fitness workout type
         year:
           type: integer
           example: 2024
@@ -205,57 +568,156 @@ components:
         count_perfect:
           type: integer
           example: 5
+
+    MonthGoalCountModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the month goal
+        workout_type:
+          example: BIKING
+          type: string
+          enum: [BIKING, RUNNING, HIKING, FITNESS]
+          description: Distance or fitness workout type
+        year:
+          type: integer
+          example: 2024
+        month:
+          type: integer
+          example: 1
+        count_minimum:
+          type: integer
+          example: 3
+        count_perfect:
+          type: integer
+          example: 5
+
+    MonthGoalDurationFormModel:
+      type: object
+      required:
+        - type
+        - year
+        - month
+        - count_minimum
+        - count_perfect
+      properties:
+        workout_type:
+          example: BIKING
+          type: string
+          enum: [BIKING, RUNNING, HIKING, FITNESS]
+          description: Distance or fitness workout type
+        year:
+          type: integer
+          example: 2024
+        month:
+          type: integer
+          example: 1
+        count_minimum:
+          type: integer
+          example: 3
+        count_perfect:
+          type: integer
+          example: 5
+
+    MonthGoalDurationModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the month goal
+        workout_type:
+          example: BIKING
+          type: string
+          enum: [BIKING, RUNNING, HIKING, FITNESS]
+          description: Distance or fitness workout type
+        year:
+          type: integer
+          example: 2024
+        month:
+          type: integer
+          example: 1
+        count_minimum:
+          type: integer
+          example: 3
+        count_perfect:
+          type: integer
+          example: 5
+
     ResponseId:
       type: object
       properties:
         id:
           type: integer
-    TrackModel:
-      type: object
-      required:
-        - id
-        - name
-        - type
-        - startTime
-        - distance
-        - duration
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        type:
-          type: string
-          example: BIKING or RUNNING
-        startTime:
-          type: string
-          example: 2024-01-30 10:00:00
-        distance:
-          type: integer
-        duration:
-          type: integer
-        averageHeartRate:
-          type: integer
-        elevationSum:
-          type: integer
-        participants:
-          type: array
-          description: participant ids
-          items:
-            type: integer
-          example: []
-        gpxFileName:
-          type: string
-        customFields:
-          type: object
-          example: { 'bike': 'Cube' }
+
     Participant:
       type: object
-      required:
-        - id
-        - name
       properties:
         id:
           type: integer
+          description: ID of the participant
         name:
           type: string
+          description: Name of the participant
+
+    CustomField:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the custom field
+        workout_type:
+          example: BIKING
+          type: string
+          enum: [BIKING, RUNNING, HIKING, FITNESS]
+          description: Distance or fitness workout type
+        field_type:
+          example: STRING
+          type: string
+          enum: [STRING, INTEGER, FLOAT]
+          description: Type of the custom field
+        name:
+          type: string
+          description: Name of the custom field
+        is_required:
+          type: boolean
+          description: Is this custom field required when creating a new workout?
+
+    PlannedTour:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the planned tour
+        workout_type:
+          example: BIKING
+          type: string
+          enum: [BIKING, RUNNING, HIKING]
+          description: Distance workout type
+        name:
+          type: string
+          description: Name of the planned tour
+
+    Maintenance:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the maintenance
+        workout_type:
+          example: BIKING
+          type: string
+          enum: [BIKING, RUNNING, HIKING, FITNESS]
+          description: Distance or fitness workout type
+        description:
+          type: string
+          description: Description of the maintenance
+        is_reminder_active:
+          type: boolean
+          description: Is a reminder configured for this maintenance?
+        reminder_limit:
+          type: integer
+          description: Distance in meter for the reminder
+        is_reminder_triggered:
+          type: boolean
+          description: Is the reminder triggered at the moment (the limit exceeded)?
