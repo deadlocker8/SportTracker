@@ -51,7 +51,7 @@ class WorkoutType(enum.Enum):
         '#AB87FF',
         'border-purple',
         'text-purple',
-        '#39B856AA',
+        '#00000000',
         True,
         3,
     )

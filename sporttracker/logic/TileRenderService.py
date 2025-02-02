@@ -130,7 +130,7 @@ class TileRenderService:
     ) -> Image.Image:
         """
         Renders a tile image for a tile with the position (x,y) and the specified zoom level.
-        Already visited (sub-) tiles are shown as squares using the color defined inside the visited tile isntance.
+        Already visited (sub-) tiles are shown as squares using the color defined inside the visited tile instance.
         All non visited (sub-) tiles will be transparent.
         Optionally renders a border for each sub tile.
         """
