@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-30 00:15+0100\n"
+"POT-Creation-Date: 2025-02-02 21:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -118,11 +118,11 @@ msgstr ""
 msgid "Incorrect password"
 msgstr ""
 
-#: ../blueprints/Charts.py:124
+#: ../blueprints/Charts.py:120
 msgid "Unknown"
 msgstr ""
 
-#: ../blueprints/Charts.py:161
+#: ../blueprints/Charts.py:157
 msgid "You"
 msgstr ""
 
@@ -330,12 +330,12 @@ msgstr ""
 #: ../templates/charts/chartDistancePerCustomFieldChooser.jinja2:18
 #: ../templates/charts/chartDistancePerParticipantChooser.jinja2:6
 #: ../templates/charts/chartDistancePerParticipantChooser.jinja2:18
-#: ../templates/charts/chartDurationPerSportChooser.jinja2:6
-#: ../templates/charts/chartDurationPerSportChooser.jinja2:18
+#: ../templates/charts/chartDurationPerWorkoutChooser.jinja2:6
+#: ../templates/charts/chartDurationPerWorkoutChooser.jinja2:18
 #: ../templates/charts/chartMacros.jinja2:7
 #: ../templates/charts/chartMacros.jinja2:20
-#: ../templates/charts/chartSpeedPerSportChooser.jinja2:6
-#: ../templates/charts/chartSpeedPerSportChooser.jinja2:18
+#: ../templates/charts/chartSpeedPerWorkoutChooser.jinja2:6
+#: ../templates/charts/chartSpeedPerWorkoutChooser.jinja2:18
 #: ../templates/macros.jinja2:78
 msgid "Charts"
 msgstr ""
@@ -409,7 +409,7 @@ msgid "No search results"
 msgstr ""
 
 #: ../templates/charts/chartAverageSpeed.jinja2:35
-#: ../templates/charts/chartSpeedPerSport.jinja2:31
+#: ../templates/charts/chartSpeedPerWorkout.jinja2:31
 msgid "Speed in km/h"
 msgstr ""
 
@@ -432,12 +432,12 @@ msgid "Distance per Participant"
 msgstr ""
 
 #: ../templates/charts/chartChooser.jinja2:63
-#: ../templates/charts/chartDurationPerSport.jinja2:20
+#: ../templates/charts/chartDurationPerWorkout.jinja2:20
 msgid "Duration per Workout"
 msgstr ""
 
 #: ../templates/charts/chartChooser.jinja2:70
-#: ../templates/charts/chartSpeedPerSport.jinja2:20
+#: ../templates/charts/chartSpeedPerWorkout.jinja2:20
 msgid "Speed per Workout"
 msgstr ""
 
@@ -470,17 +470,17 @@ msgstr ""
 msgid "Select"
 msgstr ""
 
-#: ../templates/charts/chartDurationPerSport.jinja2:31
+#: ../templates/charts/chartDurationPerWorkout.jinja2:31
 msgid "Duration in s"
 msgstr ""
 
-#: ../templates/charts/chartDurationPerSportChooser.jinja2:26
-#: ../templates/charts/chartSpeedPerSportChooser.jinja2:26
+#: ../templates/charts/chartDurationPerWorkoutChooser.jinja2:26
+#: ../templates/charts/chartSpeedPerWorkoutChooser.jinja2:26
 msgid "Choose workout by name"
 msgstr ""
 
-#: ../templates/charts/chartDurationPerSportChooser.jinja2:27
-#: ../templates/charts/chartSpeedPerSportChooser.jinja2:27
+#: ../templates/charts/chartDurationPerWorkoutChooser.jinja2:27
+#: ../templates/charts/chartSpeedPerWorkoutChooser.jinja2:27
 msgid "Note: Only names with at least two workouts are listed"
 msgstr ""
 
@@ -757,6 +757,10 @@ msgstr ""
 msgid "Show grid"
 msgstr ""
 
+#: ../templates/maps/mapMacros.jinja2:135
+msgid "Only highlight new tiles"
+msgstr ""
+
 #: ../templates/maps/mapMultipleWorkouts.jinja2:61
 #: ../templates/maps/mapTileHunting.jinja2:52
 msgid "Apply"
@@ -851,7 +855,11 @@ msgstr ""
 msgid "Zoom in to view visited tiles."
 msgstr ""
 
-#: ../templates/maps/mapTileHunting.jinja2:138
+#: ../templates/maps/mapTileHunting.jinja2:126
+msgid "Click bar to open in new tab"
+msgstr ""
+
+#: ../templates/maps/mapTileHunting.jinja2:139
 msgid "Number of new tiles"
 msgstr ""
 
