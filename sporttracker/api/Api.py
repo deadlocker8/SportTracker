@@ -2,12 +2,13 @@ import logging
 
 from flask import Blueprint, jsonify, render_template, redirect, url_for, request
 from flask_login import login_required, current_user
-from flask_pydantic import ValidationError
+from pydantic import ValidationError
 
 from sporttracker.api.FormModels import (
     MonthGoalDistanceApiFormModel,
     MonthGoalCountApiFormModel,
     MonthGoalDurationApiFormModel,
+    DistanceWorkoutApiFormModel,
 )
 from sporttracker.api.Mapper import (
     MAPPER_MONTH_GOAL_DISTANCE,
@@ -27,8 +28,8 @@ from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_wor
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
-from sporttracker.logic.model.Participant import get_participants
-from sporttracker.logic.model.PlannedTour import get_planned_tours
+from sporttracker.logic.model.Participant import get_participants, get_participants_by_ids
+from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_tour_by_id
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
@@ -178,6 +179,55 @@ def construct_blueprint():
         )
 
         return jsonify([MAPPER_DISTANCE_WORKOUT.map(w) for w in workouts])
+
+    @api.route('/workouts/distanceWorkout', methods=['POST'])
+    @login_required
+    def addDistanceWorkout():
+        try:
+            form = DistanceWorkoutApiFormModel.model_validate_json(request.data)
+        except ValidationError as e:
+            return jsonify({'error': str(e)}), 400
+
+        workoutType = WorkoutType(form.workout_type)  # type: ignore[call-arg]
+
+        if workoutType not in WorkoutType.get_distance_workout_types():
+            return jsonify(
+                {
+                    'error': f"workout_type '{form.workout_type}' is not allowed for distance workouts "
+                    f'month goals, allowed types: '
+                    f'{[w.name for w in WorkoutType.get_distance_workout_types()]}'
+                }
+            ), 400
+
+        plannedTour = None
+        if form.planned_tour_id is not None:
+            plannedTour = get_planned_tour_by_id(int(form.planned_tour_id))
+            if plannedTour is None:
+                return jsonify(
+                    {'error': f'No planned tour found for planned_tour_id {form.planned_tour_id}'}
+                ), 400
+
+        workout = DistanceWorkout(
+            name=form.name,
+            type=workoutType,
+            start_time=form.calculate_start_time(),
+            duration=form.duration,
+            distance=form.distance,
+            average_heart_rate=form.average_heart_rate,
+            elevation_sum=form.elevation_sum,
+            custom_fields={} if form.custom_fields is None else form.custom_fields,
+            participants=get_participants_by_ids(form.participants),
+            planned_tour=plannedTour,
+            share_code=None,
+            gpx_metadata_id=None,
+            user_id=current_user.id,
+        )
+
+        LOGGER.debug(f'Saved new distance workout via api: {workout}')
+        db.session.add(workout)
+        db.session.commit()
+
+        return {'id': workout.id}, 200
 
     @api.route('/workouts/fitnessWorkout')
     @login_required

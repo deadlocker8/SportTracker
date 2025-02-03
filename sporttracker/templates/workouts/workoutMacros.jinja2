@@ -8,7 +8,7 @@
 {% macro render_workout_speed_kmh(workout, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
         <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">speed</span>
-        {% if workout.duration is none %}
+        {% if workout.duration is none or workout.duration == 0 %}
             <div class="fs-5">--.- km/h</div>
         {% else %}
             <div class="fs-5 text-center">{{ (workout.distance / workout.duration * 3.6) | round(1) | format_decimal }} {{ render_workout_unit('km/h') }}</div>
