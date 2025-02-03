@@ -1,8 +1,14 @@
 import logging
 
-from flask import Blueprint, jsonify, render_template, redirect, url_for
+from flask import Blueprint, jsonify, render_template, redirect, url_for, request
 from flask_login import login_required, current_user
+from flask_pydantic import ValidationError
 
+from sporttracker.api.FormModels import (
+    MonthGoalDistanceApiFormModel,
+    MonthGoalCountApiFormModel,
+    MonthGoalDurationApiFormModel,
+)
 from sporttracker.api.Mapper import (
     MAPPER_MONTH_GOAL_DISTANCE,
     MAPPER_MONTH_GOAL_COUNT,
@@ -24,6 +30,7 @@ from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
 from sporttracker.logic.model.Participant import get_participants
 from sporttracker.logic.model.PlannedTour import get_planned_tours
 from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -59,6 +66,40 @@ def construct_blueprint():
 
         return jsonify([MAPPER_MONTH_GOAL_DISTANCE.map(m) for m in monthGoals])
 
+    @api.route('/monthGoals/monthGoalDistance', methods=['POST'])
+    @login_required
+    def addMonthGoalDistance():
+        try:
+            form = MonthGoalDistanceApiFormModel.model_validate_json(request.data)
+        except ValidationError as e:
+            return jsonify({'error': str(e)}), 400
+
+        workoutType = WorkoutType(form.workout_type)  # type: ignore[call-arg]
+
+        if workoutType not in WorkoutType.get_distance_workout_types():
+            return jsonify(
+                {
+                    'error': f"workout_type '{form.workout_type}' is not allowed for distance-based "
+                    f'month goals, allowed types: '
+                    f'{[w.name for w in WorkoutType.get_distance_workout_types()]}'
+                }
+            ), 400
+
+        monthGoal = MonthGoalDistance(
+            type=workoutType,
+            year=form.year,
+            month=form.month,
+            distance_minimum=form.distance_minimum,
+            distance_perfect=form.distance_perfect,
+            user_id=current_user.id,
+        )
+
+        LOGGER.debug(f'Saved new month goal of type "distance" via api: {monthGoal}')
+        db.session.add(monthGoal)
+        db.session.commit()
+
+        return {'id': monthGoal.id}, 200
+
     @api.route('/monthGoals/monthGoalCount')
     @login_required
     def listMonthGoalCount():
@@ -70,6 +111,29 @@ def construct_blueprint():
 
         return jsonify([MAPPER_MONTH_GOAL_COUNT.map(m) for m in monthGoals])
 
+    @api.route('/monthGoals/monthGoalCount', methods=['POST'])
+    @login_required
+    def addMonthGoalCount():
+        try:
+            form = MonthGoalCountApiFormModel.model_validate_json(request.data)
+        except ValidationError as e:
+            return jsonify({'error': str(e)}), 400
+
+        monthGoal = MonthGoalCount(
+            type=WorkoutType(form.workout_type),  # type: ignore[call-arg]
+            year=form.year,
+            month=form.month,
+            count_minimum=form.count_minimum,
+            count_perfect=form.count_perfect,
+            user_id=current_user.id,
+        )
+
+        LOGGER.debug(f'Saved new month goal of type "count" via api: {monthGoal}')
+        db.session.add(monthGoal)
+        db.session.commit()
+
+        return {'id': monthGoal.id}, 200
+
     @api.route('/monthGoals/monthGoalDuration')
     @login_required
     def listMonthGoalDuration():
@@ -80,6 +144,29 @@ def construct_blueprint():
         )
 
         return jsonify([MAPPER_MONTH_GOAL_DURATION.map(m) for m in monthGoals])
+
+    @api.route('/monthGoals/monthGoalDuration', methods=['POST'])
+    @login_required
+    def addMonthGoalDuration():
+        try:
+            form = MonthGoalDurationApiFormModel.model_validate_json(request.data)
+        except ValidationError as e:
+            return jsonify({'error': str(e)}), 400
+
+        monthGoal = MonthGoalDuration(
+            type=WorkoutType(form.workout_type),  # type: ignore[call-arg]
+            year=form.year,
+            month=form.month,
+            duration_minimum=form.duration_minimum,
+            duration_perfect=form.duration_perfect,
+            user_id=current_user.id,
+        )
+
+        LOGGER.debug(f'Saved new month goal of type "duration" via api: {monthGoal}')
+        db.session.add(monthGoal)
+        db.session.commit()
+
+        return {'id': monthGoal.id}, 200
 
     @api.route('/workouts/distanceWorkout')
     @login_required

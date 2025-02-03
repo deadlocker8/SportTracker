@@ -609,8 +609,8 @@ components:
         - type
         - year
         - month
-        - count_minimum
-        - count_perfect
+        - duration_minimum
+        - duration_perfect
       properties:
         workout_type:
           example: BIKING
@@ -623,12 +623,12 @@ components:
         month:
           type: integer
           example: 1
-        count_minimum:
+        duration_minimum:
           type: integer
-          example: 3
-        count_perfect:
+          example: 60
+        duration_perfect:
           type: integer
-          example: 5
+          example: 180
 
     MonthGoalDurationModel:
       type: object
