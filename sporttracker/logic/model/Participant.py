@@ -11,7 +11,7 @@ class Participant(db.Model):  # type: ignore[name-defined]
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
-        return f'Participant(' f'id: {self.id}, ' f'name: {self.name}, ' f'user_id: {self.user_id})'
+        return f'Participant(id: {self.id}, name: {self.name}, user_id: {self.user_id})'
 
 
 workout_participant_association = Table(
