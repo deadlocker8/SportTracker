@@ -261,7 +261,12 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Charts.construct_blueprint())
         app.register_blueprint(Users.construct_blueprint())
         app.register_blueprint(Settings.construct_blueprint())
-        app.register_blueprint(Api.construct_blueprint())
+        app.register_blueprint(
+            Api.construct_blueprint(
+                app.config['GPX_SERVICE'],
+                self._settings['tileHunting'],
+            )
+        )
         app.register_blueprint(Achievements.construct_blueprint())
         app.register_blueprint(Search.construct_blueprint())
         app.register_blueprint(GpxTracks.construct_blueprint(app.config['GPX_SERVICE']))

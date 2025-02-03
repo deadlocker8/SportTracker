@@ -189,7 +189,7 @@ paths:
 
   /api/workouts/distanceWorkout/{workout_id}/addGpxTrack:
     post:
-      summary: Adds a gpx track to a distance-based workout
+      summary: Adds a gpx track to a distance-based workout. An existing gpx track associated with the workout will be replaced!
       tags:
         - distanceWorkout
       parameters:

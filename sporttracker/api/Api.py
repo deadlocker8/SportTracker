@@ -1,6 +1,7 @@
 import logging
+from typing import Any
 
-from flask import Blueprint, jsonify, render_template, redirect, url_for, request
+from flask import Blueprint, jsonify, render_template, redirect, url_for, request, abort
 from flask_login import login_required, current_user
 from pydantic import ValidationError
 
@@ -23,10 +24,11 @@ from sporttracker.api.Mapper import (
     MAPPER_CUSTOM_FIELD,
 )
 from sporttracker.logic import Constants
+from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type
-from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
+from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_workout_by_id
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.FitnessWorkoutCategory import (
     update_workout_categories_by_workout_id,
@@ -44,7 +46,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 API_VERSION = '2.0.0'
 
 
-def construct_blueprint():
+def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, Any]):
     api = Blueprint('api', __name__, static_folder='static', url_prefix='/api')
 
     @api.route('/')
@@ -260,6 +262,34 @@ def construct_blueprint():
         db.session.commit()
 
         return {'id': workout.id}, 200
+
+    @api.route('/workouts/distanceWorkout/<int:workout_id>/addGpxTrack', methods=['POST'])
+    @login_required
+    def addGpxTrack(workout_id: int):
+        workout = get_distance_workout_by_id(workout_id)
+
+        if workout is None:
+            abort(404)
+
+        gpxMetadataId = gpxService.handle_gpx_upload_for_workout(request.files)
+        if gpxMetadataId is None:
+            abort(400)
+
+        gpxService.delete_gpx(workout, current_user.id)
+
+        workout.gpx_metadata_id = gpxMetadataId
+        db.session.add(workout)
+        db.session.commit()
+
+        gpxService.add_visited_tiles_for_workout(
+            workout, tileHuntingSettings['baseZoomLevel'], current_user.id
+        )
+
+        LOGGER.debug(
+            f'Added gpx track {workout.get_gpx_metadata().gpx_file_name} to workout {workout.id}'  # type: ignore[union-attr]
+        )
+
+        return '', 200
 
     @api.route('/workouts/fitnessWorkout')
     @login_required
