@@ -7,11 +7,13 @@ from sporttracker.api.Models import (
     DistanceWorkoutApiModel,
     FitnessWorkoutApiModel,
     ParticipantApiModel,
+    PlannedTourApiModel,
 )
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import Participant
+from sporttracker.logic.model.PlannedTour import PlannedTour
 
 
 class Mapper:
@@ -118,6 +120,16 @@ MAPPER_PARTICIPANT = Mapper(
     ParticipantApiModel,
     {
         'id': lambda source: source.id,
+        'name': lambda source: source.name,
+    },
+)
+
+MAPPER_PLANNED_TOUR = Mapper(
+    PlannedTour,
+    PlannedTourApiModel,
+    {
+        'id': lambda source: source.id,
+        'workout_type': lambda source: source.type.name,
         'name': lambda source: source.name,
     },
 )

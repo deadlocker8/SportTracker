@@ -67,3 +67,10 @@ class FitnessWorkoutApiModel:
 class ParticipantApiModel:
     id: int
     name: str
+
+
+@dataclass
+class PlannedTourApiModel:
+    id: int
+    workout_type: str
+    name: str

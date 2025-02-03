@@ -10,12 +10,15 @@ from sporttracker.api.Mapper import (
     MAPPER_DISTANCE_WORKOUT,
     MAPPER_FITNESS_WORKOUT,
     MAPPER_PARTICIPANT,
+    MAPPER_PLANNED_TOUR,
 )
 from sporttracker.logic import Constants
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import get_participants
+from sporttracker.logic.model.PlannedTour import get_planned_tours
+from sporttracker.logic.model.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -95,11 +98,18 @@ def construct_blueprint():
 
         return jsonify([MAPPER_FITNESS_WORKOUT.map(w) for w in workouts])
 
-    @api.route('//settings/participants')
+    @api.route('/settings/participants')
     @login_required
     def listParticipants():
         participants = get_participants()
 
         return jsonify([MAPPER_PARTICIPANT.map(p) for p in participants])
+
+    @api.route('/plannedTours')
+    @login_required
+    def listPlannedTours():
+        plannedTours = get_planned_tours(WorkoutType.get_distance_workout_types())
+
+        return jsonify([MAPPER_PLANNED_TOUR.map(p) for p in plannedTours])
 
     return api
