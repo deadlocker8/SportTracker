@@ -12,10 +12,12 @@ from sporttracker.api.Mapper import (
     MAPPER_PARTICIPANT,
     MAPPER_PLANNED_TOUR,
     MAPPER_MAINTENANCE,
+    MAPPER_CUSTOM_FIELD,
 )
 from sporttracker.logic import Constants
 from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.logic.QuickFilterState import QuickFilterState
+from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
@@ -107,6 +109,17 @@ def construct_blueprint():
         participants = get_participants()
 
         return jsonify([MAPPER_PARTICIPANT.map(p) for p in participants])
+
+    @api.route('/settings/customFields')
+    @login_required
+    def listCustomFields():
+        customFields = get_custom_fields_by_workout_type()
+
+        result = {}
+        for workoutType, fields in customFields.items():
+            result[workoutType.name] = [MAPPER_CUSTOM_FIELD.map(f) for f in fields]
+
+        return jsonify(result)
 
     @api.route('/plannedTours')
     @login_required

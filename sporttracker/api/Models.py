@@ -85,3 +85,12 @@ class MaintenanceTourApiModel:
     reminder_limit: int
     is_reminder_triggered: bool
     limit_exceeded_distance: int
+
+
+@dataclass
+class CustomFieldApiModel:
+    id: int
+    workout_type: str
+    field_type: str
+    name: str
+    is_required: bool
