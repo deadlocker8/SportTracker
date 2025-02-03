@@ -15,6 +15,7 @@ from flask_babel import Babel
 from flask_login import LoginManager, current_user
 from flask_migrate import upgrade, stamp
 
+from sporttracker.api import Api
 from sporttracker.blueprints import (
     General,
     Authentication,
@@ -37,7 +38,6 @@ from sporttracker.blueprints import (
     MonthGoalsDuration,
     DistanceWorkouts,
     FitnessWorkouts,
-    Api,
 )
 from sporttracker.helpers import Helpers
 from sporttracker.helpers.SettingsChecker import SettingsChecker
@@ -261,7 +261,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Charts.construct_blueprint())
         app.register_blueprint(Users.construct_blueprint())
         app.register_blueprint(Settings.construct_blueprint())
-        app.register_blueprint(Api.construct_blueprint(self._version))
+        app.register_blueprint(Api.construct_blueprint())
         app.register_blueprint(Achievements.construct_blueprint())
         app.register_blueprint(Search.construct_blueprint())
         app.register_blueprint(GpxTracks.construct_blueprint(app.config['GPX_SERVICE']))

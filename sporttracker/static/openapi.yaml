@@ -126,7 +126,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseId'
 
-  /api/monthGoals/addMonthGoalCount:
+  /api/monthGoals/monthGoalCount:
     get:
       summary: Lists all count-based month goals
       tags:
@@ -156,7 +156,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseId'
-  /api/monthGoals/addMonthGoalDuration:
+  /api/monthGoals/monthGoalDuration:
     get:
       summary: Lists all duration-based month goals
       tags:
