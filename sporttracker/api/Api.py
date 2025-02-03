@@ -107,7 +107,6 @@ def construct_blueprint():
     @login_required
     def listParticipants():
         participants = get_participants()
-
         return jsonify([MAPPER_PARTICIPANT.map(p) for p in participants])
 
     @api.route('/settings/customFields')
@@ -125,14 +124,12 @@ def construct_blueprint():
     @login_required
     def listPlannedTours():
         plannedTours = get_planned_tours(WorkoutType.get_distance_workout_types())
-
         return jsonify([MAPPER_PLANNED_TOUR.map(p) for p in plannedTours])
 
     @api.route('/maintenances')
     @login_required
     def listMaintenances():
         maintenancesWithEvents = get_maintenances_with_events(QuickFilterState())
-
         return jsonify([MAPPER_MAINTENANCE.map(m) for m in maintenancesWithEvents])
 
     return api
