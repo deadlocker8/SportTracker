@@ -74,3 +74,14 @@ class PlannedTourApiModel:
     id: int
     workout_type: str
     name: str
+
+
+@dataclass
+class MaintenanceTourApiModel:
+    id: int
+    workout_type: str
+    description: str
+    is_reminder_active: bool
+    reminder_limit: int
+    is_reminder_triggered: bool
+    limit_exceeded_distance: int

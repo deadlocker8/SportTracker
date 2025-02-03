@@ -11,7 +11,7 @@
             {% if maintenance.isLimitExceeded %}
                 <div class="d-flex align-items-center badge text-bg-danger ms-3">
                     <span class="material-symbols-outlined filled fs-5 me-1">warning</span>
-                    <span>{{ maintenance.limitExceededDistance }} km {{ gettext('over limit') }}</span>
+                    <span>{{ maintenance.limitExceededDistance // 1000 }} km {{ gettext('over limit') }}</span>
                 </div>
             {% endif %}
         </div>

@@ -20,6 +20,8 @@ class MaintenanceWithEventsModel:
     id: int
     type: WorkoutType
     description: str
+    isLimitActive: bool
+    limit: int
     isLimitExceeded: bool
     limitExceededDistance: int | None
     events: list[MaintenanceEventInstanceModel]
@@ -53,12 +55,14 @@ def get_maintenances_with_events(
             distanceUntilToday = eventModels[-1].distanceSinceEvent
             if distanceUntilToday >= maintenance.reminder_limit:
                 isLimitExceeded = True
-                limitExceededDistance = (distanceUntilToday - maintenance.reminder_limit) // 1000
+                limitExceededDistance = distanceUntilToday - maintenance.reminder_limit
 
         model = MaintenanceWithEventsModel(
             id=maintenance.id,
             type=maintenance.type,
             description=maintenance.description,
+            isLimitActive=maintenance.is_reminder_active,
+            limit=maintenance.reminder_limit,
             isLimitExceeded=isLimitExceeded,
             limitExceededDistance=limitExceededDistance,
             events=eventModels,

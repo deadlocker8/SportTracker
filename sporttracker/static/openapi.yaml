@@ -730,7 +730,10 @@ components:
           description: Distance in meter for the reminder
         is_reminder_triggered:
           type: boolean
-          description: Is the reminder triggered at the moment (the limit exceeded)?#
+          description: Is the reminder triggered at the moment (the limit exceeded)?
+        limit_exceeded_distance:
+          type: integer
+          description: Distance in meters by which the reminder limit is exceeded
 
     Version:
       type: object

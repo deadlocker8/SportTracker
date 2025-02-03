@@ -11,8 +11,11 @@ from sporttracker.api.Mapper import (
     MAPPER_FITNESS_WORKOUT,
     MAPPER_PARTICIPANT,
     MAPPER_PLANNED_TOUR,
+    MAPPER_MAINTENANCE,
 )
 from sporttracker.logic import Constants
+from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events
+from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
@@ -111,5 +114,12 @@ def construct_blueprint():
         plannedTours = get_planned_tours(WorkoutType.get_distance_workout_types())
 
         return jsonify([MAPPER_PLANNED_TOUR.map(p) for p in plannedTours])
+
+    @api.route('/maintenances')
+    @login_required
+    def listMaintenances():
+        maintenancesWithEvents = get_maintenances_with_events(QuickFilterState())
+
+        return jsonify([MAPPER_MAINTENANCE.map(m) for m in maintenancesWithEvents])
 
     return api
