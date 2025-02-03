@@ -42,3 +42,19 @@ class DistanceWorkoutApiFormModel(BaseModel):
 
     def calculate_start_time(self) -> datetime:
         return datetime.strptime(f'{self.date} {self.start_time}', '%Y-%m-%d %H:%M')
+
+
+class FitnessWorkoutApiFormModel(BaseModel):
+    name: str
+    workout_type: str
+    date: str
+    start_time: str
+    duration: int
+    participants: list[int]
+    fitness_workout_type: str
+    fitness_workout_categories: list[str] | None = None
+    average_heart_rate: int | None = None
+    custom_fields: dict[str, str | int | float] | None = None
+
+    def calculate_start_time(self) -> datetime:
+        return datetime.strptime(f'{self.date} {self.start_time}', '%Y-%m-%d %H:%M')

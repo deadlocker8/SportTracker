@@ -9,6 +9,7 @@ from sporttracker.api.FormModels import (
     MonthGoalCountApiFormModel,
     MonthGoalDurationApiFormModel,
     DistanceWorkoutApiFormModel,
+    FitnessWorkoutApiFormModel,
 )
 from sporttracker.api.Mapper import (
     MAPPER_MONTH_GOAL_DISTANCE,
@@ -27,6 +28,11 @@ from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
+from sporttracker.logic.model.FitnessWorkoutCategory import (
+    update_workout_categories_by_workout_id,
+    FitnessWorkoutCategoryType,
+)
+from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import get_participants, get_participants_by_ids
 from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_tour_by_id
@@ -193,9 +199,8 @@ def construct_blueprint():
         if workoutType not in WorkoutType.get_distance_workout_types():
             return jsonify(
                 {
-                    'error': f"workout_type '{form.workout_type}' is not allowed for distance workouts "
-                    f'month goals, allowed types: '
-                    f'{[w.name for w in WorkoutType.get_distance_workout_types()]}'
+                    'error': f"workout_type '{form.workout_type}' is not allowed for distance workouts,"
+                    f'allowed types: {[w.name for w in WorkoutType.get_distance_workout_types()]}'
                 }
             ), 400
 
@@ -239,6 +244,49 @@ def construct_blueprint():
         )
 
         return jsonify([MAPPER_FITNESS_WORKOUT.map(w) for w in workouts])
+
+    @api.route('/workouts/fitnessWorkout', methods=['POST'])
+    @login_required
+    def addFitnessWorkout():
+        try:
+            form = FitnessWorkoutApiFormModel.model_validate_json(request.data)
+        except ValidationError as e:
+            return jsonify({'error': str(e)}), 400
+
+        workoutType = WorkoutType(form.workout_type)  # type: ignore[call-arg]
+
+        if workoutType not in WorkoutType.get_fitness_workout_types():
+            return jsonify(
+                {
+                    'error': f"workout_type '{form.workout_type}' is not allowed for fitness workouts, "
+                    f'allowed types: {[w.name for w in WorkoutType.get_fitness_workout_types()]}'
+                }
+            ), 400
+
+        workout = FitnessWorkout(
+            name=form.name,
+            type=workoutType,
+            start_time=form.calculate_start_time(),
+            duration=form.duration,
+            average_heart_rate=form.average_heart_rate,
+            custom_fields={} if form.custom_fields is None else form.custom_fields,
+            participants=get_participants_by_ids(form.participants),
+            fitness_workout_type=FitnessWorkoutType(form.fitness_workout_type),
+            user_id=current_user.id,
+        )
+
+        LOGGER.debug(f'Saved new distance workout via api: {workout}')
+        db.session.add(workout)
+        db.session.commit()
+
+        if form.fitness_workout_categories is not None:
+            fitnessWorkoutCategories = [
+                FitnessWorkoutCategoryType(item)  # type: ignore[call-arg]
+                for item in form.fitness_workout_categories
+            ]
+            update_workout_categories_by_workout_id(workout.id, fitnessWorkoutCategories)
+
+        return {'id': workout.id}, 200
 
     @api.route('/settings/participants')
     @login_required
