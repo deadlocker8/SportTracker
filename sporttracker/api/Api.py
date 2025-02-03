@@ -81,7 +81,14 @@ def construct_blueprint():
         except ValidationError as e:
             return jsonify({'error': str(e)}), 400
 
-        workoutType = WorkoutType(form.workout_type)  # type: ignore[call-arg]
+        errorMessageWorkoutType = (
+            f"workout_type '{form.workout_type}' is not a valid workout type, "
+            f'allowed types: {[w.name for w in WorkoutType.get_distance_workout_types()]}'
+        )
+        try:
+            workoutType = WorkoutType(form.workout_type)  # type: ignore[call-arg]
+        except ValueError:
+            return jsonify({'error': errorMessageWorkoutType}), 400
 
         if workoutType not in WorkoutType.get_distance_workout_types():
             return jsonify(
@@ -126,8 +133,17 @@ def construct_blueprint():
         except ValidationError as e:
             return jsonify({'error': str(e)}), 400
 
+        errorMessageWorkoutType = (
+            f"workout_type '{form.workout_type}' is not a valid workout type, "
+            f'allowed types: {[w.name for w in WorkoutType]}'
+        )
+        try:
+            workoutType = WorkoutType(form.workout_type)  # type: ignore[call-arg]
+        except ValueError:
+            return jsonify({'error': errorMessageWorkoutType}), 400
+
         monthGoal = MonthGoalCount(
-            type=WorkoutType(form.workout_type),  # type: ignore[call-arg]
+            type=workoutType,
             year=form.year,
             month=form.month,
             count_minimum=form.count_minimum,
@@ -160,8 +176,17 @@ def construct_blueprint():
         except ValidationError as e:
             return jsonify({'error': str(e)}), 400
 
+        errorMessageWorkoutType = (
+            f"workout_type '{form.workout_type}' is not a valid workout type, "
+            f'allowed types: {[w.name for w in WorkoutType]}'
+        )
+        try:
+            workoutType = WorkoutType(form.workout_type)  # type: ignore[call-arg]
+        except ValueError:
+            return jsonify({'error': errorMessageWorkoutType}), 400
+
         monthGoal = MonthGoalDuration(
-            type=WorkoutType(form.workout_type),  # type: ignore[call-arg]
+            type=workoutType,
             year=form.year,
             month=form.month,
             duration_minimum=form.duration_minimum,
@@ -194,15 +219,17 @@ def construct_blueprint():
         except ValidationError as e:
             return jsonify({'error': str(e)}), 400
 
-        workoutType = WorkoutType(form.workout_type)  # type: ignore[call-arg]
+        errorMessageWorkoutType = (
+            f"workout_type '{form.workout_type}' is not allowed for distance workouts, "
+            f'allowed types: {[w.name for w in WorkoutType.get_distance_workout_types()]}'
+        )
+        try:
+            workoutType = WorkoutType(form.workout_type)  # type: ignore[call-arg]
+        except ValueError:
+            return jsonify({'error': errorMessageWorkoutType}), 400
 
         if workoutType not in WorkoutType.get_distance_workout_types():
-            return jsonify(
-                {
-                    'error': f"workout_type '{form.workout_type}' is not allowed for distance workouts,"
-                    f'allowed types: {[w.name for w in WorkoutType.get_distance_workout_types()]}'
-                }
-            ), 400
+            return jsonify({'error': errorMessageWorkoutType}), 400
 
         plannedTour = None
         if form.planned_tour_id is not None:
@@ -253,15 +280,40 @@ def construct_blueprint():
         except ValidationError as e:
             return jsonify({'error': str(e)}), 400
 
-        workoutType = WorkoutType(form.workout_type)  # type: ignore[call-arg]
+        errorMessageWorkoutType = (
+            f"workout_type '{form.workout_type}' is not allowed for fitness workouts, "
+            f'allowed types: {[w.name for w in WorkoutType.get_fitness_workout_types()]}'
+        )
+        try:
+            workoutType = WorkoutType(form.workout_type)  # type: ignore[call-arg]
+        except ValueError:
+            return jsonify({'error': errorMessageWorkoutType}), 400
 
         if workoutType not in WorkoutType.get_fitness_workout_types():
+            return jsonify({'error': errorMessageWorkoutType}), 400
+
+        try:
+            fitnessWorkoutType = FitnessWorkoutType(form.fitness_workout_type)  # type: ignore[call-arg]
+        except ValueError:
             return jsonify(
                 {
-                    'error': f"workout_type '{form.workout_type}' is not allowed for fitness workouts, "
-                    f'allowed types: {[w.name for w in WorkoutType.get_fitness_workout_types()]}'
+                    'error': f"fitness_workout_type '{form.fitness_workout_type}' is not a valid type, "
+                    f'allowed types: {[w.name for w in FitnessWorkoutType]}'
                 }
             ), 400
+
+        fitnessWorkoutCategories = []
+        if form.fitness_workout_categories is not None:
+            for category in form.fitness_workout_categories:
+                try:
+                    fitnessWorkoutCategories.append(FitnessWorkoutCategoryType(category))  # type: ignore[call-arg]
+                except ValueError:
+                    return jsonify(
+                        {
+                            'error': f"fitness_workout_categories contain invalid type '{category}', "
+                            f'allowed types: {[w.name for w in FitnessWorkoutCategoryType]}'
+                        }
+                    ), 400
 
         workout = FitnessWorkout(
             name=form.name,
@@ -271,7 +323,7 @@ def construct_blueprint():
             average_heart_rate=form.average_heart_rate,
             custom_fields={} if form.custom_fields is None else form.custom_fields,
             participants=get_participants_by_ids(form.participants),
-            fitness_workout_type=FitnessWorkoutType(form.fitness_workout_type),
+            fitness_workout_type=fitnessWorkoutType,
             user_id=current_user.id,
         )
 
@@ -279,11 +331,7 @@ def construct_blueprint():
         db.session.add(workout)
         db.session.commit()
 
-        if form.fitness_workout_categories is not None:
-            fitnessWorkoutCategories = [
-                FitnessWorkoutCategoryType(item)  # type: ignore[call-arg]
-                for item in form.fitness_workout_categories
-            ]
+        if fitnessWorkoutCategories:
             update_workout_categories_by_workout_id(workout.id, fitnessWorkoutCategories)
 
         return {'id': workout.id}, 200
