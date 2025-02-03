@@ -11,7 +11,7 @@
 - fix: maintenance events for fitness workouts now only show dates and time difference and no distances (#163)
 - fix: maintenance reminders are now only allowed for distance-based workouts (#170)
 - fix: charts are now shown correctly even if no workouts exist (#169)
-- chore: update dependencies (#167)
+- chore: update dependencies (#164, #167)
 
 # 1.32.0 - (01.01.25)
 - add: maintenance reminders: for each maintenance an optional reminder can be activated. If a maintenance exceeds the given reminder limit you will be notified in the navbar and on the maintenance page (#149)
