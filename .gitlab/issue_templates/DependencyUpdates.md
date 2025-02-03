@@ -1,0 +1,15 @@
+- [ ] update python dependencies
+  - if new ruff version:
+    - update in `pyproject.toml`
+      - update in `.pre-commit-config.yaml`
+      - run `poetry install`
+      - run `pre-commit install`
+- [ ] update js dependencies
+  - [ ] bootstrap
+  - [ ] fontawesome
+  - [ ] jquery
+  - [ ] mousetrap
+  - [ ] plotly
+- [ ] update Google Material Symbols
+- [ ] update georender
+- [ ] update changelog
