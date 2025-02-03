@@ -2,6 +2,7 @@
 - [ ] update localization
 - [ ] update icon overview 
 - [ ] database migration
+- [ ] update API
 - [ ] add dummy data
 - [ ] update README
 - [ ] update changelog
