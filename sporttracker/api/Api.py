@@ -7,9 +7,15 @@ from sporttracker.api.Mapper import (
     MAPPER_MONTH_GOAL_DISTANCE,
     MAPPER_MONTH_GOAL_COUNT,
     MAPPER_MONTH_GOAL_DURATION,
+    MAPPER_DISTANCE_WORKOUT,
+    MAPPER_FITNESS_WORKOUT,
+    MAPPER_PARTICIPANT,
 )
 from sporttracker.logic import Constants
+from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
+from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
+from sporttracker.logic.model.Participant import get_participants
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -66,5 +72,34 @@ def construct_blueprint():
         )
 
         return jsonify([MAPPER_MONTH_GOAL_DURATION.map(m) for m in monthGoals])
+
+    @api.route('/workouts/distanceWorkout')
+    @login_required
+    def listDistanceWorkout():
+        workouts = (
+            DistanceWorkout.query.filter(DistanceWorkout.user_id == current_user.id)
+            .order_by(DistanceWorkout.start_time.asc())
+            .all()
+        )
+
+        return jsonify([MAPPER_DISTANCE_WORKOUT.map(w) for w in workouts])
+
+    @api.route('/workouts/fitnessWorkout')
+    @login_required
+    def listFitnessWorkout():
+        workouts = (
+            FitnessWorkout.query.filter(FitnessWorkout.user_id == current_user.id)
+            .order_by(FitnessWorkout.start_time.asc())
+            .all()
+        )
+
+        return jsonify([MAPPER_FITNESS_WORKOUT.map(w) for w in workouts])
+
+    @api.route('//settings/participants')
+    @login_required
+    def listParticipants():
+        participants = get_participants()
+
+        return jsonify([MAPPER_PARTICIPANT.map(p) for p in participants])
 
     return api

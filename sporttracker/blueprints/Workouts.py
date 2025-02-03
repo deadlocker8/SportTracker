@@ -22,6 +22,8 @@ from sporttracker.logic.model.DistanceWorkout import (
     get_available_years,
 )
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
+from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCategoryType
+from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.MaintenanceEventInstance import (
     MaintenanceEvent,
@@ -87,8 +89,8 @@ class DistanceWorkoutModel(BaseWorkoutModel):
 
 @dataclass
 class FitnessWorkoutModel(BaseWorkoutModel):
-    fitnessWorkoutCategories: list[str]
-    fitnessWorkoutType: str | None = None
+    fitnessWorkoutCategories: list[FitnessWorkoutCategoryType]
+    fitnessWorkoutType: FitnessWorkoutType | None = None
 
     @staticmethod
     def create_from_workout(

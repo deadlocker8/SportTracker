@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class MonthGoalDistanceModel:
+class MonthGoalDistanceApiModel:
     id: int
     workout_type: str
     year: int
@@ -12,7 +12,7 @@ class MonthGoalDistanceModel:
 
 
 @dataclass
-class MonthGoalCountModel:
+class MonthGoalCountApiModel:
     id: int
     workout_type: str
     year: int
@@ -22,10 +22,48 @@ class MonthGoalCountModel:
 
 
 @dataclass
-class MonthGoalDurationModel:
+class MonthGoalDurationApiModel:
     id: int
     workout_type: str
     year: int
     month: int
     duration_minimum: int
     duration_perfect: int
+
+
+@dataclass
+class DistanceWorkoutApiModel:
+    id: int
+    workout_type: str
+    name: str
+    date: str
+    start_time: str
+    duration: int
+    average_heart_rate: int
+    participants: list[int]
+    distance: int
+    elevation_sum: int
+    planned_tour_id: int
+    has_gpx: bool
+    custom_fields: dict[str, str | int | float]
+
+
+@dataclass
+class FitnessWorkoutApiModel:
+    id: int
+    workout_type: str
+    name: str
+    date: str
+    start_time: str
+    duration: int
+    average_heart_rate: int
+    participants: list[int]
+    fitness_workout_type: str
+    fitness_workout_categories: list[str]
+    custom_fields: dict[str, str | int | float]
+
+
+@dataclass
+class ParticipantApiModel:
+    id: int
+    name: str

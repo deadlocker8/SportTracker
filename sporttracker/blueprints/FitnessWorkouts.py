@@ -25,7 +25,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 class FitnessWorkoutFormModel(BaseWorkoutFormModel):
     fitnessWorkoutType: str
-    fitnessWorkoutCategories: list[str] | str | None = None
+    fitnessWorkoutCategories: list[str] | str | None | list[FitnessWorkoutCategoryType] = None
 
     model_config = ConfigDict(
         extra='allow',

@@ -315,8 +315,7 @@ components:
           example: 11:23
           description: Workout start time in the format HH:MM
         distance:
-          type: number
-          format: float
+          type: integer
           description: Workout distance in meters
         duration:
           type: integer
@@ -364,8 +363,7 @@ components:
           example: 11:23
           description: Workout start time in the format HH:MM
         distance:
-          type: number
-          format: float
+          type: integer
           description: Workout distance in meters
         duration:
           type: integer
