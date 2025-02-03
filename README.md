@@ -131,6 +131,11 @@ Where http://localhost:3000 is the address and port number of your georender ins
 - English
 
 
+## API
+SportTracker offers a basic REST-API for the most common use-cases.  
+The corresponding swagger-ui is available at `/api/docs`
+
+
 ## Run SportTracker
 1. Install dependencies via `poetry install --no-root --without dev`
 2. Copy `settings-example.json` to `settings.json` and adjust to your configuration
