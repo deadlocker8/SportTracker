@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from flask_login import current_user
+from sqlalchemy import func, asc
 
 from sporttracker.blueprints.MaintenanceEventInstances import MaintenanceEventInstanceModel
 from sporttracker.logic.QuickFilterState import QuickFilterState
@@ -32,7 +33,7 @@ def get_maintenances_with_events(
 ) -> list[MaintenanceWithEventsModel]:
     maintenanceList = (
         Maintenance.query.filter(Maintenance.user_id == current_user.id)
-        .order_by(Maintenance.description.asc())
+        .order_by(asc(func.lower(Maintenance.description)))
         .all()
     )
 

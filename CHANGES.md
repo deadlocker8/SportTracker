@@ -11,6 +11,7 @@
 - fix: maintenance events for fitness workouts now only show dates and time difference and no distances (#163)
 - fix: maintenance reminders are now only allowed for distance-based workouts (#170)
 - fix: charts are now shown correctly even if no workouts exist (#169)
+- fix: sorting of planned tours (#172)
 - chore: update dependencies (#164, #167)
 
 # 1.32.0 - (01.01.25)

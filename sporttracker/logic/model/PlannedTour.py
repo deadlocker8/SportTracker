@@ -2,7 +2,7 @@ import enum
 
 from flask_babel import gettext
 from flask_login import current_user
-from sqlalchemy import Integer, DateTime, String, Table, Column, ForeignKey
+from sqlalchemy import Integer, DateTime, String, Table, Column, ForeignKey, asc, func
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 from sqlalchemy.sql import or_
 
@@ -197,7 +197,7 @@ def get_planned_tours(workoutTypes: list[WorkoutType]) -> list[PlannedTour]:
             )
         )
         .filter(PlannedTour.type.in_(workoutTypes))
-        .order_by(PlannedTour.name.asc())
+        .order_by(asc(func.lower(PlannedTour.name)))
         .all()
     )
 

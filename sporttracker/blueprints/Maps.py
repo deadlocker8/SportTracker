@@ -7,7 +7,7 @@ import flask_babel
 from PIL import ImageColor
 from flask import Blueprint, render_template, abort, url_for, session, redirect, request, Response
 from flask_login import login_required, current_user
-from sqlalchemy import func, extract, or_
+from sqlalchemy import func, extract, or_, asc
 
 from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Workouts import DistanceWorkoutModel
@@ -224,7 +224,7 @@ def construct_blueprint(
                 )
             )
             .filter(PlannedTour.type.in_(quickFilterState.get_active_distance_workout_types()))
-            .order_by(PlannedTour.name.asc())
+            .order_by(asc(func.lower(PlannedTour.name)))
             .all()
         )
 

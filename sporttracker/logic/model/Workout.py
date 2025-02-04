@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from flask_login import current_user
-from sqlalchemy import Integer, String, DateTime, extract, func
+from sqlalchemy import Integer, String, DateTime, extract, func, asc
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
@@ -126,7 +126,7 @@ def get_workout_names_by_type(workoutType: WorkoutType) -> list[str]:
         .filter(Workout.user_id == current_user.id)
         .filter(Workout.type == workoutType)
         .distinct()
-        .order_by(Workout.name.asc())
+        .order_by(asc(func.lower(Workout.name)))
         .all()
     )
 

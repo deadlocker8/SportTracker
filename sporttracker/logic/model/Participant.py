@@ -1,5 +1,5 @@
 from flask_login import current_user
-from sqlalchemy import Integer, String, Column, ForeignKey, Table
+from sqlalchemy import Integer, String, Column, ForeignKey, Table, asc, func
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.model.db import db
@@ -34,6 +34,6 @@ def get_participants_by_ids(ids: list[int]) -> list[Participant]:
 def get_participants() -> list[Participant]:
     return (
         Participant.query.filter(Participant.user_id == current_user.id)
-        .order_by(Participant.name.asc())
+        .order_by(asc(func.lower(Participant.name)))
         .all()
     )
