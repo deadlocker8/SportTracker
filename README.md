@@ -170,6 +170,7 @@ Python dependencies can be found in `pyproject.toml` and corresponding `poetry.l
 ### Additional dependencies
 - Google Material Symbols https://fonts.google.com/icons
 - Font Awesome Icons https://fontawesome.com/
+- OpenStreetMap https://www.openstreetmap.org/about
 
 ### Icons / Images
 - bike icon by Google Material Icons https://fonts.google.com/icons?selected=Material%20Icons%3Adirections_bike%3A
