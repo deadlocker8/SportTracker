@@ -125,7 +125,7 @@ def get_workout_names_by_type(workoutType: WorkoutType) -> list[str]:
         Workout.query.with_entities(Workout.name)
         .filter(Workout.user_id == current_user.id)
         .filter(Workout.type == workoutType)
-        .distinct()
+        .group_by(Workout.name)
         .order_by(asc(func.lower(Workout.name)))
         .all()
     )
