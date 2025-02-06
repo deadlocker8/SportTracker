@@ -606,7 +606,7 @@
                 {% for availableType in availableTypes %}
                     <input type="checkbox" class="btn-check" name="{{ inputName }}" id="{{ identifier }}-{{ loop.index }}"
                            autocomplete="off"
-                           {% if availableType.name in selectedValues %}checked{% endif %}
+                           {% if availableType in selectedValues %}checked{% endif %}
                            value="{{ availableType.name }}">
                     <label class="btn btn-outline-light btn-outline-purple d-flex align-items-center"
                            for="{{ identifier }}-{{ loop.index }}">
