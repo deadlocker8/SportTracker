@@ -1,6 +1,6 @@
 # 1.33.0 - (XX.XX.XX)
 - BREAKING CHANGE: Big refactoring for cleaner database structure. All data is automatically migrated upon start. (#160)
-- BREAKING CHANGE: API v2.0.0 - Complete rewrite of the API (#166)
+- BREAKING CHANGE: API v2.0.0 - Complete rewrite of the API (now available at /api/v2) (#166)
 - add: workouts: new field to store the workout type (duration-based or repetition-based) (#158)
 - add: workouts: new field to store one or more workout categories (arms, legs, core, etc.) (#159)
 - add: single workout map: add option to only highlight new visited tiles (#144)

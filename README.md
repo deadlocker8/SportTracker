@@ -133,7 +133,7 @@ Where http://localhost:3000 is the address and port number of your georender ins
 
 ## API
 SportTracker offers a basic REST-API for the most common use-cases.  
-The corresponding swagger-ui is available at `/api/docs`
+The corresponding swagger-ui is available at `/api/v2/docs`
 
 
 ## Run SportTracker

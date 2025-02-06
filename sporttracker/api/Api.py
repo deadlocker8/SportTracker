@@ -47,7 +47,7 @@ API_VERSION = '2.0.0'
 
 
 def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, Any]):
-    api = Blueprint('api', __name__, static_folder='static', url_prefix='/api')
+    api = Blueprint('api', __name__, static_folder='static', url_prefix='/api/v2')
 
     @api.route('/')
     @login_required

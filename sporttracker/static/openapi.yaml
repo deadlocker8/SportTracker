@@ -21,7 +21,7 @@ paths:
         200:
           description: "Okay"
 
-  /api/version:
+  /api/v2/version:
     get:
      responses:
         200:
@@ -33,7 +33,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Version'
 
-  /api/workouts/distanceWorkout:
+  /api/v2/workouts/distanceWorkout:
     get:
       summary: Lists all distance-based workouts
       tags:
@@ -64,7 +64,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseId'
 
-  /api/workouts/fitnessWorkout:
+  /api/v2/workouts/fitnessWorkout:
     get:
       summary: Lists all fitness workouts
       tags:
@@ -95,7 +95,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseId'
 
-  /api/monthGoals/monthGoalDistance:
+  /api/v2/monthGoals/monthGoalDistance:
     get:
       summary: Lists all distance-based month goals
       tags:
@@ -126,7 +126,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseId'
 
-  /api/monthGoals/monthGoalCount:
+  /api/v2/monthGoals/monthGoalCount:
     get:
       summary: Lists all count-based month goals
       tags:
@@ -156,7 +156,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseId'
-  /api/monthGoals/monthGoalDuration:
+  /api/v2/monthGoals/monthGoalDuration:
     get:
       summary: Lists all duration-based month goals
       tags:
@@ -187,7 +187,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseId'
 
-  /api/workouts/distanceWorkout/{workout_id}/addGpxTrack:
+  /api/v2/workouts/distanceWorkout/{workout_id}/addGpxTrack:
     post:
       summary: Adds a gpx track to a distance-based workout. An existing gpx track associated with the workout will be replaced!
       tags:
@@ -211,7 +211,7 @@ paths:
         200:
           description: "Okay"
 
-  /api/settings/participants:
+  /api/v2/settings/participants:
     summary: Lists all available participants
     get:
       tags:
@@ -226,7 +226,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Participant'
 
-  /api/settings/customFields:
+  /api/v2/settings/customFields:
     get:
       summary: Lists all custom fields per workout type
       tags:
@@ -256,7 +256,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/CustomField'
 
-  /api/plannedTours:
+  /api/v2/plannedTours:
     get:
       summary: Lists all planned tours
       tags:
@@ -271,7 +271,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/PlannedTour'
 
-  /api/maintenances:
+  /api/v2/maintenances:
     get:
       summary: Lists all maintenances and if their reminder is triggered
       tags:

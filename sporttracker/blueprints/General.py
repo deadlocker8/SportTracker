@@ -53,4 +53,9 @@ def construct_blueprint():
     def icons():
         return render_template('icons.jinja2')
 
+    @general.route('/api')
+    @login_required
+    def api():
+        return redirect(url_for('api.docs'))
+
     return general
