@@ -1,3 +1,6 @@
+# 1.33.1 - (08.02.25)
+- fix: fix quick filter state (prevents page load with old login session)
+
 # 1.33.0 - (04.02.25)
 - BREAKING CHANGE: Big refactoring for cleaner database structure. All data is automatically migrated upon start. (#160)
 - BREAKING CHANGE: API v2.0.0 - Complete rewrite of the API (now available at /api/v2) (#166)
