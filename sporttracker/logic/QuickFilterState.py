@@ -37,10 +37,14 @@ class QuickFilterState:
 
     @staticmethod
     def from_json(jsonString: str) -> QuickFilterState:
-        states = {
-            WorkoutType(workoutType): isActive  # type: ignore[call-arg]
-            for workoutType, isActive in json.loads(jsonString).items()
-        }
+        states = {}
+        for workoutTypeName, isActive in json.loads(jsonString).items():
+            try:
+                workoutType = WorkoutType(workoutTypeName)  # type: ignore[call-arg]
+                states[workoutType] = isActive
+            except ValueError:
+                pass
+
         quickFilterState = QuickFilterState()
         quickFilterState.set_states(states)
         return quickFilterState
