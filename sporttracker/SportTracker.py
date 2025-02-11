@@ -3,6 +3,7 @@ import os
 import secrets
 import string
 from datetime import datetime
+from http import HTTPStatus
 from typing import Any
 
 import click
@@ -10,12 +11,13 @@ import flask_babel
 from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
 from TheCodeLabs_FlaskUtils import FlaskBaseApp
 from alembic.runtime.migration import MigrationContext
-from flask import Flask, request
+from flask import Flask, request, abort, redirect, url_for
 from flask_babel import Babel
 from flask_login import LoginManager, current_user
 from flask_migrate import upgrade, stamp
 
 from sporttracker.api import Api
+from sporttracker.api.Api import API_BLUEPRINT_NAME
 from sporttracker.blueprints import (
     General,
     Authentication,
@@ -209,6 +211,14 @@ class SportTracker(FlaskBaseApp):
         @login_manager.user_loader
         def load_user(user_id):
             return db.session.get(User, int(user_id))
+
+        @login_manager.unauthorized_handler
+        def unauthorized():
+            if request.blueprint == API_BLUEPRINT_NAME:
+                if request.endpoint not in ['api.apiIndex', 'api.docs']:
+                    abort(HTTPStatus.UNAUTHORIZED)
+
+            return redirect(url_for('authentication.login', next=request.url))
 
         app.config['LANGUAGES'] = {
             Language.ENGLISH.shortCode: Language.ENGLISH.localized_name,

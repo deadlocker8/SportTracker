@@ -1,11 +1,11 @@
 openapi: 3.0.3
 info:
   title: Sport-Tracker-API
-  version: 2.0.0
+  version: 2.1.0
 servers:
   - url: 'http://localhost:10022'
 paths:
-  /login:
+  /api/v2/login:
     post:
       requestBody:
         content:
@@ -20,6 +20,10 @@ paths:
       responses:
         200:
           description: "Okay"
+        400:
+          description: "Bad request. Username or password missing."
+        401:
+          description: "Unauthorized. Unknown user or wrong password."
 
   /api/v2/version:
     get:

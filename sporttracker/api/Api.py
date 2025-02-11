@@ -2,7 +2,8 @@ import logging
 from typing import Any
 
 from flask import Blueprint, jsonify, render_template, redirect, url_for, request, abort
-from flask_login import login_required, current_user
+from flask_bcrypt import Bcrypt
+from flask_login import login_required, current_user, login_user
 from pydantic import ValidationError
 
 from sporttracker.api.FormModels import (
@@ -38,16 +39,19 @@ from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import get_participants, get_participants_by_ids
 from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_tour_by_id
+from sporttracker.logic.model.User import User
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
-API_VERSION = '2.0.0'
+API_VERSION = '2.1.0'
+
+API_BLUEPRINT_NAME = 'api'
 
 
 def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, Any]):
-    api = Blueprint('api', __name__, static_folder='static', url_prefix='/api/v2')
+    api = Blueprint(API_BLUEPRINT_NAME, __name__, static_folder='static', url_prefix='/api/v2')
 
     @api.route('/')
     @login_required
@@ -63,6 +67,31 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
     @login_required
     def docs():
         return render_template('swaggerui/swaggerui.jinja2')
+
+    @api.route('/login', methods=['POST'])
+    def login():
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        if username is None:
+            return '', 400
+
+        username = username.strip().lower()
+
+        if password is None:
+            return '', 400
+
+        password = password.strip()
+
+        user = User.query.filter_by(username=username).first()
+        if user is None:
+            return '', 401
+
+        if not Bcrypt().check_password_hash(user.password, password):
+            return '', 401
+
+        login_user(user, remember=False)
+        return '', 200
 
     @api.route('/monthGoals/monthGoalDistance')
     @login_required
