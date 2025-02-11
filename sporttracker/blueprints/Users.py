@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from flask import Blueprint, render_template, redirect, url_for, abort
 from flask_bcrypt import Bcrypt
-from flask_login import login_required
+from flask_login import fresh_login_required
 from flask_pydantic import validate
 from pydantic import BaseModel
 from sqlalchemy import asc, func
@@ -43,7 +43,7 @@ def construct_blueprint():
 
     @users.route('/')
     @admin_role_required
-    @login_required
+    @fresh_login_required
     def listUsers():
         allUsers = User.query.order_by(asc(func.lower(User.username))).all()
 
@@ -51,13 +51,13 @@ def construct_blueprint():
 
     @users.route('/add')
     @admin_role_required
-    @login_required
+    @fresh_login_required
     def add():
         return render_template('users/userForm.jinja2')
 
     @users.route('/post', methods=['POST'])
     @admin_role_required
-    @login_required
+    @fresh_login_required
     @validate()
     def addPost(form: NewUserFormModel):
         username = form.username.strip().lower()
@@ -86,7 +86,7 @@ def construct_blueprint():
 
     @users.route('/edit/<int:user_id>')
     @admin_role_required
-    @login_required
+    @fresh_login_required
     def edit(user_id: int):
         user = User.query.filter(User.id == user_id).first()
 
@@ -99,7 +99,7 @@ def construct_blueprint():
 
     @users.route('/edit/<int:user_id>', methods=['POST'])
     @admin_role_required
-    @login_required
+    @fresh_login_required
     @validate()
     def editPost(user_id: int, form: EditUserFormModel):
         user = User.query.filter(User.id == user_id).first()
@@ -146,7 +146,7 @@ def construct_blueprint():
 
     @users.route('/delete/<int:user_id>')
     @admin_role_required
-    @login_required
+    @fresh_login_required
     def delete(user_id: int):
         user = User.query.filter(User.id == user_id).first()
 

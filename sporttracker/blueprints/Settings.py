@@ -4,7 +4,7 @@ from gettext import gettext
 
 from flask import Blueprint, render_template, redirect, url_for, abort, flash
 from flask_bcrypt import Bcrypt
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, fresh_login_required
 from flask_pydantic import validate
 from pydantic import BaseModel, field_validator, ConfigDict
 
@@ -112,7 +112,7 @@ def construct_blueprint():
         return tileRenderUrl
 
     @settings.route('/editSelfPost', methods=['POST'])
-    @login_required
+    @fresh_login_required
     @validate()
     def editSelfPost(form: EditSelfUserFormModel):
         user = User.query.filter(User.id == current_user.id).first()
