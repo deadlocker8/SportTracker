@@ -74,6 +74,36 @@ class TestAuthentication:
         assert 'Login' not in responseData
         assert 'Workouts' in responseData
 
+    def test_login_post_correct_credentials_next_param_should_redirect_to_next_url(self, client):
+        response = client.post(
+            '/login',
+            follow_redirects=True,
+            data={
+                'username': TEST_USERNAME,
+                'password': TEST_PASSWORD,
+                'next': 'http://localhost/plannedTours',
+            },
+        )
+        assert response.status_code == 200
+        responseData = response.data.decode('utf-8')
+        assert 'Login' not in responseData
+        assert 'Planned Tours' in responseData
+
+    def test_login_post_correct_credentials_next_param_wrong_url_redirect_to_index(self, client):
+        response = client.post(
+            '/login',
+            follow_redirects=True,
+            data={
+                'username': TEST_USERNAME,
+                'password': TEST_PASSWORD,
+                'next': 'http://example.com/plannedTours',
+            },
+        )
+        assert response.status_code == 200
+        responseData = response.data.decode('utf-8')
+        assert 'Login' not in responseData
+        assert 'Workouts' in responseData
+
     def test_logout_should_redirect_to_index(self, client):
         with client:
             response = client.post(

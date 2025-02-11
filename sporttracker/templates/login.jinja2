@@ -24,6 +24,8 @@
                     <input type="password" id="password" name="password" class="form-control mb-4"
                            placeholder="Password" required="">
 
+                    <input type="hidden" name="next" value="{{ request.args.get('next', '') }}"/>
+
                     <button class="w-100 my-3 btn btn-lg btn-primary" type="submit">Login</button>
 
                     {% if message %}

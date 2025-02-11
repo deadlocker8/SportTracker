@@ -3,6 +3,7 @@ from flask_babel import gettext
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, logout_user, login_required, current_user
 
+from sporttracker.helpers.Helpers import is_allowed_redirect_url
 from sporttracker.logic.model.User import User
 
 
@@ -40,6 +41,11 @@ def construct_blueprint():
             return render_template('login.jinja2', message=gettext('Incorrect password'))
 
         login_user(user, remember=True)
+
+        nextUrl = request.form.get('next', None)
+        if is_allowed_redirect_url(nextUrl, request.host):
+            return redirect(nextUrl or url_for('general.index'))
+
         return redirect(url_for('general.index'))
 
     @authentication.route('/logout')
