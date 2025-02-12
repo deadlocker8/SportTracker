@@ -73,7 +73,7 @@
             <div class="fs-5 text-center">{{ render_workout_unit(workout.fitnessWorkoutCategories[0].get_localized_name()) }}</div>
         {% elif workout.fitnessWorkoutCategories|length > 1 %}
             <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">fitness_center</span>
-            <div class="fs-5 text-center">{{ gettext('Mixed') }}</div>
+            <div class="fs-5 text-center">{{ render_workout_unit(gettext('Mixed')) }}</div>
         {% endif %}
     </div>
 {%- endmacro %}
