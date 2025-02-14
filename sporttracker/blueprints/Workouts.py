@@ -65,7 +65,7 @@ class DistanceWorkoutModel(BaseWorkoutModel):
     distance: int
     elevation_sum: int | None
     gpx_metadata: GpxMetadata | None
-    shareCode: str | None
+    share_code: str | None
 
     @staticmethod
     def create_from_workout(
@@ -82,15 +82,15 @@ class DistanceWorkoutModel(BaseWorkoutModel):
             elevation_sum=workout.elevation_sum,
             gpx_metadata=workout.get_gpx_metadata(),
             participants=[str(item.id) for item in workout.participants],
-            shareCode=workout.share_code,
+            share_code=workout.share_code,
             ownerName=get_user_by_id(workout.user_id).username,
         )
 
 
 @dataclass
 class FitnessWorkoutModel(BaseWorkoutModel):
-    fitnessWorkoutCategories: list[FitnessWorkoutCategoryType]
-    fitnessWorkoutType: FitnessWorkoutType | None = None
+    fitness_workout_categories: list[FitnessWorkoutCategoryType]
+    fitness_workout_type: FitnessWorkoutType | None = None
 
     @staticmethod
     def create_from_workout(
@@ -105,8 +105,8 @@ class FitnessWorkoutModel(BaseWorkoutModel):
             average_heart_rate=workout.average_heart_rate,
             participants=[str(item.id) for item in workout.participants],
             ownerName=get_user_by_id(workout.user_id).username,
-            fitnessWorkoutCategories=workout.get_workout_categories(),
-            fitnessWorkoutType=workout.fitness_workout_type,
+            fitness_workout_categories=workout.get_workout_categories(),
+            fitness_workout_type=workout.fitness_workout_type,
         )
 
 
@@ -122,19 +122,19 @@ class BaseWorkoutFormModel(BaseModel):
     type: str
     date: str
     time: str
-    durationHours: int
-    durationMinutes: int
-    durationSeconds: int
+    duration_hours: int
+    duration_minutes: int
+    duration_seconds: int
     participants: list[str] | str | None = None
-    averageHeartRate: int | None = None
+    average_heart_rate: int | None = None
 
     def calculate_start_time(self) -> datetime:
         return datetime.strptime(f'{self.date} {self.time}', '%Y-%m-%d %H:%M')
 
     def calculate_duration(self) -> int:
-        return 3600 * self.durationHours + 60 * self.durationMinutes + self.durationSeconds
+        return 3600 * self.duration_hours + 60 * self.duration_minutes + self.duration_seconds
 
-    @field_validator(*['averageHeartRate'], mode='before')
+    @field_validator(*['average_heart_rate'], mode='before')
     def averageHeartRateCheck(cls, value: str, info) -> str | None:
         if isinstance(value, str):
             value = value.strip()

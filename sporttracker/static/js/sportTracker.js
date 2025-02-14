@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function()
     {
         buttonSharedLinkDelete.addEventListener('click', function()
         {
-            document.getElementsByName('shareCode')[0].value = '';
+            document.getElementsByName('share_code')[0].value = '';
             document.getElementById('sharedLinkControlsEnabled').classList.toggle('hidden', true);
             document.getElementById('buttonCreateSharedLink').classList.toggle('hidden', false);
         });
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function()
                 {
                     let response = JSON.parse(xhr.response);
 
-                    document.getElementsByName('shareCode')[0].value = response.shareCode;
+                    document.getElementsByName('share_code')[0].value = response.shareCode;
                     document.getElementById('sharedLink').href = response.url;
                     document.getElementById('sharedLink').innerText = response.url;
                     document.getElementById('sharedLinkControlsEnabled').classList.toggle('hidden', false);

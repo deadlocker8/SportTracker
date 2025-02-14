@@ -24,8 +24,8 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 class FitnessWorkoutFormModel(BaseWorkoutFormModel):
-    fitnessWorkoutType: str
-    fitnessWorkoutCategories: list[str] | str | None | list[FitnessWorkoutCategoryType] = None
+    fitness_workout_type: str
+    fitness_workout_categories: list[str] | str | None | list[FitnessWorkoutCategoryType] = None
 
     model_config = ConfigDict(
         extra='allow',
@@ -49,11 +49,11 @@ def construct_blueprint():
             type=WorkoutType(form.type),  # type: ignore[call-arg]
             start_time=form.calculate_start_time(),
             duration=form.calculate_duration(),
-            average_heart_rate=form.averageHeartRate,
+            average_heart_rate=form.average_heart_rate,
             custom_fields=form.model_extra,
             user_id=current_user.id,
             participants=participants,
-            fitness_workout_type=FitnessWorkoutType(form.fitnessWorkoutType),  # type: ignore[call-arg]
+            fitness_workout_type=FitnessWorkoutType(form.fitness_workout_type),  # type: ignore[call-arg]
         )
 
         LOGGER.debug(f'Saved new workout workout: {workout}')
@@ -62,7 +62,7 @@ def construct_blueprint():
 
         fitnessWorkoutCategories = [
             FitnessWorkoutCategoryType(item)  # type: ignore[call-arg]
-            for item in request.form.getlist('fitnessWorkoutCategories')
+            for item in request.form.getlist('fitness_workout_categories')
         ]
         update_workout_categories_by_workout_id(workout.id, fitnessWorkoutCategories)
 
@@ -87,13 +87,13 @@ def construct_blueprint():
             type=workout.type,
             date=workout.start_time.strftime('%Y-%m-%d'),  # type: ignore[attr-defined]
             time=workout.start_time.strftime('%H:%M'),  # type: ignore[attr-defined]
-            durationHours=workout.duration // 3600,
-            durationMinutes=workout.duration % 3600 // 60,
-            durationSeconds=workout.duration % 3600 % 60,
-            averageHeartRate=workout.average_heart_rate,
+            duration_hours=workout.duration // 3600,
+            duration_minutes=workout.duration % 3600 // 60,
+            duration_seconds=workout.duration % 3600 % 60,
+            average_heart_rate=workout.average_heart_rate,
             participants=[str(item.id) for item in workout.participants],
-            fitnessWorkoutCategories=workout.get_workout_categories(),
-            fitnessWorkoutType=workout.fitness_workout_type,
+            fitness_workout_categories=workout.get_workout_categories(),
+            fitness_workout_type=workout.fitness_workout_type,
             **workout.custom_fields,
         )
 
@@ -125,18 +125,20 @@ def construct_blueprint():
         workout.name = form.name  # type: ignore[assignment]
         workout.start_time = form.calculate_start_time()  # type: ignore[assignment]
         workout.duration = form.calculate_duration()  # type: ignore[assignment]
-        workout.average_heart_rate = form.averageHeartRate  # type: ignore[assignment]
+        workout.average_heart_rate = form.average_heart_rate  # type: ignore[assignment]
         participantIds = [int(item) for item in request.form.getlist('participants')]
         workout.participants = get_participants_by_ids(participantIds)
         workout.fitness_workout_type = (
-            None if form.fitnessWorkoutType is None else FitnessWorkoutType(form.fitnessWorkoutType)  # type: ignore[call-arg]
+            None
+            if form.fitness_workout_type is None
+            else FitnessWorkoutType(form.fitness_workout_type)  # type: ignore[call-arg]
         )
 
         workout.custom_fields = form.model_extra
 
         fitnessWorkoutCategories = [
             FitnessWorkoutCategoryType(item)  # type: ignore[call-arg]
-            for item in request.form.getlist('fitnessWorkoutCategories')
+            for item in request.form.getlist('fitness_workout_categories')
         ]
         update_workout_categories_by_workout_id(workout.id, fitnessWorkoutCategories)
 

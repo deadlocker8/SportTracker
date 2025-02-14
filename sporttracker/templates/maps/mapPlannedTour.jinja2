@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        {% if plannedTour.shareCode and plannedTour.ownerName != current_user.username %}
+        {% if plannedTour.share_code and plannedTour.ownerName != current_user.username %}
             <title>SportTracker - {{ gettext('Shared Planned Tour') }}</title>
             <meta name="description" content="{{ plannedTour.ownerName|capitalize }} is sharing a planned tour with you!">
         {% else %}

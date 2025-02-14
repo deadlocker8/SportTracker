@@ -2,6 +2,7 @@
 - add: new API version v2.1.0
 - add: API: improve login/authorization handling (new post route /api/v2/login) (#174)
 - fix: require fresh login for critical operations (e.g. everything in admin area or change of own password) (#174)
+- fix: average heart rate was not shown in form (#177)
 
 # 1.33.1 - (08.02.25)
 - fix: fix quick filter state (prevents page load with old login session)

@@ -26,17 +26,17 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 class DistanceWorkoutFormModel(BaseWorkoutFormModel):
     distance: float
-    plannedTourId: str = '-1'
-    elevationSum: int | None = None
-    gpxFileName: str | None = None
-    hasFitFile: bool = False
-    shareCode: str | None = None
+    planned_tour_id: str = '-1'
+    elevation_sum: int | None = None
+    gpx_file_name: str | None = None
+    has_fit_file: bool = False
+    share_code: str | None = None
 
     model_config = ConfigDict(
         extra='allow',
     )
 
-    @field_validator(*['elevationSum'], mode='before')
+    @field_validator(*['elevation_sum'], mode='before')
     def elevationSumCheck(cls, value: str, info) -> str | None:
         if isinstance(value, str):
             value = value.strip()
@@ -58,10 +58,10 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
 
         participantIds = [int(item) for item in request.form.getlist('participants')]
         participants = get_participants_by_ids(participantIds)
-        if form.plannedTourId == '-1':
+        if form.planned_tour_id == '-1':
             plannedTour = None
         else:
-            plannedTour = get_planned_tour_by_id(int(form.plannedTourId))
+            plannedTour = get_planned_tour_by_id(int(form.planned_tour_id))
 
         workout = DistanceWorkout(
             name=form.name,
@@ -69,13 +69,13 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             start_time=form.calculate_start_time(),
             duration=form.calculate_duration(),
             distance=form.distance * 1000,
-            average_heart_rate=form.averageHeartRate,
-            elevation_sum=form.elevationSum,
+            average_heart_rate=form.average_heart_rate,
+            elevation_sum=form.elevation_sum,
             gpx_metadata_id=gpxMetadataId,
             custom_fields=form.model_extra,
             user_id=current_user.id,
             participants=participants,
-            share_code=form.shareCode if form.shareCode else None,
+            share_code=form.share_code if form.share_code else None,
             planned_tour=plannedTour,
         )
 
@@ -104,10 +104,10 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
         if workout is None:
             abort(404)
 
-        gpxFileName = None
+        gpx_file_name = None
         gpxMetadata = workout.get_gpx_metadata()
         if gpxMetadata is not None:
-            gpxFileName = gpxMetadata.gpx_file_name
+            gpx_file_name = gpxMetadata.gpx_file_name
 
         workoutModel = DistanceWorkoutFormModel(
             name=workout.name,  # type: ignore[arg-type]
@@ -115,16 +115,16 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             date=workout.start_time.strftime('%Y-%m-%d'),  # type: ignore[attr-defined]
             time=workout.start_time.strftime('%H:%M'),  # type: ignore[attr-defined]
             distance=workout.distance / 1000,
-            durationHours=workout.duration // 3600,
-            durationMinutes=workout.duration % 3600 // 60,
-            durationSeconds=workout.duration % 3600 % 60,
-            averageHeartRate=workout.average_heart_rate,
-            elevationSum=workout.elevation_sum,
-            gpxFileName=gpxFileName,
-            hasFitFile=gpxService.has_fit_file(gpxFileName),
+            duration_hours=workout.duration // 3600,
+            duration_minutes=workout.duration % 3600 // 60,
+            duration_seconds=workout.duration % 3600 % 60,
+            average_heart_rate=workout.average_heart_rate,
+            elevation_sum=workout.elevation_sum,
+            gpx_file_name=gpx_file_name,
+            has_fit_file=gpxService.has_fit_file(gpx_file_name),
             participants=[str(item.id) for item in workout.participants],
-            shareCode=workout.share_code,
-            plannedTourId=str(workout.planned_tour.id) if workout.planned_tour else '-1',
+            share_code=workout.share_code,
+            planned_tour_id=str(workout.planned_tour.id) if workout.planned_tour else '-1',
             **workout.custom_fields,
         )
 
@@ -153,20 +153,20 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
         if workout is None:
             abort(404)
 
-        if form.plannedTourId == '-1':
+        if form.planned_tour_id == '-1':
             plannedTour = None
         else:
-            plannedTour = get_planned_tour_by_id(int(form.plannedTourId))
+            plannedTour = get_planned_tour_by_id(int(form.planned_tour_id))
 
         workout.name = form.name  # type: ignore[assignment]
         workout.start_time = form.calculate_start_time()  # type: ignore[assignment]
         workout.distance = form.distance * 1000  # type: ignore[assignment]
         workout.duration = form.calculate_duration()  # type: ignore[assignment]
-        workout.average_heart_rate = form.averageHeartRate  # type: ignore[assignment]
-        workout.elevation_sum = form.elevationSum  # type: ignore[assignment]
+        workout.average_heart_rate = form.average_heart_rate  # type: ignore[assignment]
+        workout.elevation_sum = form.elevation_sum  # type: ignore[assignment]
         participantIds = [int(item) for item in request.form.getlist('participants')]
         workout.participants = get_participants_by_ids(participantIds)
-        workout.share_code = form.shareCode if form.shareCode else None  # type: ignore[assignment]
+        workout.share_code = form.share_code if form.share_code else None  # type: ignore[assignment]
         workout.planned_tour = plannedTour  # type: ignore[assignment]
 
         shouldUpdateVisitedTiles = False

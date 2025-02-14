@@ -61,17 +61,17 @@
 
 {% macro render_fitness_workout_type(workout, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
-        <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ workout.fitnessWorkoutType.icon }}</span>
-        <div class="fs-5 text-center">{{ render_workout_unit(workout.fitnessWorkoutType.get_localized_name()) }}</div>
+        <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ workout.fitness_workout_type.icon }}</span>
+        <div class="fs-5 text-center">{{ render_workout_unit(workout.fitness_workout_type.get_localized_name()) }}</div>
     </div>
 {%- endmacro %}
 
 {% macro render_fitness_workout_category_type(workout, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
-        {% if workout.fitnessWorkoutCategories|length == 1 %}
-            <span class="material-symbols-outlined {% if not workout.fitnessWorkoutCategories[0].is_outlined_icon %}filled{% endif %} fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ workout.fitnessWorkoutCategories[0].icon }}</span>
-            <div class="fs-5 text-center">{{ render_workout_unit(workout.fitnessWorkoutCategories[0].get_localized_name()) }}</div>
-        {% elif workout.fitnessWorkoutCategories|length > 1 %}
+        {% if workout.fitness_workout_categories|length == 1 %}
+            <span class="material-symbols-outlined {% if not workout.fitness_workout_categories[0].is_outlined_icon %}filled{% endif %} fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ workout.fitness_workout_categories[0].icon }}</span>
+            <div class="fs-5 text-center">{{ render_workout_unit(workout.fitness_workout_categories[0].get_localized_name()) }}</div>
+        {% elif workout.fitness_workout_categories|length > 1 %}
             <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">fitness_center</span>
             <div class="fs-5 text-center">{{ render_workout_unit(gettext('Mixed')) }}</div>
         {% endif %}
@@ -124,7 +124,7 @@
 
 {% macro workout_card_feature_icons(workout) -%}
     <div class="z-2 d-flex">
-        {% if workout.shareCode or workout.share_code %}
+        {% if workout.share_code %}
             <span class="material-symbols-outlined filled fs-4 text-body">share</span>
         {% endif %}
         {% if workout.participants %}
@@ -337,22 +337,22 @@
         <span class="material-symbols-outlined me-3">timer</span>
 
         <input type="number" step="1" min="0" class="form-control me-3"
-               id="workout-duration-hours" name="durationHours"
+               id="workout-duration-hours" name="duration_hours"
                placeholder="{{ gettext('Hours') }}"
                required="required"
-               {% if workout %}value="{{ workout.durationHours }}"{% endif %}>
+               {% if workout %}value="{{ workout.duration_hours }}"{% endif %}>
 
         <label for="workout-duration-minutes" class="form-label">&nbsp;</label>
         <input type="number" step="1" min="0" max="59" class="form-control me-3"
-               id="workout-duration-minutes" name="durationMinutes"
+               id="workout-duration-minutes" name="duration_minutes"
                placeholder="{{ gettext('Minutes') }}" required="required"
-               {% if workout %}value="{{ workout.durationMinutes }}"{% endif %}>
+               {% if workout %}value="{{ workout.duration_minutes }}"{% endif %}>
 
         <label for="workout-duration-seconds" class="form-label">&nbsp;</label>
         <input type="number" step="1" min="0" max="59" class="form-control"
-               id="workout-duration-seconds" name="durationSeconds"
+               id="workout-duration-seconds" name="duration_seconds"
                placeholder="{{ gettext('Seconds') }}" required="required"
-               {% if workout %}value="{{ workout.durationSeconds }}"{% endif %}>
+               {% if workout %}value="{{ workout.duration_seconds }}"{% endif %}>
     </div>
 {%- endmacro %}
 
@@ -362,7 +362,7 @@
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined me-3">favorite_border</span>
             <input type="number" step="1" min="0" class="form-control" id="workout-averageHeartRate"
-                   name="averageHeartRate"
+                   name="average_heart_rate"
                    {% if workout and workout.average_heart_rate is not none %}value="{{ workout.average_heart_rate }}"{% endif %}>
         </div>
     </div>
@@ -374,7 +374,7 @@
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined me-3">expand</span>
             <input type="number" step="1" min="0" class="form-control" id="workout-elevationSum"
-                   name="elevationSum"
+                   name="elevation_sum"
                    {% if workout and workout.elevation_sum is not none %}value="{{ workout.elevation_sum }}"{% endif %}>
         </div>
     </div>
@@ -393,7 +393,7 @@
             </div>
         </label>
 
-        {% set hasGpxTrack = item and item.gpxFileName is not none %}
+        {% set hasGpxTrack = item and item.gpx_file_name is not none %}
 
         <div class="input-field-margin">
             {% if item is defined %}
@@ -412,7 +412,7 @@
                             <span class="material-symbols-outlined fs-4">download</span>
                             <span>GPX</span>
                         </a>
-                        {% if hasGpxTrack and item.hasFitFile %}
+                        {% if hasGpxTrack and item.has_fit_file %}
                             <a href="{{ downloadUrlFit }}"
                                class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
                                id="buttonFitTrackDownload"
@@ -519,12 +519,12 @@
             </div>
         </label>
 
-        {% set hasShareCode = item and item.shareCode is not none %}
+        {% set hasShareCode = item and item.share_code is not none %}
 
         <div class="input-field-margin">
             <div class="d-flex flex-column flex-md-row mb-3 {% if not hasShareCode %}hidden{% endif %}" id="sharedLinkControlsEnabled">
                 {% if hasShareCode %}
-                    <a href="{{ url_for(mapUrl, shareCode=item.shareCode, _external=True) }}" class="btn btn-sm btn-secondary text-break" id="sharedLink">{{ url_for(mapUrl, shareCode=item.shareCode, _external=True) }}</a>
+                    <a href="{{ url_for(mapUrl, shareCode=item.share_code, _external=True) }}" class="btn btn-sm btn-secondary text-break" id="sharedLink">{{ url_for(mapUrl, shareCode=item.share_code, _external=True) }}</a>
                 {% else %}
                     <a class="btn btn-sm btn-secondary text-break" id="sharedLink"></a>
                 {% endif %}
@@ -547,7 +547,7 @@
                 <span class="material-symbols-outlined fs-4 me-2">add_link</span>{{ gettext('Create link') }}
             </button>
 
-            <input type="hidden" name="shareCode" value="{% if hasShareCode %}{{ item.shareCode }}{% endif %}">
+            <input type="hidden" name="share_code" value="{% if hasShareCode %}{{ item.share_code }}{% endif %}">
         </div>
 
     </div>
@@ -558,11 +558,11 @@
         <label for="workout-plannedTour" class="form-label input-field-margin">{{ gettext('Based on Planned Tour') }}</label>
         <div class="d-flex align-items-center">
             <i class="fa-solid fa-lightbulb fa-fw fs-4 me-3"></i>
-            <select class="form-select" id="workout-plannedTour" name="plannedTourId">
+            <select class="form-select" id="workout-plannedTour" name="planned_tour_id">
                 <option value="-1"
                         {% if not workout %} selected{% endif %}>{{ gettext('Not based on a Planned Tour') }}</option>
                 {% for plannedTour in plannedTours %}
-                    <option value="{{ plannedTour.id }}" {% if workout and workout.plannedTourId != '-1' and workout.plannedTourId == plannedTour.id|string %}selected{% endif %}>{{ plannedTour.name }}</option>
+                    <option value="{{ plannedTour.id }}" {% if workout and workout.planned_tour_id != '-1' and workout.planned_tour_id == plannedTour.id|string %}selected{% endif %}>{{ plannedTour.name }}</option>
                 {% endfor %}
             </select>
         </div>

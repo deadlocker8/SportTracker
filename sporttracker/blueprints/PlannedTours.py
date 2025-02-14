@@ -62,7 +62,7 @@ class PlannedTourModel:
     arrivalMethod: TravelType
     departureMethod: TravelType
     direction: TravelDirection
-    shareCode: str | None
+    share_code: str | None
     linkedWorkouts: list[LinkedWorkout]
 
     @staticmethod
@@ -107,7 +107,7 @@ class PlannedTourModel:
             arrivalMethod=plannedTour.arrival_method,
             departureMethod=plannedTour.departure_method,
             direction=plannedTour.direction,
-            shareCode=plannedTour.share_code,
+            share_code=plannedTour.share_code,
             linkedWorkouts=linkedWorkouts,
         )
 
@@ -119,7 +119,7 @@ class PlannedTourFormModel(BaseModel):
     departureMethod: str
     direction: str
     sharedUsers: list[str] | str | None = None
-    shareCode: str | None = None
+    share_code: str | None = None
 
 
 class PlannedTourEditFormModel(BaseModel):
@@ -131,7 +131,7 @@ class PlannedTourEditFormModel(BaseModel):
     ownerId: str
     ownerName: str
     sharedUsers: list[str] | str | None = None
-    shareCode: str | None = None
+    share_code: str | None = None
     gpxFileName: str | None = None
     hasFitFile: bool = False
 
@@ -191,7 +191,7 @@ def construct_blueprint(
             arrival_method=TravelType(form.arrivalMethod),  # type: ignore[call-arg]
             departure_method=TravelType(form.departureMethod),  # type: ignore[call-arg]
             direction=TravelDirection(form.direction),  # type: ignore[call-arg]
-            share_code=form.shareCode,
+            share_code=form.share_code,
         )
 
         LOGGER.debug(f'Saved new planned tour: {plannedTour}')
@@ -222,7 +222,7 @@ def construct_blueprint(
             ownerId=str(plannedTour.user_id),
             ownerName=get_user_by_id(plannedTour.user_id).username,
             sharedUsers=[str(user.id) for user in plannedTour.shared_users],
-            shareCode=plannedTour.share_code,
+            share_code=plannedTour.share_code,
             gpxFileName=gpxFileName,
             hasFitFile=gpxService.has_fit_file(gpxFileName),
         )
@@ -250,7 +250,7 @@ def construct_blueprint(
         plannedTour.arrival_method = TravelType(form.arrivalMethod)  # type: ignore[call-arg]
         plannedTour.departure_method = TravelType(form.departureMethod)  # type: ignore[call-arg]
         plannedTour.direction = TravelDirection(form.direction)  # type: ignore[call-arg]
-        plannedTour.share_code = form.shareCode if form.shareCode else None  # type: ignore[assignment]
+        plannedTour.share_code = form.share_code if form.share_code else None  # type: ignore[assignment]
 
         newGpxMetadataId = gpxService.handle_gpx_upload_for_planned_tour(
             request.files, gpxPreviewImageSettings
