@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col col-12 mx-auto">
                         {% call macros.headline(gettext('New Workout')) %}
-                            <img class="headline-icon-svg" src="{{ url_for('static', filename="images/icon_workouts.svg") }}" />
+                            <img class="headline-icon-svg" src="{{ url_for('static', filename="images/icon_workouts.svg") }}"/>
                         {% endcall %}
                     </div>
                 </div>
@@ -50,9 +50,41 @@
                             <div class="fs-3 text-light">{{ gettext('New Fitness Workout') }}</div>
                         </a>
                     </div>
+
+                    <div class="col col-12 col-md-6 mb-5">
+                        <a class="btn btn-link text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalImportFromFitFile">
+                            <span class="d-inline-block material-symbols-outlined rounded-circle fs-1 p-3 text-white bg-secondary mb-3">upload_file</span>
+                            <div class="fs-3 text-light">{{ gettext('Import from FIT file') }}</div>
+                        </a>
+                    </div>
                 </div>
             </section>
         </div>
+
+        <div class="modal fade" id="modalImportFromFitFile" tabindex="-1" aria-labelledby="modalImportFromFitFileLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark">
+                    <form role="form" action="{{ url_for('distanceWorkouts.importFromFitFile') }}"
+                          method="post"
+                          enctype=multipart/form-data>
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="modalImportFromFitFileLabel">{{ gettext('Import from FIT file') }}</h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">{{ gettext('Upload FIT file') }}</label>
+                                <input class="form-control" type="file" id="formFile" name="gpxTrack" accept=".fit">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ gettext('Cancel') }}</button>
+                            <button type="submit" class="btn btn-primary">{{ gettext('Import') }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
         {{ macros.scripts() }}
     </body>

@@ -114,6 +114,20 @@ class GpxService:
 
         return self.__create_gpx_metadata(gpxFileName)
 
+    def handle_fit_upload_for_fit_import(self, files: dict[str, FileStorage]) -> int | None:
+        gpxFileName = self.__handle_gpx_upload(
+            files,
+            False,
+            {},
+            [
+                self.FIT_FILE_EXTENSION,
+            ],
+        )
+        if gpxFileName is None:
+            return None
+
+        return self.__create_gpx_metadata(gpxFileName)
+
     def __handle_gpx_upload(
         self,
         files: dict[str, FileStorage],

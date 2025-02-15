@@ -102,4 +102,5 @@ RESERVED_FIELD_NAMES = [
     'fitness_workout_type',
     'fitness_workout_categories',
     'planned_tour_id',
+    'is_import_from_fit_file',
 ]

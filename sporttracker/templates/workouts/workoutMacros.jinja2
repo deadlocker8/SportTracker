@@ -296,7 +296,7 @@
     </div>
 {%- endmacro %}
 
-{% macro workout_form_start_time(workout) -%}
+{% macro workout_form_start_time(workout, workoutFromFitImport) -%}
     <div class="mb-3">
         <div class="row">
             <div class="col col-12 col-md-6 mb-3 mb-md-0">
@@ -304,7 +304,7 @@
                 <div class="d-flex align-items-center">
                     <span class="material-symbols-outlined filled me-3">event</span>
                     <input type="date" class="form-control" id="workout-date" name="date"
-                           required="required" {% if workout %}value="{{ workout.date }}"{% endif %}>
+                           required="required" value="{% if workout %}{{ workout.date }}{% elif workoutFromFitImport %}{{ workoutFromFitImport.date }}{% endif %}">
                 </div>
             </div>
             <div class="col col-12 col-md-6">
@@ -312,26 +312,26 @@
                 <div class="d-flex align-items-center">
                     <span class="material-symbols-outlined me-3">schedule</span>
                     <input type="time" class="form-control" id="workout-time" name="time"
-                           required="required" {% if workout %}value="{{ workout.time }}"{% endif %}>
+                           required="required" value="{% if workout %}{{ workout.time }}{% elif workoutFromFitImport %}{{ workoutFromFitImport.time }}{% endif %}">
                 </div>
             </div>
         </div>
     </div>
 {%- endmacro %}
 
-{% macro workout_form_distance(workout) -%}
+{% macro workout_form_distance(workout, workoutFromFitImport) -%}
     <div class="mb-3">
         <label for="workout-distance" class="form-label input-field-margin">{{ gettext('Distance (in km)') }}</label>
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined me-3">route</span>
             <input type="number" step="0.01" min="0" class="form-control" id="workout-distance"
                    name="distance" required="required"
-                   {% if workout %}value="{{ workout.distance | round(2) }}"{% endif %}>
+                   value="{% if workout %}{{ workout.distance | round(2) }}{% elif workoutFromFitImport %}{{ workoutFromFitImport.distance | round(2) }}{% endif %}">
         </div>
     </div>
 {%- endmacro %}
 
-{% macro workout_form_duration(workout) -%}
+{% macro workout_form_duration(workout, workoutFromFitImport) -%}
     <label for="workout-duration-hours" class="form-label input-field-margin">{{ gettext('Duration') }}</label>
     <div class="mb-3 d-flex align-items-center">
         <span class="material-symbols-outlined me-3">timer</span>
@@ -340,51 +340,60 @@
                id="workout-duration-hours" name="duration_hours"
                placeholder="{{ gettext('Hours') }}"
                required="required"
-               {% if workout %}value="{{ workout.duration_hours }}"{% endif %}>
+               value="{% if workout %}{{ workout.duration_hours }}{% elif workoutFromFitImport %}{{ workoutFromFitImport.duration_hours }}{% endif %}">
 
         <label for="workout-duration-minutes" class="form-label">&nbsp;</label>
         <input type="number" step="1" min="0" max="59" class="form-control me-3"
                id="workout-duration-minutes" name="duration_minutes"
                placeholder="{{ gettext('Minutes') }}" required="required"
-               {% if workout %}value="{{ workout.duration_minutes }}"{% endif %}>
+               value="{% if workout %}{{ workout.duration_minutes }}{% elif workoutFromFitImport %}{{ workoutFromFitImport.duration_minutes }}{% endif %}">
 
         <label for="workout-duration-seconds" class="form-label">&nbsp;</label>
         <input type="number" step="1" min="0" max="59" class="form-control"
                id="workout-duration-seconds" name="duration_seconds"
                placeholder="{{ gettext('Seconds') }}" required="required"
-               {% if workout %}value="{{ workout.duration_seconds }}"{% endif %}>
+               value="{% if workout %}{{ workout.duration_seconds }}{% elif workoutFromFitImport %}{{ workoutFromFitImport.duration_seconds }}{% endif %}">
     </div>
 {%- endmacro %}
 
-{% macro workout_form_average_heart_rate(workout) -%}
+{% macro workout_form_average_heart_rate(workout, workoutFromFitImport) -%}
     <div class="mb-3">
         <label for="workout-averageHeartRate" class="form-label input-field-margin">{{ gettext('Average Heart Rate') }}</label>
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined me-3">favorite_border</span>
             <input type="number" step="1" min="0" class="form-control" id="workout-averageHeartRate"
                    name="average_heart_rate"
-                   {% if workout and workout.average_heart_rate is not none %}value="{{ workout.average_heart_rate }}"{% endif %}>
+                   {% if workout and workout.average_heart_rate is not none %}value="{{ workout.average_heart_rate }}"{% endif %}
+                   {% if workoutFromFitImport and workoutFromFitImport.average_heart_rate is not none %}value="{{ workoutFromFitImport.average_heart_rate }}"{% endif %}>
         </div>
     </div>
 {%- endmacro %}
 
-{% macro workout_form_elevation_sum(workout) -%}
+{% macro workout_form_elevation_sum(workout, workoutFromFitImport) -%}
     <div class="mb-3">
         <label for="workout-elevationSum" class="form-label input-field-margin">{{ gettext('Elevation Sum (in m)') }}</label>
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined me-3">expand</span>
             <input type="number" step="1" min="0" class="form-control" id="workout-elevationSum"
                    name="elevation_sum"
-                   {% if workout and workout.elevation_sum is not none %}value="{{ workout.elevation_sum }}"{% endif %}>
+                   {% if workout and workout.elevation_sum is not none %}value="{{ workout.elevation_sum }}"{% endif %}
+                   {% if workoutFromFitImport and workoutFromFitImport.elevation_sum is not none %}value="{{ workoutFromFitImport.elevation_sum }}"{% endif %}>
         </div>
     </div>
 {%- endmacro %}
 
-{% macro workout_form_gpx(workout, workout_id) -%}
-    {{ form_gpx(workout, url_for('maps.showSingleWorkout', workout_id=workout_id or -1 ), url_for('gpxTracks.downloadGpxTrackByWorkoutId', workout_id=workout_id  or -1, file_format='gpx'), url_for('gpxTracks.downloadGpxTrackByWorkoutId', workout_id=workout_id  or -1, file_format='fit'), url_for('gpxTracks.deleteGpxTrackByWorkoutId', workout_id=workout_id or -1), gettext('No GPX or FIT file is linked to this workout'), gettext('A GPX or FIT file is linked to this workout') ) }}
+{% macro workout_form_gpx(workout, workoutFromFitImport, workout_id) -%}
+    {% if workoutFromFitImport %}
+        {{ form_gpx(workoutFromFitImport, '', '', '', '', '', gettext('A FIT file is linked to this workout'), true) }}
+        <input type="hidden" name="gpx_metadata_id" value="{{ workoutFromFitImport.gpx_metadata_id }}">
+    {% else %}
+        {{ form_gpx(workout, url_for('maps.showSingleWorkout', workout_id=workout_id or -1 ), url_for('gpxTracks.downloadGpxTrackByWorkoutId', workout_id=workout_id  or -1, file_format='gpx'), url_for('gpxTracks.downloadGpxTrackByWorkoutId', workout_id=workout_id  or -1, file_format='fit'), url_for('gpxTracks.deleteGpxTrackByWorkoutId', workout_id=workout_id or -1), gettext('No GPX or FIT file is linked to this workout'), gettext('A GPX or FIT file is linked to this workout'), false) }}
+        <input type="hidden" name="gpx_metadata_id" value="">
+    {% endif %}
 {%- endmacro %}
 
-{% macro form_gpx(item, mapUrl, downloadUrlGpx, downloadUrlFit, deleteUrl, placeholderText, gpxFileLinkedText) -%}
+
+{% macro form_gpx(item, mapUrl, downloadUrlGpx, downloadUrlFit, deleteUrl, placeholderText, gpxFileLinkedText, suppressButtons=false) -%}
     <div class="mb-3">
         <label for="workout-gpxFileName" class="form-label">
             <div class="d-flex align-items-center">
@@ -399,7 +408,8 @@
             {% if item is defined %}
                 <div class="d-flex flex-column flex-md-row mb-3 {% if not hasGpxTrack %}hidden{% endif %}" id="gpxControlsEnabled">
                     <span class="badge bg-success lh-lg rounded-pill d-flex align-items-center px-3 text-wrap">{{ gpxFileLinkedText }}</span>
-                    <div id="gpxButtons" class="d-flex mt-3 mt-md-0">
+                    {% if suppressButtons is not true %}
+                        <div id="gpxButtons" class="d-flex mt-3 mt-md-0">
                         <a href="{{ mapUrl }}"
                            class="btn btn-primary btn-sm ms-0 ms-md-3 d-flex align-items-center"
                            target="_blank">
@@ -430,6 +440,7 @@
                             <a data-url="{{ deleteUrl }}" class="btn btn-danger" id="buttonGpxTrackDelete" data-bs-dismiss="modal">{{ gettext('Delete') }}</a>
                         {% endcall %}
                     </div>
+                    {% endif %}
                 </div>
             {% endif %}
             <div class="{% if hasGpxTrack %}hidden{% endif %}" id="gpxControlsDisabled">

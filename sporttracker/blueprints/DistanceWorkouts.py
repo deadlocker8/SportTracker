@@ -9,12 +9,14 @@ from pydantic import ConfigDict, field_validator
 
 from sporttracker.blueprints.Workouts import BaseWorkoutFormModel
 from sporttracker.logic import Constants
+from sporttracker.logic.FitSessionParser import FitSessionParser
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type
 from sporttracker.logic.model.DistanceWorkout import (
     DistanceWorkout,
     get_distance_workout_by_id,
 )
+from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.Participant import get_participants_by_ids, get_participants
 from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_tour_by_id
 from sporttracker.logic.model.Workout import get_workout_names_by_type
@@ -31,6 +33,7 @@ class DistanceWorkoutFormModel(BaseWorkoutFormModel):
     gpx_file_name: str | None = None
     has_fit_file: bool = False
     share_code: str | None = None
+    gpx_metadata_id: int | None = None  # only used during import from FIT file
 
     model_config = ConfigDict(
         extra='allow',
@@ -45,6 +48,14 @@ class DistanceWorkoutFormModel(BaseWorkoutFormModel):
         return value
 
 
+class DistanceWorkoutImportFromFitModel(BaseWorkoutFormModel):
+    distance: float | None
+    elevation_sum: int | None = None
+    gpx_file_name: str | None = None
+    has_fit_file: bool = False
+    gpx_metadata_id: int
+
+
 def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, Any]):
     distanceWorkouts = Blueprint(
         'distanceWorkouts', __name__, static_folder='static', url_prefix='/distanceWorkouts'
@@ -55,6 +66,8 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
     @validate()
     def addPost(form: DistanceWorkoutFormModel):
         gpxMetadataId = gpxService.handle_gpx_upload_for_workout(request.files)
+        if form.gpx_metadata_id:
+            gpxMetadataId = form.gpx_metadata_id  # only filled during import from FIT file
 
         participantIds = [int(item) for item in request.form.getlist('participants')]
         participants = get_participants_by_ids(participantIds)
@@ -217,5 +230,55 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             'url': url_for('maps.showSharedSingleWorkout', shareCode=shareCode, _external=True),
             'shareCode': shareCode,
         }
+
+    @distanceWorkouts.route('/importFromFitFile', methods=['POST'])
+    @login_required
+    def importFromFitFile():
+        gpxMetadataId = gpxService.handle_fit_upload_for_fit_import(request.files)
+        if gpxMetadataId is None:
+            return abort(400)
+
+        gpxMetadata = GpxMetadata.query.filter(GpxMetadata.id == gpxMetadataId).first()
+        if gpxMetadata is None:
+            return abort(400)
+
+        fitContent = gpxService.get_fit_content(gpxMetadata.gpx_file_name)
+        try:
+            LOGGER.debug(f'Parsing session from FIT file for gpxMetadataId: {gpxMetadataId}')
+            fitSession = FitSessionParser.parse(fitContent)
+        except Exception as e:
+            LOGGER.error(
+                f'Error parsing session from FIT file for gpxMetadataId: {gpxMetadataId}: {e}'
+            )
+            return abort(400)
+
+        if fitSession is None:
+            return abort(400)
+
+        workoutFromFitImportModel = DistanceWorkoutImportFromFitModel(
+            name='',
+            type=fitSession.workout_type.name,
+            date=fitSession.start_time.strftime('%Y-%m-%d'),  # type: ignore[attr-defined]
+            time=fitSession.start_time.strftime('%H:%M'),  # type: ignore[attr-defined]
+            distance=None if fitSession.distance is None else fitSession.distance / 1000,
+            duration_hours=fitSession.duration // 3600,
+            duration_minutes=fitSession.duration % 3600 // 60,
+            duration_seconds=fitSession.duration % 3600 % 60,
+            average_heart_rate=fitSession.average_heart_rate,
+            elevation_sum=fitSession.total_ascent,
+            gpx_file_name=gpxMetadata.gpx_file_name,
+            has_fit_file=True,
+            participants=[],
+            gpx_metadata_id=gpxMetadataId,
+        )
+
+        return render_template(
+            f'workouts/workout{fitSession.workout_type.name.capitalize()}Form.jinja2',
+            workoutFromFitImport=workoutFromFitImportModel,
+            customFields=get_custom_fields_by_workout_type(fitSession.workout_type),
+            participants=get_participants(),
+            workoutNames=get_workout_names_by_type(fitSession.workout_type),
+            plannedTours=get_planned_tours([fitSession.workout_type]),
+        )
 
     return distanceWorkouts
