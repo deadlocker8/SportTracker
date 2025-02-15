@@ -74,6 +74,14 @@ def get_custom_fields_grouped_by_workout_types(
     return customFieldsByWorkoutType
 
 
+def get_custom_fields_by_workout_type(workoutType: WorkoutType) -> list[CustomWorkoutField]:
+    return (
+        CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
+        .filter(CustomWorkoutField.workout_type == workoutType)
+        .all()
+    )
+
+
 # List of reserved names that are not allowed to be used as custom field names.
 # Otherwise, the HTML form would include multiple inputs with the same name leading to unexpected behaviour.
 # The actual inputs will be prefixed with "workout-" in the HTML form.

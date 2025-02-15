@@ -10,7 +10,7 @@ from pydantic import ConfigDict, field_validator
 from sporttracker.blueprints.Workouts import BaseWorkoutFormModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutField
+from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type
 from sporttracker.logic.model.DistanceWorkout import (
     DistanceWorkout,
     get_distance_workout_by_id,
@@ -128,17 +128,11 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             **workout.custom_fields,
         )
 
-        customFields = (
-            CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
-            .filter(CustomWorkoutField.workout_type == workout.type)
-            .all()
-        )
-
         return render_template(
             f'workouts/workout{workout.type.name.capitalize()}Form.jinja2',
             workout=workoutModel,
             workout_id=workout_id,
-            customFields=customFields,
+            customFields=get_custom_fields_by_workout_type(workout.type),
             participants=get_participants(),
             workoutNames=get_workout_names_by_type(workout.type),
             plannedTours=get_planned_tours([workout.type]),
