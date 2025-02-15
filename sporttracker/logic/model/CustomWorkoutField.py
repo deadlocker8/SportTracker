@@ -58,7 +58,7 @@ class CustomWorkoutField(db.Model):  # type: ignore[name-defined]
         )
 
 
-def get_custom_fields_by_workout_type(
+def get_custom_fields_grouped_by_workout_types(
     workoutTypes: list[WorkoutType] | None = None,
 ) -> dict[WorkoutType, list[CustomWorkoutField]]:
     if workoutTypes is None:

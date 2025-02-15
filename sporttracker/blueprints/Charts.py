@@ -12,7 +12,7 @@ from sqlalchemy import extract, func, String, asc
 
 from sporttracker.helpers.Helpers import format_duration
 from sporttracker.logic import Constants
-from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type
+from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_workout_types
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_per_month_by_type
 from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.Workout import (
@@ -85,7 +85,7 @@ def construct_blueprint():
     @charts.route('/chartDistancePerCustomFieldChooser')
     @login_required
     def chartDistancePerCustomFieldChooser():
-        customFieldsByWorkoutType = get_custom_fields_by_workout_type(
+        customFieldsByWorkoutType = get_custom_fields_grouped_by_workout_types(
             WorkoutType.get_distance_workout_types()
         )
         return render_template(

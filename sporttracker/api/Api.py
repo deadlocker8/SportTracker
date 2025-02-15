@@ -28,7 +28,7 @@ from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.logic.QuickFilterState import QuickFilterState
-from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type
+from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_workout_types
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_workout_by_id
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.FitnessWorkoutCategory import (
@@ -404,7 +404,7 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
     @api.route('/settings/customFields')
     @login_required
     def listCustomFields():
-        customFields = get_custom_fields_by_workout_type()
+        customFields = get_custom_fields_grouped_by_workout_types()
 
         result = {}
         for workoutType, fields in customFields.items():

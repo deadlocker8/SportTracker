@@ -11,7 +11,7 @@ from pydantic import BaseModel, field_validator, ConfigDict
 from sporttracker.logic import Constants
 from sporttracker.logic.Constants import MIN_PASSWORD_LENGTH
 from sporttracker.logic.model.CustomWorkoutField import (
-    get_custom_fields_by_workout_type,
+    get_custom_fields_grouped_by_workout_types,
     CustomWorkoutField,
     CustomWorkoutFieldType,
     RESERVED_FIELD_NAMES,
@@ -89,7 +89,7 @@ def construct_blueprint():
         return render_template(
             'settings/settings.jinja2',
             userLanguage=current_user.language.name,
-            customFieldsByWorkoutType=get_custom_fields_by_workout_type(),
+            customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
             participants=get_participants(),
             infoItems=infoItems,
             tileRenderUrl=tileRenderUrl,
@@ -127,7 +127,7 @@ def construct_blueprint():
                 'settings/settings.jinja2',
                 errorMessage='Password must not be empty',
                 userLanguage=current_user.language.name,
-                customFieldsByWorkoutType=get_custom_fields_by_workout_type(),
+                customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
             )
 
         if len(password) < MIN_PASSWORD_LENGTH:
@@ -135,7 +135,7 @@ def construct_blueprint():
                 'settings/settings.jinja2',
                 errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long',
                 userLanguage=current_user.language.name,
-                customFieldsByWorkoutType=get_custom_fields_by_workout_type(),
+                customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
             )
 
         user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
