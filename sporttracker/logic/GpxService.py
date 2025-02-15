@@ -83,7 +83,15 @@ class GpxService:
         return GpxParser(self.get_gpx_content(gpxFileName)).join_tracks_and_segments()
 
     def handle_gpx_upload_for_workout(self, files: dict[str, FileStorage]) -> int | None:
-        gpxFileName = self.__handle_gpx_upload(files, False, {})
+        gpxFileName = self.__handle_gpx_upload(
+            files,
+            False,
+            {},
+            [
+                self.GPX_FILE_EXTENSION,
+                self.FIT_FILE_EXTENSION,
+            ],
+        )
         if gpxFileName is None:
             return None
 
@@ -93,7 +101,13 @@ class GpxService:
         self, files: dict[str, FileStorage], gpxPreviewImageSettings: dict[str, Any]
     ) -> int | None:
         gpxFileName = self.__handle_gpx_upload(
-            files, gpxPreviewImageSettings['enabled'], gpxPreviewImageSettings
+            files,
+            gpxPreviewImageSettings['enabled'],
+            gpxPreviewImageSettings,
+            [
+                self.GPX_FILE_EXTENSION,
+                self.FIT_FILE_EXTENSION,
+            ],
         )
         if gpxFileName is None:
             return None
@@ -105,6 +119,7 @@ class GpxService:
         files: dict[str, FileStorage],
         generatePreviewImage: bool,
         gpxPreviewImageSettings: dict[str, Any],
+        allowedFileExtensions: list[str],
     ) -> str | None:
         if 'gpxTrack' not in files:
             return None
@@ -113,7 +128,7 @@ class GpxService:
         if file.filename == '' or file.filename is None:
             return None
 
-        if file and self.__is_allowed_file(file.filename):
+        if file and self.__is_allowed_file(file.filename, allowedFileExtensions):
             filename = uuid.uuid4().hex
             destinationFolderPath = os.path.join(self._dataPath, filename)
             os.makedirs(destinationFolderPath)
@@ -151,14 +166,12 @@ class GpxService:
         except Exception as e:
             LOGGER.error(f'Error while converting {fitFilePath} to gpx', e)
 
-    def __is_allowed_file(self, filename: str) -> bool:
+    @staticmethod
+    def __is_allowed_file(filename: str, allowedFileExtensions: list[str]) -> bool:
         if '.' not in filename:
             return False
 
-        return filename.rsplit('.', 1)[1].lower() in [
-            self.GPX_FILE_EXTENSION,
-            self.FIT_FILE_EXTENSION,
-        ]
+        return filename.rsplit('.', 1)[1].lower() in allowedFileExtensions
 
     def create_zip(self, gpxFileName: str, data: bytes) -> str:
         destinationFolderPath = os.path.join(self._dataPath, gpxFileName)
