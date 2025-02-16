@@ -64,8 +64,9 @@
         <div class="modal fade" id="modalImportFromFitFile" tabindex="-1" aria-labelledby="modalImportFromFitFileLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content bg-dark">
-                    <form role="form" action="{{ url_for('distanceWorkouts.importFromFitFile') }}"
+                    <form role="form" action="{{ url_for('distanceWorkouts.importFromFitFilePost') }}"
                           method="post"
+                          id="formImportFromFitFile"
                           enctype=multipart/form-data>
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="modalImportFromFitFileLabel">{{ gettext('Import from FIT file') }}</h1>
@@ -75,10 +76,18 @@
                                 <label for="formFile" class="form-label">{{ gettext('Upload FIT file') }}</label>
                                 <input class="form-control" type="file" id="formFile" name="fitFile" accept=".fit">
                             </div>
+
+                            <div class="mb-3 text-center text-danger hidden" id="warningMessageContainerImportFromFitFile">
+                                <i class="material-symbols-outlined filled align-middle">warning</i>
+                                <span id="warning-message" class="align-middle"></span>
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ gettext('Cancel') }}</button>
-                            <button type="submit" class="btn btn-primary">{{ gettext('Import') }}</button>
+                            <button type="button" class="btn btn-secondary" id="buttonCancelImportFromFitFile" data-bs-dismiss="modal">{{ gettext('Cancel') }}</button>
+                            <button type="button" class="btn btn-primary" id="buttonImportFromFitFile" data-url="{{ url_for('distanceWorkouts.importFromFitFileGet') }}">
+                                <span class="spinner-border spinner-border-sm hidden" aria-hidden="true"></span>
+                                {{ gettext('Import') }}
+                            </button>
                         </div>
                     </form>
                 </div>

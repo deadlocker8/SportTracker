@@ -94,4 +94,46 @@ document.addEventListener('DOMContentLoaded', function()
         let selectedValue = maintenanceEventTypeSelect.value;
         document.getElementById('maintenance-event-reminder-container').classList.toggle('hidden', selectedValue === 'FITNESS');
     }
+
+    let buttonImportFromFitFile = document.getElementById('buttonImportFromFitFile');
+    if(buttonImportFromFitFile !== null)
+    {
+        buttonImportFromFitFile.addEventListener('click', function()
+        {
+            let form = document.getElementById('formImportFromFitFile');
+            let warningMessageContainer = document.getElementById('warningMessageContainerImportFromFitFile');
+            let formData = new FormData(form);
+            toggleFitFileImport(buttonImportFromFitFile, true);
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', form.action);
+            xhr.onload = function()
+            {
+                toggleFitFileImport(buttonImportFromFitFile, false);
+
+                if(xhr.status === 200)
+                {
+                    window.location.href = buttonImportFromFitFile.dataset.url;
+                }
+                else
+                {
+                    warningMessageContainer.classList.toggle('hidden', false);
+                    warningMessageContainer.querySelector('#warning-message').innerText = xhr.response;
+                }
+            };
+            xhr.send(formData);
+        });
+    }
 });
+
+function toggleFitFileImport(buttonImportFromFitFile, disable)
+{
+    let buttonCancelImportFromFitFile = document.getElementById('buttonCancelImportFromFitFile');
+    let fileInput = document.getElementById('formFile');
+    let spinner = buttonImportFromFitFile.querySelector('.spinner-border');
+
+    spinner.classList.toggle('hidden', !disable);
+    buttonCancelImportFromFitFile.disabled = disable;
+    buttonImportFromFitFile.disabled = disable;
+    fileInput.disabled = disable;
+}

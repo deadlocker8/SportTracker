@@ -1,10 +1,11 @@
 import logging
 import os
 import uuid
+from gettext import gettext
 from io import BytesIO
 from typing import Any
 
-from flask import Blueprint, render_template, abort, redirect, url_for, request
+from flask import Blueprint, render_template, abort, redirect, url_for, request, session
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import ConfigDict, field_validator
@@ -12,7 +13,7 @@ from werkzeug.datastructures import FileStorage
 
 from sporttracker.blueprints.Workouts import BaseWorkoutFormModel
 from sporttracker.logic import Constants
-from sporttracker.logic.FitSessionParser import FitSessionParser
+from sporttracker.logic.FitSessionParser import FitSessionParser, FitSession
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type
 from sporttracker.logic.model.DistanceWorkout import (
@@ -253,13 +254,18 @@ def construct_blueprint(
 
     @distanceWorkouts.route('/importFromFitFile', methods=['POST'])
     @login_required
-    def importFromFitFile():
+    def importFromFitFilePost():
+        baseErrorMessage = gettext('Error importing data from FIT file')
+
         file = request.files.get('fitFile', None)
         if file is None or file.filename == '' or file.filename is None:
-            return None
+            return f'{baseErrorMessage}: {gettext("No file provided")}', 400
 
         if not GpxService.is_allowed_file(file.filename, [GpxService.FIT_FILE_EXTENSION]):
-            return None
+            return (
+                f'{baseErrorMessage}: {gettext("Invalid file extension. Allowed extension: *.fit")}',
+                400,
+            )
 
         filename = uuid.uuid4().hex
         os.makedirs(tempFolderPath, exist_ok=True)
@@ -273,11 +279,23 @@ def construct_blueprint(
         except Exception as e:
             LOGGER.error(f'Error parsing session from FIT file: "{fitFilePath}": {e}')
             os.remove(fitFilePath)
-            return abort(400)
+            return f'{baseErrorMessage}: {str(e)}', 400
 
         if fitSession is None:
             os.remove(fitFilePath)
-            return abort(400)
+            return f'{baseErrorMessage}: {gettext("No session data found")}', 400
+
+        session['fitSession'] = fitSession.to_json()
+
+        return ''
+
+    @distanceWorkouts.route('/importFromFitFile', methods=['GET'])
+    @login_required
+    def importFromFitFileGet():
+        if 'fitSession' not in session:
+            return redirect(url_for('workouts.add'))
+
+        fitSession = FitSession.from_json(session['fitSession'])
 
         workoutFromFitImportModel = DistanceWorkoutImportFromFitModel(
             name='',
@@ -290,7 +308,7 @@ def construct_blueprint(
             duration_seconds=fitSession.duration % 3600 % 60,
             average_heart_rate=fitSession.average_heart_rate,
             elevation_sum=fitSession.total_ascent,
-            gpx_file_name=filename,
+            gpx_file_name=fitSession.file_name,
             has_fit_file=True,
             participants=[],
         )
