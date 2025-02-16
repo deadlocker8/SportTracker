@@ -283,7 +283,7 @@ def construct_blueprint(
 
         if fitSession is None:
             os.remove(fitFilePath)
-            return f'{baseErrorMessage}: {gettext("No session data found")}', 400
+            return f'{baseErrorMessage}: {gettext("FIT file does not contain session data")}', 400
 
         session['fitSession'] = fitSession.to_json()
 

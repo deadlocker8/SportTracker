@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-04 22:13+0100\n"
+"POT-Creation-Date: 2025-02-16 13:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -106,15 +106,15 @@ msgstr ""
 msgid "Average Speed"
 msgstr ""
 
-#: ../blueprints/Authentication.py:25 ../blueprints/Authentication.py:32
+#: ../blueprints/Authentication.py:26 ../blueprints/Authentication.py:33
 msgid "Unknown user"
 msgstr ""
 
-#: ../blueprints/Authentication.py:35
+#: ../blueprints/Authentication.py:36
 msgid "Password must not be empty"
 msgstr ""
 
-#: ../blueprints/Authentication.py:40
+#: ../blueprints/Authentication.py:41
 msgid "Incorrect password"
 msgstr ""
 
@@ -124,6 +124,22 @@ msgstr ""
 
 #: ../blueprints/Charts.py:157
 msgid "You"
+msgstr ""
+
+#: ../blueprints/DistanceWorkouts.py:258
+msgid "Error importing data from FIT file"
+msgstr ""
+
+#: ../blueprints/DistanceWorkouts.py:262
+msgid "No file provided"
+msgstr ""
+
+#: ../blueprints/DistanceWorkouts.py:266
+msgid "Invalid file extension. Allowed extension: *.fit"
+msgstr ""
+
+#: ../blueprints/DistanceWorkouts.py:286
+msgid "FIT file does not contain session data"
 msgstr ""
 
 #: ../blueprints/MonthGoalsCount.py:76 ../blueprints/MonthGoalsDistance.py:76
@@ -383,7 +399,7 @@ msgstr ""
 
 #: ../templates/macros.jinja2:208 ../templates/settings/settings.jinja2:6
 #: ../templates/settings/settings.jinja2:18
-#: ../templates/workouts/workoutMacros.jinja2:465
+#: ../templates/workouts/workoutMacros.jinja2:476
 msgid "Settings"
 msgstr ""
 
@@ -391,7 +407,9 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: ../templates/macros.jinja2:260 ../templates/workouts/workouts.jinja2:95
+#: ../templates/macros.jinja2:259
+#: ../templates/workouts/workoutChooser.jinja2:86
+#: ../templates/workouts/workouts.jinja2:95
 #: ../templates/workouts/workouts.jinja2:117
 msgid "Cancel"
 msgstr ""
@@ -515,8 +533,8 @@ msgstr ""
 #: ../templates/workouts/workoutFitnessForm.jinja2:29
 #: ../templates/workouts/workoutHikingForm.jinja2:24
 #: ../templates/workouts/workoutHikingForm.jinja2:28
-#: ../templates/workouts/workoutMacros.jinja2:430
-#: ../templates/workouts/workoutMacros.jinja2:541
+#: ../templates/workouts/workoutMacros.jinja2:440
+#: ../templates/workouts/workoutMacros.jinja2:552
 #: ../templates/workouts/workoutRunningForm.jinja2:24
 #: ../templates/workouts/workoutRunningForm.jinja2:28
 msgid "Delete"
@@ -1149,7 +1167,7 @@ msgid ""
 msgstr ""
 
 #: ../templates/settings/settings.jinja2:103
-#: ../templates/workouts/workoutMacros.jinja2:532
+#: ../templates/workouts/workoutMacros.jinja2:543
 msgid "Copied"
 msgstr ""
 
@@ -1182,7 +1200,7 @@ msgid "Do you really want to delete the custom field \"%(name)s\"?"
 msgstr ""
 
 #: ../templates/settings/settings.jinja2:188
-#: ../templates/workouts/workoutMacros.jinja2:448
+#: ../templates/workouts/workoutMacros.jinja2:459
 msgid "Participants"
 msgstr ""
 
@@ -1260,6 +1278,19 @@ msgstr ""
 msgid "New Fitness Workout"
 msgstr ""
 
+#: ../templates/workouts/workoutChooser.jinja2:57
+#: ../templates/workouts/workoutChooser.jinja2:72
+msgid "Import from FIT file"
+msgstr ""
+
+#: ../templates/workouts/workoutChooser.jinja2:76
+msgid "Upload FIT file"
+msgstr ""
+
+#: ../templates/workouts/workoutChooser.jinja2:89
+msgid "Import"
+msgstr ""
+
 #: ../templates/workouts/workoutFitnessForm.jinja2:6
 #: ../templates/workouts/workoutFitnessForm.jinja2:21
 msgid "Edit Fitness Workout"
@@ -1294,55 +1325,59 @@ msgstr ""
 msgid "Seconds"
 msgstr ""
 
-#: ../templates/workouts/workoutMacros.jinja2:373
+#: ../templates/workouts/workoutMacros.jinja2:374
 msgid "Elevation Sum (in m)"
 msgstr ""
 
-#: ../templates/workouts/workoutMacros.jinja2:384
+#: ../templates/workouts/workoutMacros.jinja2:387
+msgid "A FIT file is linked to this workout"
+msgstr ""
+
+#: ../templates/workouts/workoutMacros.jinja2:390
 msgid "No GPX or FIT file is linked to this workout"
 msgstr ""
 
-#: ../templates/workouts/workoutMacros.jinja2:384
+#: ../templates/workouts/workoutMacros.jinja2:390
 msgid "A GPX or FIT file is linked to this workout"
 msgstr ""
 
-#: ../templates/workouts/workoutMacros.jinja2:392
+#: ../templates/workouts/workoutMacros.jinja2:401
 msgid "GPX/FIT Track"
 msgstr ""
 
-#: ../templates/workouts/workoutMacros.jinja2:429
+#: ../templates/workouts/workoutMacros.jinja2:439
 msgid "Delete GPX and FIT Track?"
 msgstr ""
 
-#: ../templates/workouts/workoutMacros.jinja2:429
+#: ../templates/workouts/workoutMacros.jinja2:439
 msgid "Do you really want to delete this associated GPX and FIT file?"
 msgstr ""
 
-#: ../templates/workouts/workoutMacros.jinja2:463
+#: ../templates/workouts/workoutMacros.jinja2:474
 msgid "Add participants in the "
 msgstr ""
 
-#: ../templates/workouts/workoutMacros.jinja2:518
+#: ../templates/workouts/workoutMacros.jinja2:529
 msgid "Share via link"
 msgstr ""
 
-#: ../templates/workouts/workoutMacros.jinja2:540
+#: ../templates/workouts/workoutMacros.jinja2:551
 msgid "Delete shared link?"
 msgstr ""
 
-#: ../templates/workouts/workoutMacros.jinja2:540
+#: ../templates/workouts/workoutMacros.jinja2:551
 msgid "Do you really want to delete this shared link?"
 msgstr ""
 
-#: ../templates/workouts/workoutMacros.jinja2:547
+#: ../templates/workouts/workoutMacros.jinja2:558
 msgid "Create link"
 msgstr ""
 
-#: ../templates/workouts/workoutMacros.jinja2:558
+#: ../templates/workouts/workoutMacros.jinja2:569
 msgid "Based on Planned Tour"
 msgstr ""
 
-#: ../templates/workouts/workoutMacros.jinja2:563
+#: ../templates/workouts/workoutMacros.jinja2:574
 msgid "Not based on a Planned Tour"
 msgstr ""
 
