@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, UTC
 
 import fitdecode  # type: ignore[import-untyped]
 
@@ -27,12 +27,22 @@ class FitSessionParser:
                 if frame.name != 'session':
                     continue
 
+                start_time = frame.get_value('start_time').replace(tzinfo=UTC).astimezone()
+                start_time = datetime(
+                    year=start_time.year,
+                    month=start_time.month,
+                    day=start_time.day,
+                    hour=start_time.hour,
+                    minute=start_time.minute,
+                    second=start_time.second,
+                    microsecond=0,
+                )
                 distance = frame.get_value('total_distance', fallback=None)
                 total_ascent = frame.get_value('total_ascent', fallback=None)
                 average_heart_rate = frame.get_value('avg_heart_rate', fallback=None)
 
                 return FitSession(
-                    start_time=frame.get_value('start_time'),
+                    start_time=start_time,
                     duration=int(frame.get_value('total_timer_time')),
                     workout_type=FitSessionParser.__parse_sport(frame.get_value('sport')),
                     distance=None if distance is None else int(distance),
