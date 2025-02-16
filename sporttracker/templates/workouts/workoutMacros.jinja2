@@ -446,7 +446,7 @@
             <div class="{% if hasGpxTrack %}hidden{% endif %}" id="gpxControlsDisabled">
                 <span class="mb-3 badge bg-secondary lh-lg rounded-pill px-3 text-wrap">{{ placeholderText }}</span>
             </div>
-            <input class="form-control" type="file" id="workout-gpxFileName" name="gpxTrack" accept=".gpx,.fit">
+            <input class="form-control" type="file" id="workout-gpxFileName" name="gpxTrack" accept=".gpx,.fit" {% if suppressButtons %}disabled{% endif %}>
         </div>
     </div>
 {%- endmacro %}
