@@ -385,10 +385,10 @@
 {% macro workout_form_gpx(workout, workoutFromFitImport, workout_id) -%}
     {% if workoutFromFitImport %}
         {{ form_gpx(workoutFromFitImport, '', '', '', '', '', gettext('A FIT file is linked to this workout'), true) }}
-        <input type="hidden" name="gpx_metadata_id" value="{{ workoutFromFitImport.gpx_metadata_id }}">
+        <input type="hidden" name="fit_file_name" value="{{ workoutFromFitImport.gpx_file_name }}">
     {% else %}
         {{ form_gpx(workout, url_for('maps.showSingleWorkout', workout_id=workout_id or -1 ), url_for('gpxTracks.downloadGpxTrackByWorkoutId', workout_id=workout_id  or -1, file_format='gpx'), url_for('gpxTracks.downloadGpxTrackByWorkoutId', workout_id=workout_id  or -1, file_format='fit'), url_for('gpxTracks.deleteGpxTrackByWorkoutId', workout_id=workout_id or -1), gettext('No GPX or FIT file is linked to this workout'), gettext('A GPX or FIT file is linked to this workout'), false) }}
-        <input type="hidden" name="gpx_metadata_id" value="">
+        <input type="hidden" name="fit_file_name" value="">
     {% endif %}
 {%- endmacro %}
 

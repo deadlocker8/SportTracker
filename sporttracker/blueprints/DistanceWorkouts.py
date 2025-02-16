@@ -1,11 +1,14 @@
 import logging
+import os
 import uuid
+from io import BytesIO
 from typing import Any
 
 from flask import Blueprint, render_template, abort, redirect, url_for, request
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import ConfigDict, field_validator
+from werkzeug.datastructures import FileStorage
 
 from sporttracker.blueprints.Workouts import BaseWorkoutFormModel
 from sporttracker.logic import Constants
@@ -16,7 +19,6 @@ from sporttracker.logic.model.DistanceWorkout import (
     DistanceWorkout,
     get_distance_workout_by_id,
 )
-from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.Participant import get_participants_by_ids, get_participants
 from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_tour_by_id
 from sporttracker.logic.model.Workout import get_workout_names_by_type
@@ -33,7 +35,7 @@ class DistanceWorkoutFormModel(BaseWorkoutFormModel):
     gpx_file_name: str | None = None
     has_fit_file: bool = False
     share_code: str | None = None
-    gpx_metadata_id: int | None = None  # only used during import from FIT file
+    fit_file_name: str | None = None  # only used during import from FIT file
 
     model_config = ConfigDict(
         extra='allow',
@@ -53,10 +55,11 @@ class DistanceWorkoutImportFromFitModel(BaseWorkoutFormModel):
     elevation_sum: int | None = None
     gpx_file_name: str | None = None
     has_fit_file: bool = False
-    gpx_metadata_id: int
 
 
-def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, Any]):
+def construct_blueprint(
+    gpxService: GpxService, tileHuntingSettings: dict[str, Any], tempFolderPath: str
+):
     distanceWorkouts = Blueprint(
         'distanceWorkouts', __name__, static_folder='static', url_prefix='/distanceWorkouts'
     )
@@ -65,9 +68,26 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
     @login_required
     @validate()
     def addPost(form: DistanceWorkoutFormModel):
-        gpxMetadataId = gpxService.handle_gpx_upload_for_workout(request.files)
-        if form.gpx_metadata_id:
-            gpxMetadataId = form.gpx_metadata_id  # only filled during import from FIT file
+        files = request.files
+        if form.fit_file_name:  # only filled during import from FIT file
+            fitFilePath = os.path.join(
+                tempFolderPath, f'{form.fit_file_name}.{GpxService.FIT_FILE_EXTENSION}'
+            )
+            if os.path.exists(fitFilePath):
+                with open(fitFilePath, 'rb') as fitFile:
+                    fitFileContent = BytesIO(fitFile.read())
+                    file = FileStorage(
+                        fitFileContent,
+                        f'{form.fit_file_name}.{GpxService.FIT_FILE_EXTENSION}',
+                        'gpxTrack',
+                        'application/octet-stream',
+                        0,
+                    )
+                os.remove(fitFilePath)
+
+            files = {'gpxTrack': file}  # type: ignore[assignment]
+
+        gpxMetadataId = gpxService.handle_gpx_upload_for_workout(files)
 
         participantIds = [int(item) for item in request.form.getlist('participants')]
         participants = get_participants_by_ids(participantIds)
@@ -234,25 +254,29 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
     @distanceWorkouts.route('/importFromFitFile', methods=['POST'])
     @login_required
     def importFromFitFile():
-        gpxMetadataId = gpxService.handle_fit_upload_for_fit_import(request.files)
-        if gpxMetadataId is None:
-            return abort(400)
+        file = request.files.get('fitFile', None)
+        if file is None or file.filename == '' or file.filename is None:
+            return None
 
-        gpxMetadata = GpxMetadata.query.filter(GpxMetadata.id == gpxMetadataId).first()
-        if gpxMetadata is None:
-            return abort(400)
+        if not GpxService.is_allowed_file(file.filename, [GpxService.FIT_FILE_EXTENSION]):
+            return None
 
-        fitContent = gpxService.get_fit_content(gpxMetadata.gpx_file_name)
+        filename = uuid.uuid4().hex
+        os.makedirs(tempFolderPath, exist_ok=True)
+        fitFilePath = os.path.join(tempFolderPath, f'{filename}.{GpxService.FIT_FILE_EXTENSION}')
+        file.save(fitFilePath)
+        LOGGER.debug(f'Saved imported FIT file "{file.filename}" to "{fitFilePath}"')
+
         try:
-            LOGGER.debug(f'Parsing session from FIT file for gpxMetadataId: {gpxMetadataId}')
-            fitSession = FitSessionParser.parse(fitContent)
+            LOGGER.debug(f'Parsing session from FIT file "{fitFilePath}"')
+            fitSession = FitSessionParser.parse(fitFilePath)
         except Exception as e:
-            LOGGER.error(
-                f'Error parsing session from FIT file for gpxMetadataId: {gpxMetadataId}: {e}'
-            )
+            LOGGER.error(f'Error parsing session from FIT file: "{fitFilePath}": {e}')
+            os.remove(fitFilePath)
             return abort(400)
 
         if fitSession is None:
+            os.remove(fitFilePath)
             return abort(400)
 
         workoutFromFitImportModel = DistanceWorkoutImportFromFitModel(
@@ -266,10 +290,9 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
             duration_seconds=fitSession.duration % 3600 % 60,
             average_heart_rate=fitSession.average_heart_rate,
             elevation_sum=fitSession.total_ascent,
-            gpx_file_name=gpxMetadata.gpx_file_name,
+            gpx_file_name=filename,
             has_fit_file=True,
             participants=[],
-            gpx_metadata_id=gpxMetadataId,
         )
 
         return render_template(

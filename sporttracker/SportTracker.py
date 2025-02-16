@@ -2,6 +2,7 @@ import logging
 import os
 import secrets
 import string
+import tempfile
 from datetime import datetime
 from http import HTTPStatus
 from typing import Any
@@ -116,6 +117,7 @@ class SportTracker(FlaskBaseApp):
 
         rootDirectory = os.path.dirname(currentDirectory)
         app.config['DATA_FOLDER'] = os.path.join(rootDirectory, 'data')
+        app.config['TEMP_FOLDER'] = os.path.join(tempfile.gettempdir(), 'sporttracker_temp')
 
         app.config['NEW_VISITED_TILE_CACHE'] = NewVisitedTileCache()
         app.config['GPX_SERVICE'] = GpxService(
@@ -260,7 +262,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Workouts.construct_blueprint())
         app.register_blueprint(
             DistanceWorkouts.construct_blueprint(
-                app.config['GPX_SERVICE'], self._settings['tileHunting']
+                app.config['GPX_SERVICE'], self._settings['tileHunting'], app.config['TEMP_FOLDER']
             )
         )
         app.register_blueprint(FitnessWorkouts.construct_blueprint())

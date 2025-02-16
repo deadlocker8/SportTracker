@@ -18,8 +18,8 @@ class FitSession:
 
 class FitSessionParser:
     @staticmethod
-    def parse(fitFileContent: bytes) -> FitSession | None:
-        with fitdecode.FitReader(fitFileContent) as fit_file:
+    def parse(fit_file_path: str) -> FitSession | None:
+        with fitdecode.FitReader(fit_file_path) as fit_file:
             for frame in fit_file:
                 if not isinstance(frame, fitdecode.records.FitDataMessage):
                     continue
