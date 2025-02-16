@@ -1,6 +1,7 @@
 # 1.34.0 - (XX.XX.XX)
 - add: new API version v2.1.0
 - add: API: improve login/authorization handling (new post route /api/v2/login) (#174)
+- add: SportTracker now allows to use .fit files to automatically prefill the workout form with data from the .fit file (e.g. duration, distance, etc.) (#178)
 - fix: require fresh login for critical operations (e.g. everything in admin area or change of own password) (#174)
 - fix: average heart rate was not shown in form (#177)
 
