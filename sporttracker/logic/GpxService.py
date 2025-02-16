@@ -142,7 +142,7 @@ class GpxService:
         if file.filename == '' or file.filename is None:
             return None
 
-        if file and self.__is_allowed_file(file.filename, allowedFileExtensions):
+        if file and self.is_allowed_file(file.filename, allowedFileExtensions):
             filename = uuid.uuid4().hex
             destinationFolderPath = os.path.join(self._dataPath, filename)
             os.makedirs(destinationFolderPath)
@@ -163,7 +163,7 @@ class GpxService:
 
         return None
 
-    def __handle_fit_upload(self, destinationFolderPath, file, filename):
+    def __handle_fit_upload(self, destinationFolderPath: str, file: FileStorage, filename: str):
         fitFilePath = os.path.join(destinationFolderPath, f'{filename}.{self.FIT_FILE_EXTENSION}')
         file.save(fitFilePath)
         LOGGER.debug(f'Saved uploaded fit file "{file.filename}" to "{fitFilePath}"')
@@ -181,7 +181,7 @@ class GpxService:
             LOGGER.error(f'Error while converting {fitFilePath} to gpx', e)
 
     @staticmethod
-    def __is_allowed_file(filename: str, allowedFileExtensions: list[str]) -> bool:
+    def is_allowed_file(filename: str, allowedFileExtensions: list[str]) -> bool:
         if '.' not in filename:
             return False
 
