@@ -49,6 +49,8 @@ During upload of a .fit file for a workout or planned tour, a gpx file is automa
 
 __NOTE__: The converted gpx file will only contain basic data like latitude, longitude, timestamps and altitude information. 
 
+#### Use FIT file to prefill workout form
+SportTracker also allows to use .fit files to automatically prefill the workout form with data from the .fit file (e.g. duration, distance, etc.)
 
 ### Tile Hunting
 Each user can optionally enable tile hunting.   
