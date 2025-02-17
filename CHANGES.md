@@ -4,6 +4,7 @@
 - add: SportTracker now allows to use .fit files to automatically prefill the workout form with data from the .fit file (e.g. duration, distance, etc.) (#178)
 - fix: require fresh login for critical operations (e.g. everything in admin area or change of own password) (#174)
 - fix: average heart rate was not shown in form (#177)
+- chore: update dependencies (#173)
 
 # 1.33.1 - (08.02.25)
 - fix: fix quick filter state (prevents page load with old login session)
