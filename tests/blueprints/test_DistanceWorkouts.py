@@ -1,3 +1,4 @@
+import os
 import time
 from datetime import datetime
 
@@ -15,7 +16,7 @@ from sporttracker.logic.model.User import create_user, Language, User
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
-from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
+from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD, ROOT_DIRECTORY
 
 
 @pytest.fixture(autouse=True)
@@ -377,3 +378,61 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
         pills = selenium.find_elements(By.CSS_SELECTOR, '.badge.rounded-pill.bg-orange')
         assert len(pills) == 1
         assert pills[0].text == '1 Workouts'
+
+    def test_add_workout_from_fit_file(self, server, selenium: WebDriver):
+        self.login(selenium)
+
+        # open fit import modal
+        selenium.get(self.build_url('/workouts'))
+
+        selenium.find_element(By.CLASS_NAME, 'headline').find_element(By.TAG_NAME, 'a').click()
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'New Workout'
+            )
+        )
+
+        buttons = selenium.find_elements(By.CSS_SELECTOR, 'section .btn')
+        buttons[4].click()
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.visibility_of_element_located((By.ID, 'buttonImportFromFitFile'))
+        )
+
+        # upload file
+        dataDirectory = os.path.join(ROOT_DIRECTORY, 'sporttracker', 'dummyData')
+        fitFilePath = os.path.join(dataDirectory, 'fitTrack_1.fit')
+        selenium.find_element(By.ID, 'formFile').send_keys(fitFilePath)
+        selenium.find_element(By.ID, 'buttonImportFromFitFile').click()
+
+        # wait for form to open
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'New Biking Workout'
+            )
+        )
+
+        # assert form is prefilled
+        assert selenium.find_element(By.ID, 'workout-date').get_attribute('value') == '2024-09-20'
+        assert selenium.find_element(By.ID, 'workout-time').get_attribute('value') == '18:30'
+        assert selenium.find_element(By.ID, 'workout-distance').get_attribute('value') == '35.39'
+        assert selenium.find_element(By.ID, 'workout-duration-hours').get_attribute('value') == '1'
+        assert (
+            selenium.find_element(By.ID, 'workout-duration-minutes').get_attribute('value') == '25'
+        )
+        assert (
+            selenium.find_element(By.ID, 'workout-duration-seconds').get_attribute('value') == '2'
+        )
+        assert selenium.find_element(By.ID, 'workout-elevationSum').get_attribute('value') == '319'
+        assert selenium.find_element(By.ID, 'workout-averageHeartRate').get_attribute('value') == ''
+
+        # save
+        selenium.find_element(By.ID, 'workout-name').send_keys('Import from FIT file')
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
+
+        # assert successful save
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Workouts'
+            )
+        )
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1

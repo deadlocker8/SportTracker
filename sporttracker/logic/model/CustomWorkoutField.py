@@ -84,7 +84,6 @@ def get_custom_fields_by_workout_type(workoutType: WorkoutType) -> list[CustomWo
 
 # List of reserved names that are not allowed to be used as custom field names.
 # Otherwise, the HTML form would include multiple inputs with the same name leading to unexpected behaviour.
-# The actual inputs will be prefixed with "workout-" in the HTML form.
 RESERVED_FIELD_NAMES = [
     'type',
     'name',
