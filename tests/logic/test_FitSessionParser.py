@@ -15,7 +15,7 @@ class TestFitSessionParser:
         assert fitSession is not None
         assert fitSession.file_name == 'fitTrack_1'
         assert fitSession.start_time == datetime(
-            year=2024, month=9, day=20, hour=18, minute=30, second=6, microsecond=0
+            year=2024, month=9, day=20, hour=16, minute=30, second=6, microsecond=0
         )
         assert fitSession.duration == 5102
         assert fitSession.distance == 35390

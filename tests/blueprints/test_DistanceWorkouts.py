@@ -413,7 +413,7 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
 
         # assert form is prefilled
         assert selenium.find_element(By.ID, 'workout-date').get_attribute('value') == '2024-09-20'
-        assert selenium.find_element(By.ID, 'workout-time').get_attribute('value') == '18:30'
+        assert selenium.find_element(By.ID, 'workout-time').get_attribute('value') == '16:30'
         assert selenium.find_element(By.ID, 'workout-distance').get_attribute('value') == '35.39'
         assert selenium.find_element(By.ID, 'workout-duration-hours').get_attribute('value') == '1'
         assert (
