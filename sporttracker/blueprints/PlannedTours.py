@@ -4,13 +4,14 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
-from flask import Blueprint, render_template, redirect, url_for, abort, request, Response
+from flask import Blueprint, render_template, redirect, url_for, abort, request, Response, session
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel
 
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
+from sporttracker.logic.PlannedTourFilterState import get_planned_tour_filter_state_from_session
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.DistanceWorkout import (
     DistanceWorkout,
@@ -22,15 +23,15 @@ from sporttracker.logic.model.PlannedTour import (
     get_planned_tour_by_id,
     TravelType,
     TravelDirection,
-    get_planned_tours,
+    get_planned_tours_filtered,
 )
-from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import (
     get_users_by_ids,
     User,
     get_all_users_except_self_and_admin,
     get_user_by_id,
 )
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -147,8 +148,11 @@ def construct_blueprint(
     @login_required
     def listPlannedTours():
         quickFilterState = get_quick_filter_state_from_session()
+        plannedTourFilterState = get_planned_tour_filter_state_from_session()
 
-        tours = get_planned_tours(quickFilterState.get_active_distance_workout_types())
+        tours = get_planned_tours_filtered(
+            quickFilterState.get_active_distance_workout_types(), plannedTourFilterState
+        )
 
         plannedTourList: list[PlannedTourModel] = []
         for tour in tours:
@@ -159,6 +163,7 @@ def construct_blueprint(
             plannedTours=plannedTourList,
             quickFilterState=quickFilterState,
             isGpxPreviewImagesEnabled=gpxPreviewImageSettings['enabled'],
+            plannedTourFilterState=plannedTourFilterState,
         )
 
     @plannedTours.route('/add')
@@ -330,6 +335,42 @@ def construct_blueprint(
             'url': url_for('maps.showSharedPlannedTour', shareCode=shareCode, _external=True),
             'shareCode': shareCode,
         }
+
+    @plannedTours.route('/applyFilter', methods=['POST'])
+    @login_required
+    def applyFilter():
+        selectedArrivalMethods = [
+            TravelType(value)  # type: ignore[call-arg]
+            for key, value in request.form.items()
+            if key.startswith('plannedTourFilterArrivalMethod')
+        ]
+        arrivalMethods = {t: t in selectedArrivalMethods for t in TravelType}
+
+        selectedDepartureMethods = [
+            TravelType(value)  # type: ignore[call-arg]
+            for key, value in request.form.items()
+            if key.startswith('plannedTourFilterDepartureMethod')
+        ]
+        departureMethods = {t: t in selectedDepartureMethods for t in TravelType}
+
+        selectedDirections = [
+            TravelDirection(value)  # type: ignore[call-arg]
+            for key, value in request.form.items()
+            if key.startswith('plannedTourFilterDirection')
+        ]
+        directions = {t: t in selectedDirections for t in TravelDirection}
+
+        plannedTourFilterState = get_planned_tour_filter_state_from_session()
+        plannedTourFilterState.update(
+            request.form.get('plannedTourFilterStatusDone', 'off').strip().lower() == 'on',
+            request.form.get('plannedTourFilterStatusTodo', 'off').strip().lower() == 'on',
+            arrivalMethods,
+            departureMethods,
+            directions,
+        )
+        session['plannedTourFilterState'] = plannedTourFilterState.to_json()
+
+        return redirect(url_for('plannedTours.listPlannedTours'))
 
     return plannedTours
 

@@ -1,4 +1,5 @@
 import enum
+from typing import TYPE_CHECKING
 
 from flask_babel import gettext
 from flask_login import current_user
@@ -8,9 +9,12 @@ from sqlalchemy.sql import or_
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
-from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+
+if TYPE_CHECKING:
+    from sporttracker.logic.PlannedTourFilterState import PlannedTourFilterState
 
 
 class TravelType(enum.Enum):
@@ -197,6 +201,31 @@ def get_planned_tours(workoutTypes: list[WorkoutType]) -> list[PlannedTour]:
             )
         )
         .filter(PlannedTour.type.in_(workoutTypes))
+        .order_by(asc(func.lower(PlannedTour.name)))
+        .all()
+    )
+
+
+def get_planned_tours_filtered(
+    workoutTypes: list[WorkoutType], plannedTourFilterState: 'PlannedTourFilterState'
+) -> list[PlannedTour]:
+    return (
+        PlannedTour.query.filter(
+            or_(
+                PlannedTour.user_id == current_user.id,
+                PlannedTour.shared_users.any(id=current_user.id),
+            )
+        )
+        .filter(PlannedTour.type.in_(workoutTypes))
+        .filter(
+            PlannedTour.arrival_method.in_(plannedTourFilterState.get_selected_arrival_methods())
+        )
+        .filter(
+            PlannedTour.departure_method.in_(
+                plannedTourFilterState.get_selected_departure_methods()
+            )
+        )
+        .filter(PlannedTour.direction.in_(plannedTourFilterState.get_selected_directions()))
         .order_by(asc(func.lower(PlannedTour.name)))
         .all()
     )

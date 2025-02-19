@@ -32,6 +32,20 @@
                     </a>
                 </div>
 
+                <form class="mt-2 pt-2" method="POST" action="{{ url_for('plannedTours.applyFilter') }}">
+                    <div class="my-3 d-flex align-items-center justify-content-center gap-3 overflow-x-scroll">
+                        {{ plannedTourMacros.plannedTourFilterStatus(plannedTourFilterState.is_done_selected(), plannedTourFilterState.is_todo_selected()) }}
+
+                        {{ plannedTourMacros.plannedTourFilterEnum(travelTypes, plannedTourFilterState.get_selected_arrival_methods(), gettext('Filter: Arrival Method'), 'plannedTourFilterArrivalMethod') }}
+
+                        {{ plannedTourMacros.plannedTourFilterEnum(travelTypes, plannedTourFilterState.get_selected_departure_methods(), gettext('Filter: Departure Method'), 'plannedTourFilterDepartureMethod') }}
+
+                        {{ plannedTourMacros.plannedTourFilterEnum(travelDirections, plannedTourFilterState.get_selected_directions(), gettext('Filter: Direction'), 'plannedTourFilterDirection') }}
+
+                        <button type="submit" class="btn btn-sm btn-primary text-nowrap">{{ gettext('Apply Filter') }}</button>
+                    </div>
+                </form>
+
                 <div class="row py-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
                     {% set ns = namespace(index = 0) %}
                     {% for plannedTour in plannedTours %}

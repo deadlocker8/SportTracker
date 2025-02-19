@@ -88,3 +88,62 @@
         </div>
     </div>
 {%- endmacro %}
+
+{% macro plannedTourFilterStatus(isDoneActive, isTodoActive) -%}
+    {% set allSelected = isDoneActive and isTodoActive %}
+
+    <div class="dropdown position-static">
+        <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="material-symbols-outlined fs-5">filter_alt</span>
+            <span class="ms-2">{{ gettext('Filter: Status') }}</span>
+        </button>
+        <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
+            <div class="form-check text-nowrap mb-2">
+                <input class="form-check-input" type="checkbox"
+                       id="plannedTourFilterStatusDone"
+                       name="plannedTourFilterStatusDone"
+                       {% if isDoneActive %}checked{% endif %}>
+                <label class="form-check-label d-flex align-items-center" for="plannedTourFilterStatusDone">
+                    <span class="material-symbols-outlined fs-5 me-1">check</span>
+                    <span>{{ gettext('already completed') }}</span>
+                </label>
+            </div>
+            <div class="form-check text-nowrap">
+                <input class="form-check-input" type="checkbox"
+                       id="plannedTourFilterStatusTodo"
+                       name="plannedTourFilterStatusTodo"
+                       {% if isTodoActive %}checked{% endif %}>
+                <label class="form-check-label d-flex align-items-center" for="plannedTourFilterStatusTodo">
+                    <span class="material-symbols-outlined fs-5 me-1">close</span>
+                    <span>{{ gettext('not completed') }}</span>
+                </label>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro plannedTourFilterEnum(availableTypes, selectedTypes, buttonText, identifier) -%}
+    {% set allSelected = availableTypes | length == selectedTypes | length %}
+
+    <div class="dropdown position-static">
+        <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="material-symbols-outlined fs-5">filter_alt</span>
+            <span class="ms-2">{{ buttonText }}</span>
+        </button>
+        <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
+            {% for availableType in availableTypes %}
+                <div class="form-check text-nowrap {% if not loop.last %}mb-2{% endif %}">
+                    <input class="form-check-input" type="checkbox"
+                           id="{{ identifier }}-{{ loop.index }}"
+                           name="{{ identifier }}-{{ loop.index }}"
+                           value="{{ availableType.name }}"
+                           {% if availableType in selectedTypes %}checked{% endif %}>
+                    <label class="form-check-label d-flex align-items-center" for="{{ identifier }}-{{ loop.index }}">
+                        <span class="material-symbols-outlined fs-5 me-1">{{ availableType.icon }}</span>
+                        <span>{{ availableType.get_localized_name() }}</span>
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{%- endmacro %}
