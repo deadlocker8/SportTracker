@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-16 13:36+0100\n"
-"PO-Revision-Date: 2025-02-16 13:37+0100\n"
+"POT-Creation-Date: 2025-02-19 21:40+0100\n"
+"PO-Revision-Date: 2025-02-19 21:40+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -132,11 +132,11 @@ msgstr "Passwort darf nicht leer sein"
 msgid "Incorrect password"
 msgstr "Ungültiges Passwort"
 
-#: ../blueprints/Charts.py:120
+#: ../blueprints/Charts.py:121
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: ../blueprints/Charts.py:157
+#: ../blueprints/Charts.py:158
 msgid "You"
 msgstr "Du"
 
@@ -438,8 +438,8 @@ msgstr "Suchergebnisse"
 msgid "No search results"
 msgstr "Keine Suchergebnisse"
 
-#: ../templates/charts/chartAverageSpeed.jinja2:35
-#: ../templates/charts/chartSpeedPerWorkout.jinja2:31
+#: ../templates/charts/chartAverageSpeed.jinja2:36
+#: ../templates/charts/chartSpeedPerWorkout.jinja2:32
 msgid "Speed in km/h"
 msgstr "Geschwindigkeit in km/h"
 
@@ -471,15 +471,20 @@ msgstr "Dauer pro Workout"
 msgid "Speed per Workout"
 msgstr "Geschwindigkeit pro Workout"
 
+#: ../templates/charts/chartChooser.jinja2:77
+#: ../templates/charts/chartDurationPerMonth.jinja2:22
+msgid "Duration per Month"
+msgstr "Dauer pro Monat"
+
 #: ../templates/charts/chartDistancePerCustomField.jinja2:16
 #, python-format
 msgid "Distance per custom field \"%(name)s\""
 msgstr "Strecke pro benutzerdefiniertem Feld \"%(name)s\""
 
-#: ../templates/charts/chartDistancePerCustomField.jinja2:26
-#: ../templates/charts/chartDistancePerMonth.jinja2:33
-#: ../templates/charts/chartDistancePerParticipant.jinja2:26
-#: ../templates/charts/chartDistancePerYear.jinja2:32
+#: ../templates/charts/chartDistancePerCustomField.jinja2:27
+#: ../templates/charts/chartDistancePerMonth.jinja2:34
+#: ../templates/charts/chartDistancePerParticipant.jinja2:27
+#: ../templates/charts/chartDistancePerYear.jinja2:33
 msgid "Distance in km"
 msgstr "Strecke in km"
 
@@ -500,7 +505,8 @@ msgstr "Workouttyp auswählen"
 msgid "Select"
 msgstr "Auswählen"
 
-#: ../templates/charts/chartDurationPerWorkout.jinja2:31
+#: ../templates/charts/chartDurationPerMonth.jinja2:34
+#: ../templates/charts/chartDurationPerWorkout.jinja2:32
 msgid "Duration in s"
 msgstr "Dauer in s"
 
