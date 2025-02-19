@@ -209,7 +209,9 @@ def get_planned_tours(workoutTypes: list[WorkoutType]) -> list[PlannedTour]:
 def get_planned_tours_filtered(
     workoutTypes: list[WorkoutType], plannedTourFilterState: 'PlannedTourFilterState'
 ) -> list[PlannedTour]:
-    return (
+    from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
+
+    plannedTours = (
         PlannedTour.query.filter(
             or_(
                 PlannedTour.user_id == current_user.id,
@@ -229,6 +231,27 @@ def get_planned_tours_filtered(
         .order_by(asc(func.lower(PlannedTour.name)))
         .all()
     )
+
+    if plannedTourFilterState.is_done_selected() and plannedTourFilterState.is_todo_selected():
+        return plannedTours
+
+    result = []
+    for plannedTour in plannedTours:
+        numberOfLinkedWorkouts = (
+            DistanceWorkout.query.filter(DistanceWorkout.user_id == current_user.id)
+            .filter(DistanceWorkout.planned_tour == plannedTour)
+            .order_by(DistanceWorkout.start_time.asc())
+            .count()
+        )
+
+        if plannedTourFilterState.is_done_selected() and numberOfLinkedWorkouts > 0:
+            result.append(plannedTour)
+            continue
+
+        if plannedTourFilterState.is_todo_selected() and numberOfLinkedWorkouts == 0:
+            result.append(plannedTour)
+
+    return result
 
 
 distance_workout_planned_tour_association = Table(
