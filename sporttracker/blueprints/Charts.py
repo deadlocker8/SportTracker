@@ -19,6 +19,7 @@ from sporttracker.logic.model.Workout import (
     Workout,
     get_workouts_by_year_and_month,
     get_available_years,
+    get_duration_per_month_by_type,
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
@@ -472,5 +473,38 @@ def construct_blueprint():
                 texts.append('0.0 km')
 
         return {'yearNames': yearNames, 'values': values, 'texts': texts, 'type': workoutType}
+
+    @charts.route('/durationPerMonth')
+    @login_required
+    def chartDurationPerMonth():
+        minYear, maxYear = __get_min_and_max_year()
+
+        chartDataDurationPerMonth: list[dict[str, Any]] = []
+        if minYear is not None and maxYear is not None:
+            for workoutType in WorkoutType:
+                chartDataDurationPerMonth.append(
+                    __get_duration_per_month_by_type(workoutType, minYear, maxYear)
+                )
+
+        return render_template(
+            'charts/chartDurationPerMonth.jinja2',
+            chartDataDurationPerMonth=chartDataDurationPerMonth,
+        )
+
+    def __get_duration_per_month_by_type(
+        workoutType: WorkoutType, minYear: int, maxYear: int
+    ) -> dict[str, Any]:
+        monthDurationSums = get_duration_per_month_by_type(workoutType, minYear, maxYear)
+        monthNames = []
+        values = []
+        texts = []
+
+        for monthDurationSum in monthDurationSums:
+            monthDate = date(year=monthDurationSum.year, month=monthDurationSum.month, day=1)
+            monthNames.append(format_datetime(monthDate, format='MMMM yyyy'))
+            values.append(monthDurationSum.durationSum)
+            texts.append(format_duration(monthDurationSum.durationSum))
+
+        return {'monthNames': monthNames, 'values': values, 'texts': texts, 'type': workoutType}
 
     return charts
