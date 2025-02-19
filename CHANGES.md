@@ -1,3 +1,6 @@
+# 1.34.0 - (XX.XX.XX)
+- add: chart "duration per workout" now also includes fitness workouts (#181)
+
 # 1.34.0 - (17.02.25)
 - add: new API version v2.1.0
 - add: API: improve login/authorization handling (new post route /api/v2/login) (#174)

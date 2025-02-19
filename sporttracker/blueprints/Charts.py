@@ -69,8 +69,8 @@ def construct_blueprint():
 
     def __get_min_and_max_year() -> tuple[int | None, int | None]:
         result = db.session.query(
-            func.min(DistanceWorkout.start_time),
-            func.max(DistanceWorkout.start_time).filter(DistanceWorkout.user_id == current_user.id),
+            func.min(Workout.start_time),
+            func.max(Workout.start_time).filter(Workout.user_id == current_user.id),
         ).first()
 
         if result is None:
@@ -219,11 +219,11 @@ def construct_blueprint():
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
 
         workouts = (
-            DistanceWorkout.query.filter(DistanceWorkout.user_id == current_user.id)
-            .filter(DistanceWorkout.type == workoutType)
-            .filter(DistanceWorkout.name == name)
-            .filter(DistanceWorkout.duration.is_not(None))
-            .order_by(DistanceWorkout.start_time.asc())
+            Workout.query.filter(Workout.user_id == current_user.id)
+            .filter(Workout.type == workoutType)
+            .filter(Workout.name == name)
+            .filter(Workout.duration.is_not(None))
+            .order_by(Workout.start_time.asc())
             .all()
         )
 
@@ -272,12 +272,12 @@ def construct_blueprint():
                 continue
 
             rows = (
-                DistanceWorkout.query.with_entities(DistanceWorkout.name)
-                .filter(DistanceWorkout.user_id == current_user.id)
-                .filter(DistanceWorkout.type == workoutType)
-                .group_by(DistanceWorkout.name)
-                .having(func.count(DistanceWorkout.name) >= 2)
-                .order_by(asc(func.lower(DistanceWorkout.name)))
+                Workout.query.with_entities(Workout.name)
+                .filter(Workout.user_id == current_user.id)
+                .filter(Workout.type == workoutType)
+                .group_by(Workout.name)
+                .having(func.count(Workout.name) >= 2)
+                .order_by(asc(func.lower(Workout.name)))
                 .all()
             )
 
