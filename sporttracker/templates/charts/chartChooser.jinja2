@@ -70,6 +70,13 @@
                             <div class="fs-3 text-light">{{ gettext('Speed per Workout') }}</div>
                         </a>
                     </div>
+                    <div class="col col-12 col-md-6 mb-5">
+                        <a href="{{ url_for('charts.chartDurationPerMonth') }}"
+                           class="btn btn-link text-decoration-none">
+                            <div class="material-symbols-outlined filled rounded-circle fs-1 p-3 text-dark bg-primary-subtle mb-2">bar_chart</div>
+                            <div class="fs-3 text-light">{{ gettext('Duration per Month') }}</div>
+                        </a>
+                    </div>
                 </div>
             </section>
         </div>

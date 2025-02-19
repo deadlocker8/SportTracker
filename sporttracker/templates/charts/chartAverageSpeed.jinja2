@@ -32,7 +32,9 @@
             showgrid: false,
         },
         yaxis: {
-            title: '{{ gettext('Speed in km/h') }}',
+            title: {
+                text: '{{ gettext('Speed in km/h') }}',
+            },
             rangemode: 'tozero',
             tickformat: '.0f',
             showline: true,

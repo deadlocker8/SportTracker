@@ -9,7 +9,7 @@
                 marker: {
                     color: '{{ entry.type.background_color_hex }}'
                 },
-                 text: {{ entry['texts'] }},
+                text: {{ entry['texts'] }},
                 name: '{{ entry.type.name | capitalize }}',
             },
         {% endfor %}
@@ -30,7 +30,9 @@
             automargin: true
         },
         yaxis: {
-            title: '{{ gettext('Distance in km') }}',
+            title: {
+                text: '{{ gettext('Distance in km') }}',
+            },
             rangemode: 'tozero',
             tickformat: '.0f',
             showline: true,

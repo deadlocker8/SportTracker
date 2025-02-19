@@ -28,7 +28,9 @@
             automargin: true
         },
         yaxis: {
-            title: '{{ gettext('Duration in s') }}',
+            title: {
+                text: '{{ gettext('Duration in s') }}',
+            },
             rangemode: 'tozero',
             tickformat: '.0f',
             showline: true,

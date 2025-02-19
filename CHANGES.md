@@ -1,5 +1,6 @@
 # 1.34.0 - (XX.XX.XX)
 - add: chart "duration per workout" now also includes fitness workouts (#181)
+- fix: missing y-axis title in all charts
 
 # 1.34.0 - (17.02.25)
 - add: new API version v2.1.0
