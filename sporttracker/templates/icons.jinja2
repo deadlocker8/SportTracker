@@ -110,6 +110,12 @@
                         {{ materialize_icon('copy', 'content_copy') }}
                         {{ materialize_icon('delete', 'delete', true) }}
                     {% endcall %}
+
+                    {% call group('custom field form') %}
+                        {{ materialize_icon('name', 'edit', true) }}
+                        {{ materialize_icon('type', 'list') }}
+                        {{ materialize_icon('is required', 'question_mark') }}
+                    {% endcall %}
                 </div>
 
                 <div class="d-flex flex-column justify-content-between">
@@ -214,12 +220,6 @@
                         {{ materialize_icon('info', 'info') }}
                     {% endcall %}
 
-                    {% call group('custom field form') %}
-                        {{ materialize_icon('name', 'edit', true) }}
-                        {{ materialize_icon('type', 'list') }}
-                        {{ materialize_icon('is required', 'question_mark') }}
-                    {% endcall %}
-
                     {% call group('workout type') %}
                         {{ materialize_icon('duration', 'update') }}
                         {{ materialize_icon('repetition', 'repeat') }}
@@ -241,6 +241,7 @@
                         {{ materialize_icon('show all', 'keyboard_arrow_down') }}
                         {{ materialize_icon('logout', 'logout') }}
                         {{ materialize_icon('import from FIT file', 'upload_file') }}
+                        {{ materialize_icon('filter', 'filter_alt') }}
                     {% endcall %}
 
                     {% call group('navbar/headlines') %}
