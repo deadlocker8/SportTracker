@@ -11,7 +11,10 @@ from pydantic import BaseModel
 
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.PlannedTourFilterState import get_planned_tour_filter_state_from_session
+from sporttracker.logic.PlannedTourFilterState import (
+    get_planned_tour_filter_state_from_session,
+    PlannedTourFilterState,
+)
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.DistanceWorkout import (
     DistanceWorkout,
@@ -379,6 +382,12 @@ def construct_blueprint(
         )
         session['plannedTourFilterState'] = plannedTourFilterState.to_json()
 
+        return redirect(url_for('plannedTours.listPlannedTours'))
+
+    @plannedTours.route('/resetFilter')
+    @login_required
+    def resetFilter():
+        session['plannedTourFilterState'] = PlannedTourFilterState().to_json()
         return redirect(url_for('plannedTours.listPlannedTours'))
 
     return plannedTours
