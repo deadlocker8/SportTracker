@@ -209,8 +209,6 @@ def get_planned_tours(workoutTypes: list[WorkoutType]) -> list[PlannedTour]:
 def get_planned_tours_filtered(
     workoutTypes: list[WorkoutType], plannedTourFilterState: 'PlannedTourFilterState'
 ) -> list[PlannedTour]:
-    from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
-
     plannedToursQuery = (
         PlannedTour.query.filter(
             or_(
@@ -238,10 +236,54 @@ def get_planned_tours_filtered(
     plannedToursQuery = plannedToursQuery.order_by(asc(func.lower(PlannedTour.name)))
     plannedTours = plannedToursQuery.all()
 
-    if plannedTourFilterState.is_done_selected() and plannedTourFilterState.is_todo_selected():
+    plannedTours = __filter_by_distance(
+        plannedTours,
+        plannedTourFilterState.get_minimum_distance(),
+        plannedTourFilterState.get_maximum_distance(),
+    )
+
+    plannedTours = __filter_by_status(
+        plannedTours,
+        plannedTourFilterState.is_done_selected(),
+        plannedTourFilterState.is_todo_selected(),
+    )
+    return plannedTours
+
+
+def __filter_by_distance(
+    plannedTours: list[PlannedTour],
+    minimumDistance: int | None,
+    maximumDistance: int | None,
+) -> list[PlannedTour]:
+    if minimumDistance is None and maximumDistance is None:
         return plannedTours
 
-    result = []
+    filteredTours = []
+    for plannedTour in plannedTours:
+        gpxMetadata = plannedTour.get_gpx_metadata()
+        if gpxMetadata is None:
+            continue
+
+        if minimumDistance is not None and gpxMetadata.length < minimumDistance:
+            continue
+
+        if maximumDistance is not None and gpxMetadata.length > maximumDistance:
+            continue
+
+        filteredTours.append(plannedTour)
+
+    return filteredTours
+
+
+def __filter_by_status(
+    plannedTours: list[PlannedTour], includeDone: bool, includeTodo: bool
+) -> list[PlannedTour]:
+    if includeDone and includeTodo:
+        return plannedTours
+
+    from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
+
+    filteredTours = []
     for plannedTour in plannedTours:
         numberOfLinkedWorkouts = (
             DistanceWorkout.query.filter(DistanceWorkout.user_id == current_user.id)
@@ -250,14 +292,14 @@ def get_planned_tours_filtered(
             .count()
         )
 
-        if plannedTourFilterState.is_done_selected() and numberOfLinkedWorkouts > 0:
-            result.append(plannedTour)
+        if includeDone and numberOfLinkedWorkouts > 0:
+            filteredTours.append(plannedTour)
             continue
 
-        if plannedTourFilterState.is_todo_selected() and numberOfLinkedWorkouts == 0:
-            result.append(plannedTour)
+        if includeTodo and numberOfLinkedWorkouts == 0:
+            filteredTours.append(plannedTour)
 
-    return result
+    return filteredTours
 
 
 distance_workout_planned_tour_association = Table(

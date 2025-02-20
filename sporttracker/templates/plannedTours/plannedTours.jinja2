@@ -33,10 +33,12 @@
                 </div>
 
                 <form class="mt-2 pt-2" method="POST" action="{{ url_for('plannedTours.applyFilter') }}">
-                    <div class="my-3 d-flex align-items-center justify-content-start justify-content-lg-center gap-3 overflow-x-scroll">
+                    <div class="my-3 d-flex align-items-center justify-content-start justify-content-xl-center gap-3 overflow-x-scroll">
                         {{ plannedTourMacros.plannedTourFilterStatus(plannedTourFilterState.is_done_selected(), plannedTourFilterState.is_todo_selected()) }}
 
                         {{ plannedTourMacros.plannedTourFilterName(plannedTourFilterState.get_name_filter()) }}
+
+                        {{ plannedTourMacros.plannedTourFilterDistance(plannedTourFilterState.get_minimum_distance(), plannedTourFilterState.get_maximum_distance()) }}
 
                         {{ plannedTourMacros.plannedTourFilterEnum(travelTypes, plannedTourFilterState.get_selected_arrival_methods(), gettext('Filter: Arrival Method'), 'plannedTourFilterArrivalMethod') }}
 

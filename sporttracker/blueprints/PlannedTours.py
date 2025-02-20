@@ -360,6 +360,12 @@ def construct_blueprint(
         ]
         directions = {t: t in selectedDirections for t in TravelDirection}
 
+        minimumDistanceValue = request.form.get('plannedTourFilterDistanceMin', None)
+        minimumDistance = int(minimumDistanceValue) * 1000 if minimumDistanceValue else None
+
+        maximumDistanceValue = request.form.get('plannedTourFilterDistanceMax', None)
+        maximumDistance = int(maximumDistanceValue) * 1000 if maximumDistanceValue else None
+
         plannedTourFilterState = get_planned_tour_filter_state_from_session()
         plannedTourFilterState.update(
             request.form.get('plannedTourFilterStatusDone', 'off').strip().lower() == 'on',
@@ -368,6 +374,8 @@ def construct_blueprint(
             departureMethods,
             directions,
             request.form.get('plannedTourFilterName', None),
+            minimumDistance,
+            maximumDistance,
         )
         session['plannedTourFilterState'] = plannedTourFilterState.to_json()
 

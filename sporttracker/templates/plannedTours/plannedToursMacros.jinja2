@@ -168,3 +168,39 @@
         </div>
     </div>
 {%- endmacro %}
+
+{% macro plannedTourFilterDistance(minDistance, maxDistance) -%}
+    {% set bothEmpty = minDistance is none and maxDistance is none %}
+
+    <div class="dropdown position-static">
+        <button class="btn btn-sm {% if bothEmpty %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="material-symbols-outlined fs-5">filter_alt</span>
+            <span class="ms-2">{{ gettext('Filter: Distance') }}</span>
+        </button>
+        <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
+            <div class="text-nowrap mb-2">
+                <label class="form-label" for="plannedTourFilterDistanceMin">
+                    <span>{{ gettext('Minimum distance (in km):') }}</span>
+                </label>
+
+                <input class="form-control"
+                       type="number" min="0"
+                       id="plannedTourFilterDistanceMin"
+                       name="plannedTourFilterDistanceMin"
+                       value="{% if minDistance is not none %}{{ minDistance // 1000 }}{% endif %}">
+            </div>
+
+            <div class="text-nowrap mb-2">
+                <label class="form-label" for="plannedTourFilterDistanceMax">
+                    <span>{{ gettext('Maximum distance (in km):') }}</span>
+                </label>
+
+                <input class="form-control"
+                       type="number" min="1"
+                       id="plannedTourFilterDistanceMax"
+                       name="plannedTourFilterDistanceMax"
+                       value="{% if maxDistance is not none %}{{ maxDistance // 1000 }}{% endif %}">
+            </div>
+        </div>
+    </div>
+{%- endmacro %}

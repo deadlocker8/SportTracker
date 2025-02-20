@@ -15,6 +15,8 @@ class PlannedTourFilterState:
         self._departureMethods = {travelType: True for travelType in TravelType}
         self._directions = {travelDirection: True for travelDirection in TravelDirection}
         self._name_filter: str | None = None
+        self._minimum_distance: int | None = None
+        self._maximum_distance: int | None = None
 
     def update(
         self,
@@ -24,6 +26,8 @@ class PlannedTourFilterState:
         departureMethods: dict[TravelType, bool],
         directions: dict[TravelDirection, bool],
         nameFilter: str | None,
+        minimum_distance: int | None = None,
+        maximum_distance: int | None = None,
     ):
         self._isDoneSelected = isDoneSelected
         self._isTodoSelected = isTodoSelected
@@ -31,6 +35,8 @@ class PlannedTourFilterState:
         self._departureMethods = departureMethods
         self._directions = directions
         self._name_filter = nameFilter
+        self._minimum_distance = minimum_distance
+        self._maximum_distance = maximum_distance
 
     def is_done_selected(self) -> bool:
         return self._isDoneSelected
@@ -59,6 +65,12 @@ class PlannedTourFilterState:
     def get_name_filter(self) -> str | None:
         return self._name_filter
 
+    def get_minimum_distance(self) -> int | None:
+        return self._minimum_distance
+
+    def get_maximum_distance(self) -> int | None:
+        return self._maximum_distance
+
     def to_json(self) -> str:
         return json.dumps(
             {
@@ -77,6 +89,8 @@ class PlannedTourFilterState:
                     for directionType, isActive in self._directions.items()
                 },
                 'nameFilter': self._name_filter,
+                'minimum_distance': self._minimum_distance,
+                'maximum_distance': self._maximum_distance,
             }
         )
 
@@ -116,6 +130,8 @@ class PlannedTourFilterState:
             departureMethods,
             directions,
             jsonData['nameFilter'],
+            jsonData['minimum_distance'],
+            jsonData['maximum_distance'],
         )
         return plannedTourFilterState
 
