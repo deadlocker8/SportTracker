@@ -130,6 +130,52 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card')) == 1
 
+    def test_filter(self, server, selenium: WebDriver):
+        self.login(selenium)
+        self.__open_form(selenium)
+        self.__fill_form(
+            selenium, WorkoutType.BIKING, 'Awesome Tour', 'arrival-method-2', None, None
+        )
+        self.click_button_by_id(selenium, 'buttonSavePlannedTour')
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
+        )
+
+        self.__open_form(selenium)
+        self.__fill_form(selenium, WorkoutType.RUNNING, 'Run away', 'arrival-method-3', None, None)
+        self.click_button_by_id(selenium, 'buttonSavePlannedTour')
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
+        )
+
+        buttonFilterArrivalMethod = selenium.find_elements(
+            By.CSS_SELECTOR, '.dropdown.position-static'
+        )[1]
+        buttonFilterArrivalMethod.click()
+
+        WebDriverWait(buttonFilterArrivalMethod, 5).until(
+            expected_conditions.visibility_of_element_located(
+                (By.ID, 'plannedTourFilterArrivalMethod-2')
+            )
+        )
+
+        buttonFilterArrivalMethod.find_element(By.ID, 'plannedTourFilterArrivalMethod-2').click()
+        selenium.find_element(By.ID, 'buttonApplyFilter').click()
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
+            )
+        )
+
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card')) == 1
+
     def test_edit_tour_valid(self, server, selenium: WebDriver, app):
         self.login(selenium)
         self.__open_form(selenium)
