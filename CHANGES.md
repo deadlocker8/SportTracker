@@ -1,4 +1,5 @@
 # 1.34.0 - (XX.XX.XX)
+- add: planned tours can now be filtered (#123)
 - add: chart "duration per workout" now also includes fitness workouts (#181)
 - add: new chart: duration per month (#180)
 - fix: missing y-axis title in all charts
