@@ -156,7 +156,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
         buttonFilterArrivalMethod = selenium.find_elements(
             By.CSS_SELECTOR, '.dropdown.position-static'
-        )[1]
+        )[3]
         buttonFilterArrivalMethod.click()
 
         WebDriverWait(buttonFilterArrivalMethod, 5).until(
