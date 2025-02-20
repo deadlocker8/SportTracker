@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-19 23:57+0100\n"
-"PO-Revision-Date: 2025-02-19 23:58+0100\n"
+"POT-Creation-Date: 2025-02-20 22:28+0100\n"
+"PO-Revision-Date: 2025-02-20 22:29+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -341,7 +341,7 @@ msgid "Users"
 msgstr "Benutzer"
 
 #: ../templates/macros.jinja2:55 ../templates/maps/mapMultipleWorkouts.jinja2:6
-#: ../templates/plannedTours/plannedTours.jinja2:116
+#: ../templates/plannedTours/plannedTours.jinja2:120
 #: ../templates/workouts/workouts.jinja2:5
 #: ../templates/workouts/workouts.jinja2:25
 msgid "Workouts"
@@ -818,13 +818,13 @@ msgstr "Geplante Tour"
 
 #: ../templates/maps/mapPlannedTour.jinja2:43
 #: ../templates/maps/mapPlannedTour.jinja2:91
-#: ../templates/plannedTours/plannedTours.jinja2:90
+#: ../templates/plannedTours/plannedTours.jinja2:94
 msgid "Arrival"
 msgstr "Anreise"
 
 #: ../templates/maps/mapPlannedTour.jinja2:46
 #: ../templates/maps/mapPlannedTour.jinja2:95
-#: ../templates/plannedTours/plannedTours.jinja2:94
+#: ../templates/plannedTours/plannedTours.jinja2:98
 msgid "Departure"
 msgstr "Abreise"
 
@@ -836,7 +836,7 @@ msgstr "Richtung"
 
 #: ../templates/maps/mapPlannedTour.jinja2:57
 #: ../templates/maps/mapPlannedTour.jinja2:141
-#: ../templates/plannedTours/plannedTours.jinja2:120
+#: ../templates/plannedTours/plannedTours.jinja2:124
 msgid "last edited"
 msgstr "bearbeitet"
 
@@ -1125,31 +1125,31 @@ msgstr "Eine GPX- oder FIT Datei ist mit dieser geplanten Tour verknüpft"
 msgid "View all on map"
 msgstr "Alle auf Karte anzeigen"
 
-#: ../templates/plannedTours/plannedTours.jinja2:39
+#: ../templates/plannedTours/plannedTours.jinja2:43
 msgid "Filter: Arrival Method"
 msgstr "Filter: Anreiseart"
 
-#: ../templates/plannedTours/plannedTours.jinja2:41
+#: ../templates/plannedTours/plannedTours.jinja2:45
 msgid "Filter: Departure Method"
 msgstr "Filter: Abreiseart"
 
-#: ../templates/plannedTours/plannedTours.jinja2:43
+#: ../templates/plannedTours/plannedTours.jinja2:47
 msgid "Filter: Direction"
 msgstr "Filter: Richtung"
 
-#: ../templates/plannedTours/plannedTours.jinja2:45
+#: ../templates/plannedTours/plannedTours.jinja2:49
 msgid "Apply Filter"
 msgstr "Filter anwenden"
 
-#: ../templates/plannedTours/plannedTours.jinja2:63
+#: ../templates/plannedTours/plannedTours.jinja2:67
 msgid "new"
 msgstr "neu"
 
-#: ../templates/plannedTours/plannedTours.jinja2:65
+#: ../templates/plannedTours/plannedTours.jinja2:69
 msgid "updated"
 msgstr "editiert"
 
-#: ../templates/plannedTours/plannedTours.jinja2:108
+#: ../templates/plannedTours/plannedTours.jinja2:112
 msgid "shared"
 msgstr "geteilt"
 
@@ -1176,6 +1176,26 @@ msgstr "abgeschlossen"
 #: ../templates/plannedTours/plannedToursMacros.jinja2:118
 msgid "not completed"
 msgstr "nicht abgeschlossen"
+
+#: ../templates/plannedTours/plannedToursMacros.jinja2:155
+msgid "Filter: Name"
+msgstr "Filter: Name"
+
+#: ../templates/plannedTours/plannedToursMacros.jinja2:160
+msgid "Name must include:"
+msgstr "Name muss enthalten:"
+
+#: ../templates/plannedTours/plannedToursMacros.jinja2:178
+msgid "Filter: Distance"
+msgstr "Filter: Strecke"
+
+#: ../templates/plannedTours/plannedToursMacros.jinja2:183
+msgid "Minimum distance (in km):"
+msgstr " Minimale Strecke (in km):"
+
+#: ../templates/plannedTours/plannedToursMacros.jinja2:195
+msgid "Maximum distance (in km):"
+msgstr "Maximale Strecke (in km):"
 
 #: ../templates/settings/customFieldsForm.jinja2:6
 #: ../templates/settings/customFieldsForm.jinja2:19
