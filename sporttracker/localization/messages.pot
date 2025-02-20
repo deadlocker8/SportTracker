@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-20 22:28+0100\n"
+"POT-Creation-Date: 2025-02-20 22:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -325,7 +325,7 @@ msgid "Users"
 msgstr ""
 
 #: ../templates/macros.jinja2:55 ../templates/maps/mapMultipleWorkouts.jinja2:6
-#: ../templates/plannedTours/plannedTours.jinja2:120
+#: ../templates/plannedTours/plannedTours.jinja2:122
 #: ../templates/workouts/workouts.jinja2:5
 #: ../templates/workouts/workouts.jinja2:25
 msgid "Workouts"
@@ -806,13 +806,13 @@ msgstr ""
 
 #: ../templates/maps/mapPlannedTour.jinja2:43
 #: ../templates/maps/mapPlannedTour.jinja2:91
-#: ../templates/plannedTours/plannedTours.jinja2:94
+#: ../templates/plannedTours/plannedTours.jinja2:96
 msgid "Arrival"
 msgstr ""
 
 #: ../templates/maps/mapPlannedTour.jinja2:46
 #: ../templates/maps/mapPlannedTour.jinja2:95
-#: ../templates/plannedTours/plannedTours.jinja2:98
+#: ../templates/plannedTours/plannedTours.jinja2:100
 msgid "Departure"
 msgstr ""
 
@@ -824,7 +824,7 @@ msgstr ""
 
 #: ../templates/maps/mapPlannedTour.jinja2:57
 #: ../templates/maps/mapPlannedTour.jinja2:141
-#: ../templates/plannedTours/plannedTours.jinja2:124
+#: ../templates/plannedTours/plannedTours.jinja2:126
 msgid "last edited"
 msgstr ""
 
@@ -1123,18 +1123,22 @@ msgid "Filter: Direction"
 msgstr ""
 
 #: ../templates/plannedTours/plannedTours.jinja2:49
+msgid "Reset Filter"
+msgstr ""
+
+#: ../templates/plannedTours/plannedTours.jinja2:51
 msgid "Apply Filter"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:67
+#: ../templates/plannedTours/plannedTours.jinja2:69
 msgid "new"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:69
+#: ../templates/plannedTours/plannedTours.jinja2:71
 msgid "updated"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:112
+#: ../templates/plannedTours/plannedTours.jinja2:114
 msgid "shared"
 msgstr ""
 
