@@ -14,6 +14,7 @@ class PlannedTourFilterState:
         self._arrivalMethods = {travelType: True for travelType in TravelType}
         self._departureMethods = {travelType: True for travelType in TravelType}
         self._directions = {travelDirection: True for travelDirection in TravelDirection}
+        self._name_filter: str | None = None
 
     def update(
         self,
@@ -22,12 +23,14 @@ class PlannedTourFilterState:
         arrivalMethods: dict[TravelType, bool],
         departureMethods: dict[TravelType, bool],
         directions: dict[TravelDirection, bool],
+        nameFilter: str | None,
     ):
         self._isDoneSelected = isDoneSelected
         self._isTodoSelected = isTodoSelected
         self._arrivalMethods = arrivalMethods
         self._departureMethods = departureMethods
         self._directions = directions
+        self._name_filter = nameFilter
 
     def is_done_selected(self) -> bool:
         return self._isDoneSelected
@@ -53,6 +56,9 @@ class PlannedTourFilterState:
         ]
         return sorted(selectedItems, key=lambda entry: entry.order)
 
+    def get_name_filter(self) -> str | None:
+        return self._name_filter
+
     def to_json(self) -> str:
         return json.dumps(
             {
@@ -70,6 +76,7 @@ class PlannedTourFilterState:
                     directionType.name: isActive
                     for directionType, isActive in self._directions.items()
                 },
+                'nameFilter': self._name_filter,
             }
         )
 
@@ -108,6 +115,7 @@ class PlannedTourFilterState:
             arrivalMethods,
             departureMethods,
             directions,
+            jsonData['nameFilter'],
         )
         return plannedTourFilterState
 

@@ -211,7 +211,7 @@ def get_planned_tours_filtered(
 ) -> list[PlannedTour]:
     from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 
-    plannedTours = (
+    plannedToursQuery = (
         PlannedTour.query.filter(
             or_(
                 PlannedTour.user_id == current_user.id,
@@ -228,9 +228,15 @@ def get_planned_tours_filtered(
             )
         )
         .filter(PlannedTour.direction.in_(plannedTourFilterState.get_selected_directions()))
-        .order_by(asc(func.lower(PlannedTour.name)))
-        .all()
     )
+
+    if plannedTourFilterState.get_name_filter() is not None:
+        plannedToursQuery = plannedToursQuery.filter(
+            PlannedTour.name.icontains(plannedTourFilterState.get_name_filter())
+        )
+
+    plannedToursQuery = plannedToursQuery.order_by(asc(func.lower(PlannedTour.name)))
+    plannedTours = plannedToursQuery.all()
 
     if plannedTourFilterState.is_done_selected() and plannedTourFilterState.is_todo_selected():
         return plannedTours

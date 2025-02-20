@@ -367,6 +367,7 @@ def construct_blueprint(
             arrivalMethods,
             departureMethods,
             directions,
+            request.form.get('plannedTourFilterName', None),
         )
         session['plannedTourFilterState'] = plannedTourFilterState.to_json()
 

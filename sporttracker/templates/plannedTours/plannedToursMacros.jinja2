@@ -147,3 +147,24 @@
         </div>
     </div>
 {%- endmacro %}
+
+{% macro plannedTourFilterName(nameFilter) -%}
+    <div class="dropdown position-static">
+        <button class="btn btn-sm {% if nameFilter is none or nameFilter | length == 0 %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="material-symbols-outlined fs-5">filter_alt</span>
+            <span class="ms-2">{{ gettext('Filter: Name') }}</span>
+        </button>
+        <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
+            <div class="text-nowrap mb-2">
+                <label class="form-label" for="plannedTourFilterName">
+                    <span>{{ gettext('Name must include:') }}</span>
+                </label>
+
+                <input class="form-control" type="text"
+                       id="plannedTourFilterName"
+                       name="plannedTourFilterName"
+                       value="{% if nameFilter is not none %}{{ nameFilter }}{% endif %}">
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
