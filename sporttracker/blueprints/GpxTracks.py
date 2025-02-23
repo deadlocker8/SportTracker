@@ -141,7 +141,9 @@ def __downloadGpxTrack(
     if gpxMetadata is None:
         return None
 
-    modifiedGpxXml = gpxService.get_joined_tracks_and_segments(gpxMetadata.gpx_file_name)
+    modifiedGpxXml = gpxService.get_joined_tracks_and_segments(
+        gpxMetadata.gpx_file_name, downloadName
+    )
     fileName = f'{downloadName}.gpx'
     return Response(
         modifiedGpxXml,

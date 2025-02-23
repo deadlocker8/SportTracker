@@ -79,8 +79,8 @@ class GpxService:
             with zipObject.open(f'{gpxFileName}.{self.GPX_FILE_EXTENSION}') as gpxFile:
                 return gpxFile.read()
 
-    def get_joined_tracks_and_segments(self, gpxFileName: str) -> str:
-        return GpxParser(self.get_gpx_content(gpxFileName)).join_tracks_and_segments()
+    def get_joined_tracks_and_segments(self, gpxFileName: str, downloadName: str) -> str:
+        return GpxParser(self.get_gpx_content(gpxFileName)).join_tracks_and_segments(downloadName)
 
     def handle_gpx_upload_for_workout(self, files: dict[str, FileStorage]) -> int | None:
         gpxFileName = self.__handle_gpx_upload(
@@ -294,10 +294,12 @@ class GpxParser:
     def __parse_gpx(gpxContent: bytes) -> GPX:
         return gpxpy.parse(gpxContent)
 
-    def join_tracks_and_segments(self) -> str:
+    def join_tracks_and_segments(self, downloadName: str) -> str:
         self.__join_tracks(self._gpx)
 
         self.__fix_missing_elevation_for_first_points(self._gpx)
+
+        self._gpx.name = downloadName
 
         return self._gpx.to_xml(prettyprint=False)
 
