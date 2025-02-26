@@ -124,6 +124,15 @@ document.addEventListener('DOMContentLoaded', function()
             xhr.send(formData);
         });
     }
+
+    let checkboxMaintenanceReminderNotifications = document.getElementById('isMaintenanceRemindersNotificationsActivated');
+    if(checkboxMaintenanceReminderNotifications !== null)
+    {
+        checkboxMaintenanceReminderNotifications.addEventListener('click', function()
+        {
+            document.getElementById('ntfy-settings').classList.toggle('hidden', !checkboxMaintenanceReminderNotifications.checked);
+        });
+    }
 });
 
 function toggleFitFileImport(buttonImportFromFitFile, disable)

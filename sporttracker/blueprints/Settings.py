@@ -16,14 +16,15 @@ from sporttracker.logic.model.CustomWorkoutField import (
     CustomWorkoutFieldType,
     RESERVED_FIELD_NAMES,
 )
+from sporttracker.logic.model.NtfySettings import NtfySettings
 from sporttracker.logic.model.Participant import Participant, get_participants
-from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import (
     User,
     Language,
     DistanceWorkoutInfoItem,
     DistanceWorkoutInfoItemType,
 )
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -72,6 +73,14 @@ class ParticipantFormModel(BaseModel):
     name: str
 
 
+class EditMaintenanceReminderNotificationsModel(BaseModel):
+    isMaintenanceRemindersNotificationsActivated: bool | None = None
+    ntfy_url: str | None = None
+    ntfy_topic: str | None = None
+    ntfy_username: str | None = None
+    ntfy_password: str | None = None
+
+
 def construct_blueprint():
     settings = Blueprint('settings', __name__, static_folder='static', url_prefix='/settings')
 
@@ -85,6 +94,7 @@ def construct_blueprint():
             participants=get_participants(),
             infoItems=__get_info_items(),
             tileRenderUrl=__get_tile_render_url(),
+            ntfySettings=__get_ntfy_settings(),
         )
 
     @settings.route('/editSelfPost', methods=['POST'])
@@ -107,6 +117,7 @@ def construct_blueprint():
                 participants=get_participants(),
                 infoItems=__get_info_items(),
                 tileRenderUrl=__get_tile_render_url(),
+                ntfySettings=__get_ntfy_settings(),
             )
 
         if len(password) < MIN_PASSWORD_LENGTH:
@@ -120,6 +131,7 @@ def construct_blueprint():
                 participants=get_participants(),
                 infoItems=__get_info_items(),
                 tileRenderUrl=__get_tile_render_url(),
+                ntfySettings=__get_ntfy_settings(),
             )
 
         user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
@@ -388,6 +400,71 @@ def construct_blueprint():
 
         return redirect(url_for('settings.settingsShow'))
 
+    @settings.route('/editMaintenanceReminderNotifications', methods=['POST'])
+    @login_required
+    @validate()
+    def editMaintenanceReminderNotifications(form: EditMaintenanceReminderNotificationsModel):
+        user = User.query.filter(User.id == current_user.id).first()
+
+        if user is None:
+            abort(404)
+
+        user.isMaintenanceRemindersNotificationsActivated = bool(
+            form.isMaintenanceRemindersNotificationsActivated
+        )
+
+        existingNtfySettings = user.get_ntfy_settings()
+
+        if not user.isMaintenanceRemindersNotificationsActivated:
+            if existingNtfySettings is not None:
+                db.session.delete(existingNtfySettings)
+                db.session.commit()
+
+                LOGGER.debug(
+                    f'Updated maintenance reminder notification settings for user: {user.username} to '
+                    f'"isMaintenanceRemindersNotificationsActivated": {bool(form.isMaintenanceRemindersNotificationsActivated)}'
+                )
+                return redirect(url_for('settings.settingsShow'))
+
+        validations = [
+            (form.ntfy_url, gettext('Ntfy Server URL')),
+            (form.ntfy_topic, gettext('Ntfy Topic Name')),
+            (form.ntfy_username, gettext('Username')),
+            (form.ntfy_password, gettext('Password')),
+        ]
+
+        for validation in validations:
+            value, name = validation
+            if value is None or value.strip() == '':
+                return render_template(
+                    'settings/settings.jinja2',
+                    ntfyErrorMessage=gettext('Ntfy Settings: {0} must not be empty').format(name),
+                    userLanguage=current_user.language.name,
+                    customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
+                    participants=get_participants(),
+                    infoItems=__get_info_items(),
+                    tileRenderUrl=__get_tile_render_url(),
+                    ntfySettings=form,
+                )
+
+        if existingNtfySettings is None:
+            existingNtfySettings = NtfySettings()
+
+        existingNtfySettings.username = form.ntfy_username
+        existingNtfySettings.password = form.ntfy_password
+        existingNtfySettings.server_url = form.ntfy_url
+        existingNtfySettings.topic = form.ntfy_topic
+        existingNtfySettings.user_id = current_user.id
+        db.session.add(existingNtfySettings)
+        db.session.commit()
+
+        LOGGER.debug(
+            f'Updated maintenance reminder notification settings for user: {user.username} to '
+            f'"isMaintenanceRemindersNotificationsActivated": {bool(form.isMaintenanceRemindersNotificationsActivated)}'
+        )
+
+        return redirect(url_for('settings.settingsShow'))
+
     def __is_allowed_custom_field_name(form: CustomWorkoutFieldFormModel):
         if form.name.lower() in RESERVED_FIELD_NAMES:
             flash(
@@ -445,5 +522,19 @@ def construct_blueprint():
         tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
         tileRenderUrl = tileRenderUrl + '/{z}/{x}/{y}.png'
         return tileRenderUrl
+
+    def __get_ntfy_settings() -> EditMaintenanceReminderNotificationsModel:
+        ntfySettings = current_user.get_ntfy_settings()
+        if ntfySettings is None:
+            return EditMaintenanceReminderNotificationsModel(
+                isMaintenanceRemindersNotificationsActivated=False
+            )
+
+        return EditMaintenanceReminderNotificationsModel(
+            isMaintenanceRemindersNotificationsActivated=True,
+            ntfy_url=ntfySettings.server_url,
+            ntfy_topic=ntfySettings.topic,
+            ntfy_username=ntfySettings.username,
+        )
 
     return settings

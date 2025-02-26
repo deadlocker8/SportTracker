@@ -7,6 +7,7 @@ from flask_login import UserMixin, current_user
 from sqlalchemy import Integer, String, Boolean, DateTime
 from sqlalchemy.orm import mapped_column, Mapped
 
+from sporttracker.logic.model.NtfySettings import NtfySettings
 from sporttracker.logic.model.db import db
 
 
@@ -59,6 +60,9 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
             f'tileHuntingShareCode: {self.tileHuntingShareCode}, '
             f'isMaintenanceRemindersNotificationsActivated: {self.isMaintenanceRemindersNotificationsActivated})'
         )
+
+    def get_ntfy_settings(self) -> NtfySettings | None:
+        return NtfySettings.query.filter(NtfySettings.user_id == self.id).first()
 
 
 class DistanceWorkoutInfoItemType(enum.Enum):

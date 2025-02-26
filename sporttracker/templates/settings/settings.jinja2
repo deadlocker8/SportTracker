@@ -232,6 +232,76 @@
     </div>
 {%- endmacro %}
 
+{% macro settings_ntfy() -%}
+    <div class="row mt-5 text-start">
+        <div class="col col-11 col-md-9 mx-auto">
+            {% call macros.headline(gettext('Maintenance Reminder Notifications'), '', 'fs-3') %}
+                <span class="material-symbols-outlined fs-2">notifications</span>
+            {% endcall %}
+
+            <form role="form" action="{{ url_for('settings.editMaintenanceReminderNotifications') }}" method="post"
+                  class="mt-5">
+                <div class="mb-4">
+                    <div class="d-flex align-items-center">
+                        <span class="material-symbols-outlined me-3">notifications</span>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                                   id="isMaintenanceRemindersNotificationsActivated"
+                                   name="isMaintenanceRemindersNotificationsActivated"
+                                   {% if current_user.isMaintenanceRemindersNotificationsActivated %}checked{% endif %}/>
+                            <label class="form-check-label" for="isTileHuntingActivated">{{ gettext('Activate notifications for maintenance reminders via ntfy') }}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ntfy-settings" class="{% if not current_user.isMaintenanceRemindersNotificationsActivated %}hidden{% endif %}">
+                    {% if ntfyErrorMessage %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ ntfyErrorMessage }}
+                        </div>
+                    {% endif %}
+
+                    <div class="mb-4">
+                        <label for="ntfy-url" class="form-label input-field-margin">{{ gettext('Ntfy Server URL') }}</label>
+                        <div class="d-flex align-items-center">
+                            <span class="material-symbols-outlined filled me-3">travel_explore</span>
+                            <input type="text" class="form-control" id="ntfy-url" name="ntfy_url" placeholder="https://example.com" value="{% if ntfySettings.ntfy_url %}{{ ntfySettings.ntfy_url }}{% endif %}">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="ntfy-topic" class="form-label input-field-margin">{{ gettext('Ntfy Topic Name') }}</label>
+                        <div class="d-flex align-items-center">
+                            <span class="material-symbols-outlined filled me-3">sell</span>
+                            <input type="text" class="form-control" id="ntfy-topic" name="ntfy_topic" value="{% if ntfySettings.ntfy_topic %}{{ ntfySettings.ntfy_topic }}{% endif %}">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="ntfy-username" class="form-label input-field-margin">{{ gettext('Username') }}</label>
+                        <div class="d-flex align-items-center">
+                            <span class="material-symbols-outlined filled me-3">person</span>
+                            <input type="text" class="form-control" id="ntfy-username" name="ntfy_username" value="{% if ntfySettings.ntfy_username %}{{ ntfySettings.ntfy_username }}{% endif %}">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="ntfy-password" class="form-label input-field-margin">{{ gettext('Password') }}</label>
+                        <div class="d-flex align-items-center">
+                            <span class="material-symbols-outlined filled me-3">vpn_key</span>
+                            <input type="password" class="form-control" id="ntfy-password" name="ntfy_password">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
+                    <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}
+                </button>
+            </form>
+        </div>
+    </div>
+{%- endmacro %}
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -253,6 +323,16 @@
                     </div>
                 </div>
 
+                {% if ntfyErrorMessage %}
+                    <div class="row mt-3 text-start">
+                        <div class="col col-11 col-md-9 mx-auto">
+                            <div class="alert alert-danger" role="alert">
+                                {{ ntfyErrorMessage }}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
                 {{ settings_general() }}
 
                 <hr class="mt-5"/>
@@ -270,6 +350,10 @@
                 <hr class="mt-5"/>
 
                 {{ settings_infoItems() }}
+
+                <hr class="mt-5"/>
+
+                {{ settings_ntfy() }}
             </section>
         </div>
 
