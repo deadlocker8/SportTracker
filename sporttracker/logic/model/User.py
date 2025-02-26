@@ -42,6 +42,9 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     isTileHuntingActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     isTileHuntingAccessActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     tileHuntingShareCode: Mapped[str] = mapped_column(String, nullable=True)
+    isMaintenanceRemindersNotificationsActivated: Mapped[bool] = mapped_column(
+        Boolean, nullable=False
+    )
 
     def __repr__(self):
         return (
@@ -50,10 +53,11 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
             f'username: {self.username}, '
             f'isAdmin: {self.isAdmin}, '
             f'language: {self.language}, '
-            f'planned_tours_last_viewed_date: {self.planned_tours_last_viewed_date})'
-            f'isTileHuntingActivated: {self.isTileHuntingActivated})'
-            f'isTileHuntingAccessActivated: {self.isTileHuntingAccessActivated})'
-            f'tileHuntingShareCode: {self.tileHuntingShareCode})'
+            f'planned_tours_last_viewed_date: {self.planned_tours_last_viewed_date}, '
+            f'isTileHuntingActivated: {self.isTileHuntingActivated}, '
+            f'isTileHuntingAccessActivated: {self.isTileHuntingAccessActivated}, '
+            f'tileHuntingShareCode: {self.tileHuntingShareCode}, '
+            f'isMaintenanceRemindersNotificationsActivated: {self.isMaintenanceRemindersNotificationsActivated})'
         )
 
 
@@ -98,6 +102,7 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
         isTileHuntingActivated=True,
         isTileHuntingAccessActivated=False,
         tileHuntingShareCode=None,
+        isMaintenanceRemindersNotificationsActivated=False,
     )
     db.session.add(user)
     db.session.commit()
