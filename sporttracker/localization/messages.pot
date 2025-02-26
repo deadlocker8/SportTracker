@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-26 22:17+0100\n"
+"POT-Creation-Date: 2025-02-26 23:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,7 +100,7 @@ msgstr ""
 msgid "Hours"
 msgstr ""
 
-#: ../blueprints/AnnualAchievements.py:321 ../logic/model/User.py:77
+#: ../blueprints/AnnualAchievements.py:321 ../logic/model/User.py:81
 #: ../templates/charts/chartAverageSpeed.jinja2:23
 #: ../templates/charts/chartChooser.jinja2:42
 msgid "Average Speed"
@@ -110,8 +110,8 @@ msgstr ""
 msgid "Unknown user"
 msgstr ""
 
-#: ../blueprints/Authentication.py:36 ../blueprints/Settings.py:128
-#: ../blueprints/Users.py:74 ../blueprints/Users.py:129
+#: ../blueprints/Authentication.py:36 ../blueprints/Settings.py:114
+#: ../blueprints/Users.py:75 ../blueprints/Users.py:132
 msgid "Password must not be empty"
 msgstr ""
 
@@ -153,26 +153,51 @@ msgstr ""
 msgid "End Month must be greater or equal Start Month."
 msgstr ""
 
-#: ../blueprints/Settings.py:136 ../blueprints/Users.py:80
-#: ../blueprints/Users.py:137
+#: ../blueprints/Settings.py:126 ../blueprints/Users.py:81
+#: ../blueprints/Users.py:140
 msgid "Password must be at least {0} characters long"
 msgstr ""
 
-#: ../blueprints/Settings.py:410
+#: ../blueprints/Settings.py:430 ../templates/settings/settings.jinja2:274
+msgid "Ntfy Server URL"
+msgstr ""
+
+#: ../blueprints/Settings.py:431 ../templates/settings/settings.jinja2:283
+msgid "Ntfy Topic Name"
+msgstr ""
+
+#: ../blueprints/Settings.py:432 ../templates/login.jinja2:19
+#: ../templates/settings/settings.jinja2:292
+#: ../templates/users/userForm.jinja2:45
+msgid "Username"
+msgstr ""
+
+#: ../blueprints/Settings.py:433 ../templates/login.jinja2:23
+#: ../templates/settings/settings.jinja2:14
+#: ../templates/settings/settings.jinja2:301
+#: ../templates/users/userForm.jinja2:54
+msgid "Password"
+msgstr ""
+
+#: ../blueprints/Settings.py:441
+msgid "Ntfy Settings: {0} must not be empty"
+msgstr ""
+
+#: ../blueprints/Settings.py:471
 msgid ""
 "The specified field name \"{0}\" conflicts with a reserved field name and"
 " therefore can't be used as custom field name."
 msgstr ""
 
-#: ../blueprints/Settings.py:424
+#: ../blueprints/Settings.py:485
 msgid "The specified field name \"{0}\" already exists."
 msgstr ""
 
-#: ../blueprints/Settings.py:435
+#: ../blueprints/Settings.py:496
 msgid "The specified participant name \"{0}\" already exists."
 msgstr ""
 
-#: ../blueprints/Users.py:69 ../blueprints/Users.py:121
+#: ../blueprints/Users.py:70 ../blueprints/Users.py:124
 msgid "Username \"{0}\" already exists"
 msgstr ""
 
@@ -241,24 +266,24 @@ msgstr ""
 msgid "Roundtrip"
 msgstr ""
 
-#: ../logic/model/User.py:73 ../templates/maps/mapPlannedTour.jinja2:36
+#: ../logic/model/User.py:77 ../templates/maps/mapPlannedTour.jinja2:36
 #: ../templates/maps/mapPlannedTour.jinja2:83
 #: ../templates/maps/mapSingleWorkout.jinja2:47
 #: ../templates/maps/mapSingleWorkout.jinja2:94
 msgid "Distance"
 msgstr ""
 
-#: ../logic/model/User.py:75 ../templates/maps/mapSingleWorkout.jinja2:50
+#: ../logic/model/User.py:79 ../templates/maps/mapSingleWorkout.jinja2:50
 #: ../templates/maps/mapSingleWorkout.jinja2:98
 #: ../templates/workouts/workoutMacros.jinja2:335
 msgid "Duration"
 msgstr ""
 
-#: ../logic/model/User.py:79 ../templates/workouts/workoutMacros.jinja2:361
+#: ../logic/model/User.py:83 ../templates/workouts/workoutMacros.jinja2:361
 msgid "Average Heart Rate"
 msgstr ""
 
-#: ../logic/model/User.py:81 ../templates/maps/mapSingleWorkout.jinja2:126
+#: ../logic/model/User.py:85 ../templates/maps/mapSingleWorkout.jinja2:126
 msgid "Elevation Sum"
 msgstr ""
 
@@ -318,15 +343,6 @@ msgstr ""
 
 #: ../templates/icons.jinja2:55
 msgid "Icons"
-msgstr ""
-
-#: ../templates/login.jinja2:19 ../templates/users/userForm.jinja2:45
-msgid "Username"
-msgstr ""
-
-#: ../templates/login.jinja2:23 ../templates/settings/settings.jinja2:14
-#: ../templates/users/userForm.jinja2:54
-msgid "Password"
 msgstr ""
 
 #: ../templates/macros.jinja2:42 ../templates/users/users.jinja2:6
@@ -399,7 +415,7 @@ msgstr ""
 
 #: ../templates/macros.jinja2:161 ../templates/maps/mapMacros.jinja2:111
 #: ../templates/maps/mapTileHunting.jinja2:6
-#: ../templates/settings/settings.jinja2:74
+#: ../templates/settings/settings.jinja2:52
 msgid "Tile Hunting"
 msgstr ""
 
@@ -407,8 +423,10 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../templates/macros.jinja2:208 ../templates/settings/settings.jinja2:50
-#: ../templates/settings/settings.jinja2:62
+#: ../templates/macros.jinja2:208
+#: ../templates/maintenances/maintenanceForm.jinja2:99
+#: ../templates/settings/settings.jinja2:320
+#: ../templates/settings/settings.jinja2:332
 #: ../templates/workouts/workoutMacros.jinja2:476
 msgid "Settings"
 msgstr ""
@@ -540,8 +558,8 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalDurationForm.jinja2:27
 #: ../templates/plannedTours/plannedTourForm.jinja2:26
 #: ../templates/plannedTours/plannedTourForm.jinja2:31
-#: ../templates/settings/settings.jinja2:175
-#: ../templates/settings/settings.jinja2:220
+#: ../templates/settings/settings.jinja2:154
+#: ../templates/settings/settings.jinja2:199
 #: ../templates/users/userForm.jinja2:23
 #: ../templates/workouts/workoutBikingForm.jinja2:24
 #: ../templates/workouts/workoutBikingForm.jinja2:28
@@ -576,7 +594,7 @@ msgid "Time"
 msgstr ""
 
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:77
-#: ../templates/maintenances/maintenanceForm.jinja2:101
+#: ../templates/maintenances/maintenanceForm.jinja2:107
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:98
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:107
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:98
@@ -587,9 +605,10 @@ msgstr ""
 #: ../templates/settings/customFieldsForm.jinja2:84
 #: ../templates/settings/participantsForm.jinja2:58
 #: ../templates/settings/settings.jinja2:23
-#: ../templates/settings/settings.jinja2:41
-#: ../templates/settings/settings.jinja2:121
-#: ../templates/settings/settings.jinja2:249
+#: ../templates/settings/settings.jinja2:42
+#: ../templates/settings/settings.jinja2:99
+#: ../templates/settings/settings.jinja2:228
+#: ../templates/settings/settings.jinja2:310
 #: ../templates/users/userForm.jinja2:66
 #: ../templates/workouts/workoutBikingForm.jinja2:70
 #: ../templates/workouts/workoutFitnessForm.jinja2:73
@@ -618,7 +637,7 @@ msgid ""
 "maintenance events?"
 msgstr ""
 
-#: ../templates/maintenances/maintenanceForm.jinja2:50
+#: ../templates/maintenances/maintenanceForm.jinja2:47
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:41
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:28
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:41
@@ -627,20 +646,24 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:28
 #: ../templates/plannedTours/plannedTourForm.jinja2:47
 #: ../templates/settings/customFieldsForm.jinja2:61
-#: ../templates/settings/settings.jinja2:152
+#: ../templates/settings/settings.jinja2:131
 msgid "Type"
 msgstr ""
 
-#: ../templates/maintenances/maintenanceForm.jinja2:64
+#: ../templates/maintenances/maintenanceForm.jinja2:61
 msgid "Description"
 msgstr ""
 
-#: ../templates/maintenances/maintenanceForm.jinja2:85
+#: ../templates/maintenances/maintenanceForm.jinja2:82
 msgid "Activate Reminder"
 msgstr ""
 
-#: ../templates/maintenances/maintenanceForm.jinja2:92
+#: ../templates/maintenances/maintenanceForm.jinja2:89
 msgid "Limit (in km)"
+msgstr ""
+
+#: ../templates/maintenances/maintenanceForm.jinja2:98
+msgid "Notifications can be configured in the "
 msgstr ""
 
 #: ../templates/maintenances/maintenances.jinja2:10
@@ -1094,8 +1117,8 @@ msgstr ""
 #: ../templates/plannedTours/plannedTourForm.jinja2:60
 #: ../templates/settings/customFieldsForm.jinja2:52
 #: ../templates/settings/participantsForm.jinja2:50
-#: ../templates/settings/settings.jinja2:151
-#: ../templates/settings/settings.jinja2:201
+#: ../templates/settings/settings.jinja2:130
+#: ../templates/settings/settings.jinja2:180
 #: ../templates/workouts/workoutMacros.jinja2:283
 msgid "Name"
 msgstr ""
@@ -1220,69 +1243,81 @@ msgstr ""
 msgid "New Participant"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:29
+#: ../templates/settings/settings.jinja2:30
 msgid "Language"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:88
+#: ../templates/settings/settings.jinja2:66
 msgid "Activate tile hunting map and statistics"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:102
+#: ../templates/settings/settings.jinja2:80
 msgid ""
 "Allow access to your tile hunting map without login (Generated link will "
 "be shown after saving)"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:107
+#: ../templates/settings/settings.jinja2:85
 #: ../templates/workouts/workoutMacros.jinja2:543
 msgid "Copied"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:114
+#: ../templates/settings/settings.jinja2:92
 msgid ""
 "This link can be used to add an overlay to OpenStreetMap based maps, e.g."
 " https://bikerouter.de/ to plan your next tile hunting route."
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:130
+#: ../templates/settings/settings.jinja2:109
 msgid "Custom Workout Fields"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:153
+#: ../templates/settings/settings.jinja2:132
 msgid "Is Required"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:154
-#: ../templates/settings/settings.jinja2:202
+#: ../templates/settings/settings.jinja2:133
+#: ../templates/settings/settings.jinja2:181
 msgid "Action"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:174
+#: ../templates/settings/settings.jinja2:153
 msgid "Delete Custom Field?"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:174
+#: ../templates/settings/settings.jinja2:153
 #, python-format
 msgid "Do you really want to delete the custom field \"%(name)s\"?"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:192
+#: ../templates/settings/settings.jinja2:171
 #: ../templates/workouts/workoutMacros.jinja2:459
 msgid "Participants"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:219
+#: ../templates/settings/settings.jinja2:198
 msgid "Delete Participant?"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:219
+#: ../templates/settings/settings.jinja2:198
 #, python-format
 msgid "Do you really want to delete the participant \"%(name)s\"?"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:234
+#: ../templates/settings/settings.jinja2:213
 msgid "Select Information to show for each distance-based workout"
+msgstr ""
+
+#: ../templates/settings/settings.jinja2:238
+msgid "Maintenance Reminder Notifications"
+msgstr ""
+
+#: ../templates/settings/settings.jinja2:246
+msgid "More information about ntfy and how to setup your own ntfy server:"
+msgstr ""
+
+#: ../templates/settings/settings.jinja2:261
+msgid "Activate notifications for maintenance reminders via ntfy"
 msgstr ""
 
 #: ../templates/users/userForm.jinja2:6 ../templates/users/userForm.jinja2:18
