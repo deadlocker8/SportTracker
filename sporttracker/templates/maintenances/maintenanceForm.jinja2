@@ -41,10 +41,7 @@
 
                 <div class="row mt-5 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
-                        <form role="form" action="
-
-
-                                {% if isEdit %}{{ url_for('maintenances.editPost', maintenance_id=maintenance_id) }}{% else %}{{ url_for('maintenances.addPost') }}{% endif %}"
+                        <form role="form" action="{% if isEdit %}{{ url_for('maintenances.editPost', maintenance_id=maintenance_id) }}{% else %}{{ url_for('maintenances.addPost') }}{% endif %}"
                               method="post">
                             <div class="mb-3">
                                 <label for="maintenance-event-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>
@@ -94,6 +91,15 @@
                                            step="1" min="0"
                                            name="reminder_limit"
                                            value="{% if maintenance and maintenance.reminder_limit is not none %}{{ maintenance.reminder_limit }}{% else %}100{% endif %}">
+
+                                    <div class="row mt-3">
+                                        <div class="col col-12 mx-auto d-flex align-items-center justify-content-start">
+                                            <span class="material-symbols-outlined fs-4 me-2">info</span>
+                                            <span>{{ gettext('Notifications can be configured in the ') }}
+                                                <a href="{{ url_for('settings.settingsShow') }}" target="_blank">{{ gettext('Settings') }}</a>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
