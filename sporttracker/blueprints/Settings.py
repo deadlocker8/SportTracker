@@ -78,38 +78,14 @@ def construct_blueprint():
     @settings.route('/settings')
     @login_required
     def settingsShow():
-        infoItems: list[DistanceWorkoutInfoItem] = DistanceWorkoutInfoItem.query.filter(
-            DistanceWorkoutInfoItem.user_id == current_user.id
-        ).all()
-
-        infoItems.sort(key=lambda item: item.type.get_localized_name().lower())
-
-        tileRenderUrl = __get_tile_render_url()
-
         return render_template(
             'settings/settings.jinja2',
             userLanguage=current_user.language.name,
             customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
             participants=get_participants(),
-            infoItems=infoItems,
-            tileRenderUrl=tileRenderUrl,
+            infoItems=__get_info_items(),
+            tileRenderUrl=__get_tile_render_url(),
         )
-
-    def __get_tile_render_url() -> str:
-        if not current_user.isTileHuntingAccessActivated:
-            return ''
-
-        tileRenderUrl = url_for(
-            'maps.renderAllTilesViaShareCode',
-            share_code=current_user.tileHuntingShareCode,
-            zoom=0,
-            x=0,
-            y=0,
-            _external=True,
-        )
-        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
-        tileRenderUrl = tileRenderUrl + '/{z}/{x}/{y}.png'
-        return tileRenderUrl
 
     @settings.route('/editSelfPost', methods=['POST'])
     @fresh_login_required
@@ -128,6 +104,9 @@ def construct_blueprint():
                 errorMessage=gettext('Password must not be empty'),
                 userLanguage=current_user.language.name,
                 customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
+                participants=get_participants(),
+                infoItems=__get_info_items(),
+                tileRenderUrl=__get_tile_render_url(),
             )
 
         if len(password) < MIN_PASSWORD_LENGTH:
@@ -138,6 +117,9 @@ def construct_blueprint():
                 ),
                 userLanguage=current_user.language.name,
                 customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
+                participants=get_participants(),
+                infoItems=__get_info_items(),
+                tileRenderUrl=__get_tile_render_url(),
             )
 
         user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
@@ -438,5 +420,30 @@ def construct_blueprint():
             return False
 
         return True
+
+    def __get_info_items() -> list[DistanceWorkoutInfoItem]:
+        infoItems: list[DistanceWorkoutInfoItem] = DistanceWorkoutInfoItem.query.filter(
+            DistanceWorkoutInfoItem.user_id == current_user.id
+        ).all()
+
+        infoItems.sort(key=lambda item: item.type.get_localized_name().lower())
+
+        return infoItems
+
+    def __get_tile_render_url() -> str:
+        if not current_user.isTileHuntingAccessActivated:
+            return ''
+
+        tileRenderUrl = url_for(
+            'maps.renderAllTilesViaShareCode',
+            share_code=current_user.tileHuntingShareCode,
+            zoom=0,
+            x=0,
+            y=0,
+            _external=True,
+        )
+        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
+        tileRenderUrl = tileRenderUrl + '/{z}/{x}/{y}.png'
+        return tileRenderUrl
 
     return settings
