@@ -239,6 +239,15 @@
                 <span class="material-symbols-outlined fs-2">notifications</span>
             {% endcall %}
 
+            <div class="row mt-3">
+                <div class="col col-12 mx-auto d-flex align-items-center justify-content-start">
+                    <span class="material-symbols-outlined fs-4 me-2">info</span>
+                    <span>
+                        {{ gettext('More information about ntfy and how to setup your own ntfy server:') }} <a href="https://github.com/binwiederhier/ntfy" target="_blank">https://github.com/binwiederhier/ntfy</a>
+                    </span>
+                </div>
+            </div>
+
             <form role="form" action="{{ url_for('settings.editMaintenanceReminderNotifications') }}" method="post"
                   class="mt-5">
                 <div class="mb-4">
@@ -265,7 +274,8 @@
                         <label for="ntfy-url" class="form-label input-field-margin">{{ gettext('Ntfy Server URL') }}</label>
                         <div class="d-flex align-items-center">
                             <span class="material-symbols-outlined filled me-3">travel_explore</span>
-                            <input type="text" class="form-control" id="ntfy-url" name="ntfy_url" placeholder="https://example.com" value="{% if ntfySettings.ntfy_url %}{{ ntfySettings.ntfy_url }}{% endif %}">
+                            <input type="text" class="form-control" id="ntfy-url" name="ntfy_url" placeholder="https://example.com" value="
+                                    {% if ntfySettings.ntfy_url %}{{ ntfySettings.ntfy_url }}{% endif %}">
                         </div>
                     </div>
 
@@ -273,7 +283,8 @@
                         <label for="ntfy-topic" class="form-label input-field-margin">{{ gettext('Ntfy Topic Name') }}</label>
                         <div class="d-flex align-items-center">
                             <span class="material-symbols-outlined filled me-3">sell</span>
-                            <input type="text" class="form-control" id="ntfy-topic" name="ntfy_topic" value="{% if ntfySettings.ntfy_topic %}{{ ntfySettings.ntfy_topic }}{% endif %}">
+                            <input type="text" class="form-control" id="ntfy-topic" name="ntfy_topic" value="
+                                    {% if ntfySettings.ntfy_topic %}{{ ntfySettings.ntfy_topic }}{% endif %}">
                         </div>
                     </div>
 
@@ -281,7 +292,8 @@
                         <label for="ntfy-username" class="form-label input-field-margin">{{ gettext('Username') }}</label>
                         <div class="d-flex align-items-center">
                             <span class="material-symbols-outlined filled me-3">person</span>
-                            <input type="text" class="form-control" id="ntfy-username" name="ntfy_username" value="{% if ntfySettings.ntfy_username %}{{ ntfySettings.ntfy_username }}{% endif %}">
+                            <input type="text" class="form-control" id="ntfy-username" name="ntfy_username" value="
+                                    {% if ntfySettings.ntfy_username %}{{ ntfySettings.ntfy_username }}{% endif %}">
                         </div>
                     </div>
 
