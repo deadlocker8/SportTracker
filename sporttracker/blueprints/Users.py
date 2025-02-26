@@ -1,5 +1,6 @@
 import logging
 from dataclasses import dataclass
+from gettext import gettext
 
 from flask import Blueprint, render_template, redirect, url_for, abort
 from flask_bcrypt import Bcrypt
@@ -65,18 +66,21 @@ def construct_blueprint():
 
         if __user_already_exists(username):
             return render_template(
-                'users/userForm.jinja2', errorMessage=f'Username "{form.username}" already exists'
+                'users/userForm.jinja2',
+                errorMessage=gettext('Username "{0}" already exists').format(form.username),
             )
 
         if not password:
             return render_template(
-                'users/userForm.jinja2', errorMessage='Password must not be empty'
+                'users/userForm.jinja2', errorMessage=gettext('Password must not be empty')
             )
 
         if len(password) < MIN_PASSWORD_LENGTH:
             return render_template(
                 'users/userForm.jinja2',
-                errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long',
+                errorMessage=gettext('Password must be at least {0} characters long').format(
+                    MIN_PASSWORD_LENGTH
+                ),
             )
 
         create_user(username=username, password=password, isAdmin=False, language=Language.ENGLISH)
@@ -117,7 +121,7 @@ def construct_blueprint():
                     'users/userForm.jinja2',
                     user=user,
                     user_id=user_id,
-                    errorMessage=f'Username "{form.username}" already exists',
+                    errorMessage=gettext('Username "{0}" already exists').format(form.username),
                 )
 
         if not password:
@@ -125,7 +129,7 @@ def construct_blueprint():
                 'users/userForm.jinja2',
                 user=user,
                 user_id=user_id,
-                errorMessage='Password must not be empty',
+                errorMessage=gettext('Password must not be empty'),
             )
 
         if len(password) < MIN_PASSWORD_LENGTH:
@@ -133,7 +137,9 @@ def construct_blueprint():
                 'users/userForm.jinja2',
                 user=user,
                 user_id=user_id,
-                errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long',
+                errorMessage=gettext('Password must be at least {0} characters long').format(
+                    MIN_PASSWORD_LENGTH
+                ),
             )
 
         user.username = username

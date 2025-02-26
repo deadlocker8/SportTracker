@@ -1,8 +1,8 @@
 import logging
 import uuid
-from gettext import gettext
 
 from flask import Blueprint, render_template, redirect, url_for, abort, flash
+from flask_babel import gettext
 from flask_bcrypt import Bcrypt
 from flask_login import login_required, current_user, fresh_login_required
 from flask_pydantic import validate
@@ -125,7 +125,7 @@ def construct_blueprint():
         if not password:
             return render_template(
                 'settings/settings.jinja2',
-                errorMessage='Password must not be empty',
+                errorMessage=gettext('Password must not be empty'),
                 userLanguage=current_user.language.name,
                 customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
             )
@@ -133,7 +133,9 @@ def construct_blueprint():
         if len(password) < MIN_PASSWORD_LENGTH:
             return render_template(
                 'settings/settings.jinja2',
-                errorMessage=f'Password must be at least {MIN_PASSWORD_LENGTH} characters long',
+                errorMessage=gettext('Password must be at least {0} characters long').format(
+                    MIN_PASSWORD_LENGTH
+                ),
                 userLanguage=current_user.language.name,
                 customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
             )
