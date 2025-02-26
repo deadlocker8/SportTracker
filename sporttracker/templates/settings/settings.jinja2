@@ -1,5 +1,237 @@
 <!DOCTYPE html>
 
+{% macro settings_general() -%}
+    <div class="row mt-3 text-start">
+        <div class="col col-11 col-md-9 mx-auto">
+            {% if errorMessage %}
+                <div class="alert alert-danger" role="alert">
+                    {{ errorMessage }}
+                </div>
+            {% endif %}
+
+            <form role="form" action="{{ url_for('settings.editSelfPost') }}" method="post">
+                <div class="mb-4">
+                    <label for="user-password" class="form-label input-field-margin">{{ gettext('Password') }}</label>
+                    <div class="d-flex align-items-center">
+                        <span class="material-symbols-outlined filled me-3">vpn_key</span>
+                        <input type="password" class="form-control" id="user-password"
+                               name="password" required="required">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
+                    <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}
+                </button>
+            </form>
+
+            <form role="form" action="{{ url_for('settings.editSelfLanguagePost') }}" method="post"
+                  class="mt-5">
+                <div class="mb-4">
+                    <label for="user-language" class="form-label input-field-margin">{{ gettext('Language') }}</label>
+                    <div class="d-flex align-items-center">
+                        <span class="material-symbols-outlined filled me-3">translate</span>
+                        <select class="form-select" id="user-language" name="language" required="required">
+                            {% for language in languages %}
+                                <option value="{{ language.name }}" {% if userLanguage == language.name %}selected{% endif %}>{{ language.localized_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
+                    <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}
+                </button>
+            </form>
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro settings_tileHunting() -%}
+    <div class="row mt-5 text-start">
+        <div class="col col-11 col-md-9 mx-auto">
+            {% call macros.headline(gettext('Tile Hunting'), '', 'fs-3') %}
+                <span class="material-symbols-outlined fs-2">explore</span>
+            {% endcall %}
+
+            <form role="form" action="{{ url_for('settings.editSelfTileHunting') }}" method="post"
+                  class="mt-5">
+                <div class="mb-4">
+                    <div class="d-flex align-items-center">
+                        <span class="material-symbols-outlined me-3">explore</span>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                                   id="isTileHuntingActivated"
+                                   name="isTileHuntingActivated"
+                                   {% if current_user.isTileHuntingActivated %}checked{% endif %}/>
+                            <label class="form-check-label" for="isTileHuntingActivated">{{ gettext('Activate tile hunting map and statistics') }}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="d-flex align-items-start">
+                        <span class="material-symbols-outlined filled me-3">link</span>
+                        <div class="d-flex flex-column">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                       id="isTileHuntingAccessActivated"
+                                       name="isTileHuntingAccessActivated"
+                                       {% if current_user.isTileHuntingAccessActivated %}checked{% endif %}/>
+                                <label class="form-check-label" for="isTileHuntingAccessActivated">{{ gettext('Allow access to your tile hunting map without login (Generated link will be shown after saving)') }}</label>
+                            </div>
+                            <div class="d-flex flex-column flex-md-row my-3 {% if not current_user.tileHuntingShareCode %}hidden{% endif %}">
+                                <a id="sharedLink" class="btn btn-sm btn-secondary text-break disabled opacity-100">{{ tileRenderUrl | safe }}</a>
+                                <div id="sharedLinkButtons" class="d-flex mt-3 mt-md-0">
+                                    <a class="btn btn-primary btn-sm ms-0 ms-md-3 d-flex align-items-center" id="buttonCopySharedLink" data-bs-toggle="tooltip" data-bs-title="{{ gettext('Copied') }}">
+                                        <span class="material-symbols-outlined fs-4">content_copy</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center ">
+                                <span class="material-symbols-outlined fs-4 me-2">info</span>
+                                <span>{{ gettext('This link can be used to add an overlay to OpenStreetMap based maps, e.g. https://bikerouter.de/ to plan your next tile hunting route.') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
+                    <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}
+                </button>
+            </form>
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro settings_customFields() -%}
+    <div class="row mt-5 text-start">
+        <div class="col col-11 col-md-9 mx-auto">
+            {% call macros.headline(gettext('Custom Workout Fields'), '', 'fs-3') %}
+                <span class="material-symbols-outlined filled fs-2">drive_file_rename_outline</span>
+            {% endcall %}
+
+            {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
+                <div class="row mt-5 mb-3">
+                    <div class="col col-12 mx-auto">
+                        <h3 class="d-flex align-items-center justify-content-center">
+                            {{ workoutMacros.workout_type_icon_small(workoutType, classes='me-3') }}
+                            <span class="me-3">{{ workoutType.get_localized_name() }}</span>
+                            <a href="{{ url_for('settings.customFieldsAdd', workout_type=workoutType.name) }}"
+                               class="link-light text-decoration-none d-inline-flex align-items-center">
+                                <span class="rounded-circle bg-primary p-1 fs-3 material-symbols-outlined filled">add</span>
+                            </a>
+                        </h3>
+                    </div>
+                </div>
+
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">{{ gettext('Name') }}</th>
+                            <th scope="col">{{ gettext('Type') }}</th>
+                            <th scope="col">{{ gettext('Is Required') }}</th>
+                            <th scope="col">{{ gettext('Action') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for field in customFields %}
+                            <tr>
+                                <td>{{ field.name }}</td>
+                                <td>{{ field.type.get_localized_name() }}</td>
+                                <td>{{ field.is_required }}</td>
+                                <td>
+                                    <a href="{{ url_for('settings.customFieldsEdit', field_id=field.id) }}"
+                                       class="link-light text-decoration-none">
+                                        <span class="p-1 fs-5 material-symbols-outlined filled">edit</span>
+                                    </a>
+                                    <a href=""
+                                       class="link-light text-decoration-none"
+                                       data-bs-toggle="modal" data-bs-target="#delete-modal-{{ field.id }}">
+                                        <span class="p-1 fs-5 material-symbols-outlined filled">delete</span>
+                                    </a>
+
+                                    {% call macros.deleteModal(gettext('Delete Custom Field?'), gettext('Do you really want to delete the custom field "%(name)s"?', name=field.name), field.id) %}
+                                        <a href="{{ url_for('settings.customFieldsDelete', field_id=field.id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                                    {% endcall %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %}
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro settings_participants() -%}
+    <div class="row mt-5 text-start">
+        <div class="col col-11 col-md-9 mx-auto">
+            <div class="row mb-3">
+                <div class="col col-12 mx-auto">
+                    {% call macros.headline(gettext('Participants'), url_for('settings.participantsAdd'), 'fs-3') %}
+                        <span class="material-symbols-outlined filled fs-2">group</span>
+                    {% endcall %}
+                </div>
+            </div>
+
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">{{ gettext('Name') }}</th>
+                        <th scope="col">{{ gettext('Action') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for participant in participants %}
+                        <tr>
+                            <td>{{ participant.name }}</td>
+                            <td>
+                                <a href="{{ url_for('settings.participantsEdit', participant_id=participant.id) }}"
+                                   class="link-light text-decoration-none">
+                                    <span class="p-1 fs-5 material-symbols-outlined filled">edit</span>
+                                </a>
+                                <a href="" class="link-light text-decoration-none"
+                                   data-bs-toggle="modal" data-bs-target="#delete-modal-participant-{{ participant.id }}">
+                                    <span class="p-1 fs-5 material-symbols-outlined filled">delete</span>
+                                </a>
+
+                                {% call macros.deleteModal(gettext('Delete Participant?'), gettext('Do you really want to delete the participant "%(name)s"?', name=participant.name), 'participant-' + participant.id|string) %}
+                                    <a href="{{ url_for('settings.participantsDelete', participant_id=participant.id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                                {% endcall %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro settings_infoItems() -%}
+    <div class="row mt-5 text-start">
+        <div class="col col-6 mx-auto">
+            <h3 class="text-center mb-5">{{ gettext('Select Information to show for each distance-based workout') }}</h3>
+            <form role="form" action="{{ url_for('settings.editDistanceWorkoutInfoItems') }}" method="post">
+                {% for infoItem in infoItems %}
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch"
+                               {% if infoItem and infoItem.is_activated %}checked{% endif %}
+                               id="infoItem-{{ infoItem.type.name }}"
+                               name="{{ infoItem.type.name }}">
+                        <label class="form-check-label" for="infoItem-{{ infoItem.type.name }}">
+                            {{ infoItem.type.get_localized_name() }}
+                        </label>
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-primary mt-4 d-flex align-items-center">
+                    <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}
+                </button>
+            </form>
+        </div>
+    </div>
+{%- endmacro %}
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -21,231 +253,23 @@
                     </div>
                 </div>
 
-                <div class="row mt-3 text-start">
-                    <div class="col col-11 col-md-9 mx-auto">
-                        {% if errorMessage %}
-                            <div class="alert alert-danger" role="alert">
-                                {{ errorMessage }}
-                            </div>
-                        {% endif %}
-
-                        <form role="form" action="{{ url_for('settings.editSelfPost') }}" method="post">
-                            <div class="mb-4">
-                                <label for="user-password" class="form-label input-field-margin">{{ gettext('Password') }}</label>
-                                <div class="d-flex align-items-center">
-                                    <span class="material-symbols-outlined filled me-3">vpn_key</span>
-                                    <input type="password" class="form-control" id="user-password"
-                                           name="password" required="required">
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
-                                <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
-                        </form>
-
-                        <form role="form" action="{{ url_for('settings.editSelfLanguagePost') }}" method="post"
-                              class="mt-5">
-                            <div class="mb-4">
-                                <label for="user-language" class="form-label input-field-margin">{{ gettext('Language') }}</label>
-                                <div class="d-flex align-items-center">
-                                    <span class="material-symbols-outlined filled me-3">translate</span>
-                                    <select class="form-select" id="user-language" name="language" required="required">
-                                        {% for language in languages %}
-                                            <option value="{{ language.name }}" {% if userLanguage == language.name %}selected{% endif %}>{{ language.localized_name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
-                                <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
-                        </form>
-                    </div>
-                </div>
+                {{ settings_general() }}
 
                 <hr class="mt-5"/>
 
-                <div class="row mt-5 text-start">
-                    <div class="col col-11 col-md-9 mx-auto">
-                        {% call macros.headline(gettext('Tile Hunting'), '', 'fs-3') %}
-                            <span class="material-symbols-outlined fs-2">explore</span>
-                        {% endcall %}
-
-                        <form role="form" action="{{ url_for('settings.editSelfTileHunting') }}" method="post"
-                              class="mt-5">
-                            <div class="mb-4">
-                                <div class="d-flex align-items-center">
-                                    <span class="material-symbols-outlined me-3">explore</span>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox"
-                                               id="isTileHuntingActivated"
-                                               name="isTileHuntingActivated"
-                                               {% if current_user.isTileHuntingActivated %}checked{% endif %}/>
-                                        <label class="form-check-label" for="isTileHuntingActivated">{{ gettext('Activate tile hunting map and statistics') }}</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <div class="d-flex align-items-start">
-                                    <span class="material-symbols-outlined filled me-3">link</span>
-                                    <div class="d-flex flex-column">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox"
-                                                   id="isTileHuntingAccessActivated"
-                                                   name="isTileHuntingAccessActivated"
-                                                   {% if current_user.isTileHuntingAccessActivated %}checked{% endif %}/>
-                                            <label class="form-check-label" for="isTileHuntingAccessActivated">{{ gettext('Allow access to your tile hunting map without login (Generated link will be shown after saving)') }}</label>
-                                        </div>
-                                        <div class="d-flex flex-column flex-md-row my-3 {% if not current_user.tileHuntingShareCode %}hidden{% endif %}">
-                                            <a id="sharedLink" class="btn btn-sm btn-secondary text-break disabled opacity-100">{{ tileRenderUrl | safe }}</a>
-                                            <div id="sharedLinkButtons" class="d-flex mt-3 mt-md-0">
-                                                <a class="btn btn-primary btn-sm ms-0 ms-md-3 d-flex align-items-center" id="buttonCopySharedLink" data-bs-toggle="tooltip" data-bs-title="{{ gettext('Copied') }}">
-                                                    <span class="material-symbols-outlined fs-4">content_copy</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center ">
-                                            <span class="material-symbols-outlined fs-4 me-2">info</span>
-                                            <span>{{ gettext('This link can be used to add an overlay to OpenStreetMap based maps, e.g. https://bikerouter.de/ to plan your next tile hunting route.') }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
-                                <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
-                        </form>
-                    </div>
-                </div>
+                {{ settings_tileHunting() }}
 
                 <hr class="mt-5"/>
 
-                <div class="row mt-5 text-start">
-                    <div class="col col-11 col-md-9 mx-auto">
-                        {% call macros.headline(gettext('Custom Workout Fields'), '', 'fs-3') %}
-                            <span class="material-symbols-outlined filled fs-2">drive_file_rename_outline</span>
-                        {% endcall %}
-
-                        {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
-                            <div class="row mt-5 mb-3">
-                                <div class="col col-12 mx-auto">
-                                    <h3 class="d-flex align-items-center justify-content-center">
-                                        {{ workoutMacros.workout_type_icon_small(workoutType, classes='me-3') }}
-                                        <span class="me-3">{{ workoutType.get_localized_name() }}</span>
-                                        <a href="{{ url_for('settings.customFieldsAdd', workout_type=workoutType.name) }}"
-                                           class="link-light text-decoration-none d-inline-flex align-items-center">
-                                            <span class="rounded-circle bg-primary p-1 fs-3 material-symbols-outlined filled">add</span>
-                                        </a>
-                                    </h3>
-                                </div>
-                            </div>
-
-                            <table class="table table-dark">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">{{ gettext('Name') }}</th>
-                                        <th scope="col">{{ gettext('Type') }}</th>
-                                        <th scope="col">{{ gettext('Is Required') }}</th>
-                                        <th scope="col">{{ gettext('Action') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for field in customFields %}
-                                        <tr>
-                                            <td>{{ field.name }}</td>
-                                            <td>{{ field.type.get_localized_name() }}</td>
-                                            <td>{{ field.is_required }}</td>
-                                            <td>
-                                                <a href="{{ url_for('settings.customFieldsEdit', field_id=field.id) }}"
-                                                   class="link-light text-decoration-none">
-                                                    <span class="p-1 fs-5 material-symbols-outlined filled">edit</span>
-                                                </a>
-                                                <a href=""
-                                                   class="link-light text-decoration-none"
-                                                   data-bs-toggle="modal" data-bs-target="#delete-modal-{{ field.id }}">
-                                                    <span class="p-1 fs-5 material-symbols-outlined filled">delete</span>
-                                                </a>
-
-                                                {% call macros.deleteModal(gettext('Delete Custom Field?'), gettext('Do you really want to delete the custom field "%(name)s"?', name=field.name), field.id) %}
-                                                    <a href="{{ url_for('settings.customFieldsDelete', field_id=field.id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
-                                                {% endcall %}
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        {% endfor %}
-                    </div>
-                </div>
+                {{ settings_customFields() }}
 
                 <hr class="mt-5"/>
 
-                <div class="row mt-5 text-start">
-                    <div class="col col-11 col-md-9 mx-auto">
-                        <div class="row mb-3">
-                            <div class="col col-12 mx-auto">
-                                {% call macros.headline(gettext('Participants'), url_for('settings.participantsAdd'), 'fs-3') %}
-                                    <span class="material-symbols-outlined filled fs-2">group</span>
-                                {% endcall %}
-                            </div>
-                        </div>
-
-                        <table class="table table-dark">
-                            <thead>
-                                <tr>
-                                    <th scope="col">{{ gettext('Name') }}</th>
-                                    <th scope="col">{{ gettext('Action') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for participant in participants %}
-                                    <tr>
-                                        <td>{{ participant.name }}</td>
-                                        <td>
-                                            <a href="{{ url_for('settings.participantsEdit', participant_id=participant.id) }}"
-                                               class="link-light text-decoration-none">
-                                                <span class="p-1 fs-5 material-symbols-outlined filled">edit</span>
-                                            </a>
-                                            <a href="" class="link-light text-decoration-none"
-                                               data-bs-toggle="modal" data-bs-target="#delete-modal-participant-{{ participant.id }}">
-                                                <span class="p-1 fs-5 material-symbols-outlined filled">delete</span>
-                                            </a>
-
-                                            {% call macros.deleteModal(gettext('Delete Participant?'), gettext('Do you really want to delete the participant "%(name)s"?', name=participant.name), 'participant-' + participant.id|string) %}
-                                                <a href="{{ url_for('settings.participantsDelete', participant_id=participant.id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
-                                            {% endcall %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                {{ settings_participants() }}
 
                 <hr class="mt-5"/>
 
-                <div class="row mt-5 text-start">
-                    <div class="col col-6 mx-auto">
-                        <h3 class="text-center mb-5">{{ gettext('Select Information to show for each distance-based workout') }}</h3>
-                        <form role="form" action="{{ url_for('settings.editDistanceWorkoutInfoItems') }}" method="post">
-                            {% for infoItem in infoItems %}
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch"
-                                           {% if infoItem and infoItem.is_activated %}checked{% endif %}
-                                           id="infoItem-{{ infoItem.type.name }}"
-                                           name="{{ infoItem.type.name }}">
-                                    <label class="form-check-label" for="infoItem-{{ infoItem.type.name }}">
-                                        {{ infoItem.type.get_localized_name() }}
-                                    </label>
-                                </div>
-                            {% endfor %}
-
-                            <button type="submit" class="btn btn-primary mt-4 d-flex align-items-center">
-                                <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
-                        </form>
-                    </div>
-                </div>
+                {{ settings_infoItems() }}
             </section>
         </div>
 
