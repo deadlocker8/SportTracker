@@ -426,7 +426,7 @@ def construct_blueprint(
     @api.route('/maintenances')
     @login_required
     def listMaintenances():
-        maintenancesWithEvents = get_maintenances_with_events(QuickFilterState())
+        maintenancesWithEvents = get_maintenances_with_events(QuickFilterState(), current_user.id)
         return jsonify([MAPPER_MAINTENANCE.map(m) for m in maintenancesWithEvents])
 
     return api

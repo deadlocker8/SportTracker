@@ -29,10 +29,10 @@ class MaintenanceWithEventsModel:
 
 
 def get_maintenances_with_events(
-    quickFilterState: QuickFilterState,
+    quickFilterState: QuickFilterState, user_id: int
 ) -> list[MaintenanceWithEventsModel]:
     maintenanceList = (
-        Maintenance.query.filter(Maintenance.user_id == current_user.id)
+        Maintenance.query.filter(Maintenance.user_id == user_id)
         .order_by(asc(func.lower(Maintenance.description)))
         .all()
     )
@@ -43,7 +43,7 @@ def get_maintenances_with_events(
             continue
 
         events: list[MaintenanceEventInstance] = get_maintenance_events_by_maintenance_id(
-            maintenance.id
+            maintenance.id, user_id
         )
 
         eventModels: list[MaintenanceEventInstanceModel] = __convert_events_to_models(

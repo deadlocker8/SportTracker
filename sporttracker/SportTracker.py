@@ -71,6 +71,7 @@ from sporttracker.logic.model.User import (
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db, migrate
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.logic.service.NtfyService import NtfyService
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 LOGGER.propagate = False
@@ -124,9 +125,13 @@ class SportTracker(FlaskBaseApp):
         app.config['GPX_SERVICE'] = GpxService(
             app.config['DATA_FOLDER'], app.config['NEW_VISITED_TILE_CACHE']
         )
-        app.config['DISTANCE_WORKOUT_SERVICE'] = DistanceWorkoutService(
+        distanceWorkoutService = DistanceWorkoutService(
             app.config['GPX_SERVICE'], app.config['TEMP_FOLDER'], self._settings['tileHunting']
         )
+        app.config['DISTANCE_WORKOUT_SERVICE'] = distanceWorkoutService
+
+        ntfyService = NtfyService()
+        distanceWorkoutService.add_listener(ntfyService)
 
         if self._prepareDatabase:
             self.__prepare_database(app)

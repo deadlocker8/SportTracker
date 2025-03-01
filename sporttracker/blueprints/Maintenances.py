@@ -47,7 +47,7 @@ def construct_blueprint():
     def listMaintenances():
         quickFilterState = get_quick_filter_state_from_session()
 
-        maintenancesWithEvents = get_maintenances_with_events(quickFilterState)
+        maintenancesWithEvents = get_maintenances_with_events(quickFilterState, current_user.id)
 
         return render_template(
             'maintenances/maintenances.jinja2',
@@ -154,7 +154,7 @@ def construct_blueprint():
         if maintenance is None:
             abort(404)
 
-        events = get_maintenance_events_by_maintenance_id(maintenance_id)
+        events = get_maintenance_events_by_maintenance_id(maintenance_id, current_user.id)
         for event in events:
             LOGGER.debug(f'Deleted maintenance event: {event}')
             db.session.delete(event)

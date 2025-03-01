@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
+from typing import Any
 
 
 class Listener(ABC):
     @abstractmethod
-    def on_update(self) -> None:
+    def on_update(self, data: dict[str, Any]) -> None:
         pass
 
 
@@ -17,6 +18,6 @@ class Observable(ABC):
     def remove_listener(self, listener: Listener) -> None:
         self._listeners.remove(listener)
 
-    def _notify_listeners(self) -> None:
+    def _notify_listeners(self, data: dict[str, Any]) -> None:
         for listener in self._listeners:
-            listener.on_update()
+            listener.on_update(data)
