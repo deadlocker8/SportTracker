@@ -13,9 +13,6 @@ from sporttracker.logic import Constants
 from sporttracker.logic.FitSessionParser import FitSessionParser, FitSession
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type
-from sporttracker.logic.model.DistanceWorkout import (
-    get_distance_workout_by_id,
-)
 from sporttracker.logic.model.Participant import get_participants_by_ids, get_participants
 from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_tour_by_id
 from sporttracker.logic.model.Workout import get_workout_names_by_type
@@ -68,7 +65,7 @@ def construct_blueprint(
     @distanceWorkouts.route('/edit/<int:workout_id>')
     @login_required
     def edit(workout_id: int):
-        workout = get_distance_workout_by_id(workout_id)
+        workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
 
         if workout is None:
             abort(404)
@@ -111,7 +108,7 @@ def construct_blueprint(
     @login_required
     @validate()
     def editPost(workout_id: int, form: DistanceWorkoutFormModel):
-        workout = get_distance_workout_by_id(workout_id)
+        workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
 
         if workout is None:
             abort(404)
@@ -165,7 +162,7 @@ def construct_blueprint(
     @distanceWorkouts.route('/delete/<int:workout_id>')
     @login_required
     def delete(workout_id: int):
-        workout = get_distance_workout_by_id(workout_id)
+        workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
 
         if workout is None:
             abort(404)

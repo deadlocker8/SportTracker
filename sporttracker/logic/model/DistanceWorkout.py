@@ -140,14 +140,6 @@ def get_distance_between_dates(
     )
 
 
-def get_distance_workout_by_id(distance_workout_id: int) -> DistanceWorkout | None:
-    return (
-        DistanceWorkout.query.filter(DistanceWorkout.user_id == current_user.id)
-        .filter(DistanceWorkout.id == distance_workout_id)
-        .first()
-    )
-
-
 def get_distance_workout_by_share_code(shareCode: str) -> DistanceWorkout | None:
     return DistanceWorkout.query.filter(DistanceWorkout.share_code == shareCode).first()
 

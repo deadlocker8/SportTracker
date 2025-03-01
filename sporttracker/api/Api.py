@@ -29,7 +29,7 @@ from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_workout_types
-from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_workout_by_id
+from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.FitnessWorkoutCategory import (
     update_workout_categories_by_workout_id,
@@ -42,6 +42,7 @@ from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -50,7 +51,11 @@ API_VERSION = '2.1.0'
 API_BLUEPRINT_NAME = 'api'
 
 
-def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, Any]):
+def construct_blueprint(
+    gpxService: GpxService,
+    tileHuntingSettings: dict[str, Any],
+    distanceWorkoutService: DistanceWorkoutService,
+) -> Blueprint:
     api = Blueprint(API_BLUEPRINT_NAME, __name__, static_folder='static', url_prefix='/api/v2')
 
     @api.route('/')
@@ -295,7 +300,7 @@ def construct_blueprint(gpxService: GpxService, tileHuntingSettings: dict[str, A
     @api.route('/workouts/distanceWorkout/<int:workout_id>/addGpxTrack', methods=['POST'])
     @login_required
     def addGpxTrack(workout_id: int):
-        workout = get_distance_workout_by_id(workout_id)
+        workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
 
         if workout is None:
             abort(404)

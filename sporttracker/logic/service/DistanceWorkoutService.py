@@ -114,3 +114,13 @@ class DistanceWorkoutService(Observable):
             os.remove(fitFilePath)
 
         return {'gpxTrack': file}  # type: ignore[assignment]
+
+    @staticmethod
+    def get_distance_workout_by_id(
+        distance_workout_id: int, user_id: int
+    ) -> DistanceWorkout | None:
+        return (
+            DistanceWorkout.query.filter(DistanceWorkout.user_id == user_id)
+            .filter(DistanceWorkout.id == distance_workout_id)
+            .first()
+        )

@@ -285,14 +285,21 @@ class SportTracker(FlaskBaseApp):
             Api.construct_blueprint(
                 app.config['GPX_SERVICE'],
                 self._settings['tileHunting'],
+                app.config['DISTANCE_WORKOUT_SERVICE'],
             )
         )
         app.register_blueprint(Achievements.construct_blueprint())
         app.register_blueprint(Search.construct_blueprint())
-        app.register_blueprint(GpxTracks.construct_blueprint(app.config['GPX_SERVICE']))
+        app.register_blueprint(
+            GpxTracks.construct_blueprint(
+                app.config['GPX_SERVICE'], app.config['DISTANCE_WORKOUT_SERVICE']
+            )
+        )
         app.register_blueprint(
             Maps.construct_blueprint(
-                self._settings['tileHunting'], app.config['NEW_VISITED_TILE_CACHE']
+                self._settings['tileHunting'],
+                app.config['NEW_VISITED_TILE_CACHE'],
+                app.config['DISTANCE_WORKOUT_SERVICE'],
             )
         )
         app.register_blueprint(QuickFilter.construct_blueprint())

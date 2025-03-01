@@ -7,7 +7,6 @@ from sporttracker.logic import Constants
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.DistanceWorkout import (
-    get_distance_workout_by_id,
     get_distance_workout_by_share_code,
     DistanceWorkout,
 )
@@ -15,17 +14,18 @@ from sporttracker.logic.model.PlannedTour import (
     get_planned_tour_by_id,
     get_planned_tour_by_share_code,
 )
+from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def construct_blueprint(gpxService: GpxService):
+def construct_blueprint(gpxService: GpxService, distanceWorkoutService: DistanceWorkoutService):
     gpxTracks = Blueprint('gpxTracks', __name__, static_folder='static', url_prefix='/gpxTracks')
 
     @gpxTracks.route('/workout/<string:file_format>/<int:workout_id>')
     @login_required
     def downloadGpxTrackByWorkoutId(workout_id: int, file_format: str):
-        workout = get_distance_workout_by_id(workout_id)
+        workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
 
         if workout is None:
             abort(404)
@@ -78,7 +78,7 @@ def construct_blueprint(gpxService: GpxService):
     @gpxTracks.route('/delete/workout/<int:workout_id>')
     @login_required
     def deleteGpxTrackByWorkoutId(workout_id: int):
-        workout = get_distance_workout_by_id(workout_id)
+        workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
 
         if workout is None:
             return Response(status=204)

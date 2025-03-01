@@ -7,8 +7,9 @@ from sqlalchemy.orm import aliased
 from sporttracker.logic.NewVisitedTileCache import NewTilesPerDistanceWorkout, NewVisitedTileCache
 from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
-from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_workout_by_id
+from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.db import db
+from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 
 
 @dataclass
@@ -26,12 +27,14 @@ class VisitedTileService:
         newVisitedTileCache: NewVisitedTileCache,
         quickFilterState: QuickFilterState,
         yearFilterState: list[int],
+        distanceWorkoutService: DistanceWorkoutService,
         workoutId: int | None = None,
         onlyHighlightNewTiles: bool = False,
     ) -> None:
         self._newVisitedTileCache = newVisitedTileCache
         self._quickFilterState = quickFilterState
         self._yearFilterState = yearFilterState
+        self._distanceWorkoutService = distanceWorkoutService
         self._workoutId = workoutId
         self._onlyHighlightNewTiles = onlyHighlightNewTiles
 
@@ -91,9 +94,14 @@ class VisitedTileService:
 
         return [TileColorPosition(r[0].tile_color, r[1], r[2]) for r in rows]
 
-    @staticmethod
     def __determine_tile_colors_of_single_workout(
-        min_x: int, max_x: int, min_y: int, max_y: int, workoutId: int, onlyHighlightNewTiles: bool
+        self,
+        min_x: int,
+        max_x: int,
+        min_y: int,
+        max_y: int,
+        workoutId: int,
+        onlyHighlightNewTiles: bool,
     ) -> list[TileColorPosition]:
         distanceWorkoutAlias = aliased(DistanceWorkout)
         gpxVisitedTileAlias = aliased(GpxVisitedTile)
@@ -112,7 +120,9 @@ class VisitedTileService:
             .all()
         )
 
-        workout = get_distance_workout_by_id(workoutId)
+        workout = self._distanceWorkoutService.get_distance_workout_by_id(
+            workoutId, current_user.id
+        )
         newVisitedTiles = []
         if workout is not None:
             newVisitedTiles = VisitedTileService.__get_new_visited_tiles_by_workout(workout)

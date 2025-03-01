@@ -20,7 +20,6 @@ from sporttracker.logic.VisitedTileService import VisitedTileService
 from sporttracker.logic.model.DistanceWorkout import (
     get_available_years,
     DistanceWorkout,
-    get_distance_workout_by_id,
     get_distance_workout_by_share_code,
 )
 from sporttracker.logic.model.PlannedTour import (
@@ -30,6 +29,7 @@ from sporttracker.logic.model.PlannedTour import (
 )
 from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
 from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -68,7 +68,9 @@ def createGpxInfoPlannedTour(tourId: int, tourName: str) -> dict[str, str | int]
 
 
 def construct_blueprint(
-    tileHuntingSettings: dict[str, Any], newVisitedTileCache: NewVisitedTileCache
+    tileHuntingSettings: dict[str, Any],
+    newVisitedTileCache: NewVisitedTileCache,
+    distanceWorkoutService: DistanceWorkoutService,
 ) -> Blueprint:
     maps = Blueprint('maps', __name__, static_folder='static')
 
@@ -115,7 +117,7 @@ def construct_blueprint(
     @maps.route('/map/<int:workout_id>')
     @login_required
     def showSingleWorkout(workout_id: int):
-        workout = get_distance_workout_by_id(workout_id)
+        workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
 
         if workout is None:
             abort(404)
@@ -247,7 +249,7 @@ def construct_blueprint(
         if current_user.id != user_id:
             abort(403)
 
-        workout = get_distance_workout_by_id(workout_id)
+        workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
 
         if workout is None:
             abort(404)
@@ -260,6 +262,7 @@ def construct_blueprint(
             newVisitedTileCache,
             quickFilterState,
             yearFilterState,
+            distanceWorkoutService,
             workoutId=workout.id,
             onlyHighlightNewTiles=__get_tile_hunting_is_only_highlight_new_tiles(),
         )
@@ -291,7 +294,7 @@ def construct_blueprint(
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         visitedTileService = VisitedTileService(
-            newVisitedTileCache, quickFilterState, yearFilterState
+            newVisitedTileCache, quickFilterState, yearFilterState, distanceWorkoutService
         )
         tileRenderService = TileRenderService(
             tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
@@ -318,7 +321,7 @@ def construct_blueprint(
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         visitedTileService = VisitedTileService(
-            newVisitedTileCache, quickFilterState, yearFilterState
+            newVisitedTileCache, quickFilterState, yearFilterState, distanceWorkoutService
         )
         tileRenderService = TileRenderService(
             tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
@@ -350,7 +353,7 @@ def construct_blueprint(
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         visitedTileService = VisitedTileService(
-            newVisitedTileCache, quickFilterState, yearFilterState
+            newVisitedTileCache, quickFilterState, yearFilterState, distanceWorkoutService
         )
         totalNumberOfTiles = visitedTileService.calculate_total_number_of_visited_tiles()
 
