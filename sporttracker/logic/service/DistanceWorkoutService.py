@@ -9,6 +9,7 @@ from werkzeug.datastructures import FileStorage
 from sporttracker.blueprints.Workouts import BaseWorkoutFormModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
+from sporttracker.logic.Observable import Observable
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.Participant import get_participants_by_ids
 from sporttracker.logic.model.PlannedTour import get_planned_tour_by_id
@@ -40,10 +41,11 @@ class DistanceWorkoutFormModel(BaseWorkoutFormModel):
         return value
 
 
-class DistanceWorkoutService:
+class DistanceWorkoutService(Observable):
     def __init__(
         self, gpx_service: GpxService, temp_folder_path: str, tile_hunting_settings: dict[str, Any]
     ) -> None:
+        super().__init__()
         self._gpx_service = gpx_service
         self._temp_folder_path = temp_folder_path
         self._tile_hunting_settings = tile_hunting_settings
@@ -90,6 +92,8 @@ class DistanceWorkoutService:
             self._gpx_service.add_visited_tiles_for_workout(
                 workout, self._tile_hunting_settings['baseZoomLevel'], user_id
             )
+
+        self._notify_listeners()
 
         return workout
 
