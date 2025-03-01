@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-01 20:36+0100\n"
-"PO-Revision-Date: 2025-03-01 20:36+0100\n"
+"POT-Creation-Date: 2025-03-01 23:36+0100\n"
+"PO-Revision-Date: 2025-03-01 23:37+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -317,7 +317,7 @@ msgstr "Wandern"
 msgid "Fitness Workout"
 msgstr "Fitness Workout"
 
-#: ../logic/service/NtfyService.py:20
+#: ../logic/service/NtfyService.py:54
 msgid ""
 "SportTracker: Maintenance \"{name}\" exceeds configured limit\n"
 "\n"
@@ -327,7 +327,7 @@ msgstr ""
 "\n"
 "Limit: {limit} km, Überschritten um: {limitExceededDistance} km"
 
-#: ../templates/about.jinja2:6 ../templates/macros.jinja2:170
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:178
 msgid "About"
 msgstr "Über"
 
@@ -440,11 +440,15 @@ msgstr "Geplante Touren"
 msgid "Tile Hunting"
 msgstr "Tile Hunting"
 
-#: ../templates/macros.jinja2:179
+#: ../templates/macros.jinja2:169 ../templates/maps/mapTileHuntingHeatmap.jinja2:6
+msgid "Tile Hunting Heatmap"
+msgstr "Tile Hunting Heatmap"
+
+#: ../templates/macros.jinja2:187
 msgid "Search"
 msgstr "Suche"
 
-#: ../templates/macros.jinja2:208
+#: ../templates/macros.jinja2:216
 #: ../templates/maintenances/maintenanceForm.jinja2:99
 #: ../templates/settings/settings.jinja2:317
 #: ../templates/settings/settings.jinja2:329
@@ -452,11 +456,11 @@ msgstr "Suche"
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../templates/macros.jinja2:217
+#: ../templates/macros.jinja2:225
 msgid "Logout"
 msgstr "Logout"
 
-#: ../templates/macros.jinja2:259 ../templates/workouts/workoutChooser.jinja2:86
+#: ../templates/macros.jinja2:267 ../templates/workouts/workoutChooser.jinja2:86
 #: ../templates/workouts/workouts.jinja2:95
 #: ../templates/workouts/workouts.jinja2:117
 msgid "Cancel"
@@ -831,6 +835,7 @@ msgstr "Besuchte Kacheln anzeigen"
 
 #: ../templates/maps/mapMacros.jinja2:127
 #: ../templates/maps/mapTileHunting.jinja2:79
+#: ../templates/maps/mapTileHuntingHeatmap.jinja2:72
 msgid "Show grid"
 msgstr "Gitter anzeigen"
 
@@ -840,6 +845,7 @@ msgstr "Nur neue Kacheln hervorheben"
 
 #: ../templates/maps/mapMultipleWorkouts.jinja2:61
 #: ../templates/maps/mapTileHunting.jinja2:52
+#: ../templates/maps/mapTileHuntingHeatmap.jinja2:43
 msgid "Apply"
 msgstr "Übernehmen"
 
@@ -932,6 +938,7 @@ msgstr ""
 "class=&quot;text-danger fw-bold&quot;>rot</span> dargestellt."
 
 #: ../templates/maps/mapTileHunting.jinja2:83
+#: ../templates/maps/mapTileHuntingHeatmap.jinja2:76
 msgid "Zoom in to view visited tiles."
 msgstr "Hineinzoomen, um besuchte Kacheln anzuzeigen."
 
@@ -942,6 +949,10 @@ msgstr "Balken anklicken, um in neuem Tab zu öffnen"
 #: ../templates/maps/mapTileHunting.jinja2:139
 msgid "Number of new tiles"
 msgstr "Anzahl neuer Kacheln"
+
+#: ../templates/maps/mapTileHuntingHeatmap.jinja2:55
+msgid "Number of visits"
+msgstr "Anzahl der Besuche"
 
 #: ../templates/monthGoals/monthGoalChooser.jinja2:6
 #: ../templates/monthGoals/monthGoalChooser.jinja2:17
