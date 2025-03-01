@@ -95,7 +95,9 @@ The achievement page shows aggregated information about all your workouts.
 ![](screenshots/achievements.png)
 
 ### Maintenance Events
-Record your maintenance events for each workout type. You can optionally set reminders for each maintenance.
+Record your maintenance events for each workout type.  
+You can optionally set reminders for each maintenance.  
+SportTracker can be configured to send notifications via a ntfy server once a maintenance reminder is triggered.
 
 ![](screenshots/maintenance.png)
 
