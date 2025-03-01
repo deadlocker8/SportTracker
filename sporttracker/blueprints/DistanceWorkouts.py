@@ -162,18 +162,11 @@ def construct_blueprint(
     @distanceWorkouts.route('/delete/<int:workout_id>')
     @login_required
     def delete(workout_id: int):
-        workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
-
-        if workout is None:
+        try:
+            distanceWorkoutService.delete_workout_by_id(workout_id, current_user.id)
+            return redirect(url_for('workouts.listWorkouts'))
+        except ValueError:
             abort(404)
-
-        gpxService.delete_gpx(workout, current_user.id)
-
-        LOGGER.debug(f'Deleted distance workout: {workout}')
-        db.session.delete(workout)
-        db.session.commit()
-
-        return redirect(url_for('workouts.listWorkouts'))
 
     @distanceWorkouts.route('/createShareCode')
     @login_required

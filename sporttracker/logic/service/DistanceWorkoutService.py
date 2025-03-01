@@ -115,6 +115,18 @@ class DistanceWorkoutService(Observable):
 
         return {'gpxTrack': file}  # type: ignore[assignment]
 
+    def delete_workout_by_id(self, workout_id: int, user_id: int) -> None:
+        workout = self.get_distance_workout_by_id(workout_id, user_id)
+
+        if workout is None:
+            raise ValueError(f'No distance workout with ID {workout_id} found')
+
+        self._gpx_service.delete_gpx(workout, user_id)
+
+        LOGGER.debug(f'Deleted distance workout: {workout}')
+        db.session.delete(workout)
+        db.session.commit()
+
     @staticmethod
     def get_distance_workout_by_id(
         distance_workout_id: int, user_id: int
