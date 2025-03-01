@@ -122,9 +122,11 @@ class DistanceWorkoutService(Observable):
 
         self._gpx_service.delete_gpx(workout, user_id)
 
-        LOGGER.debug(f'Deleted distance workout: {workout}')
         db.session.delete(workout)
         db.session.commit()
+
+        LOGGER.debug(f'Deleted distance workout: {workout}')
+        self._notify_listeners()
 
     def edit_workout(
         self,
