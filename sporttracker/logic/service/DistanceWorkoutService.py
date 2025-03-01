@@ -124,3 +124,7 @@ class DistanceWorkoutService(Observable):
             .filter(DistanceWorkout.id == distance_workout_id)
             .first()
         )
+
+    @staticmethod
+    def get_distance_workout_by_share_code(shareCode: str) -> DistanceWorkout | None:
+        return DistanceWorkout.query.filter(DistanceWorkout.share_code == shareCode).first()

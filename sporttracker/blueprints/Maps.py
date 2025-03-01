@@ -20,7 +20,6 @@ from sporttracker.logic.VisitedTileService import VisitedTileService
 from sporttracker.logic.model.DistanceWorkout import (
     get_available_years,
     DistanceWorkout,
-    get_distance_workout_by_share_code,
 )
 from sporttracker.logic.model.PlannedTour import (
     get_planned_tour_by_id,
@@ -150,7 +149,7 @@ def construct_blueprint(
 
     @maps.route('/map/shared/<string:shareCode>')
     def showSharedSingleWorkout(shareCode: str):
-        workout = get_distance_workout_by_share_code(shareCode)
+        workout = distanceWorkoutService.get_distance_workout_by_share_code(shareCode)
 
         if workout is None:
             return render_template('maps/mapNotFound.jinja2')

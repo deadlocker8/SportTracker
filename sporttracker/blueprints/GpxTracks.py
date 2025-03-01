@@ -6,10 +6,7 @@ from flask_login import login_required, current_user
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.model.DistanceWorkout import (
-    get_distance_workout_by_share_code,
-    DistanceWorkout,
-)
+from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.PlannedTour import (
     get_planned_tour_by_id,
     get_planned_tour_by_share_code,
@@ -38,7 +35,7 @@ def construct_blueprint(gpxService: GpxService, distanceWorkoutService: Distance
 
     @gpxTracks.route('/workout/shared/<string:shareCode>/<string:file_format>')
     def downloadGpxTrackBySharedWorkout(shareCode: str, file_format: str):
-        workout = get_distance_workout_by_share_code(shareCode)
+        workout = distanceWorkoutService.get_distance_workout_by_share_code(shareCode)
         if workout is None:
             abort(404)
 
