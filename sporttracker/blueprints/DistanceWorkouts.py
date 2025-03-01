@@ -2,7 +2,6 @@ import logging
 import os
 import uuid
 from gettext import gettext
-from typing import Any
 
 from flask import Blueprint, render_template, abort, redirect, url_for, request, session
 from flask_login import login_required, current_user
@@ -33,7 +32,6 @@ class DistanceWorkoutImportFromFitModel(BaseWorkoutFormModel):
 
 def construct_blueprint(
     gpxService: GpxService,
-    tileHuntingSettings: dict[str, Any],
     tempFolderPath: str,
     distanceWorkoutService: DistanceWorkoutService,
 ):
