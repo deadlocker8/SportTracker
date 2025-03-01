@@ -68,7 +68,7 @@
                     <input class="form-check-input" type="checkbox"
                            id="tileHuntingEnableGrid"
                            {% if tileHuntingIsGridActive %}checked{% endif %}
-                           data-url="{{ url_for('maps.toggleTileHuntingViewGrid', redirectUrl=url_for('maps.showTileHuntingMap')) }}">
+                           data-url="{{ url_for('maps.toggleTileHuntingViewGrid', redirectUrl=url_for('maps.showTileHuntingHeatMap')) }}">
                     <label class="form-check-label" for="tileHuntingEnableGrid">{{ gettext('Show grid') }}</label>
                 </div>
 
