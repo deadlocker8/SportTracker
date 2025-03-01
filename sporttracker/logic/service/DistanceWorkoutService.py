@@ -84,7 +84,6 @@ class DistanceWorkoutService(Observable):
             planned_tour=plannedTour,
         )
 
-        LOGGER.debug(f'Saved new distance workout: {workout}')
         db.session.add(workout)
         db.session.commit()
 
@@ -93,8 +92,8 @@ class DistanceWorkoutService(Observable):
                 workout, self._tile_hunting_settings['baseZoomLevel'], user_id
             )
 
+        LOGGER.debug(f'Saved new distance workout: {workout}')
         self._notify_listeners()
-
         return workout
 
     def __handle_fit_import(self, form_model: DistanceWorkoutFormModel) -> dict[str, FileStorage]:
@@ -126,6 +125,58 @@ class DistanceWorkoutService(Observable):
         LOGGER.debug(f'Deleted distance workout: {workout}')
         db.session.delete(workout)
         db.session.commit()
+
+    def edit_workout(
+        self,
+        workout_id: int,
+        form_model: DistanceWorkoutFormModel,
+        files: dict[str, FileStorage],
+        participant_ids: list[int],
+        user_id: int,
+    ) -> DistanceWorkout:
+        workout = self.get_distance_workout_by_id(workout_id, user_id)
+
+        if workout is None:
+            raise ValueError(f'No distance workout with ID {workout_id} found')
+
+        if form_model.planned_tour_id == '-1':
+            plannedTour = None
+        else:
+            plannedTour = get_planned_tour_by_id(int(form_model.planned_tour_id))
+
+        workout.name = form_model.name  # type: ignore[assignment]
+        workout.start_time = form_model.calculate_start_time()  # type: ignore[assignment]
+        workout.distance = form_model.distance * 1000  # type: ignore[assignment]
+        workout.duration = form_model.calculate_duration()  # type: ignore[assignment]
+        workout.average_heart_rate = form_model.average_heart_rate  # type: ignore[assignment]
+        workout.elevation_sum = form_model.elevation_sum  # type: ignore[assignment]
+        workout.participants = get_participants_by_ids(participant_ids)
+        workout.share_code = form_model.share_code if form_model.share_code else None  # type: ignore[assignment]
+        workout.planned_tour = plannedTour  # type: ignore[assignment]
+
+        shouldUpdateVisitedTiles = False
+        newGpxMetadataId = self._gpx_service.handle_gpx_upload_for_workout(files)
+        if workout.gpx_metadata_id is None:
+            workout.gpx_metadata_id = newGpxMetadataId
+            shouldUpdateVisitedTiles = True
+        else:
+            if newGpxMetadataId is not None:
+                self._gpx_service.delete_gpx(workout, user_id)
+                workout.gpx_metadata_id = newGpxMetadataId
+                shouldUpdateVisitedTiles = True
+
+        workout.custom_fields = form_model.model_extra
+
+        db.session.commit()
+
+        if shouldUpdateVisitedTiles and workout.gpx_metadata_id is not None:
+            self._gpx_service.add_visited_tiles_for_workout(
+                workout, self._tile_hunting_settings['baseZoomLevel'], user_id
+            )
+
+        LOGGER.debug(f'Updated distance workout: {workout}')
+        self._notify_listeners()
+        return workout
 
     @staticmethod
     def get_distance_workout_by_id(

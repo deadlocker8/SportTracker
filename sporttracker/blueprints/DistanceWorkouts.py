@@ -13,10 +13,9 @@ from sporttracker.logic import Constants
 from sporttracker.logic.FitSessionParser import FitSessionParser, FitSession
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type
-from sporttracker.logic.model.Participant import get_participants_by_ids, get_participants
-from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_tour_by_id
+from sporttracker.logic.model.Participant import get_participants
+from sporttracker.logic.model.PlannedTour import get_planned_tours
 from sporttracker.logic.model.Workout import get_workout_names_by_type
-from sporttracker.logic.model.db import db
 from sporttracker.logic.service.DistanceWorkoutService import (
     DistanceWorkoutService,
     DistanceWorkoutFormModel,
@@ -107,57 +106,25 @@ def construct_blueprint(
     @distanceWorkouts.route('/edit/<int:workout_id>', methods=['POST'])
     @login_required
     @validate()
-    def editPost(workout_id: int, form: DistanceWorkoutFormModel):
-        workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
-
-        if workout is None:
+    def editPost(workout_id: int, form_model: DistanceWorkoutFormModel):
+        try:
+            participant_ids = [int(item) for item in request.form.getlist('participants')]
+            workout = distanceWorkoutService.edit_workout(
+                workout_id=workout_id,
+                form_model=form_model,
+                files=request.files,
+                participant_ids=participant_ids,
+                user_id=current_user.id,
+            )
+            return redirect(
+                url_for(
+                    'workouts.listWorkouts',
+                    year=workout.start_time.year,  # type: ignore[attr-defined]
+                    month=workout.start_time.month,  # type: ignore[attr-defined]
+                )
+            )
+        except ValueError:
             abort(404)
-
-        if form.planned_tour_id == '-1':
-            plannedTour = None
-        else:
-            plannedTour = get_planned_tour_by_id(int(form.planned_tour_id))
-
-        workout.name = form.name  # type: ignore[assignment]
-        workout.start_time = form.calculate_start_time()  # type: ignore[assignment]
-        workout.distance = form.distance * 1000  # type: ignore[assignment]
-        workout.duration = form.calculate_duration()  # type: ignore[assignment]
-        workout.average_heart_rate = form.average_heart_rate  # type: ignore[assignment]
-        workout.elevation_sum = form.elevation_sum  # type: ignore[assignment]
-        participantIds = [int(item) for item in request.form.getlist('participants')]
-        workout.participants = get_participants_by_ids(participantIds)
-        workout.share_code = form.share_code if form.share_code else None  # type: ignore[assignment]
-        workout.planned_tour = plannedTour  # type: ignore[assignment]
-
-        shouldUpdateVisitedTiles = False
-        newGpxMetadataId = gpxService.handle_gpx_upload_for_workout(request.files)
-        if workout.gpx_metadata_id is None:
-            workout.gpx_metadata_id = newGpxMetadataId
-            shouldUpdateVisitedTiles = True
-        else:
-            if newGpxMetadataId is not None:
-                gpxService.delete_gpx(workout, current_user.id)
-                workout.gpx_metadata_id = newGpxMetadataId
-                shouldUpdateVisitedTiles = True
-
-        workout.custom_fields = form.model_extra
-
-        db.session.commit()
-
-        if shouldUpdateVisitedTiles and workout.gpx_metadata_id is not None:
-            gpxService.add_visited_tiles_for_workout(
-                workout, tileHuntingSettings['baseZoomLevel'], current_user.id
-            )
-
-        LOGGER.debug(f'Updated distance workout: {workout}')
-
-        return redirect(
-            url_for(
-                'workouts.listWorkouts',
-                year=workout.start_time.year,  # type: ignore[attr-defined]
-                month=workout.start_time.month,  # type: ignore[attr-defined]
-            )
-        )
 
     @distanceWorkouts.route('/delete/<int:workout_id>')
     @login_required
