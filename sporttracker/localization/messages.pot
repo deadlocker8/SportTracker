@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-26 23:40+0100\n"
+"POT-Creation-Date: 2025-03-01 20:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,19 +127,19 @@ msgstr ""
 msgid "You"
 msgstr ""
 
-#: ../blueprints/DistanceWorkouts.py:258
+#: ../blueprints/DistanceWorkouts.py:148
 msgid "Error importing data from FIT file"
 msgstr ""
 
-#: ../blueprints/DistanceWorkouts.py:262
+#: ../blueprints/DistanceWorkouts.py:152
 msgid "No file provided"
 msgstr ""
 
-#: ../blueprints/DistanceWorkouts.py:266
+#: ../blueprints/DistanceWorkouts.py:156
 msgid "Invalid file extension. Allowed extension: *.fit"
 msgstr ""
 
-#: ../blueprints/DistanceWorkouts.py:286
+#: ../blueprints/DistanceWorkouts.py:176
 msgid "FIT file does not contain session data"
 msgstr ""
 
@@ -162,19 +162,19 @@ msgstr ""
 msgid "Ntfy Server URL"
 msgstr ""
 
-#: ../blueprints/Settings.py:431 ../templates/settings/settings.jinja2:283
+#: ../blueprints/Settings.py:431 ../templates/settings/settings.jinja2:282
 msgid "Ntfy Topic Name"
 msgstr ""
 
 #: ../blueprints/Settings.py:432 ../templates/login.jinja2:19
-#: ../templates/settings/settings.jinja2:292
+#: ../templates/settings/settings.jinja2:290
 #: ../templates/users/userForm.jinja2:45
 msgid "Username"
 msgstr ""
 
 #: ../blueprints/Settings.py:433 ../templates/login.jinja2:23
 #: ../templates/settings/settings.jinja2:14
-#: ../templates/settings/settings.jinja2:301
+#: ../templates/settings/settings.jinja2:298
 #: ../templates/users/userForm.jinja2:54
 msgid "Password"
 msgstr ""
@@ -303,6 +303,13 @@ msgstr ""
 msgid "Fitness Workout"
 msgstr ""
 
+#: ../logic/service/NtfyService.py:20
+msgid ""
+"SportTracker: Maintenance \"{name}\" exceeds configured limit\n"
+"\n"
+"Limit: {limit} km, Exceeded by: {limitExceededDistance} km"
+msgstr ""
+
 #: ../templates/about.jinja2:6 ../templates/macros.jinja2:170
 msgid "About"
 msgstr ""
@@ -425,8 +432,8 @@ msgstr ""
 
 #: ../templates/macros.jinja2:208
 #: ../templates/maintenances/maintenanceForm.jinja2:99
-#: ../templates/settings/settings.jinja2:320
-#: ../templates/settings/settings.jinja2:332
+#: ../templates/settings/settings.jinja2:317
+#: ../templates/settings/settings.jinja2:329
 #: ../templates/workouts/workoutMacros.jinja2:476
 msgid "Settings"
 msgstr ""
@@ -608,7 +615,7 @@ msgstr ""
 #: ../templates/settings/settings.jinja2:42
 #: ../templates/settings/settings.jinja2:99
 #: ../templates/settings/settings.jinja2:228
-#: ../templates/settings/settings.jinja2:310
+#: ../templates/settings/settings.jinja2:307
 #: ../templates/users/userForm.jinja2:66
 #: ../templates/workouts/workoutBikingForm.jinja2:70
 #: ../templates/workouts/workoutFitnessForm.jinja2:73

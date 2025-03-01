@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-26 23:40+0100\n"
-"PO-Revision-Date: 2025-02-26 23:42+0100\n"
+"POT-Creation-Date: 2025-03-01 20:36+0100\n"
+"PO-Revision-Date: 2025-03-01 20:36+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -141,19 +141,19 @@ msgstr "Unbekannt"
 msgid "You"
 msgstr "Du"
 
-#: ../blueprints/DistanceWorkouts.py:258
+#: ../blueprints/DistanceWorkouts.py:148
 msgid "Error importing data from FIT file"
 msgstr "Fehler beim Importieren der Daten aus der FIT-Datei"
 
-#: ../blueprints/DistanceWorkouts.py:262
+#: ../blueprints/DistanceWorkouts.py:152
 msgid "No file provided"
 msgstr "Keine Datei hochgeladen"
 
-#: ../blueprints/DistanceWorkouts.py:266
+#: ../blueprints/DistanceWorkouts.py:156
 msgid "Invalid file extension. Allowed extension: *.fit"
 msgstr "Ungültige Dateiendung. Erlaubte Endung: *.fit"
 
-#: ../blueprints/DistanceWorkouts.py:286
+#: ../blueprints/DistanceWorkouts.py:176
 msgid "FIT file does not contain session data"
 msgstr "FIT-Datei enthält keine Session-Daten"
 
@@ -176,18 +176,18 @@ msgstr "Das Passwort muss mindestens {0} Zeichen lang sein"
 msgid "Ntfy Server URL"
 msgstr "Ntfy Server URL"
 
-#: ../blueprints/Settings.py:431 ../templates/settings/settings.jinja2:283
+#: ../blueprints/Settings.py:431 ../templates/settings/settings.jinja2:282
 msgid "Ntfy Topic Name"
 msgstr "Ntfy Topicname"
 
 #: ../blueprints/Settings.py:432 ../templates/login.jinja2:19
-#: ../templates/settings/settings.jinja2:292 ../templates/users/userForm.jinja2:45
+#: ../templates/settings/settings.jinja2:290 ../templates/users/userForm.jinja2:45
 msgid "Username"
 msgstr "Benutzer"
 
 #: ../blueprints/Settings.py:433 ../templates/login.jinja2:23
 #: ../templates/settings/settings.jinja2:14
-#: ../templates/settings/settings.jinja2:301 ../templates/users/userForm.jinja2:54
+#: ../templates/settings/settings.jinja2:298 ../templates/users/userForm.jinja2:54
 msgid "Password"
 msgstr "Passwort"
 
@@ -317,6 +317,16 @@ msgstr "Wandern"
 msgid "Fitness Workout"
 msgstr "Fitness Workout"
 
+#: ../logic/service/NtfyService.py:20
+msgid ""
+"SportTracker: Maintenance \"{name}\" exceeds configured limit\n"
+"\n"
+"Limit: {limit} km, Exceeded by: {limitExceededDistance} km"
+msgstr ""
+"SportTracker: Wartung \"{name}\" übersteigt das konfigurierte Limit\n"
+"\n"
+"Limit: {limit} km, Überschritten um: {limitExceededDistance} km"
+
 #: ../templates/about.jinja2:6 ../templates/macros.jinja2:170
 msgid "About"
 msgstr "Über"
@@ -436,8 +446,8 @@ msgstr "Suche"
 
 #: ../templates/macros.jinja2:208
 #: ../templates/maintenances/maintenanceForm.jinja2:99
-#: ../templates/settings/settings.jinja2:320
-#: ../templates/settings/settings.jinja2:332
+#: ../templates/settings/settings.jinja2:317
+#: ../templates/settings/settings.jinja2:329
 #: ../templates/workouts/workoutMacros.jinja2:476
 msgid "Settings"
 msgstr "Einstellungen"
@@ -617,7 +627,7 @@ msgstr "Uhrzeit"
 #: ../templates/settings/settings.jinja2:42
 #: ../templates/settings/settings.jinja2:99
 #: ../templates/settings/settings.jinja2:228
-#: ../templates/settings/settings.jinja2:310 ../templates/users/userForm.jinja2:66
+#: ../templates/settings/settings.jinja2:307 ../templates/users/userForm.jinja2:66
 #: ../templates/workouts/workoutBikingForm.jinja2:70
 #: ../templates/workouts/workoutFitnessForm.jinja2:73
 #: ../templates/workouts/workoutHikingForm.jinja2:70
