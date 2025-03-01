@@ -1,4 +1,3 @@
-from flask_login import current_user
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped
@@ -40,11 +39,3 @@ class FitnessWorkout(Workout):  # type: ignore[name-defined]
                 FitnessWorkoutCategory.workout_id == self.id
             ).all()
         ]
-
-
-def get_fitness_workout_by_id(distance_workout_id: int) -> FitnessWorkout | None:
-    return (
-        FitnessWorkout.query.filter(FitnessWorkout.user_id == current_user.id)
-        .filter(FitnessWorkout.id == distance_workout_id)
-        .first()
-    )

@@ -71,6 +71,7 @@ from sporttracker.logic.model.User import (
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db, migrate
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.logic.service.FitnessWorkoutService import FitnessWorkoutService
 from sporttracker.logic.service.NtfyService import NtfyService
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
@@ -132,6 +133,8 @@ class SportTracker(FlaskBaseApp):
 
         ntfyService = NtfyService()
         distanceWorkoutService.add_listener(ntfyService)
+
+        app.config['FITNESS_WORKOUT_SERVICE'] = FitnessWorkoutService()
 
         if self._prepareDatabase:
             self.__prepare_database(app)
@@ -277,7 +280,9 @@ class SportTracker(FlaskBaseApp):
                 app.config['DISTANCE_WORKOUT_SERVICE'],
             )
         )
-        app.register_blueprint(FitnessWorkouts.construct_blueprint())
+        app.register_blueprint(
+            FitnessWorkouts.construct_blueprint(app.config['FITNESS_WORKOUT_SERVICE'])
+        )
         app.register_blueprint(MonthGoals.construct_blueprint())
         app.register_blueprint(MonthGoalsDistance.construct_blueprint())
         app.register_blueprint(MonthGoalsCount.construct_blueprint())
