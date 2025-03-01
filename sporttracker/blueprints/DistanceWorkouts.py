@@ -42,10 +42,10 @@ def construct_blueprint(
     @distanceWorkouts.route('/post', methods=['POST'])
     @login_required
     @validate()
-    def addPost(form_model: DistanceWorkoutFormModel):
+    def addPost(form: DistanceWorkoutFormModel):
         participant_ids = [int(item) for item in request.form.getlist('participants')]
         workout = distanceWorkoutService.add_workout(
-            form_model=form_model,
+            form_model=form,
             files=request.files,
             participant_ids=participant_ids,
             user_id=current_user.id,
@@ -104,12 +104,12 @@ def construct_blueprint(
     @distanceWorkouts.route('/edit/<int:workout_id>', methods=['POST'])
     @login_required
     @validate()
-    def editPost(workout_id: int, form_model: DistanceWorkoutFormModel):
+    def editPost(workout_id: int, form: DistanceWorkoutFormModel):
         try:
             participant_ids = [int(item) for item in request.form.getlist('participants')]
             workout = distanceWorkoutService.edit_workout(
                 workout_id=workout_id,
-                form_model=form_model,
+                form_model=form,
                 files=request.files,
                 participant_ids=participant_ids,
                 user_id=current_user.id,
