@@ -70,6 +70,7 @@ from sporttracker.logic.model.User import (
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db, migrate
+from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 LOGGER.propagate = False
@@ -122,6 +123,9 @@ class SportTracker(FlaskBaseApp):
         app.config['NEW_VISITED_TILE_CACHE'] = NewVisitedTileCache()
         app.config['GPX_SERVICE'] = GpxService(
             app.config['DATA_FOLDER'], app.config['NEW_VISITED_TILE_CACHE']
+        )
+        app.config['DISTANCE_WORKOUT_SERVICE'] = DistanceWorkoutService(
+            app.config['GPX_SERVICE'], app.config['TEMP_FOLDER'], self._settings['tileHunting']
         )
 
         if self._prepareDatabase:
@@ -263,7 +267,10 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Workouts.construct_blueprint())
         app.register_blueprint(
             DistanceWorkouts.construct_blueprint(
-                app.config['GPX_SERVICE'], self._settings['tileHunting'], app.config['TEMP_FOLDER']
+                app.config['GPX_SERVICE'],
+                self._settings['tileHunting'],
+                app.config['TEMP_FOLDER'],
+                app.config['DISTANCE_WORKOUT_SERVICE'],
             )
         )
         app.register_blueprint(FitnessWorkouts.construct_blueprint())

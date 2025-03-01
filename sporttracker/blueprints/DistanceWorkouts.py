@@ -2,14 +2,11 @@ import logging
 import os
 import uuid
 from gettext import gettext
-from io import BytesIO
 from typing import Any
 
 from flask import Blueprint, render_template, abort, redirect, url_for, request, session
 from flask_login import login_required, current_user
 from flask_pydantic import validate
-from pydantic import ConfigDict, field_validator
-from werkzeug.datastructures import FileStorage
 
 from sporttracker.blueprints.Workouts import BaseWorkoutFormModel
 from sporttracker.logic import Constants
@@ -17,38 +14,18 @@ from sporttracker.logic.FitSessionParser import FitSessionParser, FitSession
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type
 from sporttracker.logic.model.DistanceWorkout import (
-    DistanceWorkout,
     get_distance_workout_by_id,
 )
 from sporttracker.logic.model.Participant import get_participants_by_ids, get_participants
 from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_tour_by_id
 from sporttracker.logic.model.Workout import get_workout_names_by_type
-from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.service.DistanceWorkoutService import (
+    DistanceWorkoutService,
+    DistanceWorkoutFormModel,
+)
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
-
-
-class DistanceWorkoutFormModel(BaseWorkoutFormModel):
-    distance: float
-    planned_tour_id: str = '-1'
-    elevation_sum: int | None = None
-    gpx_file_name: str | None = None
-    has_fit_file: bool = False
-    share_code: str | None = None
-    fit_file_name: str | None = None  # only used during import from FIT file
-
-    model_config = ConfigDict(
-        extra='allow',
-    )
-
-    @field_validator(*['elevation_sum'], mode='before')
-    def elevationSumCheck(cls, value: str, info) -> str | None:
-        if isinstance(value, str):
-            value = value.strip()
-        if value == '':
-            return None
-        return value
 
 
 class DistanceWorkoutImportFromFitModel(BaseWorkoutFormModel):
@@ -59,7 +36,10 @@ class DistanceWorkoutImportFromFitModel(BaseWorkoutFormModel):
 
 
 def construct_blueprint(
-    gpxService: GpxService, tileHuntingSettings: dict[str, Any], tempFolderPath: str
+    gpxService: GpxService,
+    tileHuntingSettings: dict[str, Any],
+    tempFolderPath: str,
+    distanceWorkoutService: DistanceWorkoutService,
 ):
     distanceWorkouts = Blueprint(
         'distanceWorkouts', __name__, static_folder='static', url_prefix='/distanceWorkouts'
@@ -68,59 +48,14 @@ def construct_blueprint(
     @distanceWorkouts.route('/post', methods=['POST'])
     @login_required
     @validate()
-    def addPost(form: DistanceWorkoutFormModel):
-        files = request.files
-        if form.fit_file_name:  # only filled during import from FIT file
-            fitFilePath = os.path.join(
-                tempFolderPath, f'{form.fit_file_name}.{GpxService.FIT_FILE_EXTENSION}'
-            )
-            if os.path.exists(fitFilePath):
-                with open(fitFilePath, 'rb') as fitFile:
-                    fitFileContent = BytesIO(fitFile.read())
-                    file = FileStorage(
-                        fitFileContent,
-                        f'{form.fit_file_name}.{GpxService.FIT_FILE_EXTENSION}',
-                        'gpxTrack',
-                        'application/octet-stream',
-                        0,
-                    )
-                os.remove(fitFilePath)
-
-            files = {'gpxTrack': file}  # type: ignore[assignment]
-
-        gpxMetadataId = gpxService.handle_gpx_upload_for_workout(files)
-
-        participantIds = [int(item) for item in request.form.getlist('participants')]
-        participants = get_participants_by_ids(participantIds)
-        if form.planned_tour_id == '-1':
-            plannedTour = None
-        else:
-            plannedTour = get_planned_tour_by_id(int(form.planned_tour_id))
-
-        workout = DistanceWorkout(
-            name=form.name,
-            type=WorkoutType(form.type),  # type: ignore[call-arg]
-            start_time=form.calculate_start_time(),
-            duration=form.calculate_duration(),
-            distance=form.distance * 1000,
-            average_heart_rate=form.average_heart_rate,
-            elevation_sum=form.elevation_sum,
-            gpx_metadata_id=gpxMetadataId,
-            custom_fields=form.model_extra,
+    def addPost(form_model: DistanceWorkoutFormModel):
+        participant_ids = [int(item) for item in request.form.getlist('participants')]
+        workout = distanceWorkoutService.add_workout(
+            form_model=form_model,
+            files=request.files,
+            participant_ids=participant_ids,
             user_id=current_user.id,
-            participants=participants,
-            share_code=form.share_code if form.share_code else None,
-            planned_tour=plannedTour,
         )
-
-        LOGGER.debug(f'Saved new distance workout: {workout}')
-        db.session.add(workout)
-        db.session.commit()
-
-        if gpxMetadataId is not None:
-            gpxService.add_visited_tiles_for_workout(
-                workout, tileHuntingSettings['baseZoomLevel'], current_user.id
-            )
 
         return redirect(
             url_for(
