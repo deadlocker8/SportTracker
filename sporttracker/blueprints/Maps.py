@@ -14,8 +14,11 @@ from sporttracker.blueprints.Workouts import DistanceWorkoutModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
-from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.TileRenderService import TileRenderService
+from sporttracker.logic.QuickFilterState import (
+    get_quick_filter_state_from_session,
+    QuickFilterState,
+)
+from sporttracker.logic.TileRenderService import TileRenderService, TileRenderColorMode
 from sporttracker.logic.VisitedTileService import VisitedTileService
 from sporttracker.logic.model.DistanceWorkout import (
     get_available_years,
@@ -274,7 +277,14 @@ def construct_blueprint(
         if __get_tile_hunting_is_grid_active():
             borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
 
-        image = tileRenderService.render_image(x, y, zoom, user_id, borderColor)  # type: ignore[arg-type]
+        image = tileRenderService.render_image(
+            x,
+            y,
+            zoom,
+            user_id,
+            TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES,
+            borderColor,  # type: ignore[arg-type]
+        )
 
         with io.BytesIO() as output:
             image.save(output, format='PNG')
@@ -303,7 +313,49 @@ def construct_blueprint(
         if __get_tile_hunting_is_grid_active():
             borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
 
-        image = tileRenderService.render_image(x, y, zoom, user_id, borderColor)  # type: ignore[arg-type]
+        image = tileRenderService.render_image(
+            x,
+            y,
+            zoom,
+            user_id,
+            TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES,
+            borderColor,  # type: ignore[arg-type]
+        )
+
+        with io.BytesIO() as output:
+            image.save(output, format='PNG')
+            return Response(output.getvalue(), mimetype='image/png')
+
+    @maps.route('/map/renderHeatmap/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')
+    def renderHeatmap(user_id: int, zoom: int, x: int, y: int):
+        if not current_user.is_authenticated:
+            abort(401)
+
+        if current_user.id != user_id:
+            abort(403)
+
+        availableYears = get_available_years(user_id)
+        yearFilterState = __get_map_year_filter_state_from_session(availableYears)
+
+        visitedTileService = VisitedTileService(
+            newVisitedTileCache, QuickFilterState(), yearFilterState, distanceWorkoutService
+        )
+        tileRenderService = TileRenderService(
+            tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
+        )
+
+        borderColor = None
+        if __get_tile_hunting_is_grid_active():
+            borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
+
+        image = tileRenderService.render_image(
+            x,
+            y,
+            zoom,
+            user_id,
+            TileRenderColorMode.NUMBER_OF_VISITS,
+            borderColor,  # type: ignore[arg-type]
+        )
 
         with io.BytesIO() as output:
             image.save(output, format='PNG')
@@ -327,7 +379,14 @@ def construct_blueprint(
         )
 
         borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
-        image = tileRenderService.render_image(x, y, zoom, user.id, borderColor)  # type: ignore[arg-type]
+        image = tileRenderService.render_image(
+            x,
+            y,
+            zoom,
+            user.id,
+            TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES,
+            borderColor,  # type: ignore[arg-type]
+        )
 
         with io.BytesIO() as output:
             image.save(output, format='PNG')
@@ -388,6 +447,53 @@ def construct_blueprint(
             tileRenderUrl=tileRenderUrl,
             totalNumberOfTiles=totalNumberOfTiles,
             chartDataNewTilesPerWorkout=chartDataNewTilesPerWorkout,
+            tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
+        )
+
+    @maps.route('/map/tileHuntingHeatmap')
+    @login_required
+    def showTileHuntingHeatMap():
+        tileRenderUrl = url_for(
+            'maps.renderHeatmap',
+            user_id=current_user.id,
+            zoom=0,
+            x=0,
+            y=0,
+            _external=True,
+        )
+
+        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
+
+        quickFilterState = get_quick_filter_state_from_session()
+        availableYears = get_available_years(current_user.id)
+        yearFilterState = __get_map_year_filter_state_from_session(availableYears)
+
+        visitedTileService = VisitedTileService(
+            newVisitedTileCache, quickFilterState, yearFilterState, distanceWorkoutService
+        )
+
+        dates = []
+        values = []
+        colors = []
+        customData = []
+        for entry in visitedTileService.get_number_of_new_tiles_per_workout():
+            dates.append(flask_babel.format_date(entry.startTime, 'short'))
+            values.append(entry.numberOfNewTiles)
+            colors.append(entry.type.background_color_hex)
+
+            customData.append(
+                {
+                    'name': entry.name,
+                    'url': url_for('maps.showSingleWorkout', workout_id=entry.distance_workout_id),
+                }
+            )
+
+        return render_template(
+            'maps/mapTileHuntingHeatmap.jinja2',
+            yearFilterState=yearFilterState,
+            availableYears=availableYears,
+            redirectUrl='maps.showTileHuntingHeatMap',
+            tileRenderUrl=tileRenderUrl,
             tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
         )
 

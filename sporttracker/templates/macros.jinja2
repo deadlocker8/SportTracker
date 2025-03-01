@@ -161,6 +161,14 @@
                                                 </span>&nbsp;{{ gettext('Tile Hunting') }}
                                             </a>
                                         </li>
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center {% if activeLink == 'tileHuntingHeatmap' %}active {% endif %}"
+                                               href="{{ url_for('maps.showTileHuntingHeatMap') }}">
+                                                <span class="navbar-icon">
+                                                    <span class="material-symbols-outlined fs-5">explore</span>
+                                                </span>&nbsp;{{ gettext('Tile Hunting Heatmap') }}
+                                            </a>
+                                        </li>
                                     {% endif %}
                                     <li>
                                         <a class="dropdown-item d-flex align-items-center {% if activeLink == 'about' %}active {% endif %}"

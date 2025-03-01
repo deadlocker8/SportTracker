@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Tile Hunting Heatmap') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+        <link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/leaflet-theme.css") }}"/>
+        <style>
+            .leaflet-layer:first-child {
+                -webkit-filter: grayscale(100%);
+                filter: grayscale(100%);
+            }
+        </style>
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('tileHuntingHeatmap') }}
+
+        <div class="row my-3 g-0">
+            <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center">
+                <div class="ms-5">
+                    <form role="form" action="{{ url_for('maps.toggleYears') }}" method="post" class="d-flex flex-row align-items-center justify-content-center">
+                        <div class="row row-cols-auto">
+                            <input type="hidden" name="redirectUrl" value="{{ url_for(redirectUrl) }}"/>
+                            {% for availableYear in availableYears %}
+                                <div class="col my-1">
+                                    <input class="btn-check" type="checkbox" role="switch"
+                                           {% if availableYear in yearFilterState %}checked{% endif %}
+                                           id="availableYear-{{ loop.index }}"
+                                           name="activeYears"
+                                           value="{{ availableYear }}">
+                                    <label class="btn btn-sm btn-available-year" for="availableYear-{{ loop.index }}">
+                                        {{ availableYear }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                            {% if availableYears | length != 0 %}
+                                <div class="col my-1">
+                                    <button type="submit" class="btn btn-sm btn-success">{{ gettext('Apply') }}</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-0">
+            <div class="col mb-3 d-flex flex-column flex-md-row align-items-center justify-content-center">
+                <div class="d-flex align-items-center justify-content-center">
+                    <h5 class="text-center mb-2 mb-md-0 me-3">{{ gettext('Number of visits') }}:</h5>
+                    <div class="d-flex flex-row align-items-center justify-content-center">
+                        <div class="heatmap-legend-cell d-flex align-items-center justify-content-center fw-bold text-dark" style="background-color: rgba(113, 167, 195, 192);">1</div>
+                        <div class="heatmap-legend-cell d-flex align-items-center justify-content-center fw-bold text-light" style="background-color: rgba(30, 111, 156, 192);">&gt;1</div>
+                        <div class="heatmap-legend-cell d-flex align-items-center justify-content-center fw-bold text-light" style="background-color: rgba(3, 62, 125, 192);">&ge;5</div>
+                        <div class="heatmap-legend-cell d-flex align-items-center justify-content-center fw-bold text-dark" style="background-color: rgba(210, 150, 116, 192);">&ge;10</div>
+                        <div class="heatmap-legend-cell d-flex align-items-center justify-content-center fw-bold text-light" style="background-color: rgba(189, 101, 51, 192);">&ge;25</div>
+                        <div class="heatmap-legend-cell d-flex align-items-center justify-content-center fw-bold text-light" style="background-color: rgba(138, 39, 6, 192);">&ge;50</div>
+                        <div class="heatmap-legend-cell d-flex align-items-center justify-content-center fw-bold text-light" style="background-color: rgba(89, 0, 8, 192);">&ge;100</div>
+                    </div>
+                </div>
+
+                <div class="form-check text-nowrap ms-0 ms-md-5">
+                    <input class="form-check-input" type="checkbox"
+                           id="tileHuntingEnableGrid"
+                           {% if tileHuntingIsGridActive %}checked{% endif %}
+                           data-url="{{ url_for('maps.toggleTileHuntingViewGrid', redirectUrl=url_for('maps.showTileHuntingMap')) }}">
+                    <label class="form-check-label" for="tileHuntingEnableGrid">{{ gettext('Show grid') }}</label>
+                </div>
+
+                <h5 class="mt-3 mt-md-0 ms-0 ms-md-5 mb-0" id="warning-zoom">
+                    <span class="badge text-bg-warning text-wrap">{{ gettext('Zoom in to view visited tiles.') }}</span>
+                </h5>
+            </div>
+        </div>
+
+        <div class="row gx-0 gy-0">
+            <div class="col col-12">
+                <div id="map" class="leaflet-map text-dark map-taller"></div>
+            </div>
+        </div>
+
+        <script>
+            tileRenderUrl = '{{ tileRenderUrl }}';
+        </script>
+
+        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+        {{ mapMacros.mapLocale() }}
+
+        {{ macros.scripts() }}
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet-ui@0.6.0/dist/leaflet-ui.js"></script>
+        <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+        <script defer src="{{ url_for('static', filename='js/mapCommon.js') }}" type="text/javascript"></script>
+        <script defer src="{{ url_for('static', filename='js/mapTileHuntingHeatmap.js') }}" type="text/javascript"></script>
+    </body>
+</html>
+

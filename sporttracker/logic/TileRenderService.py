@@ -1,12 +1,22 @@
 import logging
 import math
+from enum import Enum
 
 from PIL import Image, ImageColor
 
 from sporttracker.logic import Constants
-from sporttracker.logic.VisitedTileService import VisitedTileService, TileColorPosition
+from sporttracker.logic.VisitedTileService import (
+    VisitedTileService,
+    TileColorPosition,
+    TileCountPosition,
+)
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
+
+
+class TileRenderColorMode(Enum):
+    NUMBER_OF_WORKOUT_TYPES = 1
+    NUMBER_OF_VISITS = 2
 
 
 class TileRenderService:
@@ -99,6 +109,44 @@ class TileRenderService:
         return TileRenderService.COLOR_MULTIPLE_MATCHES
 
     @staticmethod
+    def calculate_heatmap_color(
+        x: int, y: int, tileCountPositions: list[TileCountPosition]
+    ) -> tuple[int, int, int, int]:
+        """
+        Calculates the color of a tile with the position (x, y) based on the number of times the tile was visited.
+        Expects x, y to be in self._baseZoomLevel coordinates.
+        """
+        matchingCounts = [t for t in tileCountPositions if t.x == x and t.y == y]
+
+        if not matchingCounts:
+            return TileRenderService.COLOR_TRANSPARENT
+
+        count = matchingCounts[0].count
+
+        if count >= 100:
+            return 89, 0, 8, 192
+
+        if count >= 50:
+            return 138, 39, 6, 192
+
+        if count >= 25:
+            return 189, 101, 51, 192
+
+        if count >= 10:
+            return 210, 150, 116, 192
+
+        if count >= 5:
+            return 3, 62, 125, 192
+
+        if count > 1:
+            return 30, 111, 156, 192
+
+        if count == 1:
+            return 113, 167, 195, 192
+
+        return TileRenderService.COLOR_TRANSPARENT
+
+    @staticmethod
     def calculate_border_color(
         pixelX: int,
         pixelY: int,
@@ -126,6 +174,7 @@ class TileRenderService:
         y: int,
         zoom: int,
         user_id: int,
+        tileRenderColorMode: TileRenderColorMode,
         borderColor: tuple[int, int, int, int] | None,
     ) -> Image.Image:
         """
@@ -147,15 +196,26 @@ class TileRenderService:
 
         max_x, max_y, min_x, min_y = self.__calculate_min_and_max(positions)
 
-        tileColorPositions = (
-            self._visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles(
+        tileColorPositions = []
+        tileCountPositions = []
+        if tileRenderColorMode == TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES:
+            tileColorPositions = (
+                self._visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles(
+                    min_x,  # type: ignore[arg-type]
+                    max_x,  # type: ignore[arg-type]
+                    min_y,  # type: ignore[arg-type]
+                    max_y,  # type: ignore[arg-type]
+                    user_id,
+                )
+            )
+        else:
+            tileCountPositions = self._visitedTileService.determine_number_of_visits(
                 min_x,  # type: ignore[arg-type]
                 max_x,  # type: ignore[arg-type]
                 min_y,  # type: ignore[arg-type]
                 max_y,  # type: ignore[arg-type]
                 user_id,
             )
-        )
 
         for row in range(0, numberOfElementsPerAxis):
             for col in range(0, numberOfElementsPerAxis):
@@ -168,7 +228,14 @@ class TileRenderService:
                     isTouchingUpperEdgeOfBaseZoomTile = True
                     isTouchingLeftEdgeOfBaseZoomTile = True
 
-                colorToUse = self.calculate_color(position[0], position[1], tileColorPositions)
+                if tileRenderColorMode == TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES:
+                    colorToUse = TileRenderService.calculate_color(
+                        position[0], position[1], tileColorPositions
+                    )
+                else:
+                    colorToUse = TileRenderService.calculate_heatmap_color(
+                        position[0], position[1], tileCountPositions
+                    )
 
                 for pixelX in range(boxSize):
                     for pixelY in range(boxSize):

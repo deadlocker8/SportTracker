@@ -46,6 +46,10 @@ body {
     height: 60vh !important;
 }
 
+.map-taller {
+    height: 80vh !important;
+}
+
 #map .leaflet-control-layers-inline .leaflet-control-layers-base span {
     padding: 0.2rem;
 }
@@ -211,6 +215,11 @@ body {
 
 .max-height-90 {
     max-height: 90% !important;
+}
+
+.heatmap-legend-cell {
+    height: 2.5rem;
+    width: 3rem;
 }
 
 .debug {

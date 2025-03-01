@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from flask_login import current_user
-from sqlalchemy import extract, text
+from sqlalchemy import extract, text, func
 from sqlalchemy.orm import aliased
 
 from sporttracker.logic.NewVisitedTileCache import NewTilesPerDistanceWorkout, NewVisitedTileCache
@@ -15,6 +15,13 @@ from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutSer
 @dataclass
 class TileColorPosition:
     tile_color: str
+    x: int
+    y: int
+
+
+@dataclass
+class TileCountPosition:
+    count: int
     x: int
     y: int
 
@@ -93,6 +100,33 @@ class VisitedTileService:
         )
 
         return [TileColorPosition(r[0].tile_color, r[1], r[2]) for r in rows]
+
+    def determine_number_of_visits(
+        self, min_x: int, max_x: int, min_y: int, max_y: int, user_id: int
+    ) -> list[TileCountPosition]:
+        distanceWorkoutAlias = aliased(DistanceWorkout)
+        gpxVisitedTileAlias = aliased(GpxVisitedTile)
+
+        rows = (
+            distanceWorkoutAlias.query.select_from(distanceWorkoutAlias)
+            .join(gpxVisitedTileAlias, gpxVisitedTileAlias.workout_id == distanceWorkoutAlias.id)
+            .with_entities(func.count(), gpxVisitedTileAlias.x, gpxVisitedTileAlias.y)
+            .filter(distanceWorkoutAlias.user_id == user_id)
+            .filter(
+                distanceWorkoutAlias.type.in_(
+                    self._quickFilterState.get_active_distance_workout_types()
+                )
+            )
+            .filter(extract('year', distanceWorkoutAlias.start_time).in_(self._yearFilterState))
+            .filter(gpxVisitedTileAlias.x >= min_x)
+            .filter(gpxVisitedTileAlias.x <= max_x)
+            .filter(gpxVisitedTileAlias.y >= min_y)
+            .filter(gpxVisitedTileAlias.y <= max_y)
+            .group_by(gpxVisitedTileAlias.x, gpxVisitedTileAlias.y)
+            .all()
+        )
+
+        return [TileCountPosition(r[0], r[1], r[2]) for r in rows]
 
     def __determine_tile_colors_of_single_workout(
         self,
