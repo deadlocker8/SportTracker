@@ -464,29 +464,8 @@ def construct_blueprint(
 
         tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
 
-        quickFilterState = get_quick_filter_state_from_session()
         availableYears = get_available_years(current_user.id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
-
-        visitedTileService = VisitedTileService(
-            newVisitedTileCache, quickFilterState, yearFilterState, distanceWorkoutService
-        )
-
-        dates = []
-        values = []
-        colors = []
-        customData = []
-        for entry in visitedTileService.get_number_of_new_tiles_per_workout():
-            dates.append(flask_babel.format_date(entry.startTime, 'short'))
-            values.append(entry.numberOfNewTiles)
-            colors.append(entry.type.background_color_hex)
-
-            customData.append(
-                {
-                    'name': entry.name,
-                    'url': url_for('maps.showSingleWorkout', workout_id=entry.distance_workout_id),
-                }
-            )
 
         return render_template(
             'maps/mapTileHuntingHeatmap.jinja2',
