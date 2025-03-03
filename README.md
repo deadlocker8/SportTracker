@@ -70,6 +70,14 @@ This can be useful to add a custom overlay to OpenStreetMap based maps, e.g. htt
 1. Add a custom overlay layer
 2. Use the url shown on your user settings page (e.g. http://localhost/map/tileOverlay/1df60cca70c340239cfd869673443be4/{z}/{x}/{y}.png)
 
+### Tile Hunting heatmap
+In addition to the normal tile hunting map a heatmap is available.  
+Each tile will be colored according to the number of workouts that visited each tile.  
+You can click on the map to get the exact number of visits per tile.
+
+Tile hunting heatmap:
+![](screenshots/tile_hunting_heatmap.jpg)
+
 ### Charts
 Tracked data is visualized in charts, e.g.:
 - Distance per month
