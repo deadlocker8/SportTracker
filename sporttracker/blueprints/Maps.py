@@ -5,14 +5,24 @@ from typing import Any
 
 import flask_babel
 from PIL import ImageColor
-from flask import Blueprint, render_template, abort, url_for, session, redirect, request, Response
+from flask import (
+    Blueprint,
+    render_template,
+    abort,
+    url_for,
+    session,
+    redirect,
+    request,
+    Response,
+    jsonify,
+)
 from flask_login import login_required, current_user
 from sqlalchemy import func, extract, or_, asc
 
 from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Workouts import DistanceWorkoutModel
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService
+from sporttracker.logic.GpxService import GpxService, GpxParser
 from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
@@ -461,8 +471,17 @@ def construct_blueprint(
             y=0,
             _external=True,
         )
-
         tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
+
+        numberOfVisitsUrl = url_for(
+            'maps.getNumberOfVisitsByCoordinate',
+            user_id=current_user.id,
+            latitude=0,
+            longitude=0,
+            zoom=0,
+            _external=True,
+        )
+        numberOfVisitsUrl = numberOfVisitsUrl.split('/0.0/0.0')[0]
 
         availableYears = get_available_years(current_user.id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
@@ -473,8 +492,39 @@ def construct_blueprint(
             availableYears=availableYears,
             redirectUrl='maps.showTileHuntingHeatMap',
             tileRenderUrl=tileRenderUrl,
+            numberOfVisitsUrl=numberOfVisitsUrl,
             tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
         )
+
+    @maps.route(
+        '/map/getNumberOfVisitsByCoordinate/<int:user_id>/<float:latitude>/<float:longitude>'
+    )
+    @login_required
+    def getNumberOfVisitsByCoordinate(user_id: int, latitude: float, longitude: float):
+        if not current_user.is_authenticated:
+            abort(401)
+
+        if current_user.id != user_id:
+            abort(403)
+
+        visitedTile = GpxParser.convert_coordinate_to_tile_position(
+            latitude, longitude, tileHuntingSettings['baseZoomLevel']
+        )
+
+        availableYears = get_available_years(user_id)
+        yearFilterState = __get_map_year_filter_state_from_session(availableYears)
+
+        visitedTileService = VisitedTileService(
+            newVisitedTileCache, QuickFilterState(), yearFilterState, distanceWorkoutService
+        )
+        rows = visitedTileService.determine_number_of_visits(
+            visitedTile.x, visitedTile.x, visitedTile.y, visitedTile.y, user_id
+        )
+        numberOfVisits = 0
+        if rows:
+            numberOfVisits = rows[0].count
+
+        return jsonify({'numberOfVisits': numberOfVisits})
 
     @maps.route('/toggleTileHuntingViewTiles')
     @login_required
