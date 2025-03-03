@@ -1,6 +1,7 @@
 # 1.35.0 - (XX.XX.XX)
 - add: planned tours can now be filtered (#123)
 - add: send notifications for maintenance reminders via ntfy (#168)
+- add: tile hunting heatmap: new map where each tile will be colored according to the number of workouts that visited each tile (#184)
 - add: chart "duration per workout" now also includes fitness workouts (#181)
 - add: new chart: duration per month (#180)
 - fix: missing y-axis title in all charts
