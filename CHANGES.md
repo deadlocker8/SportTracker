@@ -6,6 +6,7 @@
 - add: new chart: duration per month (#180)
 - fix: missing y-axis title in all charts
 - fix: gpx track download: add name to gpx metadata (#183)
+- chore: update dependencies (#179)
 
 # 1.34.0 - (17.02.25)
 - add: new API version v2.1.0
