@@ -36,7 +36,7 @@ pre-commit = "4.1.0"
 mypy = "1.15.0"
 pytest = "8.3.5"
 pytest-selenium = "4.1.0"
-selenium = "4.28.1"
+selenium = "4.29.0"
 
 types-python-dateutil = "*"
 types-requests = "*"
