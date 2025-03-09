@@ -1,4 +1,4 @@
-# 1.35.0 - (XX.XX.XX)
+# 1.35.0 - (09.03.25)
 - add: planned tours can now be filtered (#123)
 - add: send notifications for maintenance reminders via ntfy (#168)
 - add: tile hunting heatmap: new map where each tile will be colored according to the number of workouts that visited each tile (#184)
