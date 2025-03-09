@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-03 23:40+0100\n"
-"PO-Revision-Date: 2025-03-03 23:40+0100\n"
+"POT-Creation-Date: 2025-03-09 11:31+0100\n"
+"PO-Revision-Date: 2025-03-09 11:32+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -124,7 +124,7 @@ msgstr "Durchschnittliche Geschwindigkeit"
 msgid "Unknown user"
 msgstr "Unbekannter Nutzer"
 
-#: ../blueprints/Authentication.py:36 ../blueprints/Settings.py:114
+#: ../blueprints/Authentication.py:36 ../blueprints/Settings.py:115
 #: ../blueprints/Users.py:75 ../blueprints/Users.py:132
 msgid "Password must not be empty"
 msgstr "Passwort darf nicht leer sein"
@@ -167,35 +167,50 @@ msgstr "Das Endjahr muss größer oder gleich dem Anfangsjahr sein."
 msgid "End Month must be greater or equal Start Month."
 msgstr "Der Endmonat muss größer oder gleich dem Startmonat sein."
 
-#: ../blueprints/Settings.py:126 ../blueprints/Users.py:81
+#: ../blueprints/Settings.py:127 ../blueprints/Users.py:81
 #: ../blueprints/Users.py:140
 msgid "Password must be at least {0} characters long"
 msgstr "Das Passwort muss mindestens {0} Zeichen lang sein"
 
-#: ../blueprints/Settings.py:430 ../templates/settings/settings.jinja2:274
+#: ../blueprints/Settings.py:431 ../blueprints/Settings.py:474
+#: ../templates/settings/settings.jinja2:277
 msgid "Ntfy Server URL"
 msgstr "Ntfy Server URL"
 
-#: ../blueprints/Settings.py:431 ../templates/settings/settings.jinja2:282
+#: ../blueprints/Settings.py:432 ../blueprints/Settings.py:475
+#: ../templates/settings/settings.jinja2:285
 msgid "Ntfy Topic Name"
 msgstr "Ntfy Topicname"
 
-#: ../blueprints/Settings.py:432 ../templates/login.jinja2:19
-#: ../templates/settings/settings.jinja2:290 ../templates/users/userForm.jinja2:45
+#: ../blueprints/Settings.py:433 ../blueprints/Settings.py:476
+#: ../templates/login.jinja2:19 ../templates/settings/settings.jinja2:293
+#: ../templates/users/userForm.jinja2:45
 msgid "Username"
 msgstr "Benutzer"
 
-#: ../blueprints/Settings.py:433 ../templates/login.jinja2:23
-#: ../templates/settings/settings.jinja2:14
-#: ../templates/settings/settings.jinja2:298 ../templates/users/userForm.jinja2:54
+#: ../blueprints/Settings.py:434 ../blueprints/Settings.py:477
+#: ../templates/login.jinja2:23 ../templates/settings/settings.jinja2:14
+#: ../templates/settings/settings.jinja2:301 ../templates/users/userForm.jinja2:54
 msgid "Password"
 msgstr "Passwort"
 
-#: ../blueprints/Settings.py:441
+#: ../blueprints/Settings.py:442 ../blueprints/Settings.py:484
 msgid "Ntfy Settings: {0} must not be empty"
 msgstr "Ntfy-Einstellungen: {0} darf nicht leer sein"
 
-#: ../blueprints/Settings.py:471
+#: ../blueprints/Settings.py:493
+msgid "SportTracker: Maintenance reminder test notification"
+msgstr "SportTracker: Testbenachrichtigung für Wartungserinnerung"
+
+#: ../blueprints/Settings.py:500
+msgid "Test notification successfully sent"
+msgstr "Testbenachrichtigung erfolgreich gesendet"
+
+#: ../blueprints/Settings.py:503
+msgid "Error sending test notification {0}"
+msgstr "Fehler beim Senden der Testbenachrichtigung {0}"
+
+#: ../blueprints/Settings.py:509
 msgid ""
 "The specified field name \"{0}\" conflicts with a reserved field name and "
 "therefore can't be used as custom field name."
@@ -203,11 +218,11 @@ msgstr ""
 "Der angegebene Name \"{0}\" kollidiert mit einem reservierten Namen und kann "
 "daher nicht als Name für ein benutzerdefiniertes Feld verwendet werden."
 
-#: ../blueprints/Settings.py:485
+#: ../blueprints/Settings.py:523
 msgid "The specified field name \"{0}\" already exists."
 msgstr "Der angegebene Name \"{0}\" existiert bereits."
 
-#: ../blueprints/Settings.py:496
+#: ../blueprints/Settings.py:534
 msgid "The specified participant name \"{0}\" already exists."
 msgstr "Ein Teilnehmer mit dem Namen \"{0}\" existiert bereits."
 
@@ -450,8 +465,8 @@ msgstr "Suche"
 
 #: ../templates/macros.jinja2:216
 #: ../templates/maintenances/maintenanceForm.jinja2:99
-#: ../templates/settings/settings.jinja2:317
-#: ../templates/settings/settings.jinja2:329
+#: ../templates/settings/settings.jinja2:326
+#: ../templates/settings/settings.jinja2:338
 #: ../templates/workouts/workoutMacros.jinja2:476
 msgid "Settings"
 msgstr "Einstellungen"
@@ -631,7 +646,7 @@ msgstr "Uhrzeit"
 #: ../templates/settings/settings.jinja2:42
 #: ../templates/settings/settings.jinja2:99
 #: ../templates/settings/settings.jinja2:228
-#: ../templates/settings/settings.jinja2:307 ../templates/users/userForm.jinja2:66
+#: ../templates/settings/settings.jinja2:316 ../templates/users/userForm.jinja2:66
 #: ../templates/workouts/workoutBikingForm.jinja2:70
 #: ../templates/workouts/workoutFitnessForm.jinja2:73
 #: ../templates/workouts/workoutHikingForm.jinja2:70
@@ -1365,6 +1380,10 @@ msgstr ""
 #: ../templates/settings/settings.jinja2:261
 msgid "Activate notifications for maintenance reminders via ntfy"
 msgstr "Aktivieren der Benachrichtigungen für Wartungserinnerungen per ntfy"
+
+#: ../templates/settings/settings.jinja2:310
+msgid "Test"
+msgstr "Testen"
 
 #: ../templates/users/userForm.jinja2:6 ../templates/users/userForm.jinja2:18
 msgid "Edit User"

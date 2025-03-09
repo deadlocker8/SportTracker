@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-03 23:40+0100\n"
+"POT-Creation-Date: 2025-03-09 11:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -110,7 +110,7 @@ msgstr ""
 msgid "Unknown user"
 msgstr ""
 
-#: ../blueprints/Authentication.py:36 ../blueprints/Settings.py:114
+#: ../blueprints/Authentication.py:36 ../blueprints/Settings.py:115
 #: ../blueprints/Users.py:75 ../blueprints/Users.py:132
 msgid "Password must not be empty"
 msgstr ""
@@ -153,47 +153,61 @@ msgstr ""
 msgid "End Month must be greater or equal Start Month."
 msgstr ""
 
-#: ../blueprints/Settings.py:126 ../blueprints/Users.py:81
+#: ../blueprints/Settings.py:127 ../blueprints/Users.py:81
 #: ../blueprints/Users.py:140
 msgid "Password must be at least {0} characters long"
 msgstr ""
 
-#: ../blueprints/Settings.py:430 ../templates/settings/settings.jinja2:274
+#: ../blueprints/Settings.py:431 ../blueprints/Settings.py:474
+#: ../templates/settings/settings.jinja2:277
 msgid "Ntfy Server URL"
 msgstr ""
 
-#: ../blueprints/Settings.py:431 ../templates/settings/settings.jinja2:282
+#: ../blueprints/Settings.py:432 ../blueprints/Settings.py:475
+#: ../templates/settings/settings.jinja2:285
 msgid "Ntfy Topic Name"
 msgstr ""
 
-#: ../blueprints/Settings.py:432 ../templates/login.jinja2:19
-#: ../templates/settings/settings.jinja2:290
+#: ../blueprints/Settings.py:433 ../blueprints/Settings.py:476
+#: ../templates/login.jinja2:19 ../templates/settings/settings.jinja2:293
 #: ../templates/users/userForm.jinja2:45
 msgid "Username"
 msgstr ""
 
-#: ../blueprints/Settings.py:433 ../templates/login.jinja2:23
-#: ../templates/settings/settings.jinja2:14
-#: ../templates/settings/settings.jinja2:298
+#: ../blueprints/Settings.py:434 ../blueprints/Settings.py:477
+#: ../templates/login.jinja2:23 ../templates/settings/settings.jinja2:14
+#: ../templates/settings/settings.jinja2:301
 #: ../templates/users/userForm.jinja2:54
 msgid "Password"
 msgstr ""
 
-#: ../blueprints/Settings.py:441
+#: ../blueprints/Settings.py:442 ../blueprints/Settings.py:484
 msgid "Ntfy Settings: {0} must not be empty"
 msgstr ""
 
-#: ../blueprints/Settings.py:471
+#: ../blueprints/Settings.py:493
+msgid "SportTracker: Maintenance reminder test notification"
+msgstr ""
+
+#: ../blueprints/Settings.py:500
+msgid "Test notification successfully sent"
+msgstr ""
+
+#: ../blueprints/Settings.py:503
+msgid "Error sending test notification {0}"
+msgstr ""
+
+#: ../blueprints/Settings.py:509
 msgid ""
 "The specified field name \"{0}\" conflicts with a reserved field name and"
 " therefore can't be used as custom field name."
 msgstr ""
 
-#: ../blueprints/Settings.py:485
+#: ../blueprints/Settings.py:523
 msgid "The specified field name \"{0}\" already exists."
 msgstr ""
 
-#: ../blueprints/Settings.py:496
+#: ../blueprints/Settings.py:534
 msgid "The specified participant name \"{0}\" already exists."
 msgstr ""
 
@@ -437,8 +451,8 @@ msgstr ""
 
 #: ../templates/macros.jinja2:216
 #: ../templates/maintenances/maintenanceForm.jinja2:99
-#: ../templates/settings/settings.jinja2:317
-#: ../templates/settings/settings.jinja2:329
+#: ../templates/settings/settings.jinja2:326
+#: ../templates/settings/settings.jinja2:338
 #: ../templates/workouts/workoutMacros.jinja2:476
 msgid "Settings"
 msgstr ""
@@ -620,7 +634,7 @@ msgstr ""
 #: ../templates/settings/settings.jinja2:42
 #: ../templates/settings/settings.jinja2:99
 #: ../templates/settings/settings.jinja2:228
-#: ../templates/settings/settings.jinja2:307
+#: ../templates/settings/settings.jinja2:316
 #: ../templates/users/userForm.jinja2:66
 #: ../templates/workouts/workoutBikingForm.jinja2:70
 #: ../templates/workouts/workoutFitnessForm.jinja2:73
@@ -1341,6 +1355,10 @@ msgstr ""
 
 #: ../templates/settings/settings.jinja2:261
 msgid "Activate notifications for maintenance reminders via ntfy"
+msgstr ""
+
+#: ../templates/settings/settings.jinja2:310
+msgid "Test"
 msgstr ""
 
 #: ../templates/users/userForm.jinja2:6 ../templates/users/userForm.jinja2:18
