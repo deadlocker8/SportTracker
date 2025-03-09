@@ -479,7 +479,6 @@ def construct_blueprint(
             latitude=0,
             longitude=0,
             zoom=0,
-            _external=True,
         )
         numberOfVisitsUrl = numberOfVisitsUrl.split('/0.0/0.0')[0]
 
