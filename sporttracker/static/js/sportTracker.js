@@ -133,6 +133,42 @@ document.addEventListener('DOMContentLoaded', function()
             document.getElementById('ntfy-settings').classList.toggle('hidden', !checkboxMaintenanceReminderNotifications.checked);
         });
     }
+
+    let buttonNtfyTest = document.getElementById('btn-ntfy-test');
+    if(buttonNtfyTest !== null)
+    {
+        buttonNtfyTest.addEventListener('click', function()
+        {
+            let testUrl = buttonNtfyTest.dataset.url;
+            let form = document.getElementById('ntfy-form');
+            let warningMessageContainer = document.getElementById('warningMessageNtfy');
+            let formData = new FormData(form);
+            buttonNtfyTest.disabled = true;
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', testUrl);
+            xhr.onload = function()
+            {
+                buttonNtfyTest.disabled = false;
+
+                if(xhr.status === 200)
+                {
+                    warningMessageContainer.classList.toggle('hidden', false);
+                    warningMessageContainer.classList.toggle('alert-danger', false);
+                    warningMessageContainer.classList.toggle('alert-success', true);
+                    warningMessageContainer.innerText = JSON.parse(xhr.response)['message'];
+                }
+                else
+                {
+                    warningMessageContainer.classList.toggle('hidden', false);
+                    warningMessageContainer.classList.toggle('alert-danger', true);
+                    warningMessageContainer.classList.toggle('alert-success', false);
+                    warningMessageContainer.innerText = JSON.parse(xhr.response)['message'];
+                }
+            };
+            xhr.send(formData);
+        });
+    }
 });
 
 function toggleFitFileImport(buttonImportFromFitFile, disable)

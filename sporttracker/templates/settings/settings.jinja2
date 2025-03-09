@@ -248,7 +248,7 @@
                 </div>
             </div>
 
-            <form role="form" action="{{ url_for('settings.editMaintenanceReminderNotifications') }}" method="post"
+            <form id="ntfy-form" role="form" action="{{ url_for('settings.editMaintenanceReminderNotifications') }}" method="post"
                   class="mt-5">
                 <div class="mb-4">
                     <div class="d-flex align-items-center">
@@ -264,11 +264,14 @@
                 </div>
 
                 <div id="ntfy-settings" class="{% if not current_user.isMaintenanceRemindersNotificationsActivated %}hidden{% endif %}">
-                    {% if ntfyErrorMessage %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ ntfyErrorMessage }}
-                        </div>
-                    {% endif %}
+                    <div class="mb-3 text-center text-danger hidden" id="warningMessageContainerImportFromFitFile">
+                        <i class="material-symbols-outlined filled align-middle">warning</i>
+                        <span id="warning-message" class="align-middle"></span>
+                    </div>
+
+                    <div class="alert alert-danger {% if not ntfyErrorMessage %} hidden{% endif %}" role="alert" id="warningMessageNtfy">
+                        {{ ntfyErrorMessage }}
+                    </div>
 
                     <div class="mb-4">
                         <label for="ntfy-url" class="form-label input-field-margin">{{ gettext('Ntfy Server URL') }}</label>
@@ -300,6 +303,12 @@
                             <span class="material-symbols-outlined filled me-3">vpn_key</span>
                             <input type="password" class="form-control" id="ntfy-password" name="ntfy_password">
                         </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <button type="button" id="btn-ntfy-test" class="btn btn-secondary input-field-margin d-flex align-items-center" data-url="{{ url_for('settings.testReminderNotifications') }}">
+                            <span class="material-symbols-outlined filled text-light">send</span>&nbsp;{{ gettext('Test') }}
+                        </button>
                     </div>
                 </div>
 

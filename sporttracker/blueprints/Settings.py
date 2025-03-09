@@ -1,7 +1,8 @@
 import logging
 import uuid
 
-from flask import Blueprint, render_template, redirect, url_for, abort, flash
+from TheCodeLabs_BaseUtils.NtfyHelper import NtfyHelper
+from flask import Blueprint, render_template, redirect, url_for, abort, flash, jsonify
 from flask_babel import gettext
 from flask_bcrypt import Bcrypt
 from flask_login import login_required, current_user, fresh_login_required
@@ -464,6 +465,43 @@ def construct_blueprint():
         )
 
         return redirect(url_for('settings.settingsShow'))
+
+    @settings.route('/testReminderNotifications', methods=['POST'])
+    @login_required
+    @validate()
+    def testReminderNotifications(form: EditMaintenanceReminderNotificationsModel):
+        validations = [
+            (form.ntfy_url, gettext('Ntfy Server URL')),
+            (form.ntfy_topic, gettext('Ntfy Topic Name')),
+            (form.ntfy_username, gettext('Username')),
+            (form.ntfy_password, gettext('Password')),
+        ]
+
+        for validation in validations:
+            value, name = validation
+            if value is None or value.strip() == '':
+                return jsonify(
+                    {'message': gettext('Ntfy Settings: {0} must not be empty').format(name)}
+                ), 400
+
+        try:
+            NtfyHelper.send_message(
+                userName=form.ntfy_username,
+                password=form.ntfy_password,
+                baseUrl=form.ntfy_url,
+                topicName=form.ntfy_topic,
+                message=gettext('SportTracker: Maintenance reminder test notification'),
+                tags=['bell'],
+            )
+
+            LOGGER.debug(
+                f'Sent maintenance reminder test notification settings for user: {current_user.id}'
+            )
+            return jsonify({'message': gettext('Test notification successfully sent')})
+        except Exception as e:
+            return jsonify(
+                {'message': gettext('Error sending test notification {0}').format(e)}
+            ), 500
 
     def __is_allowed_custom_field_name(form: CustomWorkoutFieldFormModel):
         if form.name.lower() in RESERVED_FIELD_NAMES:
