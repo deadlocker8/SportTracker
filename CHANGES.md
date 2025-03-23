@@ -1,3 +1,6 @@
+# 1.36.0 - (XX.XX.XX)
+- fix: gpx track is now correctly shown again in running and hiking forms (#187)
+
 # 1.35.0 - (09.03.25)
 - add: planned tours can now be filtered (#123)
 - add: send notifications for maintenance reminders via ntfy (#168)

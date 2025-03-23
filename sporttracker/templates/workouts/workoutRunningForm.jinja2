@@ -45,15 +45,15 @@
 
                             {{ workoutMacros.workout_form_name(workout, workoutNames) }}
 
-                            {{ workoutMacros.workout_form_start_time(workout) }}
+                            {{ workoutMacros.workout_form_start_time(workout, workoutFromFitImport) }}
 
-                            {{ workoutMacros.workout_form_distance(workout) }}
+                            {{ workoutMacros.workout_form_distance(workout, workoutFromFitImport) }}
 
-                            {{ workoutMacros.workout_form_duration(workout) }}
+                            {{ workoutMacros.workout_form_duration(workout, workoutFromFitImport) }}
 
-                            {{ workoutMacros.workout_form_average_heart_rate(workout) }}
+                            {{ workoutMacros.workout_form_average_heart_rate(workout, workoutFromFitImport) }}
 
-                            {{ workoutMacros.workout_form_elevation_sum(workout) }}
+                            {{ workoutMacros.workout_form_elevation_sum(workout, workoutFromFitImport) }}
 
                             {% for field in customFields %}
                                 {{ workoutMacros.workout_form_custom_field_input(field) }}
@@ -61,7 +61,7 @@
 
                             {{ workoutMacros.workout_form_participants(workout, participants) }}
 
-                            {{ workoutMacros.workout_form_gpx(workout, workout_id) }}
+                            {{ workoutMacros.workout_form_gpx(workout, workoutFromFitImport, workout_id) }}
 
                             {{ workoutMacros.form_linked_planned_tour(workout, plannedTours) }}
 
