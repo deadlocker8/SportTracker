@@ -7,10 +7,10 @@ const miniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
     mode: 'production',
-    entry: './src/js/vendors.js',
+    entry: './src/js/libs.js',
     output: {
-        filename: 'vendors.js',
-        path: path.resolve(__dirname, '../sporttracker/static/js/vendors'),
+        filename: 'libs.js',
+        path: path.resolve(__dirname, '../sporttracker/static/js/libs'),
     },
     plugins: [
         new webpack.ProvidePlugin({
