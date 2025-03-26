@@ -5,3 +5,4 @@ uploads/
 data/
 testreport.xml
 tests/screenshots/
+**/node_modules/

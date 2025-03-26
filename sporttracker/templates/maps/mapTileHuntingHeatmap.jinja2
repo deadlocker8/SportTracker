@@ -6,9 +6,6 @@
         <title>SportTracker - {{ gettext('Tile Hunting Heatmap') }}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
-        <link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-        <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css"/>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/leaflet-theme.css") }}"/>
         <style>
             .leaflet-layer:first-child {
@@ -94,10 +91,6 @@
         {{ mapMacros.mapLocale() }}
 
         {{ macros.scripts() }}
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-        <script src="https://unpkg.com/leaflet-ui@0.6.0/dist/leaflet-ui.js"></script>
-        <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
         <script defer src="{{ url_for('static', filename='js/mapCommon.js') }}" type="text/javascript"></script>
         <script defer src="{{ url_for('static', filename='js/mapTileHuntingHeatmap.js') }}" type="text/javascript"></script>
     </body>
