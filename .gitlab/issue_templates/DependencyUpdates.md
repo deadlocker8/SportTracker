@@ -5,11 +5,9 @@
       - run `poetry install`
       - run `pre-commit install`
 - [ ] update js dependencies
-  - [ ] bootstrap
   - [ ] fontawesome
-  - [ ] jquery
-  - [ ] mousetrap
-  - [ ] plotly
+  - [ ] npm dependencies in `package.json`
+    -  run `npm run build`
 - [ ] update Google Material Symbols
 - [ ] update georender
 - [ ] update changelog
