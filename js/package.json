@@ -26,7 +26,7 @@
     "leaflet-easybutton": "^2.0.0",
     "leaflet-ui": "^0.6.0",
     "mousetrap": "^1.6.5",
-    "plotly.js-dist-min": "^3.0.1",
+    "plotly.js-basic-dist-min": "^3.0.1",
     "stream-browserify": "^3.0.0",
     "url": "^0.11.4"
   },

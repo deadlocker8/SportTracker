@@ -25,4 +25,4 @@ import Mousetrap from 'mousetrap'
 window.Mousetrap = Mousetrap;
 
 // plotly
-import Plotly from 'plotly.js-dist-min'
+import Plotly from 'plotly.js-basic-dist-min'
