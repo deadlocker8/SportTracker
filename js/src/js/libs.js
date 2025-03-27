@@ -26,3 +26,7 @@ window.Mousetrap = Mousetrap;
 
 // plotly
 import Plotly from 'plotly.js-basic-dist-min'
+
+// autocomplete
+import Autocomplete from "bootstrap5-autocomplete/autocomplete.js";
+window.Autocomplete = Autocomplete

@@ -185,7 +185,7 @@ body {
     width: 1.2rem;
 }
 
-.input-field-margin {
+.input-field-margin, .autocomplete-menu {
     margin-left: 2.5rem;
 }
 

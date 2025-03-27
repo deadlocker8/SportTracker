@@ -285,7 +285,7 @@
                 <span class="material-symbols-outlined filled me-3">edit</span>
                 <input type="text" class="form-control" id="workout-name" name="name"
                        required="required" {% if workout %}value="{{ workout.name }}"{% endif %}
-                       list="list-workout-names">
+                       data-datalist="list-workout-names">
                 <datalist id="list-workout-names">
                     {% for workoutName in workoutNames %}
                         <option>{{ workoutName }}</option>

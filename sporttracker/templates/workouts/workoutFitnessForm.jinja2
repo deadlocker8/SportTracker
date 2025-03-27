@@ -78,9 +78,12 @@
         </div>
 
         {{ macros.scripts() }}
-{#        <script src="{{ url_for('static', filename='js/libs/bootstrap-autocomplete.min.js') }}" type="text/javascript"></script>#}
         <script>
-             {#$('#workout-name').autocomplete()#}
+            Autocomplete.init('#workout-name', {
+                'fullWidth': true,
+                'highlightTyped': true,
+                'suggestionsThreshold': 2,
+            });
         </script>
     </body>
 </html>
