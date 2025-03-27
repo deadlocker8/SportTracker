@@ -173,11 +173,7 @@ The migration will be performed automatically upon start of SportTracker.
 Python dependencies can be found in `pyproject.toml` and corresponding `poetry.lock`.
 
 ### Javascript / CSS dependencies
-- Bootstrap https://getbootstrap.com/
-- Leaflet https://leafletjs.com/
-- Mousetrap https://craig.is/killing/mice
-- plotly.js https://github.com/plotly/plotly.js
-- jQuery https://jquery.com/
+Javascript dependencies can be found in `js/package.json` and corresponding `js/package-lock.json`. 
 
 ### Additional dependencies
 - Google Material Symbols https://fonts.google.com/icons
