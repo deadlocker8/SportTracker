@@ -1,4 +1,5 @@
 # 1.36.0 - (XX.XX.XX)
+- add: SportTracker now includes all required javascript dependencies instead of relying on CDNs (#147)
 - fix: gpx track is now correctly shown again in running and hiking forms (#187)
 
 # 1.35.0 - (09.03.25)
