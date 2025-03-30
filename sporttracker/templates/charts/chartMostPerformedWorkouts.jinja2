@@ -29,6 +29,10 @@
                         </div>
                     </div>
                 {% endfor %}
+
+                {% if chartMostPerformedWorkoutsData|length == 0 %}
+                    <h5 class="text-center mt-5">{{ gettext('No workouts for this type') }}</h5>
+                {% endif %}
             </section>
         </div>
 

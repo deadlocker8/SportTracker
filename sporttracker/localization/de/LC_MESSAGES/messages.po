@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-30 16:51+0200\n"
-"PO-Revision-Date: 2025-03-30 16:52+0200\n"
+"POT-Creation-Date: 2025-03-30 16:58+0200\n"
+"PO-Revision-Date: 2025-03-30 16:59+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -588,6 +588,10 @@ msgstr "Hinweis: Es werden nur Namen mit mindestens zwei Workouts angezeigt"
 #, python-format
 msgid "The most performed \"%(workout_type)s\" workouts"
 msgstr "Die am häufigsten durchgeführten „%(workout_type)s“ Workouts"
+
+#: ../templates/charts/chartMostPerformedWorkouts.jinja2:34
+msgid "No workouts for this type"
+msgstr "Keine Workouts dieses Typs"
 
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:11
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:25
