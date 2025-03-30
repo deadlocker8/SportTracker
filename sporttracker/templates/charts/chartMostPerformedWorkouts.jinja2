@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Charts') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('calendar') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 calendar-container">
+                <div class="row mb-3">
+                    <div class="col col-12 mx-auto">
+                        {% call macros.headline(gettext('The most performed "%(workout_type)s" workouts', workout_type=workout_type.name)) %}
+                            <span class="material-symbols-outlined filled fs-1">leaderboard</span>
+                        {% endcall %}
+                    </div>
+                </div>
+
+                {% for entry in chartMostPerformedWorkoutsData %}
+                    <div class="row my-3">
+                        <div class="col col-12 col-md-8 col-lg-6 col-xl-5 mx-auto">
+                            <div class="mb-2">{{ loop.index }}. {{ entry['name'] }}</div>
+                            <div class="progress bg-dark rounded-0" role="progressbar" style="height: 1.5rem">
+                                <div class="progress-bar {{ workout_type.background_color }} text-dark fw-bold" style="width: {{ entry['percentage'] }}%">{{ entry['count'] }}</div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>

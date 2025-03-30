@@ -8,7 +8,7 @@ from babel.dates import get_day_names
 from flask import Blueprint, render_template
 from flask_babel import gettext, format_datetime
 from flask_login import login_required, current_user
-from sqlalchemy import extract, func, String, asc
+from sqlalchemy import extract, func, String, asc, desc
 
 from sporttracker.helpers.Helpers import format_duration
 from sporttracker.logic import Constants
@@ -506,5 +506,34 @@ def construct_blueprint():
             texts.append(format_duration(monthDurationSum.durationSum))
 
         return {'monthNames': monthNames, 'values': values, 'texts': texts, 'type': workoutType}
+
+    @charts.route('/chartMostPerformedWorkoutsChooser')
+    @login_required
+    def chartMostPerformedWorkoutsChooser():
+        return render_template('charts/chartMostPerformedWorkoutsChooser.jinja2')
+
+    @charts.route('/chartMostPerformedWorkoutsChooser/<string:workout_type>')
+    @login_required
+    def chartMostPerformedWorkouts(workout_type: str):
+        rows = (
+            Workout.query.with_entities(Workout.name, func.count(Workout.name).label('count'))
+            .filter(Workout.user_id == current_user.id)
+            .filter(Workout.type == workout_type)
+            .group_by(Workout.name)
+            .order_by(desc('count'), asc(func.lower(Workout.name)))
+            .all()
+        )
+
+        chartMostPerformedWorkoutsData = []
+        for row in rows:
+            chartMostPerformedWorkoutsData.append(
+                {'name': row[0], 'count': row.count, 'percentage': row.count / rows[0].count * 100}
+            )
+
+        return render_template(
+            'charts/chartMostPerformedWorkouts.jinja2',
+            chartMostPerformedWorkoutsData=chartMostPerformedWorkoutsData,
+            workout_type=WorkoutType(workout_type),  # type: ignore[call-arg]
+        )
 
     return charts
