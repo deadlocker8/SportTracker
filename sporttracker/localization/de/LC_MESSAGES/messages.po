@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-09 11:31+0100\n"
-"PO-Revision-Date: 2025-03-09 11:32+0100\n"
+"POT-Creation-Date: 2025-03-30 16:51+0200\n"
+"PO-Revision-Date: 2025-03-30 16:52+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -295,15 +295,15 @@ msgstr "Hin + zurück"
 msgid "Roundtrip"
 msgstr "Rundtour"
 
-#: ../logic/model/User.py:77 ../templates/maps/mapPlannedTour.jinja2:36
-#: ../templates/maps/mapPlannedTour.jinja2:83
-#: ../templates/maps/mapSingleWorkout.jinja2:47
-#: ../templates/maps/mapSingleWorkout.jinja2:94
+#: ../logic/model/User.py:77 ../templates/maps/mapPlannedTour.jinja2:34
+#: ../templates/maps/mapPlannedTour.jinja2:81
+#: ../templates/maps/mapSingleWorkout.jinja2:45
+#: ../templates/maps/mapSingleWorkout.jinja2:92
 msgid "Distance"
 msgstr "Strecke"
 
-#: ../logic/model/User.py:79 ../templates/maps/mapSingleWorkout.jinja2:50
-#: ../templates/maps/mapSingleWorkout.jinja2:98
+#: ../logic/model/User.py:79 ../templates/maps/mapSingleWorkout.jinja2:48
+#: ../templates/maps/mapSingleWorkout.jinja2:96
 #: ../templates/workouts/workoutMacros.jinja2:335
 msgid "Duration"
 msgstr "Dauer"
@@ -312,7 +312,7 @@ msgstr "Dauer"
 msgid "Average Heart Rate"
 msgstr "Durchschnittliche Herzfrequenz"
 
-#: ../logic/model/User.py:85 ../templates/maps/mapSingleWorkout.jinja2:126
+#: ../logic/model/User.py:85 ../templates/maps/mapSingleWorkout.jinja2:124
 msgid "Elevation Sum"
 msgstr "Summe Höhenmeter"
 
@@ -342,7 +342,7 @@ msgstr ""
 "\n"
 "Limit: {limit} km, Überschritten um: {limitExceededDistance} km"
 
-#: ../templates/about.jinja2:6 ../templates/macros.jinja2:178
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:177
 msgid "About"
 msgstr "Über"
 
@@ -351,7 +351,7 @@ msgid "Changelog"
 msgstr "Changelog"
 
 #: ../templates/achievements.jinja2:30 ../templates/annualAchievements.jinja2:133
-#: ../templates/macros.jinja2:86
+#: ../templates/macros.jinja2:85
 msgid "Achievements"
 msgstr "Errungenschaften"
 
@@ -384,23 +384,23 @@ msgstr "Schließen"
 msgid "Icons"
 msgstr "Icons"
 
-#: ../templates/macros.jinja2:42 ../templates/users/users.jinja2:6
+#: ../templates/macros.jinja2:41 ../templates/users/users.jinja2:6
 #: ../templates/users/users.jinja2:17
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../templates/macros.jinja2:55 ../templates/maps/mapMultipleWorkouts.jinja2:6
+#: ../templates/macros.jinja2:54 ../templates/maps/mapMultipleWorkouts.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:122
 #: ../templates/workouts/workouts.jinja2:5
 #: ../templates/workouts/workouts.jinja2:25
 msgid "Workouts"
 msgstr "Workouts"
 
-#: ../templates/macros.jinja2:63 ../templates/monthGoals/monthGoals.jinja2:6
+#: ../templates/macros.jinja2:62 ../templates/monthGoals/monthGoals.jinja2:6
 msgid "Goals"
 msgstr "Monatsziele"
 
-#: ../templates/macros.jinja2:70
+#: ../templates/macros.jinja2:69
 msgid "Analytics"
 msgstr "Auswertung"
 
@@ -415,55 +415,58 @@ msgstr "Auswertung"
 #: ../templates/charts/chartDurationPerWorkoutChooser.jinja2:18
 #: ../templates/charts/chartMacros.jinja2:7
 #: ../templates/charts/chartMacros.jinja2:20
+#: ../templates/charts/chartMostPerformedWorkouts.jinja2:5
+#: ../templates/charts/chartMostPerformedWorkoutsChooser.jinja2:6
+#: ../templates/charts/chartMostPerformedWorkoutsChooser.jinja2:18
 #: ../templates/charts/chartSpeedPerWorkoutChooser.jinja2:6
 #: ../templates/charts/chartSpeedPerWorkoutChooser.jinja2:18
-#: ../templates/macros.jinja2:78
+#: ../templates/macros.jinja2:77
 msgid "Charts"
 msgstr "Diagramme"
 
-#: ../templates/charts/chartCalendar.jinja2:16 ../templates/macros.jinja2:94
+#: ../templates/charts/chartCalendar.jinja2:16 ../templates/macros.jinja2:93
 msgid "Calendar"
 msgstr "Kalender"
 
-#: ../templates/macros.jinja2:102
+#: ../templates/macros.jinja2:101
 msgid "Annual Statistics"
 msgstr "Jahresstatistik"
 
-#: ../templates/macros.jinja2:112 ../templates/maps/mapMultipleWorkouts.jinja2:17
+#: ../templates/macros.jinja2:111 ../templates/maps/mapMultipleWorkouts.jinja2:17
 #: ../templates/maps/mapNotFound.jinja2:6
 msgid "Map"
 msgstr "Karte"
 
-#: ../templates/macros.jinja2:119
+#: ../templates/macros.jinja2:118
 msgid "More"
 msgstr "Mehr"
 
-#: ../templates/macros.jinja2:133 ../templates/maintenances/maintenances.jinja2:35
+#: ../templates/macros.jinja2:132 ../templates/maintenances/maintenances.jinja2:35
 #: ../templates/maintenances/maintenances.jinja2:48
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: ../templates/macros.jinja2:146 ../templates/maps/mapMultipleWorkouts.jinja2:9
+#: ../templates/macros.jinja2:145 ../templates/maps/mapMultipleWorkouts.jinja2:9
 #: ../templates/plannedTours/plannedTours.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:19
 msgid "Planned Tours"
 msgstr "Geplante Touren"
 
-#: ../templates/macros.jinja2:161 ../templates/maps/mapMacros.jinja2:111
+#: ../templates/macros.jinja2:160 ../templates/maps/mapMacros.jinja2:111
 #: ../templates/maps/mapTileHunting.jinja2:6
 #: ../templates/settings/settings.jinja2:52
 msgid "Tile Hunting"
 msgstr "Tile Hunting"
 
-#: ../templates/macros.jinja2:169 ../templates/maps/mapTileHuntingHeatmap.jinja2:6
+#: ../templates/macros.jinja2:168 ../templates/maps/mapTileHuntingHeatmap.jinja2:6
 msgid "Tile Hunting Heatmap"
 msgstr "Tile Hunting Heatmap"
 
-#: ../templates/macros.jinja2:187
+#: ../templates/macros.jinja2:186
 msgid "Search"
 msgstr "Suche"
 
-#: ../templates/macros.jinja2:216
+#: ../templates/macros.jinja2:215
 #: ../templates/maintenances/maintenanceForm.jinja2:99
 #: ../templates/settings/settings.jinja2:326
 #: ../templates/settings/settings.jinja2:338
@@ -471,11 +474,11 @@ msgstr "Suche"
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../templates/macros.jinja2:225
+#: ../templates/macros.jinja2:224
 msgid "Logout"
 msgstr "Logout"
 
-#: ../templates/macros.jinja2:267 ../templates/workouts/workoutChooser.jinja2:86
+#: ../templates/macros.jinja2:266 ../templates/workouts/workoutChooser.jinja2:86
 #: ../templates/workouts/workouts.jinja2:95
 #: ../templates/workouts/workouts.jinja2:117
 msgid "Cancel"
@@ -531,6 +534,10 @@ msgstr "Geschwindigkeit pro Workout"
 msgid "Duration per Month"
 msgstr "Dauer pro Monat"
 
+#: ../templates/charts/chartChooser.jinja2:84
+msgid "Most performed workouts"
+msgstr "Am häufigsten durchgeführte Workouts"
+
 #: ../templates/charts/chartDistancePerCustomField.jinja2:16
 #, python-format
 msgid "Distance per custom field \"%(name)s\""
@@ -553,10 +560,12 @@ msgid "Distance per participant for workout type \"%(workout_type)s\""
 msgstr "Strecke pro Teilnehmer für Workouttyp \"%(workout_type)s\""
 
 #: ../templates/charts/chartDistancePerParticipantChooser.jinja2:26
+#: ../templates/charts/chartMostPerformedWorkoutsChooser.jinja2:26
 msgid "Choose workout type"
 msgstr "Workouttyp auswählen"
 
 #: ../templates/charts/chartDistancePerParticipantChooser.jinja2:37
+#: ../templates/charts/chartMostPerformedWorkoutsChooser.jinja2:37
 msgid "Select"
 msgstr "Auswählen"
 
@@ -574,6 +583,11 @@ msgstr "Workout per Name auswählen"
 #: ../templates/charts/chartSpeedPerWorkoutChooser.jinja2:27
 msgid "Note: Only names with at least two workouts are listed"
 msgstr "Hinweis: Es werden nur Namen mit mindestens zwei Workouts angezeigt"
+
+#: ../templates/charts/chartMostPerformedWorkouts.jinja2:16
+#, python-format
+msgid "The most performed \"%(workout_type)s\" workouts"
+msgstr "Die am häufigsten durchgeführten „%(workout_type)s“ Workouts"
 
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:11
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:25
@@ -621,8 +635,8 @@ msgid "Do you really want to delete this maintenance event?"
 msgstr "Willst du dieses Wartungsereignis wirklich löschen?"
 
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:58
-#: ../templates/maps/mapSingleWorkout.jinja2:44
-#: ../templates/maps/mapSingleWorkout.jinja2:90
+#: ../templates/maps/mapSingleWorkout.jinja2:42
+#: ../templates/maps/mapSingleWorkout.jinja2:88
 #: ../templates/workouts/workoutMacros.jinja2:303
 msgid "Date"
 msgstr "Datum"
@@ -735,7 +749,7 @@ msgid "Slope"
 msgstr "Steigung"
 
 #: ../templates/maps/mapMacros.jinja2:7
-#: ../templates/maps/mapSingleWorkout.jinja2:53
+#: ../templates/maps/mapSingleWorkout.jinja2:51
 msgid "Speed"
 msgstr "Geschwindigkeit"
 
@@ -849,8 +863,8 @@ msgid "Show visited tiles"
 msgstr "Besuchte Kacheln anzeigen"
 
 #: ../templates/maps/mapMacros.jinja2:127
-#: ../templates/maps/mapTileHunting.jinja2:79
-#: ../templates/maps/mapTileHuntingHeatmap.jinja2:72
+#: ../templates/maps/mapTileHunting.jinja2:76
+#: ../templates/maps/mapTileHuntingHeatmap.jinja2:69
 msgid "Show grid"
 msgstr "Gitter anzeigen"
 
@@ -858,9 +872,9 @@ msgstr "Gitter anzeigen"
 msgid "Only highlight new tiles"
 msgstr "Nur neue Kacheln hervorheben"
 
-#: ../templates/maps/mapMultipleWorkouts.jinja2:61
-#: ../templates/maps/mapTileHunting.jinja2:52
-#: ../templates/maps/mapTileHuntingHeatmap.jinja2:43
+#: ../templates/maps/mapMultipleWorkouts.jinja2:58
+#: ../templates/maps/mapTileHunting.jinja2:49
+#: ../templates/maps/mapTileHuntingHeatmap.jinja2:40
 msgid "Apply"
 msgstr "Übernehmen"
 
@@ -873,50 +887,50 @@ msgid "Shared Planned Tour"
 msgstr "Geteilte Geplante Tour"
 
 #: ../templates/maps/mapPlannedTour.jinja2:10
-#: ../templates/maps/mapPlannedTour.jinja2:32
-#: ../templates/maps/mapPlannedTour.jinja2:80
+#: ../templates/maps/mapPlannedTour.jinja2:30
+#: ../templates/maps/mapPlannedTour.jinja2:78
 msgid "Planned Tour"
 msgstr "Geplante Tour"
 
-#: ../templates/maps/mapPlannedTour.jinja2:43
-#: ../templates/maps/mapPlannedTour.jinja2:91
+#: ../templates/maps/mapPlannedTour.jinja2:41
+#: ../templates/maps/mapPlannedTour.jinja2:89
 #: ../templates/plannedTours/plannedTours.jinja2:96
 msgid "Arrival"
 msgstr "Anreise"
 
-#: ../templates/maps/mapPlannedTour.jinja2:46
-#: ../templates/maps/mapPlannedTour.jinja2:95
+#: ../templates/maps/mapPlannedTour.jinja2:44
+#: ../templates/maps/mapPlannedTour.jinja2:93
 #: ../templates/plannedTours/plannedTours.jinja2:100
 msgid "Departure"
 msgstr "Abreise"
 
-#: ../templates/maps/mapPlannedTour.jinja2:49
-#: ../templates/maps/mapPlannedTour.jinja2:99
+#: ../templates/maps/mapPlannedTour.jinja2:47
+#: ../templates/maps/mapPlannedTour.jinja2:97
 #: ../templates/plannedTours/plannedTourForm.jinja2:85
 msgid "Direction"
 msgstr "Richtung"
 
-#: ../templates/maps/mapPlannedTour.jinja2:57
-#: ../templates/maps/mapPlannedTour.jinja2:141
+#: ../templates/maps/mapPlannedTour.jinja2:55
+#: ../templates/maps/mapPlannedTour.jinja2:139
 #: ../templates/plannedTours/plannedTours.jinja2:126
 msgid "last edited"
 msgstr "bearbeitet"
 
-#: ../templates/maps/mapPlannedTour.jinja2:103
-#: ../templates/maps/mapSingleWorkout.jinja2:134
+#: ../templates/maps/mapPlannedTour.jinja2:101
+#: ../templates/maps/mapSingleWorkout.jinja2:132
 msgid "Min Height"
 msgstr "Min. Höhe"
 
-#: ../templates/maps/mapPlannedTour.jinja2:111
-#: ../templates/maps/mapSingleWorkout.jinja2:142
+#: ../templates/maps/mapPlannedTour.jinja2:109
+#: ../templates/maps/mapSingleWorkout.jinja2:140
 msgid "Max Height"
 msgstr "Max. Höhe"
 
-#: ../templates/maps/mapPlannedTour.jinja2:119
+#: ../templates/maps/mapPlannedTour.jinja2:117
 msgid "Uphill"
 msgstr "Bergauf"
 
-#: ../templates/maps/mapPlannedTour.jinja2:126
+#: ../templates/maps/mapPlannedTour.jinja2:124
 msgid "Downhill"
 msgstr "Bergab"
 
@@ -925,24 +939,24 @@ msgid "Shared Workout"
 msgstr "Geteiltes Workout"
 
 #: ../templates/maps/mapSingleWorkout.jinja2:10
-#: ../templates/maps/mapSingleWorkout.jinja2:40
-#: ../templates/maps/mapSingleWorkout.jinja2:87
+#: ../templates/maps/mapSingleWorkout.jinja2:38
+#: ../templates/maps/mapSingleWorkout.jinja2:85
 msgid "Workout"
 msgstr "Workout"
 
-#: ../templates/maps/mapSingleWorkout.jinja2:102
+#: ../templates/maps/mapSingleWorkout.jinja2:100
 msgid "Avg. Speed"
 msgstr "Duchschn. Geschwindigkeit"
 
-#: ../templates/maps/mapSingleWorkout.jinja2:118
+#: ../templates/maps/mapSingleWorkout.jinja2:116
 msgid "Avg. Heart Rate"
 msgstr "Durchschn. Herzfrequenz"
 
-#: ../templates/maps/mapTileHunting.jinja2:64
+#: ../templates/maps/mapTileHunting.jinja2:61
 msgid "Tiles visited"
 msgstr "Besuchte Kacheln"
 
-#: ../templates/maps/mapTileHunting.jinja2:69
+#: ../templates/maps/mapTileHunting.jinja2:66
 msgid ""
 "Tiles are shown in their corresponding workout type color. If different workout "
 "types had visited a tile, it will be shown in <span class=&quot;text-danger fw-"
@@ -952,24 +966,24 @@ msgstr ""
 "eine Kachel von verschiedenen Workouttypen besucht wurde, wird sie <span "
 "class=&quot;text-danger fw-bold&quot;>rot</span> dargestellt."
 
-#: ../templates/maps/mapTileHunting.jinja2:83
-#: ../templates/maps/mapTileHuntingHeatmap.jinja2:76
+#: ../templates/maps/mapTileHunting.jinja2:80
+#: ../templates/maps/mapTileHuntingHeatmap.jinja2:73
 msgid "Zoom in to view visited tiles."
 msgstr "Hineinzoomen, um besuchte Kacheln anzuzeigen."
 
-#: ../templates/maps/mapTileHunting.jinja2:126
+#: ../templates/maps/mapTileHunting.jinja2:118
 msgid "Click bar to open in new tab"
 msgstr "Balken anklicken, um in neuem Tab zu öffnen"
 
-#: ../templates/maps/mapTileHunting.jinja2:139
+#: ../templates/maps/mapTileHunting.jinja2:131
 msgid "Number of new tiles"
 msgstr "Anzahl neuer Kacheln"
 
-#: ../templates/maps/mapTileHuntingHeatmap.jinja2:55
+#: ../templates/maps/mapTileHuntingHeatmap.jinja2:52
 msgid "Number of visits"
 msgstr "Anzahl der Besuche"
 
-#: ../templates/maps/mapTileHuntingHeatmap.jinja2:90
+#: ../templates/maps/mapTileHuntingHeatmap.jinja2:87
 msgid "Visits"
 msgstr "Besuche"
 
