@@ -1,5 +1,6 @@
 # 1.36.0 - (XX.XX.XX)
 - add: SportTracker now includes all required javascript dependencies instead of relying on CDNs (#147)
+- add: new chart that shows how often a workout was performed (based on th name) (#188)
 - fix: gpx track is now correctly shown again in running and hiking forms (#187)
 
 # 1.35.0 - (09.03.25)
