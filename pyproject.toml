@@ -32,7 +32,7 @@ fitdecode = "0.10.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "0.9.10"
-pre-commit = "4.1.0"
+pre-commit = "4.2.0"
 mypy = "1.15.0"
 pytest = "8.3.5"
 pytest-selenium = "4.1.0"
