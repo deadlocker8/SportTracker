@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-30 16:58+0200\n"
-"PO-Revision-Date: 2025-03-30 16:59+0200\n"
+"POT-Creation-Date: 2025-04-01 23:26+0200\n"
+"PO-Revision-Date: 2025-04-01 23:26+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -867,7 +867,7 @@ msgid "Show visited tiles"
 msgstr "Besuchte Kacheln anzeigen"
 
 #: ../templates/maps/mapMacros.jinja2:127
-#: ../templates/maps/mapTileHunting.jinja2:76
+#: ../templates/maps/mapTileHunting.jinja2:88
 #: ../templates/maps/mapTileHuntingHeatmap.jinja2:69
 msgid "Show grid"
 msgstr "Gitter anzeigen"
@@ -970,16 +970,38 @@ msgstr ""
 "eine Kachel von verschiedenen Workouttypen besucht wurde, wird sie <span "
 "class=&quot;text-danger fw-bold&quot;>rot</span> dargestellt."
 
-#: ../templates/maps/mapTileHunting.jinja2:80
+#: ../templates/maps/mapTileHunting.jinja2:72
+msgid "Max square:"
+msgstr "Maximales Quadrat:"
+
+#: ../templates/maps/mapTileHunting.jinja2:77
+msgid ""
+"The size of the maximum square area that is completely covered by your visited "
+"tiles. If the checkbox &quot;Show max square&quot; is selected all tiles inside "
+"your max square will use this color: <span class=&quot;d-inline-block&quot; "
+"style=&quot;width: 10px; height: 10px; background-color: {maxSquareColor};&quot;"
+"></span>"
+msgstr ""
+"Die Größe der maximalen quadratischen Fläche, die vollständig von den besuchten "
+"Kacheln abgedeckt ist. Wenn die Checkbox &quot;Maximales Quadrat anzeigen&quot; "
+"aktiviert ist, verwenden alle Kacheln innerhalb des maximalen Quadrats diese "
+"Farbe: <span class=&quot;d-inline-block&quot; style=&quot;width: 10px; height: "
+"10px; background-color: {maxSquareColor};&quot;></span>"
+
+#: ../templates/maps/mapTileHunting.jinja2:96
+msgid "Show max square"
+msgstr "Max. Quadrat anzeigen"
+
+#: ../templates/maps/mapTileHunting.jinja2:101
 #: ../templates/maps/mapTileHuntingHeatmap.jinja2:73
 msgid "Zoom in to view visited tiles."
 msgstr "Hineinzoomen, um besuchte Kacheln anzuzeigen."
 
-#: ../templates/maps/mapTileHunting.jinja2:118
+#: ../templates/maps/mapTileHunting.jinja2:139
 msgid "Click bar to open in new tab"
 msgstr "Balken anklicken, um in neuem Tab zu öffnen"
 
-#: ../templates/maps/mapTileHunting.jinja2:131
+#: ../templates/maps/mapTileHunting.jinja2:152
 msgid "Number of new tiles"
 msgstr "Anzahl neuer Kacheln"
 

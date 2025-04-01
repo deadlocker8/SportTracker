@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-30 16:58+0200\n"
+"POT-Creation-Date: 2025-04-01 23:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -854,7 +854,7 @@ msgid "Show visited tiles"
 msgstr ""
 
 #: ../templates/maps/mapMacros.jinja2:127
-#: ../templates/maps/mapTileHunting.jinja2:76
+#: ../templates/maps/mapTileHunting.jinja2:88
 #: ../templates/maps/mapTileHuntingHeatmap.jinja2:69
 msgid "Show grid"
 msgstr ""
@@ -954,16 +954,33 @@ msgid ""
 ";text-danger fw-bold&quot;>red</span>."
 msgstr ""
 
-#: ../templates/maps/mapTileHunting.jinja2:80
+#: ../templates/maps/mapTileHunting.jinja2:72
+msgid "Max square:"
+msgstr ""
+
+#: ../templates/maps/mapTileHunting.jinja2:77
+msgid ""
+"The size of the maximum square area that is completely covered by your "
+"visited tiles. If the checkbox &quot;Show max square&quot; is selected "
+"all tiles inside your max square will use this color: <span class=&quot;d"
+"-inline-block&quot; style=&quot;width: 10px; height: 10px; background-"
+"color: {maxSquareColor};&quot;></span>"
+msgstr ""
+
+#: ../templates/maps/mapTileHunting.jinja2:96
+msgid "Show max square"
+msgstr ""
+
+#: ../templates/maps/mapTileHunting.jinja2:101
 #: ../templates/maps/mapTileHuntingHeatmap.jinja2:73
 msgid "Zoom in to view visited tiles."
 msgstr ""
 
-#: ../templates/maps/mapTileHunting.jinja2:118
+#: ../templates/maps/mapTileHunting.jinja2:139
 msgid "Click bar to open in new tab"
 msgstr ""
 
-#: ../templates/maps/mapTileHunting.jinja2:131
+#: ../templates/maps/mapTileHunting.jinja2:152
 msgid "Number of new tiles"
 msgstr ""
 
