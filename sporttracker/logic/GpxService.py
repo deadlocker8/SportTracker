@@ -17,6 +17,7 @@ from werkzeug.datastructures.file_storage import FileStorage
 from sporttracker.logic import Constants
 from sporttracker.logic.FitToGpxConverter import FitToGpxConverter
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
+from sporttracker.logic.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
@@ -57,9 +58,15 @@ class GpxService:
     GPX_FILE_EXTENSION = 'gpx'
     FIT_FILE_EXTENSION = 'fit'
 
-    def __init__(self, dataPath: str, newVisitedTileCache: NewVisitedTileCache) -> None:
+    def __init__(
+        self,
+        dataPath: str,
+        newVisitedTileCache: NewVisitedTileCache,
+        maxSquareCache: MaxSquareCache,
+    ) -> None:
         self._dataPath = dataPath
         self._newVisitedTileCache = newVisitedTileCache
+        self._maxSquareCache = maxSquareCache
 
     def get_folder_path(self, gpxFileName: str) -> str:
         return os.path.join(self._dataPath, gpxFileName)
@@ -231,6 +238,7 @@ class GpxService:
                 db.session.commit()
 
                 self._newVisitedTileCache.invalidate_cache_entry_by_user(userId)
+                self._maxSquareCache.invalidate_cache_entry_by_user(userId)
 
             try:
                 shutil.rmtree(self.get_folder_path(gpxMetadata.gpx_file_name))
@@ -252,6 +260,7 @@ class GpxService:
             db.session.commit()
 
         self._newVisitedTileCache.invalidate_cache_entry_by_user(userId)
+        self._maxSquareCache.invalidate_cache_entry_by_user(userId)
 
     def has_fit_file(self, gpxFileName: str | None) -> bool:
         if gpxFileName is None:

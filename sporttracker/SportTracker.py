@@ -128,6 +128,7 @@ class SportTracker(FlaskBaseApp):
         app.config['GPX_SERVICE'] = GpxService(
             app.config['DATA_FOLDER'],
             app.config['NEW_VISITED_TILE_CACHE'],
+            app.config['MAX_SQUARE_CACHE'],
         )
         distanceWorkoutService = DistanceWorkoutService(
             app.config['GPX_SERVICE'], app.config['TEMP_FOLDER'], self._settings['tileHunting']
