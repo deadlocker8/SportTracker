@@ -1,5 +1,6 @@
 # 1.37.0 - (XX.XX.XX)
 - add: show the size and corresponding tiles of the maximum square area that is completely covered by your visited tiles (#189)
+- chore: update dependencies (#190)
 
 # 1.36.0 - (30.03.25)
 - add: SportTracker now includes all required javascript dependencies instead of relying on CDNs (#147)
