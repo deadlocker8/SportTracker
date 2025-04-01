@@ -7,7 +7,8 @@
 - [ ] update js dependencies
   - [ ] fontawesome
   - [ ] npm dependencies in `package.json`
-    -  run `npm run build`
+    - run `npm install` 
+    - run `npm run build`
 - [ ] update Google Material Symbols
 - [ ] update georender
 - [ ] update changelog
