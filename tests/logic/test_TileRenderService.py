@@ -99,7 +99,13 @@ class TestTileRenderService:
 
         service = TileRenderService(14, 4, visitedTileService)
         image = service.render_image(
-            35198, 21494, 14, 1, TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES, self.COLOR_BORDER
+            35198,
+            21494,
+            14,
+            1,
+            TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES,
+            self.COLOR_BORDER,
+            None,
         )
 
         expectedImage = Image.new('RGBA', (4, 4))
@@ -139,7 +145,13 @@ class TestTileRenderService:
 
         service = TileRenderService(14, 4, visitedTileService)
         image = service.render_image(
-            17599, 10747, 13, 1, TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES, self.COLOR_BORDER
+            17599,
+            10747,
+            13,
+            1,
+            TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES,
+            self.COLOR_BORDER,
+            None,
         )
 
         expectedImage = Image.new('RGBA', (4, 4))
@@ -177,7 +189,13 @@ class TestTileRenderService:
         )
         service = TileRenderService(15, 4, visitedTileService)
         image = service.render_image(
-            35198, 21494, 16, 1, TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES, self.COLOR_BORDER
+            35198,
+            21494,
+            16,
+            1,
+            TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES,
+            self.COLOR_BORDER,
+            None,
         )
 
         expectedImage = Image.new('RGBA', (4, 4), color=self.COLOR_VISITED)

@@ -23,6 +23,7 @@ from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Workouts import DistanceWorkoutModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService, GpxParser
+from sporttracker.logic.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
@@ -82,6 +83,7 @@ def createGpxInfoPlannedTour(tourId: int, tourName: str) -> dict[str, str | int]
 def construct_blueprint(
     tileHuntingSettings: dict[str, Any],
     newVisitedTileCache: NewVisitedTileCache,
+    maxSquareCache: MaxSquareCache,
     distanceWorkoutService: DistanceWorkoutService,
 ) -> Blueprint:
     maps = Blueprint('maps', __name__, static_folder='static')
@@ -272,6 +274,7 @@ def construct_blueprint(
 
         visitedTileService = VisitedTileService(
             newVisitedTileCache,
+            maxSquareCache,
             quickFilterState,
             yearFilterState,
             distanceWorkoutService,
@@ -294,6 +297,7 @@ def construct_blueprint(
             user_id,
             TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES,
             borderColor,  # type: ignore[arg-type]
+            None,
         )
 
         with io.BytesIO() as output:
@@ -313,7 +317,11 @@ def construct_blueprint(
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         visitedTileService = VisitedTileService(
-            newVisitedTileCache, quickFilterState, yearFilterState, distanceWorkoutService
+            newVisitedTileCache,
+            maxSquareCache,
+            quickFilterState,
+            yearFilterState,
+            distanceWorkoutService,
         )
         tileRenderService = TileRenderService(
             tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
@@ -323,6 +331,12 @@ def construct_blueprint(
         if __get_tile_hunting_is_grid_active():
             borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
 
+        maxSquareColor = None
+        # TODO
+        # if __get_tile_hunting_is_max_square_active():
+        if True:
+            maxSquareColor = ImageColor.getcolor(tileHuntingSettings['maxSquareColor'], 'RGBA')
+
         image = tileRenderService.render_image(
             x,
             y,
@@ -330,6 +344,7 @@ def construct_blueprint(
             user_id,
             TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES,
             borderColor,  # type: ignore[arg-type]
+            maxSquareColor,  # type: ignore[arg-type]
         )
 
         with io.BytesIO() as output:
@@ -348,7 +363,11 @@ def construct_blueprint(
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         visitedTileService = VisitedTileService(
-            newVisitedTileCache, QuickFilterState(), yearFilterState, distanceWorkoutService
+            newVisitedTileCache,
+            maxSquareCache,
+            QuickFilterState(),
+            yearFilterState,
+            distanceWorkoutService,
         )
         tileRenderService = TileRenderService(
             tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
@@ -365,6 +384,7 @@ def construct_blueprint(
             user_id,
             TileRenderColorMode.NUMBER_OF_VISITS,
             borderColor,  # type: ignore[arg-type]
+            None,
         )
 
         with io.BytesIO() as output:
@@ -382,7 +402,11 @@ def construct_blueprint(
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         visitedTileService = VisitedTileService(
-            newVisitedTileCache, quickFilterState, yearFilterState, distanceWorkoutService
+            newVisitedTileCache,
+            maxSquareCache,
+            quickFilterState,
+            yearFilterState,
+            distanceWorkoutService,
         )
         tileRenderService = TileRenderService(
             tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
@@ -396,6 +420,7 @@ def construct_blueprint(
             user.id,
             TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES,
             borderColor,  # type: ignore[arg-type]
+            None,
         )
 
         with io.BytesIO() as output:
@@ -421,7 +446,11 @@ def construct_blueprint(
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         visitedTileService = VisitedTileService(
-            newVisitedTileCache, quickFilterState, yearFilterState, distanceWorkoutService
+            newVisitedTileCache,
+            maxSquareCache,
+            quickFilterState,
+            yearFilterState,
+            distanceWorkoutService,
         )
         totalNumberOfTiles = visitedTileService.calculate_total_number_of_visited_tiles()
 
@@ -514,7 +543,11 @@ def construct_blueprint(
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
         visitedTileService = VisitedTileService(
-            newVisitedTileCache, QuickFilterState(), yearFilterState, distanceWorkoutService
+            newVisitedTileCache,
+            maxSquareCache,
+            QuickFilterState(),
+            yearFilterState,
+            distanceWorkoutService,
         )
         rows = visitedTileService.determine_number_of_visits(
             visitedTile.x, visitedTile.x, visitedTile.y, visitedTile.y, user_id
@@ -577,3 +610,10 @@ def __get_tile_hunting_is_only_highlight_new_tiles() -> bool:
         session['tileHuntingIsOnlyHighlightNewTilesActive'] = False
 
     return session['tileHuntingIsOnlyHighlightNewTilesActive']
+
+
+def __get_tile_hunting_is_max_square_active() -> bool:
+    if 'tileHuntingIsMaxSquareActive' not in session:
+        session['tileHuntingIsMaxSquareActive'] = False
+
+    return session['tileHuntingIsMaxSquareActive']

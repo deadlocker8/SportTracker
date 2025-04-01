@@ -176,6 +176,7 @@ class TileRenderService:
         user_id: int,
         tileRenderColorMode: TileRenderColorMode,
         borderColor: tuple[int, int, int, int] | None,
+        maxSquareColor: tuple[int, int, int, int] | None,
     ) -> Image.Image:
         """
         Renders a tile image for a tile with the position (x,y) and the specified zoom level.
@@ -236,6 +237,10 @@ class TileRenderService:
                     colorToUse = TileRenderService.calculate_heatmap_color(
                         position[0], position[1], tileCountPositions
                     )
+
+                if maxSquareColor is not None:
+                    if position in self._visitedTileService.get_max_square_tile_positions():
+                        colorToUse = maxSquareColor
 
                 for pixelX in range(boxSize):
                     for pixelY in range(boxSize):

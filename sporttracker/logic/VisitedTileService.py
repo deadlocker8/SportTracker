@@ -4,10 +4,11 @@ from flask_login import current_user
 from sqlalchemy import extract, text, func
 from sqlalchemy.orm import aliased
 
+from sporttracker.logic.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.NewVisitedTileCache import NewTilesPerDistanceWorkout, NewVisitedTileCache
 from sporttracker.logic.QuickFilterState import QuickFilterState
-from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
+from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
 from sporttracker.logic.model.db import db
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 
@@ -32,6 +33,7 @@ class VisitedTileService:
     def __init__(
         self,
         newVisitedTileCache: NewVisitedTileCache,
+        maxSquareCache: MaxSquareCache,
         quickFilterState: QuickFilterState,
         yearFilterState: list[int],
         distanceWorkoutService: DistanceWorkoutService,
@@ -39,6 +41,7 @@ class VisitedTileService:
         onlyHighlightNewTiles: bool = False,
     ) -> None:
         self._newVisitedTileCache = newVisitedTileCache
+        self._maxSquareCache = maxSquareCache
         self._quickFilterState = quickFilterState
         self._yearFilterState = yearFilterState
         self._distanceWorkoutService = distanceWorkoutService
@@ -198,3 +201,10 @@ class VisitedTileService:
         ).fetchall()
 
         return [(row[1], row[2]) for row in rows]
+
+    def get_max_square_tile_positions(self) -> list[tuple[int, int]]:
+        return self._maxSquareCache.get_max_square_tile_positions(
+            current_user.id,
+            self._quickFilterState.get_active_distance_workout_types(),
+            self._yearFilterState,
+        )

@@ -50,6 +50,7 @@ from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.MaintenanceEventsCollector import (
     get_number_of_triggered_maintenance_reminders,
 )
+from sporttracker.logic.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutFieldType
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
@@ -123,8 +124,10 @@ class SportTracker(FlaskBaseApp):
         app.config['TEMP_FOLDER'] = os.path.join(tempfile.gettempdir(), 'sporttracker_temp')
 
         app.config['NEW_VISITED_TILE_CACHE'] = NewVisitedTileCache()
+        app.config['MAX_SQUARE_CACHE'] = MaxSquareCache()
         app.config['GPX_SERVICE'] = GpxService(
-            app.config['DATA_FOLDER'], app.config['NEW_VISITED_TILE_CACHE']
+            app.config['DATA_FOLDER'],
+            app.config['NEW_VISITED_TILE_CACHE'],
         )
         distanceWorkoutService = DistanceWorkoutService(
             app.config['GPX_SERVICE'], app.config['TEMP_FOLDER'], self._settings['tileHunting']
@@ -308,6 +311,7 @@ class SportTracker(FlaskBaseApp):
             Maps.construct_blueprint(
                 self._settings['tileHunting'],
                 app.config['NEW_VISITED_TILE_CACHE'],
+                app.config['MAX_SQUARE_CACHE'],
                 app.config['DISTANCE_WORKOUT_SERVICE'],
             )
         )
