@@ -53,6 +53,7 @@ class MaxSquareCache:
             .filter(DistanceWorkout.type.in_(workout_types))
             .filter(extract('year', DistanceWorkout.start_time).in_(years))
             .distinct()
+            .order_by(GpxVisitedTile.x, GpxVisitedTile.y)
             .all()
         )
 
