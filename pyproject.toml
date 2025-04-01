@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "SportTracker"
-version = "1.36.0"
+version = "1.37.0"
 description = "Self-hosted sport data tracking server."
 license = "GPL-3.0-or-later"
 authors = ["deadlocker8"]
