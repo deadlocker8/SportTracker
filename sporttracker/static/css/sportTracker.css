@@ -222,6 +222,10 @@ body {
     width: 3rem;
 }
 
+.tooltip-inner {
+    max-width: 250px;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

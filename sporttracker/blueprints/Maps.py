@@ -332,9 +332,7 @@ def construct_blueprint(
             borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
 
         maxSquareColor = None
-        # TODO
-        # if __get_tile_hunting_is_max_square_active():
-        if True:
+        if __get_tile_hunting_is_max_square_active():
             maxSquareColor = ImageColor.getcolor(tileHuntingSettings['maxSquareColor'], 'RGBA')
 
         image = tileRenderService.render_image(
@@ -485,8 +483,11 @@ def construct_blueprint(
             redirectUrl='maps.showTileHuntingMap',
             tileRenderUrl=tileRenderUrl,
             totalNumberOfTiles=totalNumberOfTiles,
+            maxSquareSize=visitedTileService.get_max_square_size(),
             chartDataNewTilesPerWorkout=chartDataNewTilesPerWorkout,
             tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
+            tileHuntingIsMaxSquareActive=__get_tile_hunting_is_max_square_active(),
+            maxSquareColor=tileHuntingSettings['maxSquareColor'],
         )
 
     @maps.route('/map/tileHuntingHeatmap')
@@ -579,6 +580,13 @@ def construct_blueprint(
         session[
             'tileHuntingIsOnlyHighlightNewTilesActive'
         ] = not __get_tile_hunting_is_only_highlight_new_tiles()
+        return redirect(redirectUrl)
+
+    @maps.route('/toggleTileHuntingMaxSquare')
+    @login_required
+    def toggleTileHuntingMaxSquare():
+        redirectUrl = request.args['redirectUrl']
+        session['tileHuntingIsMaxSquareActive'] = not __get_tile_hunting_is_max_square_active()
         return redirect(redirectUrl)
 
     return maps

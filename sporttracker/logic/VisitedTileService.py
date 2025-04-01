@@ -1,3 +1,4 @@
+import math
 from dataclasses import dataclass
 
 from flask_login import current_user
@@ -208,3 +209,10 @@ class VisitedTileService:
             self._quickFilterState.get_active_distance_workout_types(),
             self._yearFilterState,
         )
+
+    def get_max_square_size(self) -> int:
+        maxSquareTilePositions = self.get_max_square_tile_positions()
+        if not maxSquareTilePositions:
+            return 0
+
+        return int(math.sqrt(len(maxSquareTilePositions)))
