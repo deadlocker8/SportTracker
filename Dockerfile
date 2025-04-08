@@ -22,6 +22,7 @@ RUN apk update && apk upgrade && \
 COPY sporttracker/ /opt/SportTracker/sporttracker
 COPY CHANGES.md /opt/SportTracker/CHANGES.md
 COPY --from=poetry /opt/SportTracker/myvenv /opt/SportTracker/myvenv
+COPY settings.json /opt/SportTracker/settings.json
 
 RUN adduser -D sporttracker && chown -R sporttracker:sporttracker /opt/SportTracker
 USER sporttracker
