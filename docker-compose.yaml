@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres
+    container_name: sporttracker-postgres
+    environment:
+      POSTGRES_USER: sporttracker-user
+      POSTGRES_PASSWORD: sporttracker-password
+      POSTGRES_DB: sporttracker-db
+    networks:
+      - app-network
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sporttracker-user -d sporttracker-db -t 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 10s
+
+  flask:
+    container_name: sporttracker-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 10022:10022
+    networks:
+      - app-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+networks:
+  app-network:
+    driver: bridge

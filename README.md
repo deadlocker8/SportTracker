@@ -153,7 +153,14 @@ The corresponding swagger-ui is available at `/api/v2/docs`
 2. Copy `settings-example.json` to `settings.json` and adjust to your configuration
 3. Run the server: `<path_to_python_executable_in_poetry_venv> src/SportTracker.py` 
 
-💡 Or use the docker image.
+## Docker
+1. In the `docker-compose.yaml` change `POSTGRES_USER` and `POSTGRES_PASSWORD`.
+2. Copy `settings-example.json` to `settings.json` and adjust to your configuration. It is recommended to change the value of `server:secret`. Also adjust the database URI and set `sporttracker-user` and `sporttracker-password` to match the values in the `docker-compose.yaml`.
+3. Build and run the container using `docker compose up --build`.
+4. Observe the console output for the admin password that is generated during the initialization of the container.
+5. You should be able to access the server on localhost:10022
+
+
 
 ## Command line arguments
 - `--debug`, `-d` = Enable debug mode
