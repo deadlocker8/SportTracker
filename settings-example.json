@@ -2,7 +2,7 @@
     "server": {
         "listen": "0.0.0.0",
         "port": 10022,
-        "secret": "",
+        "secret": "secret",
         "useSSL": false,
         "keyfile": "",
         "certfile": ""
@@ -14,7 +14,7 @@
         "numberOfBackups": 3
     },
     "database": {
-        "uri": "postgresql://username:password@localhost:5432/your_database"
+        "uri": "postgresql://sporttracker-user:sporttracker-password@localhost:5432/sporttracker-db-name"
     },
     "gpxPreviewImages": {
         "enabled": false,
