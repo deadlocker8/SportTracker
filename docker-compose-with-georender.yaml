@@ -1,0 +1,46 @@
+services:
+  sporttracker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - <PATH_ON_HOST>/settings.json:/opt/SportTracker/settings.json
+      - <PATH_ON_HOST>/data:/opt/SportTracker/data
+    user: 20000:20000
+    ports:
+      - "127.0.0.1:10022:10022"
+    restart: unless-stopped
+    networks:
+      - netPostgres
+    environment:
+      TZ: Europe/Berlin
+      LANG: en_US.UTF-8
+      LANGUAGE: en_US.UTF-8
+    depends_on:
+      - postgres
+      - georender
+
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: <POSTGRES_DB_NAME>
+      POSTGRES_USER: <POSTGRES_USER>
+      POSTGRES_PASSWORD: <POSTGRES_PASSWORD>
+    networks:
+      - netPostgres
+    volumes:
+      - <PATH_ON_HOST>/postgres:/var/lib/postgresql/data
+
+  georender:
+    build: https://github.com/deadlocker8/georender.git
+    ports:
+      - "127.0.0.1:3000:3000"
+    restart: unless-stopped
+    networks:
+      - netPostgres
+    command: -w 800 -h 450 -t osm
+
+networks:
+  netPostgres:
+    driver: bridge
