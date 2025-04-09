@@ -1,3 +1,6 @@
+# 1.38.0 - (XX.XX.XX)
+- add: add example docker compose files and documentation on how to run via docker compose (#195)
+
 # 1.37.0 - (01.04.25)
 - add: show the size and corresponding tiles of the maximum square area that is completely covered by your visited tiles (#189)
 - chore: update dependencies (#190)
