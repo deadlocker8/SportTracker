@@ -10,5 +10,6 @@ tests/screenshots/
 **/static/js/libs/*.svg
 **/static/js/libs/*.png
 **/static/js/libs/*.gif
-**/static/js/libs/*.libs.js
+**/static/js/libs/*libs.js
 **/static/js/libs/*.txt
+**/static/js/libs/main.css
