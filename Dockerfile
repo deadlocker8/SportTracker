@@ -13,6 +13,18 @@ WORKDIR /opt/SportTracker
 RUN /root/.local/bin/poetry install --without dev
 RUN ln -s $($HOME/.local/share/pypoetry/venv/bin/poetry env info -p) /opt/SportTracker/myvenv
 
+FROM node:23-alpine AS npm
+
+RUN apk update && apk upgrade && \
+    rm -rf /var/cache/apk
+
+COPY js/ /opt/SportTracker/js
+RUN mkdir -p /opt/SportTracker/sporttracker/static/js/libs
+
+WORKDIR /opt/SportTracker/js
+
+RUN npm install && npm run build
+
 FROM python:3.12-alpine
 
 RUN apk update && apk upgrade && \
@@ -22,6 +34,8 @@ RUN apk update && apk upgrade && \
 COPY sporttracker/ /opt/SportTracker/sporttracker
 COPY CHANGES.md /opt/SportTracker/CHANGES.md
 COPY --from=poetry /opt/SportTracker/myvenv /opt/SportTracker/myvenv
+COPY --from=npm /opt/SportTracker/sporttracker/static/js/libs/main.css /opt/SportTracker/sporttracker/static/js/libs/main.css
+COPY --from=npm /opt/SportTracker/sporttracker/static/js/libs/libs.js /opt/SportTracker/sporttracker/static/js/libs/libs.js
 
 RUN adduser -D sporttracker && chown -R sporttracker:sporttracker /opt/SportTracker
 USER sporttracker

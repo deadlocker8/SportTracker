@@ -152,8 +152,9 @@ The corresponding swagger-ui is available at `/api/v2/docs`
 
 ## How to run SportTracker locally
 1. Install dependencies via `poetry install --no-root --without dev`
-2. Copy `settings-example.json` to `settings.json` and adjust to your configuration
-3. Run the server: `<path_to_python_executable_in_poetry_venv> src/SportTracker.py` 
+2. Run `npm install` and `npm run build` inside the `js` folder.
+3. Copy `settings-example.json` to `settings.json` and adjust to your configuration
+4. Run the server: `<path_to_python_executable_in_poetry_venv> src/SportTracker.py` 
 
 ## Command line arguments
 - `--debug`, `-d` = Enable debug mode
