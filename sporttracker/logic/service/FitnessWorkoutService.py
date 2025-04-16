@@ -2,6 +2,7 @@ import logging
 
 from pydantic import ConfigDict
 
+from sporttracker.api.FormModels import FitnessWorkoutApiFormModel
 from sporttracker.blueprints.Workouts import BaseWorkoutFormModel
 from sporttracker.logic import Constants
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
@@ -44,6 +45,34 @@ class FitnessWorkoutService:
             duration=form_model.calculate_duration(),
             average_heart_rate=form_model.average_heart_rate,
             custom_fields=form_model.model_extra,
+            user_id=user_id,
+            participants=participants,
+            fitness_workout_type=FitnessWorkoutType(form_model.fitness_workout_type),  # type: ignore[call-arg]
+        )
+
+        db.session.add(workout)
+        db.session.commit()
+
+        update_workout_categories_by_workout_id(workout.id, fitness_workout_categories)
+
+        LOGGER.debug(f'Saved new fitness workout: {workout}')
+        return workout
+
+    def add_workout_via_api(
+        self,
+        form_model: FitnessWorkoutApiFormModel,
+        fitness_workout_categories: list[FitnessWorkoutCategoryType],
+        user_id: int,
+    ) -> DistanceWorkout:
+        participants = get_participants_by_ids(form_model.participants)
+
+        workout = FitnessWorkout(
+            name=form_model.name,
+            type=WorkoutType(form_model.workout_type),  # type: ignore[call-arg]
+            start_time=form_model.calculate_start_time(),
+            duration=form_model.duration,
+            average_heart_rate=form_model.average_heart_rate,
+            custom_fields={} if form_model.custom_fields is None else form_model.custom_fields,
             user_id=user_id,
             participants=participants,
             fitness_workout_type=FitnessWorkoutType(form_model.fitness_workout_type),  # type: ignore[call-arg]

@@ -299,6 +299,7 @@ class SportTracker(FlaskBaseApp):
                 app.config['GPX_SERVICE'],
                 self._settings['tileHunting'],
                 app.config['DISTANCE_WORKOUT_SERVICE'],
+                app.config['FITNESS_WORKOUT_SERVICE'],
             )
         )
         app.register_blueprint(Achievements.construct_blueprint())

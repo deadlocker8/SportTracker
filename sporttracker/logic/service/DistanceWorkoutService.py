@@ -6,13 +6,14 @@ from typing import Any
 from pydantic import ConfigDict, field_validator
 from werkzeug.datastructures import FileStorage
 
+from sporttracker.api.FormModels import DistanceWorkoutApiFormModel
 from sporttracker.blueprints.Workouts import BaseWorkoutFormModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.Observable import Observable
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.Participant import get_participants_by_ids
-from sporttracker.logic.model.PlannedTour import get_planned_tour_by_id
+from sporttracker.logic.model.PlannedTour import get_planned_tour_by_id, PlannedTour
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
@@ -91,6 +92,37 @@ class DistanceWorkoutService(Observable):
             self._gpx_service.add_visited_tiles_for_workout(
                 workout, self._tile_hunting_settings['baseZoomLevel'], user_id
             )
+
+        LOGGER.debug(f'Saved new distance workout: {workout}')
+        self._notify_listeners({'user_id': user_id})
+        return workout
+
+    def add_workout_via_api(
+        self,
+        form_model: DistanceWorkoutApiFormModel,
+        planned_tour: PlannedTour | None,
+        user_id: int,
+    ) -> DistanceWorkout:
+        participants = get_participants_by_ids(form_model.participants)
+
+        workout = DistanceWorkout(
+            name=form_model.name,
+            type=WorkoutType(form_model.workout_type),  # type: ignore[call-arg]
+            start_time=form_model.calculate_start_time(),
+            duration=form_model.duration,
+            distance=form_model.distance,
+            average_heart_rate=form_model.average_heart_rate,
+            elevation_sum=form_model.elevation_sum,
+            gpx_metadata_id=None,
+            custom_fields={} if form_model.custom_fields is None else form_model.custom_fields,
+            user_id=user_id,
+            participants=participants,
+            share_code=None,
+            planned_tour=planned_tour,
+        )
+
+        db.session.add(workout)
+        db.session.commit()
 
         LOGGER.debug(f'Saved new distance workout: {workout}')
         self._notify_listeners({'user_id': user_id})

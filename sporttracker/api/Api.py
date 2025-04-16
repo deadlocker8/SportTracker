@@ -32,17 +32,17 @@ from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_groupe
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.FitnessWorkoutCategory import (
-    update_workout_categories_by_workout_id,
     FitnessWorkoutCategoryType,
 )
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
-from sporttracker.logic.model.Participant import get_participants, get_participants_by_ids
+from sporttracker.logic.model.Participant import get_participants
 from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_tour_by_id
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.logic.service.FitnessWorkoutService import FitnessWorkoutService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -55,6 +55,7 @@ def construct_blueprint(
     gpxService: GpxService,
     tileHuntingSettings: dict[str, Any],
     distanceWorkoutService: DistanceWorkoutService,
+    fitnessWorkoutService: FitnessWorkoutService,
 ) -> Blueprint:
     api = Blueprint(API_BLUEPRINT_NAME, __name__, static_folder='static', url_prefix='/api/v2')
 
@@ -275,26 +276,11 @@ def construct_blueprint(
                     {'error': f'No planned tour found for planned_tour_id {form.planned_tour_id}'}
                 ), 400
 
-        workout = DistanceWorkout(
-            name=form.name,
-            type=workoutType,
-            start_time=form.calculate_start_time(),
-            duration=form.duration,
-            distance=form.distance,
-            average_heart_rate=form.average_heart_rate,
-            elevation_sum=form.elevation_sum,
-            custom_fields={} if form.custom_fields is None else form.custom_fields,
-            participants=get_participants_by_ids(form.participants),
-            planned_tour=plannedTour,
-            share_code=None,
-            gpx_metadata_id=None,
-            user_id=current_user.id,
+        workout = distanceWorkoutService.add_workout_via_api(
+            form_model=form, planned_tour=plannedTour, user_id=current_user.id
         )
 
-        LOGGER.debug(f'Saved new distance workout via api: {workout}')
-        db.session.add(workout)
-        db.session.commit()
-
+        LOGGER.debug(f'Saved new distance workout via api: {workout.id}')
         return {'id': workout.id}, 200
 
     @api.route('/workouts/distanceWorkout/<int:workout_id>/addGpxTrack', methods=['POST'])
@@ -319,9 +305,8 @@ def construct_blueprint(
             workout, tileHuntingSettings['baseZoomLevel'], current_user.id
         )
 
-        LOGGER.debug(
-            f'Added gpx track {workout.get_gpx_metadata().gpx_file_name} to workout {workout.id}'  # type: ignore[union-attr]
-        )
+        gpxFileName = workout.get_gpx_metadata().gpx_file_name  # type: ignore[union-attr]
+        LOGGER.debug(f'Added gpx track {gpxFileName} to workout {workout.id}')
 
         return '', 200
 
@@ -357,7 +342,7 @@ def construct_blueprint(
             return jsonify({'error': errorMessageWorkoutType}), 400
 
         try:
-            fitnessWorkoutType = FitnessWorkoutType(form.fitness_workout_type)  # type: ignore[call-arg]
+            FitnessWorkoutType(form.fitness_workout_type)  # type: ignore[call-arg]
         except ValueError:
             return jsonify(
                 {
@@ -379,25 +364,13 @@ def construct_blueprint(
                         }
                     ), 400
 
-        workout = FitnessWorkout(
-            name=form.name,
-            type=workoutType,
-            start_time=form.calculate_start_time(),
-            duration=form.duration,
-            average_heart_rate=form.average_heart_rate,
-            custom_fields={} if form.custom_fields is None else form.custom_fields,
-            participants=get_participants_by_ids(form.participants),
-            fitness_workout_type=fitnessWorkoutType,
+        workout = fitnessWorkoutService.add_workout_via_api(
+            form_model=form,
+            fitness_workout_categories=fitnessWorkoutCategories,
             user_id=current_user.id,
         )
 
-        LOGGER.debug(f'Saved new distance workout via api: {workout}')
-        db.session.add(workout)
-        db.session.commit()
-
-        if fitnessWorkoutCategories:
-            update_workout_categories_by_workout_id(workout.id, fitnessWorkoutCategories)
-
+        LOGGER.debug(f'Saved new fitness workout via api: {workout.id}')
         return {'id': workout.id}, 200
 
     @api.route('/settings/participants')
