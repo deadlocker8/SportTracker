@@ -63,7 +63,7 @@ def createGpxInfo(
             file_format=GpxService.GPX_FILE_EXTENSION,
         ),
         'workoutUrl': workoutUrl,
-        'workoutName': f'{workoutStartTime.strftime("%Y-%m-%d")} - {workoutName}',
+        'workoutName': f'{workoutStartTime.strftime("%Y-%m-%d")} - {__escape_name(workoutName)}',
     }
 
 
@@ -76,7 +76,7 @@ def createGpxInfoPlannedTour(tourId: int, tourName: str) -> dict[str, str | int]
             file_format=GpxService.GPX_FILE_EXTENSION,
         ),
         'workoutUrl': url_for('plannedTours.edit', tour_id=tourId),
-        'workoutName': tourName,
+        'workoutName': __escape_name(tourName),
     }
 
 
@@ -625,3 +625,7 @@ def __get_tile_hunting_is_max_square_active() -> bool:
         session['tileHuntingIsMaxSquareActive'] = False
 
     return session['tileHuntingIsMaxSquareActive']
+
+
+def __escape_name(name: str) -> str:
+    return name.replace('<', '&lt;').replace('>', '&gt;')
