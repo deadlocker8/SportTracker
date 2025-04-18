@@ -5,6 +5,7 @@ from flask_login import current_user
 from sqlalchemy import extract, text, func
 from sqlalchemy.orm import aliased
 
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import (
     NewTilesPerDistanceWorkout,
@@ -219,3 +220,34 @@ class VisitedTileService:
             return 0
 
         return int(math.sqrt(len(maxSquareTilePositions)))
+
+    def get_number_of_new_tiles_per_workout_type_per_year(
+        self, min_year: int, max_year: int
+    ) -> dict[WorkoutType, dict[int, int]]:
+        numberOfVisitedTilesPerWorkout = (
+            self._newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
+                current_user.id,
+                self._quickFilterState.get_active_distance_workout_types(),
+                self._yearFilterState,
+            )
+        )
+
+        result = {}
+        for workoutType in WorkoutType.get_distance_workout_types():
+            numberOfNewTilesPerYear = {}
+            for currentYear in range(min_year, max_year + 1):
+                numberOfNewTiles = 0
+                for entry in numberOfVisitedTilesPerWorkout:
+                    if entry.type != workoutType:
+                        continue
+
+                    if entry.startTime.year != currentYear:
+                        continue
+
+                    numberOfNewTiles = numberOfNewTiles + entry.numberOfNewTiles
+
+                numberOfNewTilesPerYear[currentYear] = numberOfNewTiles
+
+            result[workoutType] = numberOfNewTilesPerYear
+
+        return result

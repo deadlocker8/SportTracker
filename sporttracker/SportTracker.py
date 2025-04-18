@@ -291,7 +291,13 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(MonthGoalsDistance.construct_blueprint())
         app.register_blueprint(MonthGoalsCount.construct_blueprint())
         app.register_blueprint(MonthGoalsDuration.construct_blueprint())
-        app.register_blueprint(Charts.construct_blueprint())
+        app.register_blueprint(
+            Charts.construct_blueprint(
+                app.config['NEW_VISITED_TILE_CACHE'],
+                app.config['MAX_SQUARE_CACHE'],
+                app.config['DISTANCE_WORKOUT_SERVICE'],
+            )
+        )
         app.register_blueprint(Users.construct_blueprint())
         app.register_blueprint(Settings.construct_blueprint())
         app.register_blueprint(

@@ -13,6 +13,7 @@ from sqlalchemy import extract, func, String, asc, desc
 
 from sporttracker.helpers.Helpers import format_duration
 from sporttracker.logic import Constants
+from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.CustomWorkoutField import (
     get_custom_fields_grouped_by_workout_types,
     get_custom_field_by_id,
@@ -27,6 +28,10 @@ from sporttracker.logic.model.Workout import (
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
+from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.logic.tileHunting.VisitedTileService import VisitedTileService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -37,7 +42,11 @@ class WorkoutName:
     name: str
 
 
-def construct_blueprint():
+def construct_blueprint(
+    newVisitedTileCache: NewVisitedTileCache,
+    maxSquareCache: MaxSquareCache,
+    distanceWorkoutService: DistanceWorkoutService,
+):
     charts = Blueprint('charts', __name__, static_folder='static', url_prefix='/charts')
 
     @charts.route('/')
@@ -565,5 +574,46 @@ def construct_blueprint():
             chartMostPerformedWorkoutsData=chartMostPerformedWorkoutsData,
             workout_type=WorkoutType(workout_type),  # type: ignore[call-arg]
         )
+
+    @charts.route('/newTilesPerYear')
+    @login_required
+    def chartNewTilesPerYear():
+        minYear, maxYear = __get_min_and_max_year()
+
+        chartDataNewTilesPerYear: list[dict[str, Any]] = []
+        if minYear is not None and maxYear is not None:
+            chartDataNewTilesPerYear = __get_number_of_new_tiles_per_year_per_type(minYear, maxYear)
+
+        return render_template(
+            'charts/chartNewTilesPerYear.jinja2', chartDataNewTilesPerYear=chartDataNewTilesPerYear
+        )
+
+    def __get_number_of_new_tiles_per_year_per_type(
+        minYear: int, maxYear: int
+    ) -> list[dict[str, Any]]:
+        visitedTileService = VisitedTileService(
+            newVisitedTileCache,
+            maxSquareCache,
+            QuickFilterState(),
+            get_available_years(current_user.id),
+            distanceWorkoutService,
+        )
+
+        newVisitedTilesPerTypePerYear = (
+            visitedTileService.get_number_of_new_tiles_per_workout_type_per_year(minYear, maxYear)
+        )
+
+        result = []
+        for workoutType, numberOfNewTilesPerYear in newVisitedTilesPerTypePerYear.items():
+            result.append(
+                {
+                    'yearNames': list(numberOfNewTilesPerYear.keys()),
+                    'values': list(numberOfNewTilesPerYear.values()),
+                    'texts': [str(e) for e in numberOfNewTilesPerYear.values()],
+                    'type': workoutType,
+                }
+            )
+
+        return result
 
     return charts

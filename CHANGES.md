@@ -1,6 +1,7 @@
 # 1.38.0 - (XX.XX.XX)
 - add: add example docker compose files and documentation on how to run via docker compose (#195)
 - add: build libs.js and main.css in Dockerfile instead of checking them in (#196)
+- add: new chart: number of new visited tiles per year per workout type (#175)
 - fix: distance workouts created via api now trigger maintenance reminders if limits are exceeded (#193)
 - fix: escape string user inputs when displayed in frontend (#194)
 
