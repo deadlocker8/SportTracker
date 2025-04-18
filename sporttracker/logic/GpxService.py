@@ -17,8 +17,8 @@ from werkzeug.datastructures.file_storage import FileStorage
 from sporttracker.logic import Constants
 from sporttracker.logic.FitToGpxConverter import FitToGpxConverter
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
-from sporttracker.logic.MaxSquareCache import MaxSquareCache
-from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
+from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
 from sporttracker.logic.model.PlannedTour import PlannedTour

@@ -5,8 +5,11 @@ from flask_login import current_user
 from sqlalchemy import extract, text, func
 from sqlalchemy.orm import aliased
 
-from sporttracker.logic.MaxSquareCache import MaxSquareCache
-from sporttracker.logic.NewVisitedTileCache import NewTilesPerDistanceWorkout, NewVisitedTileCache
+from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
+from sporttracker.logic.tileHunting.NewVisitedTileCache import (
+    NewTilesPerDistanceWorkout,
+    NewVisitedTileCache,
+)
 from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile

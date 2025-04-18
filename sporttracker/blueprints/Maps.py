@@ -23,14 +23,14 @@ from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Workouts import DistanceWorkoutModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService, GpxParser
-from sporttracker.logic.MaxSquareCache import MaxSquareCache
-from sporttracker.logic.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
+from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
     QuickFilterState,
 )
-from sporttracker.logic.TileRenderService import TileRenderService, TileRenderColorMode
-from sporttracker.logic.VisitedTileService import VisitedTileService
+from sporttracker.logic.tileHunting.TileRenderService import TileRenderService, TileRenderColorMode
+from sporttracker.logic.tileHunting.VisitedTileService import VisitedTileService
 from sporttracker.logic.model.DistanceWorkout import (
     get_available_years,
     DistanceWorkout,

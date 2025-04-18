@@ -5,7 +5,7 @@ from enum import Enum
 from PIL import Image, ImageColor
 
 from sporttracker.logic import Constants
-from sporttracker.logic.VisitedTileService import (
+from sporttracker.logic.tileHunting.VisitedTileService import (
     VisitedTileService,
     TileColorPosition,
     TileCountPosition,

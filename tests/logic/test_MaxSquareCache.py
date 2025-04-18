@@ -1,4 +1,4 @@
-from sporttracker.logic.MaxSquareCache import MaxSquareCache
+from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 
 
 class TestMaxSquareCache:
