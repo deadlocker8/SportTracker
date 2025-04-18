@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-04-01 23:26+0200\n"
-"PO-Revision-Date: 2025-04-01 23:26+0200\n"
+"POT-Creation-Date: 2025-04-19 00:12+0200\n"
+"PO-Revision-Date: 2025-04-19 00:13+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -133,11 +133,11 @@ msgstr "Passwort darf nicht leer sein"
 msgid "Incorrect password"
 msgstr "Ungültiges Passwort"
 
-#: ../blueprints/Charts.py:121
+#: ../blueprints/Charts.py:144
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: ../blueprints/Charts.py:158
+#: ../blueprints/Charts.py:181
 msgid "You"
 msgstr "Du"
 
@@ -538,6 +538,11 @@ msgstr "Dauer pro Monat"
 msgid "Most performed workouts"
 msgstr "Am häufigsten durchgeführte Workouts"
 
+#: ../templates/charts/chartChooser.jinja2:91
+#: ../templates/charts/chartNewTilesPerYear.jinja2:22
+msgid "Number of new visited tiles per year"
+msgstr "Anzahl neu besuchter Kacheln pro Jahr"
+
 #: ../templates/charts/chartDistancePerCustomField.jinja2:16
 #, python-format
 msgid "Distance per custom field \"%(name)s\""
@@ -592,6 +597,10 @@ msgstr "Die am häufigsten durchgeführten „%(workout_type)s“ Workouts"
 #: ../templates/charts/chartMostPerformedWorkouts.jinja2:34
 msgid "No workouts for this type"
 msgstr "Keine Workouts dieses Typs"
+
+#: ../templates/charts/chartNewTilesPerYear.jinja2:33
+msgid "Number of tiles"
+msgstr "Anzahl Kacheln"
 
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:11
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:25
