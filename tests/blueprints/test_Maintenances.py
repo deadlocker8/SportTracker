@@ -315,3 +315,25 @@ class TestMaintenances(SeleniumTestBaseClass):
         )
 
         assert selenium.find_element(By.XPATH, '//span[contains(text(), "over limit")]')
+
+    def test_add_maintenance_check_html_description_is_escaped(self, server, selenium: WebDriver):
+        self.login(selenium)
+        self.__open_maintenance_form(selenium)
+        self.__fill_maintenance_form(
+            selenium,
+            WorkoutType.BIKING,
+            '<span style="background-color: red;">chan oiled</span>',
+            None,
+        )
+        self.__click_submit_button(selenium)
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'headline-text'), 'Maintenance'
+            )
+        )
+
+        assert (
+            selenium.find_elements(By.CLASS_NAME, 'planned-tour-name')[0].text
+            == '<span style="background-color: red;">chan oiled</span>'
+        )
