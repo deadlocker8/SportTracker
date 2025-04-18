@@ -1,3 +1,4 @@
+- [ ] escape strings from user input in frontend
 - [ ] adapt/add selenium tests
 - [ ] update localization
 - [ ] update icon overview 
