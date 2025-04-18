@@ -47,7 +47,7 @@
                                         <span class="material-symbols-outlined filled me-3">person</span>
                                     <input type="text" class="form-control"
                                            id="user-name" name="username"
-                                           required="required" {% if user %}value="{{ user.username }}"{% endif %}>
+                                           required="required" {% if user %}value="{{ user.username | e }}"{% endif %}>
                                 </div>
                             </div>
                             <div class="mb-3">

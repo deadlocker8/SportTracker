@@ -51,7 +51,7 @@
                                 <div class="d-flex align-items-center">
                                     <span class="material-symbols-outlined filled me-3">edit</span>
                                     <input type="text" class="form-control" id="participant-name" name="name"
-                                           required="required" {% if participant %}value="{{ participant.name }}"{% endif %}>
+                                           required="required" {% if participant %}value="{{ participant.name | e }}"{% endif %}>
                                 </div>
                             </div>
 

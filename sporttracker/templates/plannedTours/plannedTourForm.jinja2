@@ -62,7 +62,7 @@
                                         <span class="material-symbols-outlined filled me-3">edit</span>
                                         <input type="text" class="form-control" id="planned-tour-name"
                                                name="name" required="required"
-                                               {% if plannedTour %}value="{{ plannedTour.name }}"{% endif %}>
+                                               {% if plannedTour %}value="{{ plannedTour.name | e }}"{% endif %}>
                                     </div>
                                 </div>
                             </div>

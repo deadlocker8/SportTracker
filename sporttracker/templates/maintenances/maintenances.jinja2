@@ -66,7 +66,7 @@
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div class="d-flex align-items-center text-truncate">
                                             {{ workoutMacros.workout_type_icon_small(maintenancesWithEvent.type, fontSize='fs-3') }}
-                                            <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">{{ maintenancesWithEvent.description }}</div>
+                                            <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">{{ maintenancesWithEvent.description | e }}</div>
                                         </div>
                                         <div class="d-flex align-items-center">
                                             <a href="{{ url_for('maintenances.edit', maintenance_id=maintenancesWithEvent.id) }}" class="link-light text-decoration-none d-inline-flex align-items-center button-edit-maintenance me-2">

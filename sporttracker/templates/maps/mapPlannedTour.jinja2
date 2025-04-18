@@ -21,7 +21,7 @@
         <div class="d-flex align-items-center text-truncate justify-content-center mx-5 my-3">
             {{ workoutMacros.workout_type_icon_small(plannedTour.type, fontSize='fs-3') }}
             <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">
-                {{ plannedTour.name }}
+                {{ plannedTour.name | e }}
             </div>
         </div>
 
@@ -56,7 +56,7 @@
                 </div>
                 <div class="d-flex align-items-center">
                     <div class="material-symbols-outlined filled fs-4 me-1">person</div>
-                    <div>{{ plannedTour.ownerName }}</div>
+                    <div>{{ plannedTour.ownerName  | e }}</div>
                 </div>
             </div>
         </div>
@@ -140,7 +140,7 @@
                         </div>
                         <div class="d-flex align-items-center">
                             <div class="material-symbols-outlined filled fs-4 me-1">person</div>
-                            <div>{{ plannedTour.ownerName }}</div>
+                            <div>{{ plannedTour.ownerName | e }}</div>
                         </div>
                     </div>
                 </div>

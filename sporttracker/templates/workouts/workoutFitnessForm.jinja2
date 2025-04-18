@@ -25,7 +25,7 @@
                                 <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                             </button>
 
-                            {% call macros.deleteModal(gettext('Delete Workout?'), gettext('Do you really want to delete the workout "%(name)s" (ID: %(id)d)?', name=workout.name, id=workout_id)) %}
+                            {% call macros.deleteModal(gettext('Delete Workout?'), gettext('Do you really want to delete the workout "%(name)s" (ID: %(id)d)?', name=workout.name | e, id=workout_id)) %}
                                 <a href="{{ url_for('fitnessWorkouts.delete', workout_id=workout_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
                             {% endcall %}
                         {% else %}

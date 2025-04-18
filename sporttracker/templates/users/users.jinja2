@@ -26,7 +26,7 @@
                             <a href="{{ url_for('users.edit', user_id=user.id) }}" class="text-decoration-none">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h2 class="card-title text-truncate">{{ user.username }}</h2>
+                                        <h2 class="card-title text-truncate">{{ user.username | e }}</h2>
                                         {% if user.isAdmin %}
                                             ({{ gettext('Administrator') }})
                                         {% endif %}

@@ -157,7 +157,7 @@
                     <div class="col col-9 col-md-9">
                         <div class="card-body ps-1 ps-md-3 d-flex flex-column justify-content-between h-100">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h4 class="card-title text-truncate text-start">{{ workout.name }}</h4>
+                                <h4 class="card-title text-truncate text-start">{{ workout.name | e }}</h4>
 
                                 {{ workout_card_feature_icons(workout) }}
                             </div>
@@ -215,7 +215,7 @@
                     <div class="col col-9 col-md-9">
                         <div class="card-body ps-1 ps-md-3 d-flex flex-column justify-content-between h-100">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h4 class="card-title text-truncate text-start">{{ workout.name }}</h4>
+                                <h4 class="card-title text-truncate text-start">{{ workout.name | e }}</h4>
 
                                 {{ workout_card_feature_icons(workout) }}
                             </div>
@@ -284,11 +284,11 @@
             <div class="d-flex align-items-center">
                 <span class="material-symbols-outlined filled me-3">edit</span>
                 <input type="text" class="form-control" id="workout-name" name="name"
-                       required="required" {% if workout %}value="{{ workout.name }}"{% endif %}
+                       required="required" {% if workout %}value="{{ workout.name | e }}"{% endif %}
                        data-datalist="list-workout-names">
                 <datalist id="list-workout-names">
                     {% for workoutName in workoutNames %}
-                        <option>{{ workoutName }}</option>
+                        <option>{{ workoutName | e }}</option>
                     {% endfor %}
                 </datalist>
             </div>
@@ -463,7 +463,7 @@
             <div class="form-check input-field-margin">
                 <input class="form-check-input participant-checkbox" type="checkbox" {% if workout and participant.id|string in workout.participants %}checked{% endif %} id="participant-{{ participant.id }}" name="participants" value="{{ participant.id }}">
                 <label class="form-check-label" for="participant-{{ participant.id }}">
-                    {{ participant.name }}
+                    {{ participant.name | e}}
                 </label>
             </div>
         {% endfor %}
@@ -484,7 +484,7 @@
 {% macro workout_form_custom_field_input(field) -%}
     {% set escapedName=field.get_escaped_name() %}
     <div class="mb-3">
-        <label for="workout-{{ escapedName }}" class="form-label input-field-margin">{{ field.name }}</label>
+        <label for="workout-{{ escapedName }}" class="form-label input-field-margin">{{ field.name | e}}</label>
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined filled me-3">drive_file_rename_outline</span>
 
@@ -573,7 +573,7 @@
                 <option value="-1"
                         {% if not workout %} selected{% endif %}>{{ gettext('Not based on a Planned Tour') }}</option>
                 {% for plannedTour in plannedTours %}
-                    <option value="{{ plannedTour.id }}" {% if workout and workout.planned_tour_id != '-1' and workout.planned_tour_id == plannedTour.id|string %}selected{% endif %}>{{ plannedTour.name }}</option>
+                    <option value="{{ plannedTour.id }}" {% if workout and workout.planned_tour_id != '-1' and workout.planned_tour_id == plannedTour.id|string %}selected{% endif %}>{{ plannedTour.name | e }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -594,8 +594,8 @@
                             <div class="d-flex align-items-center text-truncate">
                                 <div class="card-title text-start mb-0 fs-6 me-3 d-lg-none">{{ event.event_date | format_date }}</div>
                                 <div class="card-title text-start mb-0 fs-5 me-5 d-none d-lg-block">{{ event.event_date | format_date }}</div>
-                                <div class="text-truncate fs-6 d-lg-none">{{ event.description }}</div>
-                                <div class="text-truncate fs-5 d-none d-lg-block">{{ event.description }}</div>
+                                <div class="text-truncate fs-6 d-lg-none">{{ event.description | e }}</div>
+                                <div class="text-truncate fs-5 d-none d-lg-block">{{ event.description | e }}</div>
                             </div>
                             <i class="fa-solid fa-wrench fa-fw fs-3 text-secondary"></i>
                         </div>

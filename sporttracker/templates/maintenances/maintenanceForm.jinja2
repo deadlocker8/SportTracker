@@ -63,7 +63,7 @@
                                         <span class="material-symbols-outlined filled me-3">article</span>
                                         <input type="text" class="form-control" id="maintenance-event-description"
                                                name="description" required="required"
-                                               {% if maintenance %}value="{{ maintenance.description }}"{% endif %}>
+                                               {% if maintenance %}value="{{ maintenance.description | e }}"{% endif %}>
                                     </div>
                                 </div>
                             </div>

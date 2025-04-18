@@ -65,7 +65,7 @@
                 <div class="modal-header d-flex align-items-center justify-content-start">
                     {{ workoutMacros.workout_type_icon_small(plannedTour.type, fontSize='fs-3') }}
                     <div class="fs-5 ms-3 text-truncate">
-                        {{ plannedTour.name }}
+                        {{ plannedTour.name | e}}
                     </div>
                 </div>
                 <div class="modal-body">
