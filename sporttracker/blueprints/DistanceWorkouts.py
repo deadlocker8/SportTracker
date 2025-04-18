@@ -35,9 +35,7 @@ def construct_blueprint(
     tempFolderPath: str,
     distanceWorkoutService: DistanceWorkoutService,
 ):
-    distanceWorkouts = Blueprint(
-        'distanceWorkouts', __name__, static_folder='static', url_prefix='/distanceWorkouts'
-    )
+    distanceWorkouts = Blueprint('distanceWorkouts', __name__, static_folder='static', url_prefix='/distanceWorkouts')
 
     @distanceWorkouts.route('/post', methods=['POST'])
     @login_required

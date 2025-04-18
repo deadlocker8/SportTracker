@@ -22,9 +22,7 @@ class DistanceWorkout(Workout):  # type: ignore[name-defined]
     elevation_sum: Mapped[int] = mapped_column(Integer, nullable=True)
     share_code: Mapped[str] = mapped_column(String, nullable=True)
     gpx_metadata_id = db.Column(db.Integer, db.ForeignKey('gpx_metadata.id'), nullable=True)
-    planned_tour: Mapped[PlannedTour] = relationship(
-        secondary=distance_workout_planned_tour_association
-    )
+    planned_tour: Mapped[PlannedTour] = relationship(secondary=distance_workout_planned_tour_association)
 
     __mapper_args__ = {
         'polymorphic_identity': 'distance_workout',
@@ -70,9 +68,7 @@ class MonthDistanceSum:
     distanceSum: float
 
 
-def get_distance_per_month_by_type(
-    workoutType: WorkoutType, minYear: int, maxYear: int
-) -> list[MonthDistanceSum]:
+def get_distance_per_month_by_type(workoutType: WorkoutType, minYear: int, maxYear: int) -> list[MonthDistanceSum]:
     year = extract('year', DistanceWorkout.start_time)
     month = extract('month', DistanceWorkout.start_time)
 
@@ -95,15 +91,11 @@ def get_distance_per_month_by_type(
             for row in rows:
                 if row.year == currentYear and row.month == currentMonth:
                     result.append(
-                        MonthDistanceSum(
-                            year=currentYear, month=currentMonth, distanceSum=float(row.distanceSum)
-                        )
+                        MonthDistanceSum(year=currentYear, month=currentMonth, distanceSum=float(row.distanceSum))
                     )
                     break
             else:
-                result.append(
-                    MonthDistanceSum(year=currentYear, month=currentMonth, distanceSum=0.0)
-                )
+                result.append(MonthDistanceSum(year=currentYear, month=currentMonth, distanceSum=0.0))
 
     return result
 

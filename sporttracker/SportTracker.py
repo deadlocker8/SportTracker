@@ -161,9 +161,7 @@ class SportTracker(FlaskBaseApp):
 
                 if self._generateDummyData:
                     if User.query.count() > 1:
-                        raise RuntimeError(
-                            'Could not generate dummy data because there are already existing users!'
-                        )
+                        raise RuntimeError('Could not generate dummy data because there are already existing users!')
 
                     dummyDataGenerator = DummyDataGenerator(app.config['GPX_SERVICE'])
                     dummyDataGenerator.generate()
@@ -207,9 +205,7 @@ class SportTracker(FlaskBaseApp):
         def utility_processor():
             def is_workout_info_item_activated(name: str) -> bool:
                 distanceWorkoutInfoItem = (
-                    DistanceWorkoutInfoItem.query.filter(
-                        DistanceWorkoutInfoItem.user_id == current_user.id
-                    )
+                    DistanceWorkoutInfoItem.query.filter(DistanceWorkoutInfoItem.user_id == current_user.id)
                     .filter(DistanceWorkoutInfoItem.type == DistanceWorkoutInfoItemType(name))
                     .first()
                 )
@@ -264,9 +260,7 @@ class SportTracker(FlaskBaseApp):
                 f' CAUTION: password is only shown once. Save it now!'
             )
 
-            create_user(
-                username='admin', password=password, isAdmin=True, language=Language.ENGLISH
-            )
+            create_user(username='admin', password=password, isAdmin=True, language=Language.ENGLISH)
 
     @staticmethod
     def __generate_password() -> str:
@@ -284,9 +278,7 @@ class SportTracker(FlaskBaseApp):
                 app.config['DISTANCE_WORKOUT_SERVICE'],
             )
         )
-        app.register_blueprint(
-            FitnessWorkouts.construct_blueprint(app.config['FITNESS_WORKOUT_SERVICE'])
-        )
+        app.register_blueprint(FitnessWorkouts.construct_blueprint(app.config['FITNESS_WORKOUT_SERVICE']))
         app.register_blueprint(MonthGoals.construct_blueprint())
         app.register_blueprint(MonthGoalsDistance.construct_blueprint())
         app.register_blueprint(MonthGoalsCount.construct_blueprint())
@@ -311,9 +303,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Achievements.construct_blueprint())
         app.register_blueprint(Search.construct_blueprint())
         app.register_blueprint(
-            GpxTracks.construct_blueprint(
-                app.config['GPX_SERVICE'], app.config['DISTANCE_WORKOUT_SERVICE']
-            )
+            GpxTracks.construct_blueprint(app.config['GPX_SERVICE'], app.config['DISTANCE_WORKOUT_SERVICE'])
         )
         app.register_blueprint(
             Maps.construct_blueprint(
@@ -327,9 +317,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Maintenances.construct_blueprint())
         app.register_blueprint(MaintenanceEventInstances.construct_blueprint())
         app.register_blueprint(
-            PlannedTours.construct_blueprint(
-                app.config['GPX_SERVICE'], self._settings['gpxPreviewImages']
-            )
+            PlannedTours.construct_blueprint(app.config['GPX_SERVICE'], self._settings['gpxPreviewImages'])
         )
         app.register_blueprint(AnnualAchievements.construct_blueprint())
 
@@ -353,9 +341,7 @@ def create_test_app():
 
 # needed for creation of database revisions
 def create_app():
-    server = SportTracker(
-        Constants.APP_NAME, os.path.dirname(__file__), LOGGER, False, False, False
-    )
+    server = SportTracker(Constants.APP_NAME, os.path.dirname(__file__), LOGGER, False, False, False)
     return server.init_app()
 
 
@@ -363,9 +349,7 @@ def create_app():
 @click.option('--debug', '-d', is_flag=True, help='Enable debug mode')
 @click.option('--dummy', '-dummy', is_flag=True, help='Generate dummy workouts')
 def start(debug, dummy):
-    sportTracker = SportTracker(
-        Constants.APP_NAME, os.path.dirname(__file__), LOGGER, debug, dummy, True
-    )
+    sportTracker = SportTracker(Constants.APP_NAME, os.path.dirname(__file__), LOGGER, debug, dummy, True)
     sportTracker.start_server()
 
 

@@ -124,9 +124,7 @@ def construct_blueprint():
         if len(password) < MIN_PASSWORD_LENGTH:
             return render_template(
                 'settings/settings.jinja2',
-                errorMessage=gettext('Password must be at least {0} characters long').format(
-                    MIN_PASSWORD_LENGTH
-                ),
+                errorMessage=gettext('Password must be at least {0} characters long').format(MIN_PASSWORD_LENGTH),
                 userLanguage=current_user.language.name,
                 customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
                 participants=get_participants(),
@@ -197,9 +195,7 @@ def construct_blueprint():
 
         for itemType in DistanceWorkoutInfoItemType:
             distanceWorkoutInfoItem = (
-                DistanceWorkoutInfoItem.query.filter(
-                    DistanceWorkoutInfoItem.user_id == current_user.id
-                )
+                DistanceWorkoutInfoItem.query.filter(DistanceWorkoutInfoItem.user_id == current_user.id)
                 .filter(DistanceWorkoutInfoItem.type == itemType)
                 .first()
             )
@@ -266,9 +262,7 @@ def construct_blueprint():
             is_required=field.is_required,
         )
 
-        return render_template(
-            'settings/customFieldsForm.jinja2', field=fieldModel, field_id=field_id
-        )
+        return render_template('settings/customFieldsForm.jinja2', field=fieldModel, field_id=field_id)
 
     @settings.route('/customFields/edit/<int:field_id>', methods=['POST'])
     @login_required
@@ -410,9 +404,7 @@ def construct_blueprint():
         if user is None:
             abort(404)
 
-        user.isMaintenanceRemindersNotificationsActivated = bool(
-            form.isMaintenanceRemindersNotificationsActivated
-        )
+        user.isMaintenanceRemindersNotificationsActivated = bool(form.isMaintenanceRemindersNotificationsActivated)
 
         existingNtfySettings = user.get_ntfy_settings()
 
@@ -480,9 +472,7 @@ def construct_blueprint():
         for validation in validations:
             value, name = validation
             if value is None or value.strip() == '':
-                return jsonify(
-                    {'message': gettext('Ntfy Settings: {0} must not be empty').format(name)}
-                ), 400
+                return jsonify({'message': gettext('Ntfy Settings: {0} must not be empty').format(name)}), 400
 
         try:
             NtfyHelper.send_message(
@@ -494,14 +484,10 @@ def construct_blueprint():
                 tags=['bell'],
             )
 
-            LOGGER.debug(
-                f'Sent maintenance reminder test notification settings for user: {current_user.id}'
-            )
+            LOGGER.debug(f'Sent maintenance reminder test notification settings for user: {current_user.id}')
             return jsonify({'message': gettext('Test notification successfully sent')})
         except Exception as e:
-            return jsonify(
-                {'message': gettext('Error sending test notification {0}').format(e)}
-            ), 500
+            return jsonify({'message': gettext('Error sending test notification {0}').format(e)}), 500
 
     def __is_allowed_custom_field_name(form: CustomWorkoutFieldFormModel):
         if form.name.lower() in RESERVED_FIELD_NAMES:
@@ -526,9 +512,7 @@ def construct_blueprint():
         return True
 
     def __is_allowed_participant_name(form: ParticipantFormModel):
-        existingParticipants = Participant.query.filter(
-            Participant.user_id == current_user.id
-        ).all()
+        existingParticipants = Participant.query.filter(Participant.user_id == current_user.id).all()
         existingParticipantNames = [item.name.lower() for item in existingParticipants]
         if form.name.lower() in existingParticipantNames:
             flash(gettext('The specified participant name "{0}" already exists.').format(form.name))
@@ -564,9 +548,7 @@ def construct_blueprint():
     def __get_ntfy_settings() -> EditMaintenanceReminderNotificationsModel:
         ntfySettings = current_user.get_ntfy_settings()
         if ntfySettings is None:
-            return EditMaintenanceReminderNotificationsModel(
-                isMaintenanceRemindersNotificationsActivated=False
-            )
+            return EditMaintenanceReminderNotificationsModel(isMaintenanceRemindersNotificationsActivated=False)
 
         return EditMaintenanceReminderNotificationsModel(
             isMaintenanceRemindersNotificationsActivated=True,

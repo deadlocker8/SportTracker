@@ -15,9 +15,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 def construct_blueprint():
-    achievements = Blueprint(
-        'achievements', __name__, static_folder='static', url_prefix='/achievements'
-    )
+    achievements = Blueprint('achievements', __name__, static_folder='static', url_prefix='/achievements')
 
     @achievements.route('/')
     @login_required
@@ -56,13 +54,13 @@ def construct_blueprint():
 
         longestDistance = 0.0
         longestWorkoutDate = gettext('no date')
-        longestWorkout = AchievementCalculator.get_workout_with_longest_distance_by_type(
-            workoutType
-        )
+        longestWorkout = AchievementCalculator.get_workout_with_longest_distance_by_type(workoutType)
         if longestWorkout is not None:
             longestDistance = longestWorkout.distance / 1000
             longestWorkoutDate = format_datetime(longestWorkout.start_time, format='dd.MM.yyyy')
-            longestWorkoutDate = f'<a href="{url_for("maps.showSingleWorkout", workout_id=longestWorkout.id)}">{longestWorkoutDate}</a>'
+            longestWorkoutDate = (
+                f'<a href="{url_for("maps.showSingleWorkout", workout_id=longestWorkout.id)}">{longestWorkoutDate}</a>'
+            )
 
         achievementList.append(
             Achievement(
@@ -87,9 +85,7 @@ def construct_blueprint():
                 is_outlined_icon=False,
                 color=workoutType.border_color,
                 title=gettext('Total Distance'),
-                description=gettext(
-                    'You completed a total of <span class="fw-bold">{totalDistance} km</span>!'
-                ).format(
+                description=gettext('You completed a total of <span class="fw-bold">{totalDistance} km</span>!').format(
                     totalDistance=Helpers.format_decimal(
                         AchievementCalculator.get_total_distance_by_type(workoutType), decimals=2
                     )
@@ -136,9 +132,7 @@ def construct_blueprint():
 
         longestDuration = 0
         longestDurationDate = gettext('no date')
-        longestWorkout = AchievementCalculator.get_workout_with_longest_duration_by_type(
-            workoutType
-        )
+        longestWorkout = AchievementCalculator.get_workout_with_longest_duration_by_type(workoutType)
         if longestWorkout is not None:
             longestDuration = longestWorkout.duration
             longestDurationDate = format_datetime(longestWorkout.start_time, format='dd.MM.yyyy')
@@ -171,12 +165,8 @@ def construct_blueprint():
                 is_outlined_icon=True,
                 color=workoutType.border_color,
                 title=gettext('Total Duration'),
-                description=gettext(
-                    'You completed a total of <span class="fw-bold">{totalDuration} h</span>!'
-                ).format(
-                    totalDuration=Helpers.format_duration(
-                        AchievementCalculator.get_total_duration_by_type(workoutType)
-                    )
+                description=gettext('You completed a total of <span class="fw-bold">{totalDuration} h</span>!').format(
+                    totalDuration=Helpers.format_duration(AchievementCalculator.get_total_duration_by_type(workoutType))
                 ),
             )
         )

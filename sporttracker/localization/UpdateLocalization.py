@@ -15,21 +15,15 @@ LANGUAGES = ['de']
 @click.option('--poEditPath', '-p', help='Path to the Poedit executable')
 def update_localization(init, poeditpath):
     print('Extracting messages...')
-    subprocess.run(
-        ['pybabel', 'extract', '-F', 'babel.cfg', '-o', 'messages.pot', '../'], check=True
-    )
+    subprocess.run(['pybabel', 'extract', '-F', 'babel.cfg', '-o', 'messages.pot', '../'], check=True)
 
     for language in LANGUAGES:
         if init:
             print(f'Initializing translation for "{language}"...')
-            subprocess.run(
-                ['pybabel', 'init', '-i', 'messages.pot', '-d', '.', '-l', language], check=True
-            )
+            subprocess.run(['pybabel', 'init', '-i', 'messages.pot', '-d', '.', '-l', language], check=True)
 
         print(f'Updating translation for "{language}"...')
-        subprocess.run(
-            ['pybabel', 'update', '-i', 'messages.pot', '-d', '.', '-l', language], check=True
-        )
+        subprocess.run(['pybabel', 'update', '-i', 'messages.pot', '-d', '.', '-l', language], check=True)
 
         if poeditpath is not None:
             print(f'Opening Poedit for language "{language}"...')

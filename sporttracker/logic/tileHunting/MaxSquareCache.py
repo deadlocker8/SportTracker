@@ -15,9 +15,7 @@ class MaxSquareCache:
         self._max_square_tile_positions: dict[str, list[tuple[int, int]]] = {}
 
     @staticmethod
-    def __calculate_cache_key(
-        user_id: int, workout_types: list[WorkoutType], years: list[int]
-    ) -> str:
+    def __calculate_cache_key(user_id: int, workout_types: list[WorkoutType], years: list[int]) -> str:
         active_types = '_'.join(sorted([t.name for t in workout_types]))
         active_years = '_'.join(sorted([str(y) for y in years]))
         return f'{user_id}_{active_types}_{active_years}'
@@ -67,9 +65,7 @@ class MaxSquareCache:
         for x, y in tiles:
             # Try squares of increasing size starting from 1
             for size in range(1, min(len(tiles), max(x, y)) + 2):
-                all_positions_in_square = [
-                    (x + dx, y + dy) for dx in range(size) for dy in range(size)
-                ]
+                all_positions_in_square = [(x + dx, y + dy) for dx in range(size) for dy in range(size)]
                 if not all([t in tiles for t in all_positions_in_square]):
                     break
 

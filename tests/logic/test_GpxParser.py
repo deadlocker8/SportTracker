@@ -24,8 +24,6 @@ class TestGpxParser:
             pytest.param(52.514505633612394, 13.350366839947553, 16, 35198, 21494, id='zoom_16'),
         ],
     )
-    def test_convert_coordinate_to_tile_position_zoom_level_16(
-        self, lat, lon, zoom, expected_x, expected_y
-    ):
+    def test_convert_coordinate_to_tile_position_zoom_level_16(self, lat, lon, zoom, expected_x, expected_y):
         tile = GpxParser.convert_coordinate_to_tile_position(lat, lon, zoom)
         assert tile == VisitedTile(expected_x, expected_y)

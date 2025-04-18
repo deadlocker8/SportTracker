@@ -71,16 +71,12 @@ def construct_blueprint():
             )
 
         if not password:
-            return render_template(
-                'users/userForm.jinja2', errorMessage=gettext('Password must not be empty')
-            )
+            return render_template('users/userForm.jinja2', errorMessage=gettext('Password must not be empty'))
 
         if len(password) < MIN_PASSWORD_LENGTH:
             return render_template(
                 'users/userForm.jinja2',
-                errorMessage=gettext('Password must be at least {0} characters long').format(
-                    MIN_PASSWORD_LENGTH
-                ),
+                errorMessage=gettext('Password must be at least {0} characters long').format(MIN_PASSWORD_LENGTH),
             )
 
         create_user(username=username, password=password, isAdmin=False, language=Language.ENGLISH)
@@ -137,9 +133,7 @@ def construct_blueprint():
                 'users/userForm.jinja2',
                 user=user,
                 user_id=user_id,
-                errorMessage=gettext('Password must be at least {0} characters long').format(
-                    MIN_PASSWORD_LENGTH
-                ),
+                errorMessage=gettext('Password must be at least {0} characters long').format(MIN_PASSWORD_LENGTH),
             )
 
         user.username = username

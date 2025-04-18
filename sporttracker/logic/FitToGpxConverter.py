@@ -40,9 +40,7 @@ class FitToGpxConverter:
             if altitude is None and enhancedAltitude is not None:
                 altitude = enhancedAltitude
 
-        return TrackPoint(
-            latitude=latitude, longitude=longitude, timestamp=timestamp, altitude=altitude
-        )
+        return TrackPoint(latitude=latitude, longitude=longitude, timestamp=timestamp, altitude=altitude)
 
     @staticmethod
     def __parse_track_points_from_fit_file(filePath: str) -> list[TrackPoint]:

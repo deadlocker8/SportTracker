@@ -33,9 +33,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     isAdmin: Mapped[bool] = mapped_column(Boolean, nullable=False)
     language = db.Column(db.Enum(Language))
     workouts = db.relationship('Workout', backref='user', lazy=True, cascade='delete')
-    customFields = db.relationship(
-        'CustomWorkoutField', backref='user', lazy=True, cascade='delete'
-    )
+    customFields = db.relationship('CustomWorkoutField', backref='user', lazy=True, cascade='delete')
     distance_workout_info_items = db.relationship(
         'DistanceWorkoutInfoItem', backref='user', lazy=True, cascade='delete'
     )
@@ -43,9 +41,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     isTileHuntingActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     isTileHuntingAccessActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     tileHuntingShareCode: Mapped[str] = mapped_column(String, nullable=True)
-    isMaintenanceRemindersNotificationsActivated: Mapped[bool] = mapped_column(
-        Boolean, nullable=False
-    )
+    isMaintenanceRemindersNotificationsActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
     def __repr__(self):
         return (
@@ -84,9 +80,7 @@ class DistanceWorkoutInfoItemType(enum.Enum):
         elif self == self.ELEVATION_SUM:
             return gettext('Elevation Sum')
 
-        raise ValueError(
-            f'Could not get localized name for unsupported DistanceWorkoutInfoItemType: {self}'
-        )
+        raise ValueError(f'Could not get localized name for unsupported DistanceWorkoutInfoItemType: {self}')
 
 
 class DistanceWorkoutInfoItem(db.Model):  # type: ignore[name-defined]
@@ -112,9 +106,7 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
     db.session.commit()
 
     for itemType in DistanceWorkoutInfoItemType:
-        distanceWorkoutInfoItem = DistanceWorkoutInfoItem(
-            type=itemType, is_activated=True, user_id=user.id
-        )
+        distanceWorkoutInfoItem = DistanceWorkoutInfoItem(type=itemType, is_activated=True, user_id=user.id)
         db.session.add(distanceWorkoutInfoItem)
     db.session.commit()
 

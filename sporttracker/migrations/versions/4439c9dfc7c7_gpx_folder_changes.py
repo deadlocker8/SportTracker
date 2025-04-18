@@ -42,9 +42,7 @@ def upgrade():
 
         try:
             if gpxFileName.endswith('.gpx'):
-                LOGGER.debug(
-                    f'Migrate gpx data [{index + 1}/{len(rows)}]: gpx file name: "{gpxFileName}"'
-                )
+                LOGGER.debug(f'Migrate gpx data [{index + 1}/{len(rows)}]: gpx file name: "{gpxFileName}"')
 
                 gpxFileNameWithoutExtension = gpxFileName[:-4]
 
@@ -61,15 +59,11 @@ def upgrade():
             LOGGER.debug(f'    Create gpx folder: "{destinationFolderPath}"')
             os.makedirs(destinationFolderPath, exist_ok=True)
 
-            zipFolderPath = os.path.join(
-                destinationFolderPath, f'{gpxFileNameWithoutExtension}.gpx.zip'
-            )
+            zipFolderPath = os.path.join(destinationFolderPath, f'{gpxFileNameWithoutExtension}.gpx.zip')
             sourceGpxPath = os.path.join(uploadDirectory, f'{gpxFileNameWithoutExtension}.gpx')
 
             LOGGER.debug(f'    Create gpx zip: "{zipFolderPath}"')
-            with ZipFile(
-                zipFolderPath, mode='w', compression=ZIP_DEFLATED, compresslevel=9
-            ) as zipObject:
+            with ZipFile(zipFolderPath, mode='w', compression=ZIP_DEFLATED, compresslevel=9) as zipObject:
                 zipObject.write(sourceGpxPath, arcname=gpxFileName)
 
             sourcePreviewImage = os.path.join(uploadDirectory, f'{gpxFileNameWithoutExtension}.jpg')

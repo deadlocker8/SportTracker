@@ -30,18 +30,14 @@ class TestPlannedTours(SeleniumTestBaseClass):
 
         selenium.find_element(By.CLASS_NAME, 'headline').find_element(By.TAG_NAME, 'a').click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'New Planned Tour'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'New Planned Tour')
         )
 
     def __open_edit_form(self, selenium):
         selenium.get(self.build_url('/plannedTours/edit/1'))
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Edit Planned Tour'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Edit Planned Tour')
         )
 
     @staticmethod
@@ -83,9 +79,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card')) == 1
@@ -105,9 +99,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
 
         self.__open_form(selenium)
@@ -115,17 +107,13 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
 
         selenium.find_elements(By.CLASS_NAME, 'quick-filter')[0].click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.invisibility_of_element_located(
-                (By.XPATH, '//h4[text()="New Planned Tour"]')
-            )
+            expected_conditions.invisibility_of_element_located((By.XPATH, '//h4[text()="New Planned Tour"]'))
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card')) == 1
@@ -133,15 +121,11 @@ class TestPlannedTours(SeleniumTestBaseClass):
     def test_filter(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(
-            selenium, WorkoutType.BIKING, 'Awesome Tour', 'arrival-method-2', None, None
-        )
+        self.__fill_form(selenium, WorkoutType.BIKING, 'Awesome Tour', 'arrival-method-2', None, None)
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
 
         self.__open_form(selenium)
@@ -149,29 +133,21 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
 
-        buttonFilterArrivalMethod = selenium.find_elements(
-            By.CSS_SELECTOR, '.dropdown.position-static'
-        )[3]
+        buttonFilterArrivalMethod = selenium.find_elements(By.CSS_SELECTOR, '.dropdown.position-static')[3]
         buttonFilterArrivalMethod.click()
 
         WebDriverWait(buttonFilterArrivalMethod, 5).until(
-            expected_conditions.visibility_of_element_located(
-                (By.ID, 'plannedTourFilterArrivalMethod-2')
-            )
+            expected_conditions.visibility_of_element_located((By.ID, 'plannedTourFilterArrivalMethod-2'))
         )
 
         buttonFilterArrivalMethod.find_element(By.ID, 'plannedTourFilterArrivalMethod-2').click()
         selenium.find_element(By.ID, 'buttonApplyFilter').click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card')) == 1
@@ -190,17 +166,12 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
 
         self.__open_edit_form(selenium)
 
-        assert (
-            selenium.find_element(By.ID, 'planned-tour-name').get_attribute('value')
-            == 'Awesome Tour'
-        )
+        assert selenium.find_element(By.ID, 'planned-tour-name').get_attribute('value') == 'Awesome Tour'
 
         assert selenium.find_element(By.ID, 'arrival-method-2').is_selected()
         assert selenium.find_element(By.ID, 'departure-method-2').is_selected()
@@ -217,9 +188,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
 
         assert len(selenium.find_elements(By.CLASS_NAME, 'planned-tour-name')) == 1
@@ -235,9 +204,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
 
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
@@ -250,9 +217,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.login(selenium, username=TEST_USERNAME_2, password=TEST_PASSWORD_2)
         selenium.get(self.build_url('/plannedTours'))
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
         assert len(cards) == 1
@@ -276,9 +241,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
 
         assert len(selenium.find_elements(By.CLASS_NAME, 'planned-tour-name')) == 1
@@ -288,9 +251,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.login(selenium)
         selenium.get(self.build_url('/plannedTours'))
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
         assert len(cards) == 1
@@ -303,16 +264,12 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.__fill_form(selenium, WorkoutType.BIKING, 'Awesome Tour', None, None, None)
 
         self.click_button_by_id(selenium, 'buttonCreateSharedLink')
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
-        )
+        WebDriverWait(selenium, 5).until(expected_conditions.visibility_of_element_located((By.ID, 'sharedLink')))
         sharedLink = selenium.find_element(By.ID, 'sharedLink').text
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
 
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
@@ -324,9 +281,7 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.logout(selenium)
         selenium.get(sharedLink)
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'planned-tour-name'), 'Awesome Tour'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'planned-tour-name'), 'Awesome Tour')
         )
 
     def test_edit_tour_remove_shared_link(self, server, selenium: WebDriver):
@@ -336,15 +291,11 @@ class TestPlannedTours(SeleniumTestBaseClass):
         self.__fill_form(selenium, WorkoutType.BIKING, 'Awesome Tour', None, None, None)
 
         self.click_button_by_id(selenium, 'buttonCreateSharedLink')
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
-        )
+        WebDriverWait(selenium, 5).until(expected_conditions.visibility_of_element_located((By.ID, 'sharedLink')))
         sharedLink = selenium.find_element(By.ID, 'sharedLink').text
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
 
         self.__open_edit_form(selenium)
@@ -353,19 +304,13 @@ class TestPlannedTours(SeleniumTestBaseClass):
         selenium.execute_script('arguments[0].scrollIntoView();', buttonSharedLinkDeleteModal)
         time.sleep(1)
         buttonSharedLinkDeleteModal.click()
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.element_to_be_clickable((By.ID, 'buttonSharedLinkDelete'))
-        )
+        WebDriverWait(selenium, 5).until(expected_conditions.element_to_be_clickable((By.ID, 'buttonSharedLinkDelete')))
         time.sleep(1)
         selenium.find_element(By.ID, 'buttonSharedLinkDelete').click()
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.invisibility_of_element_located((By.ID, 'sharedLink'))
-        )
+        WebDriverWait(selenium, 5).until(expected_conditions.invisibility_of_element_located((By.ID, 'sharedLink')))
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Planned Tours'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
 
         # check shared link can no longer bew viewed

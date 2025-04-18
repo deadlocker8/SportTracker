@@ -29,8 +29,7 @@ class Mapper:
     def map(self, source: object) -> object:
         if type(source) is not self._source_type:
             raise ValueError(
-                f'Could not map {self._source_type} to {self._target_type}: '
-                f'Source is not of type {self._source_type}'
+                f'Could not map {self._source_type} to {self._target_type}: Source is not of type {self._source_type}'
             )
 
         properties = {}
@@ -112,9 +111,7 @@ MAPPER_FITNESS_WORKOUT = Mapper(
         'average_heart_rate': lambda source: source.average_heart_rate,
         'participants': lambda source: [item.id for item in source.participants],
         'fitness_workout_type': lambda source: source.fitness_workout_type.name,
-        'fitness_workout_categories': lambda source: [
-            c.name for c in source.get_workout_categories()
-        ],
+        'fitness_workout_categories': lambda source: [c.name for c in source.get_workout_categories()],
         'custom_fields': lambda source: source.custom_fields,
     },
 )

@@ -28,9 +28,7 @@ class TileRenderService:
         self._tileSize = tileSize
         self._visitedTileService = visitedTileService
 
-    def __transform_tile_positions_to_base_zoom_level(
-        self, x: int, y: int, zoom: int
-    ) -> list[tuple[int, int]]:
+    def __transform_tile_positions_to_base_zoom_level(self, x: int, y: int, zoom: int) -> list[tuple[int, int]]:
         """
         Returns all tile positions for a tile with the position (x, y) and the specified zoom level transformed to self._baseZoomLevel.
         """
@@ -55,9 +53,7 @@ class TileRenderService:
         while zoom != self._baseZoomLevel:
             newPositions = set()
             for position in positions:
-                newPositions = newPositions.union(
-                    set(transformerFunction(position[0], position[1]))
-                )
+                newPositions = newPositions.union(set(transformerFunction(position[0], position[1])))
             positions = list(newPositions)
             zoom = counterModifierFunction(zoom)
 
@@ -85,9 +81,7 @@ class TileRenderService:
         return [(x // 2, y // 2)]
 
     @staticmethod
-    def calculate_color(
-        x: int, y: int, tileColorPositions: list[TileColorPosition]
-    ) -> tuple[int, int, int, int]:
+    def calculate_color(x: int, y: int, tileColorPositions: list[TileColorPosition]) -> tuple[int, int, int, int]:
         """
         Calculates the color of a tile with the position (x, y).
         Expects x, y to be in self._baseZoomLevel coordinates.
@@ -96,9 +90,7 @@ class TileRenderService:
         If a tile was visited by exactly one gpx track, the color of the corresponding track type is returned.
         If a tile was visited by multiple gpx tracks, COLOR_MULTIPLE_MATCHES is returned.
         """
-        colorsOfMatchingWorkouts = [
-            t.tile_color for t in tileColorPositions if t.x == x and t.y == y
-        ]
+        colorsOfMatchingWorkouts = [t.tile_color for t in tileColorPositions if t.x == x and t.y == y]
 
         if len(colorsOfMatchingWorkouts) == 0:
             return TileRenderService.COLOR_TRANSPARENT
@@ -200,14 +192,12 @@ class TileRenderService:
         tileColorPositions = []
         tileCountPositions = []
         if tileRenderColorMode == TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES:
-            tileColorPositions = (
-                self._visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles(
-                    min_x,  # type: ignore[arg-type]
-                    max_x,  # type: ignore[arg-type]
-                    min_y,  # type: ignore[arg-type]
-                    max_y,  # type: ignore[arg-type]
-                    user_id,
-                )
+            tileColorPositions = self._visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles(
+                min_x,  # type: ignore[arg-type]
+                max_x,  # type: ignore[arg-type]
+                min_y,  # type: ignore[arg-type]
+                max_y,  # type: ignore[arg-type]
+                user_id,
             )
         else:
             tileCountPositions = self._visitedTileService.determine_number_of_visits(
@@ -230,13 +220,9 @@ class TileRenderService:
                     isTouchingLeftEdgeOfBaseZoomTile = True
 
                 if tileRenderColorMode == TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES:
-                    colorToUse = TileRenderService.calculate_color(
-                        position[0], position[1], tileColorPositions
-                    )
+                    colorToUse = TileRenderService.calculate_color(position[0], position[1], tileColorPositions)
                 else:
-                    colorToUse = TileRenderService.calculate_heatmap_color(
-                        position[0], position[1], tileCountPositions
-                    )
+                    colorToUse = TileRenderService.calculate_heatmap_color(position[0], position[1], tileCountPositions)
 
                 if maxSquareColor is not None:
                     if position in self._visitedTileService.get_max_square_tile_positions():

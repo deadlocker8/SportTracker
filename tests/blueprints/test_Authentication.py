@@ -42,9 +42,7 @@ class TestAuthentication:
         assert 'Password must not be empty' in responseData
 
     def test_login_post_invalid_password_should_redirect_to_login_with_error(self, client):
-        response = client.post(
-            '/login', follow_redirects=True, data={'username': TEST_USERNAME, 'password': 'abc'}
-        )
+        response = client.post('/login', follow_redirects=True, data={'username': TEST_USERNAME, 'password': 'abc'})
         assert response.status_code == 200
         responseData = response.data.decode('utf-8')
         assert 'Login' in responseData
@@ -61,9 +59,7 @@ class TestAuthentication:
         assert 'Login' not in responseData
         assert 'Workouts' in responseData
 
-    def test_login_post_correct_credentials_case_insensitive_username_should_redirect_to_index(
-        self, client
-    ):
+    def test_login_post_correct_credentials_case_insensitive_username_should_redirect_to_index(self, client):
         response = client.post(
             '/login',
             follow_redirects=True,

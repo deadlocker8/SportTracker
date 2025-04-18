@@ -21,9 +21,7 @@ class Workout(db.Model):  # type: ignore[name-defined]
     duration: Mapped[int] = mapped_column(Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     average_heart_rate: Mapped[int] = mapped_column(Integer, nullable=True)
-    participants: Mapped[list[Participant]] = relationship(
-        secondary=workout_participant_association
-    )
+    participants: Mapped[list[Participant]] = relationship(secondary=workout_participant_association)
     custom_fields = db.Column(JSON)
 
     __mapper_args__ = {
@@ -84,9 +82,7 @@ def get_available_years(userId) -> list[int]:
     return [int(row.year) for row in rows]
 
 
-def get_duration_per_month_by_type(
-    workoutType: WorkoutType, minYear: int, maxYear: int
-) -> list[MonthDurationSum]:
+def get_duration_per_month_by_type(workoutType: WorkoutType, minYear: int, maxYear: int) -> list[MonthDurationSum]:
     year = extract('year', Workout.start_time)
     month = extract('month', Workout.start_time)
 
@@ -109,9 +105,7 @@ def get_duration_per_month_by_type(
             for row in rows:
                 if row.year == currentYear and row.month == currentMonth:
                     result.append(
-                        MonthDurationSum(
-                            year=currentYear, month=currentMonth, durationSum=int(row.durationSum)
-                        )
+                        MonthDurationSum(year=currentYear, month=currentMonth, durationSum=int(row.durationSum))
                     )
                     break
             else:
@@ -133,9 +127,7 @@ def get_workout_names_by_type(workoutType: WorkoutType) -> list[str]:
     return [row[0] for row in rows]
 
 
-def get_workouts_by_year_and_month_by_type(
-    year: int, month: int, workoutTypes: list[WorkoutType]
-) -> list[Workout]:
+def get_workouts_by_year_and_month_by_type(year: int, month: int, workoutTypes: list[WorkoutType]) -> list[Workout]:
     return (
         Workout.query.join(User)
         .filter(Workout.type.in_(workoutTypes))

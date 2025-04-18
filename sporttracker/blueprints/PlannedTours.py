@@ -140,12 +140,8 @@ class PlannedTourEditFormModel(BaseModel):
     hasFitFile: bool = False
 
 
-def construct_blueprint(
-    gpxService: GpxService, gpxPreviewImageSettings: dict[str, Any]
-) -> Blueprint:
-    plannedTours = Blueprint(
-        'plannedTours', __name__, static_folder='static', url_prefix='/plannedTours'
-    )
+def construct_blueprint(gpxService: GpxService, gpxPreviewImageSettings: dict[str, Any]) -> Blueprint:
+    plannedTours = Blueprint('plannedTours', __name__, static_folder='static', url_prefix='/plannedTours')
 
     @plannedTours.route('/')
     @login_required
@@ -153,9 +149,7 @@ def construct_blueprint(
         quickFilterState = get_quick_filter_state_from_session()
         plannedTourFilterState = get_planned_tour_filter_state_from_session()
 
-        tours = get_planned_tours_filtered(
-            quickFilterState.get_active_distance_workout_types(), plannedTourFilterState
-        )
+        tours = get_planned_tours_filtered(quickFilterState.get_active_distance_workout_types(), plannedTourFilterState)
 
         plannedTourList: list[PlannedTourModel] = []
         for tour in tours:
@@ -181,9 +175,7 @@ def construct_blueprint(
     @login_required
     @validate()
     def addPost(form: PlannedTourFormModel):
-        gpxMetadataId = gpxService.handle_gpx_upload_for_planned_tour(
-            request.files, gpxPreviewImageSettings
-        )
+        gpxMetadataId = gpxService.handle_gpx_upload_for_planned_tour(request.files, gpxPreviewImageSettings)
         sharedUserIds = [int(item) for item in request.form.getlist('sharedUsers')]
         sharedUsers = get_users_by_ids(sharedUserIds)
 
@@ -260,9 +252,7 @@ def construct_blueprint(
         plannedTour.direction = TravelDirection(form.direction)  # type: ignore[call-arg]
         plannedTour.share_code = form.share_code if form.share_code else None  # type: ignore[assignment]
 
-        newGpxMetadataId = gpxService.handle_gpx_upload_for_planned_tour(
-            request.files, gpxPreviewImageSettings
-        )
+        newGpxMetadataId = gpxService.handle_gpx_upload_for_planned_tour(request.files, gpxPreviewImageSettings)
         if plannedTour.gpx_metadata_id is None:
             plannedTour.gpx_metadata_id = newGpxMetadataId
         else:

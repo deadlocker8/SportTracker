@@ -24,9 +24,7 @@ workout_participant_association = Table(
 
 def get_participants_by_ids(ids: list[int]) -> list[Participant]:
     participants = (
-        Participant.query.filter(Participant.user_id == current_user.id)
-        .filter(Participant.id.in_(ids))
-        .all()
+        Participant.query.filter(Participant.user_id == current_user.id).filter(Participant.id.in_(ids)).all()
     )
     return participants
 

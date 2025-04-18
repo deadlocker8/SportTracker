@@ -33,9 +33,7 @@ class MonthGoalCountMultipleFormModel(BaseModel):
 
 
 def construct_blueprint():
-    monthGoalsCount = Blueprint(
-        'monthGoalsCount', __name__, static_folder='static', url_prefix='/goalsCount'
-    )
+    monthGoalsCount = Blueprint('monthGoalsCount', __name__, static_folder='static', url_prefix='/goalsCount')
 
     @monthGoalsCount.route('/add')
     @login_required
@@ -79,9 +77,7 @@ def construct_blueprint():
             abort(400, gettext('End Month must be greater or equal Start Month.'))
 
         monthGoals = []
-        while currentYear < form.end_year or (
-            currentYear == form.end_year and currentMonth <= form.end_month
-        ):
+        while currentYear < form.end_year or (currentYear == form.end_year and currentMonth <= form.end_month):
             monthGoals.append(
                 MonthGoalCount(
                     type=WorkoutType(form.type),  # type: ignore[call-arg]
@@ -122,9 +118,7 @@ def construct_blueprint():
             count_perfect=monthGoal.count_perfect,
         )
 
-        return render_template(
-            'monthGoals/monthGoalCountForm.jinja2', goal=goalModel, goal_id=goal_id
-        )
+        return render_template('monthGoals/monthGoalCountForm.jinja2', goal=goalModel, goal_id=goal_id)
 
     @monthGoalsCount.route('/edit/<int:goal_id>', methods=['POST'])
     @login_required

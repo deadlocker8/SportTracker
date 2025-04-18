@@ -20,6 +20,4 @@ class SettingsChecker:
 
             for subKey in value:
                 if subKey not in self._settings[key]:
-                    raise KeyError(
-                        f'Invalid settings.json: Missing settings option "{subKey}" in category "{key}"'
-                    )
+                    raise KeyError(f'Invalid settings.json: Missing settings option "{subKey}" in category "{key}"')

@@ -282,9 +282,7 @@ def construct_blueprint(
             onlyHighlightNewTiles=__get_tile_hunting_is_only_highlight_new_tiles(),
         )
 
-        tileRenderService = TileRenderService(
-            tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
-        )
+        tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
 
         borderColor = None
         if __get_tile_hunting_is_grid_active():
@@ -323,9 +321,7 @@ def construct_blueprint(
             yearFilterState,
             distanceWorkoutService,
         )
-        tileRenderService = TileRenderService(
-            tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
-        )
+        tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
 
         borderColor = None
         if __get_tile_hunting_is_grid_active():
@@ -367,9 +363,7 @@ def construct_blueprint(
             yearFilterState,
             distanceWorkoutService,
         )
-        tileRenderService = TileRenderService(
-            tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
-        )
+        tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
 
         borderColor = None
         if __get_tile_hunting_is_grid_active():
@@ -406,9 +400,7 @@ def construct_blueprint(
             yearFilterState,
             distanceWorkoutService,
         )
-        tileRenderService = TileRenderService(
-            tileHuntingSettings['baseZoomLevel'], 256, visitedTileService
-        )
+        tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
 
         borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
         image = tileRenderService.render_image(
@@ -525,9 +517,7 @@ def construct_blueprint(
             tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
         )
 
-    @maps.route(
-        '/map/getNumberOfVisitsByCoordinate/<int:user_id>/<float:latitude>/<float:longitude>'
-    )
+    @maps.route('/map/getNumberOfVisitsByCoordinate/<int:user_id>/<float:latitude>/<float:longitude>')
     @login_required
     def getNumberOfVisitsByCoordinate(user_id: int, latitude: float, longitude: float):
         if not current_user.is_authenticated:
@@ -577,9 +567,7 @@ def construct_blueprint(
     @login_required
     def toggleTileHuntingOnlyHighlightNewTiles():
         redirectUrl = request.args['redirectUrl']
-        session[
-            'tileHuntingIsOnlyHighlightNewTilesActive'
-        ] = not __get_tile_hunting_is_only_highlight_new_tiles()
+        session['tileHuntingIsOnlyHighlightNewTilesActive'] = not __get_tile_hunting_is_only_highlight_new_tiles()
         return redirect(redirectUrl)
 
     @maps.route('/toggleTileHuntingMaxSquare')

@@ -62,13 +62,9 @@ def construct_blueprint(
         chartDataDistancePerYear: list[dict[str, Any]] = []
         if minYear is not None and maxYear is not None:
             for workoutType in WorkoutType.get_distance_workout_types():
-                chartDataDistancePerYear.append(
-                    __get_distance_per_year_by_type(workoutType, minYear, maxYear)
-                )
+                chartDataDistancePerYear.append(__get_distance_per_year_by_type(workoutType, minYear, maxYear))
 
-        return render_template(
-            'charts/chartDistancePerYear.jinja2', chartDataDistancePerYear=chartDataDistancePerYear
-        )
+        return render_template('charts/chartDistancePerYear.jinja2', chartDataDistancePerYear=chartDataDistancePerYear)
 
     @charts.route('/distancePerMonth')
     @login_required
@@ -78,9 +74,7 @@ def construct_blueprint(
         chartDataDistancePerMonth: list[dict[str, Any]] = []
         if minYear is not None and maxYear is not None:
             for workoutType in WorkoutType.get_distance_workout_types():
-                chartDataDistancePerMonth.append(
-                    __get_distance_per_month_by_type(workoutType, minYear, maxYear)
-                )
+                chartDataDistancePerMonth.append(__get_distance_per_month_by_type(workoutType, minYear, maxYear))
 
         return render_template(
             'charts/chartDistancePerMonth.jinja2',
@@ -105,9 +99,7 @@ def construct_blueprint(
     @charts.route('/chartDistancePerCustomFieldChooser')
     @login_required
     def chartDistancePerCustomFieldChooser():
-        customFieldsByWorkoutType = get_custom_fields_grouped_by_workout_types(
-            WorkoutType.get_distance_workout_types()
-        )
+        customFieldsByWorkoutType = get_custom_fields_grouped_by_workout_types(WorkoutType.get_distance_workout_types())
         return render_template(
             'charts/chartDistancePerCustomFieldChooser.jinja2',
             customFieldsByWorkoutType=customFieldsByWorkoutType,
@@ -125,9 +117,7 @@ def construct_blueprint(
         customFieldOperator = DistanceWorkout.custom_fields[customField.name].astext.cast(String)
 
         rows = (
-            DistanceWorkout.query.with_entities(
-                func.sum(DistanceWorkout.distance) / 1000, customFieldOperator
-            )
+            DistanceWorkout.query.with_entities(func.sum(DistanceWorkout.distance) / 1000, customFieldOperator)
             .filter(DistanceWorkout.user_id == current_user.id)
             .filter(DistanceWorkout.type == workoutType)
             .group_by(customFieldOperator)
@@ -221,13 +211,9 @@ def construct_blueprint(
                     dates.append(workout.start_time.isoformat())
                     speedData.append(round(workout.distance / workout.duration * 3.6, 2))
 
-                chartDataAverageSpeed.append(
-                    {'dates': dates, 'values': speedData, 'type': workoutType}
-                )
+                chartDataAverageSpeed.append({'dates': dates, 'values': speedData, 'type': workoutType})
 
-        return render_template(
-            'charts/chartAverageSpeed.jinja2', chartDataAverageSpeed=chartDataAverageSpeed
-        )
+        return render_template('charts/chartAverageSpeed.jinja2', chartDataAverageSpeed=chartDataAverageSpeed)
 
     @charts.route('/durationPerWorkoutChooser')
     @login_required
@@ -242,11 +228,7 @@ def construct_blueprint(
     def chartDurationPerWorkout(workout_type: str, workout_id: int):
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
 
-        workout = (
-            Workout.query.filter(Workout.user_id == current_user.id)
-            .filter(Workout.id == workout_id)
-            .first()
-        )
+        workout = Workout.query.filter(Workout.user_id == current_user.id).filter(Workout.id == workout_id).first()
         if workout is None:
             return redirect(url_for('charts.durationPerWorkoutChooser'))
 
@@ -297,10 +279,7 @@ def construct_blueprint(
     ) -> dict[WorkoutType, list[WorkoutName]]:
         workoutNamesByWorkoutType = {}
         for workoutType in WorkoutType:
-            if (
-                onlyDistanceBasedWorkoutTypes
-                and workoutType not in WorkoutType.get_distance_workout_types()
-            ):
+            if onlyDistanceBasedWorkoutTypes and workoutType not in WorkoutType.get_distance_workout_types():
                 continue
 
             rows = (
@@ -321,11 +300,7 @@ def construct_blueprint(
     def chartSpeedPerWorkout(workout_type: str, workout_id: int):
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
 
-        workout = (
-            Workout.query.filter(Workout.user_id == current_user.id)
-            .filter(Workout.id == workout_id)
-            .first()
-        )
+        workout = Workout.query.filter(Workout.user_id == current_user.id).filter(Workout.id == workout_id).first()
         if workout is None:
             return redirect(url_for('charts.durationPerWorkoutChooser'))
 
@@ -456,17 +431,11 @@ def construct_blueprint(
         return f'background-image: repeating-linear-gradient(45deg, {",".join(colorStops)})'
 
     def __get_single_week_day_pattern() -> list[str]:
-        patternWithSundayAsFirstDay = list(
-            get_day_names(width='narrow', locale=flask_babel.get_locale()).values()
-        )
-        patternWithMondayAsFirstDay = (
-            patternWithSundayAsFirstDay[1:] + patternWithSundayAsFirstDay[0:1]
-        )
+        patternWithSundayAsFirstDay = list(get_day_names(width='narrow', locale=flask_babel.get_locale()).values())
+        patternWithMondayAsFirstDay = patternWithSundayAsFirstDay[1:] + patternWithSundayAsFirstDay[0:1]
         return patternWithMondayAsFirstDay
 
-    def __get_distance_per_month_by_type(
-        workoutType: WorkoutType, minYear: int, maxYear: int
-    ) -> dict[str, Any]:
+    def __get_distance_per_month_by_type(workoutType: WorkoutType, minYear: int, maxYear: int) -> dict[str, Any]:
         monthDistanceSums = get_distance_per_month_by_type(workoutType, minYear, maxYear)
         monthNames = []
         values = []
@@ -480,9 +449,7 @@ def construct_blueprint(
 
         return {'monthNames': monthNames, 'values': values, 'texts': texts, 'type': workoutType}
 
-    def __get_distance_per_year_by_type(
-        workoutType: WorkoutType, minYear: int, maxYear: int
-    ) -> dict[str, Any]:
+    def __get_distance_per_year_by_type(workoutType: WorkoutType, minYear: int, maxYear: int) -> dict[str, Any]:
         year = extract('year', DistanceWorkout.start_time)
 
         rows = (
@@ -521,18 +488,14 @@ def construct_blueprint(
         chartDataDurationPerMonth: list[dict[str, Any]] = []
         if minYear is not None and maxYear is not None:
             for workoutType in WorkoutType:
-                chartDataDurationPerMonth.append(
-                    __get_duration_per_month_by_type(workoutType, minYear, maxYear)
-                )
+                chartDataDurationPerMonth.append(__get_duration_per_month_by_type(workoutType, minYear, maxYear))
 
         return render_template(
             'charts/chartDurationPerMonth.jinja2',
             chartDataDurationPerMonth=chartDataDurationPerMonth,
         )
 
-    def __get_duration_per_month_by_type(
-        workoutType: WorkoutType, minYear: int, maxYear: int
-    ) -> dict[str, Any]:
+    def __get_duration_per_month_by_type(workoutType: WorkoutType, minYear: int, maxYear: int) -> dict[str, Any]:
         monthDurationSums = get_duration_per_month_by_type(workoutType, minYear, maxYear)
         monthNames = []
         values = []
@@ -584,13 +547,9 @@ def construct_blueprint(
         if minYear is not None and maxYear is not None:
             chartDataNewTilesPerYear = __get_number_of_new_tiles_per_year_per_type(minYear, maxYear)
 
-        return render_template(
-            'charts/chartNewTilesPerYear.jinja2', chartDataNewTilesPerYear=chartDataNewTilesPerYear
-        )
+        return render_template('charts/chartNewTilesPerYear.jinja2', chartDataNewTilesPerYear=chartDataNewTilesPerYear)
 
-    def __get_number_of_new_tiles_per_year_per_type(
-        minYear: int, maxYear: int
-    ) -> list[dict[str, Any]]:
+    def __get_number_of_new_tiles_per_year_per_type(minYear: int, maxYear: int) -> list[dict[str, Any]]:
         visitedTileService = VisitedTileService(
             newVisitedTileCache,
             maxSquareCache,
@@ -599,8 +558,8 @@ def construct_blueprint(
             distanceWorkoutService,
         )
 
-        newVisitedTilesPerTypePerYear = (
-            visitedTileService.get_number_of_new_tiles_per_workout_type_per_year(minYear, maxYear)
+        newVisitedTilesPerTypePerYear = visitedTileService.get_number_of_new_tiles_per_workout_type_per_year(
+            minYear, maxYear
         )
 
         result = []

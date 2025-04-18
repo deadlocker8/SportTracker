@@ -85,9 +85,7 @@ class FitSessionParser:
                     workout_type=FitSessionParser.__parse_sport(frame.get_value('sport')),
                     distance=None if distance is None else int(distance),
                     total_ascent=None if total_ascent is None else int(total_ascent),
-                    average_heart_rate=None
-                    if average_heart_rate is None
-                    else int(average_heart_rate),
+                    average_heart_rate=None if average_heart_rate is None else int(average_heart_rate),
                 )
 
         return None

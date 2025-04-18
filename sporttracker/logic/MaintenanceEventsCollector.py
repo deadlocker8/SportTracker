@@ -28,9 +28,7 @@ class MaintenanceWithEventsModel:
     events: list[MaintenanceEventInstanceModel]
 
 
-def get_maintenances_with_events(
-    quickFilterState: QuickFilterState, user_id: int
-) -> list[MaintenanceWithEventsModel]:
+def get_maintenances_with_events(quickFilterState: QuickFilterState, user_id: int) -> list[MaintenanceWithEventsModel]:
     maintenanceList = (
         Maintenance.query.filter(Maintenance.user_id == user_id)
         .order_by(asc(func.lower(Maintenance.description)))
@@ -42,13 +40,9 @@ def get_maintenances_with_events(
         if maintenance.type not in quickFilterState.get_active_types():
             continue
 
-        events: list[MaintenanceEventInstance] = get_maintenance_events_by_maintenance_id(
-            maintenance.id, user_id
-        )
+        events: list[MaintenanceEventInstance] = get_maintenance_events_by_maintenance_id(maintenance.id, user_id)
 
-        eventModels: list[MaintenanceEventInstanceModel] = __convert_events_to_models(
-            events, maintenance
-        )
+        eventModels: list[MaintenanceEventInstanceModel] = __convert_events_to_models(events, maintenance)
 
         isLimitExceeded = False
         limitExceededDistance = None
@@ -84,9 +78,7 @@ def __convert_events_to_models(
 
     previousEventDate = events[0].event_date
     for event in events:
-        distanceSinceEvent = get_distance_between_dates(
-            previousEventDate, event.event_date, [maintenance.type]
-        )
+        distanceSinceEvent = get_distance_between_dates(previousEventDate, event.event_date, [maintenance.type])
         numberOfDaysSinceEvent = (event.event_date - previousEventDate).days  # type: ignore[operator]
         previousEventDate = event.event_date
 
@@ -121,17 +113,13 @@ def get_number_of_triggered_maintenance_reminders() -> int:
 
     numberOfTriggeredMaintenanceReminders = 0
     for maintenance in maintenanceList:
-        latestEvent: MaintenanceEventInstance | None = (
-            get_latest_maintenance_event_by_maintenance_id(maintenance.id)
-        )
+        latestEvent: MaintenanceEventInstance | None = get_latest_maintenance_event_by_maintenance_id(maintenance.id)
 
         if latestEvent is None:
             continue
 
         now = datetime.now()
-        distanceUntilToday = get_distance_between_dates(
-            latestEvent.event_date, now, [maintenance.type]
-        )
+        distanceUntilToday = get_distance_between_dates(latestEvent.event_date, now, [maintenance.type])
 
         if not maintenance.is_reminder_active:
             continue

@@ -43,9 +43,7 @@ class DistanceWorkoutFormModel(BaseWorkoutFormModel):
 
 
 class DistanceWorkoutService(Observable):
-    def __init__(
-        self, gpx_service: GpxService, temp_folder_path: str, tile_hunting_settings: dict[str, Any]
-    ) -> None:
+    def __init__(self, gpx_service: GpxService, temp_folder_path: str, tile_hunting_settings: dict[str, Any]) -> None:
         super().__init__()
         self._gpx_service = gpx_service
         self._temp_folder_path = temp_folder_path

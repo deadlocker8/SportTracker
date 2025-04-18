@@ -116,9 +116,7 @@ class FitnessWorkoutService:
         workout.average_heart_rate = form_model.average_heart_rate  # type: ignore[assignment]
         workout.participants = get_participants_by_ids(participant_ids)
         workout.fitness_workout_type = (
-            None
-            if form_model.fitness_workout_type is None
-            else FitnessWorkoutType(form_model.fitness_workout_type)  # type: ignore[call-arg]
+            None if form_model.fitness_workout_type is None else FitnessWorkoutType(form_model.fitness_workout_type)  # type: ignore[call-arg]
         )
 
         workout.custom_fields = form_model.model_extra

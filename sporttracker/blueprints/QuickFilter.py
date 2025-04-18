@@ -11,9 +11,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 def construct_blueprint():
-    quickFilter = Blueprint(
-        'quickFilter', __name__, static_folder='static', url_prefix='/quickFilter'
-    )
+    quickFilter = Blueprint('quickFilter', __name__, static_folder='static', url_prefix='/quickFilter')
 
     @quickFilter.route('/toggle/<string:workoutType>')
     @login_required

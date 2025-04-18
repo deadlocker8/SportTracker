@@ -24,9 +24,7 @@ def construct_blueprint():
     @general.route('/about')
     @login_required
     def about():
-        currentDirectory = os.path.dirname(
-            os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-        )
+        currentDirectory = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
         changelogPath = os.path.join(currentDirectory, 'CHANGES.md')
         with open(changelogPath, encoding='utf-8') as f:
             lines = f.readlines()
@@ -44,9 +42,7 @@ def construct_blueprint():
             if line.startswith('-'):
                 currentList.append(line[2:])
 
-        return render_template(
-            'about.jinja2', changelog=OrderedDict(reversed(list(changelog.items())))
-        )
+        return render_template('about.jinja2', changelog=OrderedDict(reversed(list(changelog.items()))))
 
     @general.route('/icons')
     @login_required

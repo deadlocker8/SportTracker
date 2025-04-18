@@ -18,9 +18,7 @@ class GpxPreviewImageService:
         self._previewImageFileName = f'{self._gpxFileName}.jpg'
 
     def get_preview_image_path(self) -> str:
-        return os.path.join(
-            self._gpxService.get_folder_path(self._gpxFileName), self._previewImageFileName
-        )
+        return os.path.join(self._gpxService.get_folder_path(self._gpxFileName), self._previewImageFileName)
 
     def __get_preview_image_file_name(self) -> str:
         return self._previewImageFileName

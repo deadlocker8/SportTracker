@@ -17,26 +17,20 @@ class TestWorkouts(SeleniumTestBaseClass):
 
         selenium.find_element(By.CLASS_NAME, 'headline').find_element(By.TAG_NAME, 'a').click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'New Workout'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'New Workout')
         )
 
         buttons = selenium.find_elements(By.CSS_SELECTOR, 'section .btn')
         buttons[buttonIndex].click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), expectedHeadline
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), expectedHeadline)
         )
 
     def __open_edit_form(self, selenium):
         selenium.get(self.build_url('/distanceWorkouts/edit/1'))
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Edit Biking Workout'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Edit Biking Workout')
         )
 
     @staticmethod
@@ -72,35 +66,25 @@ class TestWorkouts(SeleniumTestBaseClass):
     def test_quick_filter_only_show_activated_workout_types(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
-        self.__fill_form(
-            selenium, 'My Biking Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
-        )
+        self.__fill_form(selenium, 'My Biking Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Workouts')
         )
 
         self.__open_form(selenium, buttonIndex=1, expectedHeadline='New Running Workout')
-        self.__fill_form(
-            selenium, 'My Running Workout', '2023-02-01', '16:30', 5.5, 0, 20, 12, 188, 15
-        )
+        self.__fill_form(selenium, 'My Running Workout', '2023-02-01', '16:30', 5.5, 0, 20, 12, 188, 15)
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Workouts')
         )
 
         selenium.find_elements(By.CLASS_NAME, 'quick-filter')[0].click()
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.invisibility_of_element_located(
-                (By.XPATH, '//h4[text()="New Biking Workout"]')
-            )
+            expected_conditions.invisibility_of_element_located((By.XPATH, '//h4[text()="New Biking Workout"]'))
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
@@ -109,16 +93,12 @@ class TestWorkouts(SeleniumTestBaseClass):
         self.login(selenium)
 
         selenium.find_element(By.CSS_SELECTOR, '#month-select').click()
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.visibility_of_element_located((By.ID, 'headline-years'))
-        )
+        WebDriverWait(selenium, 5).until(expected_conditions.visibility_of_element_located((By.ID, 'headline-years')))
 
         yearButton = selenium.find_elements(By.CLASS_NAME, 'btn-select-year')[0]
         year = yearButton.get_attribute('data-year')
         yearButton.click()
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.visibility_of_element_located((By.ID, 'headline-months'))
-        )
+        WebDriverWait(selenium, 5).until(expected_conditions.visibility_of_element_located((By.ID, 'headline-months')))
 
         monthIndex = 4
         selenium.find_elements(By.CLASS_NAME, 'btn-select-month')[monthIndex].click()

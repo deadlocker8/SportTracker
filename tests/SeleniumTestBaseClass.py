@@ -32,9 +32,7 @@ class SeleniumTestBaseClass(ABC):
     @staticmethod
     def logout(selenium) -> None:
         selenium.find_element(By.CLASS_NAME, 'user-name-max-width').click()
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.visibility_of_element_located((By.ID, 'button-logout'))
-        )
+        WebDriverWait(selenium, 5).until(expected_conditions.visibility_of_element_located((By.ID, 'button-logout')))
         selenium.find_element(By.ID, 'button-logout').click()
 
     @staticmethod

@@ -45,21 +45,15 @@ class PlannedTourFilterState:
         return self._isTodoSelected
 
     def get_selected_arrival_methods(self) -> list[TravelType]:
-        selectedItems = [
-            travelType for travelType, isActive in self._arrivalMethods.items() if isActive
-        ]
+        selectedItems = [travelType for travelType, isActive in self._arrivalMethods.items() if isActive]
         return sorted(selectedItems, key=lambda entry: entry.order)
 
     def get_selected_departure_methods(self) -> list[TravelType]:
-        selectedItems = [
-            travelType for travelType, isActive in self._departureMethods.items() if isActive
-        ]
+        selectedItems = [travelType for travelType, isActive in self._departureMethods.items() if isActive]
         return sorted(selectedItems, key=lambda entry: entry.order)
 
     def get_selected_directions(self) -> list[TravelDirection]:
-        selectedItems = [
-            directionType for directionType, isActive in self._directions.items() if isActive
-        ]
+        selectedItems = [directionType for directionType, isActive in self._directions.items() if isActive]
         return sorted(selectedItems, key=lambda entry: entry.order)
 
     def get_name_filter(self) -> str | None:
@@ -76,18 +70,11 @@ class PlannedTourFilterState:
             {
                 'isDoneSelected': self._isDoneSelected,
                 'isTodoSelected': self._isTodoSelected,
-                'arrivalMethods': {
-                    travelType.name: isActive
-                    for travelType, isActive in self._arrivalMethods.items()
-                },
+                'arrivalMethods': {travelType.name: isActive for travelType, isActive in self._arrivalMethods.items()},
                 'departureMethods': {
-                    travelType.name: isActive
-                    for travelType, isActive in self._departureMethods.items()
+                    travelType.name: isActive for travelType, isActive in self._departureMethods.items()
                 },
-                'directions': {
-                    directionType.name: isActive
-                    for directionType, isActive in self._directions.items()
-                },
+                'directions': {directionType.name: isActive for directionType, isActive in self._directions.items()},
                 'nameFilter': self._name_filter,
                 'minimum_distance': self._minimum_distance,
                 'maximum_distance': self._maximum_distance,

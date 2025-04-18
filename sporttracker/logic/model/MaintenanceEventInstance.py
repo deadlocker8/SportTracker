@@ -72,9 +72,7 @@ def get_maintenance_event_by_id(event_id: int) -> MaintenanceEventInstance | Non
     )
 
 
-def get_maintenance_events_by_maintenance_id(
-    maintenance_id: int, user_id: int
-) -> list[MaintenanceEventInstance]:
+def get_maintenance_events_by_maintenance_id(maintenance_id: int, user_id: int) -> list[MaintenanceEventInstance]:
     return (
         MaintenanceEventInstance.query.join(Maintenance)
         .filter(Maintenance.user_id == user_id)

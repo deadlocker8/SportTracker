@@ -72,9 +72,7 @@ class GpxService:
         return os.path.join(self._dataPath, gpxFileName)
 
     def __get_zip_file_path(self, gpxFileName: str) -> str:
-        return os.path.join(
-            self.get_folder_path(gpxFileName), f'{gpxFileName}.{self.ZIP_FILE_EXTENSION}'
-        )
+        return os.path.join(self.get_folder_path(gpxFileName), f'{gpxFileName}.{self.ZIP_FILE_EXTENSION}')
 
     def get_gpx_content(self, gpxFileName: str) -> bytes:
         zipFilePath = self.__get_zip_file_path(gpxFileName)
@@ -231,9 +229,7 @@ class GpxService:
             db.session.commit()
 
             if isinstance(item, DistanceWorkout):
-                db.session.execute(
-                    delete(GpxVisitedTile).where(GpxVisitedTile.workout_id == item.id)
-                )
+                db.session.execute(delete(GpxVisitedTile).where(GpxVisitedTile.workout_id == item.id))
                 LOGGER.debug(f'Deleted gpx visited tiles for workout with id {item.id}')
                 db.session.commit()
 
@@ -248,9 +244,7 @@ class GpxService:
             except OSError as e:
                 LOGGER.error(e)
 
-    def add_visited_tiles_for_workout(
-        self, workout: DistanceWorkout, baseZoomLevel: int, userId: int
-    ):
+    def add_visited_tiles_for_workout(self, workout: DistanceWorkout, baseZoomLevel: int, userId: int):
         gpxParser = GpxParser(self.get_gpx_content(workout.get_gpx_metadata().gpx_file_name))  # type: ignore[union-attr]
         visitedTiles = gpxParser.get_visited_tiles(baseZoomLevel)
 
@@ -266,9 +260,7 @@ class GpxService:
         if gpxFileName is None:
             return False
 
-        fitFilePath = os.path.join(
-            self.get_folder_path(gpxFileName), f'{gpxFileName}.{self.FIT_FILE_EXTENSION}'
-        )
+        fitFilePath = os.path.join(self.get_folder_path(gpxFileName), f'{gpxFileName}.{self.FIT_FILE_EXTENSION}')
 
         return os.path.exists(fitFilePath)
 
@@ -276,9 +268,7 @@ class GpxService:
         if gpxFileName is None:
             raise FileNotFoundError(gpxFileName)
 
-        fitFilePath = os.path.join(
-            self.get_folder_path(gpxFileName), f'{gpxFileName}.{self.FIT_FILE_EXTENSION}'
-        )
+        fitFilePath = os.path.join(self.get_folder_path(gpxFileName), f'{gpxFileName}.{self.FIT_FILE_EXTENSION}')
 
         if not os.path.exists(fitFilePath):
             raise FileNotFoundError(fitFilePath)
@@ -331,9 +321,7 @@ class GpxParser:
 
         firstElevation = points[indexFirstElevation].elevation
 
-        distanceBetweenFirstPointAndFirstElevation = points[0].distance_2d(
-            points[indexFirstElevation]
-        )
+        distanceBetweenFirstPointAndFirstElevation = points[0].distance_2d(points[indexFirstElevation])
         LOGGER.debug(
             f'Detected missing elevation for the gpx data points 0 to {indexFirstElevation}. '
             f'First elevation is at index {indexFirstElevation} with value {firstElevation:.2f}. '
@@ -408,20 +396,14 @@ class GpxParser:
             for segment in track.segments:
                 for point in segment.points:
                     visitedTiles.add(
-                        self.convert_coordinate_to_tile_position(
-                            point.latitude, point.longitude, baseZoomLevel
-                        )
+                        self.convert_coordinate_to_tile_position(point.latitude, point.longitude, baseZoomLevel)
                     )
 
-        LOGGER.debug(
-            f'{numberOfPoints} points in gpx track resulted in {len(visitedTiles)} distinct tiles'
-        )
+        LOGGER.debug(f'{numberOfPoints} points in gpx track resulted in {len(visitedTiles)} distinct tiles')
         return visitedTiles
 
     @staticmethod
-    def convert_coordinate_to_tile_position(
-        lat_deg: float, lon_deg: float, zoom: int
-    ) -> VisitedTile:
+    def convert_coordinate_to_tile_position(lat_deg: float, lon_deg: float, zoom: int) -> VisitedTile:
         if zoom < 0 or zoom > 20:
             raise ValueError(f'Zoom level {zoom} is not valid. Must be between 0 and 20')
 

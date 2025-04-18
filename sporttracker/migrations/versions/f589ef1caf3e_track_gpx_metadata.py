@@ -47,9 +47,7 @@ class GpxService:
             uphill = int(uphillDownhill.uphill)
             downhill = int(uphillDownhill.downhill)
 
-        return GpxMetaInfo(
-            self._gpx.length_2d(), elevationMinimum, elevationMaximum, uphill, downhill
-        )
+        return GpxMetaInfo(self._gpx.length_2d(), elevationMinimum, elevationMaximum, uphill, downhill)
 
 
 # revision identifiers, used by Alembic.
@@ -85,9 +83,7 @@ def upgrade():
 
         for index, row in enumerate(rows):
             gpxFileName = row[1]
-            LOGGER.debug(
-                f'Migrate track [{index + 1}/{len(rows)}]: id {row[0]} with gpx file name "{gpxFileName}"'
-            )
+            LOGGER.debug(f'Migrate track [{index + 1}/{len(rows)}]: id {row[0]} with gpx file name "{gpxFileName}"')
             gpxPath = os.path.join(uploadDirectory, gpxFileName)
 
             gpxService = GpxService(gpxPath)
@@ -108,9 +104,7 @@ def upgrade():
             )
 
             gpxMetadataId = result.first()[0]  # type: ignore[index]
-            connection.execute(
-                text(f'UPDATE track SET gpx_metadata_id={gpxMetadataId} WHERE id={row[0]};')
-            )
+            connection.execute(text(f'UPDATE track SET gpx_metadata_id={gpxMetadataId} WHERE id={row[0]};'))
 
         op.drop_column('track', 'gpxFileName')
 

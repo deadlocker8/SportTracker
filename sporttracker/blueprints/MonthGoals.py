@@ -48,9 +48,7 @@ def construct_blueprint():
         )
 
         goals = goalsDistance + goalsCount + goalsDuration
-        goals.sort(
-            key=lambda summary: f'{summary.year}_{str(summary.month).zfill(2)}', reverse=True
-        )
+        goals.sort(key=lambda summary: f'{summary.year}_{str(summary.month).zfill(2)}', reverse=True)
 
         goalsByYear = {k: list(g) for k, g in groupby(goals, key=lambda goal: goal.year)}
 

@@ -179,9 +179,7 @@ def construct_blueprint():
             year=year,
             month=month,
             availableYears=get_available_years(current_user.id) or [datetime.now().year],
-            monthNames=list(
-                get_month_names(width='wide', locale=flask_babel.get_locale()).values()
-            ),
+            monthNames=list(get_month_names(width='wide', locale=flask_babel.get_locale()).values()),
         )
 
     @workouts.route('/add')

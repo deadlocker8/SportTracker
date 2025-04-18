@@ -48,9 +48,7 @@ def upgrade():
             op.create_table(
                 'maintenance',
                 sa.Column('id', sa.Integer(), nullable=False),
-                sa.Column(
-                    'type', postgresql.ENUM(name='tracktype', create_type=False), nullable=True
-                ),
+                sa.Column('type', postgresql.ENUM(name='tracktype', create_type=False), nullable=True),
                 sa.Column('description', sa.String(), nullable=False),
                 sa.Column('user_id', sa.Integer(), nullable=False),
                 sa.ForeignKeyConstraint(

@@ -30,9 +30,7 @@ class CustomWorkoutFieldType(enum.Enum):
         elif self == self.FLOAT:
             return gettext('Float')
 
-        raise ValueError(
-            f'Could not get localized name for unsupported CustomWorkoutFieldType: {self}'
-        )
+        raise ValueError(f'Could not get localized name for unsupported CustomWorkoutFieldType: {self}')
 
 
 class CustomWorkoutField(db.Model):  # type: ignore[name-defined]

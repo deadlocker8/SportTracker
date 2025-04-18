@@ -25,9 +25,7 @@ class NewVisitedTileCache:
         self._newVisitedTilesPerUser: dict[str, list[NewTilesPerDistanceWorkout]] = {}
 
     @staticmethod
-    def __calculate_cache_key(
-        userId: int, workoutTypes: list[WorkoutType], years: list[int]
-    ) -> str:
+    def __calculate_cache_key(userId: int, workoutTypes: list[WorkoutType], years: list[int]) -> str:
         activeTypes = '_'.join(sorted([t.name for t in workoutTypes]))
         activeYears = '_'.join(sorted([str(y) for y in years]))
         return f'{userId}_{activeTypes}_{activeYears}'
@@ -39,8 +37,8 @@ class NewVisitedTileCache:
 
         if cacheKey not in self._newVisitedTilesPerUser:
             LOGGER.debug(f'Creating entry in NewVisitedTileCache with key {cacheKey}')
-            self._newVisitedTilesPerUser[cacheKey] = (
-                self.__determine_number_of_new_tiles_per_workout(userId, workoutTypes, years)
+            self._newVisitedTilesPerUser[cacheKey] = self.__determine_number_of_new_tiles_per_workout(
+                userId, workoutTypes, years
             )
 
         return self._newVisitedTilesPerUser[cacheKey]

@@ -23,13 +23,9 @@ def upgrade():
     columnNames = [column['name'] for column in columns]
 
     if 'isTileHuntingActivated' not in columnNames:
-        op.add_column(
-            'user', sa.Column('isTileHuntingActivated', sa.Boolean(), nullable=True, default=True)
-        )
+        op.add_column('user', sa.Column('isTileHuntingActivated', sa.Boolean(), nullable=True, default=True))
 
-    op.execute(
-        'UPDATE "user" SET "isTileHuntingActivated"=True WHERE "user"."isTileHuntingActivated" IS NULL;'
-    )
+    op.execute('UPDATE "user" SET "isTileHuntingActivated"=True WHERE "user"."isTileHuntingActivated" IS NULL;')
 
 
 def downgrade():

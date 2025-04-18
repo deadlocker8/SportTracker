@@ -56,12 +56,10 @@ class VisitedTileService:
     def calculate_total_number_of_visited_tiles(
         self,
     ) -> int:
-        newVisitedTilesPerWorkout = (
-            self._newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
-                current_user.id,
-                self._quickFilterState.get_active_distance_workout_types(),
-                self._yearFilterState,
-            )
+        newVisitedTilesPerWorkout = self._newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
+            current_user.id,
+            self._quickFilterState.get_active_distance_workout_types(),
+            self._yearFilterState,
         )
 
         totalNumberOfTiles = 0
@@ -74,9 +72,7 @@ class VisitedTileService:
         self, min_x: int, max_x: int, min_y: int, max_y: int, user_id: int
     ) -> list[TileColorPosition]:
         if self._workoutId is None:
-            return self.__determine_tile_colors_of_all_workouts_that_visit_tiles(
-                min_x, max_x, min_y, max_y, user_id
-            )
+            return self.__determine_tile_colors_of_all_workouts_that_visit_tiles(min_x, max_x, min_y, max_y, user_id)
 
         return self.__determine_tile_colors_of_single_workout(
             min_x, max_x, min_y, max_y, self._workoutId, self._onlyHighlightNewTiles
@@ -93,11 +89,7 @@ class VisitedTileService:
             .join(gpxVisitedTileAlias, gpxVisitedTileAlias.workout_id == distanceWorkoutAlias.id)
             .with_entities(distanceWorkoutAlias.type, gpxVisitedTileAlias.x, gpxVisitedTileAlias.y)
             .filter(distanceWorkoutAlias.user_id == user_id)
-            .filter(
-                distanceWorkoutAlias.type.in_(
-                    self._quickFilterState.get_active_distance_workout_types()
-                )
-            )
+            .filter(distanceWorkoutAlias.type.in_(self._quickFilterState.get_active_distance_workout_types()))
             .filter(extract('year', distanceWorkoutAlias.start_time).in_(self._yearFilterState))
             .filter(gpxVisitedTileAlias.x >= min_x)
             .filter(gpxVisitedTileAlias.x <= max_x)
@@ -120,11 +112,7 @@ class VisitedTileService:
             .join(gpxVisitedTileAlias, gpxVisitedTileAlias.workout_id == distanceWorkoutAlias.id)
             .with_entities(func.count(), gpxVisitedTileAlias.x, gpxVisitedTileAlias.y)
             .filter(distanceWorkoutAlias.user_id == user_id)
-            .filter(
-                distanceWorkoutAlias.type.in_(
-                    self._quickFilterState.get_active_distance_workout_types()
-                )
-            )
+            .filter(distanceWorkoutAlias.type.in_(self._quickFilterState.get_active_distance_workout_types()))
             .filter(extract('year', distanceWorkoutAlias.start_time).in_(self._yearFilterState))
             .filter(gpxVisitedTileAlias.x >= min_x)
             .filter(gpxVisitedTileAlias.x <= max_x)
@@ -162,9 +150,7 @@ class VisitedTileService:
             .all()
         )
 
-        workout = self._distanceWorkoutService.get_distance_workout_by_id(
-            workoutId, current_user.id
-        )
+        workout = self._distanceWorkoutService.get_distance_workout_by_id(workoutId, current_user.id)
         newVisitedTiles = []
         if workout is not None:
             newVisitedTiles = VisitedTileService.__get_new_visited_tiles_by_workout(workout)
@@ -224,12 +210,10 @@ class VisitedTileService:
     def get_number_of_new_tiles_per_workout_type_per_year(
         self, min_year: int, max_year: int
     ) -> dict[WorkoutType, dict[int, int]]:
-        numberOfVisitedTilesPerWorkout = (
-            self._newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
-                current_user.id,
-                self._quickFilterState.get_active_distance_workout_types(),
-                self._yearFilterState,
-            )
+        numberOfVisitedTilesPerWorkout = self._newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
+            current_user.id,
+            self._quickFilterState.get_active_distance_workout_types(),
+            self._yearFilterState,
         )
 
         result = {}

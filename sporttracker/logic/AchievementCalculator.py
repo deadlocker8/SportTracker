@@ -74,9 +74,7 @@ class AchievementCalculator:
         if not monthDistanceSums:
             return gettext('No month'), 0
 
-        bestMonth = max(
-            monthDistanceSums, key=lambda monthDistanceSum: monthDistanceSum.distanceSum
-        )
+        bestMonth = max(monthDistanceSums, key=lambda monthDistanceSum: monthDistanceSum.distanceSum)
         bestMonthDate = date(year=bestMonth.year, month=bestMonth.month, day=1)
         return format_datetime(bestMonthDate, format='MMMM yyyy'), bestMonth.distanceSum
 
@@ -163,9 +161,7 @@ class AchievementCalculator:
         if not monthDurationSums:
             return gettext('No month'), 0
 
-        bestMonth = max(
-            monthDurationSums, key=lambda monthDurationSum: monthDurationSum.durationSum
-        )
+        bestMonth = max(monthDurationSums, key=lambda monthDurationSum: monthDurationSum.durationSum)
         bestMonthDate = date(year=bestMonth.year, month=bestMonth.month, day=1)
         return format_datetime(bestMonthDate, format='MMMM yyyy'), bestMonth.durationSum
 
@@ -173,9 +169,7 @@ class AchievementCalculator:
     def _get_min_and_max_date(workoutType: WorkoutType) -> tuple[datetime | None, datetime | None]:
         result = db.session.query(
             func.min(Workout.start_time),
-            func.max(Workout.start_time)
-            .filter(Workout.type == workoutType)
-            .filter(Workout.user_id == current_user.id),
+            func.max(Workout.start_time).filter(Workout.type == workoutType).filter(Workout.user_id == current_user.id),
         ).first()
         if result is None:
             return None, None

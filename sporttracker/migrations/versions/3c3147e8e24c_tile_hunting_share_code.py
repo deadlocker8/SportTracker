@@ -33,9 +33,7 @@ def upgrade():
     )
 
     if 'tileHuntingShareCode' not in columnNames:
-        op.add_column(
-            'user', sa.Column('tileHuntingShareCode', sa.String(), nullable=True, default=None)
-        )
+        op.add_column('user', sa.Column('tileHuntingShareCode', sa.String(), nullable=True, default=None))
 
 
 def downgrade():

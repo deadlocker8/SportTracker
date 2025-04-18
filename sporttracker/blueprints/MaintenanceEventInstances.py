@@ -61,9 +61,7 @@ def construct_blueprint():
         if maintenance is None:
             abort(404)
 
-        return render_template(
-            'maintenanceEvents/maintenanceEventForm.jinja2', maintenance=maintenance
-        )
+        return render_template('maintenanceEvents/maintenanceEventForm.jinja2', maintenance=maintenance)
 
     @maintenanceEventInstances.route('/post/<int:maintenance_id>', methods=['POST'])
     @login_required

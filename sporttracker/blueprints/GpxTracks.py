@@ -104,15 +104,11 @@ def construct_blueprint(gpxService: GpxService, distanceWorkoutService: Distance
 
         gpxMetadata = plannedTour.get_gpx_metadata()
         if gpxMetadata is None:
-            return send_from_directory(
-                'static', path='images/map_placeholder.png', mimetype='image/png'
-            )
+            return send_from_directory('static', path='images/map_placeholder.png', mimetype='image/png')
 
         gpxPreviewImageService = GpxPreviewImageService(gpxMetadata.gpx_file_name, gpxService)
         if not gpxPreviewImageService.is_image_existing():
-            return send_from_directory(
-                'static', path='images/map_placeholder.png', mimetype='image/png'
-            )
+            return send_from_directory('static', path='images/map_placeholder.png', mimetype='image/png')
 
         gpxPreviewImageFileName = gpxPreviewImageService.get_preview_image_path()
         return send_file(gpxPreviewImageFileName, mimetype='image/jpg')
@@ -120,9 +116,7 @@ def construct_blueprint(gpxService: GpxService, distanceWorkoutService: Distance
     return gpxTracks
 
 
-def __downloadTrackFile(
-    gpxService: GpxService, item: DistanceWorkout, fileFormat: str
-) -> Response | None:
+def __downloadTrackFile(gpxService: GpxService, item: DistanceWorkout, fileFormat: str) -> Response | None:
     if fileFormat == GpxService.GPX_FILE_EXTENSION:
         return __downloadGpxTrack(gpxService, item, item.get_download_name())
     elif fileFormat == GpxService.FIT_FILE_EXTENSION:
@@ -131,16 +125,12 @@ def __downloadTrackFile(
     return None
 
 
-def __downloadGpxTrack(
-    gpxService: GpxService, item: DistanceWorkout, downloadName: str
-) -> Response | None:
+def __downloadGpxTrack(gpxService: GpxService, item: DistanceWorkout, downloadName: str) -> Response | None:
     gpxMetadata = item.get_gpx_metadata()
     if gpxMetadata is None:
         return None
 
-    modifiedGpxXml = gpxService.get_joined_tracks_and_segments(
-        gpxMetadata.gpx_file_name, downloadName
-    )
+    modifiedGpxXml = gpxService.get_joined_tracks_and_segments(gpxMetadata.gpx_file_name, downloadName)
     fileName = f'{downloadName}.gpx'
     return Response(
         modifiedGpxXml,
@@ -149,9 +139,7 @@ def __downloadGpxTrack(
     )
 
 
-def __downloadFitTrack(
-    gpxService: GpxService, item: DistanceWorkout, downloadName: str
-) -> Response | None:
+def __downloadFitTrack(gpxService: GpxService, item: DistanceWorkout, downloadName: str) -> Response | None:
     gpxMetadata = item.get_gpx_metadata()
     if gpxMetadata is None:
         return None

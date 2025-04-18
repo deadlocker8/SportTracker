@@ -38,9 +38,7 @@ class MaintenanceFormModel(BaseModel):
 
 
 def construct_blueprint():
-    maintenances = Blueprint(
-        'maintenances', __name__, static_folder='static', url_prefix='/maintenances'
-    )
+    maintenances = Blueprint('maintenances', __name__, static_folder='static', url_prefix='/maintenances')
 
     @maintenances.route('/')
     @login_required
@@ -105,9 +103,7 @@ def construct_blueprint():
             type=maintenance.type.name,
             description=maintenance.description,  # type: ignore[arg-type]
             is_reminder_active=maintenance.is_reminder_active,  # type: ignore[arg-type]
-            reminder_limit=None
-            if maintenance.reminder_limit is None
-            else maintenance.reminder_limit // 1000,  # type: ignore[arg-type]
+            reminder_limit=None if maintenance.reminder_limit is None else maintenance.reminder_limit // 1000,  # type: ignore[arg-type]
         )
 
         return render_template(

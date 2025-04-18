@@ -37,9 +37,7 @@ class NtfyService(Listener):
                 continue
 
             try:
-                LOGGER.debug(
-                    f'Sending ntfy message for user {user.id} and maintenance {maintenance.id}'
-                )
+                LOGGER.debug(f'Sending ntfy message for user {user.id} and maintenance {maintenance.id}')
                 NtfyService.__send_notification(ntfy_settings, maintenance, user.language)
             except Exception as e:
                 LOGGER.error(f'Error while sending ntfy message: {e}')

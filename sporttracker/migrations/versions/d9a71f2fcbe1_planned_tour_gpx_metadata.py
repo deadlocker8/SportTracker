@@ -47,9 +47,7 @@ class GpxService:
             uphill = int(uphillDownhill.uphill)
             downhill = int(uphillDownhill.downhill)
 
-        return GpxMetaInfo(
-            self._gpx.length_2d(), elevationMinimum, elevationMaximum, uphill, downhill
-        )
+        return GpxMetaInfo(self._gpx.length_2d(), elevationMinimum, elevationMaximum, uphill, downhill)
 
 
 # revision identifiers, used by Alembic.
@@ -108,9 +106,7 @@ def upgrade():
             )
 
             gpxMetadataId = result.first()[0]  # type: ignore[index]
-            connection.execute(
-                text(f'UPDATE planned_tour SET gpx_metadata_id={gpxMetadataId} WHERE id={row[0]};')
-            )
+            connection.execute(text(f'UPDATE planned_tour SET gpx_metadata_id={gpxMetadataId} WHERE id={row[0]};'))
 
         op.drop_column('planned_tour', 'gpxFileName')
 

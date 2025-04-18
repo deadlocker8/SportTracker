@@ -272,9 +272,7 @@ def construct_blueprint(
         if form.planned_tour_id is not None:
             plannedTour = get_planned_tour_by_id(int(form.planned_tour_id))
             if plannedTour is None:
-                return jsonify(
-                    {'error': f'No planned tour found for planned_tour_id {form.planned_tour_id}'}
-                ), 400
+                return jsonify({'error': f'No planned tour found for planned_tour_id {form.planned_tour_id}'}), 400
 
         workout = distanceWorkoutService.add_workout_via_api(
             form_model=form, planned_tour=plannedTour, user_id=current_user.id
@@ -301,9 +299,7 @@ def construct_blueprint(
         db.session.add(workout)
         db.session.commit()
 
-        gpxService.add_visited_tiles_for_workout(
-            workout, tileHuntingSettings['baseZoomLevel'], current_user.id
-        )
+        gpxService.add_visited_tiles_for_workout(workout, tileHuntingSettings['baseZoomLevel'], current_user.id)
 
         gpxFileName = workout.get_gpx_metadata().gpx_file_name  # type: ignore[union-attr]
         LOGGER.debug(f'Added gpx track {gpxFileName} to workout {workout.id}')

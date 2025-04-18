@@ -55,15 +55,11 @@ class TestTileRenderService:
         assert color == (255, 0, 0, 96)
 
     def test_calculate_border_color_not_a_border_pixel(self):
-        color = TileRenderService.calculate_border_color(
-            2, 2, False, False, self.COLOR_VISITED, self.COLOR_BORDER
-        )
+        color = TileRenderService.calculate_border_color(2, 2, False, False, self.COLOR_VISITED, self.COLOR_BORDER)
         assert color == self.COLOR_VISITED
 
     def test_calculate_border_color_a_border_pixel_same_zoom(self):
-        color = TileRenderService.calculate_border_color(
-            0, 2, True, False, self.COLOR_VISITED, self.COLOR_BORDER
-        )
+        color = TileRenderService.calculate_border_color(0, 2, True, False, self.COLOR_VISITED, self.COLOR_BORDER)
         assert color == self.COLOR_BORDER
 
     def test_calculate_border_color_a_border_pixel_lower_zoom(self):
@@ -78,9 +74,7 @@ class TestTileRenderService:
         assert color == self.COLOR_BORDER
 
     def test_calculate_border_color_a_border_pixel_higher_zoom_subtile_not_at_border(self):
-        color = TileRenderService.calculate_border_color(
-            0, 2, False, False, self.COLOR_VISITED, self.COLOR_BORDER
-        )
+        color = TileRenderService.calculate_border_color(0, 2, False, False, self.COLOR_VISITED, self.COLOR_BORDER)
         assert color == self.COLOR_VISITED
 
     def test_render_image_same_zoom(self):
@@ -93,9 +87,7 @@ class TestTileRenderService:
             ]
 
         visitedTileService = Mock()
-        visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles.side_effect = (
-            mocked_color_method
-        )
+        visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles.side_effect = mocked_color_method
 
         service = TileRenderService(14, 4, visitedTileService)
         image = service.render_image(
@@ -139,9 +131,7 @@ class TestTileRenderService:
             ]
 
         visitedTileService = Mock()
-        visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles.side_effect = (
-            mocked_color_method
-        )
+        visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles.side_effect = mocked_color_method
 
         service = TileRenderService(14, 4, visitedTileService)
         image = service.render_image(
@@ -184,9 +174,7 @@ class TestTileRenderService:
             ]
 
         visitedTileService = Mock()
-        visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles.side_effect = (
-            mocked_color_method
-        )
+        visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles.side_effect = mocked_color_method
         service = TileRenderService(15, 4, visitedTileService)
         image = service.render_image(
             35198,
@@ -224,43 +212,29 @@ class TestTileRenderService:
         assert color == (0, 0, 0, 0)
 
     def test_calculate_heatmap_color_visited_1(self):
-        color = TileRenderService.calculate_heatmap_color(
-            35199, 21494, [TileCountPosition(1, 35199, 21494)]
-        )
+        color = TileRenderService.calculate_heatmap_color(35199, 21494, [TileCountPosition(1, 35199, 21494)])
         assert color == self.COLOR_HEATMAP_1
 
     def test_calculate_heatmap_color_visited_3(self):
-        color = TileRenderService.calculate_heatmap_color(
-            35199, 21494, [TileCountPosition(3, 35199, 21494)]
-        )
+        color = TileRenderService.calculate_heatmap_color(35199, 21494, [TileCountPosition(3, 35199, 21494)])
         assert color == self.COLOR_HEATMAP_ABOVE_1
 
     def test_calculate_heatmap_color_visited_5(self):
-        color = TileRenderService.calculate_heatmap_color(
-            35199, 21494, [TileCountPosition(5, 35199, 21494)]
-        )
+        color = TileRenderService.calculate_heatmap_color(35199, 21494, [TileCountPosition(5, 35199, 21494)])
         assert color == self.COLOR_HEATMAP_ABOVE_5
 
     def test_calculate_heatmap_color_visited_10(self):
-        color = TileRenderService.calculate_heatmap_color(
-            35199, 21494, [TileCountPosition(10, 35199, 21494)]
-        )
+        color = TileRenderService.calculate_heatmap_color(35199, 21494, [TileCountPosition(10, 35199, 21494)])
         assert color == self.COLOR_HEATMAP_ABOVE_10
 
     def test_calculate_heatmap_color_visited_25(self):
-        color = TileRenderService.calculate_heatmap_color(
-            35199, 21494, [TileCountPosition(25, 35199, 21494)]
-        )
+        color = TileRenderService.calculate_heatmap_color(35199, 21494, [TileCountPosition(25, 35199, 21494)])
         assert color == self.COLOR_HEATMAP_ABOVE_25
 
     def test_calculate_heatmap_color_visited_50(self):
-        color = TileRenderService.calculate_heatmap_color(
-            35199, 21494, [TileCountPosition(50, 35199, 21494)]
-        )
+        color = TileRenderService.calculate_heatmap_color(35199, 21494, [TileCountPosition(50, 35199, 21494)])
         assert color == self.COLOR_HEATMAP_ABOVE_50
 
     def test_calculate_heatmap_color_visited_100(self):
-        color = TileRenderService.calculate_heatmap_color(
-            35199, 21494, [TileCountPosition(100, 35199, 21494)]
-        )
+        color = TileRenderService.calculate_heatmap_color(35199, 21494, [TileCountPosition(100, 35199, 21494)])
         assert color == self.COLOR_HEATMAP_ABOVE_100

@@ -39,20 +39,14 @@ class GpxService:
             for segment in track.segments:
                 for point in segment.points:
                     visitedTiles.add(
-                        self.convert_coordinate_to_tile_position(
-                            point.latitude, point.longitude, baseZoomLevel
-                        )
+                        self.convert_coordinate_to_tile_position(point.latitude, point.longitude, baseZoomLevel)
                     )
 
-        LOGGER.debug(
-            f'{numberOfPoints} points in gpx track resulted in {len(visitedTiles)} distinct tiles'
-        )
+        LOGGER.debug(f'{numberOfPoints} points in gpx track resulted in {len(visitedTiles)} distinct tiles')
         return visitedTiles
 
     @staticmethod
-    def convert_coordinate_to_tile_position(
-        lat_deg: float, lon_deg: float, zoom: int
-    ) -> VisitedTile:
+    def convert_coordinate_to_tile_position(lat_deg: float, lon_deg: float, zoom: int) -> VisitedTile:
         if zoom < 0 or zoom > 20:
             raise ValueError(f'Zoom level {zoom} is not valid. Must be between 0 and 20')
 
@@ -89,10 +83,7 @@ def upgrade():
     existingTableEntries = connection.execute(text('SELECT * FROM gpx_visited_tile')).fetchall()
     if len(existingTableEntries) == 0:
         rows = connection.execute(
-            text(
-                'SELECT t.id, g.gpx_file_name from track as t, gpx_metadata as g '
-                'WHERE g.id=t.gpx_metadata_id;'
-            )
+            text('SELECT t.id, g.gpx_file_name from track as t, gpx_metadata as g WHERE g.id=t.gpx_metadata_id;')
         ).fetchall()
 
         currentDirectory = os.path.abspath(os.path.dirname(__file__))
@@ -116,14 +107,7 @@ def upgrade():
 
             for tile in visitedTiles:
                 connection.execute(
-                    text(
-                        f'INSERT INTO gpx_visited_tile(track_id, x, y) '
-                        f'VALUES ('
-                        f"'{trackId}', "
-                        f"'{tile.x}', "
-                        f"'{tile.y}'"
-                        f');'
-                    )
+                    text(f"INSERT INTO gpx_visited_tile(track_id, x, y) VALUES ('{trackId}', '{tile.x}', '{tile.y}');")
                 )
 
 

@@ -153,9 +153,7 @@ def get_new_planned_tour_ids() -> list[int]:
     if not current_user.is_authenticated:
         return []
 
-    last_viewed_date = (
-        User.query.filter(User.id == current_user.id).first().planned_tours_last_viewed_date
-    )
+    last_viewed_date = User.query.filter(User.id == current_user.id).first().planned_tours_last_viewed_date
 
     rows = (
         PlannedTour.query.with_entities(PlannedTour.id)
@@ -171,9 +169,7 @@ def get_updated_planned_tour_ids() -> list[int]:
     if not current_user.is_authenticated:
         return []
 
-    last_viewed_date = (
-        User.query.filter(User.id == current_user.id).first().planned_tours_last_viewed_date
-    )
+    last_viewed_date = User.query.filter(User.id == current_user.id).first().planned_tours_last_viewed_date
 
     rows = (
         PlannedTour.query.with_entities(PlannedTour.id)
@@ -217,14 +213,8 @@ def get_planned_tours_filtered(
             )
         )
         .filter(PlannedTour.type.in_(workoutTypes))
-        .filter(
-            PlannedTour.arrival_method.in_(plannedTourFilterState.get_selected_arrival_methods())
-        )
-        .filter(
-            PlannedTour.departure_method.in_(
-                plannedTourFilterState.get_selected_departure_methods()
-            )
-        )
+        .filter(PlannedTour.arrival_method.in_(plannedTourFilterState.get_selected_arrival_methods()))
+        .filter(PlannedTour.departure_method.in_(plannedTourFilterState.get_selected_departure_methods()))
         .filter(PlannedTour.direction.in_(plannedTourFilterState.get_selected_directions()))
     )
 
@@ -275,9 +265,7 @@ def __filter_by_distance(
     return filteredTours
 
 
-def __filter_by_status(
-    plannedTours: list[PlannedTour], includeDone: bool, includeTodo: bool
-) -> list[PlannedTour]:
+def __filter_by_status(plannedTours: list[PlannedTour], includeDone: bool, includeTodo: bool) -> list[PlannedTour]:
     if includeDone and includeTodo:
         return plannedTours
 

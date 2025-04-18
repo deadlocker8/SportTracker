@@ -49,26 +49,20 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
 
         selenium.find_element(By.CLASS_NAME, 'headline').find_element(By.TAG_NAME, 'a').click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'New Workout'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'New Workout')
         )
 
         buttons = selenium.find_elements(By.CSS_SELECTOR, 'section .btn')
         buttons[buttonIndex].click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), expectedHeadline
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), expectedHeadline)
         )
 
     def __open_edit_form(self, selenium):
         selenium.get(self.build_url('/distanceWorkouts/edit/1'))
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Edit Biking Workout'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Edit Biking Workout')
         )
 
     @staticmethod
@@ -108,9 +102,7 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Workouts')
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
@@ -165,16 +157,12 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Workouts')
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
 
-    def test_add_workout_non_mandatory_custom_field_not_filled(
-        self, server, selenium: WebDriver, app
-    ):
+    def test_add_workout_non_mandatory_custom_field_not_filled(self, server, selenium: WebDriver, app):
         user = User.query.filter(User.username == TEST_USERNAME).first()
 
         with app.app_context():
@@ -194,9 +182,7 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Workouts')
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
@@ -219,9 +205,7 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Workouts')
         )
 
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')
@@ -253,9 +237,7 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Workouts')
         )
 
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')
@@ -267,21 +249,15 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
         self.login(selenium)
         self.__open_form(selenium)
 
-        self.__fill_form(
-            selenium, 'My Biking Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
-        )
+        self.__fill_form(selenium, 'My Biking Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
 
         self.click_button_by_id(selenium, 'buttonCreateSharedLink')
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
-        )
+        WebDriverWait(selenium, 5).until(expected_conditions.visibility_of_element_located((By.ID, 'sharedLink')))
         sharedLink = selenium.find_element(By.ID, 'sharedLink').text
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Workouts')
         )
 
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
@@ -293,30 +269,22 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
         self.logout(selenium)
         selenium.get(sharedLink)
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'planned-tour-name'), 'My Biking Workout'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'planned-tour-name'), 'My Biking Workout')
         )
 
     def test_edit_workout_remove_shared_link(self, server, selenium: WebDriver):
         self.login(selenium)
         self.__open_form(selenium)
 
-        self.__fill_form(
-            selenium, 'My Biking Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650
-        )
+        self.__fill_form(selenium, 'My Biking Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
 
         self.click_button_by_id(selenium, 'buttonCreateSharedLink')
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.visibility_of_element_located((By.ID, 'sharedLink'))
-        )
+        WebDriverWait(selenium, 5).until(expected_conditions.visibility_of_element_located((By.ID, 'sharedLink')))
         sharedLink = selenium.find_element(By.ID, 'sharedLink').text
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Workouts')
         )
 
         self.__open_edit_form(selenium)
@@ -325,19 +293,13 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
         selenium.execute_script('arguments[0].scrollIntoView();', buttonSharedLinkDeleteModal)
         time.sleep(1)
         buttonSharedLinkDeleteModal.click()
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.element_to_be_clickable((By.ID, 'buttonSharedLinkDelete'))
-        )
+        WebDriverWait(selenium, 5).until(expected_conditions.element_to_be_clickable((By.ID, 'buttonSharedLinkDelete')))
         time.sleep(1)
         selenium.find_element(By.ID, 'buttonSharedLinkDelete').click()
-        WebDriverWait(selenium, 5).until(
-            expected_conditions.invisibility_of_element_located((By.ID, 'sharedLink'))
-        )
+        WebDriverWait(selenium, 5).until(expected_conditions.invisibility_of_element_located((By.ID, 'sharedLink')))
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Workouts')
         )
 
         # check shared link can no longer bew viewed
@@ -366,9 +328,7 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Workouts')
         )
 
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1
@@ -387,9 +347,7 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
 
         selenium.find_element(By.CLASS_NAME, 'headline').find_element(By.TAG_NAME, 'a').click()
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'New Workout'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'New Workout')
         )
 
         buttons = selenium.find_elements(By.CSS_SELECTOR, 'section .btn')
@@ -406,9 +364,7 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
 
         # wait for form to open
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'New Biking Workout'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'New Biking Workout')
         )
 
         # assert form is prefilled
@@ -416,12 +372,8 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
         assert selenium.find_element(By.ID, 'workout-time').get_attribute('value') == '16:30'
         assert selenium.find_element(By.ID, 'workout-distance').get_attribute('value') == '35.39'
         assert selenium.find_element(By.ID, 'workout-duration-hours').get_attribute('value') == '1'
-        assert (
-            selenium.find_element(By.ID, 'workout-duration-minutes').get_attribute('value') == '25'
-        )
-        assert (
-            selenium.find_element(By.ID, 'workout-duration-seconds').get_attribute('value') == '2'
-        )
+        assert selenium.find_element(By.ID, 'workout-duration-minutes').get_attribute('value') == '25'
+        assert selenium.find_element(By.ID, 'workout-duration-seconds').get_attribute('value') == '2'
         assert selenium.find_element(By.ID, 'workout-elevationSum').get_attribute('value') == '319'
         assert selenium.find_element(By.ID, 'workout-averageHeartRate').get_attribute('value') == ''
 
@@ -431,8 +383,6 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
 
         # assert successful save
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, 'headline-text'), 'Workouts'
-            )
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Workouts')
         )
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .card-body')) == 1

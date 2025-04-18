@@ -51,16 +51,12 @@ class FitnessWorkoutCategoryType(enum.Enum):
         elif self == self.YOGA:
             return gettext('Yoga')
 
-        raise ValueError(
-            f'Could not get localized name for unsupported FitnessWorkoutCategoryType: {self}'
-        )
+        raise ValueError(f'Could not get localized name for unsupported FitnessWorkoutCategoryType: {self}')
 
 
 class FitnessWorkoutCategory(db.Model):  # type: ignore[name-defined]
     workout_id: Mapped[int] = mapped_column(Integer, nullable=False, primary_key=True)
-    fitness_workout_category_type = db.Column(
-        db.Enum(FitnessWorkoutCategoryType), nullable=False, primary_key=True
-    )
+    fitness_workout_category_type = db.Column(db.Enum(FitnessWorkoutCategoryType), nullable=False, primary_key=True)
 
 
 def update_workout_categories_by_workout_id(
@@ -69,8 +65,6 @@ def update_workout_categories_by_workout_id(
     FitnessWorkoutCategory.query.filter(FitnessWorkoutCategory.workout_id == workoutId).delete()
 
     for category in newWorkoutCategories:
-        db.session.add(
-            FitnessWorkoutCategory(workout_id=workoutId, fitness_workout_category_type=category)
-        )
+        db.session.add(FitnessWorkoutCategory(workout_id=workoutId, fitness_workout_category_type=category))
 
     db.session.commit()

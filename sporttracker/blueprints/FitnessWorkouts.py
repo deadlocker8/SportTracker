@@ -21,9 +21,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
-    fitnessWorkouts = Blueprint(
-        'fitnessWorkouts', __name__, static_folder='static', url_prefix='/fitnessWorkouts'
-    )
+    fitnessWorkouts = Blueprint('fitnessWorkouts', __name__, static_folder='static', url_prefix='/fitnessWorkouts')
 
     @fitnessWorkouts.route('/post', methods=['POST'])
     @login_required

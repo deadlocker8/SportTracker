@@ -97,9 +97,7 @@ def __handle_gpx_visited_tiles():
             LOGGER.debug(f'  Migrate gpx_visited_tile: {row}')
             workoutId, x, y = row
             connection.execute(
-                text(
-                    f"INSERT INTO gpx_visited_tile (workout_id, x, y) VALUES ('{workoutId}', '{x}', '{y}');"
-                )
+                text(f"INSERT INTO gpx_visited_tile (workout_id, x, y) VALUES ('{workoutId}', '{x}', '{y}');")
             )
 
 
@@ -222,9 +220,7 @@ def __update_type_column(tableName: str):
 
         op.add_column(
             tableName,
-            sa.Column(
-                'type', postgresql.ENUM(name='workouttype', create_type=False), nullable=True
-            ),
+            sa.Column('type', postgresql.ENUM(name='workouttype', create_type=False), nullable=True),
         )
 
         for row in rows:
@@ -232,9 +228,7 @@ def __update_type_column(tableName: str):
             entryId, trackType = row
             trackType = __track_type_to_workout_type(trackType)
 
-            connection.execute(
-                text(f"UPDATE {tableName} SET type='{trackType}' WHERE id={entryId};")
-            )
+            connection.execute(text(f"UPDATE {tableName} SET type='{trackType}' WHERE id={entryId};"))
 
         op.drop_column(tableName, 'type_old')
 
@@ -267,9 +261,7 @@ def __handle_workout_participant_association():
         )
 
     if 'track_participant_association' in tableNames:
-        LOGGER.debug(
-            '  Migrate data from "track_participant_association " to "workout_participant_association'
-        )
+        LOGGER.debug('  Migrate data from "track_participant_association " to "workout_participant_association')
         connection = op.get_bind()
         rows = connection.execute(text('SELECT * FROM track_participant_association;')).fetchall()
 

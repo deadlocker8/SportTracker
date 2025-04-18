@@ -122,9 +122,7 @@ class DummyDataGenerator:
 
         if user is None:
             LOGGER.debug('Creating demo user')
-            user = create_user(
-                username=name, password=password, isAdmin=False, language=Language.ENGLISH
-            )
+            user = create_user(username=name, password=password, isAdmin=False, language=Language.ENGLISH)
 
         return user
 
@@ -209,15 +207,11 @@ class DummyDataGenerator:
         for monthIndex in range(self.NUMBER_OF_MONTHS):
             firstDay = date(year=lastDayCurrentMonth.year, month=lastDayCurrentMonth.month, day=1)
 
-            indexesWithGpx = random.choices(
-                range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithGpx
-            )
+            indexesWithGpx = random.choices(range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithGpx)
             indexesWithParticipants = random.choices(
                 range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithParticipants
             )
-            indexesWithSharedLink = random.choices(
-                range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithSharedLink
-            )
+            indexesWithSharedLink = random.choices(range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithSharedLink)
             indexesWithLinkedPlannedTour = random.choices(
                 range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithLinkedPlannedTour
             )
@@ -393,9 +387,7 @@ class DummyDataGenerator:
         lastPlannedTour = None
 
         for index in range(2):
-            fakeTime = fake.date_time_between_dates(
-                datetime.now() - timedelta(days=90), datetime.now()
-            )
+            fakeTime = fake.date_time_between_dates(datetime.now() - timedelta(days=90), datetime.now())
 
             shared_users = []
             if index == 1:

@@ -31,9 +31,7 @@ class QuickFilterState:
         ]
 
     def to_json(self) -> str:
-        return json.dumps(
-            {workoutType.name: isActive for workoutType, isActive in self._states.items()}
-        )
+        return json.dumps({workoutType.name: isActive for workoutType, isActive in self._states.items()})
 
     @staticmethod
     def from_json(jsonString: str) -> QuickFilterState:
