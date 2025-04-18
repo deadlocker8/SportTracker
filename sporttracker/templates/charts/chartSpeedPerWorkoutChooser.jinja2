@@ -40,7 +40,7 @@
                                 {% for name in workoutNames %}
                                     <a href="{{ url_for('charts.chartSpeedPerWorkout', workout_type=workoutType.name, name=name) }}"
                                        class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
-                                        {{ name }}
+                                        {{ name | e}}
                                         <span class="material-symbols-outlined filled text-primary">send</span>
                                     </a>
                                 {% endfor %}

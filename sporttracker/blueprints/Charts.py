@@ -5,14 +5,17 @@ from typing import Any
 
 import flask_babel
 from babel.dates import get_day_names
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, url_for
 from flask_babel import gettext, format_datetime
 from flask_login import login_required, current_user
 from sqlalchemy import extract, func, String, asc, desc
 
 from sporttracker.helpers.Helpers import format_duration
 from sporttracker.logic import Constants
-from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_workout_types
+from sporttracker.logic.model.CustomWorkoutField import (
+    get_custom_fields_grouped_by_workout_types,
+    get_custom_field_by_id,
+)
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_per_month_by_type
 from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.Workout import (
@@ -94,21 +97,25 @@ def construct_blueprint():
             customFieldsByWorkoutType=customFieldsByWorkoutType,
         )
 
-    @charts.route('/chartDistancePerCustomField/<string:workout_type>/<string:name>')
+    @charts.route('/chartDistancePerCustomField/<string:workout_type>/<int:custom_field_id>')
     @login_required
-    def chartDistancePerCustomField(workout_type: str, name: str):
+    def chartDistancePerCustomField(workout_type: str, custom_field_id: int):
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
 
-        customField = DistanceWorkout.custom_fields[name].astext.cast(String)
+        customField = get_custom_field_by_id(custom_field_id)
+        if customField is None:
+            return redirect(url_for('charts.chartDistancePerCustomFieldChooser'))
+
+        customFieldOperator = DistanceWorkout.custom_fields[customField.name].astext.cast(String)
 
         rows = (
             DistanceWorkout.query.with_entities(
-                func.sum(DistanceWorkout.distance) / 1000, customField
+                func.sum(DistanceWorkout.distance) / 1000, customFieldOperator
             )
             .filter(DistanceWorkout.user_id == current_user.id)
             .filter(DistanceWorkout.type == workoutType)
-            .group_by(customField)
-            .order_by(asc(func.lower(customField)))
+            .group_by(customFieldOperator)
+            .order_by(asc(func.lower(customFieldOperator)))
             .all()
         )
 
@@ -127,7 +134,7 @@ def construct_blueprint():
         return render_template(
             'charts/chartDistancePerCustomField.jinja2',
             chartDistancePerCustomFieldData=chartDistancePerCustomFieldData,
-            customFieldName=name,
+            customFieldName=customField.name,
         )
 
     @charts.route('/chartDistancePerParticipantChooser')

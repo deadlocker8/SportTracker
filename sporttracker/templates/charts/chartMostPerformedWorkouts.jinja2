@@ -22,7 +22,7 @@
                 {% for entry in chartMostPerformedWorkoutsData %}
                     <div class="row my-3">
                         <div class="col col-12 col-md-8 col-lg-6 col-xl-5 mx-auto">
-                            <div class="mb-2">{{ loop.index }}. {{ entry['name'] }}</div>
+                            <div class="mb-2">{{ loop.index }}. {{ entry['name'] | e }}</div>
                             <div class="progress bg-dark rounded-0" role="progressbar" style="height: 1.5rem">
                                 <div class="progress-bar {{ workout_type.background_color }} text-dark fw-bold" style="width: {{ entry['percentage'] }}%">{{ entry['count'] }}</div>
                             </div>
