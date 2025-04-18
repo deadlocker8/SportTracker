@@ -1,5 +1,6 @@
 import calendar
 import logging
+from dataclasses import dataclass
 from datetime import date
 from typing import Any
 
@@ -28,6 +29,12 @@ from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
+
+
+@dataclass
+class WorkoutName:
+    id: int
+    name: str
 
 
 def construct_blueprint():
@@ -221,15 +228,23 @@ def construct_blueprint():
             workoutNamesByWorkoutType=__get_workout_names_by_type(False),
         )
 
-    @charts.route('/durationPerWorkout/<string:workout_type>/<string:name>')
+    @charts.route('/durationPerWorkout/<string:workout_type>/<int:workout_id>')
     @login_required
-    def chartDurationPerWorkout(workout_type: str, name: str):
+    def chartDurationPerWorkout(workout_type: str, workout_id: int):
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
+
+        workout = (
+            Workout.query.filter(Workout.user_id == current_user.id)
+            .filter(Workout.id == workout_id)
+            .first()
+        )
+        if workout is None:
+            return redirect(url_for('charts.durationPerWorkoutChooser'))
 
         workouts = (
             Workout.query.filter(Workout.user_id == current_user.id)
             .filter(Workout.type == workoutType)
-            .filter(Workout.name == name)
+            .filter(Workout.name == workout.name)
             .filter(Workout.duration.is_not(None))
             .order_by(Workout.start_time.asc())
             .all()
@@ -270,7 +285,7 @@ def construct_blueprint():
 
     def __get_workout_names_by_type(
         onlyDistanceBasedWorkoutTypes: bool,
-    ) -> dict[WorkoutType, list[str]]:
+    ) -> dict[WorkoutType, list[WorkoutName]]:
         workoutNamesByWorkoutType = {}
         for workoutType in WorkoutType:
             if (
@@ -280,7 +295,7 @@ def construct_blueprint():
                 continue
 
             rows = (
-                Workout.query.with_entities(Workout.name)
+                Workout.query.with_entities(func.min(Workout.id).label('id'), Workout.name)
                 .filter(Workout.user_id == current_user.id)
                 .filter(Workout.type == workoutType)
                 .group_by(Workout.name)
@@ -289,18 +304,26 @@ def construct_blueprint():
                 .all()
             )
 
-            workoutNamesByWorkoutType[workoutType] = [row[0] for row in rows]
+            workoutNamesByWorkoutType[workoutType] = [WorkoutName(row[0], row[1]) for row in rows]
         return workoutNamesByWorkoutType
 
-    @charts.route('/speedPerWorkout/<string:workout_type>/<string:name>')
+    @charts.route('/speedPerWorkout/<string:workout_type>/<string:workout_id>')
     @login_required
-    def chartSpeedPerWorkout(workout_type: str, name: str):
+    def chartSpeedPerWorkout(workout_type: str, workout_id: int):
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
+
+        workout = (
+            Workout.query.filter(Workout.user_id == current_user.id)
+            .filter(Workout.id == workout_id)
+            .first()
+        )
+        if workout is None:
+            return redirect(url_for('charts.durationPerWorkoutChooser'))
 
         workouts = (
             DistanceWorkout.query.filter(DistanceWorkout.user_id == current_user.id)
             .filter(DistanceWorkout.type == workoutType)
-            .filter(DistanceWorkout.name == name)
+            .filter(DistanceWorkout.name == workout.name)
             .filter(DistanceWorkout.duration.is_not(None))
             .order_by(DistanceWorkout.start_time.asc())
             .all()

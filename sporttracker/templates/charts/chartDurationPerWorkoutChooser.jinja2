@@ -37,10 +37,10 @@
                             </div>
 
                             <div class="list-group text-start">
-                                {% for name in workoutNames %}
-                                    <a href="{{ url_for('charts.chartDurationPerWorkout', workout_type=workoutType.name, name=name) }}"
+                                {% for workoutName in workoutNames %}
+                                    <a href="{{ url_for('charts.chartDurationPerWorkout', workout_type=workoutType.name, workout_id=workoutName.id) }}"
                                        class="list-group-item list-group-item-action d-flex justify-content-between fw-bold">
-                                        {{ name | e }}
+                                        {{ workoutName.name | e }}
                                         <span class="material-symbols-outlined filled text-primary">send</span>
                                     </a>
                                 {% endfor %}
