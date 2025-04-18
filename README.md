@@ -167,7 +167,7 @@ You have to make the following changes before starting via docker compose:
 1. In the `docker-compose.yaml` change `<POSTGRES_DB_NAME>`, `<POSTGRES_USER>` and `<POSTGRES_PASSWORD>`.
 2. The `docker-compose.yaml` uses volume mounts to persist your data even if the containers are stopped and removed.
   - Therefore, you have to change `<PATH_ON_HOST>` to an absolute path to a folder on your host machine.
-3. Copy `settings-example.json` to `settings.json` and adjust to your configuration. 
+3. Copy `settings-example.json` to `<PATH_ON_HOST>/settings.json` and adjust to your configuration. 
   - It is important to change the value of `secret`. 
   - Adjust the database URI and set `sporttracker-user`, `sporttracker-password` and `sporttracker-db-name` to match the values in the `docker-compose.yaml` from step 1.
 4. Build and run all containers using `docker compose up --build`.
