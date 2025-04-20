@@ -92,7 +92,7 @@ class DistanceWorkoutService(Observable):
             )
 
         LOGGER.debug(f'Saved new distance workout: {workout}')
-        self._notify_listeners({'user_id': user_id})
+        self._notify_listeners({'user_id': user_id, 'workout_type': workout.type})
         return workout
 
     def add_workout_via_api(
@@ -123,7 +123,7 @@ class DistanceWorkoutService(Observable):
         db.session.commit()
 
         LOGGER.debug(f'Saved new distance workout: {workout}')
-        self._notify_listeners({'user_id': user_id})
+        self._notify_listeners({'user_id': user_id, 'workout_type': workout.type})
         return workout
 
     def __handle_fit_import(self, form_model: DistanceWorkoutFormModel) -> dict[str, FileStorage]:
@@ -156,7 +156,7 @@ class DistanceWorkoutService(Observable):
         db.session.commit()
 
         LOGGER.debug(f'Deleted distance workout: {workout}')
-        self._notify_listeners({'user_id': user_id})
+        self._notify_listeners({'user_id': user_id, 'workout_type': workout.type})
 
     def edit_workout(
         self,
@@ -207,7 +207,7 @@ class DistanceWorkoutService(Observable):
             )
 
         LOGGER.debug(f'Updated distance workout: {workout}')
-        self._notify_listeners({'user_id': user_id})
+        self._notify_listeners({'user_id': user_id, 'workout_type': workout.type})
         return workout
 
     @staticmethod

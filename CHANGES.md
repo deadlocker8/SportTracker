@@ -4,6 +4,7 @@
 - add: new chart: number of new visited tiles per year per workout type (#175)
 - fix: distance workouts created via api now trigger maintenance reminders if limits are exceeded (#193)
 - fix: escape string user inputs when displayed in frontend (#194)
+- fix: maintenance reminders: only send notifications for maintenance reminders that share the same workout type as the workout created, edited or deleted (#198)
 
 # 1.37.0 - (01.04.25)
 - add: show the size and corresponding tiles of the maximum square area that is completely covered by your visited tiles (#189)
