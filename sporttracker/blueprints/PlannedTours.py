@@ -191,7 +191,7 @@ def construct_blueprint(gpxService: GpxService, gpxPreviewImageSettings: dict[st
             arrival_method=TravelType(form.arrivalMethod),  # type: ignore[call-arg]
             departure_method=TravelType(form.departureMethod),  # type: ignore[call-arg]
             direction=TravelDirection(form.direction),  # type: ignore[call-arg]
-            share_code=form.share_code,
+            share_code=form.share_code if form.share_code else None,
         )
 
         LOGGER.debug(f'Saved new planned tour: {plannedTour}')
