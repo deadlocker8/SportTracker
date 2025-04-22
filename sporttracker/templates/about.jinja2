@@ -22,14 +22,18 @@
 
                 <h3 class="mb-5">{{ gettext('Changelog') }}</h3>
 
-                {% for version, entries in changelog.items() %}
+                {% for release in releases %}
                     <div class="card mb-4">
                         <div class="card-header bg-dark-subtle fw-bold">
-                            v{{ version }}
+                            {% if 'XX' in release.date %}
+                                v{{ release.name }}<span class="badge text-bg-danger ms-3 ">Upcoming Release</span>
+                            {% else %}
+                                v{{ release.name }} - {{ release.date }}
+                            {% endif %}
                         </div>
                         <ul class="list-group list-group-flush text-start">
-                            {% for entry in entries %}
-                                <li class="list-group-item">{{ entry }}</li>
+                            {% for entry in release.entries %}
+                                <li class="list-group-item"><span class="badge changelog-badge {{ entry.type.color }} me-3 ">{{ entry.type.display_name }}</span> {{ entry.description }} {% if entry.issue_id is not none %}(#{{ entry.issue_id }}){% endif %}</li>
                             {% endfor %}
                         </ul>
                     </div>

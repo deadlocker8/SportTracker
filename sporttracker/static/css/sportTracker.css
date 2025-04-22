@@ -226,6 +226,10 @@ body {
     max-width: 250px;
 }
 
+.changelog-badge {
+    width: 5rem;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

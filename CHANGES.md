@@ -3,6 +3,7 @@
 - add: build libs.js and main.css in Dockerfile instead of checking them in (#196)
 - add: new chart: number of new visited tiles per year per workout type (#175)
 - add: planned tours: allow to view visited tiles and grid from tile hunting (#199)
+- add: improved visualization of changelog on about page (#201)
 - fix: distance workouts created via api now trigger maintenance reminders if limits are exceeded (#193)
 - fix: escape string user inputs when displayed in frontend (#194)
 - fix: maintenance reminders: only send notifications for maintenance reminders that share the same workout type as the workout created, edited or deleted (#198)
@@ -310,7 +311,7 @@
 - add: new about page with changelog
 
 # 1.3.0 - (21.11.23)
-- fix charts: fill missing years and months
+- fix: charts: fill missing years and months
 - fix: charts: fixed clipped legend
 - fix: charts: cast number to int/float
 - fix: deletion of month goals
@@ -325,4 +326,4 @@
 - fix: only show data for current user in charts
 
 # 1.0.0 - (18.11.23)
-- initial release
+- add: initial release
