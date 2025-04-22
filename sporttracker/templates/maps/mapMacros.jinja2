@@ -104,7 +104,7 @@
     </div>
 {%- endmacro %}
 
-{% macro tileHuntingMapSettings(isShowTilesActive, isGridActive, isOnlyHighlightNewTilesActive, workoutId) -%}
+{% macro tileHuntingMapSettings(isShowTilesActive, isGridActive, isOnlyHighlightNewTilesActive, redirectUrl, enableNewTilesOption=true) -%}
     <div class="dropdown ms-3">
         <button class="btn btn-sm btn-primary dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="material-symbols-outlined fs-5">explore</span>
@@ -115,25 +115,27 @@
                 <input class="form-check-input tileHuntingCheckbox" type="checkbox"
                        id="tileHuntingEnableTiles"
                        {% if isShowTilesActive %}checked{% endif %}
-                       data-url="{{ url_for('maps.toggleTileHuntingViewTiles', redirectUrl=url_for('maps.showSingleWorkout', workout_id=workoutId)) }}">
+                       data-url="{{ url_for('maps.toggleTileHuntingViewTiles', redirectUrl=redirectUrl) }}">
                 <label class="form-check-label" for="tileHuntingEnableTiles">{{ gettext('Show visited tiles') }}</label>
             </div>
-            <div class="form-check text-nowrap mb-2">
+            <div class="form-check text-nowrap">
                 <input class="form-check-input tileHuntingCheckbox" type="checkbox"
                        id="tileHuntingEnableGrid"
                        {% if isGridActive %}checked{% endif %}
                        {% if not isShowTilesActive %}disabled{% endif %}
-                       data-url="{{ url_for('maps.toggleTileHuntingViewGrid', redirectUrl=url_for('maps.showSingleWorkout', workout_id=workoutId)) }}">
+                       data-url="{{ url_for('maps.toggleTileHuntingViewGrid', redirectUrl=redirectUrl) }}">
                 <label class="form-check-label" for="tileHuntingEnableGrid">{{ gettext('Show grid') }}</label>
             </div>
-            <div class="form-check text-nowrap">
-                <input class="form-check-input tileHuntingCheckbox" type="checkbox"
-                       id="tileHuntingEnableOnlyHighlightNewTiles"
-                       {% if isOnlyHighlightNewTilesActive %}checked{% endif %}
-                       {% if not isShowTilesActive %}disabled{% endif %}
-                       data-url="{{ url_for('maps.toggleTileHuntingOnlyHighlightNewTiles', redirectUrl=url_for('maps.showSingleWorkout', workout_id=workoutId)) }}">
-                <label class="form-check-label" for="tileHuntingEnableOnlyHighlightNewTiles">{{ gettext('Only highlight new tiles') }}</label>
-            </div>
+            {% if enableNewTilesOption %}
+                <div class="form-check text-nowrap mt-2">
+                    <input class="form-check-input tileHuntingCheckbox" type="checkbox"
+                           id="tileHuntingEnableOnlyHighlightNewTiles"
+                           {% if isOnlyHighlightNewTilesActive %}checked{% endif %}
+                           {% if not isShowTilesActive %}disabled{% endif %}
+                           data-url="{{ url_for('maps.toggleTileHuntingOnlyHighlightNewTiles', redirectUrl=redirectUrl) }}">
+                    <label class="form-check-label" for="tileHuntingEnableOnlyHighlightNewTiles">{{ gettext('Only highlight new tiles') }}</label>
+                </div>
+            {% endif %}
         </div>
     </div>
 {%- endmacro %}

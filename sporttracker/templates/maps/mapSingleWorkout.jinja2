@@ -28,7 +28,7 @@
             </div>
 
             {% if editUrl and current_user.isTileHuntingActivated %}
-                {{ mapMacros.tileHuntingMapSettings(tileHuntingIsShowTilesActive, tileHuntingIsGridActive, tileHuntingIsOnlyHighlightNewTilesActive, workout.id) }}
+                {{ mapMacros.tileHuntingMapSettings(tileHuntingIsShowTilesActive, tileHuntingIsGridActive, tileHuntingIsOnlyHighlightNewTilesActive, url_for('maps.showSingleWorkout', workout_id=workout.id)) }}
             {% endif %}
         </div>
 

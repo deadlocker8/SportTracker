@@ -18,11 +18,17 @@
         {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
         {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
 
-        <div class="d-flex align-items-center text-truncate justify-content-center mx-5 my-3">
-            {{ workoutMacros.workout_type_icon_small(plannedTour.type, fontSize='fs-3') }}
-            <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">
-                {{ plannedTour.name | e }}
+        <div class="d-flex flex-row align-items-center justify-content-center my-3 px-3">
+            <div class="d-flex align-items-center text-truncate justify-content-center">
+                {{ workoutMacros.workout_type_icon_small(plannedTour.type, fontSize='fs-3') }}
+                <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">
+                    {{ plannedTour.name | e}}
+                </div>
             </div>
+
+            {% if editUrl and current_user.isTileHuntingActivated %}
+                {{ mapMacros.tileHuntingMapSettings(tileHuntingIsShowTilesActive, tileHuntingIsGridActive, tileHuntingIsOnlyHighlightNewTilesActive, url_for('maps.showPlannedTour', tour_id=plannedTour.id), false) }}
+            {% endif %}
         </div>
 
         <!-- small displays -->
@@ -149,6 +155,7 @@
 
         <script>
             gpxUrl = '{{ gpxUrl }}';
+            tileRenderUrl = '{{ tileRenderUrl }}';
         </script>
 
         {% import 'maps/mapMacros.jinja2' as mapMacros with context %}

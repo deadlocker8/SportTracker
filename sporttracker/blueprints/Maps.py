@@ -187,6 +187,17 @@ def construct_blueprint(
         if plannedTour is None:
             abort(404)
 
+        tileRenderUrl = url_for(
+            'maps.renderAllTiles',
+            user_id=current_user.id,
+            zoom=0,
+            x=0,
+            y=0,
+            _external=True,
+        )
+
+        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
+
         return render_template(
             'maps/mapPlannedTour.jinja2',
             plannedTour=PlannedTourModel.create_from_tour(plannedTour, True),
@@ -196,6 +207,8 @@ def construct_blueprint(
                 file_format=GpxService.GPX_FILE_EXTENSION,
             ),
             editUrl=url_for('plannedTours.edit', tour_id=tour_id),
+            tileRenderUrl=tileRenderUrl,
+            tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
         )
 
     @maps.route('/map/plannedTour/shared/<string:shareCode>')
