@@ -1,7 +1,10 @@
 import enum
+from operator import attrgetter
 
+import natsort
 from flask_babel import gettext
 from flask_login import current_user
+from natsort import natsorted
 from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
@@ -64,20 +67,23 @@ def get_custom_fields_grouped_by_workout_types(
 
     customFieldsByWorkoutType = {}
     for workoutType in workoutTypes:
-        customFieldsByWorkoutType[workoutType] = (
+        fields = (
             CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
             .filter(CustomWorkoutField.workout_type == workoutType)
             .all()
         )
+        fields = natsorted(fields, alg=natsort.ns.IGNORECASE, key=lambda field: field.name)
+        customFieldsByWorkoutType[workoutType] = fields
     return customFieldsByWorkoutType
 
 
 def get_custom_fields_by_workout_type(workoutType: WorkoutType) -> list[CustomWorkoutField]:
-    return (
+    fields = (
         CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
         .filter(CustomWorkoutField.workout_type == workoutType)
         .all()
     )
+    return natsorted(fields, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
 
 
 def get_custom_field_by_id(customFieldId: int) -> CustomWorkoutField | None:

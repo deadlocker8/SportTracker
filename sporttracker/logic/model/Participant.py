@@ -1,5 +1,9 @@
+from operator import attrgetter
+
+import natsort
 from flask_login import current_user
-from sqlalchemy import Integer, String, Column, ForeignKey, Table, asc, func
+from natsort import natsorted
+from sqlalchemy import Integer, String, Column, ForeignKey, Table
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.model.db import db
@@ -30,8 +34,5 @@ def get_participants_by_ids(ids: list[int]) -> list[Participant]:
 
 
 def get_participants() -> list[Participant]:
-    return (
-        Participant.query.filter(Participant.user_id == current_user.id)
-        .order_by(asc(func.lower(Participant.name)))
-        .all()
-    )
+    participants = Participant.query.filter(Participant.user_id == current_user.id).all()
+    return natsorted(participants, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))

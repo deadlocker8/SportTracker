@@ -1,6 +1,7 @@
 import io
 import logging
 from datetime import datetime
+from operator import attrgetter
 from typing import Any
 
 import flask_babel
@@ -17,7 +18,8 @@ from flask import (
     jsonify,
 )
 from flask_login import login_required, current_user
-from sqlalchemy import func, extract, or_, asc
+from natsort import natsorted, natsort
+from sqlalchemy import func, extract, or_
 
 from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Workouts import DistanceWorkoutModel
@@ -253,9 +255,9 @@ def construct_blueprint(
                 )
             )
             .filter(PlannedTour.type.in_(quickFilterState.get_active_distance_workout_types()))
-            .order_by(asc(func.lower(PlannedTour.name)))
             .all()
         )
+        plannedTours = natsorted(plannedTours, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
 
         for tour in plannedTours:
             gpxInfo.append(createGpxInfoPlannedTour(tour.id, tour.name))  # type: ignore[arg-type]

@@ -1,8 +1,11 @@
 import enum
+from operator import attrgetter
 from typing import TYPE_CHECKING
 
+import natsort
 from flask_babel import gettext
 from flask_login import current_user
+from natsort import natsorted
 from sqlalchemy import Integer, DateTime, String, Table, Column, ForeignKey, asc, func
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 from sqlalchemy.sql import or_
@@ -189,7 +192,7 @@ def get_updated_planned_tour_ids() -> list[int]:
 
 
 def get_planned_tours(workoutTypes: list[WorkoutType]) -> list[PlannedTour]:
-    return (
+    plannedTours = (
         PlannedTour.query.filter(
             or_(
                 PlannedTour.user_id == current_user.id,
@@ -197,9 +200,10 @@ def get_planned_tours(workoutTypes: list[WorkoutType]) -> list[PlannedTour]:
             )
         )
         .filter(PlannedTour.type.in_(workoutTypes))
-        .order_by(asc(func.lower(PlannedTour.name)))
         .all()
     )
+
+    return natsorted(plannedTours, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
 
 
 def get_planned_tours_filtered(
@@ -237,7 +241,7 @@ def get_planned_tours_filtered(
         plannedTourFilterState.is_done_selected(),
         plannedTourFilterState.is_todo_selected(),
     )
-    return plannedTours
+    return natsorted(plannedTours, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
 
 
 def __filter_by_distance(

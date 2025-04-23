@@ -1,8 +1,10 @@
 from dataclasses import dataclass
 from datetime import datetime
+from operator import attrgetter
 
+import natsort
 from flask_login import current_user
-from sqlalchemy import func, asc
+from natsort import natsorted
 
 from sporttracker.blueprints.MaintenanceEventInstances import MaintenanceEventInstanceModel
 from sporttracker.logic.QuickFilterState import QuickFilterState
@@ -29,11 +31,8 @@ class MaintenanceWithEventsModel:
 
 
 def get_maintenances_with_events(quickFilterState: QuickFilterState, user_id: int) -> list[MaintenanceWithEventsModel]:
-    maintenanceList = (
-        Maintenance.query.filter(Maintenance.user_id == user_id)
-        .order_by(asc(func.lower(Maintenance.description)))
-        .all()
-    )
+    maintenanceList = Maintenance.query.filter(Maintenance.user_id == user_id).all()
+    maintenanceList = natsorted(maintenanceList, alg=natsort.ns.IGNORECASE, key=attrgetter('description'))
 
     maintenancesWithEvents: list[MaintenanceWithEventsModel] = []
     for maintenance in maintenanceList:

@@ -3,11 +3,13 @@ from dataclasses import dataclass
 from datetime import datetime, date
 
 import flask_babel
+import natsort
 from babel.dates import get_month_names
 from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template, redirect, url_for
 from flask_babel import format_datetime
 from flask_login import login_required, current_user
+from natsort import natsorted
 from pydantic import BaseModel, field_validator
 
 from sporttracker.logic import Constants
@@ -199,6 +201,7 @@ def construct_blueprint():
             .filter(CustomWorkoutField.workout_type == workoutType)
             .all()
         )
+        customFields = natsorted(customFields, alg=natsort.ns.IGNORECASE, key=lambda field: field.name)
 
         return render_template(
             f'workouts/workout{workout_type.capitalize()}Form.jinja2',
