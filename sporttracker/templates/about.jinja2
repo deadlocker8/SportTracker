@@ -33,7 +33,13 @@
                         </div>
                         <ul class="list-group list-group-flush text-start">
                             {% for entry in release.entries %}
-                                <li class="list-group-item"><span class="badge changelog-badge {{ entry.type.color }} me-3 ">{{ entry.type.display_name }}</span> {{ entry.description }} {% if entry.issue_id is not none %}(#{{ entry.issue_id }}){% endif %}</li>
+                                <li class="list-group-item d-flex flex-row">
+                                    <div class="me-3">
+                                        <span class="badge changelog-badge {{ entry.type.color }}">{{ entry.type.display_name }}</span>
+                                    </div>
+                                    <div class="me-2">{{ entry.description }}</div>
+                                    <div>{% if entry.issue_id is not none %}(#{{ entry.issue_id }}){% endif %}</div>
+                                </li>
                             {% endfor %}
                         </ul>
                     </div>
