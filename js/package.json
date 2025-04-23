@@ -19,7 +19,7 @@
     "@popperjs/core": "^2.11.8",
     "@raruto/leaflet-elevation": "^2.5.1",
     "assert": "^2.1.0",
-    "bootstrap": "^5.3.3",
+    "bootstrap": "^5.3.5",
     "bootstrap5-autocomplete": "^1.1.38",
     "buffer": "^6.0.3",
     "jquery": "^3.7.1",
