@@ -23,7 +23,7 @@ RUN mkdir -p /opt/SportTracker/sporttracker/static/js/libs
 
 WORKDIR /opt/SportTracker/js
 
-RUN npm install && npm run build
+RUN npm ci && npm run build
 
 FROM python:3.12-alpine
 
