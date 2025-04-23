@@ -4,6 +4,7 @@
 - add: new chart: number of new visited tiles per year per workout type (#175)
 - add: planned tours: allow to view visited tiles and grid from tile hunting (#199)
 - add: improved visualization of changelog on about page (#201)
+- add: sort planned tours, participants, maintenances and custom workout fields naturally (#192)
 - fix: distance workouts created via api now trigger maintenance reminders if limits are exceeded (#193)
 - fix: escape string user inputs when displayed in frontend (#194)
 - fix: maintenance reminders: only send notifications for maintenance reminders that share the same workout type as the workout created, edited or deleted (#198)
