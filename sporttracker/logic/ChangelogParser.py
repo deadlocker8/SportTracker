@@ -61,7 +61,7 @@ class Release:
 
 class ChangelogParser:
     PATTERN_RELEASE = re.compile(r'#\s(\d+\.\d+\.\d+)\s-\s\((.*)\)')
-    PATTERN_ENTRY = re.compile(r'-\s(.+?):\s+(.+?)(?:\(#(\d+)\))?$')
+    PATTERN_ENTRY = re.compile(r'-\s(.+?):\s+(.+?)(?:\s+\(#(\d+)\))?$')
 
     def __init__(self, changelog_path: str) -> None:
         self._changelog_path = changelog_path
@@ -72,7 +72,8 @@ class ChangelogParser:
 
         return self._parse(lines)
 
-    def _parse(self, lines: list[str]) -> list[Release]:
+    @staticmethod
+    def _parse(lines: list[str]) -> list[Release]:
         releases = []
 
         entries: list[ChangelogEntry] = []
@@ -82,7 +83,7 @@ class ChangelogParser:
                 continue
 
             if line.startswith('#'):
-                match = re.match(self.PATTERN_RELEASE, line)
+                match = re.match(ChangelogParser.PATTERN_RELEASE, line)
                 if match is None:
                     LOGGER.debug(f'Skipping invalid release line: "{line}"')
                     continue
@@ -93,7 +94,7 @@ class ChangelogParser:
                 releases.append(Release(match.group(1), match.group(2), sorted_entries))
                 entries = []
             if line.startswith('-'):
-                match = re.match(self.PATTERN_ENTRY, line)
+                match = re.match(ChangelogParser.PATTERN_ENTRY, line)
                 if match is None:
                     LOGGER.debug(f'Skipping invalid changelog entry line: "{line}"')
                     continue

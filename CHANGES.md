@@ -54,7 +54,8 @@
 - fix: maintenance reminders are now only allowed for distance-based workouts (#170)
 - fix: charts are now shown correctly even if no workouts exist (#169)
 - fix: sorting of planned tours (#172)
-- chore: update dependencies (#164, #167)
+- chore: update dependencies (#164)
+- chore: update dependencies (#167)
 - chore: update georender (#161)
 
 # 1.32.0 - (01.01.25)
