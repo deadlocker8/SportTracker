@@ -210,6 +210,7 @@ def construct_blueprint(
             ),
             editUrl=url_for('plannedTours.edit', tour_id=tour_id),
             tileRenderUrl=tileRenderUrl,
+            tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
             tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
         )
 
