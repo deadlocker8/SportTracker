@@ -1,4 +1,4 @@
-# 1.38.0 - (XX.XX.XX)
+# 1.38.0 - (23.04.25)
 - add: add example docker compose files and documentation on how to run via docker compose (#195)
 - add: build libs.js and main.css in Dockerfile instead of checking them in (#196)
 - add: new chart: number of new visited tiles per year per workout type (#175)
