@@ -13,7 +13,7 @@ from sqlalchemy import extract, func, String, asc, desc
 
 from sporttracker.helpers.Helpers import format_duration
 from sporttracker.logic import Constants
-from sporttracker.logic.QuickFilterState import QuickFilterState
+from sporttracker.logic.QuickFilterState import QuickFilterState, get_quick_filter_state_from_session
 from sporttracker.logic.model.CustomWorkoutField import (
     get_custom_fields_grouped_by_workout_types,
     get_custom_field_by_id,
@@ -348,6 +348,8 @@ def construct_blueprint(
             'months': [],
         }
 
+        quickFilterState = get_quick_filter_state_from_session()
+
         months = []
         for monthNumber in range(1, 13):
             currentMonthDate = date(year=year, month=monthNumber, day=1)
@@ -359,7 +361,7 @@ def construct_blueprint(
             for dayNumber in range(1, numberOfDays + 1):
                 numberOfWorkoutsPerType = {}
                 colors = []
-                for workoutType in WorkoutType:
+                for workoutType in quickFilterState.get_active_types():
                     numberOfWorkouts = __get_number_of_workouts_per_day_by_type(
                         workouts, workoutType, year, monthNumber, dayNumber
                     )
@@ -395,6 +397,7 @@ def construct_blueprint(
             calendarData=calendarData,
             availableYears=get_available_years(current_user.id),
             selectedYear=year,
+            quickFilterState=quickFilterState,
         )
 
     def __get_number_of_workouts_per_day_by_type(

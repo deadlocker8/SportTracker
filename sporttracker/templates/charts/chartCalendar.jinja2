@@ -11,7 +11,7 @@
 
         <div id="main" class="center-align">
             <section class="py-5 text-center calendar-container">
-                <div class="row mb-3">
+                <div class="row mb-2">
                     <div class="col col-12 mx-auto">
                         {% call macros.headline(gettext('Calendar') + ' ' + selectedYear | string) %}
                             <span class="material-symbols-outlined filled fs-1">leaderboard</span>
@@ -19,7 +19,9 @@
                     </div>
                 </div>
 
-                 <div class="row mb-3">
+                {{ macros.workout_type_quick_filter(url_for('charts.chartCalendar', year=selectedYear), false) }}
+
+                 <div class="row mb-3 mt-4">
                     <div class="col col-12 mx-auto">
                         {% for year in availableYears %}
                             <a href="{{ url_for('charts.chartCalendar', year=year) }}" class="btn btn-primary btn-sm">

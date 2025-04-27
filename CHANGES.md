@@ -1,6 +1,7 @@
 # 1.39.0 - (XX.XX.XX)
 - add: chart "number of new visited tiles per year": extend chart to show number of new visited tiles per year in total and separately per each workout type (#203)
-- planned tour map: add checkbox to toggle visibility of max square of tile hunting (#204)
+- add: planned tour map: add checkbox to toggle visibility of max square of tile hunting (#204)
+- add: calendar: add workout type quick filter (205)
 
 # 1.38.0 - (23.04.25)
 - add: add example docker compose files and documentation on how to run via docker compose (#195)
