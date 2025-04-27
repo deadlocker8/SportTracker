@@ -83,7 +83,7 @@ def construct_blueprint(
 
     def __get_min_and_max_year() -> tuple[int | None, int | None]:
         result = db.session.query(
-            func.min(Workout.start_time),
+            func.min(Workout.start_time).filter(Workout.user_id == current_user.id),
             func.max(Workout.start_time).filter(Workout.user_id == current_user.id),
         ).first()
 
