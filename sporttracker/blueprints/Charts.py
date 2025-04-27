@@ -337,6 +337,7 @@ def construct_blueprint(
         return render_template(
             'charts/chartSpeedPerWorkout.jinja2',
             chartDataSpeedPerWorkout=chartDataSpeedPerWorkout,
+            chartTitle=f'{gettext("Speed per Workout")} "{workout.name}"',
         )
 
     @charts.route('/calendar/<int:year>')
