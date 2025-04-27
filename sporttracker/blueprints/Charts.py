@@ -543,23 +543,41 @@ def construct_blueprint(
     def chartNewTilesPerYear():
         minYear, maxYear = __get_min_and_max_year()
 
-        chartDataNewTilesPerYear: list[dict[str, Any]] = []
+        chartDataTotalNumberNewTilesPerYear: list[dict[str, Any]] = []
+        chartDataNumberNewTilesPerTypePerYear: list[dict[str, Any]] = []
         if minYear is not None and maxYear is not None:
-            chartDataNewTilesPerYear = __get_number_of_new_tiles_per_year_per_type(minYear, maxYear)
+            visitedTileService = VisitedTileService(
+                newVisitedTileCache,
+                maxSquareCache,
+                QuickFilterState(),
+                get_available_years(current_user.id),
+                distanceWorkoutService,
+            )
 
-        return render_template('charts/chartNewTilesPerYear.jinja2', chartDataNewTilesPerYear=chartDataNewTilesPerYear)
+            chartDataTotalNumberNewTilesPerYear = __get_total_number_of_new_tiles_per_year_per_type(
+                visitedTileService, minYear, maxYear
+            )
+            chartDataNumberNewTilesPerTypePerYear = __get_number_of_new_tiles_per_year_per_type(
+                visitedTileService, minYear, maxYear
+            )
 
-    def __get_number_of_new_tiles_per_year_per_type(minYear: int, maxYear: int) -> list[dict[str, Any]]:
-        visitedTileService = VisitedTileService(
-            newVisitedTileCache,
-            maxSquareCache,
-            QuickFilterState(),
-            get_available_years(current_user.id),
-            distanceWorkoutService,
+        return render_template(
+            'charts/chartNewTilesPerYear.jinja2',
+            chartDataTotalNumberNewTilesPerYear=chartDataTotalNumberNewTilesPerYear,
+            chartDataNumberNewTilesPerTypePerYear=chartDataNumberNewTilesPerTypePerYear,
         )
 
+    def __get_total_number_of_new_tiles_per_year_per_type(
+        visitedTileService: VisitedTileService, minYear: int, maxYear: int
+    ) -> list[dict[str, Any]]:
+        """
+        Calculates the total number of new visited tiles per year.
+        If a tile is visited for the first time in a year but by multiple workout types it will only be counted once.
+        The collected data includes shows the number of new visited tiles for each workout type.
+        A tile will be associated with the workout type that first visits the tile.
+        """
         newVisitedTilesPerTypePerYear = visitedTileService.get_number_of_new_tiles_per_workout_type_per_year(
-            minYear, maxYear
+            minYear, maxYear, WorkoutType.get_distance_workout_types()
         )
 
         result = []
@@ -569,6 +587,31 @@ def construct_blueprint(
                     'yearNames': list(numberOfNewTilesPerYear.keys()),
                     'values': list(numberOfNewTilesPerYear.values()),
                     'texts': [str(e) for e in numberOfNewTilesPerYear.values()],
+                    'type': workoutType,
+                }
+            )
+
+        return result
+
+    def __get_number_of_new_tiles_per_year_per_type(
+        visitedTileService: VisitedTileService, minYear: int, maxYear: int
+    ) -> list[dict[str, Any]]:
+        """
+        Calculates the number of new visited tiles for each workout type separately.
+        This allows tile hunting to be analyzed separately for each workout type.
+        So the number of new tiles are calculated for each workout type regardless if they were already visited by another workout type.
+        """
+        result = []
+        for workoutType in WorkoutType.get_distance_workout_types():
+            newVisitedTilesPerType = visitedTileService.get_number_of_new_tiles_per_workout_type_per_year(
+                minYear, maxYear, [workoutType]
+            )
+
+            result.append(
+                {
+                    'yearNames': list(newVisitedTilesPerType[workoutType].keys()),
+                    'values': list(newVisitedTilesPerType[workoutType].values()),
+                    'texts': [str(e) for e in newVisitedTilesPerType[workoutType].values()],
                     'type': workoutType,
                 }
             )

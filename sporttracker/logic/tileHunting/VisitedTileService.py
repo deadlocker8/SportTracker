@@ -208,16 +208,16 @@ class VisitedTileService:
         return int(math.sqrt(len(maxSquareTilePositions)))
 
     def get_number_of_new_tiles_per_workout_type_per_year(
-        self, min_year: int, max_year: int
+        self, min_year: int, max_year: int, workout_types: list[WorkoutType]
     ) -> dict[WorkoutType, dict[int, int]]:
         numberOfVisitedTilesPerWorkout = self._newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
             current_user.id,
-            self._quickFilterState.get_active_distance_workout_types(),
+            workout_types,
             self._yearFilterState,
         )
 
         result = {}
-        for workoutType in WorkoutType.get_distance_workout_types():
+        for workoutType in workout_types:
             numberOfNewTilesPerYear = {}
             for currentYear in range(min_year, max_year + 1):
                 numberOfNewTiles = 0

@@ -1,54 +1,136 @@
-{% import 'charts/chartMacros.jinja2' as chartMacros with context %}
-{% call chartMacros.chart() %}
-     const data = [
-        {% for entry in chartDataNewTilesPerYear %}
-            {
-                x: {{ entry['yearNames'] }},
-                y: {{ entry['values'] }},
-                type: 'bar',
-                marker: {
-                    color: '{{ entry.type.background_color_hex }}'
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Charts') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('charts') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        {% call macros.headline(gettext('Charts')) %}
+                            <span class="material-symbols-outlined filled fs-1">leaderboard</span>
+                        {% endcall %}
+                    </div>
+                </div>
+
+                <div id="chartContainer"></div>
+                <div id="chartContainer2"></div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+        <script>
+            const data = [
+                {% for entry in chartDataTotalNumberNewTilesPerYear %}
+                    {
+                        x: {{ entry['yearNames'] }},
+                        y: {{ entry['values'] }},
+                        type: 'bar',
+                        marker: {
+                            color: '{{ entry.type.background_color_hex }}'
+                        },
+                        text: {{ entry['texts'] }},
+                        name: '{{ entry.type.name | capitalize }}'
+                    },
+                {% endfor %}
+            ];
+
+            const plotlyLayout = {
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                title: {
+                    text: '{{ gettext('Total number of new visited tiles per year') }}',
+                    font: {
+                        color: '#FFFFFF'
+                    }
                 },
-                text: {{ entry['texts'] }},
-                name: '{{ entry.type.name | capitalize }}'
-            },
-        {% endfor %}
-    ];
-
-    const plotlyLayout = {
-        paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)',
-        title: {
-            text: '{{ gettext('Number of new visited tiles per year') }}',
-            font: {
-                color: '#FFFFFF'
+                xaxis: {
+                    type: 'category',
+                    color: '#FFFFFF'
+                },
+                yaxis: {
+                    title: {
+                        text: '{{ gettext('Number of tiles') }}',
+                    },
+                    rangemode: 'tozero',
+                    tickformat: '.0f',
+                    showline: true,
+                    color: '#FFFFFF'
+                },
+                barmode: 'stack',
+                legend: {
+                    font: {
+                        color: '#FFFFFF'
+                    }
+                }
             }
-        },
-        xaxis: {
-            type: 'category',
-            color: '#FFFFFF'
-        },
-        yaxis: {
-            title: {
-                text: '{{ gettext('Number of tiles') }}',
-            },
-            rangemode: 'tozero',
-            tickformat: '.0f',
-            showline: true,
-            color: '#FFFFFF'
-        },
-        barmode: 'stack',
-        legend: {
-            font: {
-                color: '#FFFFFF'
+
+            const plotlyConfig = {
+                responsive: true,
+                displayModeBar: false
+            };
+
+            Plotly.newPlot('chartContainer', data, plotlyLayout, plotlyConfig);
+        </script>
+        <script>
+            const data2 = [
+                {% for entry in chartDataNumberNewTilesPerTypePerYear %}
+                    {
+                        x: {{ entry['yearNames'] }},
+                        y: {{ entry['values'] }},
+                        type: 'bar',
+                        marker: {
+                            color: '{{ entry.type.background_color_hex }}'
+                        },
+                        text: {{ entry['texts'] }},
+                        name: '{{ entry.type.name | capitalize }}'
+                    },
+                {% endfor %}
+            ];
+
+            const plotlyLayout2 = {
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                title: {
+                    text: '{{ gettext('Number of new visited tiles analyzed separately for each workout type per year') }}',
+                    font: {
+                        color: '#FFFFFF'
+                    }
+                },
+                xaxis: {
+                    type: 'category',
+                    color: '#FFFFFF',
+                },
+                yaxis: {
+                    title: {
+                        text: '{{ gettext('Number of tiles') }}',
+                    },
+                    rangemode: 'tozero',
+                    tickformat: '.0f',
+                    showline: true,
+                    color: '#FFFFFF'
+                },
+                barmode: 'group',
+                bargap: 0.4,
+                legend: {
+                    font: {
+                        color: '#FFFFFF'
+                    }
+                }
             }
-        }
-    }
 
-    const plotlyConfig = {
-        responsive: true,
-        displayModeBar: false
-    };
+            const plotlyConfig2 = {
+                responsive: true,
+                displayModeBar: false
+            };
 
-    Plotly.newPlot('chartContainer', data, plotlyLayout, plotlyConfig);
-{% endcall %}
+            Plotly.newPlot('chartContainer2', data2, plotlyLayout2, plotlyConfig2);
+        </script>
+    </body>
+</html>
