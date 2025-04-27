@@ -140,7 +140,7 @@ def construct_blueprint(
         return render_template(
             'charts/chartDistancePerCustomField.jinja2',
             chartDistancePerCustomFieldData=chartDistancePerCustomFieldData,
-            customFieldName=customField.name,
+            chartTitle=f'{gettext("Distance per custom field")} "{customField.name}"',
         )
 
     @charts.route('/chartDistancePerParticipantChooser')

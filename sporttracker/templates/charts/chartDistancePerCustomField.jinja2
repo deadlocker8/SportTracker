@@ -1,5 +1,5 @@
 {% import 'charts/chartMacros.jinja2' as chartMacros with context %}
-{% call chartMacros.chart() %}
+{% call chartMacros.chart(chartTitle) %}
      const data = [
         {
             labels: {{ chartDistancePerCustomFieldData['keys'] }},
@@ -12,12 +12,6 @@
     const plotlyLayout = {
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
-        title: {
-            text: '{{ gettext('Distance per custom field "%(name)s"', name=customFieldName) }}',
-            font: {
-                color: '#FFFFFF'
-            }
-        },
         xaxis: {
             type: 'category',
             color: '#FFFFFF'
