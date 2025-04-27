@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-04-27 22:25+0200\n"
-"PO-Revision-Date: 2025-04-27 22:25+0200\n"
+"POT-Creation-Date: 2025-04-27 22:40+0200\n"
+"PO-Revision-Date: 2025-04-27 22:41+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -888,19 +888,24 @@ msgstr "Legende ausblenden"
 msgid "Show %(length)s linked Workouts"
 msgstr "Zeige %(length)s verlinkte Workouts"
 
-#: ../templates/maps/mapMacros.jinja2:119
+#: ../templates/maps/mapMacros.jinja2:120
 msgid "Show visited tiles"
 msgstr "Besuchte Kacheln anzeigen"
 
-#: ../templates/maps/mapMacros.jinja2:127
+#: ../templates/maps/mapMacros.jinja2:130
 #: ../templates/maps/mapTileHunting.jinja2:88
 #: ../templates/maps/mapTileHuntingHeatmap.jinja2:69
 msgid "Show grid"
 msgstr "Gitter anzeigen"
 
-#: ../templates/maps/mapMacros.jinja2:136
+#: ../templates/maps/mapMacros.jinja2:141
 msgid "Only highlight new tiles"
 msgstr "Nur neue Kacheln hervorheben"
+
+#: ../templates/maps/mapMacros.jinja2:153
+#: ../templates/maps/mapTileHunting.jinja2:96
+msgid "Show max square"
+msgstr "Maximales Quadrat anzeigen"
 
 #: ../templates/maps/mapMultipleWorkouts.jinja2:58
 #: ../templates/maps/mapTileHunting.jinja2:49
@@ -1013,10 +1018,6 @@ msgstr ""
 "aktiviert ist, verwenden alle Kacheln innerhalb des maximalen Quadrats diese "
 "Farbe: <span class=&quot;d-inline-block&quot; style=&quot;width: 10px; height: "
 "10px; background-color: {maxSquareColor};&quot;></span>"
-
-#: ../templates/maps/mapTileHunting.jinja2:96
-msgid "Show max square"
-msgstr "Max. Quadrat anzeigen"
 
 #: ../templates/maps/mapTileHunting.jinja2:101
 #: ../templates/maps/mapTileHuntingHeatmap.jinja2:73

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-04-27 22:25+0200\n"
+"POT-Creation-Date: 2025-04-27 22:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -874,18 +874,23 @@ msgstr ""
 msgid "Show %(length)s linked Workouts"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:119
+#: ../templates/maps/mapMacros.jinja2:120
 msgid "Show visited tiles"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:127
+#: ../templates/maps/mapMacros.jinja2:130
 #: ../templates/maps/mapTileHunting.jinja2:88
 #: ../templates/maps/mapTileHuntingHeatmap.jinja2:69
 msgid "Show grid"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:136
+#: ../templates/maps/mapMacros.jinja2:141
 msgid "Only highlight new tiles"
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:153
+#: ../templates/maps/mapTileHunting.jinja2:96
+msgid "Show max square"
 msgstr ""
 
 #: ../templates/maps/mapMultipleWorkouts.jinja2:58
@@ -990,10 +995,6 @@ msgid ""
 "all tiles inside your max square will use this color: <span class=&quot;d"
 "-inline-block&quot; style=&quot;width: 10px; height: 10px; background-"
 "color: {maxSquareColor};&quot;></span>"
-msgstr ""
-
-#: ../templates/maps/mapTileHunting.jinja2:96
-msgid "Show max square"
 msgstr ""
 
 #: ../templates/maps/mapTileHunting.jinja2:101

@@ -160,6 +160,13 @@
                         {{ materialize_icon('annual statistics trend down', 'trending_down') }}
                         {{ materialize_icon('annual statistics show details down', 'query_stats') }}
                     {% endcall %}
+
+                    {% call group('tile hunting settings') %}
+                        {{ materialize_icon('show visited tiles', 'explore') }}
+                        {{ materialize_icon('show grid', 'window') }}
+                        {{ materialize_icon('show only new', 'more_time') }}
+                        {{ materialize_icon('show max square', 'arrows_output') }}
+                    {% endcall %}
                 </div>
 
                 <div class="d-flex flex-column justify-content-between">
