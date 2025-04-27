@@ -230,6 +230,11 @@ body {
     width: 5rem;
 }
 
+/* plotly hover labe: background for trace name */
+.plotly .hoverlayer .hovertext rect {
+    fill: black !important;
+}
+
 .debug {
     outline: 1px solid red !important;
 }
