@@ -27,7 +27,7 @@
             </div>
 
             {% if editUrl and current_user.isTileHuntingActivated %}
-                {{ mapMacros.tileHuntingMapSettings(tileHuntingIsShowTilesActive, tileHuntingIsGridActive, tileHuntingIsOnlyHighlightNewTilesActive, url_for('maps.showPlannedTour', tour_id=plannedTour.id), false) }}
+                {{ mapMacros.tileHuntingMapSettings(tileHuntingIsShowTilesActive, tileHuntingIsGridActive, tileHuntingIsOnlyHighlightNewTilesActive, url_for('maps.showPlannedTour', tour_id=plannedTour.id), false, true, tileHuntingIsMaxSquareActive) }}
             {% endif %}
         </div>
 

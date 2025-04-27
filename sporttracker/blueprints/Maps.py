@@ -212,6 +212,7 @@ def construct_blueprint(
             tileRenderUrl=tileRenderUrl,
             tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
             tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
+            tileHuntingIsMaxSquareActive=__get_tile_hunting_is_max_square_active(),
         )
 
     @maps.route('/map/plannedTour/shared/<string:shareCode>')
