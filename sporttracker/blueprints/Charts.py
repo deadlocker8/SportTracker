@@ -265,6 +265,7 @@ def construct_blueprint(
         return render_template(
             'charts/chartDurationPerWorkout.jinja2',
             chartDataDurationPerWorkout=chartDataDurationPerWorkout,
+            chartTitle=f'{gettext("Duration per Workout")} "{workout.name}"',
         )
 
     @charts.route('/speedPerWorkoutChooser')
