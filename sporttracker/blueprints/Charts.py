@@ -185,6 +185,7 @@ def construct_blueprint(
             'charts/chartDistancePerParticipant.jinja2',
             chartDistancePerParticipantData=chartDistancePerParticipantData,
             workout_type=workout_type,
+            chartTitle=f'{gettext("Distance per participant for workout type ")} "{workout_type}"',
         )
 
     @charts.route('/chartAverageSpeed')
