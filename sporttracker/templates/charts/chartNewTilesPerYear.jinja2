@@ -19,7 +19,10 @@
                     </div>
                 </div>
 
+                <h5 class="mt-3">{{ gettext('Total number of new visited tiles per year') }}</h5>
                 <div id="chartContainer"></div>
+
+                <h5 class="mt-3">{{ gettext('Number of new visited tiles analyzed separately for each workout type per year') }}</h5>
                 <div id="chartContainer2"></div>
             </section>
         </div>
@@ -45,7 +48,6 @@
                 paper_bgcolor: 'rgba(0,0,0,0)',
                 plot_bgcolor: 'rgba(0,0,0,0)',
                 title: {
-                    text: '{{ gettext('Total number of new visited tiles per year') }}',
                     font: {
                         color: '#FFFFFF'
                     }
@@ -68,7 +70,11 @@
                     font: {
                         color: '#FFFFFF'
                     }
-                }
+                },
+                margin: {
+                    t: 40,
+                    pad: 0
+                },
             }
 
             const plotlyConfig = {
@@ -98,7 +104,6 @@
                 paper_bgcolor: 'rgba(0,0,0,0)',
                 plot_bgcolor: 'rgba(0,0,0,0)',
                 title: {
-                    text: '{{ gettext('Number of new visited tiles analyzed separately for each workout type per year') }}',
                     font: {
                         color: '#FFFFFF'
                     }
@@ -122,7 +127,11 @@
                     font: {
                         color: '#FFFFFF'
                     }
-                }
+                },
+                margin: {
+                    t: 40,
+                    pad: 0
+                },
             }
 
             const plotlyConfig2 = {
