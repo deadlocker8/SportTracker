@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-04-19 00:12+0200\n"
+"POT-Creation-Date: 2025-04-27 21:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,81 +17,81 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: ../blueprints/Achievements.py:49 ../blueprints/Achievements.py:129
+#: ../blueprints/Achievements.py:47 ../blueprints/Achievements.py:125
 msgid "Month Goal Streak"
 msgstr ""
 
-#: ../blueprints/Achievements.py:50 ../blueprints/Achievements.py:130
+#: ../blueprints/Achievements.py:48 ../blueprints/Achievements.py:126
 msgid ""
 "You have achieved all your monthly goals for <span class=\"fw-"
 "bold\">{currentStreak}</span> months in a row!<br>(Best: <span class"
 "=\"fw-bold\">{maxStreak}</span>)"
 msgstr ""
 
-#: ../blueprints/Achievements.py:58 ../blueprints/Achievements.py:138
+#: ../blueprints/Achievements.py:56 ../blueprints/Achievements.py:134
 msgid "no date"
 msgstr ""
 
-#: ../blueprints/Achievements.py:73 ../blueprints/AnnualAchievements.py:278
+#: ../blueprints/Achievements.py:71 ../blueprints/AnnualAchievements.py:250
 msgid "Longest Workout"
 msgstr ""
 
-#: ../blueprints/Achievements.py:74
+#: ../blueprints/Achievements.py:72
 msgid ""
 "You completed <span class=\"fw-bold\">{longestWorkoutDistance} km</span> "
 "in one trip on <span class=\"fw-bold\">{longestWorkoutDate}</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:89 ../blueprints/AnnualAchievements.py:145
+#: ../blueprints/Achievements.py:87 ../blueprints/AnnualAchievements.py:129
 msgid "Total Distance"
 msgstr ""
 
-#: ../blueprints/Achievements.py:90
+#: ../blueprints/Achievements.py:88
 msgid ""
 "You completed a total of <span class=\"fw-bold\">{totalDistance} "
 "km</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:107 ../blueprints/Achievements.py:191
+#: ../blueprints/Achievements.py:103 ../blueprints/Achievements.py:181
 msgid "Best Month"
 msgstr ""
 
-#: ../blueprints/Achievements.py:108
+#: ../blueprints/Achievements.py:104
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
 "<span class=\"fw-bold\">{bestMonthDistance} km</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:157 ../blueprints/AnnualAchievements.py:364
+#: ../blueprints/Achievements.py:151 ../blueprints/AnnualAchievements.py:328
 msgid "Longest Duration"
 msgstr ""
 
-#: ../blueprints/Achievements.py:158
+#: ../blueprints/Achievements.py:152
 msgid ""
 "You completed <span class=\"fw-bold\">{longestDuration} h </span> in one "
 "workout on <span class=\"fw-bold\">{longestDurationDate}</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:173 ../blueprints/AnnualAchievements.py:187
+#: ../blueprints/Achievements.py:167 ../blueprints/AnnualAchievements.py:167
 msgid "Total Duration"
 msgstr ""
 
-#: ../blueprints/Achievements.py:174
+#: ../blueprints/Achievements.py:168
 msgid "You completed a total of <span class=\"fw-bold\">{totalDuration} h</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:192
+#: ../blueprints/Achievements.py:182
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
 "<span class=\"fw-bold\">{bestMonthDuration} h</span>!"
 msgstr ""
 
-#: ../blueprints/AnnualAchievements.py:68
-#: ../blueprints/AnnualAchievements.py:97
+#: ../blueprints/AnnualAchievements.py:62
+#: ../blueprints/AnnualAchievements.py:85
 msgid "Number Of Workouts"
 msgstr ""
 
-#: ../blueprints/AnnualAchievements.py:194
+#: ../blueprints/AnnualAchievements.py:172
 #: ../templates/monthGoals/monthGoalDurationForm.jinja2:87
 #: ../templates/monthGoals/monthGoalDurationForm.jinja2:105
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:95
@@ -100,7 +100,7 @@ msgstr ""
 msgid "Hours"
 msgstr ""
 
-#: ../blueprints/AnnualAchievements.py:321 ../logic/model/User.py:81
+#: ../blueprints/AnnualAchievements.py:289 ../logic/model/User.py:77
 #: ../templates/charts/chartAverageSpeed.jinja2:23
 #: ../templates/charts/chartChooser.jinja2:42
 msgid "Average Speed"
@@ -111,7 +111,7 @@ msgid "Unknown user"
 msgstr ""
 
 #: ../blueprints/Authentication.py:36 ../blueprints/Settings.py:115
-#: ../blueprints/Users.py:75 ../blueprints/Users.py:132
+#: ../blueprints/Users.py:74 ../blueprints/Users.py:128
 msgid "Password must not be empty"
 msgstr ""
 
@@ -119,116 +119,116 @@ msgstr ""
 msgid "Incorrect password"
 msgstr ""
 
-#: ../blueprints/Charts.py:144
+#: ../blueprints/Charts.py:134
 msgid "Unknown"
 msgstr ""
 
-#: ../blueprints/Charts.py:181
+#: ../blueprints/Charts.py:171
 msgid "You"
 msgstr ""
 
-#: ../blueprints/DistanceWorkouts.py:148
+#: ../blueprints/DistanceWorkouts.py:146
 msgid "Error importing data from FIT file"
 msgstr ""
 
-#: ../blueprints/DistanceWorkouts.py:152
+#: ../blueprints/DistanceWorkouts.py:150
 msgid "No file provided"
 msgstr ""
 
-#: ../blueprints/DistanceWorkouts.py:156
+#: ../blueprints/DistanceWorkouts.py:154
 msgid "Invalid file extension. Allowed extension: *.fit"
 msgstr ""
 
-#: ../blueprints/DistanceWorkouts.py:176
+#: ../blueprints/DistanceWorkouts.py:174
 msgid "FIT file does not contain session data"
 msgstr ""
 
-#: ../blueprints/MonthGoalsCount.py:76 ../blueprints/MonthGoalsDistance.py:76
-#: ../blueprints/MonthGoalsDuration.py:100
+#: ../blueprints/MonthGoalsCount.py:74 ../blueprints/MonthGoalsDistance.py:74
+#: ../blueprints/MonthGoalsDuration.py:98
 msgid "End Year must be greater or equal Start Year."
 msgstr ""
 
-#: ../blueprints/MonthGoalsCount.py:79 ../blueprints/MonthGoalsDistance.py:79
-#: ../blueprints/MonthGoalsDuration.py:103
+#: ../blueprints/MonthGoalsCount.py:77 ../blueprints/MonthGoalsDistance.py:77
+#: ../blueprints/MonthGoalsDuration.py:101
 msgid "End Month must be greater or equal Start Month."
 msgstr ""
 
-#: ../blueprints/Settings.py:127 ../blueprints/Users.py:81
-#: ../blueprints/Users.py:140
+#: ../blueprints/Settings.py:127 ../blueprints/Users.py:79
+#: ../blueprints/Users.py:136
 msgid "Password must be at least {0} characters long"
 msgstr ""
 
-#: ../blueprints/Settings.py:431 ../blueprints/Settings.py:474
+#: ../blueprints/Settings.py:423 ../blueprints/Settings.py:466
 #: ../templates/settings/settings.jinja2:277
 msgid "Ntfy Server URL"
 msgstr ""
 
-#: ../blueprints/Settings.py:432 ../blueprints/Settings.py:475
+#: ../blueprints/Settings.py:424 ../blueprints/Settings.py:467
 #: ../templates/settings/settings.jinja2:285
 msgid "Ntfy Topic Name"
 msgstr ""
 
-#: ../blueprints/Settings.py:433 ../blueprints/Settings.py:476
+#: ../blueprints/Settings.py:425 ../blueprints/Settings.py:468
 #: ../templates/login.jinja2:19 ../templates/settings/settings.jinja2:293
 #: ../templates/users/userForm.jinja2:45
 msgid "Username"
 msgstr ""
 
-#: ../blueprints/Settings.py:434 ../blueprints/Settings.py:477
+#: ../blueprints/Settings.py:426 ../blueprints/Settings.py:469
 #: ../templates/login.jinja2:23 ../templates/settings/settings.jinja2:14
 #: ../templates/settings/settings.jinja2:301
 #: ../templates/users/userForm.jinja2:54
 msgid "Password"
 msgstr ""
 
-#: ../blueprints/Settings.py:442 ../blueprints/Settings.py:484
+#: ../blueprints/Settings.py:434 ../blueprints/Settings.py:475
 msgid "Ntfy Settings: {0} must not be empty"
 msgstr ""
 
-#: ../blueprints/Settings.py:493
+#: ../blueprints/Settings.py:483
 msgid "SportTracker: Maintenance reminder test notification"
 msgstr ""
 
-#: ../blueprints/Settings.py:500
+#: ../blueprints/Settings.py:488
 msgid "Test notification successfully sent"
 msgstr ""
 
-#: ../blueprints/Settings.py:503
+#: ../blueprints/Settings.py:490
 msgid "Error sending test notification {0}"
 msgstr ""
 
-#: ../blueprints/Settings.py:509
+#: ../blueprints/Settings.py:495
 msgid ""
 "The specified field name \"{0}\" conflicts with a reserved field name and"
 " therefore can't be used as custom field name."
 msgstr ""
 
-#: ../blueprints/Settings.py:523
+#: ../blueprints/Settings.py:509
 msgid "The specified field name \"{0}\" already exists."
 msgstr ""
 
-#: ../blueprints/Settings.py:534
+#: ../blueprints/Settings.py:518
 msgid "The specified participant name \"{0}\" already exists."
 msgstr ""
 
-#: ../blueprints/Users.py:70 ../blueprints/Users.py:124
+#: ../blueprints/Users.py:70 ../blueprints/Users.py:120
 msgid "Username \"{0}\" already exists"
 msgstr ""
 
 #: ../logic/AchievementCalculator.py:70 ../logic/AchievementCalculator.py:75
-#: ../logic/AchievementCalculator.py:159 ../logic/AchievementCalculator.py:164
+#: ../logic/AchievementCalculator.py:157 ../logic/AchievementCalculator.py:162
 msgid "No month"
 msgstr ""
 
-#: ../logic/model/CustomWorkoutField.py:27
+#: ../logic/model/CustomWorkoutField.py:30
 msgid "String"
 msgstr ""
 
-#: ../logic/model/CustomWorkoutField.py:29
+#: ../logic/model/CustomWorkoutField.py:32
 msgid "Integer"
 msgstr ""
 
-#: ../logic/model/CustomWorkoutField.py:31
+#: ../logic/model/CustomWorkoutField.py:34
 msgid "Float"
 msgstr ""
 
@@ -256,48 +256,48 @@ msgstr ""
 msgid "Repetition-based"
 msgstr ""
 
-#: ../logic/model/PlannedTour.py:43
+#: ../logic/model/PlannedTour.py:46
 msgid "None"
 msgstr ""
 
-#: ../logic/model/PlannedTour.py:45
+#: ../logic/model/PlannedTour.py:48
 msgid "Car"
 msgstr ""
 
-#: ../logic/model/PlannedTour.py:47
+#: ../logic/model/PlannedTour.py:50
 msgid "Train"
 msgstr ""
 
-#: ../logic/model/PlannedTour.py:75
+#: ../logic/model/PlannedTour.py:78
 msgid "Single"
 msgstr ""
 
-#: ../logic/model/PlannedTour.py:77
+#: ../logic/model/PlannedTour.py:80
 msgid "Return"
 msgstr ""
 
-#: ../logic/model/PlannedTour.py:79
+#: ../logic/model/PlannedTour.py:82
 msgid "Roundtrip"
 msgstr ""
 
-#: ../logic/model/User.py:77 ../templates/maps/mapPlannedTour.jinja2:34
-#: ../templates/maps/mapPlannedTour.jinja2:81
+#: ../logic/model/User.py:73 ../templates/maps/mapPlannedTour.jinja2:40
+#: ../templates/maps/mapPlannedTour.jinja2:87
 #: ../templates/maps/mapSingleWorkout.jinja2:45
 #: ../templates/maps/mapSingleWorkout.jinja2:92
 msgid "Distance"
 msgstr ""
 
-#: ../logic/model/User.py:79 ../templates/maps/mapSingleWorkout.jinja2:48
+#: ../logic/model/User.py:75 ../templates/maps/mapSingleWorkout.jinja2:48
 #: ../templates/maps/mapSingleWorkout.jinja2:96
 #: ../templates/workouts/workoutMacros.jinja2:335
 msgid "Duration"
 msgstr ""
 
-#: ../logic/model/User.py:83 ../templates/workouts/workoutMacros.jinja2:361
+#: ../logic/model/User.py:79 ../templates/workouts/workoutMacros.jinja2:361
 msgid "Average Heart Rate"
 msgstr ""
 
-#: ../logic/model/User.py:85 ../templates/maps/mapSingleWorkout.jinja2:124
+#: ../logic/model/User.py:81 ../templates/maps/mapSingleWorkout.jinja2:124
 msgid "Elevation Sum"
 msgstr ""
 
@@ -317,7 +317,7 @@ msgstr ""
 msgid "Fitness Workout"
 msgstr ""
 
-#: ../logic/service/NtfyService.py:54
+#: ../logic/service/NtfyService.py:56
 msgid ""
 "SportTracker: Maintenance \"{name}\" exceeds configured limit\n"
 "\n"
@@ -400,6 +400,8 @@ msgstr ""
 #: ../templates/charts/chartMostPerformedWorkouts.jinja2:5
 #: ../templates/charts/chartMostPerformedWorkoutsChooser.jinja2:6
 #: ../templates/charts/chartMostPerformedWorkoutsChooser.jinja2:18
+#: ../templates/charts/chartNewTilesPerYear.jinja2:5
+#: ../templates/charts/chartNewTilesPerYear.jinja2:16
 #: ../templates/charts/chartSpeedPerWorkoutChooser.jinja2:6
 #: ../templates/charts/chartSpeedPerWorkoutChooser.jinja2:18
 #: ../templates/macros.jinja2:77
@@ -526,7 +528,6 @@ msgid "Most performed workouts"
 msgstr ""
 
 #: ../templates/charts/chartChooser.jinja2:91
-#: ../templates/charts/chartNewTilesPerYear.jinja2:22
 msgid "Number of new visited tiles per year"
 msgstr ""
 
@@ -585,8 +586,19 @@ msgstr ""
 msgid "No workouts for this type"
 msgstr ""
 
-#: ../templates/charts/chartNewTilesPerYear.jinja2:33
+#: ../templates/charts/chartNewTilesPerYear.jinja2:48
+msgid "Total number of new visited tiles per year"
+msgstr ""
+
+#: ../templates/charts/chartNewTilesPerYear.jinja2:59
+#: ../templates/charts/chartNewTilesPerYear.jinja2:112
 msgid "Number of tiles"
+msgstr ""
+
+#: ../templates/charts/chartNewTilesPerYear.jinja2:101
+msgid ""
+"Number of new visited tiles analyzed separately for each workout type per"
+" year"
 msgstr ""
 
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:11
@@ -868,7 +880,7 @@ msgstr ""
 msgid "Show grid"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:135
+#: ../templates/maps/mapMacros.jinja2:136
 msgid "Only highlight new tiles"
 msgstr ""
 
@@ -887,50 +899,50 @@ msgid "Shared Planned Tour"
 msgstr ""
 
 #: ../templates/maps/mapPlannedTour.jinja2:10
-#: ../templates/maps/mapPlannedTour.jinja2:30
-#: ../templates/maps/mapPlannedTour.jinja2:78
+#: ../templates/maps/mapPlannedTour.jinja2:36
+#: ../templates/maps/mapPlannedTour.jinja2:84
 msgid "Planned Tour"
 msgstr ""
 
-#: ../templates/maps/mapPlannedTour.jinja2:41
-#: ../templates/maps/mapPlannedTour.jinja2:89
+#: ../templates/maps/mapPlannedTour.jinja2:47
+#: ../templates/maps/mapPlannedTour.jinja2:95
 #: ../templates/plannedTours/plannedTours.jinja2:96
 msgid "Arrival"
 msgstr ""
 
-#: ../templates/maps/mapPlannedTour.jinja2:44
-#: ../templates/maps/mapPlannedTour.jinja2:93
+#: ../templates/maps/mapPlannedTour.jinja2:50
+#: ../templates/maps/mapPlannedTour.jinja2:99
 #: ../templates/plannedTours/plannedTours.jinja2:100
 msgid "Departure"
 msgstr ""
 
-#: ../templates/maps/mapPlannedTour.jinja2:47
-#: ../templates/maps/mapPlannedTour.jinja2:97
+#: ../templates/maps/mapPlannedTour.jinja2:53
+#: ../templates/maps/mapPlannedTour.jinja2:103
 #: ../templates/plannedTours/plannedTourForm.jinja2:85
 msgid "Direction"
 msgstr ""
 
-#: ../templates/maps/mapPlannedTour.jinja2:55
-#: ../templates/maps/mapPlannedTour.jinja2:139
+#: ../templates/maps/mapPlannedTour.jinja2:61
+#: ../templates/maps/mapPlannedTour.jinja2:145
 #: ../templates/plannedTours/plannedTours.jinja2:126
 msgid "last edited"
 msgstr ""
 
-#: ../templates/maps/mapPlannedTour.jinja2:101
+#: ../templates/maps/mapPlannedTour.jinja2:107
 #: ../templates/maps/mapSingleWorkout.jinja2:132
 msgid "Min Height"
 msgstr ""
 
-#: ../templates/maps/mapPlannedTour.jinja2:109
+#: ../templates/maps/mapPlannedTour.jinja2:115
 #: ../templates/maps/mapSingleWorkout.jinja2:140
 msgid "Max Height"
 msgstr ""
 
-#: ../templates/maps/mapPlannedTour.jinja2:117
+#: ../templates/maps/mapPlannedTour.jinja2:123
 msgid "Uphill"
 msgstr ""
 
-#: ../templates/maps/mapPlannedTour.jinja2:124
+#: ../templates/maps/mapPlannedTour.jinja2:130
 msgid "Downhill"
 msgstr ""
 
