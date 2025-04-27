@@ -235,6 +235,10 @@ body {
     fill: black !important;
 }
 
+.plotly .bartext-outside {
+    fill: #FFFFFF !important;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

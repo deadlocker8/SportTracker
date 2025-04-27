@@ -580,11 +580,19 @@ def construct_blueprint(
             minYear, maxYear, WorkoutType.get_distance_workout_types()
         )
 
+        sumsPerYear = {year: 0 for year in range(minYear, maxYear + 1)}
+        for numberOfNewTilesPerYear in newVisitedTilesPerTypePerYear.values():
+            for years, tileCount in numberOfNewTilesPerYear.items():
+                sumsPerYear[years] = sumsPerYear[years] + tileCount
+
         result = []
         for workoutType, numberOfNewTilesPerYear in newVisitedTilesPerTypePerYear.items():
             result.append(
                 {
-                    'yearNames': list(numberOfNewTilesPerYear.keys()),
+                    'yearNames': [
+                        f'{year}<br><br>{sumsPerYear[year]} {gettext("Tiles")}'
+                        for year, tileCount in numberOfNewTilesPerYear.items()
+                    ],
                     'values': list(numberOfNewTilesPerYear.values()),
                     'texts': [str(e) for e in numberOfNewTilesPerYear.values()],
                     'type': workoutType,

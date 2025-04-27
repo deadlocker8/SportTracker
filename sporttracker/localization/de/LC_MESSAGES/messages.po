@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-04-27 21:02+0200\n"
-"PO-Revision-Date: 2025-04-27 21:03+0200\n"
+"POT-Creation-Date: 2025-04-27 22:25+0200\n"
+"PO-Revision-Date: 2025-04-27 22:25+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -140,6 +140,10 @@ msgstr "Unbekannt"
 #: ../blueprints/Charts.py:171
 msgid "You"
 msgstr "Du"
+
+#: ../blueprints/Charts.py:593
+msgid "Tiles"
+msgstr "Kacheln"
 
 #: ../blueprints/DistanceWorkouts.py:146
 msgid "Error importing data from FIT file"
@@ -599,21 +603,21 @@ msgstr "Die am häufigsten durchgeführten „%(workout_type)s“ Workouts"
 msgid "No workouts for this type"
 msgstr "Keine Workouts dieses Typs"
 
-#: ../templates/charts/chartNewTilesPerYear.jinja2:48
+#: ../templates/charts/chartNewTilesPerYear.jinja2:22
 msgid "Total number of new visited tiles per year"
 msgstr "Anzahl der insgesamt neu besuchten Kacheln pro Jahr"
 
-#: ../templates/charts/chartNewTilesPerYear.jinja2:59
-#: ../templates/charts/chartNewTilesPerYear.jinja2:112
-msgid "Number of tiles"
-msgstr "Anzahl Kacheln"
-
-#: ../templates/charts/chartNewTilesPerYear.jinja2:101
+#: ../templates/charts/chartNewTilesPerYear.jinja2:25
 msgid ""
 "Number of new visited tiles analyzed separately for each workout type per year"
 msgstr ""
 "Anzahl der neu besuchten Kacheln gesondert betrachtet für jeden Workouttyp pro "
 "Jahr"
+
+#: ../templates/charts/chartNewTilesPerYear.jinja2:61
+#: ../templates/charts/chartNewTilesPerYear.jinja2:117
+msgid "Number of tiles"
+msgstr "Anzahl Kacheln"
 
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:11
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:25

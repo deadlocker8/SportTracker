@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-04-27 21:02+0200\n"
+"POT-Creation-Date: 2025-04-27 22:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,6 +125,10 @@ msgstr ""
 
 #: ../blueprints/Charts.py:171
 msgid "You"
+msgstr ""
+
+#: ../blueprints/Charts.py:593
+msgid "Tiles"
 msgstr ""
 
 #: ../blueprints/DistanceWorkouts.py:146
@@ -586,19 +590,19 @@ msgstr ""
 msgid "No workouts for this type"
 msgstr ""
 
-#: ../templates/charts/chartNewTilesPerYear.jinja2:48
+#: ../templates/charts/chartNewTilesPerYear.jinja2:22
 msgid "Total number of new visited tiles per year"
 msgstr ""
 
-#: ../templates/charts/chartNewTilesPerYear.jinja2:59
-#: ../templates/charts/chartNewTilesPerYear.jinja2:112
-msgid "Number of tiles"
-msgstr ""
-
-#: ../templates/charts/chartNewTilesPerYear.jinja2:101
+#: ../templates/charts/chartNewTilesPerYear.jinja2:25
 msgid ""
 "Number of new visited tiles analyzed separately for each workout type per"
 " year"
+msgstr ""
+
+#: ../templates/charts/chartNewTilesPerYear.jinja2:61
+#: ../templates/charts/chartNewTilesPerYear.jinja2:117
+msgid "Number of tiles"
 msgstr ""
 
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:11
