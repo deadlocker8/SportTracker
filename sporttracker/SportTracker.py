@@ -51,6 +51,7 @@ from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.MaintenanceEventsCollector import (
     get_number_of_triggered_maintenance_reminders,
 )
+from sporttracker.logic.model.LongDistanceTour import get_new_long_distance_tour_ids, get_updated_long_distance_tour_ids
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutFieldType
@@ -180,8 +181,8 @@ class SportTracker(FlaskBaseApp):
                 'travelDirections': [x for x in TravelDirection],
                 'newPlannedTourIds': get_new_planned_tour_ids(),
                 'updatedPlannedTourIds': get_updated_planned_tour_ids(),
-                'newLongDistanceTourIds': [],
-                'updatedLongDistanceTourIds': [],
+                'newLongDistanceTourIds': get_new_long_distance_tour_ids(),
+                'updatedLongDistanceTourIds': get_updated_long_distance_tour_ids(),
                 'numberOfTriggeredMaintenanceReminders': get_number_of_triggered_maintenance_reminders(),
                 'currentYear': datetime.now().year,
                 'fitnessWorkoutTypes': [x for x in FitnessWorkoutType],
