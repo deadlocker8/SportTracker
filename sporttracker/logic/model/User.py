@@ -38,6 +38,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
         'DistanceWorkoutInfoItem', backref='user', lazy=True, cascade='delete'
     )
     planned_tours_last_viewed_date: Mapped[DateTime] = mapped_column(DateTime)
+    long_distance_tours_last_viewed_date: Mapped[DateTime] = mapped_column(DateTime)
     isTileHuntingActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     isTileHuntingAccessActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     tileHuntingShareCode: Mapped[str] = mapped_column(String, nullable=True)
@@ -51,6 +52,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
             f'isAdmin: {self.isAdmin}, '
             f'language: {self.language}, '
             f'planned_tours_last_viewed_date: {self.planned_tours_last_viewed_date}, '
+            f'long_distance_tours_last_viewed_date: {self.long_distance_tours_last_viewed_date}, '
             f'isTileHuntingActivated: {self.isTileHuntingActivated}, '
             f'isTileHuntingAccessActivated: {self.isTileHuntingAccessActivated}, '
             f'tileHuntingShareCode: {self.tileHuntingShareCode}, '
@@ -97,6 +99,7 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
         isAdmin=isAdmin,
         language=language,
         planned_tours_last_viewed_date=datetime.now(),
+        long_distance_tours_last_viewed_date=datetime.now(),
         isTileHuntingActivated=True,
         isTileHuntingAccessActivated=False,
         tileHuntingShareCode=None,
