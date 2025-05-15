@@ -112,12 +112,40 @@
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle d-flex align-items-center {% if activeLink == 'maintenance' or activeLink == 'plannedTours' or activeLink == 'about' %}active {% endif %}" href="#" role="button" data-bs-toggle="dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center {% if activeLink == 'plannedTours' or activeLink == 'longDistanceTours' %}active {% endif %}" href="#" role="button" data-bs-toggle="dropdown">
+                                    <span class="navbar-icon">
+                                        <i class="fa-solid fa-lightbulb fa-fw fs-6"></i>
+                                    </span>&nbsp;{{ gettext('Tours') }}
+                                    {% set numberOfUpdatedPlannedTours = newPlannedTourIds|length + updatedPlannedTourIds|length %}
+                                    {% if numberOfUpdatedPlannedTours > 0 or numberOfTriggeredMaintenanceReminders > 0 %}
+                                        <span class="badge rounded-pill bg-danger ms-1">
+                                            {{ numberOfUpdatedPlannedTours + numberOfTriggeredMaintenanceReminders }}
+                                        </span>
+                                    {% endif %}
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center {% if activeLink == 'plannedTours' %}active {% endif %}"
+                                           href="{{ url_for('plannedTours.listPlannedTours') }}">
+                                            <span class="navbar-icon">
+                                                <i class="fa-solid fa-lightbulb fa-fw fs-6"></i>
+                                            </span>&nbsp;{{ gettext('Planned Tours') }}
+                                            {% set numberOfUpdatedPlannedTours = newPlannedTourIds|length + updatedPlannedTourIds|length %}
+                                            {% if numberOfUpdatedPlannedTours > 0 %}
+                                                <span class="badge rounded-pill bg-danger ms-1">
+                                                    {{ numberOfUpdatedPlannedTours }}
+                                                </span>
+                                            {% endif %}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center {% if activeLink == 'maintenance' or activeLink == 'about' %}active {% endif %}" href="#" role="button" data-bs-toggle="dropdown">
                                     <span class="navbar-icon">
                                         <span class="material-symbols-outlined fs-5">format_list_bulleted</span>
                                     </span>&nbsp;{{ gettext('More') }}
-                                    {% set numberOfUpdatedPlannedTours = newPlannedTourIds|length + updatedPlannedTourIds|length %}
-                                    {% if numberOfUpdatedPlannedTours > 0 or numberOfTriggeredMaintenanceReminders > 0 %}
+                                    {% if numberOfTriggeredMaintenanceReminders > 0 %}
                                         <span class="badge rounded-pill bg-danger ms-1">
                                             {{ numberOfUpdatedPlannedTours + numberOfTriggeredMaintenanceReminders }}
                                         </span>
@@ -133,20 +161,6 @@
                                             {% if numberOfTriggeredMaintenanceReminders > 0 %}
                                                 <span class="badge rounded-pill bg-danger ms-1">
                                                     {{ numberOfTriggeredMaintenanceReminders }}
-                                                </span>
-                                            {% endif %}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center {% if activeLink == 'plannedTours' %}active {% endif %}"
-                                           href="{{ url_for('plannedTours.listPlannedTours') }}">
-                                            <span class="navbar-icon">
-                                                <i class="fa-solid fa-lightbulb fa-fw fs-6"></i>
-                                            </span>&nbsp;{{ gettext('Planned Tours') }}
-                                            {% set numberOfUpdatedPlannedTours = newPlannedTourIds|length + updatedPlannedTourIds|length %}
-                                            {% if numberOfUpdatedPlannedTours > 0 %}
-                                                <span class="badge rounded-pill bg-danger ms-1">
-                                                    {{ numberOfUpdatedPlannedTours }}
                                                 </span>
                                             {% endif %}
                                         </a>
