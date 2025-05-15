@@ -41,6 +41,7 @@ from sporttracker.blueprints import (
     MonthGoalsDuration,
     DistanceWorkouts,
     FitnessWorkouts,
+    LongDistanceTours,
 )
 from sporttracker.helpers import Helpers
 from sporttracker.helpers.SettingsChecker import SettingsChecker
@@ -179,6 +180,8 @@ class SportTracker(FlaskBaseApp):
                 'travelDirections': [x for x in TravelDirection],
                 'newPlannedTourIds': get_new_planned_tour_ids(),
                 'updatedPlannedTourIds': get_updated_planned_tour_ids(),
+                'newLongDistanceTourIds': [],
+                'updatedLongDistanceTourIds': [],
                 'numberOfTriggeredMaintenanceReminders': get_number_of_triggered_maintenance_reminders(),
                 'currentYear': datetime.now().year,
                 'fitnessWorkoutTypes': [x for x in FitnessWorkoutType],
@@ -318,6 +321,9 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(MaintenanceEventInstances.construct_blueprint())
         app.register_blueprint(
             PlannedTours.construct_blueprint(app.config['GPX_SERVICE'], self._settings['gpxPreviewImages'])
+        )
+        app.register_blueprint(
+            LongDistanceTours.construct_blueprint(app.config['GPX_SERVICE'], self._settings['gpxPreviewImages'])
         )
         app.register_blueprint(AnnualAchievements.construct_blueprint())
 

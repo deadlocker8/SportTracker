@@ -138,6 +138,14 @@
                                             {% endif %}
                                         </a>
                                     </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center {% if activeLink == 'longDistanceTours' %}active {% endif %}"
+                                           href="{{ url_for('longDistanceTours.listLongDistanceTours') }}">
+                                            <span class="navbar-icon">
+                                                <span class="material-symbols-outlined fs-5">laps</span>
+                                            </span>&nbsp;{{ gettext('Long-distance Tours') }}
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="nav-item dropdown">

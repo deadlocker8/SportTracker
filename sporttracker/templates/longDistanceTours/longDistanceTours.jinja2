@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Long-distance Tours') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light" style="font-family: sans-serif">
+        {{ macros.navbar('longDistanceTours') }}
+        {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
+        {% import 'longDistanceTours/longDistanceToursMacros.jinja2' as longDistanceToursMacros with context %}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row mb-3">
+                    <div class="col col-12 mx-auto">
+                        {% call macros.headline(gettext('Long-distance Tours'), url_for('plannedTours.add')) %}
+                            <i class="material-symbols-outlined fa-fw fs-2">laps</i>
+                        {% endcall %}
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    {{ macros.workout_type_quick_filter(url_for('plannedTours.listPlannedTours'), true) }}
+                </div>
+
+                <div class="row py-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
+                    {% set ns = namespace(index = 0) %}
+                    {% for longDistanceTour in longDistanceTours %}
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <div class="card-header mb-0">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center text-truncate">
+                                            {{ workoutMacros.workout_type_icon_small(longDistanceTour.type, fontSize='fs-3') }}
+                                            <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">
+                                                {{ longDistanceTour.name | e}}
+                                            </div>
+                                        </div>
+                                        {% if longDistanceTour.id in newLongDistanceTourIds %}
+                                            <span class="badge text-bg-danger">{{ gettext('new') }}</span>
+                                        {% elif longDistanceTour.id in updatedLongDistanceTourIds %}
+                                            <span class="badge text-bg-danger">{{ gettext('updated') }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                {% if isGpxPreviewImagesEnabled %}
+                                    <a href="{{ url_for('maps.showLongDistanceTour', tour_id=longDistanceTour.id or -1) }}">
+                                        <img class="img-fluid" src="{{ url_for('gpxTracks.getPreviewImageByLongDistanceTourId', tour_id=longDistanceTour.id) }}" alt="">
+                                    </a>
+                                {% endif %}
+
+                                <div class="card-body">
+                                    <div class="row row-cols-2 row-cols-lg-4 gy-3">
+                                        <div class="col d-flex flex-column align-items-center justify-content-between">
+                                            <div class="fs-5">
+                                                {% if longDistanceTour.gpxMetadata is not none %}
+                                                    {{ (longDistanceTour.gpxMetadata.length / 1000) | format_decimal(2) }}
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </div>
+                                            <div class="fs-6">km</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-footer text-body-secondary d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        {% if longDistanceTour.sharedUsers %}
+                                            <div class="badge rounded-pill text-bg-success d-flex align-items-center me-2">
+                                                <div class="material-symbols-outlined filled fs-5">share</div>
+                                                <div class="fs-6 fw-normal">&nbsp;{{ gettext('shared') }}</div>
+                                            </div>
+                                        {% endif %}
+
+                                        {{ gettext('last edited') }}: {{ longDistanceTour.lastEditDate | format_date() }}
+                                    </div>
+
+                                    <a href="{{ url_for('longDistanceTours.edit', tour_id=longDistanceTour.id) }}" class="btn btn-primary d-inline-flex align-items-center">
+                                        <span class="material-symbols-outlined filled text-light fs-5">edit</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+        <script>
+            const url = "{{ url_for('longDistanceTours.set_last_viewed_date') }}";
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', url);
+            xhr.onload = function()
+            {
+                if(xhr.status !== 204)
+                {
+                    console.error(xhr.response);
+                }
+            };
+            xhr.send();
+        </script>
+    </body>
+</html>
