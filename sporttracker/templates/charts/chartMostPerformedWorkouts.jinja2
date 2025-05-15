@@ -13,7 +13,7 @@
             <section class="py-5 calendar-container">
                 <div class="row mb-3">
                     <div class="col col-12 mx-auto">
-                        {% call macros.headline(gettext('The most performed "%(workout_type)s" workouts', workout_type=workout_type.name), size='fs-2') %}
+                        {% call macros.headline(gettext('The most performed "%(workout_type)s" workouts', workout_type=workout_type.get_localized_name()), size='fs-2') %}
                             <span class="material-symbols-outlined filled fs-1">leaderboard</span>
                         {% endcall %}
                     </div>
