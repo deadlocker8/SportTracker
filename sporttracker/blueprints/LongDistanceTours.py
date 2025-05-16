@@ -12,7 +12,11 @@ from sporttracker.blueprints.PlannedTours import PlannedTourModel, __get_user_mo
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
-from sporttracker.logic.model.LongDistanceTour import LongDistanceTour, get_long_distance_tour_by_id
+from sporttracker.logic.model.LongDistanceTour import (
+    LongDistanceTour,
+    get_long_distance_tour_by_id,
+    get_long_distance_tours,
+)
 from sporttracker.logic.model.User import User, get_user_by_id, get_all_users_except_self_and_admin, get_users_by_ids
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
@@ -50,7 +54,7 @@ class LongDistanceTourModel:
             ownerId=str(longDistanceTour.user_id),
             ownerName=get_user_by_id(longDistanceTour.user_id).username,
             linkedPlannedTours=[
-                PlannedTourModel.create_from_tour(p, False) for p in longDistanceTour.linkedPlannedTours
+                PlannedTourModel.create_from_tour(p, False) for p in longDistanceTour.linked_planned_tours
             ],
         )
 
@@ -79,9 +83,11 @@ def construct_blueprint(gpxService: GpxService, gpxPreviewImageSettings: dict[st
     def listLongDistanceTours():
         quickFilterState = get_quick_filter_state_from_session()
 
+        longDistanceTourList = get_long_distance_tours(quickFilterState.get_active_distance_workout_types())
+
         return render_template(
             'longDistanceTours/longDistanceTours.jinja2',
-            longDistanceTours=[],
+            longDistanceTours=[LongDistanceTourModel.create_from_tour(t) for t in longDistanceTourList],
             quickFilterState=quickFilterState,
             isGpxPreviewImagesEnabled=gpxPreviewImageSettings['enabled'],
         )

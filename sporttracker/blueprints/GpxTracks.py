@@ -94,7 +94,7 @@ def construct_blueprint(gpxService: GpxService, distanceWorkoutService: Distance
         gpxService.delete_gpx(plannedTour, current_user.id)
         return Response(status=204)
 
-    @gpxTracks.route('/previewImage<int:tour_id>')
+    @gpxTracks.route('/previewImage/<int:tour_id>')
     @login_required
     def getPreviewImageByPlannedTourId(tour_id: int):
         plannedTour = get_planned_tour_by_id(tour_id)
@@ -112,6 +112,17 @@ def construct_blueprint(gpxService: GpxService, distanceWorkoutService: Distance
 
         gpxPreviewImageFileName = gpxPreviewImageService.get_preview_image_path()
         return send_file(gpxPreviewImageFileName, mimetype='image/jpg')
+
+    @gpxTracks.route('/previewImage/longDistanceTour/<int:tour_id>')
+    @login_required
+    def getPreviewImageByLongDistanceTourId(tour_id: int):
+        longDistanceTour = get_planned_tour_by_id(tour_id)
+
+        if longDistanceTour is None:
+            abort(404)
+
+        # TODO
+        return send_from_directory('static', path='images/map_placeholder.png', mimetype='image/png')
 
     return gpxTracks
 

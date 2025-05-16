@@ -57,11 +57,8 @@
                                     <div class="row row-cols-2 row-cols-lg-4 gy-3">
                                         <div class="col d-flex flex-column align-items-center justify-content-between">
                                             <div class="fs-5">
-                                                {% if longDistanceTour.gpxMetadata is not none %}
-                                                    {{ (longDistanceTour.gpxMetadata.length / 1000) | format_decimal(2) }}
-                                                {% else %}
-                                                    -
-                                                {% endif %}
+{#                                            TODO #}
+                                                200/1300
                                             </div>
                                             <div class="fs-6">km</div>
                                         </div>

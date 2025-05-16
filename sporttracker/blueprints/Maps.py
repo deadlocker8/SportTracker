@@ -25,6 +25,7 @@ from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Workouts import DistanceWorkoutModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService, GpxParser
+from sporttracker.logic.model.LongDistanceTour import get_long_distance_tour_by_id
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.QuickFilterState import (
@@ -565,6 +566,42 @@ def construct_blueprint(
             numberOfVisits = rows[0].count
 
         return jsonify({'numberOfVisits': numberOfVisits})
+
+    @maps.route('/map/lonDistanceTour/<int:tour_id>')
+    @login_required
+    def showLongDistanceTour(tour_id: int):
+        longDistanceTour = get_long_distance_tour_by_id(tour_id)
+
+        if longDistanceTour is None:
+            abort(404)
+
+        # TODO
+        # tileRenderUrl = url_for(
+        #     'maps.renderAllTiles',
+        #     user_id=current_user.id,
+        #     zoom=0,
+        #     x=0,
+        #     y=0,
+        #     _external=True,
+        # )
+        #
+        # tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
+        #
+        # return render_template(
+        #     'maps/mapPlannedTour.jinja2',
+        #     longDistanceTour=LongDistanceTourModel.create_from_tour(longDistanceTour),
+        #     gpxUrl=url_for(
+        #         'gpxTracks.downloadGpxTrackByPlannedTourId',
+        #         tour_id=tour_id,
+        #         file_format=GpxService.GPX_FILE_EXTENSION,
+        #     ),
+        #     editUrl=url_for('plannedTours.edit', tour_id=tour_id),
+        #     tileRenderUrl=tileRenderUrl,
+        #     tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
+        #     tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
+        #     tileHuntingIsMaxSquareActive=__get_tile_hunting_is_max_square_active(),
+        # )
+        abort(200)
 
     @maps.route('/toggleTileHuntingViewTiles')
     @login_required
