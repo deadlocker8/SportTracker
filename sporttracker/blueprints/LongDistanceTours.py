@@ -11,12 +11,13 @@ from pydantic import BaseModel
 from sporttracker.blueprints.PlannedTours import PlannedTourModel, __get_user_models
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
+from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session, QuickFilterState
 from sporttracker.logic.model.LongDistanceTour import (
     LongDistanceTour,
     get_long_distance_tour_by_id,
     get_long_distance_tours,
 )
+from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_tours_by_ids
 from sporttracker.logic.model.User import User, get_user_by_id, get_all_users_except_self_and_admin, get_users_by_ids
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
@@ -63,6 +64,7 @@ class LongDistanceTourFormModel(BaseModel):
     name: str
     type: str
     sharedUsers: list[str] | str | None = None
+    linkedPlannedTours: list[str] | str | None = None
 
 
 class LongDistanceTourEditFormModel(BaseModel):
@@ -71,6 +73,7 @@ class LongDistanceTourEditFormModel(BaseModel):
     ownerId: str
     ownerName: str
     sharedUsers: list[str] | str | None = None
+    linkedPlannedTours: list[str] | str | None = None
 
 
 def construct_blueprint(gpxService: GpxService, gpxPreviewImageSettings: dict[str, Any]) -> Blueprint:
@@ -98,6 +101,7 @@ def construct_blueprint(gpxService: GpxService, gpxPreviewImageSettings: dict[st
         return render_template(
             'longDistanceTours/longDistanceTourForm.jinja2',
             users=__get_user_models(get_all_users_except_self_and_admin()),
+            plannedTours=__get_available_planned_tours(get_quick_filter_state_from_session()),
         )
 
     @longDistanceTours.route('/post', methods=['POST'])
@@ -107,6 +111,9 @@ def construct_blueprint(gpxService: GpxService, gpxPreviewImageSettings: dict[st
         sharedUserIds = [int(item) for item in request.form.getlist('sharedUsers')]
         sharedUsers = get_users_by_ids(sharedUserIds)
 
+        linkedPlannedTourIds = [int(item) for item in request.form.getlist('linkedPlannedTours')]
+        linkedPlannedTours = get_planned_tours_by_ids(linkedPlannedTourIds)
+
         longDistanceTour = LongDistanceTour(
             name=form.name,
             type=WorkoutType(form.type),  # type: ignore[call-arg]
@@ -115,6 +122,7 @@ def construct_blueprint(gpxService: GpxService, gpxPreviewImageSettings: dict[st
             last_edit_date=datetime.now(),
             last_edit_user_id=current_user.id,
             shared_users=sharedUsers,
+            linked_planned_tours=linkedPlannedTours,
         )
 
         LOGGER.debug(f'Saved new long-distance tour: {longDistanceTour}')
@@ -137,6 +145,7 @@ def construct_blueprint(gpxService: GpxService, gpxPreviewImageSettings: dict[st
             ownerId=str(longDistanceTour.user_id),
             ownerName=get_user_by_id(longDistanceTour.user_id).username,
             sharedUsers=[str(user.id) for user in longDistanceTour.shared_users],
+            linkedPlannedTours=[str(user.id) for user in longDistanceTour.linked_planned_tours],
         )
 
         return render_template(
@@ -144,6 +153,7 @@ def construct_blueprint(gpxService: GpxService, gpxPreviewImageSettings: dict[st
             longDistanceTour=tourModel,
             tour_id=tour_id,
             users=__get_user_models(get_all_users_except_self_and_admin()),
+            plannedTours=__get_available_planned_tours(get_quick_filter_state_from_session()),
         )
 
     @longDistanceTours.route('/edit/<int:tour_id>', methods=['POST'])
@@ -163,6 +173,10 @@ def construct_blueprint(gpxService: GpxService, gpxPreviewImageSettings: dict[st
         sharedUserIds = [int(item) for item in request.form.getlist('sharedUsers')]
         sharedUsers = get_users_by_ids(sharedUserIds)
         longDistanceTour.shared_users = sharedUsers
+
+        linkedPlannedTourIds = [int(item) for item in request.form.getlist('linkedPlannedTours')]
+        linkedPlannedTours = get_planned_tours_by_ids(linkedPlannedTourIds)
+        longDistanceTour.linked_planned_tours = linkedPlannedTours
 
         LOGGER.debug(f'Updated long-distance tour: {longDistanceTour}')
         db.session.commit()
@@ -196,3 +210,8 @@ def construct_blueprint(gpxService: GpxService, gpxPreviewImageSettings: dict[st
         return Response(status=204)
 
     return longDistanceTours
+
+
+def __get_available_planned_tours(quickFilterState: QuickFilterState) -> list[PlannedTourModel]:
+    plannedTours = get_planned_tours(quickFilterState.get_active_distance_workout_types())
+    return [PlannedTourModel.create_from_tour(t, False) for t in plannedTours]

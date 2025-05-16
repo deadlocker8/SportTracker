@@ -1,5 +1,31 @@
 <!DOCTYPE html>
 
+{% macro long_distance_tour_planned_tours_selector(longDistanceTours, plannedTours) -%}
+    <div class="mb-3">
+        <label for="linked-planned-tours" class="form-label">
+            <div class="d-flex align-items-center">
+                <i class="fa-solid fa-lightbulb fa-fw fs-4 me-3"></i>
+                <span>{{ gettext('Select planned tours') }}</span>
+            </div>
+        </label>
+        {% for plannedTour in plannedTours %}
+            <div class="form-check input-field-margin">
+                <input class="form-check-input linked-planned-tour-checkbox" type="checkbox" {% if longDistanceTours and (plannedTour.id|string in longDistanceTours.linkedPlannedTours) %}checked{% endif %} id="linkedPlannedTour-{{ plannedTour.id }}" name="linkedPlannedTours" value="{{ plannedTour.id }}">
+                <label class="form-check-label" for="linkedPlannedTour-{{ plannedTour.id }}">
+                    {{ plannedTour.name | e | capitalize }}
+                </label>
+            </div>
+        {% endfor %}
+
+        {% if not plannedTours %}
+            <div class="d-flex align-items-center input-field-margin">
+                <span class="material-symbols-outlined fs-4 me-2">info</span>
+                <span>{{ gettext('No planned tours available') }}</span>
+            </div>
+        {% endif %}
+    </div>
+{%- endmacro %}
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -67,6 +93,8 @@
                                 </div>
                             </div>
                             {{ plannedToursMacros.planned_tour_form_shared_users(longDistanceTour, users)}}
+
+                            {{ long_distance_tour_planned_tours_selector(longDistanceTour, plannedTours) }}
 
                             <button type="submit" id="buttonSaveLongDistanceTour" class="btn btn-success mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
                         </form>

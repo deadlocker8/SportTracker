@@ -206,6 +206,10 @@ def get_planned_tours(workoutTypes: list[WorkoutType]) -> list[PlannedTour]:
     return natsorted(plannedTours, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
 
 
+def get_planned_tours_by_ids(ids: list[int]) -> list[PlannedTour]:
+    return [p for p in get_planned_tours(WorkoutType.get_distance_workout_types()) if p.id in ids]
+
+
 def get_planned_tours_filtered(
     workoutTypes: list[WorkoutType], plannedTourFilterState: 'PlannedTourFilterState'
 ) -> list[PlannedTour]:
