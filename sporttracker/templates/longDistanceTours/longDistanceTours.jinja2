@@ -56,8 +56,7 @@
                                     <div class="row row-cols-2 gy-3">
                                         <div class="col d-flex flex-column align-items-center justify-content-between">
                                             <div class="fs-5">
-{#                                            TODO #}
-                                                200 / 1300
+                                                {{ (longDistanceTour.get_completed_distance() / 1000) | format_decimal(1) }} / {{ (longDistanceTour.get_total_distance() / 1000) | format_decimal(1) }}
                                             </div>
                                             <div class="fs-6">km</div>
                                         </div>

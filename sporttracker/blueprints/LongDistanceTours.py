@@ -62,6 +62,27 @@ class LongDistanceTourModel:
     def get_number_of_completed_stages(self) -> int:
         return len([t for t in self.linkedPlannedTours if len(t.linkedWorkouts) > 0])
 
+    def get_total_distance(self) -> float:
+        totalDistance = 0
+        for planned_tour in self.linkedPlannedTours:
+            if planned_tour.gpxMetadata is not None:
+                totalDistance += planned_tour.gpxMetadata.length
+
+        return totalDistance
+
+    def get_completed_distance(self) -> float:
+        completedDistance = 0
+        for planned_tour in self.linkedPlannedTours:
+            if planned_tour.gpxMetadata is None:
+                continue
+
+            if len(planned_tour.linkedWorkouts) == 0:
+                continue
+
+            completedDistance += planned_tour.gpxMetadata.length
+
+        return completedDistance
+
 
 class LongDistanceTourFormModel(BaseModel):
     name: str
