@@ -55,9 +55,12 @@ class LongDistanceTourModel:
             ownerId=str(longDistanceTour.user_id),
             ownerName=get_user_by_id(longDistanceTour.user_id).username,
             linkedPlannedTours=[
-                PlannedTourModel.create_from_tour(p, False) for p in longDistanceTour.linked_planned_tours
+                PlannedTourModel.create_from_tour(p, True) for p in longDistanceTour.linked_planned_tours
             ],
         )
+
+    def get_number_of_completed_stages(self) -> int:
+        return len([t for t in self.linkedPlannedTours if len(t.linkedWorkouts) > 0])
 
 
 class LongDistanceTourFormModel(BaseModel):

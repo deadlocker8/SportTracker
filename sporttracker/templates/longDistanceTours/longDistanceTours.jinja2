@@ -53,13 +53,20 @@
                                 {% endif %}
 
                                 <div class="card-body">
-                                    <div class="row row-cols-2 row-cols-lg-4 gy-3">
+                                    <div class="row row-cols-2 gy-3">
                                         <div class="col d-flex flex-column align-items-center justify-content-between">
                                             <div class="fs-5">
 {#                                            TODO #}
-                                                200/1300
+                                                200 / 1300
                                             </div>
                                             <div class="fs-6">km</div>
+                                        </div>
+
+                                        <div class="col d-flex flex-column align-items-center justify-content-between">
+                                            <div class="fs-5">
+                                                {{ longDistanceTour.get_number_of_completed_stages() }} / {{ longDistanceTour.linkedPlannedTours|length }}
+                                            </div>
+                                            <div class="fs-6">{{ gettext('Stages') }}</div>
                                         </div>
                                     </div>
                                 </div>
