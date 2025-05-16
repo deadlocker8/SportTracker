@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {% if longDistanceTour %}{{ gettext('Edit Long-distance Tour') }}{% else %}{{ gettext('New Long-distance Tour') }}{% endif %}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('longDistanceTours') }}
+
+        {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
+        {% import 'longDistanceTours/longDistanceToursMacros.jinja2' as longDistanceToursMacros with context %}
+        {% import 'plannedTours/plannedToursMacros.jinja2' as plannedToursMacros with context %}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        {% if longDistanceTour %}
+                            {% call macros.headline(gettext('Edit Long-distance Tour')) %}
+                                <i class="material-symbols-outlined fs-2">laps</i>
+                            {% endcall %}
+                            {% if current_user.id|string == longDistanceTour.ownerId %}
+                                <button id="button-delete" type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                                    <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
+                                </button>
+                            {% endif %}
+
+                            {% call macros.deleteModal(gettext('Delete Long-distance Tour?'), gettext('Do you really want to delete this long-distance tour?')) %}
+                                <a href="{{ url_for('longDistanceTours.delete', tour_id=tour_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                            {% endcall %}
+                        {% else %}
+                            {% call macros.headline(gettext('New Long-distance Tour')) %}
+                                <i class="material-symbols-outlined fs-2">laps</i>
+                            {% endcall %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row mt-5 text-start">
+                    <div class="col col-11 col-md-9 mx-auto">
+                        <form role="form" action="{% if longDistanceTour %}{{ url_for('longDistanceTours.editPost', tour_id=tour_id) }}{% else %}{{ url_for('longDistanceTours.addPost') }}{% endif %}"
+                              method="post"
+                              enctype=multipart/form-data>
+                            <div class="mb-3">
+                                <label for="long-distance-tour-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="material-symbols-outlined filled me-3">stars</span>
+                                    <select class="form-select" id="long-distance-tour-type" name="type" required="required">
+                                        {% for workoutType in distanceWorkoutTypes %}
+                                            <option value="{{ workoutType.name }}" {% if longDistanceTour and longDistanceTour.type == workoutType.name %}selected{% endif %}>{{ workoutType.get_localized_name() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-group">
+                                    <label for="long-distance-tour-name" class="form-label input-field-margin">{{ gettext('Name') }}</label>
+                                    <div class="d-flex align-items-center">
+                                        <span class="material-symbols-outlined filled me-3">edit</span>
+                                        <input type="text" class="form-control" id="long-distance-tour-name"
+                                               name="name" required="required"
+                                               {% if longDistanceTour %}value="{{ longDistanceTour.name | e }}"{% endif %}>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ plannedToursMacros.planned_tour_form_shared_users(plannedTour, users)}}
+
+                            <button type="submit" id="buttonSaveLongDistanceTour" class="btn btn-success mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>
