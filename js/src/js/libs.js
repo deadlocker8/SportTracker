@@ -30,3 +30,8 @@ import Plotly from 'plotly.js-basic-dist-min'
 // autocomplete
 import Autocomplete from "bootstrap5-autocomplete/autocomplete.js";
 window.Autocomplete = Autocomplete
+
+// sortablejs
+import { Sortable, OnSpill } from 'sortablejs/modular/sortable.core.esm.js';
+Sortable.mount(OnSpill);
+window.Sortable = Sortable
