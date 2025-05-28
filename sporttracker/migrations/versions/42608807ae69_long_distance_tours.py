@@ -71,8 +71,9 @@ def upgrade():
     if 'long_distance_tour_planned_tour_association' not in tableNames:
         op.create_table(
             'long_distance_tour_planned_tour_association',
-            sa.Column('long_distance_tour_id', sa.Integer(), nullable=True),
-            sa.Column('planned_tour_id', sa.Integer(), nullable=True),
+            sa.Column('long_distance_tour_id', sa.Integer(), nullable=False),
+            sa.Column('planned_tour_id', sa.Integer(), nullable=False),
+            sa.Column('order', sa.Integer(), nullable=False),
             sa.ForeignKeyConstraint(
                 ['long_distance_tour_id'],
                 ['long_distance_tour.id'],
@@ -81,6 +82,7 @@ def upgrade():
                 ['planned_tour_id'],
                 ['planned_tour.id'],
             ),
+            sa.PrimaryKeyConstraint('long_distance_tour_id', 'planned_tour_id'),
         )
 
 

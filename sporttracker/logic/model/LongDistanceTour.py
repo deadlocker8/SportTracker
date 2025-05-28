@@ -8,7 +8,6 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 from sqlalchemy.sql import or_
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
-from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
@@ -20,12 +19,11 @@ long_distance_tour_user_association = Table(
     Column('user_id', ForeignKey('user.id')),
 )
 
-long_distance_tour_planned_tour_association = Table(
-    'long_distance_tour_planned_tour_association',
-    db.Model.metadata,
-    Column('long_distance_tour_id', ForeignKey('long_distance_tour.id')),
-    Column('planned_tour_id', ForeignKey('planned_tour.id')),
-)
+
+class LongDistanceTourPlannedTourAssociation(db.Model):  # type: ignore[name-defined]
+    long_distance_tour_id: Mapped[int] = mapped_column(ForeignKey('long_distance_tour.id'), primary_key=True)
+    planned_tour_id: Mapped[int] = mapped_column(ForeignKey('planned_tour.id'), primary_key=True)
+    order: Mapped[int]
 
 
 class LongDistanceTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
@@ -37,9 +35,7 @@ class LongDistanceTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     last_edit_user_id: Mapped[int] = mapped_column(Integer, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     shared_users: Mapped[list[User]] = relationship(secondary=long_distance_tour_user_association)
-    linked_planned_tours: Mapped[list[PlannedTour]] = relationship(
-        secondary=long_distance_tour_planned_tour_association
-    )
+    linked_planned_tours: Mapped[list['LongDistanceTourPlannedTourAssociation']] = relationship()
 
     def __repr__(self):
         return (
