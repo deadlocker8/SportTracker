@@ -63,7 +63,7 @@ class LongDistanceTourModel:
         return len([t for t in self.linkedPlannedTours if len(t.linkedWorkouts) > 0])
 
     def get_total_distance(self) -> float:
-        totalDistance = 0
+        totalDistance = 0.0
         for planned_tour in self.linkedPlannedTours:
             if planned_tour.gpxMetadata is not None:
                 totalDistance += planned_tour.gpxMetadata.length
@@ -71,7 +71,7 @@ class LongDistanceTourModel:
         return totalDistance
 
     def get_completed_distance(self) -> float:
-        completedDistance = 0
+        completedDistance = 0.0
         for planned_tour in self.linkedPlannedTours:
             if planned_tour.gpxMetadata is None:
                 continue
