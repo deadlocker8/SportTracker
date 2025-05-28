@@ -35,7 +35,9 @@ class LongDistanceTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     last_edit_user_id: Mapped[int] = mapped_column(Integer, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     shared_users: Mapped[list[User]] = relationship(secondary=long_distance_tour_user_association)
-    linked_planned_tours: Mapped[list['LongDistanceTourPlannedTourAssociation']] = relationship()
+    linked_planned_tours: Mapped[list['LongDistanceTourPlannedTourAssociation']] = relationship(
+        cascade='all,delete-orphan'
+    )
 
     def __repr__(self):
         return (
@@ -48,7 +50,7 @@ class LongDistanceTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
             f'last_edit_user_id: {self.last_edit_user_id}, '
             f'user_id: {self.user_id}, '
             f'shared_users: {[user.id for user in self.shared_users]}, '
-            f'linked_planned_tours: {[p.id for p in self.linked_planned_tours]})'
+            f'linked_planned_tours: {[p.planned_tour_id for p in self.linked_planned_tours]})'
         )
 
 

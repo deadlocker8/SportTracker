@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-{% macro long_distance_tour_planned_tours_selector(longDistanceTours, plannedTours) -%}
+{% macro long_distance_tour_planned_tours_selector(longDistanceTour, plannedTours) -%}
     <div class="mb-3">
         <label for="linked-planned-tours" class="form-label">
             <div class="d-flex align-items-center">
@@ -8,21 +8,59 @@
                 <span>{{ gettext('Select planned tours') }}</span>
             </div>
         </label>
-        {% for plannedTour in plannedTours %}
-            <div class="form-check input-field-margin">
-                <input class="form-check-input linked-planned-tour-checkbox" type="checkbox" {% if longDistanceTours and (plannedTour.id|string in longDistanceTours.linkedPlannedTours) %}checked{% endif %} id="linkedPlannedTour-{{ plannedTour.id }}" name="linkedPlannedTours" value="{{ plannedTour.id }}">
-                <label class="form-check-label" for="linkedPlannedTour-{{ plannedTour.id }}">
-                    {{ plannedTour.name | e | capitalize }}
-                </label>
-            </div>
-        {% endfor %}
 
-        {% if not plannedTours %}
-            <div class="d-flex align-items-center input-field-margin">
-                <span class="material-symbols-outlined fs-4 me-2">info</span>
-                <span>{{ gettext('No planned tours available') }}</span>
+        <div class="input-field-margin">
+
+{#            TODO: update visibility on all stages removed / at least one added #}
+            {% if longDistanceTour and longDistanceTour.linkedPlannedTours %}
+                <div class="d-flex align-items-center justify-content-start mb-3">
+                    <span class="material-symbols-outlined fs-4 me-2">info</span>
+                    <span>{{ gettext('Re-order stages via drag & drop.') }}</span>
+                </div>
+            {% else %}
+                <div class="d-flex align-items-center">
+                    <span class="material-symbols-outlined fs-4 me-2">info</span>
+                    <span>{{ gettext('No planned tours linked') }}</span>
+                </div>
+            {% endif %}
+
+            <div class="d-flex align-items-center justify-content-start">
+                <ul id="long-distance-tour-orders" class="list-group me-3"></ul>
+
+                <ul id="long-distance-tour-planned-tours" class="list-group flex-grow-1">
+                    {% for plannedTour in plannedTours %}
+                        {% if longDistanceTour and plannedTour.id|string in longDistanceTour.linkedPlannedTours %}
+                            <li class="list-group-item d-flex align-items-center" id="long-distance-tour-linked-planned-tour-{{ loop.index }}">
+                                <span class="flex-grow-1">{{ plannedTour.name | e | capitalize }}</span>
+                                <i class="material-symbols-outlined fs-5 button-long-distance-tour-unlink-planned-tour" data-order="{{ loop.index }}" data-id="{{ plannedTour.id }}">delete</i>
+                                <input type="hidden" name="linkedPlannedTours" value="{{ plannedTour.id }}">
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
-        {% endif %}
+
+            <div class="my-3">
+                <div class="form-group">
+                    <div class="d-flex align-items-center">
+                        <input type="text" class="form-control" id="long-distance-tour-planned-tour-search" placeholder="{{ gettext('Geplante Touren durchsuchen') }}"/>
+                    </div>
+                </div>
+            </div>
+
+            <ul id="long-distance-tour-available-planned-tours" class="list-group">
+                {% for plannedTour in plannedTours %}
+                    <button type="button" class="list-group-item list-group-item-action button-long-distance-tour-add-planned-tour {% if longDistanceTour and plannedTour.id|string in longDistanceTour.linkedPlannedTours %}hidden{% endif %}" data-id="{{ plannedTour.id }}">{{ plannedTour.name | e | capitalize }}</button>
+                {% endfor %}
+            </ul>
+
+            {% if not plannedTours %}
+                <div class="d-flex align-items-center">
+                    <span class="material-symbols-outlined fs-4 me-2">info</span>
+                    <span>{{ gettext('No planned tours available') }}</span>
+                </div>
+            {% endif %}
+        </div>
     </div>
 {%- endmacro %}
 
@@ -104,5 +142,9 @@
         </div>
 
         {{ macros.scripts() }}
+        <script>
+            localeStage = '{{ gettext('Stage') }}';
+        </script>
+        <script defer src="{{ url_for('static', filename='js/longDistanceTours.js') }}" type="text/javascript"></script>
     </body>
 </html>

@@ -239,6 +239,10 @@ body {
     fill: #FFFFFF !important;
 }
 
+.button-long-distance-tour-unlink-planned-tour:hover {
+    cursor: pointer;
+}
+
 .debug {
     outline: 1px solid red !important;
 }
