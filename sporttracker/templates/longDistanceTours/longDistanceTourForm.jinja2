@@ -10,7 +10,6 @@
         </label>
 
         <div class="input-field-margin">
-
             <div id="info-drag-and-drop" class="d-flex align-items-center justify-content-start mb-3 hidden">
                 <span class="material-symbols-outlined fs-4 me-2">info</span>
                 <span>{{ gettext('Re-order stages via drag & drop') }}</span>
@@ -46,16 +45,17 @@
 
             <ul id="long-distance-tour-available-planned-tours" class="list-group">
                 {% for plannedTour in plannedTours %}
-                    <button type="button" class="list-group-item list-group-item-action button-long-distance-tour-add-planned-tour {% if longDistanceTour and plannedTour.id|string in longDistanceTour.linkedPlannedTours %}hidden{% endif %}" data-id="{{ plannedTour.id }}">{{ plannedTour.name | e | capitalize }}</button>
+                    <button type="button"
+                            class="list-group-item list-group-item-action button-long-distance-tour-add-planned-tour {% if longDistanceTour and plannedTour.id|string in longDistanceTour.linkedPlannedTours %}hidden{% endif %}"
+                            data-id="{{ plannedTour.id }}"
+                            data-type="{{ plannedTour.type.name }}">{{ plannedTour.name | e | capitalize }}</button>
                 {% endfor %}
             </ul>
 
-            {% if not plannedTours %}
-                <div class="d-flex align-items-center">
-                    <span class="material-symbols-outlined fs-4 me-2">info</span>
-                    <span>{{ gettext('No planned tours available') }}</span>
-                </div>
-            {% endif %}
+            <div id="info-no-planned-tours" class="d-flex align-items-center hidden">
+                <span class="material-symbols-outlined fs-4 me-2">info</span>
+                <span>{{ gettext('No planned tours available') }}</span>
+            </div>
         </div>
     </div>
 {%- endmacro %}
