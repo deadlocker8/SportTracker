@@ -64,6 +64,7 @@ function updateStageOrders()
         let newItem = document.createElement('li');
         newItem.classList.add('list-group-item', 'fw-bold');
         newItem.innerText = localeStage + ' ' + (i + 1);
+        newItem.style.whiteSpace = 'nowrap';
 
         ordersList.appendChild(newItem);
     }
