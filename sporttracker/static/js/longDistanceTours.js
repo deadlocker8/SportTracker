@@ -1,5 +1,6 @@
 const linkedPlannedToursList = document.getElementById('long-distance-tour-planned-tours');
-const availablePlannedToursList = document.getElementById('long-distance-tour-available-planned-tours');
+const infoDragAndDrop = document.getElementById('info-drag-and-drop');
+const infoNoLinkedTours = document.getElementById('info-no-linked-tours');
 
 new Sortable(linkedPlannedToursList, {
     ghostClass: 'active',
@@ -56,21 +57,21 @@ for(let i = 0; i < addButtons.length; i++)
 
         addButtons[i].classList.toggle('hidden', true);
         updateStageOrders();
-
-
+        updateInfoMessages();
     });
 }
 
 updateStageOrders();
+updateInfoMessages();
 
 function updateStageOrders()
 {
-    let numberOfItems = document.querySelectorAll('.button-long-distance-tour-unlink-planned-tour')
+    let numberOfItems = document.querySelectorAll('.button-long-distance-tour-unlink-planned-tour').length;
 
     let ordersList = document.getElementById('long-distance-tour-orders');
     ordersList.innerHTML = '';
 
-    for(let i = 0; i < numberOfItems.length; i++)
+    for(let i = 0; i < numberOfItems; i++)
     {
         let newItem = document.createElement('li');
         newItem.classList.add('list-group-item', 'fw-bold');
@@ -85,6 +86,15 @@ function onDeleteStage(item)
     let order = item.dataset.order;
     linkedPlannedToursList.removeChild(document.getElementById('long-distance-tour-linked-planned-tour-' + order));
     updateStageOrders();
+    updateInfoMessages();
 
     document.querySelector('.button-long-distance-tour-add-planned-tour[data-id="' + item.dataset.id + '"]').classList.toggle('hidden', false);
+}
+
+function updateInfoMessages()
+{
+    let hasLinkedPlannedTours = document.querySelectorAll('.button-long-distance-tour-unlink-planned-tour').length;
+
+    infoDragAndDrop.classList.toggle('hidden', hasLinkedPlannedTours === 0);
+    infoNoLinkedTours.classList.toggle('hidden', hasLinkedPlannedTours !== 0);
 }

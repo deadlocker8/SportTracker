@@ -11,18 +11,14 @@
 
         <div class="input-field-margin">
 
-{#            TODO: update visibility on all stages removed / at least one added #}
-            {% if longDistanceTour and longDistanceTour.linkedPlannedTours %}
-                <div class="d-flex align-items-center justify-content-start mb-3">
-                    <span class="material-symbols-outlined fs-4 me-2">info</span>
-                    <span>{{ gettext('Re-order stages via drag & drop.') }}</span>
-                </div>
-            {% else %}
-                <div class="d-flex align-items-center">
-                    <span class="material-symbols-outlined fs-4 me-2">info</span>
-                    <span>{{ gettext('No planned tours linked') }}</span>
-                </div>
-            {% endif %}
+            <div id="info-drag-and-drop" class="d-flex align-items-center justify-content-start mb-3 hidden">
+                <span class="material-symbols-outlined fs-4 me-2">info</span>
+                <span>{{ gettext('Re-order stages via drag & drop') }}</span>
+            </div>
+            <div id="info-no-linked-tours" class="d-flex align-items-center hidden">
+                <span class="material-symbols-outlined fs-4 me-2">info</span>
+                <span>{{ gettext('No planned tours linked') }}</span>
+            </div>
 
             <div class="d-flex align-items-center justify-content-start">
                 <ul id="long-distance-tour-orders" class="list-group me-3"></ul>
