@@ -247,6 +247,10 @@ body {
     min-width: 0;
 }
 
+select[disabled] {
+    opacity: 0.5;
+}
+
 .debug {
     outline: 1px solid red !important;
 }
