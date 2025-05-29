@@ -52,6 +52,7 @@ from sporttracker.logic.MaintenanceEventsCollector import (
     get_number_of_triggered_maintenance_reminders,
 )
 from sporttracker.logic.model.LongDistanceTour import get_new_long_distance_tour_ids, get_updated_long_distance_tour_ids
+from sporttracker.logic.service.PlannedTourService import PlannedTourService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutFieldType
@@ -141,6 +142,10 @@ class SportTracker(FlaskBaseApp):
         distanceWorkoutService.add_listener(ntfyService)
 
         app.config['FITNESS_WORKOUT_SERVICE'] = FitnessWorkoutService()
+
+        app.config['PLANNED_TOUR_SERVICE'] = PlannedTourService(
+            app.config['GPX_SERVICE'], self._settings['gpxPreviewImages']
+        )
 
         if self._prepareDatabase:
             self.__prepare_database(app)
@@ -321,10 +326,14 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(Maintenances.construct_blueprint())
         app.register_blueprint(MaintenanceEventInstances.construct_blueprint())
         app.register_blueprint(
-            PlannedTours.construct_blueprint(app.config['GPX_SERVICE'], self._settings['gpxPreviewImages'])
+            PlannedTours.construct_blueprint(
+                app.config['GPX_SERVICE'], self._settings['gpxPreviewImages'], app.config['PLANNED_TOUR_SERVICE']
+            )
         )
         app.register_blueprint(
-            LongDistanceTours.construct_blueprint(app.config['GPX_SERVICE'], self._settings['gpxPreviewImages'])
+            LongDistanceTours.construct_blueprint(
+                app.config['GPX_SERVICE'], self._settings['gpxPreviewImages'], app.config['PLANNED_TOUR_SERVICE']
+            )
         )
         app.register_blueprint(AnnualAchievements.construct_blueprint())
 

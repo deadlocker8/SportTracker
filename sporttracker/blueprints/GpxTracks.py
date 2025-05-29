@@ -7,11 +7,8 @@ from sporttracker.logic import Constants
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
-from sporttracker.logic.model.PlannedTour import (
-    get_planned_tour_by_id,
-    get_planned_tour_by_share_code,
-)
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.logic.service.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -48,7 +45,7 @@ def construct_blueprint(gpxService: GpxService, distanceWorkoutService: Distance
     @gpxTracks.route('/plannedTour/<string:file_format>/<int:tour_id>')
     @login_required
     def downloadGpxTrackByPlannedTourId(tour_id: int, file_format: str):
-        plannedTour = get_planned_tour_by_id(tour_id)
+        plannedTour = PlannedTourService.get_planned_tour_by_id(tour_id)
 
         if plannedTour is None:
             abort(404)
@@ -61,7 +58,7 @@ def construct_blueprint(gpxService: GpxService, distanceWorkoutService: Distance
 
     @gpxTracks.route('/plannedTour/shared/<string:shareCode>/<string:file_format>')
     def downloadGpxTrackBySharedPlannedTour(shareCode: str, file_format: str):
-        plannedTour = get_planned_tour_by_share_code(shareCode)
+        plannedTour = PlannedTourService.get_planned_tour_by_share_code(shareCode)
 
         if plannedTour is None:
             abort(404)
@@ -86,7 +83,7 @@ def construct_blueprint(gpxService: GpxService, distanceWorkoutService: Distance
     @gpxTracks.route('/delete/plannedTour/<int:tour_id>')
     @login_required
     def deleteGpxTrackByPlannedTourId(tour_id: int):
-        plannedTour = get_planned_tour_by_id(tour_id)
+        plannedTour = PlannedTourService.get_planned_tour_by_id(tour_id)
 
         if plannedTour is None:
             return Response(status=204)
@@ -97,7 +94,7 @@ def construct_blueprint(gpxService: GpxService, distanceWorkoutService: Distance
     @gpxTracks.route('/previewImage/<int:tour_id>')
     @login_required
     def getPreviewImageByPlannedTourId(tour_id: int):
-        plannedTour = get_planned_tour_by_id(tour_id)
+        plannedTour = PlannedTourService.get_planned_tour_by_id(tour_id)
 
         if plannedTour is None:
             abort(404)
@@ -116,7 +113,7 @@ def construct_blueprint(gpxService: GpxService, distanceWorkoutService: Distance
     @gpxTracks.route('/previewImage/longDistanceTour/<int:tour_id>')
     @login_required
     def getPreviewImageByLongDistanceTourId(tour_id: int):
-        longDistanceTour = get_planned_tour_by_id(tour_id)
+        longDistanceTour = PlannedTourService.get_planned_tour_by_id(tour_id)
 
         if longDistanceTour is None:
             abort(404)

@@ -18,10 +18,11 @@ from sporttracker.logic.model.LongDistanceTour import (
     get_long_distance_tours,
     LongDistanceTourPlannedTourAssociation,
 )
-from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_tour_by_id
+from sporttracker.logic.model.PlannedTour import get_planned_tours
 from sporttracker.logic.model.User import User, get_user_by_id, get_all_users_except_self_and_admin, get_users_by_ids
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.service.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -57,7 +58,7 @@ class LongDistanceTourModel:
             ownerName=get_user_by_id(longDistanceTour.user_id).username,
             linkedPlannedTours=[
                 PlannedTourModel.create_from_tour(
-                    get_planned_tour_by_id(p.planned_tour_id),  # type: ignore[arg-type]
+                    PlannedTourService.get_planned_tour_by_id(p.planned_tour_id),  # type: ignore[arg-type]
                     True,
                 )
                 for p in longDistanceTour.linked_planned_tours
@@ -105,7 +106,9 @@ class LongDistanceTourEditFormModel(BaseModel):
     linkedPlannedTours: list[str] | str | None = None
 
 
-def construct_blueprint(gpxService: GpxService, gpxPreviewImageSettings: dict[str, Any]) -> Blueprint:
+def construct_blueprint(
+    gpxService: GpxService, gpxPreviewImageSettings: dict[str, Any], plannedToursService: PlannedTourService
+) -> Blueprint:
     longDistanceTours = Blueprint(
         'longDistanceTours', __name__, static_folder='static', url_prefix='/longDistanceTours'
     )

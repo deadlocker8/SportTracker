@@ -37,12 +37,13 @@ from sporttracker.logic.model.FitnessWorkoutCategory import (
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import get_participants
-from sporttracker.logic.model.PlannedTour import get_planned_tours, get_planned_tour_by_id
+from sporttracker.logic.model.PlannedTour import get_planned_tours
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.logic.service.FitnessWorkoutService import FitnessWorkoutService
+from sporttracker.logic.service.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -270,7 +271,7 @@ def construct_blueprint(
 
         plannedTour = None
         if form.planned_tour_id is not None:
-            plannedTour = get_planned_tour_by_id(int(form.planned_tour_id))
+            plannedTour = PlannedTourService.get_planned_tour_by_id(int(form.planned_tour_id))
             if plannedTour is None:
                 return jsonify({'error': f'No planned tour found for planned_tour_id {form.planned_tour_id}'}), 400
 

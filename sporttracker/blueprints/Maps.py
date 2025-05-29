@@ -26,6 +26,7 @@ from sporttracker.blueprints.Workouts import DistanceWorkoutModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService, GpxParser
 from sporttracker.logic.model.LongDistanceTour import get_long_distance_tour_by_id
+from sporttracker.logic.service.PlannedTourService import PlannedTourService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.QuickFilterState import (
@@ -38,11 +39,7 @@ from sporttracker.logic.model.DistanceWorkout import (
     get_available_years,
     DistanceWorkout,
 )
-from sporttracker.logic.model.PlannedTour import (
-    get_planned_tour_by_id,
-    PlannedTour,
-    get_planned_tour_by_share_code,
-)
+from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
@@ -185,7 +182,7 @@ def construct_blueprint(
     @maps.route('/map/plannedTour/<int:tour_id>')
     @login_required
     def showPlannedTour(tour_id: int):
-        plannedTour = get_planned_tour_by_id(tour_id)
+        plannedTour = PlannedTourService.get_planned_tour_by_id(tour_id)
 
         if plannedTour is None:
             abort(404)
@@ -218,7 +215,7 @@ def construct_blueprint(
 
     @maps.route('/map/plannedTour/shared/<string:shareCode>')
     def showSharedPlannedTour(shareCode: str):
-        plannedTour = get_planned_tour_by_share_code(shareCode)
+        plannedTour = PlannedTourService.get_planned_tour_by_share_code(shareCode)
 
         if plannedTour is None:
             return render_template('maps/mapNotFound.jinja2')

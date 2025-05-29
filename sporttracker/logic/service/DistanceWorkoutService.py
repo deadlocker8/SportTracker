@@ -13,9 +13,10 @@ from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.Observable import Observable
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.Participant import get_participants_by_ids
-from sporttracker.logic.model.PlannedTour import get_planned_tour_by_id, PlannedTour
+from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.service.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -65,7 +66,7 @@ class DistanceWorkoutService(Observable):
         if form_model.planned_tour_id == '-1':
             plannedTour = None
         else:
-            plannedTour = get_planned_tour_by_id(int(form_model.planned_tour_id))
+            plannedTour = PlannedTourService.get_planned_tour_by_id(int(form_model.planned_tour_id))
 
         workout = DistanceWorkout(
             name=form_model.name,
@@ -174,7 +175,7 @@ class DistanceWorkoutService(Observable):
         if form_model.planned_tour_id == '-1':
             plannedTour = None
         else:
-            plannedTour = get_planned_tour_by_id(int(form_model.planned_tour_id))
+            plannedTour = PlannedTourService.get_planned_tour_by_id(int(form_model.planned_tour_id))
 
         workout.name = form_model.name  # type: ignore[assignment]
         workout.start_time = form_model.calculate_start_time()  # type: ignore[assignment]

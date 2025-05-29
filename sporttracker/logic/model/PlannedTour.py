@@ -135,23 +135,6 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
             return GpxMetadata.query.get(self.gpx_metadata_id)
 
 
-def get_planned_tour_by_id(tour_id: int) -> PlannedTour | None:
-    return (
-        PlannedTour.query.filter(
-            or_(
-                PlannedTour.user_id == current_user.id,
-                PlannedTour.shared_users.any(id=current_user.id),
-            )
-        )
-        .filter(PlannedTour.id == tour_id)
-        .first()
-    )
-
-
-def get_planned_tour_by_share_code(shareCode: str) -> PlannedTour | None:
-    return PlannedTour.query.filter(PlannedTour.share_code == shareCode).first()
-
-
 def get_new_planned_tour_ids() -> list[int]:
     if not current_user.is_authenticated:
         return []
