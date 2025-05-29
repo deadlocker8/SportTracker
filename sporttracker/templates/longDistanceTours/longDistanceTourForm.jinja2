@@ -22,11 +22,11 @@
             <div class="d-flex align-items-center justify-content-start mb-5">
                 <ul id="long-distance-tour-orders" class="list-group me-3"></ul>
 
-                <ul id="long-distance-tour-planned-tours" class="list-group flex-grow-1">
+                <ul id="long-distance-tour-planned-tours" class="list-group flex-grow-1 min-width-0">
                     {% for plannedTour in plannedTours %}
                         {% if longDistanceTour and plannedTour.id|string in longDistanceTour.linkedPlannedTours %}
                             <li class="list-group-item d-flex align-items-center" id="long-distance-tour-linked-planned-tour-{{ loop.index }}">
-                                <span class="flex-grow-1">{{ plannedTour.name | e | capitalize }}</span>
+                                <div class="flex-grow-1 text-truncate min-width-0">{{ plannedTour.name | e }}</div>
                                 <i class="material-symbols-outlined fs-5 button-long-distance-tour-unlink-planned-tour" data-order="{{ loop.index }}" data-id="{{ plannedTour.id }}">delete</i>
                                 <input type="hidden" name="linkedPlannedTours" value="{{ plannedTour.id }}">
                             </li>
@@ -47,12 +47,12 @@
             <ul id="long-distance-tour-available-planned-tours" class="list-group">
                 {% for plannedTour in plannedTours %}
                     <button type="button"
-                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center button-long-distance-tour-add-planned-tour {% if longDistanceTour and plannedTour.id|string in longDistanceTour.linkedPlannedTours %}hidden{% endif %}"
+                            class="list-group-item list-group-item-action text-dark d-flex justify-content-between align-items-center button-long-distance-tour-add-planned-tour {% if longDistanceTour and plannedTour.id|string in longDistanceTour.linkedPlannedTours %}hidden{% endif %}"
                             data-id="{{ plannedTour.id }}"
                             data-type="{{ plannedTour.type.name }}"
                             data-name="{{ plannedTour.name | e | lower }}"
-                            data-name-beautified="{{ plannedTour.name | e | lower }}">
-                        {{ plannedTour.name | e | capitalize }}
+                            data-name-beautified="{{ plannedTour.name | e }}">
+                        {{ plannedTour.name | e }}
                         <i class="material-symbols-outlined fs-5">add</i>
                     </button>
                 {% endfor %}
