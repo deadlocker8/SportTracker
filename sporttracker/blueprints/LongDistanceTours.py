@@ -214,9 +214,9 @@ def construct_blueprint(
 
         return redirect(url_for('longDistanceTours.listLongDistanceTours'))
 
-    @longDistanceTours.route('/delete/<int:tour_id>')
+    @longDistanceTours.route('/delete/<int:tour_id>/<int:delete_linked_tours>')
     @login_required
-    def delete(tour_id: int):
+    def delete(tour_id: int, delete_linked_tours: int):
         longDistanceTour = get_long_distance_tour_by_id(tour_id)
 
         if longDistanceTour is None:
@@ -225,9 +225,18 @@ def construct_blueprint(
         if current_user.id != longDistanceTour.user_id:
             abort(403)
 
+        linkedPlannedTours = longDistanceTour.linked_planned_tours
+
         LOGGER.debug(f'Deleted long-distance tour: {longDistanceTour}')
         db.session.delete(longDistanceTour)
         db.session.commit()
+
+        if delete_linked_tours == 1:
+            for linkedPlannedTour in linkedPlannedTours:
+                try:
+                    plannedToursService.delete_planned_tour_by_id(linkedPlannedTour.planned_tour_id, current_user.id)
+                except ValueError as e:
+                    LOGGER.error(e)
 
         return redirect(url_for('longDistanceTours.listLongDistanceTours'))
 

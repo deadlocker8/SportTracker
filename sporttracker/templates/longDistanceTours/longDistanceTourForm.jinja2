@@ -94,7 +94,10 @@
                             {% endif %}
 
                             {% call macros.deleteModal(gettext('Delete Long-distance Tour?'), gettext('Do you really want to delete this long-distance tour?')) %}
-                                <a href="{{ url_for('longDistanceTours.delete', tour_id=tour_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                                <div class="d-flex flex-column align-items-end ms-3">
+                                    <a href="{{ url_for('longDistanceTours.delete', tour_id=tour_id, delete_linked_tours=1) }}" class="btn btn-danger mb-3 w-100">{{ gettext('Delete (including all linked planned tours)') }}</a>
+                                    <a href="{{ url_for('longDistanceTours.delete', tour_id=tour_id, delete_linked_tours=0) }}" class="btn btn-danger w-100">{{ gettext('Delete (only this long-distance tour)') }}</a>
+                                </div>
                             {% endcall %}
                         {% else %}
                             {% call macros.headline(gettext('New Long-distance Tour')) %}
