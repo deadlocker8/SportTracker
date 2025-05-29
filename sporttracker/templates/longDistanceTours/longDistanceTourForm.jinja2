@@ -48,7 +48,8 @@
                     <button type="button"
                             class="list-group-item list-group-item-action button-long-distance-tour-add-planned-tour {% if longDistanceTour and plannedTour.id|string in longDistanceTour.linkedPlannedTours %}hidden{% endif %}"
                             data-id="{{ plannedTour.id }}"
-                            data-type="{{ plannedTour.type.name }}">{{ plannedTour.name | e | capitalize }}</button>
+                            data-type="{{ plannedTour.type.name }}"
+                            data-name="{{ plannedTour.name | e | lower }}">{{ plannedTour.name | e | capitalize }}</button>
                 {% endfor %}
             </ul>
 

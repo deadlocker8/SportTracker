@@ -3,7 +3,7 @@ const infoDragAndDrop = document.getElementById('info-drag-and-drop');
 const infoNoLinkedTours = document.getElementById('info-no-linked-tours');
 const infoNoPlannedTours = document.getElementById('info-no-planned-tours');
 const workoutTypeSelect = document.getElementById('long-distance-tour-type');
-
+const plannedTourSearchInput = document.getElementById('long-distance-tour-planned-tour-search');
 
 init();
 
@@ -15,7 +15,6 @@ function init()
         revertOnSpill: true,
     });
 
-    // delete item in list
     let deleteButtons = document.querySelectorAll('.button-long-distance-tour-unlink-planned-tour');
     for(let i = 0; i < deleteButtons.length; i++)
     {
@@ -25,7 +24,6 @@ function init()
         });
     }
 
-    // add item to list
     let addButtons = document.querySelectorAll('.button-long-distance-tour-add-planned-tour');
     for(let i = 0; i < addButtons.length; i++)
     {
@@ -40,12 +38,16 @@ function init()
         updateStagesAndAvailablePlannedTours();
     });
 
+    plannedTourSearchInput.addEventListener('input', function(e) {
+       updateStagesAndAvailablePlannedTours();
+    });
+
     updateStagesAndAvailablePlannedTours();
 }
 
 function updateStagesAndAvailablePlannedTours()
 {
-    filterAvailablePlannedTours(workoutTypeSelect.value);
+    filterAvailablePlannedTours(workoutTypeSelect.value, plannedTourSearchInput.value.trim().toLowerCase());
     updateStageOrders();
     updateInfoMessages();
 }
@@ -122,21 +124,31 @@ function updateInfoMessages()
     infoNoPlannedTours.classList.toggle('hidden', document.querySelectorAll('.button-long-distance-tour-add-planned-tour:not(.hidden)').length > 0);
 }
 
-function filterAvailablePlannedTours(workoutType)
+function filterAvailablePlannedTours(workoutType, searchText)
 {
+    // re-enable all available planned tours
     document.querySelectorAll('.button-long-distance-tour-add-planned-tour').forEach(e => {
         e.classList.toggle('hidden', false);
     });
 
+    // hide planned tours that do not match the selected workout type
     document.querySelectorAll('.button-long-distance-tour-add-planned-tour:not([data-type="' + workoutType + '"])').forEach(e => {
         e.classList.toggle('hidden', true);
     });
 
-
+    // hide planned tours that are already added as stages
     let alreadyUsedTours = document.querySelectorAll('.button-long-distance-tour-unlink-planned-tour');
     alreadyUsedTours.forEach(e => {
         document.querySelector('.button-long-distance-tour-add-planned-tour[data-id="' + e.dataset.id + '"]').classList.toggle('hidden', true);
     });
+
+    // hide planned tours that do not contain the search text
+    if(searchText.length > 0)
+    {
+        document.querySelectorAll('.button-long-distance-tour-add-planned-tour:not([data-name*="' + searchText + '"])').forEach(e => {
+            e.classList.toggle('hidden', true);
+        });
+    }
 }
 
 function clearStages()
