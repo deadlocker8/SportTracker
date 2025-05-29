@@ -2,67 +2,40 @@ const linkedPlannedToursList = document.getElementById('long-distance-tour-plann
 const infoDragAndDrop = document.getElementById('info-drag-and-drop');
 const infoNoLinkedTours = document.getElementById('info-no-linked-tours');
 
-new Sortable(linkedPlannedToursList, {
-    ghostClass: 'active',
-    revertOnSpill: true,
-});
 
-// delete item in list
-let deleteButtons = document.querySelectorAll('.button-long-distance-tour-unlink-planned-tour');
-for(let i = 0; i < deleteButtons.length; i++)
+init();
+
+
+function init()
 {
-    deleteButtons[i].addEventListener('click', () =>
-    {
-        onDeleteStage(deleteButtons[i]);
+    new Sortable(linkedPlannedToursList, {
+        ghostClass: 'active',
+        revertOnSpill: true,
     });
-}
 
-// add item to list
-let addButtons = document.querySelectorAll('.button-long-distance-tour-add-planned-tour');
-for(let i = 0; i < addButtons.length; i++)
-{
-    addButtons[i].addEventListener('click', () =>
+    // delete item in list
+    let deleteButtons = document.querySelectorAll('.button-long-distance-tour-unlink-planned-tour');
+    for(let i = 0; i < deleteButtons.length; i++)
     {
-        let id = addButtons[i].dataset.id;
-
-        let numberOfStages = linkedPlannedToursList.querySelectorAll('li').length;
-
-        let newItem = document.createElement('li');
-        newItem.classList.add('list-group-item', 'd-flex', 'align-items-center');
-        newItem.id = 'long-distance-tour-linked-planned-tour-' + numberOfStages;
-
-        let newName = document.createElement('span');
-        newName.classList.add('flex-grow-1');
-        newName.innerText = addButtons[i].innerText;
-        newItem.appendChild(newName);
-
-        let newDeleteButton = document.createElement('i');
-        newDeleteButton.classList.add('material-symbols-outlined', 'fs-5', 'button-long-distance-tour-unlink-planned-tour');
-        newDeleteButton.innerText = 'delete';
-        newDeleteButton.dataset.order=numberOfStages.toString();
-        newDeleteButton.dataset.id=id;
-        newDeleteButton.addEventListener('click', () =>
+        deleteButtons[i].addEventListener('click', () =>
         {
-            onDeleteStage(newDeleteButton);
+            onDeleteStage(deleteButtons[i]);
         });
-        newItem.appendChild(newDeleteButton);
+    }
 
-        let newHiddenInput = document.createElement('input');
-        newHiddenInput.setAttribute('type', 'hidden');
-        newHiddenInput.setAttribute('name', 'linkedPlannedTours');
-        newHiddenInput.setAttribute('value', id);
-        newItem.appendChild(newHiddenInput);
+    // add item to list
+    let addButtons = document.querySelectorAll('.button-long-distance-tour-add-planned-tour');
+    for(let i = 0; i < addButtons.length; i++)
+    {
+        addButtons[i].addEventListener('click', () =>
+        {
+            onAddStage(addButtons[i]);
+        });
+    }
 
-        linkedPlannedToursList.appendChild(newItem);
-
-        addButtons[i].classList.toggle('hidden', true);
-        updateStageOrders();
-        updateInfoMessages();
-    });
+    updateStageOrders();
+    updateInfoMessages();
 }
-
-updateStageOrders();
-updateInfoMessages();
 
 function updateStageOrders()
 {
@@ -81,14 +54,53 @@ function updateStageOrders()
     }
 }
 
-function onDeleteStage(item)
+function onDeleteStage(button)
 {
-    let order = item.dataset.order;
+    let order = button.dataset.order;
     linkedPlannedToursList.removeChild(document.getElementById('long-distance-tour-linked-planned-tour-' + order));
     updateStageOrders();
     updateInfoMessages();
 
-    document.querySelector('.button-long-distance-tour-add-planned-tour[data-id="' + item.dataset.id + '"]').classList.toggle('hidden', false);
+    document.querySelector('.button-long-distance-tour-add-planned-tour[data-id="' + button.dataset.id + '"]').classList.toggle('hidden', false);
+}
+
+function onAddStage(button)
+{
+    let id = button.dataset.id;
+
+    let numberOfStages = linkedPlannedToursList.querySelectorAll('li').length;
+
+    let newItem = document.createElement('li');
+    newItem.classList.add('list-group-item', 'd-flex', 'align-items-center');
+    newItem.id = 'long-distance-tour-linked-planned-tour-' + numberOfStages;
+
+    let newName = document.createElement('span');
+    newName.classList.add('flex-grow-1');
+    newName.innerText = button.innerText;
+    newItem.appendChild(newName);
+
+    let newDeleteButton = document.createElement('i');
+    newDeleteButton.classList.add('material-symbols-outlined', 'fs-5', 'button-long-distance-tour-unlink-planned-tour');
+    newDeleteButton.innerText = 'delete';
+    newDeleteButton.dataset.order = numberOfStages.toString();
+    newDeleteButton.dataset.id = id;
+    newDeleteButton.addEventListener('click', () =>
+    {
+        onDeleteStage(newDeleteButton);
+    });
+    newItem.appendChild(newDeleteButton);
+
+    let newHiddenInput = document.createElement('input');
+    newHiddenInput.setAttribute('type', 'hidden');
+    newHiddenInput.setAttribute('name', 'linkedPlannedTours');
+    newHiddenInput.setAttribute('value', id);
+    newItem.appendChild(newHiddenInput);
+
+    linkedPlannedToursList.appendChild(newItem);
+
+    button.classList.toggle('hidden', true);
+    updateStageOrders();
+    updateInfoMessages();
 }
 
 function updateInfoMessages()
