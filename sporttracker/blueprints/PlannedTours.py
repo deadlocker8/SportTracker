@@ -21,6 +21,7 @@ from sporttracker.logic.model.DistanceWorkout import (
     get_distance_workout_ids_by_planned_tour,
 )
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
+from sporttracker.logic.model.LongDistanceTour import LongDistanceTourPlannedTourAssociation
 from sporttracker.logic.model.PlannedTour import (
     PlannedTour,
     get_planned_tour_by_id,
@@ -303,6 +304,16 @@ def construct_blueprint(gpxService: GpxService, gpxPreviewImageSettings: dict[st
             workout = DistanceWorkout.query.filter().filter(DistanceWorkout.id == workoutId).first()
             workout.planned_tour = None
             LOGGER.debug(f'Removed linked planned tour from workout: {workoutId}')
+            db.session.commit()
+
+        associatedLongDistanceTours = (
+            LongDistanceTourPlannedTourAssociation.query.filter()
+            .filter(LongDistanceTourPlannedTourAssociation.planned_tour_id == tour_id)
+            .all()
+        )
+        for association in associatedLongDistanceTours:
+            LOGGER.debug(f'Removed planned tour from long-distance tour: {association.long_distance_tour_id}')
+            db.session.delete(association)
             db.session.commit()
 
         LOGGER.debug(f'Deleted planned tour: {plannedTour}')

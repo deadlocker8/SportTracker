@@ -274,14 +274,14 @@
     {{ workoutMacros.workout_type_icon_small(workoutType, fontSize='fs-4', backgroundColorOverride=backgroundColor) }}
 {%- endmacro %}
 
-{% macro deleteModal(title, text, idSuffix='0') -%}
+{% macro deleteModal(title, text, idSuffix='0', additionalClasses='') -%}
     <div class="modal fade" tabindex="-1" id="delete-modal-{{ idSuffix }}" data-bs-theme="dark">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ title }}</h5>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body {{ additionalClasses }}">
                     <p>{{ text }}</p>
                 </div>
                 <div class="modal-footer">

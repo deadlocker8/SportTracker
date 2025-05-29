@@ -27,7 +27,7 @@
                                 </button>
                             {% endif %}
 
-                            {% call macros.deleteModal(gettext('Delete Planned Tour?'), gettext('Do you really want to delete this planned tour?')) %}
+                            {% call macros.deleteModal(gettext('Delete Planned Tour?'), gettext('Do you really want to delete this planned tour?<br><br>Caution: This will also unlink this planned tour from all assoicated long-distance tours.'), additionalClasses='text-start') %}
                                 <a href="{{ url_for('plannedTours.delete', tour_id=tour_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
                             {% endcall %}
                         {% else %}
