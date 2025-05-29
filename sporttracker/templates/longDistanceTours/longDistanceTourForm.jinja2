@@ -10,16 +10,16 @@
         </label>
 
         <div class="input-field-margin">
-            <div id="info-drag-and-drop" class="d-flex align-items-center justify-content-start mb-3 hidden">
+            <div id="info-drag-and-drop" class="d-flex align-items-center justify-content-start my-3 hidden">
                 <span class="material-symbols-outlined fs-4 me-2">info</span>
                 <span>{{ gettext('Re-order stages via drag & drop') }}</span>
             </div>
-            <div id="info-no-linked-tours" class="d-flex align-items-center hidden">
+            <div id="info-no-linked-tours" class="d-flex align-items-center mt-3 hidden">
                 <span class="material-symbols-outlined fs-4 me-2">info</span>
-                <span>{{ gettext('No planned tours linked') }}</span>
+                <span>{{ gettext('No planned tours selected') }}</span>
             </div>
 
-            <div class="d-flex align-items-center justify-content-start">
+            <div class="d-flex align-items-center justify-content-start mb-5">
                 <ul id="long-distance-tour-orders" class="list-group me-3"></ul>
 
                 <ul id="long-distance-tour-planned-tours" class="list-group flex-grow-1">
@@ -38,7 +38,8 @@
             <div class="my-3">
                 <div class="form-group">
                     <div class="d-flex align-items-center">
-                        <input type="text" class="form-control" id="long-distance-tour-planned-tour-search" placeholder="{{ gettext('Geplante Touren durchsuchen') }}"/>
+                        <span class="material-symbols-outlined filled me-3">search</span>
+                        <input type="text" class="form-control" id="long-distance-tour-planned-tour-search" placeholder="{{ gettext('Search planned tours') }}"/>
                     </div>
                 </div>
             </div>
@@ -46,10 +47,14 @@
             <ul id="long-distance-tour-available-planned-tours" class="list-group">
                 {% for plannedTour in plannedTours %}
                     <button type="button"
-                            class="list-group-item list-group-item-action button-long-distance-tour-add-planned-tour {% if longDistanceTour and plannedTour.id|string in longDistanceTour.linkedPlannedTours %}hidden{% endif %}"
+                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center button-long-distance-tour-add-planned-tour {% if longDistanceTour and plannedTour.id|string in longDistanceTour.linkedPlannedTours %}hidden{% endif %}"
                             data-id="{{ plannedTour.id }}"
                             data-type="{{ plannedTour.type.name }}"
-                            data-name="{{ plannedTour.name | e | lower }}">{{ plannedTour.name | e | capitalize }}</button>
+                            data-name="{{ plannedTour.name | e | lower }}"
+                            data-name-beautified="{{ plannedTour.name | e | lower }}">
+                        {{ plannedTour.name | e | capitalize }}
+                        <i class="material-symbols-outlined fs-5">add</i>
+                    </button>
                 {% endfor %}
             </ul>
 

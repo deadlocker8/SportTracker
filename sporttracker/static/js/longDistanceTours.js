@@ -89,7 +89,7 @@ function onAddStage(button)
 
     let newName = document.createElement('span');
     newName.classList.add('flex-grow-1');
-    newName.innerText = button.innerText;
+    newName.innerText = button.dataset.nameBeautified;
     newItem.appendChild(newName);
 
     let newDeleteButton = document.createElement('i');
