@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        {% if longDistanceTour.share_code and longDistanceTour.ownerName != current_user.username %}
+            <title>SportTracker - {{ gettext('Shared Long-distance Tour') }}</title>
+            <meta name="description" content="{{ longDistanceTour.ownerName|capitalize }} is sharing a long-distance tour with you!">
+        {% else %}
+            <title>SportTracker - {{ gettext('Long-distance Tour') }}</title>
+        {% endif %}
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/leaflet-theme.css") }}"/>
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('map') }}
+        {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
+        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+
+        <div class="d-flex flex-row align-items-center justify-content-center my-3 px-3">
+            <div class="d-flex align-items-center text-truncate justify-content-center">
+                {{ workoutMacros.workout_type_icon_small(longDistanceTour.type, fontSize='fs-3') }}
+                <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">
+                    {{ longDistanceTour.name | e }}
+                </div>
+            </div>
+
+            {% if editUrl and current_user.isTileHuntingActivated %}
+                {{ mapMacros.tileHuntingMapSettings(tileHuntingIsShowTilesActive, tileHuntingIsGridActive, tileHuntingIsOnlyHighlightNewTilesActive, url_for('maps.showLongDistanceTour', tour_id=longDistanceTour.id), false, true, tileHuntingIsMaxSquareActive) }}
+            {% endif %}
+        </div>
+
+        <div class="row mx-3 mx-xl-5">
+            <div class="col col-12 col-xl-7 p-0">
+                <div id="map" class="leaflet-map text-dark map-smaller"></div>
+            </div>
+
+            <!-- large displays -->
+            <div class="col col-5 p-0 ps-4">
+                <div class="card bg-body-secondary" data-bs-theme="dark">
+                    <div class="card-header d-flex align-items-center {{ classes }} justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <div class="fs-5">
+                                {{ gettext('Stages') }}
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            {% if editUrl %}
+                                <a href="{{ editUrl }}" class="btn btn-primary btn-sm ms-3 d-flex align-items-center">
+                                    <span class="material-symbols-outlined filled fs-4">edit</span>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="card-body ps-4 pt-4">
+                        {% for stage in longDistanceTour.linkedPlannedTours %}
+                            {% set linkedWorkout=stage.linkedWorkouts[-1] %}
+
+                            <div class="card mb-3" data-bs-theme="light">
+                                <div class="row">
+                                    <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
+                                        {% if isGpxPreviewImagesEnabled %}
+                                            <a href="{{ url_for('maps.showPlannedTour', tour_id=stage.id or -1) }}">
+                                                <img class="img-fluid p-2" src="{{ url_for('gpxTracks.getPreviewImageByPlannedTourId', tour_id=stage.id) }}" alt="">
+                                            </a>
+                                        {% endif %}
+                                        {% if stage.linkedWorkouts|length > 0 %}
+                                            <a href="{{ url_for('maps.showSingleWorkout', workout_id=linkedWorkout.id) }}"
+                                               class="btn btn-primary d-inline-flex align-items-center fs-6 mt-2 mb-3">
+                                                <span class="material-symbols-outlined filled fs-6">map</span>&nbsp;{{ gettext('Open workout') }}
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-3">
+                                                {% if stage.linkedWorkouts|length > 0 %}
+                                                    <span class="material-symbols-outlined filled fs-4 me-2 text-success">check_circle</span>
+                                                {% endif %}
+                                                <span class="fs-4 card-title mb-0 text-truncate text-start">{{ stage.name }}</span>
+                                            </div>
+
+                                            {% if stage.linkedWorkouts|length > 0 %}
+                                                <div class="row row-cols-2 gy-3">
+                                                    {% call mapMacros.stage_info_item('route', longDistanceTour.type.text_color, gettext('Distance'), alignment='align-items-start') %}
+                                                        {{ (linkedWorkout.distance / 1000) | format_decimal(2) }} km
+                                                    {% endcall %}
+
+                                                    {% call mapMacros.stage_info_item('event', longDistanceTour.type.text_color, gettext('Date'), alignment='align-items-start') %}
+                                                        {{ linkedWorkout.startTime | format_date }}
+                                                    {% endcall %}
+
+                                                    {% call mapMacros.stage_info_item('timer', longDistanceTour.type.text_color, gettext('Duration'), 'material-symbols-outlined', alignment='align-items-start') %}
+                                                        {{ linkedWorkout.duration | format_duration }} h
+                                                    {% endcall %}
+
+                                                    {% call mapMacros.stage_info_item('expand', longDistanceTour.type.text_color, gettext('Elevation Sum'), alignment='align-items-start') %}
+                                                        {% if linkedWorkout.elevation_sum is not none %}
+                                                            {{ linkedWorkout.elevation_sum }} m
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                    {% endcall %}
+                                                </div>
+                                            {% else %}
+                                                <div class="row row-cols-3 gy-3">
+                                                    {% call mapMacros.stage_info_item('route', stage.type.text_color, gettext('Distance')) %}
+                                                        {% if stage.gpxMetadata is not none %}
+                                                            {{ (stage.gpxMetadata.length / 1000) | format_decimal(2) }} km
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                    {% endcall %}
+
+                                                    {% call mapMacros.stage_info_item('arrow_upward', stage.type.text_color, gettext('Uphill')) %}
+                                                        {% if stage.gpxMetadata is not none %}
+                                                            {{ (stage.gpxMetadata.uphill) }} m
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                    {% endcall %}
+                                                    {% call mapMacros.stage_info_item('arrow_downward', stage.type.text_color, gettext('Downhill')) %}
+                                                        {% if stage.gpxMetadata is not none %}
+                                                            {{ (stage.gpxMetadata.downhill) }} m
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                    {% endcall %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="card-footer text-body-secondary d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            {{ gettext('last edited') }}: {{ longDistanceTour.lastEditDate | format_date() }}
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="material-symbols-outlined filled fs-4 me-1">person</div>
+                            <div>{{ longDistanceTour.ownerName | e }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            gpxUrl = '{{ gpxUrl }}';
+            tileRenderUrl = '{{ tileRenderUrl }}';
+        </script>
+
+        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+        {{ mapMacros.mapLocale() }}
+
+        {{ macros.scripts() }}
+        <script defer src="{{ url_for('static', filename='js/mapCommon.js') }}" type="text/javascript"></script>
+        <script defer src="{{ url_for('static', filename='js/mapPlannedTour.js') }}" type="text/javascript"></script>
+    </body>
+</html>

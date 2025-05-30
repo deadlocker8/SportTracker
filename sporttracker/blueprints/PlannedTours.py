@@ -51,6 +51,9 @@ class SharedUserModel:
 class LinkedWorkout:
     id: int
     startTime: datetime
+    distance: float
+    duration: int
+    elevation_sum: int
 
 
 @dataclass
@@ -84,7 +87,11 @@ class PlannedTourModel:
 
         result = []
         for workout in linkedWorkout:
-            result.append(LinkedWorkout(int(workout.id), workout.start_time))
+            result.append(
+                LinkedWorkout(
+                    int(workout.id), workout.start_time, workout.distance, workout.duration, workout.elevation_sum
+                )
+            )
 
         return result
 

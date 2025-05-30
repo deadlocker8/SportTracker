@@ -58,6 +58,19 @@
     </div>
 {%- endmacro %}
 
+{% macro stage_info_item(icon, iconColor, title, iconClass='material-symbols-outlined filled', alignment='align-items-center') -%}
+    <div class="d-flex flex-column {{ alignment }}">
+        <div class="d-flex align-items-center">
+            <div class="{{ iconClass }} {{ iconColor }} fs-3 me-2">{{ icon }}</div>
+            <div>
+                <div class="fs-6 text-body-secondary">{{ title }}</div>
+                <div class="fs-5 text-body-emphasis">
+                    {{ caller() }}
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
 
 {% macro gpxDownloadButton(title, gpxUrl, icon, isSvgIcon=false, classes='', editUrl='') -%}
     <div class="card-header d-flex align-items-center {{ classes }} justify-content-between">

@@ -21,6 +21,7 @@ from flask_login import login_required, current_user
 from natsort import natsorted, natsort
 from sqlalchemy import func, extract, or_
 
+from sporttracker.blueprints.LongDistanceTours import LongDistanceTourModel
 from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Workouts import DistanceWorkoutModel
 from sporttracker.logic import Constants
@@ -85,6 +86,7 @@ def construct_blueprint(
     newVisitedTileCache: NewVisitedTileCache,
     maxSquareCache: MaxSquareCache,
     distanceWorkoutService: DistanceWorkoutService,
+    gpxPreviewImageSettings: dict[str, Any],
 ) -> Blueprint:
     maps = Blueprint('maps', __name__, static_folder='static')
 
@@ -573,32 +575,32 @@ def construct_blueprint(
             abort(404)
 
         # TODO
-        # tileRenderUrl = url_for(
-        #     'maps.renderAllTiles',
-        #     user_id=current_user.id,
-        #     zoom=0,
-        #     x=0,
-        #     y=0,
-        #     _external=True,
-        # )
-        #
-        # tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
-        #
-        # return render_template(
-        #     'maps/mapPlannedTour.jinja2',
-        #     longDistanceTour=LongDistanceTourModel.create_from_tour(longDistanceTour),
-        #     gpxUrl=url_for(
-        #         'gpxTracks.downloadGpxTrackByPlannedTourId',
-        #         tour_id=tour_id,
-        #         file_format=GpxService.GPX_FILE_EXTENSION,
-        #     ),
-        #     editUrl=url_for('plannedTours.edit', tour_id=tour_id),
-        #     tileRenderUrl=tileRenderUrl,
-        #     tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
-        #     tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
-        #     tileHuntingIsMaxSquareActive=__get_tile_hunting_is_max_square_active(),
-        # )
-        abort(200)
+        tileRenderUrl = url_for(
+            'maps.renderAllTiles',
+            user_id=current_user.id,
+            zoom=0,
+            x=0,
+            y=0,
+            _external=True,
+        )
+
+        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
+
+        return render_template(
+            'maps/mapLongDistanceTour.jinja2',
+            longDistanceTour=LongDistanceTourModel.create_from_tour(longDistanceTour),
+            gpxUrl=url_for(
+                'gpxTracks.downloadGpxTrackByPlannedTourId',
+                tour_id=tour_id,
+                file_format=GpxService.GPX_FILE_EXTENSION,
+            ),
+            editUrl=url_for('longDistanceTours.edit', tour_id=tour_id),
+            tileRenderUrl=tileRenderUrl,
+            tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
+            tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
+            tileHuntingIsMaxSquareActive=__get_tile_hunting_is_max_square_active(),
+            isGpxPreviewImagesEnabled=gpxPreviewImageSettings['enabled'],
+        )
 
     @maps.route('/toggleTileHuntingViewTiles')
     @login_required

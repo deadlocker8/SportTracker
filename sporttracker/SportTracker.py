@@ -320,6 +320,7 @@ class SportTracker(FlaskBaseApp):
                 app.config['NEW_VISITED_TILE_CACHE'],
                 app.config['MAX_SQUARE_CACHE'],
                 app.config['DISTANCE_WORKOUT_SERVICE'],
+                self._settings['gpxPreviewImages'],
             )
         )
         app.register_blueprint(QuickFilter.construct_blueprint())
