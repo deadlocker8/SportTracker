@@ -3,10 +3,10 @@
 {% macro long_distance_tour_planned_tours_selector(longDistanceTour, plannedTours) -%}
     <div class="mb-3">
         <label for="linked-planned-tours" class="form-label">
-            <div class="d-flex align-items-center">
+            <span class="d-flex align-items-center">
                 <i class="fa-solid fa-lightbulb fa-fw fs-4 me-3"></i>
                 <span>{{ gettext('Select planned tours') }}</span>
-            </div>
+            </span>
         </label>
 
         <div class="input-field-margin">
@@ -23,14 +23,12 @@
                 <ul id="long-distance-tour-orders" class="list-group me-3"></ul>
 
                 <ul id="long-distance-tour-planned-tours" class="list-group flex-grow-1 min-width-0">
-                    {% for plannedTour in plannedTours %}
-                        {% if longDistanceTour and plannedTour.id|string in longDistanceTour.linkedPlannedTours %}
-                            <li class="list-group-item d-flex align-items-center" id="long-distance-tour-linked-planned-tour-{{ loop.index }}">
-                                <div class="flex-grow-1 text-truncate min-width-0">{{ plannedTour.name | e }}</div>
-                                <i class="material-symbols-outlined fs-5 button-long-distance-tour-unlink-planned-tour" data-order="{{ loop.index }}" data-id="{{ plannedTour.id }}">delete</i>
-                                <input type="hidden" name="linkedPlannedTours" value="{{ plannedTour.id }}">
-                            </li>
-                        {% endif %}
+                    {% for tourStage in longDistanceTour.linkedPlannedTours %}
+                        <li class="list-group-item d-flex align-items-center" id="long-distance-tour-linked-planned-tour-{{ loop.index }}">
+                            <div class="flex-grow-1 text-truncate min-width-0">{{ tourStage.name | e }}</div>
+                            <i class="material-symbols-outlined fs-5 button-long-distance-tour-unlink-planned-tour" data-order="{{ loop.index }}" data-id="{{ tourStage.id }}">delete</i>
+                            <input type="hidden" name="linkedPlannedTours" value="{{ tourStage.id }}">
+                        </li>
                     {% endfor %}
                 </ul>
             </div>

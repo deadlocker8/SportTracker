@@ -97,15 +97,6 @@ class LongDistanceTourFormModel(BaseModel):
     linkedPlannedTours: list[str] | str | None = None
 
 
-class LongDistanceTourEditFormModel(BaseModel):
-    name: str
-    type: str
-    ownerId: str
-    ownerName: str
-    sharedUsers: list[str] | str | None = None
-    linkedPlannedTours: list[str] | str | None = None
-
-
 def construct_blueprint(
     gpxService: GpxService, gpxPreviewImageSettings: dict[str, Any], plannedToursService: PlannedTourService
 ) -> Blueprint:
@@ -170,14 +161,7 @@ def construct_blueprint(
         if longDistanceTour is None:
             abort(404)
 
-        tourModel = LongDistanceTourEditFormModel(
-            name=longDistanceTour.name,  # type: ignore[arg-type]
-            type=longDistanceTour.type,
-            ownerId=str(longDistanceTour.user_id),
-            ownerName=get_user_by_id(longDistanceTour.user_id).username,
-            sharedUsers=[str(user.id) for user in longDistanceTour.shared_users],
-            linkedPlannedTours=[str(p.planned_tour_id) for p in longDistanceTour.linked_planned_tours],
-        )
+        tourModel = LongDistanceTourModel.create_from_tour(longDistanceTour)
 
         return render_template(
             'longDistanceTours/longDistanceTourForm.jinja2',
