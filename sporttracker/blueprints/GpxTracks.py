@@ -124,7 +124,6 @@ def construct_blueprint(
             abort(404)
 
         gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(longDistanceTour, gpxService)
-        gpxPreviewImageService.generate_image(gpxPreviewSettings)
 
         if not gpxPreviewImageService.is_image_existing():
             return send_from_directory('static', path='images/map_placeholder.png', mimetype='image/png')

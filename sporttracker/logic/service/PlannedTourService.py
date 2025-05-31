@@ -9,7 +9,10 @@ from werkzeug.datastructures import FileStorage
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_workout_ids_by_planned_tour
-from sporttracker.logic.model.LongDistanceTour import LongDistanceTourPlannedTourAssociation
+from sporttracker.logic.model.LongDistanceTour import (
+    LongDistanceTourPlannedTourAssociation,
+    get_long_distance_tour_by_id,
+)
 from sporttracker.logic.model.PlannedTour import PlannedTour, TravelType, TravelDirection
 from sqlalchemy.sql import or_
 from sporttracker.logic.model.User import get_users_by_ids
@@ -79,6 +82,9 @@ class PlannedTourService:
         db.session.commit()
 
         LOGGER.debug(f'Saved new planned tour: {plannedTour}')
+
+        self.__update_gpx_preview_image_for_long_distance_tours(plannedTour.id)
+
         return plannedTour
 
     def delete_planned_tour_by_id(self, tour_id: int, user_id: int) -> None:
@@ -143,6 +149,8 @@ class PlannedTourService:
                 self._gpx_service.delete_gpx(plannedTour, user_id)
                 plannedTour.gpx_metadata_id = newGpxMetadataId
 
+                self.__update_gpx_preview_image_for_long_distance_tours(plannedTour.id)
+
         sharedUsers = get_users_by_ids(shared_user_ids)
         plannedTour.shared_users = sharedUsers
 
@@ -183,3 +191,18 @@ class PlannedTourService:
     @staticmethod
     def get_planned_tour_by_share_code(shareCode: str) -> PlannedTour | None:
         return PlannedTour.query.filter(PlannedTour.share_code == shareCode).first()
+
+    def __update_gpx_preview_image_for_long_distance_tours(self, plannedTourId: int):
+        linkedLongDistanceTours = LongDistanceTourPlannedTourAssociation.query.filter(
+            LongDistanceTourPlannedTourAssociation.planned_tour_id == plannedTourId
+        ).all()
+
+        for linkedLongDistanceTour in linkedLongDistanceTours:
+            longDistanceTour = get_long_distance_tour_by_id(linkedLongDistanceTour.long_distance_tour_id)
+            if longDistanceTour is None:
+                continue
+
+            from sporttracker.logic.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
+
+            gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(longDistanceTour, self._gpx_service)
+            gpxPreviewImageService.generate_image(self._gpx_preview_image_settings)
