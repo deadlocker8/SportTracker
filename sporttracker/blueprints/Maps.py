@@ -68,7 +68,7 @@ def createGpxInfo(
     }
 
 
-def createGpxInfoPlannedTour(tourId: int, tourName: str) -> dict[str, str | int]:
+def createGpxInfoPlannedTour(tourId: int, tourName: str, workoutUrlEndpoint: str) -> dict[str, str | int]:
     return {
         'workoutId': tourId,
         'gpxUrl': url_for(
@@ -76,7 +76,7 @@ def createGpxInfoPlannedTour(tourId: int, tourName: str) -> dict[str, str | int]
             tour_id=tourId,
             file_format=GpxService.GPX_FILE_EXTENSION,
         ),
-        'workoutUrl': url_for('plannedTours.edit', tour_id=tourId),
+        'workoutUrl': workoutUrlEndpoint,
         'workoutName': __escape_name(tourName),
     }
 
@@ -262,7 +262,7 @@ def construct_blueprint(
         plannedTours = natsorted(plannedTours, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
 
         for tour in plannedTours:
-            gpxInfo.append(createGpxInfoPlannedTour(tour.id, tour.name))  # type: ignore[arg-type]
+            gpxInfo.append(createGpxInfoPlannedTour(tour.id, tour.name, url_for('plannedTours.edit', tour_id=tour.id)))  # type: ignore[arg-type]
 
         return render_template(
             'maps/mapMultipleWorkouts.jinja2',
@@ -574,7 +574,6 @@ def construct_blueprint(
         if longDistanceTour is None:
             abort(404)
 
-        # TODO
         tileRenderUrl = url_for(
             'maps.renderAllTiles',
             user_id=current_user.id,
@@ -584,16 +583,21 @@ def construct_blueprint(
             _external=True,
         )
 
+        longDistanceTourModel = LongDistanceTourModel.create_from_tour(longDistanceTour)
+
         tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
+
+        gpxInfo = []
+        for order, tour in enumerate(longDistanceTourModel.linkedPlannedTours):
+            tourName = f'{flask_babel.gettext("Stage")} {order + 1} - {tour.name}'
+            gpxInfo.append(
+                createGpxInfoPlannedTour(tour.id, tourName, url_for('maps.showPlannedTour', tour_id=tour.id))
+            )  # type: ignore[arg-type]
 
         return render_template(
             'maps/mapLongDistanceTour.jinja2',
-            longDistanceTour=LongDistanceTourModel.create_from_tour(longDistanceTour),
-            gpxUrl=url_for(
-                'gpxTracks.downloadGpxTrackByPlannedTourId',
-                tour_id=tour_id,
-                file_format=GpxService.GPX_FILE_EXTENSION,
-            ),
+            longDistanceTour=longDistanceTourModel,
+            gpxInfo=gpxInfo,
             editUrl=url_for('longDistanceTours.edit', tour_id=tour_id),
             tileRenderUrl=tileRenderUrl,
             tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
