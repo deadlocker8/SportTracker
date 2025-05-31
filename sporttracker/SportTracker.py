@@ -335,7 +335,7 @@ class SportTracker(FlaskBaseApp):
         )
         app.register_blueprint(
             LongDistanceTours.construct_blueprint(
-                self._settings['gpxPreviewImages'], app.config['PLANNED_TOUR_SERVICE']
+                app.config['GPX_SERVICE'], self._settings['gpxPreviewImages'], app.config['PLANNED_TOUR_SERVICE']
             )
         )
         app.register_blueprint(AnnualAchievements.construct_blueprint())

@@ -10,6 +10,8 @@ from pydantic import BaseModel
 
 from sporttracker.blueprints.PlannedTours import PlannedTourModel, __get_user_models
 from sporttracker.logic import Constants
+from sporttracker.logic.GpxService import GpxService
+from sporttracker.logic.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session, QuickFilterState
 from sporttracker.logic.model.LongDistanceTour import (
     LongDistanceTour,
@@ -96,7 +98,9 @@ class LongDistanceTourFormModel(BaseModel):
     linkedPlannedTours: list[str] | str | None = None
 
 
-def construct_blueprint(gpxPreviewImageSettings: dict[str, Any], plannedToursService: PlannedTourService) -> Blueprint:
+def construct_blueprint(
+    gpxService: GpxService, gpxPreviewImageSettings: dict[str, Any], plannedToursService: PlannedTourService
+) -> Blueprint:
     longDistanceTours = Blueprint(
         'longDistanceTours', __name__, static_folder='static', url_prefix='/longDistanceTours'
     )
@@ -150,6 +154,9 @@ def construct_blueprint(gpxPreviewImageSettings: dict[str, Any], plannedToursSer
 
         __add_shared_users_to_all_linked_planned_tours(plannedToursService, longDistanceTour, sharedUsers)
 
+        gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(longDistanceTour, gpxService)
+        gpxPreviewImageService.generate_image(gpxPreviewImageSettings)
+
         return redirect(url_for('longDistanceTours.listLongDistanceTours'))
 
     @longDistanceTours.route('/edit/<int:tour_id>')
@@ -195,6 +202,9 @@ def construct_blueprint(gpxPreviewImageSettings: dict[str, Any], plannedToursSer
         LOGGER.debug(f'Updated long-distance tour: {longDistanceTour}')
 
         __add_shared_users_to_all_linked_planned_tours(plannedToursService, longDistanceTour, sharedUsers)
+
+        gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(longDistanceTour, gpxService)
+        gpxPreviewImageService.generate_image(gpxPreviewImageSettings)
 
         return redirect(url_for('longDistanceTours.listLongDistanceTours'))
 
