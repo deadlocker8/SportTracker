@@ -8,20 +8,22 @@
         </label>
         {% for user in users %}
             {% set isOwner=plannedTour and user.id|string == plannedTour.ownerId %}
+            {% set isUserFromSharedLongDistanceTour=plannedTour and user.id in userIdsForSharedLongDistanceTour %}
 
             <div class="form-check input-field-margin">
-                <input class="form-check-input participant-checkbox" type="checkbox" {% if plannedTour and (user.id|string in plannedTour.sharedUsers) or isOwner %}checked{% endif %} id="sharedUser-{{ user.id }}" name="sharedUsers" value="{{ user.id }}" {% if plannedTour and user.id|string == plannedTour.ownerId %}disabled{% endif %}>
+                <input class="form-check-input participant-checkbox" type="checkbox" {% if plannedTour and (user.id|string in plannedTour.sharedUsers) or isOwner %}checked{% endif %} id="sharedUser-{{ user.id }}" name="sharedUsers" value="{{ user.id }}" {% if plannedTour and (user.id|string == plannedTour.ownerId or isUserFromSharedLongDistanceTour) %}disabled{% endif %}>
                 <label class="form-check-label" for="sharedUser-{{ user.id }}">
-                    {{ user.name | capitalize }} {% if isOwner %}({{ gettext('Owner') }}){% endif %}
+                    {{ user.name | capitalize }} {% if isOwner %}({{ gettext('Owner') }}){% endif %} {% if isUserFromSharedLongDistanceTour %}({{ gettext('shared via long-distance-tour') }}){% endif %}
                 </label>
             </div>
         {% endfor %}
 
         {% if plannedTour and current_user.id|string != plannedTour.ownerId %}
+            {% set isUserFromSharedLongDistanceTour=plannedTour and current_user.id in userIdsForSharedLongDistanceTour %}
             <div class="form-check input-field-margin">
-                <input class="form-check-input participant-checkbox" type="checkbox" checked id="sharedUser-{{ current_user.id }}" name="sharedUsers" value="{{ current_user.id }}">
+                <input class="form-check-input participant-checkbox" type="checkbox" checked id="sharedUser-{{ current_user.id }}" name="sharedUsers" value="{{ current_user.id }}" {% if isUserFromSharedLongDistanceTour %}disabled{% endif %}>
                 <label class="form-check-label" for="sharedUser-{{ current_user.id }}">
-                    {{ current_user.username | capitalize }}
+                    {{ current_user.username | capitalize }} {% if isUserFromSharedLongDistanceTour %}({{ gettext('shared via long-distance-tour') }}){% endif %}
                 </label>
             </div>
         {% endif %}

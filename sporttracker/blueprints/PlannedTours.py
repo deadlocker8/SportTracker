@@ -19,6 +19,10 @@ from sporttracker.logic.model.DistanceWorkout import (
     DistanceWorkout,
 )
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
+from sporttracker.logic.model.LongDistanceTour import (
+    LongDistanceTourPlannedTourAssociation,
+    get_long_distance_tour_by_id,
+)
 from sporttracker.logic.model.PlannedTour import (
     PlannedTour,
     TravelType,
@@ -201,11 +205,24 @@ def construct_blueprint(
             hasFitFile=gpxService.has_fit_file(gpxFileName),
         )
 
+        longDistanceTours = LongDistanceTourPlannedTourAssociation.query.filter(
+            LongDistanceTourPlannedTourAssociation.planned_tour_id == tour_id
+        ).all()
+
+        userIdsForSharedLongDistanceTour = set()
+        for longDistanceTourAssociation in longDistanceTours:
+            longDistanceTour = get_long_distance_tour_by_id(longDistanceTourAssociation.long_distance_tour_id)
+            if longDistanceTour is None:
+                continue
+
+            [userIdsForSharedLongDistanceTour.add(user.id) for user in longDistanceTour.shared_users]
+
         return render_template(
             'plannedTours/plannedTourForm.jinja2',
             plannedTour=tourModel,
             tour_id=tour_id,
             users=__get_user_models(get_all_users_except_self_and_admin()),
+            userIdsForSharedLongDistanceTour=list(userIdsForSharedLongDistanceTour),
         )
 
     @plannedTours.route('/edit/<int:tour_id>', methods=['POST'])
