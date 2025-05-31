@@ -60,7 +60,7 @@
 
                             <div class="card mb-3" data-bs-theme="light">
                                 <div class="row">
-                                    <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
+                                    <div class="col-md-4 pe-0 d-flex flex-column align-items-center justify-content-center">
                                         {% if isGpxPreviewImagesEnabled %}
                                             <a href="{{ url_for('maps.showPlannedTour', tour_id=stage.id or -1) }}">
                                                 <img class="img-fluid p-2" src="{{ url_for('gpxTracks.getPreviewImageByPlannedTourId', tour_id=stage.id) }}" alt="">
@@ -73,16 +73,17 @@
                                             </a>
                                         {% endif %}
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 ps-0">
                                         <div class="card-body">
                                             <div class="d-flex align-items-center mb-3">
                                                 {% if stage.linkedWorkouts|length > 0 %}
                                                     <span class="material-symbols-outlined filled fs-4 me-2 text-success">check_circle</span>
                                                 {% endif %}
-                                                <span class="fs-4 card-title mb-0 text-truncate text-start">{{ stage.name }}</span>
+                                                <span class="fs-4 card-title mb-0 text-truncate text-start">{{ gettext('Stage') }} {{ loop.index }} - {{ stage.name }}</span>
                                             </div>
 
                                             {% if stage.linkedWorkouts|length > 0 %}
+                                                <!-- stage is completed-->
                                                 <div class="row row-cols-2 gy-3">
                                                     {% call mapMacros.stage_info_item('route', longDistanceTour.type.text_color, gettext('Distance'), alignment='align-items-start') %}
                                                         {{ (linkedWorkout.distance / 1000) | format_decimal(2) }} km
