@@ -38,6 +38,27 @@
 
             <!-- large displays -->
             <div class="col col-12 col-xxl-5 p-0 ps-4 mb-5 mb-xxl-0">
+                <div class="card bg-body-secondary mb-3" data-bs-theme="dark">
+                    <div class="card-body">
+                        <div class="row row-cols-2">
+                            <div class="col d-flex flex-column align-items-center justify-content-between">
+                                <div class="fs-4 fw-bold {{ longDistanceTour.type.text_color }}">
+                                    {{ longDistanceTour.get_number_of_completed_stages() }} / {{ longDistanceTour.linkedPlannedTours|length }}
+                                </div>
+                                <div class="fs-6">{{ gettext('Stages') }}</div>
+                            </div>
+
+                            <div class="col d-flex flex-column align-items-center justify-content-between">
+                                <div class="fs-4 fw-bold {{ longDistanceTour.type.text_color }}">
+                                    {{ (longDistanceTour.get_completed_distance() / 1000) | format_decimal(1) }} / {{ (longDistanceTour.get_total_distance() / 1000) | format_decimal(1) }}
+                                </div>
+                                <div class="fs-6">km</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="card bg-body-secondary" data-bs-theme="dark">
                     <div class="card-header d-flex align-items-center {{ classes }} justify-content-between">
                         <div class="d-flex align-items-center">

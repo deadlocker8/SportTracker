@@ -56,16 +56,16 @@
                                     <div class="row row-cols-2 gy-3">
                                         <div class="col d-flex flex-column align-items-center justify-content-between">
                                             <div class="fs-5">
-                                                {{ (longDistanceTour.get_completed_distance() / 1000) | format_decimal(1) }} / {{ (longDistanceTour.get_total_distance() / 1000) | format_decimal(1) }}
+                                                {{ longDistanceTour.get_number_of_completed_stages() }} / {{ longDistanceTour.linkedPlannedTours|length }}
                                             </div>
-                                            <div class="fs-6">km</div>
+                                            <div class="fs-6">{{ gettext('Stages') }}</div>
                                         </div>
 
                                         <div class="col d-flex flex-column align-items-center justify-content-between">
                                             <div class="fs-5">
-                                                {{ longDistanceTour.get_number_of_completed_stages() }} / {{ longDistanceTour.linkedPlannedTours|length }}
+                                                {{ (longDistanceTour.get_completed_distance() / 1000) | format_decimal(1) }} / {{ (longDistanceTour.get_total_distance() / 1000) | format_decimal(1) }}
                                             </div>
-                                            <div class="fs-6">{{ gettext('Stages') }}</div>
+                                            <div class="fs-6">km</div>
                                         </div>
                                     </div>
                                 </div>
