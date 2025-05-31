@@ -141,12 +141,14 @@ def construct_blueprint(gpxPreviewImageSettings: dict[str, Any], plannedToursSer
             shared_users=sharedUsers,
         )
 
-        LOGGER.debug(f'Saved new long-distance tour: {longDistanceTour}')
         db.session.add(longDistanceTour)
         db.session.commit()
 
         longDistanceTour.linked_planned_tours = __get_linked_planned_tour_associations(longDistanceTour.id)
         db.session.commit()
+        LOGGER.debug(f'Saved new long-distance tour: {longDistanceTour}')
+
+        __add_shared_users_to_all_linked_planned_tours(plannedToursService, longDistanceTour, sharedUsers)
 
         return redirect(url_for('longDistanceTours.listLongDistanceTours'))
 
@@ -190,8 +192,9 @@ def construct_blueprint(gpxPreviewImageSettings: dict[str, Any], plannedToursSer
         db.session.commit()
         longDistanceTour.linked_planned_tours = __get_linked_planned_tour_associations(tour_id)
         db.session.commit()
-
         LOGGER.debug(f'Updated long-distance tour: {longDistanceTour}')
+
+        __add_shared_users_to_all_linked_planned_tours(plannedToursService, longDistanceTour, sharedUsers)
 
         return redirect(url_for('longDistanceTours.listLongDistanceTours'))
 
@@ -248,3 +251,18 @@ def __get_linked_planned_tour_associations(tour_id):
             )
         )
     return linkedPlannedTours
+
+
+def __add_shared_users_to_all_linked_planned_tours(
+    plannedToursService: PlannedTourService, longDistanceTour: LongDistanceTour, sharedUsers: list[User]
+) -> None:
+    for linkedPlannedTour in longDistanceTour.linked_planned_tours:
+        plannedTour = plannedToursService.get_planned_tour_by_id(linkedPlannedTour.planned_tour_id)
+        if plannedTour is None:
+            continue
+
+        for sharedUser in sharedUsers:
+            if sharedUser not in plannedTour.shared_users:
+                plannedTour.shared_users.append(sharedUser)
+                LOGGER.debug(f'Added shared user {sharedUser.id} to linked planned tour {plannedTour.id}')
+            db.session.commit()
