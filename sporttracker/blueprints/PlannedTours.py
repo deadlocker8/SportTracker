@@ -215,7 +215,8 @@ def construct_blueprint(
             if longDistanceTour is None:
                 continue
 
-            [userIdsForSharedLongDistanceTour.add(user.id) for user in longDistanceTour.shared_users]
+            for user in longDistanceTour.shared_users:
+                userIdsForSharedLongDistanceTour.add(user.id)
 
         return render_template(
             'plannedTours/plannedTourForm.jinja2',
@@ -311,6 +312,8 @@ def construct_blueprint(
             request.form.get('plannedTourFilterName', None),
             minimumDistance,
             maximumDistance,
+            request.form.get('plannedTourFilterLongDistanceToursInclude', 'off').strip().lower() == 'on',
+            request.form.get('plannedTourFilterLongDistanceToursExclude', 'off').strip().lower() == 'on',
         )
         session['plannedTourFilterState'] = plannedTourFilterState.to_json()
 

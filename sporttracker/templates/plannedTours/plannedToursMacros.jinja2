@@ -97,7 +97,7 @@
     <div class="dropdown position-static">
         <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="material-symbols-outlined fs-5">filter_alt</span>
-            <span class="ms-2">{{ gettext('Filter: Status') }}</span>
+            <span class="ms-2">{{ gettext('Status') }}</span>
         </button>
         <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
             <div class="form-check text-nowrap mb-2">
@@ -154,7 +154,7 @@
     <div class="dropdown position-static">
         <button class="btn btn-sm {% if nameFilter is none or nameFilter | length == 0 %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="material-symbols-outlined fs-5">filter_alt</span>
-            <span class="ms-2">{{ gettext('Filter: Name') }}</span>
+            <span class="ms-2">{{ gettext('Name') }}</span>
         </button>
         <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
             <div class="text-nowrap mb-2">
@@ -177,7 +177,7 @@
     <div class="dropdown position-static">
         <button class="btn btn-sm {% if bothEmpty %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="material-symbols-outlined fs-5">filter_alt</span>
-            <span class="ms-2">{{ gettext('Filter: Distance') }}</span>
+            <span class="ms-2">{{ gettext('Distance') }}</span>
         </button>
         <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
             <div class="text-nowrap mb-2">
@@ -202,6 +202,37 @@
                        id="plannedTourFilterDistanceMax"
                        name="plannedTourFilterDistanceMax"
                        value="{% if maxDistance is not none %}{{ maxDistance // 1000 }}{% endif %}">
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro plannedTourFilterLongDistanceTours(isLongDistanceToursIncludeSelected, isLongDistanceToursExcludeSelected) -%}
+    {% set allSelected = isLongDistanceToursIncludeSelected and isLongDistanceToursExcludeSelected %}
+
+    <div class="dropdown position-static">
+        <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="material-symbols-outlined fs-5">filter_alt</span>
+            <span class="ms-2">{{ gettext('Long-distance Tours') }}</span>
+        </button>
+        <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
+            <div class="form-check text-nowrap mb-2">
+                <input class="form-check-input" type="checkbox"
+                       id="plannedTourFilterLongDistanceToursInclude"
+                       name="plannedTourFilterLongDistanceToursInclude"
+                       {% if isLongDistanceToursIncludeSelected %}checked{% endif %}>
+                <label class="form-check-label d-flex align-items-center" for="plannedTourFilterLongDistanceToursInclude">
+                    <span>{{ gettext('Part of long-distance tour') }}</span>
+                </label>
+            </div>
+            <div class="form-check text-nowrap">
+                <input class="form-check-input" type="checkbox"
+                       id="plannedTourFilterLongDistanceToursExclude"
+                       name="plannedTourFilterLongDistanceToursExclude"
+                       {% if isLongDistanceToursExcludeSelected %}checked{% endif %}>
+                <label class="form-check-label d-flex align-items-center" for="plannedTourFilterLongDistanceToursExclude">
+                    <span>{{ gettext('Not part of long-distance tour') }}</span>
+                </label>
             </div>
         </div>
     </div>

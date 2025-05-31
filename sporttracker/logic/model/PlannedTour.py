@@ -228,6 +228,13 @@ def get_planned_tours_filtered(
         plannedTourFilterState.is_done_selected(),
         plannedTourFilterState.is_todo_selected(),
     )
+
+    plannedTours = __filter_by_long_distance_tours(
+        plannedTours,
+        plannedTourFilterState.is_long_distance_tours_include_selected(),
+        plannedTourFilterState.is_long_distance_tours_exclude_selected(),
+    )
+
     return natsorted(plannedTours, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
 
 
@@ -276,6 +283,48 @@ def __filter_by_status(plannedTours: list[PlannedTour], includeDone: bool, inclu
             continue
 
         if includeTodo and numberOfLinkedWorkouts == 0:
+            filteredTours.append(plannedTour)
+
+    return filteredTours
+
+
+def __filter_by_long_distance_tours(
+    plannedTours: list[PlannedTour], includeLongDistanceTours: bool, excludeLongDistanceTours: bool
+) -> list[PlannedTour]:
+    if includeLongDistanceTours and excludeLongDistanceTours:
+        return plannedTours
+
+    from sporttracker.logic.model.LongDistanceTour import (
+        LongDistanceTourPlannedTourAssociation,
+        get_long_distance_tour_by_id,
+    )
+
+    filteredTours = []
+
+    for plannedTour in plannedTours:
+        longDistanceTours = LongDistanceTourPlannedTourAssociation.query.filter(
+            LongDistanceTourPlannedTourAssociation.planned_tour_id == plannedTour.id
+        ).all()
+
+        numberOfAllowedLongDistanceTours = 0
+        for longDistanceTourAssociation in longDistanceTours:
+            longDistanceTour = get_long_distance_tour_by_id(longDistanceTourAssociation.long_distance_tour_id)
+            if longDistanceTour is None:
+                continue
+
+            if current_user.id == longDistanceTour.user_id:
+                numberOfAllowedLongDistanceTours += 1
+                continue
+
+            sharedUserIds = [u.id for u in longDistanceTour.shared_users]
+            if current_user.id in sharedUserIds:
+                numberOfAllowedLongDistanceTours += 1
+
+        if includeLongDistanceTours and numberOfAllowedLongDistanceTours > 0:
+            filteredTours.append(plannedTour)
+            continue
+
+        if excludeLongDistanceTours and numberOfAllowedLongDistanceTours == 0:
             filteredTours.append(plannedTour)
 
     return filteredTours

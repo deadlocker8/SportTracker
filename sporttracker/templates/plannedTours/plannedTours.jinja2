@@ -40,11 +40,13 @@
 
                         {{ plannedTourMacros.plannedTourFilterDistance(plannedTourFilterState.get_minimum_distance(), plannedTourFilterState.get_maximum_distance()) }}
 
-                        {{ plannedTourMacros.plannedTourFilterEnum(travelTypes, plannedTourFilterState.get_selected_arrival_methods(), gettext('Filter: Arrival Method'), 'plannedTourFilterArrivalMethod') }}
+                        {{ plannedTourMacros.plannedTourFilterEnum(travelTypes, plannedTourFilterState.get_selected_arrival_methods(), gettext('Arrival Method'), 'plannedTourFilterArrivalMethod') }}
 
-                        {{ plannedTourMacros.plannedTourFilterEnum(travelTypes, plannedTourFilterState.get_selected_departure_methods(), gettext('Filter: Departure Method'), 'plannedTourFilterDepartureMethod') }}
+                        {{ plannedTourMacros.plannedTourFilterEnum(travelTypes, plannedTourFilterState.get_selected_departure_methods(), gettext('Departure Method'), 'plannedTourFilterDepartureMethod') }}
 
-                        {{ plannedTourMacros.plannedTourFilterEnum(travelDirections, plannedTourFilterState.get_selected_directions(), gettext('Filter: Direction'), 'plannedTourFilterDirection') }}
+                        {{ plannedTourMacros.plannedTourFilterEnum(travelDirections, plannedTourFilterState.get_selected_directions(), gettext('Direction'), 'plannedTourFilterDirection') }}
+
+                        {{ plannedTourMacros.plannedTourFilterLongDistanceTours(plannedTourFilterState.is_long_distance_tours_include_selected(), plannedTourFilterState.is_long_distance_tours_exclude_selected()) }}
 
                         <a href="{{ url_for('plannedTours.resetFilter') }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap">{{ gettext('Reset Filter') }}</a>
 

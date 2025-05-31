@@ -17,6 +17,8 @@ class PlannedTourFilterState:
         self._name_filter: str | None = None
         self._minimum_distance: int | None = None
         self._maximum_distance: int | None = None
+        self._isLongDistanceToursIncludeSelected: bool = True
+        self._isLongDistanceToursExcludeSelected: bool = True
 
     def update(
         self,
@@ -28,6 +30,8 @@ class PlannedTourFilterState:
         nameFilter: str | None,
         minimum_distance: int | None = None,
         maximum_distance: int | None = None,
+        isLongDistanceToursIncludeSelected: bool = True,
+        isLongDistanceToursExcludeSelected: bool = True,
     ):
         self._isDoneSelected = isDoneSelected
         self._isTodoSelected = isTodoSelected
@@ -37,6 +41,8 @@ class PlannedTourFilterState:
         self._name_filter = nameFilter
         self._minimum_distance = minimum_distance
         self._maximum_distance = maximum_distance
+        self._isLongDistanceToursIncludeSelected = isLongDistanceToursIncludeSelected
+        self._isLongDistanceToursExcludeSelected = isLongDistanceToursExcludeSelected
 
     def is_done_selected(self) -> bool:
         return self._isDoneSelected
@@ -65,6 +71,12 @@ class PlannedTourFilterState:
     def get_maximum_distance(self) -> int | None:
         return self._maximum_distance
 
+    def is_long_distance_tours_include_selected(self) -> bool:
+        return self._isLongDistanceToursIncludeSelected
+
+    def is_long_distance_tours_exclude_selected(self) -> bool:
+        return self._isLongDistanceToursExcludeSelected
+
     def to_json(self) -> str:
         return json.dumps(
             {
@@ -78,6 +90,8 @@ class PlannedTourFilterState:
                 'nameFilter': self._name_filter,
                 'minimum_distance': self._minimum_distance,
                 'maximum_distance': self._maximum_distance,
+                'isLongDistanceToursIncludeSelected': self._isLongDistanceToursIncludeSelected,
+                'isLongDistanceToursExcludeSelected': self._isLongDistanceToursExcludeSelected,
             }
         )
 
@@ -119,6 +133,12 @@ class PlannedTourFilterState:
             jsonData['nameFilter'],
             jsonData['minimum_distance'],
             jsonData['maximum_distance'],
+            jsonData['isLongDistanceToursIncludeSelected']
+            if 'isLongDistanceToursIncludeSelected' in jsonData
+            else True,
+            jsonData['isLongDistanceToursExcludeSelected']
+            if 'isLongDistanceToursExcludeSelected' in jsonData
+            else True,
         )
         return plannedTourFilterState
 
