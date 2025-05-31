@@ -20,9 +20,6 @@ class GpxPreviewImageService:
     def get_preview_image_path(self) -> str:
         return os.path.join(self._gpxService.get_folder_path(self._gpxFileName), self._previewImageFileName)
 
-    def __get_preview_image_file_name(self) -> str:
-        return self._previewImageFileName
-
     def is_image_existing(self) -> bool:
         return os.path.exists(self.get_preview_image_path())
 

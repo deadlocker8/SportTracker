@@ -1,4 +1,5 @@
 import logging
+from typing import Any
 
 from flask import Blueprint, abort, Response, send_file, send_from_directory
 from flask_login import login_required, current_user
@@ -6,14 +7,18 @@ from flask_login import login_required, current_user
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.logic.GpxService import GpxService
+from sporttracker.logic.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
+from sporttracker.logic.model.LongDistanceTour import get_long_distance_tour_by_id
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.logic.service.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def construct_blueprint(gpxService: GpxService, distanceWorkoutService: DistanceWorkoutService):
+def construct_blueprint(
+    gpxService: GpxService, distanceWorkoutService: DistanceWorkoutService, gpxPreviewSettings: dict[str, Any]
+):
     gpxTracks = Blueprint('gpxTracks', __name__, static_folder='static', url_prefix='/gpxTracks')
 
     @gpxTracks.route('/workout/<string:file_format>/<int:workout_id>')
@@ -113,13 +118,19 @@ def construct_blueprint(gpxService: GpxService, distanceWorkoutService: Distance
     @gpxTracks.route('/previewImage/longDistanceTour/<int:tour_id>')
     @login_required
     def getPreviewImageByLongDistanceTourId(tour_id: int):
-        longDistanceTour = PlannedTourService.get_planned_tour_by_id(tour_id)
+        longDistanceTour = get_long_distance_tour_by_id(tour_id)
 
         if longDistanceTour is None:
             abort(404)
 
-        # TODO
-        return send_from_directory('static', path='images/map_placeholder.png', mimetype='image/png')
+        gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(longDistanceTour, gpxService)
+        gpxPreviewImageService.generate_image(gpxPreviewSettings)
+
+        if not gpxPreviewImageService.is_image_existing():
+            return send_from_directory('static', path='images/map_placeholder.png', mimetype='image/png')
+
+        gpxPreviewImageFileName = gpxPreviewImageService.get_preview_image_path()
+        return send_file(gpxPreviewImageFileName, mimetype='image/jpg')
 
     return gpxTracks
 

@@ -276,6 +276,18 @@ class GpxService:
         with open(fitFilePath, 'rb') as f:
             return f.read()
 
+    def join_multiple_gpx(self, gpxFileNames: list[str]) -> bytes:
+        joinedGpx = gpxpy.gpx.GPX()
+        joinedTrack = gpxpy.gpx.GPXTrack()
+
+        for gpxFileName in gpxFileNames:
+            gpxTrack = GpxParser(self.get_gpx_content(gpxFileName)).get_joined_track()
+            for segment in gpxTrack.segments:
+                joinedTrack.segments.append(segment)
+
+        joinedGpx.tracks.append(joinedTrack)
+        return joinedGpx.to_xml(prettyprint=False).encode('utf-8')
+
 
 class GpxParser:
     def __init__(self, gpxContent: bytes) -> None:
@@ -301,6 +313,9 @@ class GpxParser:
         self._gpx.name = downloadName
 
         return self._gpx.to_xml(prettyprint=False)
+
+    def get_joined_track(self):
+        return self.__join_tracks(self._gpx)
 
     @staticmethod
     def __fix_missing_elevation_for_first_points(gpx: GPX):
@@ -339,7 +354,7 @@ class GpxParser:
         return None
 
     @staticmethod
-    def __join_tracks(gpx: GPX) -> None:
+    def __join_tracks(gpx: GPX) -> GPXTrack:
         joinedTrack = gpxpy.gpx.GPXTrack()
         numberOfTracks = len(gpx.tracks)
         for track in gpx.tracks:
@@ -352,6 +367,7 @@ class GpxParser:
         gpx.tracks.append(joinedTrack)
 
         GpxParser.__join_track_segments(joinedTrack)
+        return joinedTrack
 
     @staticmethod
     def __join_track_segments(track: GPXTrack) -> None:
