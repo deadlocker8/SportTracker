@@ -10,7 +10,6 @@ from pydantic import BaseModel
 
 from sporttracker.blueprints.PlannedTours import PlannedTourModel, __get_user_models
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session, QuickFilterState
 from sporttracker.logic.model.LongDistanceTour import (
     LongDistanceTour,
@@ -97,9 +96,7 @@ class LongDistanceTourFormModel(BaseModel):
     linkedPlannedTours: list[str] | str | None = None
 
 
-def construct_blueprint(
-    gpxService: GpxService, gpxPreviewImageSettings: dict[str, Any], plannedToursService: PlannedTourService
-) -> Blueprint:
+def construct_blueprint(gpxPreviewImageSettings: dict[str, Any], plannedToursService: PlannedTourService) -> Blueprint:
     longDistanceTours = Blueprint(
         'longDistanceTours', __name__, static_folder='static', url_prefix='/longDistanceTours'
     )
