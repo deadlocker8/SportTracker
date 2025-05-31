@@ -566,7 +566,7 @@ def construct_blueprint(
 
         return jsonify({'numberOfVisits': numberOfVisits})
 
-    @maps.route('/map/lonDistanceTour/<int:tour_id>')
+    @maps.route('/map/longDistanceTour/<int:tour_id>')
     @login_required
     def showLongDistanceTour(tour_id: int):
         longDistanceTour = get_long_distance_tour_by_id(tour_id)
