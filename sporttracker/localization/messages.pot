@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-31 23:19+0200\n"
+"POT-Creation-Date: 2025-06-01 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -164,7 +164,7 @@ msgid "FIT file does not contain session data"
 msgstr ""
 
 #: ../blueprints/Maps.py:592
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:152
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:154
 #: ../templates/maps/mapLongDistanceTour.jinja2:103
 msgid "Stage"
 msgstr ""
@@ -635,25 +635,25 @@ msgstr ""
 msgid "No planned tours selected"
 msgstr ""
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:40
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:42
 msgid "Search planned tours"
 msgstr ""
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:61
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:63
 msgid "No planned tours available"
 msgstr ""
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:70
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:85
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:72
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:87
 msgid "Edit Long-distance Tour"
 msgstr ""
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:70
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:101
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:72
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:103
 msgid "New Long-distance Tour"
 msgstr ""
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:90
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:92
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:29
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:33
 #: ../templates/maintenances/maintenanceForm.jinja2:28
@@ -682,23 +682,23 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:94
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:96
 msgid "Delete Long-distance Tour?"
 msgstr ""
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:94
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:96
 msgid "Do you really want to delete this long-distance tour?"
 msgstr ""
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:96
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:98
 msgid "Delete (including all linked planned tours)"
 msgstr ""
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:97
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:99
 msgid "Delete (only this long-distance tour)"
 msgstr ""
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:114
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:116
 #: ../templates/maintenances/maintenanceForm.jinja2:47
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:41
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:28
@@ -712,7 +712,7 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:130
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:132
 #: ../templates/plannedTours/plannedTourForm.jinja2:63
 #: ../templates/plannedTours/plannedToursMacros.jinja2:157
 #: ../templates/settings/customFieldsForm.jinja2:52
@@ -723,7 +723,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:143
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:145
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:77
 #: ../templates/maintenances/maintenanceForm.jinja2:107
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:98

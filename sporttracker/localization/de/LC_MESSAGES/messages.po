@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-31 23:19+0200\n"
-"PO-Revision-Date: 2025-05-31 23:25+0200\n"
+"POT-Creation-Date: 2025-06-01 18:51+0200\n"
+"PO-Revision-Date: 2025-06-01 18:53+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -146,7 +146,6 @@ msgid "You"
 msgstr "Du"
 
 #: ../blueprints/Charts.py:188
-#, python-format
 msgid "Distance per participant for workout type "
 msgstr "Strecke pro Teilnehmer für Workouttyp "
 
@@ -179,7 +178,7 @@ msgid "FIT file does not contain session data"
 msgstr "FIT-Datei enthält keine Session-Daten"
 
 #: ../blueprints/Maps.py:592
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:152
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:154
 #: ../templates/maps/mapLongDistanceTour.jinja2:103
 msgid "Stage"
 msgstr "Etappe"
@@ -486,7 +485,7 @@ msgstr "Geplante Touren"
 #: ../templates/macros.jinja2:146
 #: ../templates/plannedTours/plannedToursMacros.jinja2:216
 msgid "Long-distance Tours"
-msgstr "Langstreckentouren"
+msgstr "Etappentouren"
 
 #: ../templates/macros.jinja2:160
 msgid "More"
@@ -650,25 +649,25 @@ msgstr "Etappen können per Drag & Drop sortiert werden"
 msgid "No planned tours selected"
 msgstr "Keine geplanten Touren ausgewählt"
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:40
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:42
 msgid "Search planned tours"
 msgstr "Geplante Touren durchsuchen"
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:61
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:63
 msgid "No planned tours available"
 msgstr "Keine geplanten Touren verfügbar"
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:70
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:85
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:72
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:87
 msgid "Edit Long-distance Tour"
-msgstr "Langstreckentour bearbeiten"
+msgstr "Etappentour bearbeiten"
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:70
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:101
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:72
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:103
 msgid "New Long-distance Tour"
-msgstr "Neue Langstreckentour"
+msgstr "Neue Etappentour"
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:90
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:92
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:29
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:33
 #: ../templates/maintenances/maintenanceForm.jinja2:28
@@ -696,23 +695,23 @@ msgstr "Neue Langstreckentour"
 msgid "Delete"
 msgstr "Löschen"
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:94
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:96
 msgid "Delete Long-distance Tour?"
-msgstr "Langstreckentour löschen?"
-
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:94
-msgid "Do you really want to delete this long-distance tour?"
-msgstr "Willst du diese Langstreckentour wirklich löschen?"
+msgstr "Etappentour löschen?"
 
 #: ../templates/longDistanceTours/longDistanceTourForm.jinja2:96
+msgid "Do you really want to delete this long-distance tour?"
+msgstr "Willst du diese Etappentour wirklich löschen?"
+
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:98
 msgid "Delete (including all linked planned tours)"
 msgstr "Löschen (inkl. verknüpfter geplanter Touren)"
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:97
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:99
 msgid "Delete (only this long-distance tour)"
-msgstr "Löschen (nur diese Langstreckentour)"
+msgstr "Löschen (nur diese Etappentour)"
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:114
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:116
 #: ../templates/maintenances/maintenanceForm.jinja2:47
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:41
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:28
@@ -726,7 +725,7 @@ msgstr "Löschen (nur diese Langstreckentour)"
 msgid "Type"
 msgstr "Typ"
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:130
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:132
 #: ../templates/plannedTours/plannedTourForm.jinja2:63
 #: ../templates/plannedTours/plannedToursMacros.jinja2:157
 #: ../templates/settings/customFieldsForm.jinja2:52
@@ -737,7 +736,7 @@ msgstr "Typ"
 msgid "Name"
 msgstr "Name"
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:143
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:145
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:77
 #: ../templates/maintenances/maintenanceForm.jinja2:107
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:98
@@ -877,11 +876,11 @@ msgstr "Tage"
 
 #: ../templates/maps/mapLongDistanceTour.jinja2:7
 msgid "Shared Long-distance Tour"
-msgstr "Geteilte Langstreckentour"
+msgstr "Geteilte Etappentour"
 
 #: ../templates/maps/mapLongDistanceTour.jinja2:10
 msgid "Long-distance Tour"
-msgstr "Langstreckentour"
+msgstr "Etappentour"
 
 #: ../templates/maps/mapLongDistanceTour.jinja2:93
 msgid "Open workout"
@@ -1354,7 +1353,7 @@ msgid ""
 "unlink this planned tour from all assoicated long-distance tours."
 msgstr ""
 "Willst du diese geplante Tour wirklich löschen?<br><br>Achtung: Dadurch wird "
-"diese geplante Tour auch von allen zugeordneten Langstreckentouren entfernt."
+"diese geplante Tour auch von allen zugeordneten Etappentouren entfernt."
 
 #: ../templates/plannedTours/plannedTourForm.jinja2:76
 msgid "Arrival method"
@@ -1403,7 +1402,7 @@ msgstr "Besitzer"
 #: ../templates/plannedTours/plannedToursMacros.jinja2:16
 #: ../templates/plannedTours/plannedToursMacros.jinja2:26
 msgid "shared via long-distance-tour"
-msgstr "geteilt per Langstreckentour"
+msgstr "geteilt per Etappentour"
 
 #: ../templates/plannedTours/plannedToursMacros.jinja2:34
 msgid "No other users available"
@@ -1435,11 +1434,11 @@ msgstr "Maximale Strecke (in km):"
 
 #: ../templates/plannedTours/plannedToursMacros.jinja2:225
 msgid "Part of long-distance tour"
-msgstr "Teil einer Langstreckentour"
+msgstr "Teil einer Etappentour"
 
 #: ../templates/plannedTours/plannedToursMacros.jinja2:234
 msgid "Not part of long-distance tour"
-msgstr "Nicht Teil einer Langstreckentour"
+msgstr "Nicht Teil einer Etappentour"
 
 #: ../templates/settings/customFieldsForm.jinja2:6
 #: ../templates/settings/customFieldsForm.jinja2:19
