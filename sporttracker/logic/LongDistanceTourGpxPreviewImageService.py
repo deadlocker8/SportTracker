@@ -47,6 +47,9 @@ class LongDistanceTourGpxPreviewImageService:
 
             gpxFileNames.append(gpxMetadata.gpx_file_name)
 
+        if not gpxFileNames:
+            return None
+
         try:
             with tempfile.TemporaryDirectory() as tempDirectory:
                 tempGpxFilePath = os.path.join(tempDirectory, f'{self._uniqueName}.gpx')
