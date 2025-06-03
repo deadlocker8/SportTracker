@@ -262,6 +262,11 @@ select[disabled] {
     opacity: 0.5;
 }
 
+#long-distance-stages {
+   max-height: 65vh;
+    overflow-y: scroll;
+}
+
 .debug {
     outline: 1px solid red !important;
 }
