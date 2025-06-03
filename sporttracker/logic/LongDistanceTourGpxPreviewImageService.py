@@ -12,6 +12,10 @@ from sporttracker.logic.service.PlannedTourService import PlannedTourService
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
+class ImageGenerationException(Exception):
+    pass
+
+
 class LongDistanceTourGpxPreviewImageService:
     def __init__(self, longDistanceTour: LongDistanceTour, gpxService) -> None:
         self._longDistanceTour = longDistanceTour
@@ -27,13 +31,27 @@ class LongDistanceTourGpxPreviewImageService:
         return os.path.exists(self.get_preview_image_path())
 
     def generate_image(self, gpxPreviewImageSettings: dict[str, Any]) -> None:
-        if not gpxPreviewImageSettings['enabled']:
-            return
+        try:
+            if not gpxPreviewImageSettings['enabled']:
+                raise ImageGenerationException()
 
-        os.makedirs(self._gpxService.get_folder_path(self._uniqueName), exist_ok=True)
+            os.makedirs(self._gpxService.get_folder_path(self._uniqueName), exist_ok=True)
 
-        linkedPlannedTours = self._longDistanceTour.linked_planned_tours
+            linkedPlannedTours = self._longDistanceTour.linked_planned_tours
+            gpxFileNames = self.__determine_gpx_file_names(linkedPlannedTours)
+            if not gpxFileNames:
+                raise ImageGenerationException()
 
+            self.__render_image(gpxFileNames, gpxPreviewImageSettings)
+        except ImageGenerationException:
+            if os.path.exists(self.get_preview_image_path()):
+                try:
+                    os.remove(self.get_preview_image_path())
+                except Exception as err:
+                    LOGGER.error(err)
+
+    @staticmethod
+    def __determine_gpx_file_names(linkedPlannedTours):
         gpxFileNames = []
         for linkedPlannedTour in linkedPlannedTours:
             plannedTour = PlannedTourService.get_planned_tour_by_id(linkedPlannedTour.planned_tour_id)
@@ -46,10 +64,9 @@ class LongDistanceTourGpxPreviewImageService:
                 continue
 
             gpxFileNames.append(gpxMetadata.gpx_file_name)
+        return gpxFileNames
 
-        if not gpxFileNames:
-            return None
-
+    def __render_image(self, gpxFileNames, gpxPreviewImageSettings):
         try:
             with tempfile.TemporaryDirectory() as tempDirectory:
                 tempGpxFilePath = os.path.join(tempDirectory, f'{self._uniqueName}.gpx')
@@ -65,3 +82,4 @@ class LongDistanceTourGpxPreviewImageService:
                         f.write(response.content)
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError) as err:
             LOGGER.error(err)
+            raise ImageGenerationException()

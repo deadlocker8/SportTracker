@@ -83,7 +83,12 @@ class PlannedTourService:
 
         LOGGER.debug(f'Saved new planned tour: {plannedTour}')
 
-        self.__update_gpx_preview_image_for_long_distance_tours(plannedTour.id)
+        linkedLongDistanceTours = LongDistanceTourPlannedTourAssociation.query.filter(
+            LongDistanceTourPlannedTourAssociation.long_distance_tour_id == plannedTour.id
+        ).all()
+        self.__update_gpx_preview_image_for_long_distance_tours(
+            [t.long_distance_tour_id for t in linkedLongDistanceTours]
+        )
 
         return plannedTour
 
@@ -110,10 +115,13 @@ class PlannedTourService:
             .filter(LongDistanceTourPlannedTourAssociation.planned_tour_id == tour_id)
             .all()
         )
+        linkedLongDistanceTourIds = [t.long_distance_tour_id for t in associatedLongDistanceTours]
         for association in associatedLongDistanceTours:
             LOGGER.debug(f'Removed planned tour from long-distance tour: {association.long_distance_tour_id}')
             db.session.delete(association)
             db.session.commit()
+
+        self.__update_gpx_preview_image_for_long_distance_tours(linkedLongDistanceTourIds)
 
         LOGGER.debug(f'Deleted planned tour: {plannedTour}')
         db.session.delete(plannedTour)
@@ -149,7 +157,12 @@ class PlannedTourService:
                 self._gpx_service.delete_gpx(plannedTour, user_id)
                 plannedTour.gpx_metadata_id = newGpxMetadataId
 
-                self.__update_gpx_preview_image_for_long_distance_tours(plannedTour.id)
+                linkedLongDistanceTours = LongDistanceTourPlannedTourAssociation.query.filter(
+                    LongDistanceTourPlannedTourAssociation.long_distance_tour_id == plannedTour.id
+                ).all()
+                self.__update_gpx_preview_image_for_long_distance_tours(
+                    [t.long_distance_tour_id for t in linkedLongDistanceTours]
+                )
 
         sharedUsers = get_users_by_ids(shared_user_ids)
         plannedTour.shared_users = sharedUsers
@@ -192,13 +205,9 @@ class PlannedTourService:
     def get_planned_tour_by_share_code(shareCode: str) -> PlannedTour | None:
         return PlannedTour.query.filter(PlannedTour.share_code == shareCode).first()
 
-    def __update_gpx_preview_image_for_long_distance_tours(self, plannedTourId: int):
-        linkedLongDistanceTours = LongDistanceTourPlannedTourAssociation.query.filter(
-            LongDistanceTourPlannedTourAssociation.planned_tour_id == plannedTourId
-        ).all()
-
-        for linkedLongDistanceTour in linkedLongDistanceTours:
-            longDistanceTour = get_long_distance_tour_by_id(linkedLongDistanceTour.long_distance_tour_id)
+    def __update_gpx_preview_image_for_long_distance_tours(self, linkedLongDistanceTourIds: list[int]):
+        for linkedLongDistanceTourId in linkedLongDistanceTourIds:
+            longDistanceTour = get_long_distance_tour_by_id(linkedLongDistanceTourId)
             if longDistanceTour is None:
                 continue
 
