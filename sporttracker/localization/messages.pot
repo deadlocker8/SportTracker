@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-01 18:51+0200\n"
+"POT-Creation-Date: 2025-06-03 22:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -165,7 +165,7 @@ msgstr ""
 
 #: ../blueprints/Maps.py:592
 #: ../templates/longDistanceTours/longDistanceTourForm.jinja2:154
-#: ../templates/maps/mapLongDistanceTour.jinja2:103
+#: ../templates/maps/mapLongDistanceTour.jinja2:101
 msgid "Stage"
 msgstr ""
 
@@ -306,8 +306,8 @@ msgstr ""
 msgid "Roundtrip"
 msgstr ""
 
-#: ../logic/model/User.py:75 ../templates/maps/mapLongDistanceTour.jinja2:109
-#: ../templates/maps/mapLongDistanceTour.jinja2:131
+#: ../logic/model/User.py:75 ../templates/maps/mapLongDistanceTour.jinja2:107
+#: ../templates/maps/mapLongDistanceTour.jinja2:129
 #: ../templates/maps/mapPlannedTour.jinja2:40
 #: ../templates/maps/mapPlannedTour.jinja2:87
 #: ../templates/maps/mapSingleWorkout.jinja2:45
@@ -316,7 +316,7 @@ msgstr ""
 msgid "Distance"
 msgstr ""
 
-#: ../logic/model/User.py:77 ../templates/maps/mapLongDistanceTour.jinja2:117
+#: ../logic/model/User.py:77 ../templates/maps/mapLongDistanceTour.jinja2:115
 #: ../templates/maps/mapSingleWorkout.jinja2:48
 #: ../templates/maps/mapSingleWorkout.jinja2:96
 #: ../templates/workouts/workoutMacros.jinja2:335
@@ -327,7 +327,7 @@ msgstr ""
 msgid "Average Heart Rate"
 msgstr ""
 
-#: ../logic/model/User.py:83 ../templates/maps/mapLongDistanceTour.jinja2:121
+#: ../logic/model/User.py:83 ../templates/maps/mapLongDistanceTour.jinja2:119
 #: ../templates/maps/mapSingleWorkout.jinja2:124
 msgid "Elevation Sum"
 msgstr ""
@@ -759,8 +759,8 @@ msgid "updated"
 msgstr ""
 
 #: ../templates/longDistanceTours/longDistanceTours.jinja2:61
-#: ../templates/maps/mapLongDistanceTour.jinja2:48
-#: ../templates/maps/mapLongDistanceTour.jinja2:66
+#: ../templates/maps/mapLongDistanceTour.jinja2:47
+#: ../templates/maps/mapLongDistanceTour.jinja2:64
 msgid "Stages"
 msgstr ""
 
@@ -770,7 +770,7 @@ msgid "shared"
 msgstr ""
 
 #: ../templates/longDistanceTours/longDistanceTours.jinja2:82
-#: ../templates/maps/mapLongDistanceTour.jinja2:164
+#: ../templates/maps/mapLongDistanceTour.jinja2:169
 #: ../templates/maps/mapPlannedTour.jinja2:61
 #: ../templates/maps/mapPlannedTour.jinja2:145
 #: ../templates/plannedTours/plannedTours.jinja2:128
@@ -796,7 +796,7 @@ msgid "Do you really want to delete this maintenance event?"
 msgstr ""
 
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:58
-#: ../templates/maps/mapLongDistanceTour.jinja2:113
+#: ../templates/maps/mapLongDistanceTour.jinja2:111
 #: ../templates/maps/mapSingleWorkout.jinja2:42
 #: ../templates/maps/mapSingleWorkout.jinja2:88
 #: ../templates/workouts/workoutMacros.jinja2:303
@@ -868,18 +868,22 @@ msgstr ""
 msgid "Long-distance Tour"
 msgstr ""
 
-#: ../templates/maps/mapLongDistanceTour.jinja2:93
+#: ../templates/maps/mapLongDistanceTour.jinja2:91
 msgid "Open workout"
 msgstr ""
 
-#: ../templates/maps/mapLongDistanceTour.jinja2:139
+#: ../templates/maps/mapLongDistanceTour.jinja2:137
 #: ../templates/maps/mapPlannedTour.jinja2:123
 msgid "Uphill"
 msgstr ""
 
-#: ../templates/maps/mapLongDistanceTour.jinja2:146
+#: ../templates/maps/mapLongDistanceTour.jinja2:144
 #: ../templates/maps/mapPlannedTour.jinja2:130
 msgid "Downhill"
+msgstr ""
+
+#: ../templates/maps/mapLongDistanceTour.jinja2:162
+msgid "No stages"
 msgstr ""
 
 #: ../templates/maps/mapMacros.jinja2:4
