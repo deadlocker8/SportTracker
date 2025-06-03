@@ -16,9 +16,13 @@ document.addEventListener('DOMContentLoaded', function()
     {
         initMap(sortWorkoutsByName);
     }
-    else
+    else if(mapMode === 'plannedTours')
     {
         initMap(sortPlannedToursByName);
+    }
+    else if(mapMode === 'longDistanceTour')
+    {
+        initMap(sortLongDistanceTourStagesByOrder);
     }
 });
 
@@ -181,12 +185,14 @@ function initMap(itemSortFunction)
 
 const PATTERN_WORKOUT_NAME = /(\d{4}-\d{2}-\d{2} - .*)<\/a>/;
 const PATTERN_PLANNED_TOUR_NAME = /<a.*>(.*)<\/a>/;
+const PATTERN_LONG_DISTANCE_TOUR_STAGE_ORDER = /<a.*>\w+\s(\d+)\s-\s.*<\/a>/;
 
 
 function sortByName(layerA, layerB, nameA, nameB, pattern, ignoreCase, ascending)
 {
     let realNameA = pattern.exec(nameA)[1];
     let realNameB = pattern.exec(nameB)[1];
+
     if(ignoreCase === true)
     {
         realNameA = realNameA.toLowerCase();
@@ -217,6 +223,25 @@ function sortByName(layerA, layerB, nameA, nameB, pattern, ignoreCase, ascending
     return 0;
 }
 
+function sortByOrder(layerA, layerB, nameA, nameB, pattern)
+{
+    let realNameA = pattern.exec(nameA)[1];
+    let realNameB = pattern.exec(nameB)[1];
+
+    let realIntA = parseInt(realNameA);
+    let realIntB = parseInt(realNameB);
+
+    if(realIntA > realIntB)
+    {
+        return 1;
+    }
+    if(realIntA < realIntB)
+    {
+        return -1;
+    }
+    return 0;
+}
+
 function sortWorkoutsByName(layerA, layerB, nameA, nameB)
 {
     return sortByName(layerA, layerB, nameA, nameB, PATTERN_WORKOUT_NAME, false, false);
@@ -225,4 +250,9 @@ function sortWorkoutsByName(layerA, layerB, nameA, nameB)
 function sortPlannedToursByName(layerA, layerB, nameA, nameB)
 {
     return sortByName(layerA, layerB, nameA, nameB, PATTERN_PLANNED_TOUR_NAME, true, true);
+}
+
+function sortLongDistanceTourStagesByOrder(layerA, layerB, nameA, nameB)
+{
+    return sortByOrder(layerA, layerB, nameA, nameB, PATTERN_LONG_DISTANCE_TOUR_STAGE_ORDER);
 }
