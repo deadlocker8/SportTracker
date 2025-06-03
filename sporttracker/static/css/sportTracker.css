@@ -263,8 +263,12 @@ select[disabled] {
 }
 
 #long-distance-stages {
-   max-height: 65vh;
+    max-height: 65vh;
     overflow-y: scroll;
+}
+
+#long-distance-stages .stage {
+    scroll-margin-top: 75px;
 }
 
 .debug {

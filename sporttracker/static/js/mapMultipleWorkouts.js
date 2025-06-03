@@ -14,19 +14,19 @@ document.addEventListener('DOMContentLoaded', function()
 
     if(mapMode === 'workouts')
     {
-        initMap(sortWorkoutsByName);
+        initMap(sortWorkoutsByName, () => {});
     }
     else if(mapMode === 'plannedTours')
     {
-        initMap(sortPlannedToursByName);
+        initMap(sortPlannedToursByName, () => {});
     }
     else if(mapMode === 'longDistanceTour')
     {
-        initMap(sortLongDistanceTourStagesByOrder);
+        initMap(sortLongDistanceTourStagesByOrder, onLongDistanceRouteSelected);
     }
 });
 
-function initMap(itemSortFunction)
+function initMap(itemSortFunction, onRouteSelectedCallback)
 {
     let map = initMapBase();
 
@@ -67,6 +67,16 @@ function initMap(itemSortFunction)
                 {
                     this.setSelection(route);
                     L.DomUtil.get('legend_' + route._leaflet_id).parentNode.previousSibling.click();
+                }
+            },
+            _onRouteSelected: function(route, polyline) {
+                if(route.isSelected())
+                {
+                    onRouteSelectedCallback(route);
+                }
+                else
+                {
+                    this.unhighlight(route, polyline);
                 }
             },
             _loadGeoJSON: function(geojson, fallbackName)
@@ -255,4 +265,20 @@ function sortPlannedToursByName(layerA, layerB, nameA, nameB)
 function sortLongDistanceTourStagesByOrder(layerA, layerB, nameA, nameB)
 {
     return sortByOrder(layerA, layerB, nameA, nameB, PATTERN_LONG_DISTANCE_TOUR_STAGE_ORDER);
+}
+
+function onLongDistanceRouteSelected(route)
+{
+    document.querySelectorAll('.stage').forEach((stage) =>
+    {
+        stage.classList.toggle('border', false);
+        stage.classList.toggle('border-5', false);
+        stage.classList.toggle('border-danger', false);
+    })
+
+    let stageId = PATTERN_LONG_DISTANCE_TOUR_STAGE_ORDER.exec(route.options.name)[1];
+    let stageCard = document.getElementById('stage-' + stageId);
+    stageCard.classList.add('border', 'border-5', 'border-danger');
+
+    stageCard.scrollIntoView({behavior: "smooth"});
 }
