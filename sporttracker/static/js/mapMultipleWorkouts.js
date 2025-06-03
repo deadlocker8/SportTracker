@@ -182,10 +182,30 @@ function initMap(itemSortFunction)
 const PATTERN_WORKOUT_NAME = /(\d{4}-\d{2}-\d{2} - .*)<\/a>/;
 const PATTERN_PLANNED_TOUR_NAME = /<a.*>(.*)<\/a>/;
 
-function sortWorkoutsByName(layerA, layerB, nameA, nameB)
+
+function sortByName(layerA, layerB, nameA, nameB, pattern, ignoreCase, ascending)
 {
-    let realNameA = PATTERN_WORKOUT_NAME.exec(nameA)[1];
-    let realNameB = PATTERN_WORKOUT_NAME.exec(nameB)[1];
+    let realNameA = pattern.exec(nameA)[1];
+    let realNameB = pattern.exec(nameB)[1];
+    if(ignoreCase === true)
+    {
+        realNameA = realNameA.toLowerCase();
+        realNameB = realNameB.toLowerCase();
+    }
+
+    if(ascending)
+    {
+        if(realNameA > realNameB)
+        {
+            return 1;
+        }
+        if(realNameA < realNameB)
+        {
+            return -1;
+        }
+        return 0;
+    }
+
     if(realNameA < realNameB)
     {
         return 1;
@@ -197,17 +217,12 @@ function sortWorkoutsByName(layerA, layerB, nameA, nameB)
     return 0;
 }
 
+function sortWorkoutsByName(layerA, layerB, nameA, nameB)
+{
+    return sortByName(layerA, layerB, nameA, nameB, PATTERN_WORKOUT_NAME, false, false);
+}
+
 function sortPlannedToursByName(layerA, layerB, nameA, nameB)
 {
-    let realNameA = PATTERN_PLANNED_TOUR_NAME.exec(nameA)[1].toLowerCase();
-    let realNameB = PATTERN_PLANNED_TOUR_NAME.exec(nameB)[1].toLowerCase();
-    if(realNameA > realNameB)
-    {
-        return 1;
-    }
-    if(realNameA < realNameB)
-    {
-        return -1;
-    }
-    return 0;
+    return sortByName(layerA, layerB, nameA, nameB, PATTERN_PLANNED_TOUR_NAME, true, true);
 }
