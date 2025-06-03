@@ -42,10 +42,6 @@ body {
     height: 60vh;
 }
 
-.map-smaller {
-    height: 60vh !important;
-}
-
 .map-taller {
     height: 80vh !important;
 }
