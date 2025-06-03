@@ -50,6 +50,21 @@ body {
     padding: 0.2rem;
 }
 
+/* smalled than xxl */
+@media (max-width: 1399.98px) {
+    .map-smaller {
+        height: 42vh !important;
+    }
+
+    .preview-image {
+        max-width: 90% !important;
+    }
+
+    .inline-summary {
+        display: none !important;
+    }
+}
+
 .svg-inline--fa.fa-fw {
     width: 1em;
 }
