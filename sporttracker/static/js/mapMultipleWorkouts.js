@@ -86,7 +86,7 @@ function initMap(itemSortFunction, onRouteSelectedCallback)
                     const workoutId = fallbackName;
                     const gpxInfoForWorkout = getGpxInfoById(workoutId);
 
-                    geojson.name = '<a href="' + gpxInfoForWorkout.workoutUrl + '" target="_blank">' + gpxInfoForWorkout.workoutName + '</a>'
+                    geojson.name = '<a href="' + gpxInfoForWorkout.workoutUrl + '" target="_blank" class="map-layer-link" data-name="' + gpxInfoForWorkout.workoutName + '">' + gpxInfoForWorkout.workoutName + '</a>'
                     this._loadRoute(geojson, gpxInfoForWorkout.gpxUrl);
                 }
             },

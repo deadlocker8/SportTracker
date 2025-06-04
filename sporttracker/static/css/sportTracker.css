@@ -271,6 +271,10 @@ select[disabled] {
     scroll-margin-top: 75px;
 }
 
+.stage:hover {
+    cursor: pointer;
+}
+
 .debug {
     outline: 1px solid red !important;
 }
