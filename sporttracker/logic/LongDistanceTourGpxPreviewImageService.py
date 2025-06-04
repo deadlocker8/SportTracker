@@ -21,7 +21,7 @@ class LongDistanceTourGpxPreviewImageService:
         self._longDistanceTour = longDistanceTour
         self._gpxService = gpxService
 
-        self._uniqueName = f'planned_tour_{self._longDistanceTour.id}'
+        self._uniqueName = f'long_distance_tour_{self._longDistanceTour.id}'
         self._previewImageFileName = f'{self._uniqueName}.jpg'
 
     def get_preview_image_path(self) -> str:
