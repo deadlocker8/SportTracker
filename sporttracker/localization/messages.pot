@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-03 22:00+0200\n"
+"POT-Creation-Date: 2025-06-04 22:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -166,6 +166,7 @@ msgstr ""
 #: ../blueprints/Maps.py:592
 #: ../templates/longDistanceTours/longDistanceTourForm.jinja2:154
 #: ../templates/maps/mapLongDistanceTour.jinja2:101
+#: ../templates/maps/mapLongDistanceTour.jinja2:185
 msgid "Stage"
 msgstr ""
 
@@ -481,7 +482,7 @@ msgstr ""
 msgid "Maintenance"
 msgstr ""
 
-#: ../templates/macros.jinja2:187 ../templates/maps/mapMacros.jinja2:124
+#: ../templates/macros.jinja2:187 ../templates/maps/mapMacros.jinja2:125
 #: ../templates/maps/mapTileHunting.jinja2:6
 #: ../templates/settings/settings.jinja2:52
 msgid "Tile Hunting"
@@ -1003,26 +1004,30 @@ msgstr ""
 msgid "Collapse Legend"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:104
+#: ../templates/maps/mapMacros.jinja2:33
+msgid "Reset zoom"
+msgstr ""
+
+#: ../templates/maps/mapMacros.jinja2:105
 #, python-format
 msgid "Show %(length)s linked Workouts"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:133
+#: ../templates/maps/mapMacros.jinja2:134
 msgid "Show visited tiles"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:143
+#: ../templates/maps/mapMacros.jinja2:144
 #: ../templates/maps/mapTileHunting.jinja2:88
 #: ../templates/maps/mapTileHuntingHeatmap.jinja2:69
 msgid "Show grid"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:154
+#: ../templates/maps/mapMacros.jinja2:155
 msgid "Only highlight new tiles"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:166
+#: ../templates/maps/mapMacros.jinja2:167
 #: ../templates/maps/mapTileHunting.jinja2:96
 msgid "Show max square"
 msgstr ""
