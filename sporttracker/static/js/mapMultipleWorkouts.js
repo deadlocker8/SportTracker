@@ -14,19 +14,19 @@ document.addEventListener('DOMContentLoaded', function()
 
     if(mapMode === 'workouts')
     {
-        initMap(sortWorkoutsByName, () => {});
+        initMap(sortWorkoutsByName, () => {}, false);
     }
     else if(mapMode === 'plannedTours')
     {
-        initMap(sortPlannedToursByName, () => {});
+        initMap(sortPlannedToursByName, () => {}, false);
     }
     else if(mapMode === 'longDistanceTour')
     {
-        initMap(sortLongDistanceTourStagesByOrder, onLongDistanceRouteSelected);
+        initMap(sortLongDistanceTourStagesByOrder, onLongDistanceRouteSelected, true);
     }
 });
 
-function initMap(itemSortFunction, onRouteSelectedCallback)
+function initMap(itemSortFunction, onRouteSelectedCallback, showResetButton)
 {
     let map = initMapBase();
 
@@ -190,6 +190,25 @@ function initMap(itemSortFunction, onRouteSelectedCallback)
                 }]
         });
         stateChangingButton.addTo(map);
+
+        if(showResetButton)
+        {
+            const resetButton = L.easyButton({
+                position: 'topright',
+                states: [
+                    {
+                        stateName: 'collapse-layers',
+                        icon: '<i class="material-symbols-outlined">zoom_out_map</i>',
+                        title: map_locale['button_reset'],
+                        onClick: function(btn, map)
+                        {
+                            map.fitBounds(routes.getBounds());
+                        }
+                    }
+                ]
+            });
+            resetButton.addTo(map);
+        }
     });
 }
 
