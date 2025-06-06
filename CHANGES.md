@@ -1,4 +1,5 @@
 # 1.40.0 - (XX.XX.XX)
+- add: add support for long-distance tours (tours with multiple stages) (#209)
 - fix: invisible texts in modals (#213)
 
 # 1.39.0 - (29.04.25)
