@@ -281,8 +281,10 @@ class GpxService:
         joinedTrack = gpxpy.gpx.GPXTrack()
 
         for gpxFileName in gpxFileNames:
-            gpxTrack = GpxParser(self.get_gpx_content(gpxFileName)).get_joined_track()
-            for segment in gpxTrack.segments:
+            gpxParser = GpxParser(self.get_gpx_content(gpxFileName))
+            joinedGpx.nsmap.update(gpxParser.get_namespaces())
+
+            for segment in gpxParser.get_joined_track().segments:
                 joinedTrack.segments.append(segment)
 
         joinedGpx.tracks.append(joinedTrack)
@@ -314,8 +316,11 @@ class GpxParser:
 
         return self._gpx.to_xml(prettyprint=False)
 
-    def get_joined_track(self):
+    def get_joined_track(self) -> GPXTrack:
         return self.__join_tracks(self._gpx)
+
+    def get_namespaces(self) -> dict[str, str]:
+        return self._gpx.nsmap
 
     @staticmethod
     def __fix_missing_elevation_for_first_points(gpx: GPX):
