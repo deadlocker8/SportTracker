@@ -1,6 +1,7 @@
 # 1.40.0 - (XX.XX.XX)
 - add: add support for long-distance tours (tours with multiple stages) (#209)
 - fix: invisible texts in modals (#213)
+- fix: planned tours map / long-distance tours map: hide speed chart since there is no speed data (#216)
 
 # 1.39.0 - (29.04.25)
 - add: chart "number of new visited tiles per year": extend chart to show number of new visited tiles per year in total and separately per each workout type (#203)

@@ -14,19 +14,19 @@ document.addEventListener('DOMContentLoaded', function()
 
     if(mapMode === 'workouts')
     {
-        initMap(sortWorkoutsByName, () => {}, false);
+        initMap(sortWorkoutsByName, () => {}, false, 'disabled');
     }
     else if(mapMode === 'plannedTours')
     {
-        initMap(sortPlannedToursByName, () => {}, false);
+        initMap(sortPlannedToursByName, () => {}, false, false);
     }
     else if(mapMode === 'longDistanceTour')
     {
-        initMap(sortLongDistanceTourStagesByOrder, onLongDistanceRouteSelected, true);
+        initMap(sortLongDistanceTourStagesByOrder, onLongDistanceRouteSelected, true, false);
     }
 });
 
-function initMap(itemSortFunction, onRouteSelectedCallback, showResetButton)
+function initMap(itemSortFunction, onRouteSelectedCallback, showResetButton, speedMode)
 {
     let map = initMapBase();
 
@@ -134,7 +134,7 @@ function initMap(itemSortFunction, onRouteSelectedCallback, showResetButton)
             points: [],
             point_options: {},
             elevation: true,
-            elevation_options: initElevationChartSettings(false, 'disabled', 'inline'),
+            elevation_options: initElevationChartSettings(false, speedMode, 'inline'),
             legend: true,
             distanceMarkers: false
         });
