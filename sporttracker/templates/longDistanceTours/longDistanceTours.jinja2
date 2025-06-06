@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="mb-4">
-                    {{ macros.workout_type_quick_filter(url_for('plannedTours.listPlannedTours'), true) }}
+                    {{ macros.workout_type_quick_filter(url_for('longDistanceTours.listLongDistanceTours'), true) }}
                 </div>
 
                 <div class="row py-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
@@ -34,7 +34,7 @@
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div class="d-flex align-items-center text-truncate">
                                             {{ workoutMacros.workout_type_icon_small(longDistanceTour.type, fontSize='fs-3') }}
-                                            <div class="fs-5 text-truncate planned-tour-name ps-3 pe-2">
+                                            <div class="fs-5 text-truncate long-distance-tour-name ps-3 pe-2">
                                                 {{ longDistanceTour.name | e}}
                                             </div>
                                         </div>
@@ -55,7 +55,7 @@
                                 <div class="card-body">
                                     <div class="row row-cols-2 gy-3">
                                         <div class="col d-flex flex-column align-items-center justify-content-between">
-                                            <div class="fs-5">
+                                            <div class="fs-5 long-distance-tour-card-number-of-stages">
                                                 {{ longDistanceTour.get_number_of_completed_stages() }} / {{ longDistanceTour.linkedPlannedTours|length }}
                                             </div>
                                             <div class="fs-6">{{ gettext('Stages') }}</div>
