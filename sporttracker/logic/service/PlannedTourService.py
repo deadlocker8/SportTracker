@@ -84,7 +84,7 @@ class PlannedTourService:
         LOGGER.debug(f'Saved new planned tour: {plannedTour}')
 
         linkedLongDistanceTours = LongDistanceTourPlannedTourAssociation.query.filter(
-            LongDistanceTourPlannedTourAssociation.long_distance_tour_id == plannedTour.id
+            LongDistanceTourPlannedTourAssociation.planned_tour_id == plannedTour.id
         ).all()
         self.__update_gpx_preview_image_for_long_distance_tours(
             [t.long_distance_tour_id for t in linkedLongDistanceTours]
@@ -158,7 +158,7 @@ class PlannedTourService:
                 plannedTour.gpx_metadata_id = newGpxMetadataId
 
                 linkedLongDistanceTours = LongDistanceTourPlannedTourAssociation.query.filter(
-                    LongDistanceTourPlannedTourAssociation.long_distance_tour_id == plannedTour.id
+                    LongDistanceTourPlannedTourAssociation.planned_tour_id == plannedTour.id
                 ).all()
                 self.__update_gpx_preview_image_for_long_distance_tours(
                     [t.long_distance_tour_id for t in linkedLongDistanceTours]
