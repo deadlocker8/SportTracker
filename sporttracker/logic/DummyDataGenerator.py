@@ -12,6 +12,7 @@ from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutField, CustomWorkoutFieldType
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
+from sporttracker.logic.model.LongDistanceTour import LongDistanceTour, LongDistanceTourPlannedTourAssociation
 from sporttracker.logic.model.Maintenance import Maintenance
 from sporttracker.logic.model.MaintenanceEventInstance import MaintenanceEventInstance
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
@@ -115,6 +116,8 @@ class DummyDataGenerator:
             self.__generate_demo_month_goals(user)
 
             self.__generate_demo_maintenance_events(user)
+
+            self.__generate_demo_long_distance_tour(user)
 
     @staticmethod
     def __generate_demo_user(name: str, password: str) -> User:
@@ -418,3 +421,51 @@ class DummyDataGenerator:
         db.session.commit()
 
         return lastPlannedTour  # type: ignore[return-value]
+
+    def __generate_demo_long_distance_tour(self, user) -> None:
+        fake = Faker()
+
+        fakeTime = fake.date_time_between_dates(datetime.now() - timedelta(days=90), datetime.now())
+
+        longDistanceTour = LongDistanceTour(
+            type=WorkoutType.BIKING,
+            creation_date=fakeTime,
+            last_edit_date=fakeTime,
+            last_edit_user_id=user.id,
+            name='Tour Germany',
+            user_id=user.id,
+            shared_users=[],
+        )
+        db.session.add(longDistanceTour)
+        db.session.commit()
+
+        plannedTourIds = []
+        for index in range(1, 6):
+            fakeTime = fake.date_time_between_dates(datetime.now() - timedelta(days=90), datetime.now())
+
+            plannedTour = PlannedTour(
+                type=WorkoutType.BIKING,
+                creation_date=fakeTime,
+                last_edit_date=fakeTime,
+                last_edit_user_id=user.id,
+                name=f'Tour Germany - Stage {index}',
+                user_id=user.id,
+                shared_users=[],
+                arrival_method=TravelType.TRAIN,
+                departure_method=TravelType.NONE,
+                direction=TravelDirection.SINGLE,
+                share_code=None,
+            )
+
+            self.__append_gpx(plannedTour)
+            db.session.add(plannedTour)
+            db.session.commit()
+
+            plannedTourIds.append(plannedTour.id)
+
+        for order, linkedPlannedTourId in enumerate(plannedTourIds):
+            association = LongDistanceTourPlannedTourAssociation(
+                long_distance_tour_id=longDistanceTour.id, planned_tour_id=linkedPlannedTourId, order=order
+            )
+            db.session.add(association)
+            db.session.commit()
