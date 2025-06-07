@@ -4,11 +4,13 @@ from typing import Any
 
 from flask_login import current_user
 from pydantic import BaseModel
+from sqlalchemy import tuple_
 from werkzeug.datastructures import FileStorage
 
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_workout_ids_by_planned_tour
+from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
 from sporttracker.logic.model.LongDistanceTour import (
     LongDistanceTourPlannedTourAssociation,
     get_long_distance_tour_by_id,
@@ -47,10 +49,15 @@ class PlannedTourEditFormModel(BaseModel):
 
 
 class PlannedTourService:
-    def __init__(self, gpx_service: GpxService, gpx_preview_image_settings: dict[str, Any]) -> None:
-        super().__init__()
+    def __init__(
+        self,
+        gpx_service: GpxService,
+        gpx_preview_image_settings: dict[str, Any],
+        tile_hunting_settings: dict[str, Any],
+    ) -> None:
         self._gpx_service = gpx_service
         self._gpx_preview_image_settings = gpx_preview_image_settings
+        self._tile_hunting_settings = tile_hunting_settings
 
     def add_planned_tour(
         self,
@@ -215,3 +222,25 @@ class PlannedTourService:
 
             gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(longDistanceTour, self._gpx_service)
             gpxPreviewImageService.generate_image(self._gpx_preview_image_settings)
+
+    def get_number_of_new_visited_tiles(self, plannedTour: PlannedTour) -> int:
+        gpxMetadata = plannedTour.get_gpx_metadata()
+        if gpxMetadata is None:
+            return 0
+
+        newVisitedTiles = self._gpx_service.get_visited_tiles(
+            gpxMetadata.gpx_file_name, self._tile_hunting_settings['baseZoomLevel']
+        )
+        newVisitedTilesTuples = [(v.x, v.y) for v in newVisitedTiles]
+
+        numberOfAlreadyVisitedTiles = (
+            DistanceWorkout.query.select_from(DistanceWorkout)
+            .join(GpxVisitedTile, GpxVisitedTile.workout_id == DistanceWorkout.id)
+            .with_entities(GpxVisitedTile.x, GpxVisitedTile.y)
+            .filter(DistanceWorkout.user_id == current_user.id)
+            .filter(tuple_(GpxVisitedTile.x, GpxVisitedTile.y).in_(newVisitedTilesTuples))
+            .distinct()
+            .count()
+        )
+
+        return len(newVisitedTiles) - numberOfAlreadyVisitedTiles

@@ -245,8 +245,7 @@ class GpxService:
                 LOGGER.error(e)
 
     def add_visited_tiles_for_workout(self, workout: DistanceWorkout, baseZoomLevel: int, userId: int):
-        gpxParser = GpxParser(self.get_gpx_content(workout.get_gpx_metadata().gpx_file_name))  # type: ignore[union-attr]
-        visitedTiles = gpxParser.get_visited_tiles(baseZoomLevel)
+        visitedTiles = self.get_visited_tiles(workout.get_gpx_metadata().gpx_file_name, baseZoomLevel)  # type: ignore[union-attr]
 
         for tile in visitedTiles:
             gpxVisitedTile = GpxVisitedTile(workout_id=workout.id, x=tile.x, y=tile.y)
@@ -255,6 +254,10 @@ class GpxService:
 
         self._newVisitedTileCache.invalidate_cache_entry_by_user(userId)
         self._maxSquareCache.invalidate_cache_entry_by_user(userId)
+
+    def get_visited_tiles(self, gpxFileName: str, baseZoomLevel: int) -> list[VisitedTile]:
+        gpxParser = GpxParser(self.get_gpx_content(gpxFileName))  # type: ignore[union-attr]
+        return list(gpxParser.get_visited_tiles(baseZoomLevel))
 
     def has_fit_file(self, gpxFileName: str | None) -> bool:
         if gpxFileName is None:

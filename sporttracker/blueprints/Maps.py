@@ -26,24 +26,24 @@ from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Workouts import DistanceWorkoutModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService, GpxParser
-from sporttracker.logic.model.LongDistanceTour import get_long_distance_tour_by_id
-from sporttracker.logic.service.PlannedTourService import PlannedTourService
-from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
-from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
     QuickFilterState,
 )
-from sporttracker.logic.tileHunting.TileRenderService import TileRenderService, TileRenderColorMode
-from sporttracker.logic.tileHunting.VisitedTileService import VisitedTileService
 from sporttracker.logic.model.DistanceWorkout import (
     get_available_years,
     DistanceWorkout,
 )
+from sporttracker.logic.model.LongDistanceTour import get_long_distance_tour_by_id
 from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.logic.service.PlannedTourService import PlannedTourService
+from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
+from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.logic.tileHunting.TileRenderService import TileRenderService, TileRenderColorMode
+from sporttracker.logic.tileHunting.VisitedTileService import VisitedTileService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -87,6 +87,7 @@ def construct_blueprint(
     maxSquareCache: MaxSquareCache,
     distanceWorkoutService: DistanceWorkoutService,
     gpxPreviewImageSettings: dict[str, Any],
+    plannedTourService: PlannedTourService,
 ) -> Blueprint:
     maps = Blueprint('maps', __name__, static_folder='static')
 
@@ -213,6 +214,7 @@ def construct_blueprint(
             tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
             tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
             tileHuntingIsMaxSquareActive=__get_tile_hunting_is_max_square_active(),
+            tileHuntingNumberOfNewVisitedTiles=plannedTourService.get_number_of_new_visited_tiles(plannedTour),
         )
 
     @maps.route('/map/plannedTour/shared/<string:shareCode>')

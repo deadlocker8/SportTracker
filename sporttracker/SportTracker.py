@@ -144,7 +144,7 @@ class SportTracker(FlaskBaseApp):
         app.config['FITNESS_WORKOUT_SERVICE'] = FitnessWorkoutService()
 
         app.config['PLANNED_TOUR_SERVICE'] = PlannedTourService(
-            app.config['GPX_SERVICE'], self._settings['gpxPreviewImages']
+            app.config['GPX_SERVICE'], self._settings['gpxPreviewImages'], self._settings['tileHunting']
         )
 
         if self._prepareDatabase:
@@ -323,6 +323,7 @@ class SportTracker(FlaskBaseApp):
                 app.config['MAX_SQUARE_CACHE'],
                 app.config['DISTANCE_WORKOUT_SERVICE'],
                 self._settings['gpxPreviewImages'],
+                app.config['PLANNED_TOUR_SERVICE'],
             )
         )
         app.register_blueprint(QuickFilter.construct_blueprint())
