@@ -3,6 +3,7 @@
 - add: planned tour: show number of possibly new visited tiles (#210)
 - add: workout details page: show number of new visited tiles (#218)
 - add: planned tours: show number of planned tours matching filters and total number (#217)
+- add: planned tours: add button to open gpx in original editor (e.g. bikerouter) (#214)
 - fix: invisible texts in modals (#213)
 - fix: planned tours map / long-distance tours map: hide speed chart since there is no speed data (#216)
 - fix: workout/planned tour map: highlight workout/planned tour in navbar (#215)
