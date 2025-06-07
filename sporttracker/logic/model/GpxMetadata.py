@@ -12,6 +12,7 @@ class GpxMetadata(db.Model):  # type: ignore[name-defined]
     elevation_maximum: Mapped[int] = mapped_column(Integer, nullable=True)
     uphill: Mapped[int] = mapped_column(Integer, nullable=True)
     downhill: Mapped[int] = mapped_column(Integer, nullable=True)
+    editor_link: Mapped[str] = mapped_column(String, nullable=True)
 
     def __repr__(self):
         return (
@@ -22,5 +23,6 @@ class GpxMetadata(db.Model):  # type: ignore[name-defined]
             f'elevation_minimum: {self.elevation_minimum}, '
             f'elevation_maximum: {self.elevation_maximum}, '
             f'uphill: {self.uphill}, '
-            f'downhill: {self.downhill})'
+            f'downhill: {self.downhill}, '
+            f'editor_link: {self.editor_link})'
         )

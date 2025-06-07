@@ -275,6 +275,7 @@ class DummyDataGenerator:
             elevation_maximum=random.randint(220, 400),
             uphill=random.randint(30, 400),
             downhill=random.randint(30, 400),
+            editor_link=None,
         )
 
         db.session.add(gpxMetadata)

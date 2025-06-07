@@ -51,6 +51,7 @@ class GpxMetaInfo:
     distance: float
     elevationExtremes: ElevationExtremes
     uphillDownhill: UphillDownhill
+    editorLink: str | None
 
 
 class GpxService:
@@ -212,6 +213,7 @@ class GpxService:
             elevation_maximum=metaInfo.elevationExtremes.maximum,
             uphill=metaInfo.uphillDownhill.uphill,
             downhill=metaInfo.uphillDownhill.downhill,
+            editor_link=metaInfo.editorLink,
         )
 
         db.session.add(gpxMetadata)
@@ -367,6 +369,7 @@ class GpxParser:
         numberOfTracks = len(gpx.tracks)
         for track in gpx.tracks:
             joinedTrack.segments.extend(track.segments)
+            joinedTrack.link = track.link
 
         if numberOfTracks > 1:
             LOGGER.debug(f'Joined {numberOfTracks} tracks')
@@ -412,6 +415,13 @@ class GpxParser:
 
         return UphillDownhill(int(uphill), int(downhill))
 
+    def __get_editor_link(self) -> str | None:
+        for track in self._gpx.tracks:
+            if track.link is not None and track.link:
+                return track.link
+
+        return None
+
     def get_visited_tiles(self, baseZoomLevel: int) -> set[VisitedTile]:
         visitedTiles = set()
 
@@ -442,4 +452,5 @@ class GpxParser:
             self.__get_length(),
             self.__get_elevation_extremes(),
             self.__get_uphill_downhill(),
+            self.__get_editor_link(),
         )
