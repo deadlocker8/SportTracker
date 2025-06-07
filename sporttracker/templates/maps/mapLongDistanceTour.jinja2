@@ -14,7 +14,7 @@
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/leaflet-theme.css") }}"/>
     </head>
     <body class="bg-dark text-light">
-        {{ macros.navbar('map') }}
+        {{ macros.navbar('longDistanceTours') }}
         {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
         {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
 
