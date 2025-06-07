@@ -47,6 +47,9 @@ class QuickFilterState:
         quickFilterState.set_states(states)
         return quickFilterState
 
+    def disable_all(self):
+        self._states = {workoutType: False for workoutType in WorkoutType}
+
 
 def get_quick_filter_state_from_session() -> QuickFilterState:
     if 'quickFilterState' not in session:

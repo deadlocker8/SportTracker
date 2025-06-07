@@ -150,6 +150,24 @@ def construct_blueprint(
         )
         tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
 
+        tileHuntingNumberOfNewVisitedTiles = 0
+
+        quickFilterState = QuickFilterState()
+        quickFilterState.disable_all()
+        quickFilterState.toggle_state(workout.type)
+
+        visitedTileService = VisitedTileService(
+            newVisitedTileCache,
+            maxSquareCache,
+            quickFilterState,
+            get_available_years(current_user.id),
+            distanceWorkoutService,
+        )
+        newVisitedTilesPerWorkout = visitedTileService.get_number_of_new_tiles_per_workout()
+        filtered = [x for x in newVisitedTilesPerWorkout if x.distance_workout_id == workout_id]
+        if filtered:
+            tileHuntingNumberOfNewVisitedTiles = filtered[0].numberOfNewTiles
+
         return render_template(
             'maps/mapSingleWorkout.jinja2',
             workout=DistanceWorkoutModel.create_from_workout(workout),
@@ -163,6 +181,7 @@ def construct_blueprint(
             tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
             tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
             tileHuntingIsOnlyHighlightNewTilesActive=__get_tile_hunting_is_only_highlight_new_tiles(),
+            tileHuntingNumberOfNewVisitedTiles=tileHuntingNumberOfNewVisitedTiles,
         )
 
     @maps.route('/map/shared/<string:shareCode>')
