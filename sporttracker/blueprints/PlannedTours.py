@@ -28,6 +28,7 @@ from sporttracker.logic.model.PlannedTour import (
     TravelType,
     TravelDirection,
     get_planned_tours_filtered,
+    get_planned_tours,
 )
 from sporttracker.logic.model.User import (
     User,
@@ -153,6 +154,7 @@ def construct_blueprint(
             quickFilterState=quickFilterState,
             isGpxPreviewImagesEnabled=gpxPreviewImageSettings['enabled'],
             plannedTourFilterState=plannedTourFilterState,
+            totalNumberOfPlannedTours=len(get_planned_tours(WorkoutType.get_distance_workout_types())),
         )
 
     @plannedTours.route('/add')

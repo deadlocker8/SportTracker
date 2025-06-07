@@ -16,7 +16,7 @@
             <section class="py-5 text-center container">
                 <div class="row mb-3">
                     <div class="col col-12 mx-auto">
-                        {% call macros.headline(gettext('Planned Tours'), url_for('plannedTours.add')) %}
+                        {% call macros.headline(gettext('Planned Tours') +  ' ' + plannedTours|length|string + '/' + totalNumberOfPlannedTours|string, url_for('plannedTours.add')) %}
                             <i class="fa-solid fa-lightbulb fa-fw fs-2"></i>
                         {% endcall %}
                     </div>
