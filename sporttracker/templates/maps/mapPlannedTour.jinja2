@@ -34,7 +34,7 @@
 
         <!-- small displays -->
         <div class="card bg-body-secondary mx-3 mb-3 d-xl-none" data-bs-theme="dark">
-            {{ mapMacros.gpxDownloadButton(gettext('Planned Tour'), gpxUrl, 'fa-lightbulb', false, editUrl=editUrl) }}
+            {{ mapMacros.gpxDownloadButton(gettext('Planned Tour'), gpxUrl, 'fa-lightbulb', false, editUrl=editUrl, externalEditorUrl=plannedTour.gpxMetadata.editor_link) }}
 
             <div class="card-body ps-4 pt-4 pb-0">
                 <div class="row row-cols-4 gy-3 pb-3 overflow-x-auto">
@@ -75,14 +75,14 @@
         {% endif %}
 
         <div class="row mx-3 mx-xl-5">
-            <div class="col col-12 col-xl-10 p-0">
+            <div class="col col-12 col-xl-9 col-xxl-10 p-0">
                 <div id="map" class="leaflet-map text-dark map-smaller"></div>
             </div>
 
             <!-- large displays -->
-            <div class="col col-2 p-0 ps-4 d-none d-xl-block">
+            <div class="col col-3 col-xxl-2 p-0 ps-4 d-none d-xl-block">
                 <div class="card bg-body-secondary" data-bs-theme="dark">
-                    {{ mapMacros.gpxDownloadButton(gettext('Planned Tour'), gpxUrl, 'fa-lightbulb', false, 'flex-column flex-xxl-row', editUrl=editUrl) }}
+                    {{ mapMacros.gpxDownloadButton(gettext('Planned Tour'), gpxUrl, 'fa-lightbulb', false, 'flex-column', editUrl=editUrl, externalEditorUrl=plannedTour.gpxMetadata.editor_link, classesButtons='mt-xl-2') }}
 
                     <div class="card-body ps-4 pt-4">
                         {% call mapMacros.meta_info_item('route', plannedTour.type.text_color, gettext('Distance')) %}
