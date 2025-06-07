@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-04 22:39+0200\n"
+"POT-Creation-Date: 2025-06-07 16:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -163,7 +163,7 @@ msgstr ""
 msgid "FIT file does not contain session data"
 msgstr ""
 
-#: ../blueprints/Maps.py:592
+#: ../blueprints/Maps.py:594
 #: ../templates/longDistanceTours/longDistanceTourForm.jinja2:154
 #: ../templates/maps/mapLongDistanceTour.jinja2:101
 #: ../templates/maps/mapLongDistanceTour.jinja2:185
@@ -309,8 +309,8 @@ msgstr ""
 
 #: ../logic/model/User.py:75 ../templates/maps/mapLongDistanceTour.jinja2:107
 #: ../templates/maps/mapLongDistanceTour.jinja2:129
-#: ../templates/maps/mapPlannedTour.jinja2:40
-#: ../templates/maps/mapPlannedTour.jinja2:87
+#: ../templates/maps/mapPlannedTour.jinja2:41
+#: ../templates/maps/mapPlannedTour.jinja2:88
 #: ../templates/maps/mapSingleWorkout.jinja2:45
 #: ../templates/maps/mapSingleWorkout.jinja2:92
 #: ../templates/plannedTours/plannedToursMacros.jinja2:180
@@ -772,8 +772,8 @@ msgstr ""
 
 #: ../templates/longDistanceTours/longDistanceTours.jinja2:82
 #: ../templates/maps/mapLongDistanceTour.jinja2:169
-#: ../templates/maps/mapPlannedTour.jinja2:61
-#: ../templates/maps/mapPlannedTour.jinja2:145
+#: ../templates/maps/mapPlannedTour.jinja2:62
+#: ../templates/maps/mapPlannedTour.jinja2:146
 #: ../templates/plannedTours/plannedTours.jinja2:128
 msgid "last edited"
 msgstr ""
@@ -874,12 +874,12 @@ msgid "Open workout"
 msgstr ""
 
 #: ../templates/maps/mapLongDistanceTour.jinja2:137
-#: ../templates/maps/mapPlannedTour.jinja2:123
+#: ../templates/maps/mapPlannedTour.jinja2:124
 msgid "Uphill"
 msgstr ""
 
 #: ../templates/maps/mapLongDistanceTour.jinja2:144
-#: ../templates/maps/mapPlannedTour.jinja2:130
+#: ../templates/maps/mapPlannedTour.jinja2:131
 msgid "Downhill"
 msgstr ""
 
@@ -1047,36 +1047,40 @@ msgid "Shared Planned Tour"
 msgstr ""
 
 #: ../templates/maps/mapPlannedTour.jinja2:10
-#: ../templates/maps/mapPlannedTour.jinja2:36
-#: ../templates/maps/mapPlannedTour.jinja2:84
+#: ../templates/maps/mapPlannedTour.jinja2:37
+#: ../templates/maps/mapPlannedTour.jinja2:85
 msgid "Planned Tour"
 msgstr ""
 
-#: ../templates/maps/mapPlannedTour.jinja2:47
-#: ../templates/maps/mapPlannedTour.jinja2:95
+#: ../templates/maps/mapPlannedTour.jinja2:31
+msgid "new tiles"
+msgstr ""
+
+#: ../templates/maps/mapPlannedTour.jinja2:48
+#: ../templates/maps/mapPlannedTour.jinja2:96
 #: ../templates/plannedTours/plannedTours.jinja2:98
 msgid "Arrival"
 msgstr ""
 
-#: ../templates/maps/mapPlannedTour.jinja2:50
-#: ../templates/maps/mapPlannedTour.jinja2:99
+#: ../templates/maps/mapPlannedTour.jinja2:51
+#: ../templates/maps/mapPlannedTour.jinja2:100
 #: ../templates/plannedTours/plannedTours.jinja2:102
 msgid "Departure"
 msgstr ""
 
-#: ../templates/maps/mapPlannedTour.jinja2:53
-#: ../templates/maps/mapPlannedTour.jinja2:103
+#: ../templates/maps/mapPlannedTour.jinja2:54
+#: ../templates/maps/mapPlannedTour.jinja2:104
 #: ../templates/plannedTours/plannedTourForm.jinja2:88
 #: ../templates/plannedTours/plannedTours.jinja2:47
 msgid "Direction"
 msgstr ""
 
-#: ../templates/maps/mapPlannedTour.jinja2:107
+#: ../templates/maps/mapPlannedTour.jinja2:108
 #: ../templates/maps/mapSingleWorkout.jinja2:132
 msgid "Min Height"
 msgstr ""
 
-#: ../templates/maps/mapPlannedTour.jinja2:115
+#: ../templates/maps/mapPlannedTour.jinja2:116
 #: ../templates/maps/mapSingleWorkout.jinja2:140
 msgid "Max Height"
 msgstr ""
