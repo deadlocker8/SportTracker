@@ -342,10 +342,25 @@ def construct_blueprint(
         if current_user.id != user_id:
             abort(403)
 
+        return __renderTile(user_id, zoom, x, y, QuickFilterState(), get_available_years(user_id))
+
+    @maps.route('/map/renderAllTilesWithFilter/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')
+    def renderAllTilesWithFilter(user_id: int, zoom: int, x: int, y: int):
+        if not current_user.is_authenticated:
+            abort(401)
+
+        if current_user.id != user_id:
+            abort(403)
+
         quickFilterState = get_quick_filter_state_from_session()
         availableYears = get_available_years(user_id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
+        return __renderTile(user_id, zoom, x, y, quickFilterState, yearFilterState)
+
+    def __renderTile(
+        user_id: int, zoom: int, x: int, y: int, quickFilterState: QuickFilterState, yearFilterState: list[int]
+    ) -> Response:
         visitedTileService = __create_visited_tile_service(quickFilterState, yearFilterState)
         tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
 
@@ -431,7 +446,7 @@ def construct_blueprint(
     @login_required
     def showTileHuntingMap():
         tileRenderUrl = url_for(
-            'maps.renderAllTiles',
+            'maps.renderAllTilesWithFilter',
             user_id=current_user.id,
             zoom=0,
             x=0,
