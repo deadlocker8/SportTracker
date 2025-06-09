@@ -18,7 +18,6 @@ services:
       LANGUAGE: en_US.UTF-8
     depends_on:
       - postgres
-      - georender
 
   postgres:
     image: postgres:17-alpine
@@ -31,15 +30,6 @@ services:
       - netPostgres
     volumes:
       - <PATH_ON_HOST>/postgres:/var/lib/postgresql/data
-
-  georender:
-    build: https://github.com/deadlocker8/georender.git
-    ports:
-      - "127.0.0.1:3000:3000"
-    restart: unless-stopped
-    networks:
-      - netPostgres
-    command: -w 800 -h 450 -t osm
 
 networks:
   netPostgres:
