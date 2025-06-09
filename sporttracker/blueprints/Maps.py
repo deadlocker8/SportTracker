@@ -156,13 +156,7 @@ def construct_blueprint(
         quickFilterState.disable_all()
         quickFilterState.toggle_state(workout.type)
 
-        visitedTileService = VisitedTileService(
-            newVisitedTileCache,
-            maxSquareCache,
-            quickFilterState,
-            get_available_years(current_user.id),
-            distanceWorkoutService,
-        )
+        visitedTileService = __create_visited_tile_service(quickFilterState, get_available_years(current_user.id))
         newVisitedTilesPerWorkout = visitedTileService.get_number_of_new_tiles_per_workout()
         filtered = [x for x in newVisitedTilesPerWorkout if x.distance_workout_id == workout_id]
         if filtered:
@@ -352,13 +346,7 @@ def construct_blueprint(
         availableYears = get_available_years(user_id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
-        visitedTileService = VisitedTileService(
-            newVisitedTileCache,
-            maxSquareCache,
-            quickFilterState,
-            yearFilterState,
-            distanceWorkoutService,
-        )
+        visitedTileService = __create_visited_tile_service(quickFilterState, yearFilterState)
         tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
 
         borderColor = None
@@ -394,13 +382,7 @@ def construct_blueprint(
         availableYears = get_available_years(user_id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
-        visitedTileService = VisitedTileService(
-            newVisitedTileCache,
-            maxSquareCache,
-            QuickFilterState(),
-            yearFilterState,
-            distanceWorkoutService,
-        )
+        visitedTileService = __create_visited_tile_service(QuickFilterState(), yearFilterState)
         tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
 
         borderColor = None
@@ -427,17 +409,7 @@ def construct_blueprint(
         if user is None:
             abort(404)
 
-        quickFilterState = get_quick_filter_state_from_session()
-        availableYears = get_available_years(user.id)
-        yearFilterState = __get_map_year_filter_state_from_session(availableYears)
-
-        visitedTileService = VisitedTileService(
-            newVisitedTileCache,
-            maxSquareCache,
-            quickFilterState,
-            yearFilterState,
-            distanceWorkoutService,
-        )
+        visitedTileService = __create_visited_tile_service(QuickFilterState(), get_available_years(user.id))
         tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
 
         borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
@@ -473,13 +445,7 @@ def construct_blueprint(
         availableYears = get_available_years(current_user.id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
-        visitedTileService = VisitedTileService(
-            newVisitedTileCache,
-            maxSquareCache,
-            quickFilterState,
-            yearFilterState,
-            distanceWorkoutService,
-        )
+        visitedTileService = __create_visited_tile_service(quickFilterState, yearFilterState)
         totalNumberOfTiles = visitedTileService.calculate_total_number_of_visited_tiles()
 
         dates = []
@@ -571,13 +537,7 @@ def construct_blueprint(
         availableYears = get_available_years(user_id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
-        visitedTileService = VisitedTileService(
-            newVisitedTileCache,
-            maxSquareCache,
-            QuickFilterState(),
-            yearFilterState,
-            distanceWorkoutService,
-        )
+        visitedTileService = __create_visited_tile_service(QuickFilterState(), yearFilterState)
         rows = visitedTileService.determine_number_of_visits(
             visitedTile.x, visitedTile.x, visitedTile.y, visitedTile.y, user_id
         )
@@ -654,6 +614,15 @@ def construct_blueprint(
         redirectUrl = request.args['redirectUrl']
         session['tileHuntingIsMaxSquareActive'] = not __get_tile_hunting_is_max_square_active()
         return redirect(redirectUrl)
+
+    def __create_visited_tile_service(quickFilterState, yearFilterState):
+        return VisitedTileService(
+            newVisitedTileCache,
+            maxSquareCache,
+            quickFilterState,
+            yearFilterState,
+            distanceWorkoutService,
+        )
 
     return maps
 
