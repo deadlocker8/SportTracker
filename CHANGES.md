@@ -1,4 +1,4 @@
-# 1.40.0 - (XX.XX.XX)
+# 1.40.0 - (09.06.25)
 - add: add support for long-distance tours (tours with multiple stages) (#209)
 - add: planned tour: show number of possibly new visited tiles (#210)
 - add: workout details page: show number of new visited tiles (#218)
@@ -8,6 +8,7 @@
 - fix: planned tours map / long-distance tours map: hide speed chart since there is no speed data (#216)
 - fix: workout/planned tour map: highlight workout/planned tour in navbar (#215)
 - fix: planned tour map: ignore quick filter and year filter (#220)
+- chore: update dependencies (#207)
 
 # 1.39.0 - (29.04.25)
 - add: chart "number of new visited tiles per year": extend chart to show number of new visited tiles per year in total and separately per each workout type (#203)
