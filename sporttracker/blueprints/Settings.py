@@ -534,7 +534,7 @@ def construct_blueprint():
             return ''
 
         tileRenderUrl = url_for(
-            'maps.renderAllTilesViaShareCode',
+            'maps.renderAllTileHuntingTilesViaShareCode',
             share_code=current_user.tileHuntingShareCode,
             zoom=0,
             x=0,

@@ -422,7 +422,7 @@ def construct_blueprint(
             return Response(output.getvalue(), mimetype='image/png')
 
     @maps.route('/map/tileOverlay/<string:share_code>/<int:zoom>/<int:x>/<int:y>.png')
-    def renderAllTilesViaShareCode(share_code: str, zoom: int, x: int, y: int):
+    def renderAllTileHuntingTilesViaShareCode(share_code: str, zoom: int, x: int, y: int):
         user = get_user_by_tile_hunting_shared_code(share_code)
         if user is None:
             abort(404)
