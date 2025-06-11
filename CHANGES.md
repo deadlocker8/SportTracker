@@ -1,4 +1,4 @@
-# 1.40.0 - (09.06.25)
+# 1.40.0 - (11.06.25)
 - add: add support for long-distance tours (tours with multiple stages) (#209)
 - add: planned tour: show number of possibly new visited tiles (#210)
 - add: workout details page: show number of new visited tiles (#218)
