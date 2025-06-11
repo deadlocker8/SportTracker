@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 import math
 import os
+import re
 import shutil
 import uuid
 from dataclasses import dataclass
@@ -369,7 +370,7 @@ class GpxParser:
         numberOfTracks = len(gpx.tracks)
         for track in gpx.tracks:
             joinedTrack.segments.extend(track.segments)
-            joinedTrack.link = track.link
+            joinedTrack.link = GpxParser.escape_ampersands(track.link)
 
         if numberOfTracks > 1:
             LOGGER.debug(f'Joined {numberOfTracks} tracks')
@@ -454,3 +455,11 @@ class GpxParser:
             self.__get_uphill_downhill(),
             self.__get_editor_link(),
         )
+
+    @staticmethod
+    def escape_ampersands(url):
+        if url is None:
+            return None
+
+        # Match '&' that is not followed by a valid HTML entity like &amp;, &lt;, etc.
+        return re.sub(r'&(?!#?\w+;)', '%26', url)
