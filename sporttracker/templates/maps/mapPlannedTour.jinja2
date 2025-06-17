@@ -34,7 +34,7 @@
 
         <!-- small displays -->
         <div class="card bg-body-secondary mx-3 mb-3 d-xl-none" data-bs-theme="dark">
-            {{ mapMacros.gpxDownloadButton(gettext('Planned Tour'), gpxUrl, 'fa-lightbulb', false, editUrl=editUrl, externalEditorUrl=plannedTour.gpxMetadata.editor_link) }}
+            {{ mapMacros.gpxDownloadButton(gettext('Planned Tour'), gpxUrl, 'fa-lightbulb', false, editUrl=editUrl, externalEditorUrl=plannedTour.gpxMetadata.editor_link, classes='flex-column', classesButtons='mt-1') }}
 
             <div class="card-body ps-4 pt-4 pb-0">
                 <div class="row row-cols-4 gy-3 pb-3 overflow-x-auto">

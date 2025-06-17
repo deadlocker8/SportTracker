@@ -1,3 +1,6 @@
+# 1.41.0 - (XX.XX.XXXX)
+- fix: planned tour map: link to editor no longer overlaps on small devices (#224)
+
 # 1.40.0 - (11.06.25)
 - add: add support for long-distance tours (tours with multiple stages) (#209)
 - add: planned tour: show number of possibly new visited tiles (#210)
