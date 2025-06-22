@@ -72,22 +72,22 @@
                                 <label for="maintenance-event-custom-field" class="form-label input-field-margin">{{ gettext('Filter by custom workout field') }}</label>
                                 <div class="d-flex align-items-center">
                                     <span class="material-symbols-outlined me-3">filter_alt</span>
-                                    <select class="form-select" id="maintenance-event-custom-field" name="customField">
+                                    <select class="form-select" id="maintenance-event-custom-field" name="custom_field_id">
                                         <option class="maintenance-event-custom-field-select-placeholder" value=""></option>
 
                                         {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
                                             {% for field in customFields %}
-                                                <option value="{{ field.custom_field.name }}" data-workout-type="{{ workoutType.name }}">{{ field.custom_field.name }}</option>
+                                                <option value="{{ field.custom_field.id }}" data-workout-type="{{ workoutType.name }}">{{ field.custom_field.name }}</option>
                                             {% endfor %}
                                         {% endfor %}
                                     </select>
 
                                     <label for="maintenance-event-custom-field-value" class="form-label"></label>
-                                    <select class="form-select ms-3" id="maintenance-event-custom-field-value" name="customField">
+                                    <select class="form-select ms-3" id="maintenance-event-custom-field-value" name="custom_field_value">
                                         {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
                                             {% for field in customFields %}
                                                 {% for value in field.values %}
-                                                    <option value="{{ value }}" data-workout-type="{{ workoutType.name }}" data-field-name="{{ field.custom_field.name }}">{{ value }}</option>
+                                                    <option value="{{ value }}" data-workout-type="{{ workoutType.name }}" data-field-id="{{ field.custom_field.id }}">{{ value }}</option>
                                                 {% endfor %}
                                             {% endfor %}
                                         {% endfor %}

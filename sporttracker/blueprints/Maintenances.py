@@ -36,6 +36,8 @@ class MaintenanceFormModel(BaseModel):
     description: str
     is_reminder_active: bool | None = None
     reminder_limit: int | None = None
+    custom_field_id: int | None = None
+    custom_field_value: str | None = None
 
 
 def construct_blueprint():
@@ -70,6 +72,16 @@ def construct_blueprint():
         if form.reminder_limit is not None:
             reminderLimit = form.reminder_limit * 1000
 
+        customFieldId = form.custom_field_id
+        if form.custom_field_value is None:
+            # if no value is selected then no custom field id should be saved
+            customFieldId = None
+
+        customFieldValue = form.custom_field_value
+        if form.custom_field_id is None:
+            # if no custom field is selected then the value needs to be ignored
+            customFieldValue = None
+
         workoutType = WorkoutType(form.type)  # type: ignore[call-arg]
         if workoutType in WorkoutType.get_distance_workout_types():
             maintenance = Maintenance(
@@ -78,6 +90,8 @@ def construct_blueprint():
                 user_id=current_user.id,
                 is_reminder_active=bool(form.is_reminder_active),
                 reminder_limit=reminderLimit,
+                custom_workout_field_id=customFieldId,
+                custom_workout_filed_value=customFieldValue,
             )
         else:
             maintenance = Maintenance(
@@ -107,7 +121,8 @@ def construct_blueprint():
             type=maintenance.type.name,
             description=maintenance.description,  # type: ignore[arg-type]
             is_reminder_active=maintenance.is_reminder_active,  # type: ignore[arg-type]
-            reminder_limit=None if maintenance.reminder_limit is None else maintenance.reminder_limit // 1000,  # type: ignore[arg-type]
+            reminder_limit=None if maintenance.reminder_limit is None else maintenance.reminder_limit // 1000,
+            # type: ignore[arg-type]
         )
 
         return render_template(
@@ -138,6 +153,17 @@ def construct_blueprint():
         if workoutType in WorkoutType.get_distance_workout_types():
             maintenance.is_reminder_active = bool(form.is_reminder_active)
             maintenance.reminder_limit = reminderLimit  # type: ignore[assignment]
+
+            maintenance.custom_workout_field_id = form.custom_field_id
+            if form.custom_field_value is None:
+                # if no value is selected then no custom field id should be saved
+                maintenance.custom_workout_field_id = None
+
+            maintenance.custom_workout_filed_value = form.custom_field_value  # type: ignore[assignment]
+            if form.custom_field_id is None:
+                # if no custom field is selected then the value needs to be ignored
+                maintenance.custom_workout_filed_value = None  # type: ignore[assignment]
+
         else:
             maintenance.is_reminder_active = False
             maintenance.reminder_limit = None  # type: ignore[assignment]
