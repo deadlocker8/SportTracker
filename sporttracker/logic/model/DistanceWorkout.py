@@ -121,15 +121,22 @@ def get_distance_between_dates(
     startDateTime: datetime | DateTime,
     endDateTime: datetime | DateTime,
     workoutTypes: list[WorkoutType],
+    customWorkoutFieldName: str | None = None,
+    customWorkoutFieldValue: str | None = None,
 ) -> int:
-    return int(
+    query = (
         DistanceWorkout.query.with_entities(func.sum(DistanceWorkout.distance))
         .filter(DistanceWorkout.type.in_(workoutTypes))
         .filter(DistanceWorkout.user_id == current_user.id)
         .filter(DistanceWorkout.start_time.between(startDateTime, endDateTime))
-        .scalar()
-        or 0
     )
+
+    if customWorkoutFieldName is not None and customWorkoutFieldValue is not None:
+        query = query.filter(
+            DistanceWorkout.custom_fields[customWorkoutFieldName].astext.cast(String) == customWorkoutFieldValue
+        )
+
+    return int(query.scalar() or 0)
 
 
 def get_distance_workout_ids_by_planned_tour(plannedTour: PlannedTour) -> list[int]:

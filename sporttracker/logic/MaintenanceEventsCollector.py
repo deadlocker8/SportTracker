@@ -8,6 +8,7 @@ from natsort import natsorted
 
 from sporttracker.blueprints.MaintenanceEventInstances import MaintenanceEventInstanceModel
 from sporttracker.logic.QuickFilterState import QuickFilterState
+from sporttracker.logic.model.CustomWorkoutField import get_custom_field_by_id
 from sporttracker.logic.model.DistanceWorkout import get_distance_between_dates
 from sporttracker.logic.model.Maintenance import Maintenance
 from sporttracker.logic.model.MaintenanceEventInstance import (
@@ -74,10 +75,18 @@ def __convert_events_to_models(
         return []
 
     eventModels: list[MaintenanceEventInstanceModel] = []
+    customWorkoutField = get_custom_field_by_id(maintenance.custom_workout_field_id)
+    customWorkoutFieldName = None if customWorkoutField is None else customWorkoutField.name
 
     previousEventDate = events[0].event_date
     for event in events:
-        distanceSinceEvent = get_distance_between_dates(previousEventDate, event.event_date, [maintenance.type])
+        distanceSinceEvent = get_distance_between_dates(
+            previousEventDate,
+            event.event_date,
+            [maintenance.type],
+            customWorkoutFieldName,  # type: ignore[arg-type]
+            maintenance.custom_workout_field_value,  # type: ignore[arg-type]
+        )
         numberOfDaysSinceEvent = (event.event_date - previousEventDate).days  # type: ignore[operator]
         previousEventDate = event.event_date
 
@@ -88,7 +97,13 @@ def __convert_events_to_models(
 
     # add additional pseudo maintenance event representing today
     now = datetime.now()
-    distanceUntilToday = get_distance_between_dates(previousEventDate, now, [maintenance.type])
+    distanceUntilToday = get_distance_between_dates(
+        previousEventDate,
+        now,
+        [maintenance.type],
+        customWorkoutFieldName,  # type: ignore[arg-type]
+        maintenance.custom_workout_field_value,  # type: ignore[arg-type]
+    )
 
     eventModels.append(
         MaintenanceEventInstanceModel(
@@ -118,7 +133,16 @@ def get_number_of_triggered_maintenance_reminders() -> int:
             continue
 
         now = datetime.now()
-        distanceUntilToday = get_distance_between_dates(latestEvent.event_date, now, [maintenance.type])
+
+        customWorkoutField = get_custom_field_by_id(maintenance.custom_workout_field_id)
+        customWorkoutFieldName = None if customWorkoutField is None else customWorkoutField.name
+        distanceUntilToday = get_distance_between_dates(
+            latestEvent.event_date,
+            now,
+            [maintenance.type],
+            customWorkoutFieldName,  # type: ignore[arg-type]
+            maintenance.custom_workout_field_value,  # type: ignore[arg-type]
+        )
 
         if not maintenance.is_reminder_active:
             continue
