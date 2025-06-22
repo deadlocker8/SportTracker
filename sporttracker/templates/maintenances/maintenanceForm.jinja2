@@ -77,7 +77,7 @@
 
                                         {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
                                             {% for field in customFields %}
-                                                <option value="{{ field.custom_field.id }}" data-workout-type="{{ workoutType.name }}">{{ field.custom_field.name }}</option>
+                                                <option value="{{ field.custom_field.id }}" data-workout-type="{{ workoutType.name }}">{{ field.custom_field.name | e }}</option>
                                             {% endfor %}
                                         {% endfor %}
                                     </select>
@@ -87,7 +87,7 @@
                                         {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
                                             {% for field in customFields %}
                                                 {% for value in field.values %}
-                                                    <option value="{{ value }}" data-workout-type="{{ workoutType.name }}" data-field-id="{{ field.custom_field.id }}">{{ value }}</option>
+                                                    <option value="{{ value | e }}" data-workout-type="{{ workoutType.name }}" data-field-id="{{ field.custom_field.id }}">{{ value | e }}</option>
                                                 {% endfor %}
                                             {% endfor %}
                                         {% endfor %}
