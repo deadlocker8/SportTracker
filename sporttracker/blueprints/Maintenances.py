@@ -29,6 +29,8 @@ class MaintenanceModel:
     description: str
     is_reminder_active: bool
     reminder_limit: int | None
+    custom_field_id: int | None = None
+    custom_field_value: str | None = None
 
 
 class MaintenanceFormModel(BaseModel):
@@ -121,8 +123,9 @@ def construct_blueprint():
             type=maintenance.type.name,
             description=maintenance.description,  # type: ignore[arg-type]
             is_reminder_active=maintenance.is_reminder_active,  # type: ignore[arg-type]
-            reminder_limit=None if maintenance.reminder_limit is None else maintenance.reminder_limit // 1000,
-            # type: ignore[arg-type]
+            reminder_limit=None if maintenance.reminder_limit is None else maintenance.reminder_limit // 1000,  # type: ignore[arg-type]
+            custom_field_id=maintenance.custom_workout_field_id,
+            custom_field_value=maintenance.custom_workout_field_value,  # type: ignore[arg-type]
         )
 
         return render_template(

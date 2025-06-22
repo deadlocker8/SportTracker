@@ -21,6 +21,7 @@ function init()
     });
 
     updateAllCustomWorkoutFieldSelects();
+    initialSelect();
 }
 
 function updateAllCustomWorkoutFieldSelects()
@@ -61,4 +62,12 @@ function updateCustomWorkoutFieldSelect(select, itemFilter)
         select.value = matchingOptions[0].value;
         select.disabled = false;
     }
+}
+
+function initialSelect()
+{
+    customWorkoutFieldSelect.value = initialCustomFieldId;
+    customWorkoutFieldValueSelect.value = initialCustomFieldValue;
+
+    customWorkoutFieldSelect.dispatchEvent(new Event('change', { 'bubbles': true }));
 }
