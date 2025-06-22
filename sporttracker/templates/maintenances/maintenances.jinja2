@@ -113,6 +113,13 @@
                                         {% endif %}
                                     {% endfor %}
                                 </div>
+
+                                {% if maintenancesWithEvent.custom_workout_field_name is not none and maintenancesWithEvent.custom_workout_field_value is not none %}
+                                    <div class="card-footer text-body-secondary d-flex align-items-center justify-content-center">
+                                        <span class="material-symbols-outlined me-1 fs-5">filter_alt</span>
+                                        <span class="small">"{{ maintenancesWithEvent.custom_workout_field_name | e }}" == "{{ maintenancesWithEvent.custom_workout_field_value | e }}"</span>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
 
