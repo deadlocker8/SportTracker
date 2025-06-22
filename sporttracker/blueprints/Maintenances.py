@@ -91,7 +91,7 @@ def construct_blueprint():
                 is_reminder_active=bool(form.is_reminder_active),
                 reminder_limit=reminderLimit,
                 custom_workout_field_id=customFieldId,
-                custom_workout_filed_value=customFieldValue,
+                custom_workout_field_value=customFieldValue,
             )
         else:
             maintenance = Maintenance(
@@ -159,10 +159,10 @@ def construct_blueprint():
                 # if no value is selected then no custom field id should be saved
                 maintenance.custom_workout_field_id = None
 
-            maintenance.custom_workout_filed_value = form.custom_field_value  # type: ignore[assignment]
+            maintenance.custom_workout_field_value = form.custom_field_value  # type: ignore[assignment]
             if form.custom_field_id is None:
                 # if no custom field is selected then the value needs to be ignored
-                maintenance.custom_workout_filed_value = None  # type: ignore[assignment]
+                maintenance.custom_workout_field_value = None  # type: ignore[assignment]
 
         else:
             maintenance.is_reminder_active = False

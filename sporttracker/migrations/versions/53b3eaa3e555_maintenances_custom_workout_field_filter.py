@@ -30,10 +30,10 @@ def upgrade():
 
         op.create_foreign_key(None, 'maintenance', 'custom_workout_field', ['custom_workout_field_id'], ['id'])
 
-    if 'custom_workout_filed_value' not in columnNames:
+    if 'custom_workout_field_value' not in columnNames:
         op.add_column(
             'maintenance',
-            sa.Column('custom_workout_filed_value', sa.String(), nullable=True),
+            sa.Column('custom_workout_field_value', sa.String(), nullable=True),
         )
 
 
@@ -44,5 +44,5 @@ def downgrade():
     if 'custom_workout_field_id' in columnNames:
         op.drop_column('maintenance', 'custom_workout_field_id')
 
-    if 'custom_workout_filed_value' in columnNames:
-        op.drop_column('maintenance', 'custom_workout_filed_value')
+    if 'custom_workout_field_value' in columnNames:
+        op.drop_column('maintenance', 'custom_workout_field_value')
