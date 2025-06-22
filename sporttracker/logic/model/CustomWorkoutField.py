@@ -102,9 +102,11 @@ class CustomWorkoutFieldWithValues:
     values: list[str | int | float]
 
 
-def get_custom_fields_grouped_by_workout_types_wih_values() -> dict[WorkoutType, list[CustomWorkoutFieldWithValues]]:
+def get_custom_fields_grouped_by_distance_workout_types_wih_values() -> dict[
+    WorkoutType, list[CustomWorkoutFieldWithValues]
+]:
     customFieldsByWorkoutType = {}
-    for workoutType in [s for s in WorkoutType]:
+    for workoutType in [s for s in WorkoutType.get_distance_workout_types()]:
         fields = (
             CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
             .filter(CustomWorkoutField.workout_type == workoutType)
