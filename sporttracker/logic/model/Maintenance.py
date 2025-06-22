@@ -14,6 +14,8 @@ class Maintenance(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     is_reminder_active: Mapped[bool] = mapped_column(Boolean, nullable=False)
     reminder_limit: Mapped[int] = mapped_column(Integer, nullable=True)
+    custom_workout_field_id = db.Column(db.Integer, db.ForeignKey('custom_workout_field.id'), nullable=True)
+    custom_workout_filed_value: Mapped[String] = mapped_column(String, nullable=True)
 
     def __repr__(self):
         return (
@@ -23,7 +25,9 @@ class Maintenance(db.Model, DateTimeAccess):  # type: ignore[name-defined]
             f'description: {self.description}, '
             f'user_id: {self.user_id}, '
             f'is_reminder_active: {self.is_reminder_active}, '
-            f'reminder_limit: {self.reminder_limit})'
+            f'reminder_limit: {self.reminder_limit}, '
+            f'custom_workout_field_id: {self.custom_workout_field_id}, '
+            f'custom_workout_filed_value: {self.custom_workout_filed_value})'
         )
 
 
