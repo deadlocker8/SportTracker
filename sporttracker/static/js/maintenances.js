@@ -16,7 +16,7 @@ function init()
     {
         updateCustomWorkoutFieldSelect(customWorkoutFieldValueSelect, (item) =>
         {
-            return item.dataset.workoutType === workoutTypeSelect.value && item.dataset.fieldName === customWorkoutFieldSelect.value;
+            return item.dataset.workoutType === workoutTypeSelect.value && item.dataset.fieldId === customWorkoutFieldSelect.value;
         });
     });
 
@@ -32,7 +32,7 @@ function updateAllCustomWorkoutFieldSelects()
 
     updateCustomWorkoutFieldSelect(customWorkoutFieldValueSelect, (item) =>
     {
-        return item.dataset.workoutType === workoutTypeSelect.value && item.dataset.fieldName === customWorkoutFieldSelect.value;
+        return item.dataset.workoutType === workoutTypeSelect.value && item.dataset.fieldId === customWorkoutFieldSelect.value;
     });
 }
 
@@ -50,7 +50,8 @@ function updateCustomWorkoutFieldSelect(select, itemFilter)
         }
     });
 
-    if(matchingOptions.length === 0)
+    // no matching options or single matching option is the placeholder with empty value
+    if(matchingOptions.length === 0 || matchingOptions.length === 1  && matchingOptions[0].value === '')
     {
         select.value = '';
         select.disabled = true;
