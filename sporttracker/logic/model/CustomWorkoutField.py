@@ -1,4 +1,5 @@
 import enum
+from dataclasses import dataclass
 from operator import attrgetter
 
 import natsort
@@ -8,6 +9,7 @@ from natsort import natsorted
 from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
+from sporttracker.logic.model.Workout import Workout
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
@@ -92,6 +94,46 @@ def get_custom_field_by_id(customFieldId: int) -> CustomWorkoutField | None:
         .filter(CustomWorkoutField.id == customFieldId)
         .first()
     )
+
+
+@dataclass
+class CustomWorkoutFieldWithValues:
+    custom_field: CustomWorkoutField
+    values: list[str | int | float]
+
+
+def get_custom_fields_grouped_by_workout_types_wih_values() -> dict[WorkoutType, list[CustomWorkoutFieldWithValues]]:
+    customFieldsByWorkoutType = {}
+    for workoutType in [s for s in WorkoutType]:
+        fields = (
+            CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
+            .filter(CustomWorkoutField.workout_type == workoutType)
+            .all()
+        )
+        fields = natsorted(fields, alg=natsort.ns.IGNORECASE, key=lambda f: f.name)
+
+        fieldsWithValues = []
+        for field in fields:
+            fieldsWithValues.append(__get_custom_field_with_values(field))
+
+        customFieldsByWorkoutType[workoutType] = fieldsWithValues
+    return customFieldsByWorkoutType
+
+
+def __get_custom_field_with_values(customField: CustomWorkoutField) -> CustomWorkoutFieldWithValues:
+    customFieldOperator = Workout.custom_fields[customField.name].astext.cast(String)
+
+    rows = (
+        Workout.query.with_entities(customFieldOperator)
+        .filter(Workout.user_id == current_user.id)
+        .filter(Workout.type == customField.workout_type)
+        .group_by(customFieldOperator)
+        .all()
+    )
+
+    values = [row[0] for row in rows if row[0] is not None]
+
+    return CustomWorkoutFieldWithValues(customField, natsorted(values, alg=natsort.ns.IGNORECASE))
 
 
 # List of reserved names that are not allowed to be used as custom field names.

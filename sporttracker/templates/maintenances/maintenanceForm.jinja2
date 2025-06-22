@@ -73,9 +73,22 @@
                                 <div class="d-flex align-items-center">
                                     <span class="material-symbols-outlined me-3">filter_alt</span>
                                     <select class="form-select" id="maintenance-event-custom-field" name="customField">
+                                        <option class="maintenance-event-custom-field-select-placeholder" value=""></option>
+
                                         {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
                                             {% for field in customFields %}
-                                                <option value="{{ field.name }}" data-workout-type="{{ workoutType.name }}">{{ field.name }}</option>
+                                                <option value="{{ field.custom_field.name }}" data-workout-type="{{ workoutType.name }}">{{ field.custom_field.name }}</option>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </select>
+
+                                    <label for="maintenance-event-custom-field-value" class="form-label"></label>
+                                    <select class="form-select ms-3" id="maintenance-event-custom-field-value" name="customField">
+                                        {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
+                                            {% for field in customFields %}
+                                                {% for value in field.values %}
+                                                    <option value="{{ value }}" data-workout-type="{{ workoutType.name }}" data-field-name="{{ field.custom_field.name }}">{{ value }}</option>
+                                                {% endfor %}
                                             {% endfor %}
                                         {% endfor %}
                                     </select>
