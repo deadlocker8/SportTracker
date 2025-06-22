@@ -150,7 +150,7 @@
                                         <span class="p-1 fs-5 material-symbols-outlined filled">delete</span>
                                     </a>
 
-                                    {% call macros.deleteModal(gettext('Delete Custom Field?'), gettext('Do you really want to delete the custom field "%(name)s"?', name=field.name), field.id) %}
+                                    {% call macros.deleteModal(gettext('Delete Custom Field?'), gettext('Do you really want to delete the custom field "%(name)s"?<br><br>The custom field will also be removed from all maintenances that use this field as a filter.', name=field.name), field.id) %}
                                         <a href="{{ url_for('settings.customFieldsDelete', field_id=field.id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
                                     {% endcall %}
                                 </td>

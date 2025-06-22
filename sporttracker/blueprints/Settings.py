@@ -17,6 +17,7 @@ from sporttracker.logic.model.CustomWorkoutField import (
     CustomWorkoutFieldType,
     RESERVED_FIELD_NAMES,
 )
+from sporttracker.logic.model.Maintenance import Maintenance
 from sporttracker.logic.model.NtfySettings import NtfySettings
 from sporttracker.logic.model.Participant import Participant, get_participants
 from sporttracker.logic.model.User import (
@@ -304,6 +305,20 @@ def construct_blueprint():
 
         if field is None:
             abort(404)
+
+        linkedMaintenances = (
+            Maintenance.query.filter(Maintenance.user_id == current_user.id)
+            .filter(Maintenance.custom_workout_field_id == field_id)
+            .all()
+        )
+
+        for linkedMaintenance in linkedMaintenances:
+            linkedMaintenance.custom_workout_field_id = None
+            linkedMaintenance.custom_workout_field_value = None
+
+            LOGGER.debug(f'Removed link to custom field: {field.id} from maintenance: {linkedMaintenance.id}')
+            db.session.add(linkedMaintenance)
+            db.session.commit()
 
         LOGGER.debug(f'Deleted custom field: {field}')
         db.session.delete(field)
