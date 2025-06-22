@@ -67,7 +67,6 @@ function updateCustomWorkoutFieldSelect(select, itemFilter)
 function initialSelect()
 {
     customWorkoutFieldSelect.value = initialCustomFieldId;
-    customWorkoutFieldValueSelect.value = initialCustomFieldValue;
-
     customWorkoutFieldSelect.dispatchEvent(new Event('change', { 'bubbles': true }));
+    customWorkoutFieldValueSelect.value = initialCustomFieldValue;
 }
