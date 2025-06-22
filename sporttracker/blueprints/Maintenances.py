@@ -11,6 +11,7 @@ from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_
 from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
 )
+from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_workout_types
 from sporttracker.logic.model.Maintenance import Maintenance, get_maintenance_by_id
 from sporttracker.logic.model.MaintenanceEventInstance import (
     get_maintenance_events_by_maintenance_id,
@@ -56,7 +57,10 @@ def construct_blueprint():
     @maintenances.route('/add')
     @login_required
     def add():
-        return render_template('maintenances/maintenanceForm.jinja2')
+        return render_template(
+            'maintenances/maintenanceForm.jinja2',
+            customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
+        )
 
     @maintenances.route('/post', methods=['POST'])
     @login_required
@@ -110,6 +114,7 @@ def construct_blueprint():
             'maintenances/maintenanceForm.jinja2',
             maintenance=model,
             maintenance_id=maintenance_id,
+            customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
         )
 
     @maintenances.route('/edit/<int:maintenance_id>', methods=['POST'])

@@ -68,6 +68,19 @@
                                 </div>
                             </div>
 
+                            <div class="mb-3">
+                                <label for="maintenance-event-custom-field" class="form-label input-field-margin">{{ gettext('Filter by custom workout field') }}</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="material-symbols-outlined me-3">filter_alt</span>
+                                    <select class="form-select" id="maintenance-event-custom-field" name="customField">
+                                        {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
+                                            {% for field in customFields %}
+                                                <option value="{{ field.name }}" data-workout-type="{{ workoutType.name }}">{{ field.name }}</option>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
 
                             <div class="mb-3 mt-5" id="maintenance-event-reminder-container">
                                 <label for="maintenance-event-reminder" class="form-label">
@@ -113,5 +126,6 @@
         </div>
 
         {{ macros.scripts() }}
+        <script defer src="{{ url_for('static', filename='js/maintenances.js') }}" type="text/javascript"></script>
     </body>
 </html>
