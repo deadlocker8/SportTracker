@@ -3,7 +3,7 @@ info:
   title: Sport-Tracker-API
   version: 2.1.0
 servers:
-  - url: 'http://localhost:10022'
+  - url: '/'
 paths:
   /api/v2/login:
     post:
