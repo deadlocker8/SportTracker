@@ -54,13 +54,18 @@ def construct_blueprint():
 
         maintenancesWithEvents = get_maintenances_with_events(quickFilterState, maintenanceFilterState, current_user.id)
 
+        customFieldsByWorkoutType = get_custom_fields_grouped_by_distance_workout_types_with_values(
+            quickFilterState.get_active_distance_workout_types()
+        )
+
+        hasCustomWorkoutFields = any([len(fields) > 0 for fields in customFieldsByWorkoutType.values()])
+
         return render_template(
             'maintenances/maintenances.jinja2',
             maintenancesWithEvents=maintenancesWithEvents,
             quickFilterState=quickFilterState,
-            customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(
-                quickFilterState.get_active_distance_workout_types()
-            ),
+            customFieldsByWorkoutType=customFieldsByWorkoutType,
+            hasCustomWorkoutFields=hasCustomWorkoutFields,
             maintenanceFilterState=maintenanceFilterState,
         )
 

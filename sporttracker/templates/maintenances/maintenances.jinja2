@@ -30,7 +30,7 @@
 {%- endmacro %}
 
 {% macro maintenanceFilterCustomWorkoutField(maintenanceFilterState) -%}
-    <button class="btn btn-sm {% if maintenanceFilterState.is_active() %}btn-light{% else %}btn-outline-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <button class="btn btn-sm {% if maintenanceFilterState.is_active() %}btn-light{% else %}btn-outline-light{% endif %} dropdown-toggle d-inline-flex align-items-center {% if not hasCustomWorkoutFields %}disabled{% endif %}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         <span class="material-symbols-outlined fs-5">filter_alt</span>
         <span class="ms-2">{{ gettext('Custom Workout Field') }}</span>
     </button>
