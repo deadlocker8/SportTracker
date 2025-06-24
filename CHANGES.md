@@ -1,6 +1,7 @@
 # 1.41.0 - (XX.XX.XXXX)
 - add: maintenances: allow to apply a custom field as distance filter (e.g. which bike) (#211)
 - add: allow swagger ui to be used on production servers (#228)
+- add: workout form: add suggestions for custom workout field values (#225)
 - fix: planned tour map: link to editor no longer overlaps on small devices (#224)
 - fix: charts: speed/duration per workout: start y-axis near min value instead of zero (#219)
 
