@@ -66,7 +66,7 @@ def get_maintenances_with_events(quickFilterState: QuickFilterState, user_id: in
             isLimitExceeded=isLimitExceeded,
             limitExceededDistance=limitExceededDistance,
             events=eventModels,
-            custom_workout_field_name=customWorkoutFieldName,
+            custom_workout_field_name=customWorkoutFieldName,  # type: ignore[arg-type]
             custom_workout_field_value=maintenance.custom_workout_field_value,
         )
 
