@@ -2,6 +2,7 @@
 - add: maintenances: allow to apply a custom field as distance filter (e.g. which bike) (#211)
 - add: allow swagger ui to be used on production servers (#228)
 - fix: planned tour map: link to editor no longer overlaps on small devices (#224)
+- fix: charts: speed/duration per workout: start y-axis near min value instead of zero (#219)
 
 # 1.40.0 - (11.06.25)
 - add: add support for long-distance tours (tours with multiple stages) (#209)

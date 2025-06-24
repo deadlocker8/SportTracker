@@ -42,6 +42,10 @@ class WorkoutName:
     name: str
 
 
+AXIS_DELTA_MAX = 0.01
+AXIS_DELTA_MIN = 0.05
+
+
 def construct_blueprint(
     newVisitedTileCache: NewVisitedTileCache,
     maxSquareCache: MaxSquareCache,
@@ -255,13 +259,16 @@ def construct_blueprint(
             values.append(workout.duration)
             texts.append(f'{format_duration(workout.duration)} h')
 
+        minValue = min(values, default=0)
+        maxValue = max(values, default=0)
+
         chartDataDurationPerWorkout = {
             'dates': dates,
             'values': values,
             'texts': texts,
             'type': workoutType,
-            'min': min(values, default=0) - 300,
-            'max': max(values, default=0) + 300,
+            'min': max(minValue - minValue * AXIS_DELTA_MIN, 0),
+            'max': maxValue + maxValue * AXIS_DELTA_MAX,
         }
 
         return render_template(
@@ -329,13 +336,16 @@ def construct_blueprint(
             values.append(speed)
             texts.append(f'{speed} km/h')
 
+        minValue = min(values, default=0)
+        maxValue = max(values, default=0)
+
         chartDataSpeedPerWorkout = {
             'dates': dates,
             'values': values,
             'texts': texts,
             'type': workoutType,
-            'min': 0,
-            'max': max(values, default=0) + 5,
+            'min': max(minValue - minValue * AXIS_DELTA_MIN, 0),
+            'max': maxValue + maxValue * AXIS_DELTA_MAX,
         }
 
         return render_template(
