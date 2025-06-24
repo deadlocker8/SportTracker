@@ -9,6 +9,7 @@ from sporttracker.logic.MaintenanceEventsCollector import (
     get_maintenances_with_events,
     MaintenanceWithEventsModel,
 )
+from sporttracker.logic.MaintenanceFilterState import MaintenanceFilterState
 from sporttracker.logic.Observable import Listener
 from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.NtfySettings import NtfySettings
@@ -32,7 +33,7 @@ class NtfyService(Listener):
         quickFilterState = QuickFilterState()
         quickFilterState.set_states({t: t == data['workout_type'] for t in WorkoutType})
 
-        maintenances = get_maintenances_with_events(quickFilterState, user.id)
+        maintenances = get_maintenances_with_events(quickFilterState, MaintenanceFilterState(), user.id)
         for maintenance in maintenances:
             if not maintenance.isLimitActive:
                 continue

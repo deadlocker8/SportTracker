@@ -29,6 +29,47 @@
     {% endif %}
 {%- endmacro %}
 
+{% macro maintenanceFilterCustomWorkoutField(maintenanceFilterState) -%}
+    <button class="btn btn-sm {% if maintenanceFilterState.is_active() %}btn-light{% else %}btn-outline-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="material-symbols-outlined fs-5">filter_alt</span>
+        <span class="ms-2">{{ gettext('Custom Workout Field') }}</span>
+    </button>
+
+    <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
+        <div class="text-nowrap mb-2">
+            <label class="form-label" for="customWorkoutFieldId">
+                <span>{{ gettext('Custom Workout Field:') }}</span>
+            </label>
+
+            <select class="form-select" id="customWorkoutFieldId" name="customWorkoutFieldId">
+                <option class="maintenance-event-custom-field-select-placeholder" value=""></option>
+
+                {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
+                    {% for field in customFields %}
+                        <option value="{{ field.custom_field.id }}" data-workout-type="{{ workoutType.name }}">{{ workoutType.get_localized_name() }}: {{ field.custom_field.name | e }}</option>
+                    {% endfor %}
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="text-nowrap mb-2">
+            <label class="form-label" for="customWorkoutFieldValue">
+                <span>{{ gettext('Value:') }}</span>
+            </label>
+
+            <select class="form-select" id="customWorkoutFieldValue" name="customWorkoutFieldValue">
+                {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
+                    {% for field in customFields %}
+                        {% for value in field.values %}
+                            <option value="{{ value | e }}" data-workout-type="{{ workoutType.name }}" data-field-id="{{ field.custom_field.id }}">{{ value | e }}</option>
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+{%- endmacro %}
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -54,6 +95,16 @@
                 <div class="mb-4">
                     {{ macros.workout_type_quick_filter(url_for('maintenances.listMaintenances'), false) }}
                 </div>
+
+                <form class="mt-2 pt-2" method="POST" action="{{ url_for('maintenances.applyFilter') }}">
+                    <div class="my-3 d-flex align-items-center justify-content-start justify-content-xxl-center gap-3 overflow-x-scroll">
+                        {{ maintenanceFilterCustomWorkoutField(maintenanceFilterState) }}
+
+                        <a href="{{ url_for('maintenances.resetFilter') }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap">{{ gettext('Reset Filter') }}</a>
+
+                        <button id="buttonApplyFilter" type="submit" class="btn btn-sm btn-primary text-nowrap">{{ gettext('Apply Filter') }}</button>
+                    </div>
+                </form>
 
                 <div class="row py-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
                     {% set ns = namespace(index = 0) %}
@@ -130,5 +181,10 @@
         </div>
 
         {{ macros.scripts() }}
+        <script>
+            initialCustomFieldId = '{% if maintenanceFilterState.get_custom_workout_field_id() is not none %}{{ maintenanceFilterState.get_custom_workout_field_id() }}{% endif %}';
+            initialCustomFieldValue = '{% if maintenanceFilterState.get_custom_workout_field_value() is not none %}{{ maintenanceFilterState.get_custom_workout_field_value() }}{% endif %}';
+        </script>
+        <script defer src="{{ url_for('static', filename='js/maintenances.js') }}" type="text/javascript"></script>
     </body>
 </html>

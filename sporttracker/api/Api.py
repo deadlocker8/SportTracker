@@ -27,6 +27,7 @@ from sporttracker.api.Mapper import (
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events
+from sporttracker.logic.MaintenanceFilterState import MaintenanceFilterState
 from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_workout_types
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
@@ -396,7 +397,9 @@ def construct_blueprint(
     @api.route('/maintenances')
     @login_required
     def listMaintenances():
-        maintenancesWithEvents = get_maintenances_with_events(QuickFilterState(), current_user.id)
+        maintenancesWithEvents = get_maintenances_with_events(
+            QuickFilterState(), MaintenanceFilterState(), current_user.id
+        )
         return jsonify([MAPPER_MAINTENANCE.map(m) for m in maintenancesWithEvents])
 
     return api

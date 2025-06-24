@@ -143,6 +143,6 @@
             initialCustomFieldId = '{% if maintenance and maintenance.custom_field_id is not none %}{{ maintenance.custom_field_id }}{% endif %}';
             initialCustomFieldValue = '{% if maintenance and maintenance.custom_field_value is not none %}{{ maintenance.custom_field_value }}{% endif %}';
         </script>
-        <script defer src="{{ url_for('static', filename='js/maintenances.js') }}" type="text/javascript"></script>
+        <script defer src="{{ url_for('static', filename='js/maintenancesForm.js') }}" type="text/javascript"></script>
     </body>
 </html>
