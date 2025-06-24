@@ -12,7 +12,7 @@ from sporttracker.logic.MaintenanceFilterState import MaintenanceFilterState, ge
 from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
 )
-from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_distance_workout_types_wih_values
+from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_distance_workout_types_with_values
 from sporttracker.logic.model.Maintenance import Maintenance, get_maintenance_by_id
 from sporttracker.logic.model.MaintenanceEventInstance import (
     get_maintenance_events_by_maintenance_id,
@@ -58,7 +58,7 @@ def construct_blueprint():
             'maintenances/maintenances.jinja2',
             maintenancesWithEvents=maintenancesWithEvents,
             quickFilterState=quickFilterState,
-            customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_wih_values(
+            customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(
                 quickFilterState.get_active_distance_workout_types()
             ),
             maintenanceFilterState=maintenanceFilterState,
@@ -69,7 +69,7 @@ def construct_blueprint():
     def add():
         return render_template(
             'maintenances/maintenanceForm.jinja2',
-            customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_wih_values(
+            customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(
                 WorkoutType.get_distance_workout_types()
             ),
             maintenanceFilterState=get_maintenances_filter_state_from_session(),
@@ -142,7 +142,7 @@ def construct_blueprint():
             'maintenances/maintenanceForm.jinja2',
             maintenance=model,
             maintenance_id=maintenance_id,
-            customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_wih_values(
+            customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(
                 WorkoutType.get_distance_workout_types()
             ),
             maintenanceFilterState=get_maintenances_filter_state_from_session(),

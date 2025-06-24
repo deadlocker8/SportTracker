@@ -12,10 +12,10 @@ from pydantic import BaseModel, field_validator, ConfigDict
 from sporttracker.logic import Constants
 from sporttracker.logic.Constants import MIN_PASSWORD_LENGTH
 from sporttracker.logic.model.CustomWorkoutField import (
-    get_custom_fields_grouped_by_workout_types,
     CustomWorkoutField,
     CustomWorkoutFieldType,
     RESERVED_FIELD_NAMES,
+    get_custom_fields_grouped_by_distance_workout_types_with_values,
 )
 from sporttracker.logic.model.Maintenance import Maintenance
 from sporttracker.logic.model.NtfySettings import NtfySettings
@@ -92,7 +92,7 @@ def construct_blueprint():
         return render_template(
             'settings/settings.jinja2',
             userLanguage=current_user.language.name,
-            customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
+            customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(),
             participants=get_participants(),
             infoItems=__get_info_items(),
             tileRenderUrl=__get_tile_render_url(),
@@ -115,7 +115,7 @@ def construct_blueprint():
                 'settings/settings.jinja2',
                 errorMessage=gettext('Password must not be empty'),
                 userLanguage=current_user.language.name,
-                customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
+                customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(),
                 participants=get_participants(),
                 infoItems=__get_info_items(),
                 tileRenderUrl=__get_tile_render_url(),
@@ -127,7 +127,7 @@ def construct_blueprint():
                 'settings/settings.jinja2',
                 errorMessage=gettext('Password must be at least {0} characters long').format(MIN_PASSWORD_LENGTH),
                 userLanguage=current_user.language.name,
-                customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
+                customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(),
                 participants=get_participants(),
                 infoItems=__get_info_items(),
                 tileRenderUrl=__get_tile_render_url(),
@@ -448,7 +448,7 @@ def construct_blueprint():
                     'settings/settings.jinja2',
                     ntfyErrorMessage=gettext('Ntfy Settings: {0} must not be empty').format(name),
                     userLanguage=current_user.language.name,
-                    customFieldsByWorkoutType=get_custom_fields_grouped_by_workout_types(),
+                    customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(),
                     participants=get_participants(),
                     infoItems=__get_info_items(),
                     tileRenderUrl=__get_tile_render_url(),

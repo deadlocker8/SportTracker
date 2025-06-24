@@ -15,8 +15,8 @@ from sporttracker.helpers.Helpers import format_duration
 from sporttracker.logic import Constants
 from sporttracker.logic.QuickFilterState import QuickFilterState, get_quick_filter_state_from_session
 from sporttracker.logic.model.CustomWorkoutField import (
-    get_custom_fields_grouped_by_workout_types,
     get_custom_field_by_id,
+    get_custom_fields_grouped_by_distance_workout_types_with_values,
 )
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_per_month_by_type
 from sporttracker.logic.model.Participant import Participant
@@ -99,7 +99,9 @@ def construct_blueprint(
     @charts.route('/chartDistancePerCustomFieldChooser')
     @login_required
     def chartDistancePerCustomFieldChooser():
-        customFieldsByWorkoutType = get_custom_fields_grouped_by_workout_types(WorkoutType.get_distance_workout_types())
+        customFieldsByWorkoutType = get_custom_fields_grouped_by_distance_workout_types_with_values(
+            WorkoutType.get_distance_workout_types()
+        )
         return render_template(
             'charts/chartDistancePerCustomFieldChooser.jinja2',
             customFieldsByWorkoutType=customFieldsByWorkoutType,

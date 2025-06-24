@@ -61,24 +61,6 @@ class CustomWorkoutField(db.Model):  # type: ignore[name-defined]
         )
 
 
-def get_custom_fields_grouped_by_workout_types(
-    workoutTypes: list[WorkoutType] | None = None,
-) -> dict[WorkoutType, list[CustomWorkoutField]]:
-    if workoutTypes is None:
-        workoutTypes = [s for s in WorkoutType]
-
-    customFieldsByWorkoutType = {}
-    for workoutType in workoutTypes:
-        fields = (
-            CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
-            .filter(CustomWorkoutField.workout_type == workoutType)
-            .all()
-        )
-        fields = natsorted(fields, alg=natsort.ns.IGNORECASE, key=lambda field: field.name)
-        customFieldsByWorkoutType[workoutType] = fields
-    return customFieldsByWorkoutType
-
-
 def get_custom_fields_by_workout_type(workoutType: WorkoutType) -> list[CustomWorkoutField]:
     fields = (
         CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
@@ -102,8 +84,8 @@ class CustomWorkoutFieldWithValues:
     values: list[str | int | float]
 
 
-def get_custom_fields_grouped_by_distance_workout_types_wih_values(
-    workoutTypes: list[WorkoutType],
+def get_custom_fields_grouped_by_distance_workout_types_with_values(
+    workoutTypes: list[WorkoutType] | None = None,
 ) -> dict[WorkoutType, list[CustomWorkoutFieldWithValues]]:
     if workoutTypes is None:
         workoutTypes = [s for s in WorkoutType]

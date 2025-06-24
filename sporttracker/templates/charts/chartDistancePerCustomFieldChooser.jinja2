@@ -36,8 +36,8 @@
                             </div>
 
                             {% for field in customFields %}
-                                <a href="{{ url_for('charts.chartDistancePerCustomField', workout_type=workoutType.name, custom_field_id=field.id) }}" class="btn btn-primary">
-                                    <span class="fs-5 text-light">{{ field.name | e }}</span>
+                                <a href="{{ url_for('charts.chartDistancePerCustomField', workout_type=workoutType.name, custom_field_id=field.custom_field.id) }}" class="btn btn-primary">
+                                    <span class="fs-5 text-light">{{ field.custom_field.name | e }}</span>
                                 </a>
                             {% endfor %}
                         {% endfor %}

@@ -136,22 +136,22 @@
                     <tbody>
                         {% for field in customFields %}
                             <tr>
-                                <td>{{ field.name | e }}</td>
-                                <td>{{ field.type.get_localized_name() }}</td>
-                                <td>{{ field.is_required }}</td>
+                                <td>{{ field.custom_field.name | e }}</td>
+                                <td>{{ field.custom_field.type.get_localized_name() }}</td>
+                                <td>{{ field.custom_field.is_required }}</td>
                                 <td>
-                                    <a href="{{ url_for('settings.customFieldsEdit', field_id=field.id) }}"
+                                    <a href="{{ url_for('settings.customFieldsEdit', field_id=field.custom_field.id) }}"
                                        class="link-light text-decoration-none">
                                         <span class="p-1 fs-5 material-symbols-outlined filled">edit</span>
                                     </a>
                                     <a href=""
                                        class="link-light text-decoration-none"
-                                       data-bs-toggle="modal" data-bs-target="#delete-modal-{{ field.id }}">
+                                       data-bs-toggle="modal" data-bs-target="#delete-modal-{{ field.custom_field.id }}">
                                         <span class="p-1 fs-5 material-symbols-outlined filled">delete</span>
                                     </a>
 
-                                    {% call macros.deleteModal(gettext('Delete Custom Field?'), gettext('Do you really want to delete the custom field "%(name)s"?<br><br>The custom field will also be removed from all maintenances that use this field as a filter.', name=field.name), field.id) %}
-                                        <a href="{{ url_for('settings.customFieldsDelete', field_id=field.id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                                    {% call macros.deleteModal(gettext('Delete Custom Field?'), gettext('Do you really want to delete the custom field "%(name)s"?<br><br>The custom field will also be removed from all maintenances that use this field as a filter.', name=field.custom_field.name), field.custom_field.id) %}
+                                        <a href="{{ url_for('settings.customFieldsDelete', field_id=field.custom_field.id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
                                     {% endcall %}
                                 </td>
                             </tr>

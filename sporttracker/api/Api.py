@@ -29,7 +29,7 @@ from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.logic.MaintenanceFilterState import MaintenanceFilterState
 from sporttracker.logic.QuickFilterState import QuickFilterState
-from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_workout_types
+from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_distance_workout_types_with_values
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.FitnessWorkoutCategory import (
@@ -380,11 +380,11 @@ def construct_blueprint(
     @api.route('/settings/customFields')
     @login_required
     def listCustomFields():
-        customFields = get_custom_fields_grouped_by_workout_types()
+        customFieldsWithValues = get_custom_fields_grouped_by_distance_workout_types_with_values()
 
         result = {}
-        for workoutType, fields in customFields.items():
-            result[workoutType.name] = [MAPPER_CUSTOM_FIELD.map(f) for f in fields]
+        for workoutType, fields in customFieldsWithValues.items():
+            result[workoutType.name] = [MAPPER_CUSTOM_FIELD.map(f.custom_field) for f in fields]
 
         return jsonify(result)
 
