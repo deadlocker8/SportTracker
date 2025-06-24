@@ -1,4 +1,5 @@
 # 1.41.0 - (XX.XX.XXXX)
+- add: maintenances: allow to apply a custom field as distance filter (e.g. which bike) (#211)
 - fix: planned tour map: link to editor no longer overlaps on small devices (#224)
 
 # 1.40.0 - (11.06.25)
