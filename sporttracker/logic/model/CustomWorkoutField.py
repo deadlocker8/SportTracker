@@ -92,19 +92,24 @@ def get_custom_fields_grouped_by_distance_workout_types_with_values(
 
     customFieldsByWorkoutType = {}
     for workoutType in workoutTypes:
-        fields = (
-            CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
-            .filter(CustomWorkoutField.workout_type == workoutType)
-            .all()
-        )
-        fields = natsorted(fields, alg=natsort.ns.IGNORECASE, key=lambda f: f.name)
+        customFieldsByWorkoutType[workoutType] = get_custom_fields_by_workout_type_with_values(workoutType)
 
-        fieldsWithValues = []
-        for field in fields:
-            fieldsWithValues.append(__get_custom_field_with_values(field))
-
-        customFieldsByWorkoutType[workoutType] = fieldsWithValues
     return customFieldsByWorkoutType
+
+
+def get_custom_fields_by_workout_type_with_values(workoutType: WorkoutType) -> list[CustomWorkoutFieldWithValues]:
+    fields = (
+        CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
+        .filter(CustomWorkoutField.workout_type == workoutType)
+        .all()
+    )
+    fields = natsorted(fields, alg=natsort.ns.IGNORECASE, key=lambda f: f.name)
+
+    fieldsWithValues = []
+    for field in fields:
+        fieldsWithValues.append(__get_custom_field_with_values(field))
+
+    return fieldsWithValues
 
 
 def __get_custom_field_with_values(customField: CustomWorkoutField) -> CustomWorkoutFieldWithValues:
