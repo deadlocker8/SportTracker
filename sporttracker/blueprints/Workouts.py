@@ -3,13 +3,11 @@ from dataclasses import dataclass
 from datetime import datetime, date
 
 import flask_babel
-import natsort
 from babel.dates import get_month_names
 from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template, redirect, url_for
 from flask_babel import format_datetime
 from flask_login import login_required, current_user
-from natsort import natsorted
 from pydantic import BaseModel, field_validator
 
 from sporttracker.logic import Constants
@@ -18,7 +16,7 @@ from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
     QuickFilterState,
 )
-from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutField
+from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type_with_values
 from sporttracker.logic.model.DistanceWorkout import (
     DistanceWorkout,
     get_available_years,
@@ -196,16 +194,9 @@ def construct_blueprint():
     def addType(workout_type: str):
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
 
-        customFields = (
-            CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
-            .filter(CustomWorkoutField.workout_type == workoutType)
-            .all()
-        )
-        customFields = natsorted(customFields, alg=natsort.ns.IGNORECASE, key=lambda field: field.name)
-
         return render_template(
             f'workouts/workout{workout_type.capitalize()}Form.jinja2',
-            customFields=customFields,
+            customFields=get_custom_fields_by_workout_type_with_values(workoutType),
             participants=get_participants(),
             workoutNames=get_workout_names_by_type(workoutType),
             plannedTours=get_planned_tours([workoutType]),

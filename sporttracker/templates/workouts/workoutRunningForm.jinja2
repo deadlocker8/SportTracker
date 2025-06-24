@@ -12,6 +12,8 @@
 
         {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
 
+        {{ macros.scripts() }}
+
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row">
@@ -74,7 +76,6 @@
             </section>
         </div>
 
-        {{ macros.scripts() }}
         <script>
             Autocomplete.init('#workout-name', {
                 'fullWidth': true,

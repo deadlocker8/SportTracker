@@ -11,7 +11,7 @@ from sporttracker.blueprints.Workouts import BaseWorkoutFormModel
 from sporttracker.logic import Constants
 from sporttracker.logic.FitSessionParser import FitSessionParser, FitSession
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type
+from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type_with_values
 from sporttracker.logic.model.Participant import get_participants
 from sporttracker.logic.model.PlannedTour import get_planned_tours
 from sporttracker.logic.model.Workout import get_workout_names_by_type
@@ -93,7 +93,7 @@ def construct_blueprint(
             f'workouts/workout{workout.type.name.capitalize()}Form.jinja2',
             workout=workoutModel,
             workout_id=workout_id,
-            customFields=get_custom_fields_by_workout_type(workout.type),
+            customFields=get_custom_fields_by_workout_type_with_values(workout.type),
             participants=get_participants(),
             workoutNames=get_workout_names_by_type(workout.type),
             plannedTours=get_planned_tours([workout.type]),
@@ -204,7 +204,7 @@ def construct_blueprint(
         return render_template(
             f'workouts/workout{fitSession.workout_type.name.capitalize()}Form.jinja2',
             workoutFromFitImport=workoutFromFitImportModel,
-            customFields=get_custom_fields_by_workout_type(fitSession.workout_type),
+            customFields=get_custom_fields_by_workout_type_with_values(fitSession.workout_type),
             participants=get_participants(),
             workoutNames=get_workout_names_by_type(fitSession.workout_type),
             plannedTours=get_planned_tours([fitSession.workout_type]),

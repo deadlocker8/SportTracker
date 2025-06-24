@@ -482,21 +482,23 @@
 {%- endmacro %}
 
 {% macro workout_form_custom_field_input(field) -%}
-    {% set escapedName=field.get_escaped_name() %}
+    {% set escapedName=field.custom_field.get_escaped_name() %}
     <div class="mb-3">
-        <label for="workout-{{ escapedName }}" class="form-label input-field-margin">{{ field.name | e}}</label>
+        <label for="workout-{{ escapedName }}" class="form-label input-field-margin">{{ field.custom_field.name | e}}</label>
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined filled me-3">drive_file_rename_outline</span>
 
-            {% if field.type.name == 'STRING' %}
+            {% if field.custom_field.type.name == 'STRING' %}
                 <input type="text"
                        class="form-control"
                        id="workout-{{ escapedName }}"
-                       name="{{ field.name }}"
-                       {% if workout and workout.model_extra[field.name] is not none %}value="{{ workout.model_extra[field.name] }}"{% endif %}
+                       name="{{ field.custom_field.name }}"
+                       {% if workout and workout.model_extra[field.custom_field.name] is not none %}value="{{ workout.model_extra[field.custom_field.name] }}"{% endif %}
                         {% if field.is_required %} required="required"{% endif %}
+                       data-datalist="list-workout-custom-field-{{ escapedName }}"
                 >
-            {% elif field.type.name == 'INTEGER' %}
+
+            {% elif field.custom_field.type.name == 'INTEGER' %}
                 <input type="number"
                        step="1"
                        min="0"
@@ -505,8 +507,9 @@
                        name="{{ field.name }}"
                        {% if workout and workout.model_extra[field.name] is not none %}value="{{ workout.model_extra[field.name] }}"{% endif %}
                         {% if field.is_required %} required="required"{% endif %}
+                       data-datalist="list-workout-custom-field-{{ escapedName }}"
                 >
-            {% elif field.type.name == 'FLOAT' %}
+            {% elif field.custom_field.type.name == 'FLOAT' %}
                 <input type="number"
                        step="0.01"
                        min="0"
@@ -515,9 +518,24 @@
                        name="{{ field.name }}"
                        {% if workout and workout.model_extra[field.name] is not none %}value="{{ workout.model_extra[field.name] }}"{% endif %}
                         {% if field.is_required %} required="required"{% endif %}
+                       data-datalist="list-workout-custom-field-{{ escapedName }}"
                 >
             {% endif %}
+
+            <datalist id="list-workout-custom-field-{{ escapedName }}">
+                {% for value in field.values %}
+                    <option>{{ value | e }}</option>
+                {% endfor %}
+            </datalist>
         </div>
+
+        <script>
+            Autocomplete.init('#workout-{{ escapedName }}', {
+                'fullWidth': true,
+                'highlightTyped': true,
+                'suggestionsThreshold': 1,
+            });
+        </script>
     </div>
 {%- endmacro %}
 
