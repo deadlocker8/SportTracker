@@ -185,6 +185,7 @@
             initialCustomFieldId = '{% if maintenanceFilterState.get_custom_workout_field_id() is not none %}{{ maintenanceFilterState.get_custom_workout_field_id() }}{% endif %}';
             initialCustomFieldValue = '{% if maintenanceFilterState.get_custom_workout_field_value() is not none %}{{ maintenanceFilterState.get_custom_workout_field_value() }}{% endif %}';
         </script>
+        <script defer src="{{ url_for('static', filename='js/maintenancesCommon.js') }}" type="text/javascript"></script>
         <script defer src="{{ url_for('static', filename='js/maintenances.js') }}" type="text/javascript"></script>
     </body>
 </html>
