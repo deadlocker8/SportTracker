@@ -2,6 +2,27 @@ from __future__ import annotations
 
 import enum
 from dataclasses import dataclass
+from typing import Sequence
+
+from sporttracker.helpers import Helpers
+
+
+@dataclass
+class AchievementHistoryItem:
+    date: str
+    value: int | float
+
+
+@dataclass
+class DistanceAchievementHistoryItem(AchievementHistoryItem):
+    def get_value_formatted(self) -> str:
+        return f'{Helpers.format_decimal(self.value, decimals=2)} km'
+
+
+@dataclass
+class DurationAchievementHistoryItem(AchievementHistoryItem):
+    def get_value_formatted(self) -> str:
+        return f'{Helpers.format_duration(int(self.value))} h'
 
 
 @dataclass
@@ -12,6 +33,7 @@ class Achievement:
     color: str
     title: str
     description: str
+    historyItems: Sequence[AchievementHistoryItem]
 
 
 class AnnualAchievementDifferenceType(enum.Enum):

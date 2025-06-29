@@ -49,6 +49,7 @@ def construct_blueprint():
                     'You have achieved all your monthly goals for <span class="fw-bold">{currentStreak}</span> '
                     'months in a row!<br>(Best: <span class="fw-bold">{maxStreak}</span>)'
                 ).format(currentStreak=streak[1], maxStreak=streak[0]),
+                historyItems=[],
             )
         )
 
@@ -75,6 +76,7 @@ def construct_blueprint():
                     longestWorkoutDistance=Helpers.format_decimal(longestDistance, decimals=2),
                     longestWorkoutDate=longestWorkoutDate,
                 ),
+                historyItems=[],
             )
         )
 
@@ -90,10 +92,11 @@ def construct_blueprint():
                         AchievementCalculator.get_total_distance_by_type(workoutType), decimals=2
                     )
                 ),
+                historyItems=[],
             )
         )
 
-        bestMonth = AchievementCalculator.get_best_distance_month_by_type(workoutType)
+        bestMonths = AchievementCalculator.get_best_distance_months_by_type(workoutType)
         achievementList.append(
             Achievement(
                 icon='calendar_month',
@@ -103,11 +106,12 @@ def construct_blueprint():
                 title=gettext('Best Month'),
                 description=gettext(
                     '<span class="fw-bold">{bestMonthName}</span> was your best month with <span class="fw-bold">'
-                    '{bestMonthDistance} km</span>!'
+                    '{bestMonthDistance}</span>!'
                 ).format(
-                    bestMonthName=bestMonth[0],
-                    bestMonthDistance=Helpers.format_decimal(bestMonth[1], decimals=2),
+                    bestMonthName=bestMonths[0].date,
+                    bestMonthDistance=bestMonths[0].get_value_formatted(),
                 ),
+                historyItems=bestMonths,
             )
         )
 
@@ -127,6 +131,7 @@ def construct_blueprint():
                     'You have achieved all your monthly goals for <span class="fw-bold">{currentStreak}</span> '
                     'months in a row!<br>(Best: <span class="fw-bold">{maxStreak}</span>)'
                 ).format(currentStreak=streak[1], maxStreak=streak[0]),
+                historyItems=[],
             )
         )
 
@@ -155,6 +160,7 @@ def construct_blueprint():
                     longestDuration=Helpers.format_duration(longestDuration),
                     longestDurationDate=longestDurationDate,
                 ),
+                historyItems=[],
             )
         )
 
@@ -168,10 +174,11 @@ def construct_blueprint():
                 description=gettext('You completed a total of <span class="fw-bold">{totalDuration} h</span>!').format(
                     totalDuration=Helpers.format_duration(AchievementCalculator.get_total_duration_by_type(workoutType))
                 ),
+                historyItems=[],
             )
         )
 
-        bestMonth = AchievementCalculator.get_best_duration_month_by_type(workoutType)
+        bestMonths = AchievementCalculator.get_best_duration_month_by_type(workoutType)
         achievementList.append(
             Achievement(
                 icon='calendar_month',
@@ -181,11 +188,12 @@ def construct_blueprint():
                 title=gettext('Best Month'),
                 description=gettext(
                     '<span class="fw-bold">{bestMonthName}</span> was your best month with <span class="fw-bold">'
-                    '{bestMonthDuration} h</span>!'
+                    '{bestMonthDuration}</span>!'
                 ).format(
-                    bestMonthName=bestMonth[0],
-                    bestMonthDuration=Helpers.format_duration(bestMonth[1]),
+                    bestMonthName=bestMonths[0].date,
+                    bestMonthDuration=bestMonths[0].get_value_formatted(),
                 ),
+                historyItems=bestMonths,
             )
         )
 

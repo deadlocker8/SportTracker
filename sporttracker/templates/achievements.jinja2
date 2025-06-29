@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-{% macro renderAchievement(achievement) -%}
+{% macro renderAchievement(achievement, workoutType) -%}
     <div class="col">
         <div class="tile">
             <div class="diamond d-flex align-items-center justify-content-center mx-auto bg-secondary-subtle {{ achievement.color }} text-dark">
@@ -18,7 +18,36 @@
         <div class="card height-60">
             <div class="card-body">
                 <h5 class="card-title mt-5">{{ achievement.title }}</h5>
-                <p class="card-text">{{ achievement.description }}</p>
+                <p class="card-text mb-2">{{ achievement.description }}</p>
+                {% if achievement.historyItems|length > 1 %}
+                    <a href="" class="fw-bold" data-bs-toggle="modal" data-bs-target="#history-items-modal-{{ workoutType }}-{{ achievement.icon }}">{{ gettext("Show more") }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="history-items-modal-{{ workoutType }}-{{ achievement.icon }}" data-bs-theme="dark">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header d-flex align-items-center justify-content-start">
+                    {{ workoutMacros.workout_type_icon_small(workoutType, fontSize='fs-3') }}
+                    <div class="fs-5 ms-3">
+                        {{ workoutType.get_localized_name() }} - {{ achievement.title }}
+                    </div>
+                </div>
+                <div class="modal-body">
+                        <div class="list-group text-start">
+                        {% for historyItem in achievement.historyItems %}
+                            <div class="list-group-item d-flex align-items-center justify-content-between">
+                                <div>{{ historyItem.date }}</div>
+                                <div>{{ historyItem.get_value_formatted() }}</div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                </div>
+                <div class="modal-footer overflow-y-auto">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{ gettext('Close') }}</button>
+                </div>
             </div>
         </div>
     </div>
@@ -51,7 +80,7 @@
 
                     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-5">
                         {% for achievement in achievements %}
-                            {{ renderAchievement(achievement) }}
+                            {{ renderAchievement(achievement, workoutType) }}
                         {% endfor %}
                     </div>
 

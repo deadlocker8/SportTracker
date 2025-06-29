@@ -5,6 +5,7 @@ from flask_babel import format_datetime, gettext
 from flask_login import current_user
 from sqlalchemy import asc, func, extract
 
+from sporttracker.logic.model.Achievement import DistanceAchievementHistoryItem, DurationAchievementHistoryItem
 from sporttracker.logic.model.DistanceWorkout import (
     get_distance_per_month_by_type,
     DistanceWorkout,
@@ -16,6 +17,8 @@ from sporttracker.logic.model.db import db
 
 
 class AchievementCalculator:
+    BEST_MONTH_HISTORY_SIZE = 5
+
     @staticmethod
     def get_workout_with_longest_distance_by_type(
         workoutType: WorkoutType,
@@ -63,20 +66,28 @@ class AchievementCalculator:
         return value / 1000
 
     @staticmethod
-    def get_best_distance_month_by_type(workoutType: WorkoutType) -> tuple[str, float]:
+    def get_best_distance_months_by_type(workoutType: WorkoutType) -> list[DistanceAchievementHistoryItem]:
         maxDate, minDate = AchievementCalculator._get_min_and_max_date(workoutType)
 
         if minDate is None or maxDate is None:
-            return gettext('No month'), 0
+            return [DistanceAchievementHistoryItem(gettext('No month'), 0)]
 
         monthDistanceSums = get_distance_per_month_by_type(workoutType, minDate.year, maxDate.year)
+        monthDistanceSums = [month for month in monthDistanceSums if month.distanceSum > 0.0]
 
         if not monthDistanceSums:
-            return gettext('No month'), 0
+            return [DistanceAchievementHistoryItem(gettext('No month'), 0)]
 
-        bestMonth = max(monthDistanceSums, key=lambda monthDistanceSum: monthDistanceSum.distanceSum)
-        bestMonthDate = date(year=bestMonth.year, month=bestMonth.month, day=1)
-        return format_datetime(bestMonthDate, format='MMMM yyyy'), bestMonth.distanceSum
+        bestMonths = sorted(monthDistanceSums, key=lambda monthDistanceSum: monthDistanceSum.distanceSum, reverse=True)
+
+        result = []
+        for month in bestMonths[: AchievementCalculator.BEST_MONTH_HISTORY_SIZE]:
+            bestMonthDate = date(year=month.year, month=month.month, day=1)
+            result.append(
+                DistanceAchievementHistoryItem(format_datetime(bestMonthDate, format='MMMM yyyy'), month.distanceSum)
+            )
+
+        return result
 
     @staticmethod
     def get_streaks_by_type(workoutType: WorkoutType, currentDate: date) -> tuple[int, int]:
@@ -150,20 +161,28 @@ class AchievementCalculator:
         return value
 
     @staticmethod
-    def get_best_duration_month_by_type(workoutType: WorkoutType) -> tuple[str, int]:
+    def get_best_duration_month_by_type(workoutType: WorkoutType) -> list[DurationAchievementHistoryItem]:
         maxDate, minDate = AchievementCalculator._get_min_and_max_date(workoutType)
 
         if minDate is None or maxDate is None:
-            return gettext('No month'), 0
+            return [DurationAchievementHistoryItem(gettext('No month'), 0)]
 
         monthDurationSums = get_duration_per_month_by_type(workoutType, minDate.year, maxDate.year)
+        monthDurationSums = [month for month in monthDurationSums if month.durationSum > 0.0]
 
         if not monthDurationSums:
-            return gettext('No month'), 0
+            return [DurationAchievementHistoryItem(gettext('No month'), 0)]
 
-        bestMonth = max(monthDurationSums, key=lambda monthDurationSum: monthDurationSum.durationSum)
-        bestMonthDate = date(year=bestMonth.year, month=bestMonth.month, day=1)
-        return format_datetime(bestMonthDate, format='MMMM yyyy'), bestMonth.durationSum
+        bestMonths = sorted(monthDurationSums, key=lambda monthDistanceSum: monthDistanceSum.durationSum, reverse=True)
+
+        result = []
+        for month in bestMonths[: AchievementCalculator.BEST_MONTH_HISTORY_SIZE]:
+            bestMonthDate = date(year=month.year, month=month.month, day=1)
+            result.append(
+                DurationAchievementHistoryItem(format_datetime(bestMonthDate, format='MMMM yyyy'), month.durationSum)
+            )
+
+        return result
 
     @staticmethod
     def _get_min_and_max_date(workoutType: WorkoutType) -> tuple[datetime | None, datetime | None]:

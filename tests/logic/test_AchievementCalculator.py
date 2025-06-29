@@ -4,6 +4,7 @@ import pytest
 from flask_login import FlaskLoginClient, login_user
 
 from sporttracker.logic.AchievementCalculator import AchievementCalculator
+from sporttracker.logic.model.Achievement import DistanceAchievementHistoryItem, DurationAchievementHistoryItem
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
 from sporttracker.logic.model.WorkoutType import WorkoutType
@@ -155,15 +156,15 @@ class TestAchievementCalculatorGetTotalDurationByType:
 
 
 class TestAchievementCalculatorGetBestDistanceMonthByType:
-    def test_get_best_distance_month_by_type_no_workouts_should_return_0(self, app):
+    def test_get_best_distance_months_by_type_no_workouts_should_return_0(self, app):
         with app.test_request_context():
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            result = AchievementCalculator.get_best_distance_month_by_type(WorkoutType.BIKING)
-            assert ('No month', 0) == result
+            result = AchievementCalculator.get_best_distance_months_by_type(WorkoutType.BIKING)
+            assert [DistanceAchievementHistoryItem('No month', 0)] == result
 
-    def test_get_best_distance_month_by_type_single_months(self, app):
+    def test_get_best_distance_months_by_type_single_months(self, app):
         with app.test_request_context():
             user = db.session.get(User, 1)
             login_user(user, remember=False)
@@ -171,10 +172,10 @@ class TestAchievementCalculatorGetBestDistanceMonthByType:
             db.session.add(create_dummy_workout(WorkoutType.BIKING, datetime.date(2023, 1, 1), 30))
             db.session.commit()
 
-            result = AchievementCalculator.get_best_distance_month_by_type(WorkoutType.BIKING)
-            assert ('January 2023', 30) == result
+            result = AchievementCalculator.get_best_distance_months_by_type(WorkoutType.BIKING)
+            assert [DistanceAchievementHistoryItem('January 2023', 30)] == result
 
-    def test_get_best_distance_month_by_type_multiple_months(self, app):
+    def test_get_best_distance_months_by_type_multiple_months(self, app):
         with app.test_request_context():
             user = db.session.get(User, 1)
             login_user(user, remember=False)
@@ -185,8 +186,12 @@ class TestAchievementCalculatorGetBestDistanceMonthByType:
             db.session.add(create_dummy_workout(WorkoutType.BIKING, datetime.date(2023, 3, 1), 22))
             db.session.commit()
 
-            result = AchievementCalculator.get_best_distance_month_by_type(WorkoutType.BIKING)
-            assert ('February 2023', 52) == result
+            result = AchievementCalculator.get_best_distance_months_by_type(WorkoutType.BIKING)
+            assert [
+                DistanceAchievementHistoryItem('February 2023', 52),
+                DistanceAchievementHistoryItem('January 2023', 30),
+                DistanceAchievementHistoryItem('March 2023', 22),
+            ] == result
 
 
 class TestAchievementCalculatorGetBestDurationMonthByType:
@@ -196,7 +201,7 @@ class TestAchievementCalculatorGetBestDurationMonthByType:
             login_user(user, remember=False)
 
             result = AchievementCalculator.get_best_duration_month_by_type(WorkoutType.FITNESS)
-            assert ('No month', 0) == result
+            assert [DurationAchievementHistoryItem('No month', 0)] == result
 
     def test_get_best_duration_month_by_type_single_months(self, app):
         with app.test_request_context():
@@ -207,7 +212,7 @@ class TestAchievementCalculatorGetBestDurationMonthByType:
             db.session.commit()
 
             result = AchievementCalculator.get_best_duration_month_by_type(WorkoutType.FITNESS)
-            assert ('January 2023', 3000) == result
+            assert [DurationAchievementHistoryItem('January 2023', 3000)] == result
 
     def test_get_best_duration_month_by_type_multiple_months(self, app):
         with app.test_request_context():
@@ -221,7 +226,11 @@ class TestAchievementCalculatorGetBestDurationMonthByType:
             db.session.commit()
 
             result = AchievementCalculator.get_best_duration_month_by_type(WorkoutType.FITNESS)
-            assert ('February 2023', 7000) == result
+            assert [
+                DurationAchievementHistoryItem('February 2023', 7000),
+                DurationAchievementHistoryItem('March 2023', 3500),
+                DurationAchievementHistoryItem('January 2023', 2000),
+            ] == result
 
 
 class TestAchievementCalculatorGetStreaksByType:

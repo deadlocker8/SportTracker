@@ -132,6 +132,7 @@ def construct_blueprint():
             difference_type=AnnualAchievementDifferenceType.get_by_difference(totalDistanceDifference),
             all_year_data=totalDistanceAllYearData,
             unit='km',
+            historyItems=[],
         )
 
     def __create_achievement_total_duration(
@@ -170,6 +171,7 @@ def construct_blueprint():
             difference_type=AnnualAchievementDifferenceType.get_by_difference(totalDurationDifference),
             all_year_data=totalDurationAllYearData,
             unit=gettext('Hours'),
+            historyItems=[],
         )
 
     def __create_achievement_workout_count(
@@ -214,6 +216,7 @@ def construct_blueprint():
             difference_type=AnnualAchievementDifferenceType.get_by_difference(totalWorkoutCountDifference),
             all_year_data=totalWorkoutCountAllYearData,
             unit='',
+            historyItems=[],
         )
 
     def __create_achievement_longest_workout(
@@ -253,6 +256,7 @@ def construct_blueprint():
             difference_type=AnnualAchievementDifferenceType.get_by_difference(longestWorkoutDifference),
             all_year_data=longestWorkoutAllYearData,
             unit='km',
+            historyItems=[],
         )
 
     def __create_achievement_average_speed(
@@ -292,6 +296,7 @@ def construct_blueprint():
             difference_type=AnnualAchievementDifferenceType.get_by_difference(averageSpeedDifference),
             all_year_data=averageSpeedAllYearData,
             unit='km/h',
+            historyItems=[],
         )
 
     def __create_achievement_longest_duration(
@@ -331,6 +336,7 @@ def construct_blueprint():
             difference_type=AnnualAchievementDifferenceType.get_by_difference(longestDurationDifference),
             all_year_data=longestDurationAllYearData,
             unit='km',
+            historyItems=[],
         )
 
     return annualAchievements
