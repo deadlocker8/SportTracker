@@ -1,4 +1,5 @@
 from sqlalchemy import String, Boolean, Integer, JSON
+from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.model.TravelDirection import TravelDirection
@@ -11,9 +12,9 @@ class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, primary_key=True)
     is_done_selected: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
     is_todo_selected: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
-    arrival_methods = db.Column(JSON)
-    departure_methods = db.Column(JSON)
-    directions = db.Column(JSON)
+    arrival_methods = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
+    departure_methods = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
+    directions = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
     name_filter: Mapped[String] = mapped_column(String, nullable=True)
     minimum_distance: Mapped[Integer] = mapped_column(Integer, nullable=True)
     maximum_distance: Mapped[Integer] = mapped_column(Integer, nullable=True)
@@ -107,4 +108,28 @@ class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
 
 
 def get_planned_tour_filter_state_by_user(user_id: int) -> PlannedTourFilterState:
-    return PlannedTourFilterState.query.filter(PlannedTourFilterState.user_id == user_id).first()
+    plannedTourFilterState = PlannedTourFilterState.query.filter(PlannedTourFilterState.user_id == user_id).first()
+
+    filterArrivalMethods = plannedTourFilterState.arrival_methods
+    filterDepartureMethods = plannedTourFilterState.departure_methods
+
+    isUpdated = False
+    for travelType in [t for t in TravelType]:
+        if travelType.name not in filterArrivalMethods:
+            filterArrivalMethods[travelType.name] = True
+            isUpdated = True
+
+        if travelType.name not in filterDepartureMethods:
+            filterDepartureMethods[travelType.name] = True
+            isUpdated = True
+
+    filterDirections = plannedTourFilterState.directions
+    for travelDirection in [t for t in TravelDirection]:
+        if travelDirection.name not in filterDirections:
+            filterDirections[travelDirection.name] = True
+            isUpdated = True
+
+    if isUpdated:
+        db.session.commit()
+
+    return plannedTourFilterState

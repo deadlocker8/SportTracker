@@ -1,4 +1,5 @@
 from sqlalchemy import JSON
+from sqlalchemy.ext.mutable import MutableDict
 
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
@@ -7,7 +8,7 @@ from sporttracker.logic.model.db import db
 class QuickFilterState(db.Model):  # type: ignore[name-defined]
     __tablename__ = 'filter_state_quick'
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, primary_key=True)
-    workout_types = db.Column(JSON)
+    workout_types = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
     years = db.Column(JSON)
 
     def __repr__(self):
@@ -47,13 +48,24 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
         return self
 
     def toggle_workout_type(self, workoutType: WorkoutType) -> None:
-        workout_types = self.get_workout_types()
-        workout_types[workoutType] = not workout_types[workoutType]
-        self.update(workout_types, self.years)
+        self.workout_types[workoutType.name] = not self.workout_types[workoutType.name]
 
     def disable_all_workout_types(self) -> None:
         self.update({workoutType: False for workoutType in WorkoutType}, self.years)
 
 
 def get_quick_filter_state_by_user(user_id: int) -> QuickFilterState:
-    return QuickFilterState.query.filter(QuickFilterState.user_id == user_id).first()
+    quickFilterState = QuickFilterState.query.filter(QuickFilterState.user_id == user_id).first()
+
+    filterWorkoutTypes = quickFilterState.get_workout_types()
+
+    isUpdated = False
+    for workoutType in [t for t in WorkoutType]:
+        if workoutType not in filterWorkoutTypes:
+            filterWorkoutTypes[workoutType] = True
+            isUpdated = True
+
+    if isUpdated:
+        db.session.commit()
+
+    return quickFilterState
