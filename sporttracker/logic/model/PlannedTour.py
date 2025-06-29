@@ -1,9 +1,7 @@
-import enum
 from operator import attrgetter
 from typing import TYPE_CHECKING
 
 import natsort
-from flask_babel import gettext
 from flask_login import current_user
 from natsort import natsorted
 from sqlalchemy import Integer, DateTime, String, Table, Column, ForeignKey, asc, func
@@ -12,6 +10,7 @@ from sqlalchemy.sql import or_
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
+from sporttracker.logic.model.TravelDirection import TravelDirection
 from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.WorkoutType import WorkoutType
@@ -19,39 +18,6 @@ from sporttracker.logic.model.db import db
 
 if TYPE_CHECKING:
     from sporttracker.logic.PlannedTourFilterState import PlannedTourFilterState
-
-
-class TravelDirection(enum.Enum):
-    SINGLE = 'SINGLE', 'turn_sharp_right', 0
-    RETURN = 'RETURN', 'sync_alt', 1
-    ROUNDTRIP = 'ROUNDTRIP', 'refresh', 2
-
-    icon: str
-    order: int
-
-    def __new__(
-        cls,
-        name: str,
-        icon: str,
-        order: int,
-    ):
-        member = object.__new__(cls)
-        member._value_ = name
-        member.icon = icon
-        member.order = order
-        return member
-
-    def get_localized_name(self) -> str:
-        # must be done this way to include translations in *.po and *.mo file
-        if self == self.SINGLE:
-            return gettext('Single')
-        elif self == self.RETURN:
-            return gettext('Return')
-        elif self == self.ROUNDTRIP:
-            return gettext('Roundtrip')
-
-        raise ValueError(f'Could not get localized name for unsupported TravelDirection: {self}')
-
 
 planned_tour_user_association = Table(
     'planned_tour_user_association',

@@ -1,10 +1,6 @@
 import enum
-from typing import TYPE_CHECKING
 
 from flask_babel import gettext
-
-if TYPE_CHECKING:
-    pass
 
 
 class TravelType(enum.Enum):
