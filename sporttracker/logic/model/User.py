@@ -8,6 +8,7 @@ from sqlalchemy import Integer, String, Boolean, DateTime
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.model.NtfySettings import NtfySettings
+from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.model.db import db
 
 
@@ -122,7 +123,7 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
     db.session.commit()
 
     from sporttracker.logic.model.filterStates.PlannedTourFilterState import PlannedTourFilterState
-    from sporttracker.logic.model.PlannedTour import TravelType, TravelDirection
+    from sporttracker.logic.model.PlannedTour import TravelDirection
 
     plannedTourFilterState = PlannedTourFilterState(user_id=user.id)
     plannedTourFilterState.update(

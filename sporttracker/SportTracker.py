@@ -52,6 +52,7 @@ from sporttracker.logic.MaintenanceEventsCollector import (
     get_number_of_triggered_maintenance_reminders,
 )
 from sporttracker.logic.model.LongDistanceTour import get_new_long_distance_tour_ids, get_updated_long_distance_tour_ids
+from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.service.PlannedTourService import PlannedTourService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
@@ -60,7 +61,6 @@ from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCategoryType
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.PlannedTour import (
-    TravelType,
     TravelDirection,
     get_new_planned_tour_ids,
     get_updated_planned_tour_ids,

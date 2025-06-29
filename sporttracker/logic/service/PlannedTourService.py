@@ -15,8 +15,10 @@ from sporttracker.logic.model.LongDistanceTour import (
     LongDistanceTourPlannedTourAssociation,
     get_long_distance_tour_by_id,
 )
-from sporttracker.logic.model.PlannedTour import PlannedTour, TravelType, TravelDirection
+from sporttracker.logic.model.PlannedTour import PlannedTour, TravelDirection
 from sqlalchemy.sql import or_
+
+from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.model.User import get_users_by_ids
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db

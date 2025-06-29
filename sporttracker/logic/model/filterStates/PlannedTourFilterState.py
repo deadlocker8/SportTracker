@@ -1,7 +1,8 @@
 from sqlalchemy import String, Boolean, Integer, JSON
 from sqlalchemy.orm import mapped_column, Mapped
 
-from sporttracker.logic.model.PlannedTour import TravelType, TravelDirection
+from sporttracker.logic.model.PlannedTour import TravelDirection
+from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.model.db import db
 
 

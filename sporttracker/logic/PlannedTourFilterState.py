@@ -4,7 +4,8 @@ import json
 
 from flask import session
 
-from sporttracker.logic.model.PlannedTour import TravelDirection, TravelType
+from sporttracker.logic.model.PlannedTour import TravelDirection
+from sporttracker.logic.model.TravelType import TravelType
 
 
 class PlannedTourFilterState:

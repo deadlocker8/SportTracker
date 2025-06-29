@@ -25,11 +25,11 @@ from sporttracker.logic.model.LongDistanceTour import (
 )
 from sporttracker.logic.model.PlannedTour import (
     PlannedTour,
-    TravelType,
     TravelDirection,
     get_planned_tours_filtered,
     get_planned_tours,
 )
+from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.model.User import (
     User,
     get_all_users_except_self_and_admin,
