@@ -3,6 +3,7 @@
 - add: allow swagger ui to be used on production servers (#228)
 - add: workout form: add suggestions for custom workout field values (#225)
 - add: best month achievement: show best 5 months on click (#208)
+- add: filter states are now saved in the database and therefore independent of the device and login session (#229)
 - fix: planned tour map: link to editor no longer overlaps on small devices (#224)
 - fix: charts: speed/duration per workout: start y-axis near min value instead of zero (#219)
 
