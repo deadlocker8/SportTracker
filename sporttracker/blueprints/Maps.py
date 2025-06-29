@@ -26,10 +26,6 @@ from sporttracker.blueprints.PlannedTours import PlannedTourModel
 from sporttracker.blueprints.Workouts import DistanceWorkoutModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService, GpxParser
-from sporttracker.logic.QuickFilterState import (
-    get_quick_filter_state_from_session,
-    QuickFilterState,
-)
 from sporttracker.logic.model.DistanceWorkout import (
     get_available_years,
     DistanceWorkout,
@@ -38,6 +34,7 @@ from sporttracker.logic.model.LongDistanceTour import get_long_distance_tour_by_
 from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
 from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user, QuickFilterState
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.logic.service.PlannedTourService import PlannedTourService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
@@ -94,7 +91,7 @@ def construct_blueprint(
     @maps.route('/map')
     @login_required
     def showAllWorkoutsOnMap():
-        quickFilterState = get_quick_filter_state_from_session()
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
         availableYears = get_available_years(current_user.id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
@@ -260,7 +257,7 @@ def construct_blueprint(
     @maps.route('/map/plannedTours')
     @login_required
     def showAllPlannedToursOnMap():
-        quickFilterState = get_quick_filter_state_from_session()
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
 
         gpxInfo = []
 
@@ -300,7 +297,7 @@ def construct_blueprint(
         if workout is None:
             abort(404)
 
-        quickFilterState = get_quick_filter_state_from_session()
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
         availableYears = get_available_years(user_id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
@@ -342,7 +339,9 @@ def construct_blueprint(
         if current_user.id != user_id:
             abort(403)
 
-        return __renderTile(user_id, zoom, x, y, QuickFilterState(), get_available_years(user_id))
+        return __renderTile(
+            user_id, zoom, x, y, QuickFilterState().reset(get_available_years(user_id)), get_available_years(user_id)
+        )
 
     @maps.route('/map/renderAllTilesWithFilter/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')
     def renderAllTilesWithFilter(user_id: int, zoom: int, x: int, y: int):
@@ -352,7 +351,7 @@ def construct_blueprint(
         if current_user.id != user_id:
             abort(403)
 
-        quickFilterState = get_quick_filter_state_from_session()
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
         availableYears = get_available_years(user_id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 
@@ -456,7 +455,7 @@ def construct_blueprint(
 
         tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
 
-        quickFilterState = get_quick_filter_state_from_session()
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
         availableYears = get_available_years(current_user.id)
         yearFilterState = __get_map_year_filter_state_from_session(availableYears)
 

@@ -10,11 +10,12 @@ from sporttracker.logic.MaintenanceEventsCollector import (
     MaintenanceWithEventsModel,
 )
 from sporttracker.logic.Observable import Listener
-from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.NtfySettings import NtfySettings
 from sporttracker.logic.model.User import User, Language
+from sporttracker.logic.model.Workout import get_available_years
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.filterStates.MaintenanceFilterState import MaintenanceFilterState
+from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -30,8 +31,8 @@ class NtfyService(Listener):
 
         ntfy_settings = user.get_ntfy_settings()
 
-        quickFilterState = QuickFilterState()
-        quickFilterState.set_states({t: t == data['workout_type'] for t in WorkoutType})
+        quickFilterState = QuickFilterState().reset(get_available_years(user.id))
+        quickFilterState.update({t: t == data['workout_type'] for t in WorkoutType}, quickFilterState.years)
 
         maintenances = get_maintenances_with_events(quickFilterState, MaintenanceFilterState(), user.id)
         for maintenance in maintenances:

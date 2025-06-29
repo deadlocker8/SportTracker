@@ -12,10 +12,6 @@ from pydantic import BaseModel, field_validator
 
 from sporttracker.logic import Constants
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
-from sporttracker.logic.QuickFilterState import (
-    get_quick_filter_state_from_session,
-    QuickFilterState,
-)
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type_with_values
 from sporttracker.logic.model.DistanceWorkout import (
     DistanceWorkout,
@@ -41,6 +37,7 @@ from sporttracker.logic.model.Workout import (
     get_workouts_by_year_and_month_by_type,
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user, QuickFilterState
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -156,7 +153,7 @@ def construct_blueprint():
         else:
             monthRightSideDate = date(year=year, month=month, day=1)
 
-        quickFilterState = get_quick_filter_state_from_session()
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
 
         monthRightSide = __get_month_model(monthRightSideDate, quickFilterState)
 
@@ -212,7 +209,7 @@ def __get_month_model(
     workouts = get_workouts_by_year_and_month_by_type(
         monthDate.year,
         monthDate.month,
-        quickFilterState.get_active_types(),
+        quickFilterState.get_active_workout_types(),
     )
 
     workoutModels: list[DistanceWorkoutModel | FitnessWorkoutModel] = []
@@ -223,7 +220,7 @@ def __get_month_model(
             workoutModels.append(FitnessWorkoutModel.create_from_workout(workout))
 
     maintenanceEvents = get_maintenance_events_by_year_and_month_by_type(
-        monthDate.year, monthDate.month, quickFilterState.get_active_types()
+        monthDate.year, monthDate.month, quickFilterState.get_active_workout_types()
     )
 
     entries = workoutModels + maintenanceEvents
@@ -235,6 +232,6 @@ def __get_month_model(
         get_goal_summaries_by_year_and_month_and_types(
             monthDate.year,
             monthDate.month,
-            quickFilterState.get_active_types(),
+            quickFilterState.get_active_workout_types(),
         ),
     )

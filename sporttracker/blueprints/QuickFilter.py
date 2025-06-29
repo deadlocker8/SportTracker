@@ -1,11 +1,12 @@
 import logging
 
-from flask import Blueprint, session, redirect, request
-from flask_login import login_required
+from flask import Blueprint, redirect, request
+from flask_login import login_required, current_user
 
 from sporttracker.logic import Constants
-from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.logic.model.db import db
+from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -20,9 +21,9 @@ def construct_blueprint():
 
         workoutType = WorkoutType(workoutType)  # type: ignore[call-arg]
 
-        quickFilterState = get_quick_filter_state_from_session()
-        quickFilterState.toggle_state(workoutType)
-        session['quickFilterState'] = quickFilterState.to_json()
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
+        quickFilterState.toggle_workout_type(workoutType)
+        db.session.commit()
 
         return redirect(redirectUrl)
 

@@ -13,7 +13,7 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
     def __repr__(self):
         return f'QuickFilterState(user_id: {self.user_id}, workout_types: {self.workout_types}, years: {self.years})'
 
-    def get_active_types(self) -> list[WorkoutType]:
+    def get_workout_types(self) -> dict[WorkoutType, bool]:
         workoutTypes = {}
         for workoutTypeName, isActive in self.workout_types.items():
             try:
@@ -22,12 +22,15 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
             except ValueError:
                 pass
 
-        return [workoutType for workoutType, isActive in workoutTypes.items() if isActive]
+        return workoutTypes
+
+    def get_active_workout_types(self) -> list[WorkoutType]:
+        return [workoutType for workoutType, isActive in self.get_workout_types().items() if isActive]
 
     def get_active_distance_workout_types(self) -> list[WorkoutType]:
         return [
             workoutType
-            for workoutType in self.get_active_types()
+            for workoutType in self.get_active_workout_types()
             if workoutType in WorkoutType.get_distance_workout_types()
         ]
 
@@ -39,8 +42,14 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
         self.workout_types = {enumValue.name: isActive for enumValue, isActive in workout_types.items()}
         self.years = years
 
-    def reset(self, availableYears: list[int]) -> None:
+    def reset(self, availableYears: list[int]) -> 'QuickFilterState':
         self.update({workoutType: True for workoutType in WorkoutType}, availableYears)
+        return self
+
+    def toggle_workout_type(self, workoutType: WorkoutType) -> None:
+        workout_types = self.get_workout_types()
+        workout_types[workoutType] = not workout_types[workoutType]
+        self.update(workout_types, self.years)
 
 
 def get_quick_filter_state_by_user(user_id: int) -> QuickFilterState:

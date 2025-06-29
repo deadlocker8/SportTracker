@@ -5,9 +5,9 @@ from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
 from sporttracker.logic import Constants
-from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.User import User
+from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -18,12 +18,12 @@ def construct_blueprint():
     @monthGoals.route('/')
     @login_required
     def listMonthGoals():
-        quickFilterState = get_quick_filter_state_from_session()
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
 
         goalsDistance: list[MonthGoalDistance] = (
             MonthGoalDistance.query.join(User)
             .filter(User.username == current_user.username)
-            .filter(MonthGoalDistance.type.in_(quickFilterState.get_active_types()))
+            .filter(MonthGoalDistance.type.in_(quickFilterState.get_active_workout_types()))
             .order_by(MonthGoalDistance.year.desc())
             .order_by(MonthGoalDistance.month.desc())
             .all()
@@ -32,7 +32,7 @@ def construct_blueprint():
         goalsCount: list[MonthGoalCount] = (
             MonthGoalCount.query.join(User)
             .filter(User.username == current_user.username)
-            .filter(MonthGoalCount.type.in_(quickFilterState.get_active_types()))
+            .filter(MonthGoalCount.type.in_(quickFilterState.get_active_workout_types()))
             .order_by(MonthGoalCount.year.desc())
             .order_by(MonthGoalCount.month.desc())
             .all()
@@ -41,7 +41,7 @@ def construct_blueprint():
         goalsDuration: list[MonthGoalDuration] = (
             MonthGoalDuration.query.join(User)
             .filter(User.username == current_user.username)
-            .filter(MonthGoalDuration.type.in_(quickFilterState.get_active_types()))
+            .filter(MonthGoalDuration.type.in_(quickFilterState.get_active_workout_types()))
             .order_by(MonthGoalDuration.year.desc())
             .order_by(MonthGoalDuration.month.desc())
             .all()

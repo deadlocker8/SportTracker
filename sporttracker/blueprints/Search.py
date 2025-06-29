@@ -7,11 +7,11 @@ from flask_login import login_required, current_user
 
 from sporttracker.blueprints.Workouts import DistanceWorkoutModel, FitnessWorkoutModel
 from sporttracker.logic import Constants
-from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.Workout import Workout
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
+from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -25,7 +25,7 @@ def construct_blueprint():
         searchText = request.args.get('searchText')
         pageNumber = request.args.get('pageNumber')
 
-        quickFilterState = get_quick_filter_state_from_session()
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
 
         if searchText is None:
             return render_template(
@@ -48,7 +48,7 @@ def construct_blueprint():
             Workout.query.join(User)
             .filter(User.username == current_user.username)
             .filter(Workout.name.icontains(searchText))
-            .filter(Workout.type.in_(quickFilterState.get_active_types()))
+            .filter(Workout.type.in_(quickFilterState.get_active_workout_types()))
             .order_by(Workout.start_time.desc()),
             per_page=10,
             page=pageNumberValue,

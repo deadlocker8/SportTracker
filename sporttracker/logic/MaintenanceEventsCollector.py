@@ -7,7 +7,6 @@ from flask_login import current_user
 from natsort import natsorted
 
 from sporttracker.blueprints.MaintenanceEventInstances import MaintenanceEventInstanceModel
-from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.CustomWorkoutField import get_custom_field_by_id
 from sporttracker.logic.model.DistanceWorkout import get_distance_between_dates
 from sporttracker.logic.model.Maintenance import Maintenance
@@ -18,6 +17,7 @@ from sporttracker.logic.model.MaintenanceEventInstance import (
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.filterStates.MaintenanceFilterState import MaintenanceFilterState
+from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 
 
 @dataclass
@@ -49,7 +49,7 @@ def get_maintenances_with_events(
 
     maintenancesWithEvents: list[MaintenanceWithEventsModel] = []
     for maintenance in maintenanceList:
-        if maintenance.type not in quickFilterState.get_active_types():
+        if maintenance.type not in quickFilterState.get_active_workout_types():
             continue
 
         events: list[MaintenanceEventInstance] = get_maintenance_events_by_maintenance_id(maintenance.id, user_id)

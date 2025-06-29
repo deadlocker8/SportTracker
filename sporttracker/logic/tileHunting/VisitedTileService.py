@@ -6,12 +6,12 @@ from sqlalchemy import extract, text, func
 from sqlalchemy.orm import aliased
 
 from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import (
     NewTilesPerDistanceWorkout,
     NewVisitedTileCache,
 )
-from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
 from sporttracker.logic.model.db import db

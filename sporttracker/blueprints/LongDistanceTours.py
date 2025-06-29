@@ -12,7 +12,6 @@ from sporttracker.blueprints.PlannedTours import PlannedTourModel, __get_user_mo
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
-from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session, QuickFilterState
 from sporttracker.logic.model.LongDistanceTour import (
     LongDistanceTour,
     get_long_distance_tour_by_id,
@@ -23,6 +22,7 @@ from sporttracker.logic.model.PlannedTour import get_planned_tours
 from sporttracker.logic.model.User import User, get_user_by_id, get_all_users_except_self_and_admin, get_users_by_ids
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user, QuickFilterState
 from sporttracker.logic.service.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -108,7 +108,7 @@ def construct_blueprint(
     @longDistanceTours.route('/')
     @login_required
     def listLongDistanceTours():
-        quickFilterState = get_quick_filter_state_from_session()
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
 
         longDistanceTourList = get_long_distance_tours(quickFilterState.get_active_distance_workout_types())
 
@@ -125,7 +125,7 @@ def construct_blueprint(
         return render_template(
             'longDistanceTours/longDistanceTourForm.jinja2',
             users=__get_user_models(get_all_users_except_self_and_admin()),
-            plannedTours=__get_available_planned_tours(get_quick_filter_state_from_session()),
+            plannedTours=__get_available_planned_tours(get_quick_filter_state_by_user(current_user.id)),
         )
 
     @longDistanceTours.route('/post', methods=['POST'])
@@ -174,7 +174,7 @@ def construct_blueprint(
             longDistanceTour=tourModel,
             tour_id=tour_id,
             users=__get_user_models(get_all_users_except_self_and_admin()),
-            plannedTours=__get_available_planned_tours(get_quick_filter_state_from_session()),
+            plannedTours=__get_available_planned_tours(get_quick_filter_state_by_user(current_user.id)),
         )
 
     @longDistanceTours.route('/edit/<int:tour_id>', methods=['POST'])

@@ -8,9 +8,6 @@ from pydantic import BaseModel, field_validator
 
 from sporttracker.logic import Constants
 from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events
-from sporttracker.logic.QuickFilterState import (
-    get_quick_filter_state_from_session,
-)
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_distance_workout_types_with_values
 from sporttracker.logic.model.Maintenance import Maintenance, get_maintenance_by_id
 from sporttracker.logic.model.MaintenanceEventInstance import (
@@ -19,6 +16,7 @@ from sporttracker.logic.model.MaintenanceEventInstance import (
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.logic.model.filterStates.MaintenanceFilterState import get_maintenance_filter_state_by_user
+from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -59,7 +57,7 @@ def construct_blueprint():
     @maintenances.route('/')
     @login_required
     def listMaintenances():
-        quickFilterState = get_quick_filter_state_from_session()
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
         maintenanceFilterState = get_maintenance_filter_state_by_user(current_user.id)
 
         maintenancesWithEvents = get_maintenances_with_events(quickFilterState, maintenanceFilterState, current_user.id)
