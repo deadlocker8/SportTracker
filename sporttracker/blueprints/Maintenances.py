@@ -1,14 +1,13 @@
 import logging
 from dataclasses import dataclass
 
-from flask import Blueprint, render_template, redirect, url_for, abort, session, request
+from flask import Blueprint, render_template, redirect, url_for, abort, request
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel, field_validator
 
 from sporttracker.logic import Constants
 from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events
-from sporttracker.logic.MaintenanceFilterState import MaintenanceFilterState, get_maintenances_filter_state_from_session
 from sporttracker.logic.QuickFilterState import (
     get_quick_filter_state_from_session,
 )
@@ -19,6 +18,7 @@ from sporttracker.logic.model.MaintenanceEventInstance import (
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.model.filterStates.MaintenanceFilterState import get_maintenance_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -60,7 +60,7 @@ def construct_blueprint():
     @login_required
     def listMaintenances():
         quickFilterState = get_quick_filter_state_from_session()
-        maintenanceFilterState = get_maintenances_filter_state_from_session()
+        maintenanceFilterState = get_maintenance_filter_state_by_user(current_user.id)
 
         maintenancesWithEvents = get_maintenances_with_events(quickFilterState, maintenanceFilterState, current_user.id)
 
@@ -87,7 +87,7 @@ def construct_blueprint():
             customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(
                 WorkoutType.get_distance_workout_types()
             ),
-            maintenanceFilterState=get_maintenances_filter_state_from_session(),
+            maintenanceFilterState=get_maintenance_filter_state_by_user(current_user.id),
         )
 
     @maintenances.route('/post', methods=['POST'])
@@ -160,7 +160,7 @@ def construct_blueprint():
             customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(
                 WorkoutType.get_distance_workout_types()
             ),
-            maintenanceFilterState=get_maintenances_filter_state_from_session(),
+            maintenanceFilterState=get_maintenance_filter_state_by_user(current_user.id),
         )
 
     @maintenances.route('/edit/<int:maintenance_id>', methods=['POST'])
@@ -239,16 +239,21 @@ def construct_blueprint():
         if customWorkoutFieldId is not None:
             customWorkoutFieldId = int(customWorkoutFieldId)
 
-        maintenanceFilterState = get_maintenances_filter_state_from_session()
-        maintenanceFilterState.update(customWorkoutFieldId, customWorkoutFieldValue)
-        session[MaintenanceFilterState.SESSION_ATTRIBUTE_NAME] = maintenanceFilterState.to_json()
+        maintenanceFilterState = get_maintenance_filter_state_by_user(current_user.id)
+        maintenanceFilterState.custom_workout_field_id = customWorkoutFieldId
+        maintenanceFilterState.custom_workout_field_value = customWorkoutFieldValue  # type: ignore[assignment]
+        db.session.commit()
 
         return redirect(url_for('maintenances.listMaintenances'))
 
     @maintenances.route('/resetFilter')
     @login_required
     def resetFilter():
-        session[MaintenanceFilterState.SESSION_ATTRIBUTE_NAME] = MaintenanceFilterState().to_json()
+        maintenanceFilterState = get_maintenance_filter_state_by_user(current_user.id)
+        maintenanceFilterState.custom_workout_field_id = None
+        maintenanceFilterState.custom_workout_field_value = None  # type: ignore[assignment]
+        db.session.commit()
+
         return redirect(url_for('maintenances.listMaintenances'))
 
     return maintenances

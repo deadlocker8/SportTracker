@@ -7,7 +7,6 @@ from flask_login import current_user
 from natsort import natsorted
 
 from sporttracker.blueprints.MaintenanceEventInstances import MaintenanceEventInstanceModel
-from sporttracker.logic.MaintenanceFilterState import MaintenanceFilterState
 from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.CustomWorkoutField import get_custom_field_by_id
 from sporttracker.logic.model.DistanceWorkout import get_distance_between_dates
@@ -18,6 +17,7 @@ from sporttracker.logic.model.MaintenanceEventInstance import (
     get_latest_maintenance_event_by_maintenance_id,
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.logic.model.filterStates.MaintenanceFilterState import MaintenanceFilterState
 
 
 @dataclass
@@ -39,13 +39,10 @@ def get_maintenances_with_events(
 ) -> list[MaintenanceWithEventsModel]:
     maintenanceQuery = Maintenance.query.filter(Maintenance.user_id == user_id)
 
-    if (
-        maintenanceFilterState.get_custom_workout_field_id()
-        and maintenanceFilterState.get_custom_workout_field_value() is not None
-    ):
+    if maintenanceFilterState.custom_workout_field_id and maintenanceFilterState.custom_workout_field_value is not None:
         maintenanceQuery = maintenanceQuery.filter(
-            Maintenance.custom_workout_field_id == maintenanceFilterState.get_custom_workout_field_id()
-        ).filter(Maintenance.custom_workout_field_value == maintenanceFilterState.get_custom_workout_field_value())
+            Maintenance.custom_workout_field_id == maintenanceFilterState.custom_workout_field_id
+        ).filter(Maintenance.custom_workout_field_value == maintenanceFilterState.custom_workout_field_value)
 
     maintenanceList = maintenanceQuery.all()
     maintenanceList = natsorted(maintenanceList, alg=natsort.ns.IGNORECASE, key=attrgetter('description'))

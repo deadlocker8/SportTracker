@@ -9,12 +9,12 @@ from sporttracker.logic.MaintenanceEventsCollector import (
     get_maintenances_with_events,
     MaintenanceWithEventsModel,
 )
-from sporttracker.logic.MaintenanceFilterState import MaintenanceFilterState
 from sporttracker.logic.Observable import Listener
 from sporttracker.logic.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.NtfySettings import NtfySettings
 from sporttracker.logic.model.User import User, Language
 from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.logic.model.filterStates.MaintenanceFilterState import MaintenanceFilterState
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
