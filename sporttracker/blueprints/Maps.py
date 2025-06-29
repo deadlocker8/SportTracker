@@ -149,7 +149,7 @@ def construct_blueprint(
 
         quickFilterState = QuickFilterState().reset(get_available_years(current_user.id))
         quickFilterState.disable_all_workout_types()
-        quickFilterState.toggle_state(workout.type)
+        quickFilterState.toggle_workout_type(workout.type)
 
         visitedTileService = __create_visited_tile_service(quickFilterState)
         newVisitedTilesPerWorkout = visitedTileService.get_number_of_new_tiles_per_workout()
