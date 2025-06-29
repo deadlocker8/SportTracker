@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from flask import Blueprint, render_template, redirect, url_for, abort, session, request
 from flask_login import login_required, current_user
 from flask_pydantic import validate
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from sporttracker.logic import Constants
 from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events
@@ -41,6 +41,16 @@ class MaintenanceFormModel(BaseModel):
     reminder_limit: int | None = None
     custom_field_id: int | None = None
     custom_field_value: str | None = None
+
+    @field_validator(*['custom_field_id'], mode='before')
+    def custom_field_id_check(cls, value: str, info) -> str | None:
+        if isinstance(value, str):
+            value = value.strip()
+
+        if value == '':
+            return None
+
+        return value
 
 
 def construct_blueprint():
