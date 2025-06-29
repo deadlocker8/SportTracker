@@ -11,7 +11,6 @@ from flask import (
     render_template,
     abort,
     url_for,
-    session,
     redirect,
     request,
     Response,
@@ -34,7 +33,9 @@ from sporttracker.logic.model.LongDistanceTour import get_long_distance_tour_by_
 from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
 from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.logic.model.db import db
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user, QuickFilterState
+from sporttracker.logic.model.filterStates.TileHuntingFilterState import get_tile_hunting_filter_state_by_user
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.logic.service.PlannedTourService import PlannedTourService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
@@ -166,9 +167,7 @@ def construct_blueprint(
             ),
             editUrl=url_for('distanceWorkouts.edit', workout_id=workout_id),
             tileRenderUrl=tileRenderUrl,
-            tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
-            tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
-            tileHuntingIsOnlyHighlightNewTilesActive=__get_tile_hunting_is_only_highlight_new_tiles(),
+            tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             tileHuntingNumberOfNewVisitedTiles=tileHuntingNumberOfNewVisitedTiles,
         )
 
@@ -218,9 +217,7 @@ def construct_blueprint(
             ),
             editUrl=url_for('plannedTours.edit', tour_id=tour_id),
             tileRenderUrl=tileRenderUrl,
-            tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
-            tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
-            tileHuntingIsMaxSquareActive=__get_tile_hunting_is_max_square_active(),
+            tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             tileHuntingNumberOfNewVisitedTiles=plannedTourService.get_number_of_new_visited_tiles(plannedTour),
         )
 
@@ -285,6 +282,7 @@ def construct_blueprint(
             abort(404)
 
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
+        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
 
         visitedTileService = VisitedTileService(
             newVisitedTileCache,
@@ -292,13 +290,13 @@ def construct_blueprint(
             quickFilterState,
             distanceWorkoutService,
             workoutId=workout.id,
-            onlyHighlightNewTiles=__get_tile_hunting_is_only_highlight_new_tiles(),
+            onlyHighlightNewTiles=tileHuntingFilterState.is_only_highlight_new_tiles_active,  # type: ignore[arg-type]
         )
 
         tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
 
         borderColor = None
-        if __get_tile_hunting_is_grid_active():
+        if tileHuntingFilterState.is_show_grid_active:
             borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
 
         image = tileRenderService.render_image(
@@ -340,13 +338,14 @@ def construct_blueprint(
     def __renderTile(user_id: int, zoom: int, x: int, y: int, quickFilterState: QuickFilterState) -> Response:
         visitedTileService = __create_visited_tile_service(quickFilterState)
         tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
+        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
 
         borderColor = None
-        if __get_tile_hunting_is_grid_active():
+        if tileHuntingFilterState.is_show_grid_active:
             borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
 
         maxSquareColor = None
-        if __get_tile_hunting_is_max_square_active():
+        if tileHuntingFilterState.is_show_max_square_active:
             maxSquareColor = ImageColor.getcolor(tileHuntingSettings['maxSquareColor'], 'RGBA')
 
         image = tileRenderService.render_image(
@@ -376,8 +375,10 @@ def construct_blueprint(
         visitedTileService = __create_visited_tile_service(QuickFilterState().reset(availableYears))
         tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
 
+        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
+
         borderColor = None
-        if __get_tile_hunting_is_grid_active():
+        if tileHuntingFilterState.is_show_grid_active:
             borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
 
         image = tileRenderService.render_image(
@@ -469,8 +470,7 @@ def construct_blueprint(
             totalNumberOfTiles=totalNumberOfTiles,
             maxSquareSize=visitedTileService.get_max_square_size(),
             chartDataNewTilesPerWorkout=chartDataNewTilesPerWorkout,
-            tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
-            tileHuntingIsMaxSquareActive=__get_tile_hunting_is_max_square_active(),
+            tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             maxSquareColor=tileHuntingSettings['maxSquareColor'],
         )
 
@@ -506,7 +506,7 @@ def construct_blueprint(
             redirectUrl='maps.showTileHuntingHeatMap',
             tileRenderUrl=tileRenderUrl,
             numberOfVisitsUrl=numberOfVisitsUrl,
-            tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
+            tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
         )
 
     @maps.route('/map/getNumberOfVisitsByCoordinate/<int:user_id>/<float:latitude>/<float:longitude>')
@@ -568,9 +568,7 @@ def construct_blueprint(
             gpxInfo=gpxInfo,
             editUrl=url_for('longDistanceTours.edit', tour_id=tour_id),
             tileRenderUrl=tileRenderUrl,
-            tileHuntingIsShowTilesActive=__get_tile_hunting_is_show_tiles_active(),
-            tileHuntingIsGridActive=__get_tile_hunting_is_grid_active(),
-            tileHuntingIsMaxSquareActive=__get_tile_hunting_is_max_square_active(),
+            tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             isGpxPreviewImagesEnabled=gpxPreviewImageSettings['enabled'],
         )
 
@@ -578,28 +576,44 @@ def construct_blueprint(
     @login_required
     def toggleTileHuntingViewTiles():
         redirectUrl = request.args['redirectUrl']
-        session['tileHuntingIsShowTilesActive'] = not __get_tile_hunting_is_show_tiles_active()
+        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
+        currentValue = tileHuntingFilterState.is_show_tiles_active
+        tileHuntingFilterState.is_show_tiles_active = not currentValue  # type: ignore[assignment]
+        db.session.commit()
+
         return redirect(redirectUrl)
 
     @maps.route('/toggleTileHuntingViewGrid')
     @login_required
     def toggleTileHuntingViewGrid():
         redirectUrl = request.args['redirectUrl']
-        session['tileHuntingIsGridActive'] = not __get_tile_hunting_is_grid_active()
+        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
+        currentValue = tileHuntingFilterState.is_show_grid_active
+        tileHuntingFilterState.is_show_grid_active = not currentValue  # type: ignore[assignment]
+        db.session.commit()
+
         return redirect(redirectUrl)
 
     @maps.route('/toggleTileHuntingOnlyHighlightNewTiles')
     @login_required
     def toggleTileHuntingOnlyHighlightNewTiles():
         redirectUrl = request.args['redirectUrl']
-        session['tileHuntingIsOnlyHighlightNewTilesActive'] = not __get_tile_hunting_is_only_highlight_new_tiles()
+        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
+        currentValue = tileHuntingFilterState.is_only_highlight_new_tiles_active
+        tileHuntingFilterState.is_only_highlight_new_tiles_active = not currentValue  # type: ignore[assignment]
+        db.session.commit()
+
         return redirect(redirectUrl)
 
     @maps.route('/toggleTileHuntingMaxSquare')
     @login_required
     def toggleTileHuntingMaxSquare():
         redirectUrl = request.args['redirectUrl']
-        session['tileHuntingIsMaxSquareActive'] = not __get_tile_hunting_is_max_square_active()
+        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
+        currentValue = tileHuntingFilterState.is_show_max_square_active
+        tileHuntingFilterState.is_show_max_square_active = not currentValue  # type: ignore[assignment]
+        db.session.commit()
+
         return redirect(redirectUrl)
 
     def __create_visited_tile_service(quickFilterState):
@@ -611,34 +625,6 @@ def construct_blueprint(
         )
 
     return maps
-
-
-def __get_tile_hunting_is_show_tiles_active() -> bool:
-    if 'tileHuntingIsShowTilesActive' not in session:
-        session['tileHuntingIsShowTilesActive'] = True
-
-    return session['tileHuntingIsShowTilesActive']
-
-
-def __get_tile_hunting_is_grid_active() -> bool:
-    if 'tileHuntingIsGridActive' not in session:
-        session['tileHuntingIsGridActive'] = False
-
-    return session['tileHuntingIsGridActive']
-
-
-def __get_tile_hunting_is_only_highlight_new_tiles() -> bool:
-    if 'tileHuntingIsOnlyHighlightNewTilesActive' not in session:
-        session['tileHuntingIsOnlyHighlightNewTilesActive'] = False
-
-    return session['tileHuntingIsOnlyHighlightNewTilesActive']
-
-
-def __get_tile_hunting_is_max_square_active() -> bool:
-    if 'tileHuntingIsMaxSquareActive' not in session:
-        session['tileHuntingIsMaxSquareActive'] = False
-
-    return session['tileHuntingIsMaxSquareActive']
 
 
 def __escape_name(name: str) -> str:

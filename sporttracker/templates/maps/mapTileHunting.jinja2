@@ -83,7 +83,7 @@
                     <div class="form-check text-nowrap mb-0">
                         <input class="form-check-input" type="checkbox"
                                id="tileHuntingEnableGrid"
-                               {% if tileHuntingIsGridActive %}checked{% endif %}
+                               {% if tileHuntingFilterState.is_show_grid_active %}checked{% endif %}
                                data-url="{{ url_for('maps.toggleTileHuntingViewGrid', redirectUrl=url_for('maps.showTileHuntingMap')) }}">
                         <label class="form-check-label" for="tileHuntingEnableGrid">{{ gettext('Show grid') }}</label>
                     </div>
@@ -91,7 +91,7 @@
                     <div class="form-check text-nowrap mb-0">
                         <input class="form-check-input" type="checkbox"
                                id="tileHuntingEnableMaxSquare"
-                               {% if tileHuntingIsMaxSquareActive %}checked{% endif %}
+                               {% if tileHuntingFilterState.is_show_max_square_active %}checked{% endif %}
                                data-url="{{ url_for('maps.toggleTileHuntingMaxSquare', redirectUrl=url_for('maps.showTileHuntingMap')) }}">
                         <label class="form-check-label" for="tileHuntingEnableMaxSquare">{{ gettext('Show max square') }}</label>
                     </div>

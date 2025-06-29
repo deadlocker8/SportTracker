@@ -123,7 +123,7 @@
     </div>
 {%- endmacro %}
 
-{% macro tileHuntingMapSettings(isShowTilesActive, isGridActive, isOnlyHighlightNewTilesActive, redirectUrl, enableNewTilesOption=true, enableMaxSquareOption=false, isTileHuntingIsMaxSquareActive=false) -%}
+{% macro tileHuntingMapSettings(tileHuntingFilterState, redirectUrl, enableNewTilesOption=true, enableMaxSquareOption=false) -%}
     <div class="dropdown ms-3">
         <button class="btn btn-sm btn-primary dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="material-symbols-outlined fs-5">explore</span>
@@ -133,7 +133,7 @@
             <div class="form-check text-nowrap mb-2">
                 <input class="form-check-input tileHuntingCheckbox" type="checkbox"
                        id="tileHuntingEnableTiles"
-                       {% if isShowTilesActive %}checked{% endif %}
+                       {% if tileHuntingFilterState.is_show_tiles_active %}checked{% endif %}
                        data-url="{{ url_for('maps.toggleTileHuntingViewTiles', redirectUrl=redirectUrl) }}">
                 <label class="form-check-label d-flex align-items-center" for="tileHuntingEnableTiles">
                     <span class="material-symbols-outlined fs-5">explore</span>&nbsp;{{ gettext('Show visited tiles') }}
@@ -142,8 +142,8 @@
             <div class="form-check text-nowrap">
                 <input class="form-check-input tileHuntingCheckbox" type="checkbox"
                        id="tileHuntingEnableGrid"
-                       {% if isGridActive %}checked{% endif %}
-                       {% if not isShowTilesActive %}disabled{% endif %}
+                       {% if tileHuntingFilterState.is_show_grid_active %}checked{% endif %}
+                       {% if not tileHuntingFilterState.is_show_tiles_active %}disabled{% endif %}
                        data-url="{{ url_for('maps.toggleTileHuntingViewGrid', redirectUrl=redirectUrl) }}">
                 <label class="form-check-label d-flex align-items-center" for="tileHuntingEnableGrid">
                     <span class="material-symbols-outlined fs-5">window</span>&nbsp;{{ gettext('Show grid') }}
@@ -153,8 +153,8 @@
                 <div class="form-check text-nowrap mt-2">
                     <input class="form-check-input tileHuntingCheckbox" type="checkbox"
                            id="tileHuntingEnableOnlyHighlightNewTiles"
-                           {% if isOnlyHighlightNewTilesActive %}checked{% endif %}
-                           {% if not isShowTilesActive %}disabled{% endif %}
+                           {% if tileHuntingFilterState.is_only_highlight_new_tiles_active %}checked{% endif %}
+                           {% if not tileHuntingFilterState.is_show_tiles_active %}disabled{% endif %}
                            data-url="{{ url_for('maps.toggleTileHuntingOnlyHighlightNewTiles', redirectUrl=redirectUrl) }}">
                     <label class="form-check-label d-flex align-items-center" for="tileHuntingEnableOnlyHighlightNewTiles">
                         <span class="material-symbols-outlined fs-5">more_time</span>&nbsp;{{ gettext('Only highlight new tiles') }}
@@ -165,8 +165,8 @@
                 <div class="form-check text-nowrap mt-2">
                     <input class="form-check-input tileHuntingCheckbox" type="checkbox"
                            id="tileHuntingEnableMaxSquare"
-                           {% if isTileHuntingIsMaxSquareActive %}checked{% endif %}
-                           {% if not isShowTilesActive %}disabled{% endif %}
+                           {% if tileHuntingFilterState.is_show_max_square_active %}checked{% endif %}
+                           {% if not tileHuntingFilterState.is_show_tiles_active %}disabled{% endif %}
                            data-url="{{ url_for('maps.toggleTileHuntingMaxSquare', redirectUrl=redirectUrl) }}">
                     <label class="form-check-label d-flex align-items-center" for="tileHuntingEnableMaxSquare">
                         <span class="material-symbols-outlined fs-5">arrows_output</span>&nbsp;{{ gettext('Show max square') }}
