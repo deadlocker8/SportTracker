@@ -12,6 +12,7 @@ from sporttracker.logic.model.db import db
 from sporttracker.logic.model.filterStates.MaintenanceFilterState import MaintenanceFilterState
 from sporttracker.logic.model.filterStates.PlannedTourFilterState import PlannedTourFilterState
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
+from sporttracker.logic.model.filterStates.TileHuntingFilterState import TileHuntingFilterState
 
 
 class Language(enum.Enum):
@@ -129,6 +130,11 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
     quickFilterState = QuickFilterState(user_id=user.id)
     quickFilterState.reset([])
     db.session.add(quickFilterState)
+    db.session.commit()
+
+    tileHuntingFilterState = TileHuntingFilterState(user_id=user.id)
+    tileHuntingFilterState.reset()
+    db.session.add(tileHuntingFilterState)
     db.session.commit()
 
     return user

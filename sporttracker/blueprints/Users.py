@@ -21,6 +21,7 @@ from sporttracker.logic.model.db import db
 from sporttracker.logic.model.filterStates.MaintenanceFilterState import get_maintenance_filter_state_by_user
 from sporttracker.logic.model.filterStates.PlannedTourFilterState import get_planned_tour_filter_state_by_user
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
+from sporttracker.logic.model.filterStates.TileHuntingFilterState import get_tile_hunting_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -169,6 +170,10 @@ def construct_blueprint():
 
         quickFilterState = get_quick_filter_state_by_user(user.id)
         db.session.delete(quickFilterState)
+        db.session.commit()
+
+        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(user.id)
+        db.session.delete(tileHuntingFilterState)
         db.session.commit()
 
         LOGGER.debug(f'Deleted user: {user.username}')
