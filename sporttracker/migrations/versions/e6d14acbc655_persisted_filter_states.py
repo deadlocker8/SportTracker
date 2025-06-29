@@ -34,6 +34,8 @@ def upgrade():
 
     __handle_new_table_quick_filter_state(tableNames)
 
+    __handle_new_table_tile_hunting_filter_state(tableNames)
+
 
 def downgrade():
     inspector = Inspector.from_engine(op.get_bind().engine)
@@ -47,6 +49,9 @@ def downgrade():
 
     if 'filter_state_quick' in tableNames:
         op.drop_table('filter_state_quick')
+
+    if 'filter_state_tile_hunting' in tableNames:
+        op.drop_table('filter_state_tile_hunting')
 
 
 def __handle_new_table_maintenance_filter_state(tableNames):
@@ -169,5 +174,43 @@ def __handle_new_table_quick_filter_state(tableNames):
                     f" ) VALUES ('{userIdRow[0]}', "
                     f"'{workoutTypes}', "
                     f"'[]');"
+                )
+            )
+
+
+def __handle_new_table_tile_hunting_filter_state(tableNames):
+    if 'filter_state_tile_hunting' not in tableNames:
+        op.create_table(
+            'filter_state_tile_hunting',
+            sa.Column('user_id', sa.Integer(), nullable=False),
+            sa.Column('is_show_tiles_active', sa.Boolean(), nullable=False),
+            sa.Column('is_show_grid_active', sa.Boolean(), nullable=False),
+            sa.Column('is_only_highlight_new_tiles_active', sa.Boolean(), nullable=False),
+            sa.Column('is_show_max_square_active', sa.Boolean(), nullable=False),
+            sa.ForeignKeyConstraint(
+                ['user_id'],
+                ['user.id'],
+            ),
+            sa.PrimaryKeyConstraint('user_id'),
+        )
+
+    connection = op.get_bind()
+    existingRows = connection.execute(text('SELECT * FROM filter_state_tile_hunting;')).fetchall()
+    if not existingRows:
+        userIdRows = connection.execute(text('SELECT "user".id FROM "user";')).fetchall()
+
+        for userIdRow in userIdRows:
+            connection.execute(
+                text(
+                    f'INSERT INTO filter_state_tile_hunting (user_id, '
+                    f'is_show_tiles_active, '
+                    f'is_show_grid_active, '
+                    f'is_only_highlight_new_tiles_active, '
+                    f'is_show_max_square_active'
+                    f" ) VALUES ('{userIdRow[0]}', "
+                    f'True, '
+                    f'True, '
+                    f'True, '
+                    f'True);'
                 )
             )
