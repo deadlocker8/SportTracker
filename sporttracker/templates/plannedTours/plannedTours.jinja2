@@ -34,11 +34,11 @@
 
                 <form class="mt-2 pt-2" method="POST" action="{{ url_for('plannedTours.applyFilter') }}">
                     <div class="my-3 d-flex align-items-center justify-content-start justify-content-xxl-center gap-3 overflow-x-scroll">
-                        {{ plannedTourMacros.plannedTourFilterStatus(plannedTourFilterState.is_done_selected(), plannedTourFilterState.is_todo_selected()) }}
+                        {{ plannedTourMacros.plannedTourFilterStatus(plannedTourFilterState.is_done_selected, plannedTourFilterState.is_todo_selected) }}
 
-                        {{ plannedTourMacros.plannedTourFilterName(plannedTourFilterState.get_name_filter()) }}
+                        {{ plannedTourMacros.plannedTourFilterName(plannedTourFilterState.name_filter) }}
 
-                        {{ plannedTourMacros.plannedTourFilterDistance(plannedTourFilterState.get_minimum_distance(), plannedTourFilterState.get_maximum_distance()) }}
+                        {{ plannedTourMacros.plannedTourFilterDistance(plannedTourFilterState.minimum_distance, plannedTourFilterState.maximum_distance) }}
 
                         {{ plannedTourMacros.plannedTourFilterEnum(travelTypes, plannedTourFilterState.get_selected_arrival_methods(), gettext('Arrival Method'), 'plannedTourFilterArrivalMethod') }}
 
@@ -46,7 +46,7 @@
 
                         {{ plannedTourMacros.plannedTourFilterEnum(travelDirections, plannedTourFilterState.get_selected_directions(), gettext('Direction'), 'plannedTourFilterDirection') }}
 
-                        {{ plannedTourMacros.plannedTourFilterLongDistanceTours(plannedTourFilterState.is_long_distance_tours_include_selected(), plannedTourFilterState.is_long_distance_tours_exclude_selected()) }}
+                        {{ plannedTourMacros.plannedTourFilterLongDistanceTours(plannedTourFilterState.is_long_distance_tours_include_selected, plannedTourFilterState.is_long_distance_tours_exclude_selected) }}
 
                         <a href="{{ url_for('plannedTours.resetFilter') }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap">{{ gettext('Reset Filter') }}</a>
 

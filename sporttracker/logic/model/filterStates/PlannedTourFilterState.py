@@ -91,6 +91,20 @@ class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
         self.is_long_distance_tours_include_selected = is_long_distance_tours_include_selected  # type: ignore[assignment]
         self.is_long_distance_tours_exclude_selected = is_long_distance_tours_exclude_selected  # type: ignore[assignment]
 
+    def reset(self) -> None:
+        self.update(
+            True,
+            True,
+            {travelType: True for travelType in TravelType},
+            {travelType: True for travelType in TravelType},
+            {travelDirection: True for travelDirection in TravelDirection},
+            None,
+            None,
+            None,
+            True,
+            True,
+        )
+
 
 def get_planned_tour_filter_state_by_user(user_id: int) -> PlannedTourFilterState:
     return PlannedTourFilterState.query.filter(PlannedTourFilterState.user_id == user_id).first()

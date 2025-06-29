@@ -8,9 +8,9 @@ from sqlalchemy import Integer, String, Boolean, DateTime
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.model.NtfySettings import NtfySettings
-from sporttracker.logic.model.TravelDirection import TravelDirection
-from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.model.filterStates.MaintenanceFilterState import MaintenanceFilterState
+from sporttracker.logic.model.filterStates.PlannedTourFilterState import PlannedTourFilterState
 
 
 class Language(enum.Enum):
@@ -115,29 +115,14 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
         db.session.add(distanceWorkoutInfoItem)
     db.session.commit()
 
-    from sporttracker.logic.model.filterStates.MaintenanceFilterState import MaintenanceFilterState
-
     maintenanceFilterState = MaintenanceFilterState(
         user_id=user.id, custom_workout_field_id=None, custom_workout_field_value=None
     )
     db.session.add(maintenanceFilterState)
     db.session.commit()
 
-    from sporttracker.logic.model.filterStates.PlannedTourFilterState import PlannedTourFilterState
-
     plannedTourFilterState = PlannedTourFilterState(user_id=user.id)
-    plannedTourFilterState.update(
-        True,
-        True,
-        {travelType: True for travelType in TravelType},
-        {travelType: True for travelType in TravelType},
-        {travelDirection: True for travelDirection in TravelDirection},
-        None,
-        None,
-        None,
-        True,
-        True,
-    )
+    plannedTourFilterState.reset()
     db.session.add(plannedTourFilterState)
     db.session.commit()
 

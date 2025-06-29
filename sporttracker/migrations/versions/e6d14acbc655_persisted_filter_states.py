@@ -82,7 +82,7 @@ def __handle_new_table_planned_tour_filter_state(tableNames):
             sa.Column('arrival_methods', postgresql.JSON(astext_type=sa.Text()), nullable=True),
             sa.Column('departure_methods', postgresql.JSON(astext_type=sa.Text()), nullable=True),
             sa.Column('directions', postgresql.JSON(astext_type=sa.Text()), nullable=True),
-            sa.Column('name_filter', sa.Boolean(), nullable=True),
+            sa.Column('name_filter', sa.String(), nullable=True),
             sa.Column('minimum_distance', sa.Integer(), nullable=True),
             sa.Column('maximum_distance', sa.Integer(), nullable=True),
             sa.Column('is_long_distance_tours_include_selected', sa.Boolean(), nullable=False),

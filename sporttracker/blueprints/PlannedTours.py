@@ -4,16 +4,12 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
-from flask import Blueprint, render_template, redirect, url_for, abort, request, Response, session
+from flask import Blueprint, render_template, redirect, url_for, abort, request, Response
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.PlannedTourFilterState import (
-    get_planned_tour_filter_state_from_session,
-    PlannedTourFilterState,
-)
 from sporttracker.logic.QuickFilterState import get_quick_filter_state_from_session
 from sporttracker.logic.model.DistanceWorkout import (
     DistanceWorkout,
@@ -37,6 +33,7 @@ from sporttracker.logic.model.User import (
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.model.filterStates.PlannedTourFilterState import get_planned_tour_filter_state_by_user
 from sporttracker.logic.service.PlannedTourService import (
     PlannedTourFormModel,
     PlannedTourEditFormModel,
@@ -140,7 +137,7 @@ def construct_blueprint(
     @login_required
     def listPlannedTours():
         quickFilterState = get_quick_filter_state_from_session()
-        plannedTourFilterState = get_planned_tour_filter_state_from_session()
+        plannedTourFilterState = get_planned_tour_filter_state_by_user(current_user.id)
 
         tours = get_planned_tours_filtered(quickFilterState.get_active_distance_workout_types(), plannedTourFilterState)
 
@@ -304,7 +301,7 @@ def construct_blueprint(
         maximumDistanceValue = request.form.get('plannedTourFilterDistanceMax', None)
         maximumDistance = int(maximumDistanceValue) * 1000 if maximumDistanceValue else None
 
-        plannedTourFilterState = get_planned_tour_filter_state_from_session()
+        plannedTourFilterState = get_planned_tour_filter_state_by_user(current_user.id)
         plannedTourFilterState.update(
             request.form.get('plannedTourFilterStatusDone', 'off').strip().lower() == 'on',
             request.form.get('plannedTourFilterStatusTodo', 'off').strip().lower() == 'on',
@@ -317,14 +314,16 @@ def construct_blueprint(
             request.form.get('plannedTourFilterLongDistanceToursInclude', 'off').strip().lower() == 'on',
             request.form.get('plannedTourFilterLongDistanceToursExclude', 'off').strip().lower() == 'on',
         )
-        session['plannedTourFilterState'] = plannedTourFilterState.to_json()
+        db.session.commit()
 
         return redirect(url_for('plannedTours.listPlannedTours'))
 
     @plannedTours.route('/resetFilter')
     @login_required
     def resetFilter():
-        session['plannedTourFilterState'] = PlannedTourFilterState().to_json()
+        plannedTourFilterState = get_planned_tour_filter_state_by_user(current_user.id)
+        plannedTourFilterState.reset()
+        db.session.commit()
         return redirect(url_for('plannedTours.listPlannedTours'))
 
     return plannedTours

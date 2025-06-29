@@ -21,6 +21,10 @@ class MaintenanceFilterState(db.Model):  # type: ignore[name-defined]
     def is_active(self) -> bool:
         return self.custom_workout_field_id is not None and self.custom_workout_field_value is not None
 
+    def reset(self) -> None:
+        self.custom_workout_field_id = None
+        self.custom_workout_field_value = None  # type: ignore[assignment]
+
 
 def get_maintenance_filter_state_by_user(user_id: int) -> MaintenanceFilterState:
     return MaintenanceFilterState.query.filter(MaintenanceFilterState.user_id == user_id).first()

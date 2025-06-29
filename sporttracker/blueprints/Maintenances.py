@@ -250,8 +250,7 @@ def construct_blueprint():
     @login_required
     def resetFilter():
         maintenanceFilterState = get_maintenance_filter_state_by_user(current_user.id)
-        maintenanceFilterState.custom_workout_field_id = None
-        maintenanceFilterState.custom_workout_field_value = None  # type: ignore[assignment]
+        maintenanceFilterState.reset()
         db.session.commit()
 
         return redirect(url_for('maintenances.listMaintenances'))

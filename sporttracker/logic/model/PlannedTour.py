@@ -1,5 +1,4 @@
 from operator import attrgetter
-from typing import TYPE_CHECKING
 
 import natsort
 from flask_login import current_user
@@ -15,9 +14,7 @@ from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
-
-if TYPE_CHECKING:
-    from sporttracker.logic.PlannedTourFilterState import PlannedTourFilterState
+from sporttracker.logic.model.filterStates.PlannedTourFilterState import PlannedTourFilterState
 
 planned_tour_user_association = Table(
     'planned_tour_user_association',
@@ -144,30 +141,28 @@ def get_planned_tours_filtered(
         .filter(PlannedTour.direction.in_(plannedTourFilterState.get_selected_directions()))
     )
 
-    if plannedTourFilterState.get_name_filter() is not None:
-        plannedToursQuery = plannedToursQuery.filter(
-            PlannedTour.name.icontains(plannedTourFilterState.get_name_filter())
-        )
+    if plannedTourFilterState.name_filter is not None:
+        plannedToursQuery = plannedToursQuery.filter(PlannedTour.name.icontains(plannedTourFilterState.name_filter))
 
     plannedToursQuery = plannedToursQuery.order_by(asc(func.lower(PlannedTour.name)))
     plannedTours = plannedToursQuery.all()
 
     plannedTours = __filter_by_distance(
         plannedTours,
-        plannedTourFilterState.get_minimum_distance(),
-        plannedTourFilterState.get_maximum_distance(),
+        plannedTourFilterState.minimum_distance,  # type: ignore[arg-type]
+        plannedTourFilterState.maximum_distance,  # type: ignore[arg-type]
     )
 
     plannedTours = __filter_by_status(
         plannedTours,
-        plannedTourFilterState.is_done_selected(),
-        plannedTourFilterState.is_todo_selected(),
+        plannedTourFilterState.is_done_selected,  # type: ignore[arg-type]
+        plannedTourFilterState.is_todo_selected,  # type: ignore[arg-type]
     )
 
     plannedTours = __filter_by_long_distance_tours(
         plannedTours,
-        plannedTourFilterState.is_long_distance_tours_include_selected(),
-        plannedTourFilterState.is_long_distance_tours_exclude_selected(),
+        plannedTourFilterState.is_long_distance_tours_include_selected,  # type: ignore[arg-type]
+        plannedTourFilterState.is_long_distance_tours_exclude_selected,  # type: ignore[arg-type]
     )
 
     return natsorted(plannedTours, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
