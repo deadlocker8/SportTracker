@@ -15,6 +15,7 @@ from sqlalchemy.dialects import postgresql
 
 from sporttracker.logic.model.TravelDirection import TravelDirection
 from sporttracker.logic.model.TravelType import TravelType
+from sporttracker.logic.model.WorkoutType import WorkoutType
 
 # revision identifiers, used by Alembic.
 revision = 'e6d14acbc655'
@@ -31,6 +32,8 @@ def upgrade():
 
     __handle_new_table_planned_tour_filter_state(tableNames)
 
+    __handle_new_table_quick_filter_state(tableNames)
+
 
 def downgrade():
     inspector = Inspector.from_engine(op.get_bind().engine)
@@ -41,6 +44,9 @@ def downgrade():
 
     if 'filter_state_planned_tour' in tableNames:
         op.drop_table('filter_state_planned_tour')
+
+    if 'filter_state_quick' in tableNames:
+        op.drop_table('filter_state_quick')
 
 
 def __handle_new_table_maintenance_filter_state(tableNames):
@@ -60,6 +66,7 @@ def __handle_new_table_maintenance_filter_state(tableNames):
             ),
             sa.PrimaryKeyConstraint('user_id'),
         )
+
     connection = op.get_bind()
     existingRows = connection.execute(text('SELECT * FROM filter_state_maintenance;')).fetchall()
     if not existingRows:
@@ -93,6 +100,7 @@ def __handle_new_table_planned_tour_filter_state(tableNames):
             ),
             sa.PrimaryKeyConstraint('user_id'),
         )
+
     connection = op.get_bind()
     existingRows = connection.execute(text('SELECT * FROM filter_state_planned_tour;')).fetchall()
     if not existingRows:
@@ -127,5 +135,39 @@ def __handle_new_table_planned_tour_filter_state(tableNames):
                     f'NULL, '
                     f'True, '
                     f'True);'
+                )
+            )
+
+
+def __handle_new_table_quick_filter_state(tableNames):
+    if 'filter_state_quick' not in tableNames:
+        op.create_table(
+            'filter_state_quick',
+            sa.Column('user_id', sa.Integer(), nullable=False),
+            sa.Column('workout_types', postgresql.JSON(astext_type=sa.Text()), nullable=True),
+            sa.Column('years', postgresql.JSON(astext_type=sa.Text()), nullable=True),
+            sa.ForeignKeyConstraint(
+                ['user_id'],
+                ['user.id'],
+            ),
+            sa.PrimaryKeyConstraint('user_id'),
+        )
+
+    connection = op.get_bind()
+    existingRows = connection.execute(text('SELECT * FROM filter_state_quick;')).fetchall()
+    if not existingRows:
+        userIdRows = connection.execute(text('SELECT "user".id FROM "user";')).fetchall()
+
+        workoutTypes = json.dumps({workoutType.name: True for workoutType in WorkoutType})
+
+        for userIdRow in userIdRows:
+            connection.execute(
+                text(
+                    f'INSERT INTO filter_state_quick (user_id, '
+                    f'workout_types, '
+                    f'years'
+                    f" ) VALUES ('{userIdRow[0]}', "
+                    f"'{workoutTypes}', "
+                    f"'[]');"
                 )
             )
