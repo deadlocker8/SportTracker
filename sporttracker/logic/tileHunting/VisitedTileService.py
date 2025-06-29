@@ -40,7 +40,6 @@ class VisitedTileService:
         newVisitedTileCache: NewVisitedTileCache,
         maxSquareCache: MaxSquareCache,
         quickFilterState: QuickFilterState,
-        yearFilterState: list[int],
         distanceWorkoutService: DistanceWorkoutService,
         workoutId: int | None = None,
         onlyHighlightNewTiles: bool = False,
@@ -48,7 +47,6 @@ class VisitedTileService:
         self._newVisitedTileCache = newVisitedTileCache
         self._maxSquareCache = maxSquareCache
         self._quickFilterState = quickFilterState
-        self._yearFilterState = yearFilterState
         self._distanceWorkoutService = distanceWorkoutService
         self._workoutId = workoutId
         self._onlyHighlightNewTiles = onlyHighlightNewTiles
@@ -59,7 +57,7 @@ class VisitedTileService:
         newVisitedTilesPerWorkout = self._newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
             current_user.id,
             self._quickFilterState.get_active_distance_workout_types(),
-            self._yearFilterState,
+            self._quickFilterState.years,
         )
 
         totalNumberOfTiles = 0
@@ -90,7 +88,7 @@ class VisitedTileService:
             .with_entities(distanceWorkoutAlias.type, gpxVisitedTileAlias.x, gpxVisitedTileAlias.y)
             .filter(distanceWorkoutAlias.user_id == user_id)
             .filter(distanceWorkoutAlias.type.in_(self._quickFilterState.get_active_distance_workout_types()))
-            .filter(extract('year', distanceWorkoutAlias.start_time).in_(self._yearFilterState))
+            .filter(extract('year', distanceWorkoutAlias.start_time).in_(self._quickFilterState.years))
             .filter(gpxVisitedTileAlias.x >= min_x)
             .filter(gpxVisitedTileAlias.x <= max_x)
             .filter(gpxVisitedTileAlias.y >= min_y)
@@ -113,7 +111,7 @@ class VisitedTileService:
             .with_entities(func.count(), gpxVisitedTileAlias.x, gpxVisitedTileAlias.y)
             .filter(distanceWorkoutAlias.user_id == user_id)
             .filter(distanceWorkoutAlias.type.in_(self._quickFilterState.get_active_distance_workout_types()))
-            .filter(extract('year', distanceWorkoutAlias.start_time).in_(self._yearFilterState))
+            .filter(extract('year', distanceWorkoutAlias.start_time).in_(self._quickFilterState.years))
             .filter(gpxVisitedTileAlias.x >= min_x)
             .filter(gpxVisitedTileAlias.x <= max_x)
             .filter(gpxVisitedTileAlias.y >= min_y)
@@ -172,7 +170,7 @@ class VisitedTileService:
         return self._newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
             current_user.id,
             self._quickFilterState.get_active_distance_workout_types(),
-            self._yearFilterState,
+            self._quickFilterState.years,
         )
 
     @staticmethod
@@ -197,7 +195,7 @@ class VisitedTileService:
         return self._maxSquareCache.get_max_square_tile_positions(
             current_user.id,
             self._quickFilterState.get_active_distance_workout_types(),
-            self._yearFilterState,
+            self._quickFilterState.years,
         )
 
     def get_max_square_size(self) -> int:
@@ -213,7 +211,7 @@ class VisitedTileService:
         numberOfVisitedTilesPerWorkout = self._newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
             current_user.id,
             workout_types,
-            self._yearFilterState,
+            self._quickFilterState.years,
         )
 
         result = {}

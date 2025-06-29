@@ -567,8 +567,7 @@ def construct_blueprint(
             visitedTileService = VisitedTileService(
                 newVisitedTileCache,
                 maxSquareCache,
-                QuickFilterState(),
-                get_available_years(current_user.id),
+                QuickFilterState().reset(get_available_years(current_user.id)),
                 distanceWorkoutService,
             )
 

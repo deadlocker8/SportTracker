@@ -29,13 +29,13 @@
                 </div>
 
                 <div class="ms-5">
-                    <form role="form" action="{{ url_for('maps.toggleYears') }}" method="post" class="d-flex flex-row align-items-center justify-content-center">
+                    <form role="form" action="{{ url_for('quickFilter.toggleYears') }}" method="post" class="d-flex flex-row align-items-center justify-content-center">
                         <div class="row row-cols-auto">
                             <input type="hidden" name="redirectUrl" value="{{ url_for(redirectUrl) }}"/>
                             {% for availableYear in availableYears %}
                                 <div class="col my-1">
                                     <input class="btn-check" type="checkbox" role="switch"
-                                           {% if availableYear in yearFilterState %}checked{% endif %}
+                                           {% if availableYear in quickFilterState.years %}checked{% endif %}
                                            id="availableYear-{{ loop.index }}"
                                            name="activeYears"
                                            value="{{ availableYear }}">

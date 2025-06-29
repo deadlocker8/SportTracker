@@ -27,4 +27,16 @@ def construct_blueprint():
 
         return redirect(redirectUrl)
 
+    @quickFilter.route('/toggleYears', methods=['POST'])
+    @login_required
+    def toggleYears():
+        activeYears = [int(item) for item in request.form.getlist('activeYears')]
+        redirectUrl = request.form['redirectUrl']
+
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
+        quickFilterState.years = activeYears
+        db.session.commit()
+
+        return redirect(redirectUrl)
+
     return quickFilter

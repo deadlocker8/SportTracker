@@ -51,6 +51,9 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
         workout_types[workoutType] = not workout_types[workoutType]
         self.update(workout_types, self.years)
 
+    def disable_all_workout_types(self) -> None:
+        self.update({workoutType: False for workoutType in WorkoutType}, self.years)
+
 
 def get_quick_filter_state_by_user(user_id: int) -> QuickFilterState:
     return QuickFilterState.query.filter(QuickFilterState.user_id == user_id).first()
