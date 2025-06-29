@@ -18,6 +18,7 @@ from sporttracker.logic.model.User import (
     create_user,
 )
 from sporttracker.logic.model.db import db
+from sporttracker.logic.model.filterStates.MaintenanceFilterState import get_maintenance_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -155,6 +156,10 @@ def construct_blueprint():
 
         if user.isAdmin:
             abort(400)
+
+        maintenanceFilterState = get_maintenance_filter_state_by_user(user.id)
+        db.session.delete(maintenanceFilterState)
+        db.session.commit()
 
         LOGGER.debug(f'Deleted user: {user.username}')
         db.session.delete(user)
