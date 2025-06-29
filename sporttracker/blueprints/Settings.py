@@ -28,6 +28,7 @@ from sporttracker.logic.model.User import (
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.model.filterStates.MaintenanceFilterState import get_maintenance_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -317,7 +318,11 @@ def construct_blueprint():
             linkedMaintenance.custom_workout_field_value = None
 
             LOGGER.debug(f'Removed link to custom field: {field.id} from maintenance: {linkedMaintenance.id}')
-            db.session.add(linkedMaintenance)
+            db.session.commit()
+
+        maintenanceFilterState = get_maintenance_filter_state_by_user(current_user.id)
+        if maintenanceFilterState.custom_workout_field_id == field_id:
+            maintenanceFilterState.reset()
             db.session.commit()
 
         LOGGER.debug(f'Deleted custom field: {field}')
