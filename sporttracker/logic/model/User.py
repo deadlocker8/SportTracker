@@ -11,6 +11,7 @@ from sporttracker.logic.model.NtfySettings import NtfySettings
 from sporttracker.logic.model.db import db
 from sporttracker.logic.model.filterStates.MaintenanceFilterState import MaintenanceFilterState
 from sporttracker.logic.model.filterStates.PlannedTourFilterState import PlannedTourFilterState
+from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 
 
 class Language(enum.Enum):
@@ -115,15 +116,19 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
         db.session.add(distanceWorkoutInfoItem)
     db.session.commit()
 
-    maintenanceFilterState = MaintenanceFilterState(
-        user_id=user.id, custom_workout_field_id=None, custom_workout_field_value=None
-    )
+    maintenanceFilterState = MaintenanceFilterState(user_id=user.id)
+    maintenanceFilterState.reset()
     db.session.add(maintenanceFilterState)
     db.session.commit()
 
     plannedTourFilterState = PlannedTourFilterState(user_id=user.id)
     plannedTourFilterState.reset()
     db.session.add(plannedTourFilterState)
+    db.session.commit()
+
+    quickFilterState = QuickFilterState(user_id=user.id)
+    quickFilterState.reset([])
+    db.session.add(quickFilterState)
     db.session.commit()
 
     return user
