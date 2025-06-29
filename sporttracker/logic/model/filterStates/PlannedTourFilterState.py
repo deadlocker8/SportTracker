@@ -106,30 +106,29 @@ class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
             True,
         )
 
+    def update_missing_values(self) -> bool:
+        isUpdated = False
+        for travelType in [t for t in TravelType]:
+            if travelType.name not in self.arrival_methods:
+                self.arrival_methods[travelType.name] = True
+                isUpdated = True
+
+            if travelType.name not in self.departure_methods:
+                self.departure_methods[travelType.name] = True
+                isUpdated = True
+
+        for travelDirection in [t for t in TravelDirection]:
+            if travelDirection.name not in self.directions:
+                self.directions[travelDirection.name] = True
+                isUpdated = True
+
+        return isUpdated
+
 
 def get_planned_tour_filter_state_by_user(user_id: int) -> PlannedTourFilterState:
     plannedTourFilterState = PlannedTourFilterState.query.filter(PlannedTourFilterState.user_id == user_id).first()
 
-    filterArrivalMethods = plannedTourFilterState.arrival_methods
-    filterDepartureMethods = plannedTourFilterState.departure_methods
-
-    isUpdated = False
-    for travelType in [t for t in TravelType]:
-        if travelType.name not in filterArrivalMethods:
-            filterArrivalMethods[travelType.name] = True
-            isUpdated = True
-
-        if travelType.name not in filterDepartureMethods:
-            filterDepartureMethods[travelType.name] = True
-            isUpdated = True
-
-    filterDirections = plannedTourFilterState.directions
-    for travelDirection in [t for t in TravelDirection]:
-        if travelDirection.name not in filterDirections:
-            filterDirections[travelDirection.name] = True
-            isUpdated = True
-
-    if isUpdated:
+    if plannedTourFilterState.update_missing_values():
         db.session.commit()
 
     return plannedTourFilterState

@@ -1,3 +1,4 @@
+from __future__ import annotations
 from sqlalchemy import JSON
 from sqlalchemy.ext.mutable import MutableDict
 
@@ -43,7 +44,7 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
         self.workout_types = {enumValue.name: isActive for enumValue, isActive in workout_types.items()}
         self.years = years
 
-    def reset(self, availableYears: list[int]) -> 'QuickFilterState':
+    def reset(self, availableYears: list[int]) -> QuickFilterState:
         self.update({workoutType: True for workoutType in WorkoutType}, availableYears)
         return self
 
@@ -53,19 +54,22 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
     def disable_all_workout_types(self) -> None:
         self.update({workoutType: False for workoutType in WorkoutType}, self.years)
 
+    def update_missing_values(self) -> bool:
+        filterWorkoutTypes = self.get_workout_types()
+
+        isUpdated = False
+        for workoutType in [t for t in WorkoutType]:
+            if workoutType not in filterWorkoutTypes:
+                filterWorkoutTypes[workoutType] = True
+                isUpdated = True
+
+        self.workout_types = filterWorkoutTypes
+        return isUpdated
+
 
 def get_quick_filter_state_by_user(user_id: int) -> QuickFilterState:
     quickFilterState = QuickFilterState.query.filter(QuickFilterState.user_id == user_id).first()
-
-    filterWorkoutTypes = quickFilterState.get_workout_types()
-
-    isUpdated = False
-    for workoutType in [t for t in WorkoutType]:
-        if workoutType not in filterWorkoutTypes:
-            filterWorkoutTypes[workoutType] = True
-            isUpdated = True
-
-    if isUpdated:
+    if quickFilterState.update_missing_values():
         db.session.commit()
 
     return quickFilterState
