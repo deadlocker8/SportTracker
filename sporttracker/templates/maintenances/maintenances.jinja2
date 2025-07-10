@@ -97,7 +97,7 @@
                 </div>
 
                 <form class="mt-2 pt-2" method="POST" action="{{ url_for('maintenances.applyFilter') }}">
-                    <div class="my-3 d-flex align-items-center justify-content-start justify-content-xxl-center gap-3 overflow-x-scroll">
+                    <div class="my-3 d-flex align-items-center justify-content-start justify-content-xxl-center gap-3 overflow-x-auto">
                         {{ maintenanceFilterCustomWorkoutField(maintenanceFilterState) }}
 
                         <a href="{{ url_for('maintenances.resetFilter') }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap">{{ gettext('Reset Filter') }}</a>
