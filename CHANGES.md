@@ -8,6 +8,7 @@
 - fix: planned tour map: link to editor no longer overlaps on small devices (#224)
 - fix: charts: speed/duration per workout: start y-axis near min value instead of zero (#219)
 - fix: annual achievements: remove duplicated HTML Tag bracket (#235)
+- fix: filter: do not close dropdown on checkbox click (#233)
 
 # 1.40.0 - (11.06.25)
 - add: add support for long-distance tours (tours with multiple stages) (#209)

@@ -95,7 +95,7 @@
     {% set allSelected = isDoneActive and isTodoActive %}
 
     <div class="dropdown position-static">
-        <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             <span class="material-symbols-outlined fs-5">filter_alt</span>
             <span class="ms-2">{{ gettext('Status') }}</span>
         </button>
@@ -128,7 +128,7 @@
     {% set allSelected = availableTypes | length == selectedTypes | length %}
 
     <div class="dropdown position-static">
-        <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             <span class="material-symbols-outlined fs-5">filter_alt</span>
             <span class="ms-2">{{ buttonText }}</span>
         </button>
@@ -152,7 +152,7 @@
 
 {% macro plannedTourFilterName(nameFilter) -%}
     <div class="dropdown position-static">
-        <button class="btn btn-sm {% if nameFilter is none or nameFilter | length == 0 %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-sm {% if nameFilter is none or nameFilter | length == 0 %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             <span class="material-symbols-outlined fs-5">filter_alt</span>
             <span class="ms-2">{{ gettext('Name') }}</span>
         </button>
@@ -175,7 +175,7 @@
     {% set bothEmpty = minDistance is none and maxDistance is none %}
 
     <div class="dropdown position-static">
-        <button class="btn btn-sm {% if bothEmpty %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-sm {% if bothEmpty %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             <span class="material-symbols-outlined fs-5">filter_alt</span>
             <span class="ms-2">{{ gettext('Distance') }}</span>
         </button>
@@ -211,7 +211,7 @@
     {% set allSelected = isLongDistanceToursIncludeSelected and isLongDistanceToursExcludeSelected %}
 
     <div class="dropdown position-static">
-        <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             <span class="material-symbols-outlined fs-5">filter_alt</span>
             <span class="ms-2">{{ gettext('Long-distance Tours') }}</span>
         </button>
