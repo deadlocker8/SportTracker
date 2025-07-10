@@ -591,7 +591,7 @@
                 <option value="-1"
                         {% if not workout %} selected{% endif %}>{{ gettext('Not based on a Planned Tour') }}</option>
                 {% for plannedTour in plannedTours %}
-                    <option value="{{ plannedTour.id }}" {% if workout and workout.planned_tour_id != '-1' and workout.planned_tour_id == plannedTour.id|string %}selected{% endif %}>{{ plannedTour.name | e }}</option>
+                    <option value="{{ plannedTour.id }}" {% if workout and workout.planned_tour_id != '-1' and workout.planned_tour_id == plannedTour.id|string %}selected{% endif %}>{{ plannedTour.name | e }} {% if current_user.id != plannedTour.user_id %}({{ gettext('shared by ') }} {{ plannedTour.get_owner_name() | e }}){% endif %}</option>
                 {% endfor %}
             </select>
         </div>

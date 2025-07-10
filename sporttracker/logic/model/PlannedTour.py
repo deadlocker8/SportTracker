@@ -11,7 +11,7 @@ from sporttracker.logic.DateTimeAccess import DateTimeAccess
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.TravelDirection import TravelDirection
 from sporttracker.logic.model.TravelType import TravelType
-from sporttracker.logic.model.User import User
+from sporttracker.logic.model.User import User, get_user_by_id
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.logic.model.filterStates.PlannedTourFilterState import PlannedTourFilterState
@@ -65,6 +65,10 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
             return None
         else:
             return GpxMetadata.query.get(self.gpx_metadata_id)
+
+    def get_owner_name(self) -> str:
+        user = get_user_by_id(self.user_id)
+        return user.username
 
 
 def get_new_planned_tour_ids() -> list[int]:
