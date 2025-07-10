@@ -60,10 +60,9 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
         isUpdated = False
         for workoutType in [t for t in WorkoutType]:
             if workoutType not in filterWorkoutTypes:
-                filterWorkoutTypes[workoutType] = True
+                self.workout_types[workoutType.name] = True
                 isUpdated = True
 
-        self.workout_types = filterWorkoutTypes
         return isUpdated
 
 
