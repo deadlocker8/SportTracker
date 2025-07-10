@@ -243,6 +243,17 @@ def construct_blueprint(
     def showAllPlannedToursOnMap():
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
 
+        tileRenderUrl = url_for(
+            'maps.renderAllTilesWithFilter',
+            user_id=current_user.id,
+            zoom=0,
+            x=0,
+            y=0,
+            _external=True,
+        )
+
+        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
+
         gpxInfo = []
 
         plannedTours: list[PlannedTour] = (
@@ -266,6 +277,8 @@ def construct_blueprint(
             quickFilterState=quickFilterState,
             mapMode='plannedTours',
             redirectUrl='maps.showAllPlannedToursOnMap',
+            tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
+            tileRenderUrl=tileRenderUrl,
         )
 
     @maps.route('/map/<int:workout_id>/renderTile/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')

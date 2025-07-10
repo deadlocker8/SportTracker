@@ -22,7 +22,10 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('map') }}
 
-         <div class="row my-3">
+        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+        {{ mapMacros.mapLocale() }}
+
+        <div class="row my-3">
             <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center">
                 <div class="d-none d-lg-block">
                     {{ toggleWorkoutsAndPlannedTours('me-5') }}
@@ -30,10 +33,18 @@
                 <div class="d-none d-lg-block">
                     {{ macros.workout_type_quick_filter(url_for(redirectUrl), true) }}
                 </div>
+                {% if mapMode == 'plannedTours' and current_user.isTileHuntingActivated %}
+                    <div class="d-none d-lg-block">
+                        {{ mapMacros.tileHuntingMapSettings(tileHuntingFilterState,url_for('maps.showAllPlannedToursOnMap'), false, true, true, "ms-5") }}
+                    </div>
+                {% endif %}
                 <div class="d-lg-none">
                     <div class="d-flex flex-column align-items-center justify-content-center ms-3">
                         {{ toggleWorkoutsAndPlannedTours('mb-3') }}
                         {{ macros.workout_type_quick_filter(url_for(redirectUrl), true) }}
+                        {% if mapMode == 'plannedTours' and current_user.isTileHuntingActivated %}
+                            {{ mapMacros.tileHuntingMapSettings(tileHuntingFilterState,url_for('maps.showAllPlannedToursOnMap'), false, true, true, "mt-3") }}
+                        {% endif %}
                     </div>
                 </div>
 
@@ -69,7 +80,8 @@
         <script>
             gpxInfo = {{ gpxInfo }};
             mapMode = '{{ mapMode }}';
-            isTileHuntingOverlayEnabled = false;
+            isTileHuntingOverlayEnabled = {% if mapMode == 'plannedTours' %}true{% else %}false{% endif %};
+            tileRenderUrl = '{{ tileRenderUrl }}';
         </script>
 
         {% import 'maps/mapMacros.jinja2' as mapMacros with context %}

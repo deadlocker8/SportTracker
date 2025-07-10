@@ -123,11 +123,11 @@
     </div>
 {%- endmacro %}
 
-{% macro tileHuntingMapSettings(tileHuntingFilterState, redirectUrl, enableNewTilesOption=true, enableMaxSquareOption=false) -%}
-    <div class="dropdown ms-3">
+{% macro tileHuntingMapSettings(tileHuntingFilterState, redirectUrl, enableNewTilesOption=true, enableMaxSquareOption=false, forceButtonText=false, classes="ms-3") -%}
+    <div class="dropdown {{ classes }}">
         <button class="btn btn-sm btn-primary dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="material-symbols-outlined fs-5">explore</span>
-            <span class="ms-2 d-none d-lg-block">{{ gettext('Tile Hunting') }}</span>
+            <span class="ms-2 {% if not forceButtonText %}d-none d-lg-block{% endif %}">{{ gettext('Tile Hunting') }}</span>
         </button>
         <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
             <div class="form-check text-nowrap mb-2">
