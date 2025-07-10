@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-29 14:01+0200\n"
-"PO-Revision-Date: 2025-06-29 14:01+0200\n"
+"POT-Creation-Date: 2025-07-10 22:46+0200\n"
+"PO-Revision-Date: 2025-07-10 22:47+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -114,7 +114,7 @@ msgstr "Anzahl Workouts"
 msgid "Hours"
 msgstr "Stunden"
 
-#: ../blueprints/AnnualAchievements.py:293 ../logic/model/User.py:79
+#: ../blueprints/AnnualAchievements.py:293 ../logic/model/User.py:83
 #: ../templates/charts/chartAverageSpeed.jinja2:2
 #: ../templates/charts/chartChooser.jinja2:42
 msgid "Average Speed"
@@ -124,8 +124,8 @@ msgstr "Durchschnittliche Geschwindigkeit"
 msgid "Unknown user"
 msgstr "Unbekannter Nutzer"
 
-#: ../blueprints/Authentication.py:36 ../blueprints/Settings.py:116
-#: ../blueprints/Users.py:74 ../blueprints/Users.py:128
+#: ../blueprints/Authentication.py:36 ../blueprints/Settings.py:117
+#: ../blueprints/Users.py:78 ../blueprints/Users.py:132
 msgid "Password must not be empty"
 msgstr "Passwort darf nicht leer sein"
 
@@ -157,7 +157,7 @@ msgstr "Dauer pro Workout"
 msgid "Speed per Workout"
 msgstr "Geschwindigkeit pro Workout"
 
-#: ../blueprints/Charts.py:611
+#: ../blueprints/Charts.py:610
 msgid "Tiles"
 msgstr "Kacheln"
 
@@ -177,7 +177,7 @@ msgstr "Ungültige Dateiendung. Erlaubte Endung: *.fit"
 msgid "FIT file does not contain session data"
 msgstr "FIT-Datei enthält keine Session-Daten"
 
-#: ../blueprints/Maps.py:588
+#: ../blueprints/Maps.py:560
 #: ../templates/longDistanceTours/longDistanceTourForm.jinja2:154
 #: ../templates/maps/mapLongDistanceTour.jinja2:101
 #: ../templates/maps/mapLongDistanceTour.jinja2:185
@@ -194,50 +194,50 @@ msgstr "Das Endjahr muss größer oder gleich dem Anfangsjahr sein."
 msgid "End Month must be greater or equal Start Month."
 msgstr "Der Endmonat muss größer oder gleich dem Startmonat sein."
 
-#: ../blueprints/Settings.py:128 ../blueprints/Users.py:79
-#: ../blueprints/Users.py:136
+#: ../blueprints/Settings.py:129 ../blueprints/Users.py:83
+#: ../blueprints/Users.py:140
 msgid "Password must be at least {0} characters long"
 msgstr "Das Passwort muss mindestens {0} Zeichen lang sein"
 
-#: ../blueprints/Settings.py:438 ../blueprints/Settings.py:481
+#: ../blueprints/Settings.py:443 ../blueprints/Settings.py:486
 #: ../templates/settings/settings.jinja2:277
 msgid "Ntfy Server URL"
 msgstr "Ntfy Server URL"
 
-#: ../blueprints/Settings.py:439 ../blueprints/Settings.py:482
+#: ../blueprints/Settings.py:444 ../blueprints/Settings.py:487
 #: ../templates/settings/settings.jinja2:285
 msgid "Ntfy Topic Name"
 msgstr "Ntfy Topicname"
 
-#: ../blueprints/Settings.py:440 ../blueprints/Settings.py:483
+#: ../blueprints/Settings.py:445 ../blueprints/Settings.py:488
 #: ../templates/login.jinja2:19 ../templates/settings/settings.jinja2:293
 #: ../templates/users/userForm.jinja2:45
 msgid "Username"
 msgstr "Benutzer"
 
-#: ../blueprints/Settings.py:441 ../blueprints/Settings.py:484
+#: ../blueprints/Settings.py:446 ../blueprints/Settings.py:489
 #: ../templates/login.jinja2:23 ../templates/settings/settings.jinja2:14
 #: ../templates/settings/settings.jinja2:301 ../templates/users/userForm.jinja2:54
 msgid "Password"
 msgstr "Passwort"
 
-#: ../blueprints/Settings.py:449 ../blueprints/Settings.py:490
+#: ../blueprints/Settings.py:454 ../blueprints/Settings.py:495
 msgid "Ntfy Settings: {0} must not be empty"
 msgstr "Ntfy-Einstellungen: {0} darf nicht leer sein"
 
-#: ../blueprints/Settings.py:498
+#: ../blueprints/Settings.py:503
 msgid "SportTracker: Maintenance reminder test notification"
 msgstr "SportTracker: Testbenachrichtigung für Wartungserinnerung"
 
-#: ../blueprints/Settings.py:503
+#: ../blueprints/Settings.py:508
 msgid "Test notification successfully sent"
 msgstr "Testbenachrichtigung erfolgreich gesendet"
 
-#: ../blueprints/Settings.py:505
+#: ../blueprints/Settings.py:510
 msgid "Error sending test notification {0}"
 msgstr "Fehler beim Senden der Testbenachrichtigung {0}"
 
-#: ../blueprints/Settings.py:510
+#: ../blueprints/Settings.py:515
 msgid ""
 "The specified field name \"{0}\" conflicts with a reserved field name and "
 "therefore can't be used as custom field name."
@@ -245,15 +245,15 @@ msgstr ""
 "Der angegebene Name \"{0}\" kollidiert mit einem reservierten Namen und kann "
 "daher nicht als Name für ein benutzerdefiniertes Feld verwendet werden."
 
-#: ../blueprints/Settings.py:524
+#: ../blueprints/Settings.py:529
 msgid "The specified field name \"{0}\" already exists."
 msgstr "Der angegebene Name \"{0}\" existiert bereits."
 
-#: ../blueprints/Settings.py:533
+#: ../blueprints/Settings.py:538
 msgid "The specified participant name \"{0}\" already exists."
 msgstr "Ein Teilnehmer mit dem Namen \"{0}\" existiert bereits."
 
-#: ../blueprints/Users.py:70 ../blueprints/Users.py:120
+#: ../blueprints/Users.py:74 ../blueprints/Users.py:124
 msgid "Username \"{0}\" already exists"
 msgstr "Benutzername \"{0}\" existiert bereits"
 
@@ -298,31 +298,31 @@ msgstr "Zeitbasiert"
 msgid "Repetition-based"
 msgstr "Wiederholungsbasiert"
 
-#: ../logic/model/PlannedTour.py:46
-msgid "None"
-msgstr "Keine"
-
-#: ../logic/model/PlannedTour.py:48
-msgid "Car"
-msgstr "Auto"
-
-#: ../logic/model/PlannedTour.py:50
-msgid "Train"
-msgstr "Zug"
-
-#: ../logic/model/PlannedTour.py:78
+#: ../logic/model/TravelDirection.py:29
 msgid "Single"
 msgstr "Nur hin"
 
-#: ../logic/model/PlannedTour.py:80
+#: ../logic/model/TravelDirection.py:31
 msgid "Return"
 msgstr "Hin + zurück"
 
-#: ../logic/model/PlannedTour.py:82
+#: ../logic/model/TravelDirection.py:33
 msgid "Roundtrip"
 msgstr "Rundtour"
 
-#: ../logic/model/User.py:75 ../templates/maps/mapLongDistanceTour.jinja2:107
+#: ../logic/model/TravelType.py:29
+msgid "None"
+msgstr "Keine"
+
+#: ../logic/model/TravelType.py:31
+msgid "Car"
+msgstr "Auto"
+
+#: ../logic/model/TravelType.py:33
+msgid "Train"
+msgstr "Zug"
+
+#: ../logic/model/User.py:79 ../templates/maps/mapLongDistanceTour.jinja2:107
 #: ../templates/maps/mapLongDistanceTour.jinja2:129
 #: ../templates/maps/mapPlannedTour.jinja2:41
 #: ../templates/maps/mapPlannedTour.jinja2:88
@@ -332,18 +332,18 @@ msgstr "Rundtour"
 msgid "Distance"
 msgstr "Strecke"
 
-#: ../logic/model/User.py:77 ../templates/maps/mapLongDistanceTour.jinja2:115
+#: ../logic/model/User.py:81 ../templates/maps/mapLongDistanceTour.jinja2:115
 #: ../templates/maps/mapSingleWorkout.jinja2:49
 #: ../templates/maps/mapSingleWorkout.jinja2:97
 #: ../templates/workouts/workoutMacros.jinja2:335
 msgid "Duration"
 msgstr "Dauer"
 
-#: ../logic/model/User.py:81 ../templates/workouts/workoutMacros.jinja2:361
+#: ../logic/model/User.py:85 ../templates/workouts/workoutMacros.jinja2:361
 msgid "Average Heart Rate"
 msgstr "Durchschnittliche Herzfrequenz"
 
-#: ../logic/model/User.py:83 ../templates/maps/mapLongDistanceTour.jinja2:119
+#: ../logic/model/User.py:87 ../templates/maps/mapLongDistanceTour.jinja2:119
 #: ../templates/maps/mapSingleWorkout.jinja2:125
 msgid "Elevation Sum"
 msgstr "Summe Höhenmeter"
@@ -364,7 +364,7 @@ msgstr "Wandern"
 msgid "Fitness Workout"
 msgstr "Fitness Workout"
 
-#: ../logic/service/NtfyService.py:57
+#: ../logic/service/NtfyService.py:58
 msgid ""
 "SportTracker: Maintenance \"{name}\" exceeds configured limit\n"
 "\n"
@@ -1758,6 +1758,10 @@ msgstr "Basiert auf geplanter Tour"
 #: ../templates/workouts/workoutMacros.jinja2:592
 msgid "Not based on a Planned Tour"
 msgstr "Basiert auf keiner geplanten Tour"
+
+#: ../templates/workouts/workoutMacros.jinja2:594
+msgid "shared by "
+msgstr "geteilt von "
 
 #: ../templates/workouts/workoutRunningForm.jinja2:6
 #: ../templates/workouts/workoutRunningForm.jinja2:22
