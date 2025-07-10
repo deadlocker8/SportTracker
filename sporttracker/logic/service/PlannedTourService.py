@@ -68,7 +68,7 @@ class PlannedTourService:
         files: dict[str, FileStorage],
         shared_user_ids: list[int],
         user_id: int,
-    ) -> DistanceWorkout:
+    ) -> PlannedTour:
         gpxMetadataId = self._gpx_service.handle_gpx_upload_for_planned_tour(files, self._gpx_preview_image_settings)
 
         sharedUsers = get_users_by_ids(shared_user_ids)

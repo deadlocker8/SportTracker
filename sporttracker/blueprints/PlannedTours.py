@@ -168,14 +168,14 @@ def construct_blueprint(
     def addPost(form: PlannedTourFormModel):
         shared_user_ids = [int(item) for item in request.form.getlist('sharedUsers')]
 
-        plannedTourService.add_planned_tour(
+        planned_tour = plannedTourService.add_planned_tour(
             form_model=form,
             files=request.files,
             shared_user_ids=shared_user_ids,
             user_id=current_user.id,
         )
 
-        return redirect(url_for('plannedTours.listPlannedTours'))
+        return redirect(url_for('maps.showPlannedTour', tour_id=planned_tour.id))
 
     @plannedTours.route('/edit/<int:tour_id>')
     @login_required
@@ -240,7 +240,7 @@ def construct_blueprint(
                 user_id=current_user.id,
             )
 
-            return redirect(url_for('plannedTours.listPlannedTours'))
+            return redirect(url_for('maps.showPlannedTour', tour_id=tour_id))
         except ValueError:
             abort(404)
 
