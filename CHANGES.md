@@ -5,6 +5,7 @@
 - add: best month achievement: show best 5 months on click (#208)
 - add: filter states are now saved in the database and therefore independent of the device and login session (#229)
 - add: redirect to planned tour map instead of all planned tours page after saving a planned tour (#232)
+- add: distance workout form: link planned tour: mark planned tours shared by other users (#231)
 - fix: planned tour map: link to editor no longer overlaps on small devices (#224)
 - fix: charts: speed/duration per workout: start y-axis near min value instead of zero (#219)
 - fix: annual achievements: remove duplicated HTML Tag bracket (#235)
