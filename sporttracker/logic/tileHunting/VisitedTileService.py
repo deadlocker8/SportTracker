@@ -6,7 +6,7 @@ from sqlalchemy import extract, text, func, or_
 from sqlalchemy.orm import aliased
 
 from sporttracker.logic.GpxService import VisitedTile
-from sporttracker.logic.model.GpxPlannedTiles import GpxPlannedTile
+from sporttracker.logic.model.GpxPlannedTile import GpxPlannedTile
 from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
