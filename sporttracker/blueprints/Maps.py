@@ -1,7 +1,6 @@
 import io
 import logging
 from datetime import datetime
-from operator import attrgetter
 from typing import Any
 
 import flask_babel
@@ -17,8 +16,7 @@ from flask import (
     jsonify,
 )
 from flask_login import login_required, current_user
-from natsort import natsorted, natsort
-from sqlalchemy import func, extract, or_
+from sqlalchemy import func, extract
 
 from sporttracker.blueprints.LongDistanceTours import LongDistanceTourModel
 from sporttracker.blueprints.PlannedTours import PlannedTourModel
@@ -30,10 +28,11 @@ from sporttracker.logic.model.DistanceWorkout import (
     DistanceWorkout,
 )
 from sporttracker.logic.model.LongDistanceTour import get_long_distance_tour_by_id
-from sporttracker.logic.model.PlannedTour import PlannedTour
+from sporttracker.logic.model.PlannedTour import get_planned_tours_filtered
 from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.model.filterStates.PlannedTourFilterState import get_planned_tour_filter_state_by_user
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user, QuickFilterState
 from sporttracker.logic.model.filterStates.TileHuntingFilterState import get_tile_hunting_filter_state_by_user
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
@@ -241,8 +240,6 @@ def construct_blueprint(
     @maps.route('/map/plannedTours')
     @login_required
     def showAllPlannedToursOnMap():
-        quickFilterState = get_quick_filter_state_by_user(current_user.id)
-
         tileRenderUrl = url_for(
             'maps.renderAllTilesWithFilter',
             user_id=current_user.id,
@@ -256,17 +253,12 @@ def construct_blueprint(
 
         gpxInfo = []
 
-        plannedTours: list[PlannedTour] = (
-            PlannedTour.query.filter(
-                or_(
-                    PlannedTour.user_id == current_user.id,
-                    PlannedTour.shared_users.any(id=current_user.id),
-                )
-            )
-            .filter(PlannedTour.type.in_(quickFilterState.get_active_distance_workout_types()))
-            .all()
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
+        plannedTourFilterState = get_planned_tour_filter_state_by_user(current_user.id)
+
+        plannedTours = get_planned_tours_filtered(
+            quickFilterState.get_active_distance_workout_types(), plannedTourFilterState
         )
-        plannedTours = natsorted(plannedTours, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
 
         for tour in plannedTours:
             gpxInfo.append(createGpxInfoPlannedTour(tour.id, tour.name, url_for('plannedTours.edit', tour_id=tour.id)))  # type: ignore[arg-type]
@@ -279,6 +271,7 @@ def construct_blueprint(
             redirectUrl='maps.showAllPlannedToursOnMap',
             tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             tileRenderUrl=tileRenderUrl,
+            plannedTourFilterState=plannedTourFilterState,
         )
 
     @maps.route('/map/<int:workout_id>/renderTile/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')

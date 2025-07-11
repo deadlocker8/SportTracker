@@ -32,27 +32,7 @@
                     </a>
                 </div>
 
-                <form class="mt-2 pt-2" method="POST" action="{{ url_for('plannedTours.applyFilter') }}">
-                    <div class="my-3 d-flex align-items-center justify-content-start justify-content-xxl-center gap-3 overflow-x-auto">
-                        {{ plannedTourMacros.plannedTourFilterStatus(plannedTourFilterState.is_done_selected, plannedTourFilterState.is_todo_selected) }}
-
-                        {{ plannedTourMacros.plannedTourFilterName(plannedTourFilterState.name_filter) }}
-
-                        {{ plannedTourMacros.plannedTourFilterDistance(plannedTourFilterState.minimum_distance, plannedTourFilterState.maximum_distance) }}
-
-                        {{ plannedTourMacros.plannedTourFilterEnum(travelTypes, plannedTourFilterState.get_selected_arrival_methods(), gettext('Arrival Method'), 'plannedTourFilterArrivalMethod') }}
-
-                        {{ plannedTourMacros.plannedTourFilterEnum(travelTypes, plannedTourFilterState.get_selected_departure_methods(), gettext('Departure Method'), 'plannedTourFilterDepartureMethod') }}
-
-                        {{ plannedTourMacros.plannedTourFilterEnum(travelDirections, plannedTourFilterState.get_selected_directions(), gettext('Direction'), 'plannedTourFilterDirection') }}
-
-                        {{ plannedTourMacros.plannedTourFilterLongDistanceTours(plannedTourFilterState.is_long_distance_tours_include_selected, plannedTourFilterState.is_long_distance_tours_exclude_selected) }}
-
-                        <a href="{{ url_for('plannedTours.resetFilter') }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap">{{ gettext('Reset Filter') }}</a>
-
-                        <button id="buttonApplyFilter" type="submit" class="btn btn-sm btn-primary text-nowrap">{{ gettext('Apply Filter') }}</button>
-                    </div>
-                </form>
+                {{ plannedTourMacros.plannedTourFilter(plannedTourFilterState, url_for('plannedTours.listPlannedTours')) }}
 
                 <div class="row py-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
                     {% set ns = namespace(index = 0) %}

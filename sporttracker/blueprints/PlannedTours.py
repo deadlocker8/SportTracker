@@ -316,15 +316,15 @@ def construct_blueprint(
         )
         db.session.commit()
 
-        return redirect(url_for('plannedTours.listPlannedTours'))
+        return redirect(request.form.get('redirectUrl', url_for('plannedTours.listPlannedTours')))
 
-    @plannedTours.route('/resetFilter')
+    @plannedTours.route('/resetFilter>')
     @login_required
     def resetFilter():
         plannedTourFilterState = get_planned_tour_filter_state_by_user(current_user.id)
         plannedTourFilterState.reset()
         db.session.commit()
-        return redirect(url_for('plannedTours.listPlannedTours'))
+        return redirect(request.args.get('redirectUrl', url_for('plannedTours.listPlannedTours')))
 
     return plannedTours
 

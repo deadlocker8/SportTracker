@@ -22,10 +22,11 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('map') }}
 
+        {% import 'plannedTours/plannedToursMacros.jinja2' as plannedTourMacros with context %}
         {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
         {{ mapMacros.mapLocale() }}
 
-        <div class="row my-3">
+        <div class="row mt-3">
             <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center">
                 <div class="d-none d-lg-block">
                     {{ toggleWorkoutsAndPlannedTours('me-5') }}
@@ -73,6 +74,12 @@
                     </form>
                 </div>
             </div>
+
+            {% if mapMode == 'plannedTours' and current_user.isTileHuntingActivated %}
+                <div class="col col-12 px-4 my-3">
+                    {{ plannedTourMacros.plannedTourFilter(plannedTourFilterState, redirectUrl=url_for('maps.showAllPlannedToursOnMap'), classes="mt-3") }}
+                </div>
+            {% endif %}
         </div>
 
         <div id="map" class="leaflet-map w-100 text-dark"></div>

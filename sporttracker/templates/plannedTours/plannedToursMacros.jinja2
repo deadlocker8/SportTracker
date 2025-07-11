@@ -237,3 +237,29 @@
         </div>
     </div>
 {%- endmacro %}
+
+{% macro plannedTourFilter(plannedTourFilterState, redirectUrl, classes="mt-2 pt-2")%}
+    <form class="{{ classes }}" method="POST" action="{{ url_for('plannedTours.applyFilter') }}">
+        <input type="hidden" name="redirectUrl" value="{{ redirectUrl }}">
+
+        <div class="my-3 d-flex align-items-center justify-content-start justify-content-xxl-center gap-3 overflow-x-auto">
+            {{ plannedTourFilterStatus(plannedTourFilterState.is_done_selected, plannedTourFilterState.is_todo_selected) }}
+
+            {{ plannedTourFilterName(plannedTourFilterState.name_filter) }}
+
+            {{ plannedTourFilterDistance(plannedTourFilterState.minimum_distance, plannedTourFilterState.maximum_distance) }}
+
+            {{ plannedTourFilterEnum(travelTypes, plannedTourFilterState.get_selected_arrival_methods(), gettext('Arrival Method'), 'plannedTourFilterArrivalMethod') }}
+
+            {{ plannedTourFilterEnum(travelTypes, plannedTourFilterState.get_selected_departure_methods(), gettext('Departure Method'), 'plannedTourFilterDepartureMethod') }}
+
+            {{ plannedTourFilterEnum(travelDirections, plannedTourFilterState.get_selected_directions(), gettext('Direction'), 'plannedTourFilterDirection') }}
+
+            {{ plannedTourFilterLongDistanceTours(plannedTourFilterState.is_long_distance_tours_include_selected, plannedTourFilterState.is_long_distance_tours_exclude_selected) }}
+
+            <a href="{{ url_for('plannedTours.resetFilter', redirectUrl=redirectUrl) }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap">{{ gettext('Reset Filter') }}</a>
+
+            <button id="buttonApplyFilter" type="submit" class="btn btn-sm btn-primary text-nowrap">{{ gettext('Apply Filter') }}</button>
+        </div>
+    </form>
+{%- endmacro %}
