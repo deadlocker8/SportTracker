@@ -10,7 +10,6 @@ from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import create_user, Language
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
-from tests.blueprints.test_PlannedTours import TestPlannedTours
 
 TEST_USERNAME_2 = 'test_user_2'
 TEST_PASSWORD_2 = 'abcdef'
@@ -45,11 +44,16 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
 
     def __create_planned_tour(self, selenium, name):
         selenium.get(self.build_url('/plannedTours'))
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
+        )
 
         selenium.find_element(By.CLASS_NAME, 'headline').find_element(By.TAG_NAME, 'a').click()
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'New Planned Tour')
         )
+
+        from tests.blueprints.test_PlannedTours import TestPlannedTours
 
         TestPlannedTours.fill_form(
             selenium, WorkoutType.BIKING, name, 'arrival-method-2', 'departure-method-2', 'direction-2'
@@ -58,7 +62,7 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSavePlannedTour')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'planned-tour-name'), name)
         )
 
     @staticmethod
