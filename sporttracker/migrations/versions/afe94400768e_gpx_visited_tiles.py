@@ -112,4 +112,8 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table('gpx_visited_tiles')
+    inspector = Inspector.from_engine(op.get_bind().engine)
+    tableNames = inspector.get_table_names()
+
+    if 'gpx_visited_tile' not in tableNames:
+        op.drop_table('gpx_visited_tile')
