@@ -4,7 +4,7 @@ from sqlalchemy import extract
 
 from sporttracker.logic import Constants
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
-from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
+from sporttracker.logic.model.GpxVisitedTile import GpxVisitedTile
 from sporttracker.logic.model.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

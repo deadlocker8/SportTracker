@@ -10,7 +10,7 @@ from werkzeug.datastructures import FileStorage
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_workout_ids_by_planned_tour
-from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
+from sporttracker.logic.model.GpxVisitedTile import GpxVisitedTile
 from sporttracker.logic.model.LongDistanceTour import (
     LongDistanceTourPlannedTourAssociation,
     get_long_distance_tour_by_id,

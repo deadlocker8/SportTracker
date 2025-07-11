@@ -17,7 +17,7 @@ from sporttracker.logic.tileHunting.NewVisitedTileCache import (
     NewVisitedTileCache,
 )
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
-from sporttracker.logic.model.GpxVisitedTiles import GpxVisitedTile
+from sporttracker.logic.model.GpxVisitedTile import GpxVisitedTile
 from sporttracker.logic.model.db import db
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 
