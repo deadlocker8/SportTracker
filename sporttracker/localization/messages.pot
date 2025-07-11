@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-10 22:46+0200\n"
+"POT-Creation-Date: 2025-07-12 00:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -119,31 +119,31 @@ msgstr ""
 msgid "Incorrect password"
 msgstr ""
 
-#: ../blueprints/Charts.py:140
+#: ../blueprints/Charts.py:141
 msgid "Unknown"
 msgstr ""
 
-#: ../blueprints/Charts.py:149
+#: ../blueprints/Charts.py:150
 msgid "Distance per custom field"
 msgstr ""
 
-#: ../blueprints/Charts.py:177
+#: ../blueprints/Charts.py:178
 msgid "You"
 msgstr ""
 
-#: ../blueprints/Charts.py:194
+#: ../blueprints/Charts.py:195
 msgid "Distance per participant for workout type "
 msgstr ""
 
-#: ../blueprints/Charts.py:277 ../templates/charts/chartChooser.jinja2:63
+#: ../blueprints/Charts.py:278 ../templates/charts/chartChooser.jinja2:63
 msgid "Duration per Workout"
 msgstr ""
 
-#: ../blueprints/Charts.py:354 ../templates/charts/chartChooser.jinja2:70
+#: ../blueprints/Charts.py:355 ../templates/charts/chartChooser.jinja2:70
 msgid "Speed per Workout"
 msgstr ""
 
-#: ../blueprints/Charts.py:610
+#: ../blueprints/Charts.py:612
 msgid "Tiles"
 msgstr ""
 
@@ -163,7 +163,7 @@ msgstr ""
 msgid "FIT file does not contain session data"
 msgstr ""
 
-#: ../blueprints/Maps.py:560
+#: ../blueprints/Maps.py:577
 #: ../templates/longDistanceTours/longDistanceTourForm.jinja2:154
 #: ../templates/maps/mapLongDistanceTour.jinja2:101
 #: ../templates/maps/mapLongDistanceTour.jinja2:185
@@ -409,7 +409,7 @@ msgid "Users"
 msgstr ""
 
 #: ../templates/macros.jinja2:54 ../templates/maps/mapMultipleWorkouts.jinja2:6
-#: ../templates/plannedTours/plannedTours.jinja2:124
+#: ../templates/plannedTours/plannedTours.jinja2:104
 #: ../templates/workouts/workouts.jinja2:5
 #: ../templates/workouts/workouts.jinja2:25
 msgid "Workouts"
@@ -755,12 +755,12 @@ msgid "Save"
 msgstr ""
 
 #: ../templates/longDistanceTours/longDistanceTours.jinja2:42
-#: ../templates/plannedTours/plannedTours.jinja2:71
+#: ../templates/plannedTours/plannedTours.jinja2:51
 msgid "new"
 msgstr ""
 
 #: ../templates/longDistanceTours/longDistanceTours.jinja2:44
-#: ../templates/plannedTours/plannedTours.jinja2:73
+#: ../templates/plannedTours/plannedTours.jinja2:53
 msgid "updated"
 msgstr ""
 
@@ -771,7 +771,7 @@ msgid "Stages"
 msgstr ""
 
 #: ../templates/longDistanceTours/longDistanceTours.jinja2:78
-#: ../templates/plannedTours/plannedTours.jinja2:116
+#: ../templates/plannedTours/plannedTours.jinja2:96
 msgid "shared"
 msgstr ""
 
@@ -779,7 +779,7 @@ msgstr ""
 #: ../templates/maps/mapLongDistanceTour.jinja2:169
 #: ../templates/maps/mapPlannedTour.jinja2:62
 #: ../templates/maps/mapPlannedTour.jinja2:146
-#: ../templates/plannedTours/plannedTours.jinja2:128
+#: ../templates/plannedTours/plannedTours.jinja2:108
 msgid "last edited"
 msgstr ""
 
@@ -874,12 +874,12 @@ msgid "Value:"
 msgstr ""
 
 #: ../templates/maintenances/maintenances.jinja2:103
-#: ../templates/plannedTours/plannedTours.jinja2:51
+#: ../templates/plannedTours/plannedToursMacros.jinja2:260
 msgid "Reset Filter"
 msgstr ""
 
 #: ../templates/maintenances/maintenances.jinja2:105
-#: ../templates/plannedTours/plannedTours.jinja2:53
+#: ../templates/plannedTours/plannedToursMacros.jinja2:262
 msgid "Apply Filter"
 msgstr ""
 
@@ -1063,7 +1063,11 @@ msgstr ""
 msgid "Show max square"
 msgstr ""
 
-#: ../templates/maps/mapMultipleWorkouts.jinja2:58
+#: ../templates/maps/mapMacros.jinja2:184
+msgid "Show planned tiles"
+msgstr ""
+
+#: ../templates/maps/mapMultipleWorkouts.jinja2:70
 #: ../templates/maps/mapTileHunting.jinja2:49
 #: ../templates/maps/mapTileHuntingHeatmap.jinja2:40
 msgid "Apply"
@@ -1090,20 +1094,20 @@ msgstr ""
 
 #: ../templates/maps/mapPlannedTour.jinja2:48
 #: ../templates/maps/mapPlannedTour.jinja2:96
-#: ../templates/plannedTours/plannedTours.jinja2:98
+#: ../templates/plannedTours/plannedTours.jinja2:78
 msgid "Arrival"
 msgstr ""
 
 #: ../templates/maps/mapPlannedTour.jinja2:51
 #: ../templates/maps/mapPlannedTour.jinja2:100
-#: ../templates/plannedTours/plannedTours.jinja2:102
+#: ../templates/plannedTours/plannedTours.jinja2:82
 msgid "Departure"
 msgstr ""
 
 #: ../templates/maps/mapPlannedTour.jinja2:54
 #: ../templates/maps/mapPlannedTour.jinja2:104
 #: ../templates/plannedTours/plannedTourForm.jinja2:88
-#: ../templates/plannedTours/plannedTours.jinja2:47
+#: ../templates/plannedTours/plannedToursMacros.jinja2:256
 msgid "Direction"
 msgstr ""
 
@@ -1396,14 +1400,6 @@ msgstr ""
 msgid "View all on map"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTours.jinja2:43
-msgid "Arrival Method"
-msgstr ""
-
-#: ../templates/plannedTours/plannedTours.jinja2:45
-msgid "Departure Method"
-msgstr ""
-
 #: ../templates/plannedTours/plannedToursMacros.jinja2:6
 msgid "Share this tour with"
 msgstr ""
@@ -1451,6 +1447,14 @@ msgstr ""
 
 #: ../templates/plannedTours/plannedToursMacros.jinja2:234
 msgid "Not part of long-distance tour"
+msgstr ""
+
+#: ../templates/plannedTours/plannedToursMacros.jinja2:252
+msgid "Arrival Method"
+msgstr ""
+
+#: ../templates/plannedTours/plannedToursMacros.jinja2:254
+msgid "Departure Method"
 msgstr ""
 
 #: ../templates/settings/customFieldsForm.jinja2:6
