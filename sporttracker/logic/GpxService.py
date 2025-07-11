@@ -18,13 +18,14 @@ from werkzeug.datastructures.file_storage import FileStorage
 from sporttracker.logic import Constants
 from sporttracker.logic.FitToGpxConverter import FitToGpxConverter
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
-from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
-from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
+from sporttracker.logic.model.GpxPlannedTile import GpxPlannedTile
 from sporttracker.logic.model.GpxVisitedTile import GpxVisitedTile
 from sporttracker.logic.model.PlannedTour import PlannedTour
-from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.db import db
+from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
+from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -238,6 +239,10 @@ class GpxService:
 
                 self._newVisitedTileCache.invalidate_cache_entry_by_user(userId)
                 self._maxSquareCache.invalidate_cache_entry_by_user(userId)
+            else:
+                db.session.execute(delete(GpxPlannedTile).where(GpxPlannedTile.planned_tour_id == item.id))
+                LOGGER.debug(f'Deleted gpx planned tiles for planned tour with id {item.id}')
+                db.session.commit()
 
             try:
                 shutil.rmtree(self.get_folder_path(gpxMetadata.gpx_file_name))
@@ -257,6 +262,14 @@ class GpxService:
 
         self._newVisitedTileCache.invalidate_cache_entry_by_user(userId)
         self._maxSquareCache.invalidate_cache_entry_by_user(userId)
+
+    def add_planned_tiles_for_planned_tour(self, plannedTour: PlannedTour, baseZoomLevel: int, userId: int):
+        visitedTiles = self.get_visited_tiles(plannedTour.get_gpx_metadata().gpx_file_name, baseZoomLevel)  # type: ignore[union-attr]
+
+        for tile in visitedTiles:
+            gpxPlannedTile = GpxPlannedTile(planned_tour_id=plannedTour.id, x=tile.x, y=tile.y)
+            db.session.add(gpxPlannedTile)
+            db.session.commit()
 
     def get_visited_tiles(self, gpxFileName: str, baseZoomLevel: int) -> list[VisitedTile]:
         gpxParser = GpxParser(self.get_gpx_content(gpxFileName))  # type: ignore[union-attr]

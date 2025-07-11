@@ -91,6 +91,11 @@ class PlannedTourService:
         db.session.add(plannedTour)
         db.session.commit()
 
+        if gpxMetadataId is not None:
+            self._gpx_service.add_planned_tiles_for_planned_tour(
+                plannedTour, self._tile_hunting_settings['baseZoomLevel'], user_id
+            )
+
         LOGGER.debug(f'Saved new planned tour: {plannedTour}')
 
         linkedLongDistanceTours = LongDistanceTourPlannedTourAssociation.query.filter(
@@ -159,9 +164,11 @@ class PlannedTourService:
         plannedTour.direction = TravelDirection(form_model.direction)  # type: ignore[call-arg]
         plannedTour.share_code = form_model.share_code if form_model.share_code else None  # type: ignore[assignment]
 
+        shouldUpdateVisitedTiles = False
         newGpxMetadataId = self._gpx_service.handle_gpx_upload_for_planned_tour(files, self._gpx_preview_image_settings)
         if plannedTour.gpx_metadata_id is None:
             plannedTour.gpx_metadata_id = newGpxMetadataId
+            shouldUpdateVisitedTiles = True
         else:
             if newGpxMetadataId is not None:
                 self._gpx_service.delete_gpx(plannedTour, user_id)
@@ -173,6 +180,7 @@ class PlannedTourService:
                 self.__update_gpx_preview_image_for_long_distance_tours(
                     [t.long_distance_tour_id for t in linkedLongDistanceTours]
                 )
+                shouldUpdateVisitedTiles = True
 
         sharedUsers = get_users_by_ids(shared_user_ids)
         plannedTour.shared_users = sharedUsers
@@ -195,6 +203,11 @@ class PlannedTourService:
 
         LOGGER.debug(f'Updated planned tour: {plannedTour}')
         db.session.commit()
+
+        if shouldUpdateVisitedTiles and plannedTour.gpx_metadata_id is not None:
+            self._gpx_service.add_planned_tiles_for_planned_tour(
+                plannedTour, self._tile_hunting_settings['baseZoomLevel'], user_id
+            )
 
         return plannedTour
 

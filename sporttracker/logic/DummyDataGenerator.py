@@ -419,6 +419,9 @@ class DummyDataGenerator:
 
             self.__append_gpx(plannedTour)
             db.session.add(plannedTour)
+
+            self._gpxService.add_planned_tiles_for_planned_tour(plannedTour, 14, user.id)
+
             lastPlannedTour = plannedTour
 
         db.session.commit()
