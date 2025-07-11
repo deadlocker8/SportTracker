@@ -222,6 +222,8 @@ def construct_blueprint(
             tileRenderUrl=tileRenderUrl,
             tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             tileHuntingNumberOfNewVisitedTiles=plannedTourService.get_number_of_new_visited_tiles(plannedTour),
+            maxSquareColor=tileHuntingSettings['maxSquareColor'],
+            plannedTileColor=TileRenderService.COLOR_PLANNED,
         )
 
     @maps.route('/map/plannedTour/shared/<string:shareCode>')
@@ -276,6 +278,8 @@ def construct_blueprint(
             tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             tileRenderUrl=tileRenderUrl,
             plannedTourFilterState=plannedTourFilterState,
+            maxSquareColor=tileHuntingSettings['maxSquareColor'],
+            plannedTileColor=TileRenderService.COLOR_PLANNED,
         )
 
     @maps.route('/map/<int:workout_id>/renderTile/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')
