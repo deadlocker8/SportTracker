@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from sqlalchemy import Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
@@ -24,12 +26,14 @@ class TileHuntingFilterState(db.Model):  # type: ignore[name-defined]
             f'is_show_planned_tiles_active: {self.is_show_planned_tiles_active})'
         )
 
-    def reset(self) -> None:
+    def reset(self) -> TileHuntingFilterState:
         self.is_show_tiles_active = True  # type: ignore[assignment]
         self.is_show_grid_active = True  # type: ignore[assignment]
         self.is_only_highlight_new_tiles_active = True  # type: ignore[assignment]
         self.is_show_max_square_active = True  # type: ignore[assignment]
         self.is_show_planned_tiles_active = True  # type: ignore[assignment]
+
+        return self
 
 
 def get_tile_hunting_filter_state_by_user(user_id: int) -> TileHuntingFilterState:

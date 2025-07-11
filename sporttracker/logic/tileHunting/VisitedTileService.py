@@ -2,11 +2,15 @@ import math
 from dataclasses import dataclass
 
 from flask_login import current_user
-from sqlalchemy import extract, text, func
+from sqlalchemy import extract, text, func, or_
 from sqlalchemy.orm import aliased
 
+from sporttracker.logic.GpxService import VisitedTile
+from sporttracker.logic.model.GpxPlannedTiles import GpxPlannedTile
+from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
+from sporttracker.logic.model.filterStates.TileHuntingFilterState import TileHuntingFilterState
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import (
     NewTilesPerDistanceWorkout,
@@ -40,16 +44,16 @@ class VisitedTileService:
         newVisitedTileCache: NewVisitedTileCache,
         maxSquareCache: MaxSquareCache,
         quickFilterState: QuickFilterState,
+        tileHuntingFilterState: TileHuntingFilterState,
         distanceWorkoutService: DistanceWorkoutService,
         workoutId: int | None = None,
-        onlyHighlightNewTiles: bool = False,
     ) -> None:
         self._newVisitedTileCache = newVisitedTileCache
         self._maxSquareCache = maxSquareCache
         self._quickFilterState = quickFilterState
+        self._tileHuntingFilterState = tileHuntingFilterState
         self._distanceWorkoutService = distanceWorkoutService
         self._workoutId = workoutId
-        self._onlyHighlightNewTiles = onlyHighlightNewTiles
 
     def calculate_total_number_of_visited_tiles(
         self,
@@ -73,7 +77,12 @@ class VisitedTileService:
             return self.__determine_tile_colors_of_all_workouts_that_visit_tiles(min_x, max_x, min_y, max_y, user_id)
 
         return self.__determine_tile_colors_of_single_workout(
-            min_x, max_x, min_y, max_y, self._workoutId, self._onlyHighlightNewTiles
+            min_x,
+            max_x,
+            min_y,
+            max_y,
+            self._workoutId,
+            self._tileHuntingFilterState.is_only_highlight_new_tiles_active,  # type: ignore[arg-type]
         )
 
     def __determine_tile_colors_of_all_workouts_that_visit_tiles(
@@ -98,6 +107,39 @@ class VisitedTileService:
         )
 
         return [TileColorPosition(r[0].tile_color, r[1], r[2]) for r in rows]
+
+    def determine_planned_tiles(
+        self, min_x: int, max_x: int, min_y: int, max_y: int, user_id: int
+    ) -> list[VisitedTile]:
+        if self._workoutId is not None:
+            return []
+
+        if not self._tileHuntingFilterState.is_show_planned_tiles_active:  # type: ignore[arg-type]
+            return []
+
+        plannedTourAlias = aliased(PlannedTour)
+        gpxPlannedTileAlias = aliased(GpxPlannedTile)
+
+        rows = (
+            plannedTourAlias.query.select_from(plannedTourAlias)
+            .join(gpxPlannedTileAlias, gpxPlannedTileAlias.planned_tour_id == plannedTourAlias.id)
+            .with_entities(gpxPlannedTileAlias.x, gpxPlannedTileAlias.y)
+            .filter(
+                or_(
+                    plannedTourAlias.user_id == user_id,
+                    plannedTourAlias.shared_users.any(id=user_id),
+                )
+            )
+            .filter(plannedTourAlias.type.in_(self._quickFilterState.get_active_distance_workout_types()))
+            .filter(gpxPlannedTileAlias.x >= min_x)
+            .filter(gpxPlannedTileAlias.x <= max_x)
+            .filter(gpxPlannedTileAlias.y >= min_y)
+            .filter(gpxPlannedTileAlias.y <= max_y)
+            .group_by(gpxPlannedTileAlias.x, gpxPlannedTileAlias.y)
+            .all()
+        )
+
+        return [VisitedTile(r[0], r[1]) for r in rows]
 
     def determine_number_of_visits(
         self, min_x: int, max_x: int, min_y: int, max_y: int, user_id: int

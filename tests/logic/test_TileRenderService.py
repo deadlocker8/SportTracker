@@ -37,12 +37,16 @@ class TestTileRenderService:
         assert (17599, 10747) in result
 
     def test_calculate_color_not_visited(self):
-        color = TileRenderService.calculate_color(35199, 21494, [])
+        color = TileRenderService.calculate_color(35199, 21494, [], False)
         assert color == (0, 0, 0, 0)
+
+    def test_calculate_color_not_visited_but_planned(self):
+        color = TileRenderService.calculate_color(35199, 21494, [], True)
+        assert color == (0, 0, 0, 85)
 
     def test_calculate_color_visited_only_one_match(self):
         color = TileRenderService.calculate_color(
-            35199, 21494, [TileColorPosition(self.COLOR_VISITED_HEX, 35199, 21494)]
+            35199, 21494, [TileColorPosition(self.COLOR_VISITED_HEX, 35199, 21494)], False
         )
         assert color == self.COLOR_VISITED
 
@@ -51,7 +55,7 @@ class TestTileRenderService:
             TileColorPosition(self.COLOR_VISITED_HEX, 35199, 21494),
             TileColorPosition('#00FF00FF', 35199, 21494),
         ]
-        color = TileRenderService.calculate_color(35199, 21494, tileColorPositions)
+        color = TileRenderService.calculate_color(35199, 21494, tileColorPositions, False)
         assert color == (255, 0, 0, 96)
 
     def test_calculate_border_color_not_a_border_pixel(self):
@@ -88,6 +92,7 @@ class TestTileRenderService:
 
         visitedTileService = Mock()
         visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles.side_effect = mocked_color_method
+        visitedTileService.determine_planned_tiles.return_value = []
 
         service = TileRenderService(14, 4, visitedTileService)
         image = service.render_image(
@@ -132,6 +137,7 @@ class TestTileRenderService:
 
         visitedTileService = Mock()
         visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles.side_effect = mocked_color_method
+        visitedTileService.determine_planned_tiles.return_value = []
 
         service = TileRenderService(14, 4, visitedTileService)
         image = service.render_image(
@@ -175,6 +181,8 @@ class TestTileRenderService:
 
         visitedTileService = Mock()
         visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles.side_effect = mocked_color_method
+        visitedTileService.determine_planned_tiles.return_value = []
+
         service = TileRenderService(15, 4, visitedTileService)
         image = service.render_image(
             35198,

@@ -28,6 +28,7 @@ from sporttracker.logic.model.Workout import (
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user, QuickFilterState
+from sporttracker.logic.model.filterStates.TileHuntingFilterState import TileHuntingFilterState
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
@@ -568,6 +569,7 @@ def construct_blueprint(
                 newVisitedTileCache,
                 maxSquareCache,
                 QuickFilterState().reset(get_available_years(current_user.id)),
+                TileHuntingFilterState().reset(),
                 distanceWorkoutService,
             )
 
