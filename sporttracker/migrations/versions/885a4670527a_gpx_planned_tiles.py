@@ -91,6 +91,39 @@ def upgrade():
     inspector = Inspector.from_engine(op.get_bind().engine)
     tableNames = inspector.get_table_names()
 
+    __handle_new_table_gpx_planned_tiles(tableNames)
+
+    columns = inspector.get_columns('maintenance')
+    columnNames = [column['name'] for column in columns]
+
+    if 'is_show_planned_tiles_active' not in columnNames:
+        op.add_column(
+            'filter_state_tile_hunting',
+            sa.Column('is_show_planned_tiles_active', sa.Boolean(), nullable=True),
+        )
+
+        connection = op.get_bind()
+        connection.execute(
+            text(
+                'UPDATE filter_state_tile_hunting SET is_show_planned_tiles_active=True WHERE is_show_planned_tiles_active is NULL;'
+            )
+        )
+
+
+def downgrade():
+    inspector = Inspector.from_engine(op.get_bind().engine)
+    tableNames = inspector.get_table_names()
+
+    if 'gpx_planned_tile' not in tableNames:
+        op.drop_table('gpx_planned_tile')
+
+    columnNames = inspector.get_columns('filter_state_tile_hunting')
+
+    if 'is_show_planned_tiles_active' in columnNames:
+        op.drop_column('filter_state_tile_hunting', 'is_show_planned_tiles_active')
+
+
+def __handle_new_table_gpx_planned_tiles(tableNames):
     if 'gpx_planned_tile' not in tableNames:
         op.create_table(
             'gpx_planned_tile',
@@ -133,11 +166,3 @@ def upgrade():
                         f"INSERT INTO gpx_planned_tile(planned_tour_id, x, y) VALUES ('{plannedTourId}', '{tile.x}', '{tile.y}');"
                     )
                 )
-
-
-def downgrade():
-    inspector = Inspector.from_engine(op.get_bind().engine)
-    tableNames = inspector.get_table_names()
-
-    if 'gpx_planned_tile' not in tableNames:
-        op.drop_table('gpx_planned_tile')

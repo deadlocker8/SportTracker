@@ -123,7 +123,7 @@
     </div>
 {%- endmacro %}
 
-{% macro tileHuntingMapSettings(tileHuntingFilterState, redirectUrl, enableNewTilesOption=true, enableMaxSquareOption=false, forceButtonText=false, classes="ms-3") -%}
+{% macro tileHuntingMapSettings(tileHuntingFilterState, redirectUrl, enableNewTilesOption=true, enableMaxSquareOption=false, enablePlannedTileOption=false, forceButtonText=false, classes="ms-3") -%}
     <div class="dropdown {{ classes }}">
         <button class="btn btn-sm btn-primary dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="material-symbols-outlined fs-5">explore</span>
@@ -170,6 +170,18 @@
                            data-url="{{ url_for('maps.toggleTileHuntingMaxSquare', redirectUrl=redirectUrl) }}">
                     <label class="form-check-label d-flex align-items-center" for="tileHuntingEnableMaxSquare">
                         <span class="material-symbols-outlined fs-5">arrows_output</span>&nbsp;{{ gettext('Show max square') }}
+                    </label>
+                </div>
+            {% endif %}
+            {% if enablePlannedTileOption %}
+                <div class="form-check text-nowrap mt-2">
+                    <input class="form-check-input tileHuntingCheckbox" type="checkbox"
+                           id="tileHuntingEnableShowPlannedTiles"
+                           {% if tileHuntingFilterState.is_show_planned_tiles_active %}checked{% endif %}
+                           {% if not tileHuntingFilterState.is_show_tiles_active %}disabled{% endif %}
+                           data-url="{{ url_for('maps.toggleTileHuntingShowPlannedTiles', redirectUrl=redirectUrl) }}">
+                    <label class="form-check-label d-flex align-items-center" for="tileHuntingEnableShowPlannedTiles">
+                        <i class="fa-solid fa-lightbulb fa-fw fs-5"></i>&nbsp;{{ gettext('Show planned tiles') }}
                     </label>
                 </div>
             {% endif %}

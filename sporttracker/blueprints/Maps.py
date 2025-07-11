@@ -622,6 +622,17 @@ def construct_blueprint(
 
         return redirect(redirectUrl)
 
+    @maps.route('/toggleTileHuntingShowPlannedTiles')
+    @login_required
+    def toggleTileHuntingShowPlannedTiles():
+        redirectUrl = request.args['redirectUrl']
+        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
+        currentValue = tileHuntingFilterState.is_show_planned_tiles_active
+        tileHuntingFilterState.is_show_planned_tiles_active = not currentValue  # type: ignore[assignment]
+        db.session.commit()
+
+        return redirect(redirectUrl)
+
     def __create_visited_tile_service(quickFilterState):
         return VisitedTileService(
             newVisitedTileCache,
