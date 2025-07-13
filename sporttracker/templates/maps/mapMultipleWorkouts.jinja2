@@ -76,13 +76,13 @@
             </div>
 
             {% if mapMode == 'plannedTours' and current_user.isTileHuntingActivated %}
-                <div class="col col-12 px-4 my-3">
+                <div class="col col-12 px-4 mt-3">
                     {{ plannedTourMacros.plannedTourFilter(plannedTourFilterState, redirectUrl=url_for('maps.showAllPlannedToursOnMap'), classes="mt-3") }}
                 </div>
             {% endif %}
         </div>
 
-        <div id="map" class="leaflet-map w-100 text-dark"></div>
+        <div id="map" class="leaflet-map w-100 text-dark mt-3"></div>
 
         <script>
             gpxInfo = {{ gpxInfo }};
