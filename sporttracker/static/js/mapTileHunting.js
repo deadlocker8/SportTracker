@@ -17,6 +17,15 @@ document.addEventListener('DOMContentLoaded', function()
         window.location.href = checkboxMaxSquare.dataset.url;
     });
 
+    const tileHuntingCheckboxes = document.getElementsByClassName('tileHuntingCheckbox');
+    for(let i = 0; i < tileHuntingCheckboxes.length; i++)
+    {
+        tileHuntingCheckboxes[i].addEventListener('change', function()
+        {
+            window.location.href = tileHuntingCheckboxes[i].dataset.url;
+        });
+    }
+
     initMap();
 });
 

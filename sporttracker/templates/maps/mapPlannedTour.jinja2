@@ -27,7 +27,7 @@
             </div>
 
             {% if editUrl and current_user.isTileHuntingActivated %}
-                {{ mapMacros.tileHuntingMapSettings(tileHuntingFilterState, url_for('maps.showPlannedTour', tour_id=plannedTour.id),  enableNewTilesOption=false, enableMaxSquareOption=true, enablePlannedTileOption=true) }}
+                {{ mapMacros.tileHuntingMapSettings(tileHuntingFilterState, url_for('maps.showPlannedTour', tour_id=plannedTour.id), enableTilesOption=true, enableGridOption=true, enableNewTilesOption=false, enableMaxSquareOption=true, enablePlannedTileOption=true) }}
                 <div class="fs-5 ms-3">{{ tileHuntingNumberOfNewVisitedTiles }} {{ gettext('new tiles') }}</div>
             {% endif %}
         </div>

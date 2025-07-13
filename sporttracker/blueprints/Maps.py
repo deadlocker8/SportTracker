@@ -595,6 +595,7 @@ def construct_blueprint(
             tileRenderUrl=tileRenderUrl,
             tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             isGpxPreviewImagesEnabled=gpxPreviewImageSettings['enabled'],
+            maxSquareColor=tileHuntingSettings['maxSquareColor'],
         )
 
     @maps.route('/toggleTileHuntingViewTiles')
