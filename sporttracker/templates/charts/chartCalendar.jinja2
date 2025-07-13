@@ -21,13 +21,15 @@
 
                 {{ macros.workout_type_quick_filter(url_for('charts.chartCalendar', year=selectedYear), false) }}
 
-                 <div class="row mb-3 mt-4">
+                <div class="row mb-3 mt-4">
                     <div class="col col-12 mx-auto">
-                        {% for year in availableYears %}
-                            <a href="{{ url_for('charts.chartCalendar', year=year) }}" class="btn btn-primary btn-sm">
-                                <span class=" text-light">{{ year }}</span>
-                            </a>
-                        {% endfor %}
+                        <div class="d-flex justify-content-center overflow-x-auto">
+                            {% for year in availableYears %}
+                                <a href="{{ url_for('charts.chartCalendar', year=year) }}" class="btn btn-primary btn-sm me-1 {% if year==selectedYear %}btn-secondary{% endif %}">
+                                    <span class=" text-light">{{ year }}</span>
+                                </a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
 
