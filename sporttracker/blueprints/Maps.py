@@ -416,8 +416,12 @@ def construct_blueprint(
         if user is None:
             abort(404)
 
+        tileHuntingFilterState = TileHuntingFilterState().reset()
+        tileHuntingFilterState.is_show_max_square_active = False  # type: ignore[assignment]
+        tileHuntingFilterState.is_show_planned_tiles_active = user.isTileHuntingShowPlannedTilesActivated  # type: ignore[assignment]
+
         visitedTileService = __create_visited_tile_service(
-            QuickFilterState().reset(get_available_years(user.id)), TileHuntingFilterState().reset()
+            QuickFilterState().reset(get_available_years(user.id)), tileHuntingFilterState
         )
         tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
 

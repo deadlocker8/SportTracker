@@ -44,6 +44,7 @@ class EditSelfLanguageFormModel(BaseModel):
 class EditSelfTileHuntingFormModel(BaseModel):
     isTileHuntingActivated: bool | None = None
     isTileHuntingAccessActivated: bool | None = None
+    isTileHuntingShowPlannedTilesActivated: bool | None = None
 
 
 class EditDistanceWorkoutInfoItemsModel(BaseModel):
@@ -169,6 +170,7 @@ def construct_blueprint():
 
         user.isTileHuntingActivated = bool(form.isTileHuntingActivated)
         user.isTileHuntingAccessActivated = bool(form.isTileHuntingAccessActivated)
+        user.isTileHuntingShowPlannedTilesActivated = bool(form.isTileHuntingShowPlannedTilesActivated)
 
         if user.isTileHuntingAccessActivated:
             if user.tileHuntingShareCode is None:
@@ -180,7 +182,8 @@ def construct_blueprint():
             f'Updated tile hunting settings for user: {user.username} to '
             f'"isTileHuntingActivated": {bool(form.isTileHuntingActivated)}, '
             f'"isTileHuntingAccessActivated": {bool(form.isTileHuntingAccessActivated)}, '
-            f'"tileHuntingShareCode": {user.tileHuntingShareCode}'
+            f'"tileHuntingShareCode": {user.tileHuntingShareCode}, '
+            f'"isTileHuntingShowPlannedTilesActivated": {bool(user.isTileHuntingShowPlannedTilesActivated)}'
         )
         db.session.commit()
 

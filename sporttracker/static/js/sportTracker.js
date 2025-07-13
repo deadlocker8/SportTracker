@@ -169,6 +169,15 @@ document.addEventListener('DOMContentLoaded', function()
             xhr.send(formData);
         });
     }
+
+    let isTileHuntingAccessActivated = document.getElementById('isTileHuntingAccessActivated');
+    if(isTileHuntingAccessActivated !== null)
+    {
+        isTileHuntingAccessActivated.addEventListener('click', function()
+        {
+            document.getElementById('isTileHuntingShowPlannedTilesActivated').disabled = !isTileHuntingAccessActivated.checked;
+        });
+    }
 });
 
 function toggleFitFileImport(buttonImportFromFitFile, disable)
