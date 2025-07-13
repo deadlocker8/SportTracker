@@ -275,6 +275,10 @@ select[disabled] {
     cursor: pointer;
 }
 
+#dropdown-years-container {
+    max-height: 30vh;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

@@ -206,3 +206,40 @@
         </div>
     </div>
 {%- endmacro %}
+
+{% macro mapYearFilter(availableYears, quickFilterState, redirectUrl) -%}
+    {% set allSelected = availableYears|check_all_items_included(quickFilterState.years) %}
+
+    <div class="dropdown position-static">
+        <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            <span class="material-symbols-outlined fs-5">filter_alt</span>
+            <span class="ms-2">{{ gettext('Years') }}</span>
+        </button>
+        <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
+            <form role="form" action="{{ url_for('quickFilter.toggleYears') }}" method="post">
+                <input type="hidden" name="redirectUrl" value="{{ url_for(redirectUrl) }}"/>
+
+                <div id="dropdown-years-container" class="overflow-y-auto">
+                    {% for availableYear in availableYears %}
+                        <div class="form-check text-nowrap mb-2">
+                            <input class="form-check-input" type="checkbox"
+                                   id="availableYear-{{ loop.index }}"
+                                   name="activeYears"
+                                   value="{{ availableYear }}"
+                                   {% if availableYear in quickFilterState.years %}checked{% endif %}>
+                            <label class="form-check-label" for="availableYear-{{ loop.index }}">
+                                {{ availableYear }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% if availableYears | length != 0 %}
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-sm btn-success my-2">{{ gettext('Apply') }}</button>
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+{%- endmacro %}

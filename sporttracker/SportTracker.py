@@ -210,6 +210,9 @@ class SportTracker(FlaskBaseApp):
             seconds = speed % 60
             return f'{minutes}:{str(seconds).zfill(2)}'
 
+        def check_all_items_included(allItemsList: list, listToCheck: list) -> bool:
+            return all(item in listToCheck for item in allItemsList)
+
         @app.context_processor
         def utility_processor():
             def is_workout_info_item_activated(name: str) -> bool:
@@ -226,6 +229,7 @@ class SportTracker(FlaskBaseApp):
         app.add_template_filter(format_date)
         app.add_template_filter(format_duration)
         app.add_template_filter(format_pace)
+        app.add_template_filter(check_all_items_included)
 
         login_manager = LoginManager()
         login_manager.login_view = 'authentication.login'
