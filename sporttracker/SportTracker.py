@@ -265,7 +265,7 @@ class SportTracker(FlaskBaseApp):
         return app
 
     def __create_admin_user(self):
-        if User.query.filter_by(username='admin').first() is None:
+        if User.query.with_entities(User.id).filter_by(username='admin').first() is None:
             LOGGER.debug('Creating admin user')
             password = self.__generate_password()
             LOGGER.info(

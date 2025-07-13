@@ -206,8 +206,10 @@ def __handle_new_table_tile_hunting_filter_state(tableNames):
                     f'is_show_tiles_active, '
                     f'is_show_grid_active, '
                     f'is_only_highlight_new_tiles_active, '
-                    f'is_show_max_square_active'
+                    f'is_show_max_square_active, '
+                    f'is_show_planned_tiles_active'
                     f" ) VALUES ('{userIdRow[0]}', "
+                    f'True, '
                     f'True, '
                     f'True, '
                     f'True, '
