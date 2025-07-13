@@ -46,6 +46,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     isTileHuntingActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     isTileHuntingAccessActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     tileHuntingShareCode: Mapped[str] = mapped_column(String, nullable=True)
+    isTileHuntingShowPlannedTilesActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     isMaintenanceRemindersNotificationsActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
     def __repr__(self):
@@ -60,6 +61,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
             f'isTileHuntingActivated: {self.isTileHuntingActivated}, '
             f'isTileHuntingAccessActivated: {self.isTileHuntingAccessActivated}, '
             f'tileHuntingShareCode: {self.tileHuntingShareCode}, '
+            f'isTileHuntingShowPlannedTilesActivated: {self.isTileHuntingShowPlannedTilesActivated}, '
             f'isMaintenanceRemindersNotificationsActivated: {self.isMaintenanceRemindersNotificationsActivated})'
         )
 
@@ -107,6 +109,7 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
         isTileHuntingActivated=True,
         isTileHuntingAccessActivated=False,
         tileHuntingShareCode=None,
+        isTileHuntingShowPlannedTilesActivated=True,
         isMaintenanceRemindersNotificationsActivated=False,
     )
     db.session.add(user)

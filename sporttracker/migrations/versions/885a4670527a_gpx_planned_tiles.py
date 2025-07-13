@@ -109,6 +109,17 @@ def upgrade():
             )
         )
 
+    columns = inspector.get_columns('user')
+    columnNames = [column['name'] for column in columns]
+    if 'isTileHuntingShowPlannedTilesActivated' not in columnNames:
+        op.add_column(
+            'user',
+            sa.Column('isTileHuntingShowPlannedTilesActivated', sa.Boolean(), nullable=True),
+        )
+        op.execute(
+            'UPDATE "user" SET "isTileHuntingShowPlannedTilesActivated"=True WHERE "user"."isTileHuntingShowPlannedTilesActivated" IS NULL;'
+        )
+
 
 def downgrade():
     inspector = Inspector.from_engine(op.get_bind().engine)
@@ -118,9 +129,13 @@ def downgrade():
         op.drop_table('gpx_planned_tile')
 
     columnNames = inspector.get_columns('filter_state_tile_hunting')
-
     if 'is_show_planned_tiles_active' in columnNames:
         op.drop_column('filter_state_tile_hunting', 'is_show_planned_tiles_active')
+
+    inspector = Inspector.from_engine(op.get_bind().engine)
+    columnNames = inspector.get_columns('user')
+    if 'isTileHuntingShowPlannedTilesActivated' in columnNames:
+        op.drop_column('user', 'isTileHuntingShowPlannedTilesActivated')
 
 
 def __handle_new_table_gpx_planned_tiles(tableNames):
