@@ -1,4 +1,4 @@
-# 1.41.0 - (XX.XX.XXXX)
+# 1.41.0 - (13.07.25)
 - add: maintenances: allow to apply a custom field as distance filter (e.g. which bike) (#211)
 - add: allow swagger ui to be used on production servers (#228)
 - add: workout form: add suggestions for custom workout field values (#225)
