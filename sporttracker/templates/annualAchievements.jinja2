@@ -145,7 +145,7 @@
                 <div class="row mb-5">
                     <div class="col col-12 mx-auto">
                         {% for year in availableYears %}
-                            <a href="{{ url_for('annualAchievements.showAnnualAchievementsByYear', year=year) }}" class="btn btn-primary btn-sm">
+                            <a href="{{ url_for('annualAchievements.showAnnualAchievementsByYear', year=year) }}" class="btn btn-primary btn-sm {% if year==selectedYear %}btn-secondary{% endif %}">
                                 <span class="text-light">{{ year }}</span>
                             </a>
                         {% endfor %}
