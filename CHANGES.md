@@ -1,3 +1,7 @@
+# 1.42.0 - (XX.XX.XX)
+- fix: highlight selected year in annual achievements
+- fix: page titles
+
 # 1.41.0 - (13.07.25)
 - add: maintenances: allow to apply a custom field as distance filter (e.g. which bike) (#211)
 - add: allow swagger ui to be used on production servers (#228)
