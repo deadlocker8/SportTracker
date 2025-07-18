@@ -504,8 +504,8 @@
                        min="0"
                        class="form-control"
                        id="workout-{{ escapedName }}"
-                       name="{{ field.name }}"
-                       {% if workout and workout.model_extra[field.name] is not none %}value="{{ workout.model_extra[field.name] }}"{% endif %}
+                       name="{{ field.custom_field.name }}"
+                       {% if workout and workout.model_extra[field.custom_field.name] is not none %}value="{{ workout.model_extra[field.custom_field.name] }}"{% endif %}
                         {% if field.custom_field.is_required %} required="required"{% endif %}
                        data-datalist="list-workout-custom-field-{{ escapedName }}"
                 >
@@ -515,8 +515,8 @@
                        min="0"
                        class="form-control"
                        id="workout-{{ escapedName }}"
-                       name="{{ field.name }}"
-                       {% if workout and workout.model_extra[field.name] is not none %}value="{{ workout.model_extra[field.name] }}"{% endif %}
+                       name="{{ field.custom_field.name }}"
+                       {% if workout and workout.model_extra[field.custom_field.name] is not none %}value="{{ workout.model_extra[field.custom_field.name] }}"{% endif %}
                         {% if field.custom_field.is_required %} required="required"{% endif %}
                        data-datalist="list-workout-custom-field-{{ escapedName }}"
                 >
