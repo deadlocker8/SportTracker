@@ -637,9 +637,9 @@
                            autocomplete="off"
                            {% if availableType in selectedValues %}checked{% endif %}
                            value="{{ availableType.name }}">
-                    <label class="btn btn-outline-light btn-outline-purple d-flex align-items-center"
+                    <label class="btn btn-outline-light btn-outline-purple d-flex flex-column flex-sm-row align-items-center"
                            for="{{ identifier }}-{{ loop.index }}">
-                        <span class="material-symbols-outlined {% if not availableType.is_outlined_icon %}filled{% endif %} me-3">{{ availableType.icon }}</span>
+                        <span class="material-symbols-outlined {% if not availableType.is_outlined_icon %}filled{% endif %} me-0 me-sm-3">{{ availableType.icon }}</span>
                         {{ availableType.get_localized_name() }}
                     </label>
                 {% endfor %}
