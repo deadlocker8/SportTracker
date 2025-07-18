@@ -49,9 +49,9 @@
                            autocomplete="off"
                            {% if selectedValue == availableType.name or (selectedValue is none and loop.index == 1) %}checked{% endif %}
                            value="{{ availableType.name }}">
-                    <label class="btn btn-outline-light d-flex align-items-center"
+                    <label class="btn btn-outline-light d-flex flex-column flex-sm-row align-items-center"
                            for="{{ identifier }}-{{ loop.index }}">
-                        <span class="material-symbols-outlined filled me-3">{{ availableType.icon }}</span>
+                        <span class="material-symbols-outlined filled me-0 me-sm-3">{{ availableType.icon }}</span>
                         {{ availableType.get_localized_name() }}
                     </label>
                 {% endfor %}

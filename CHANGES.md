@@ -3,6 +3,7 @@
 - fix: custom workout fields of type integer and float are now saved correctly again (#239)
 - fix: highlight selected year in annual achievements
 - fix: page titles
+- fix: improve responsiveness of button groups in planned tour form (#241)
 
 # 1.41.0 - (13.07.25)
 - add: maintenances: allow to apply a custom field as distance filter (e.g. which bike) (#211)
