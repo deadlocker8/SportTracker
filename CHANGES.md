@@ -1,4 +1,5 @@
 # 1.42.0 - (XX.XX.XX)
+- add: redirect to planned tour map instead of edit page on click on specific tour on all panned tours map (#242)
 - fix: highlight selected year in annual achievements
 - fix: page titles
 

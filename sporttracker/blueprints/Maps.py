@@ -267,7 +267,9 @@ def construct_blueprint(
         )
 
         for tour in plannedTours:
-            gpxInfo.append(createGpxInfoPlannedTour(tour.id, tour.name, url_for('plannedTours.edit', tour_id=tour.id)))  # type: ignore[arg-type]
+            gpxInfo.append(
+                createGpxInfoPlannedTour(tour.id, tour.name, url_for('maps.showPlannedTour', tour_id=tour.id))
+            )  # type: ignore[arg-type]
 
         return render_template(
             'maps/mapMultipleWorkouts.jinja2',
