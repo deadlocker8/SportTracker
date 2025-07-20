@@ -44,6 +44,7 @@
                     <div class="col col-11 col-md-9 mx-auto">
                         <form role="form" action="
                                 {% if field %}{{ url_for('settings.customFieldsEditPost', field_id=field_id) }}{% else %}{{ url_for('settings.customFieldsAddPost') }}{% endif %}"
+                              onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
                               method="post">
 
                             <input type="hidden" class="form-control" id="field-workout-type" name="workout_type" value="{% if field %}{{ field.workout_type }}{% else %}{{ workoutType.name }}{% endif %}">
@@ -81,7 +82,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-5 input-field-margin') }}
                         </form>
                     </div>
                 </div>

@@ -44,6 +44,7 @@
                     <div class="col col-11 col-md-9 mx-auto">
                         <form role="form" action="
                                 {% if participant %}{{ url_for('settings.participantsEditPost', participant_id=participant_id) }}{% else %}{{ url_for('settings.participantsAddPost') }}{% endif %}"
+                              onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
                               method="post">
 
                             <div class="mb-3">
@@ -55,7 +56,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-5 input-field-margin') }}
                         </form>
                     </div>
                 </div>

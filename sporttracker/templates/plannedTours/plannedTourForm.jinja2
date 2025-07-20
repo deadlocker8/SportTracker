@@ -22,7 +22,7 @@
                                 <i class="fa-solid fa-lightbulb fa-fw fs-2"></i>
                             {% endcall %}
                             {% if current_user.id|string == plannedTour.ownerId %}
-                                <button id="button-delete" type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                                <button id="button-delete" type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto button-automatically-disabled" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
                                     <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                                 </button>
                             {% endif %}
@@ -42,7 +42,8 @@
                     <div class="col col-11 col-md-9 mx-auto">
                         <form role="form" action="{% if plannedTour %}{{ url_for('plannedTours.editPost', tour_id=tour_id) }}{% else %}{{ url_for('plannedTours.addPost') }}{% endif %}"
                               method="post"
-                              enctype=multipart/form-data>
+                              onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
+                              enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="planned-tour-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>
                                 <div class="d-flex align-items-center">
@@ -93,7 +94,7 @@
 
                             {{ workoutMacros.form_share_link(plannedTour, 'maps.showSharedPlannedTour', 'plannedTours.createShareCode')}}
 
-                            <button type="submit" id="buttonSavePlannedTour" class="btn btn-success mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-5 input-field-margin', id='buttonSavePlannedTour') }}
                         </form>
                     </div>
                 </div>

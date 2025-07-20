@@ -191,3 +191,27 @@ function toggleFitFileImport(buttonImportFromFitFile, disable)
     buttonImportFromFitFile.disabled = disable;
     fileInput.disabled = disable;
 }
+
+function automaticallyDisableButtonsOnFormSubmit(form)
+{
+    let buttonSubmitAutomaticallyDisabled = form.getElementsByClassName('button-submit-automatically-disabled')[0];
+    buttonSubmitAutomaticallyDisabled.disabled = true;
+
+    // hide icon and text
+    let icon = buttonSubmitAutomaticallyDisabled.querySelector('.material-symbols-outlined');
+    if(icon !== null)
+    {
+        icon.classList.toggle('hidden', true);
+    }
+    buttonSubmitAutomaticallyDisabled.querySelector('.button-automatically-disabled-text').classList.toggle('hidden', true);
+
+    // show spinner and disabled text
+    buttonSubmitAutomaticallyDisabled.querySelector('.spinner-border').classList.toggle('hidden', false);
+    buttonSubmitAutomaticallyDisabled.querySelector('.button-automatically-disabled-text-disabled').classList.toggle('hidden', false);
+
+    // disable other buttons that could interfere with the form submit
+    let buttonsToDisable = document.querySelectorAll('.button-automatically-disabled');
+    buttonsToDisable.forEach((button) => button.disabled = true);
+
+    return true;
+}

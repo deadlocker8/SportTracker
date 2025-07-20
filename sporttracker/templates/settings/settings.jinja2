@@ -9,7 +9,8 @@
                 </div>
             {% endif %}
 
-            <form role="form" action="{{ url_for('settings.editSelfPost') }}" method="post">
+            <form role="form" action="{{ url_for('settings.editSelfPost') }}" method="post"
+                  onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);">
                 <div class="mb-4">
                     <label for="user-password" class="form-label input-field-margin">{{ gettext('Password') }}</label>
                     <div class="d-flex align-items-center">
@@ -19,12 +20,11 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
-                    <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}
-                </button>
+                {{ macros.buttonSubmitAutomaticallyDisabled(classes='input-field-margin') }}
             </form>
 
             <form role="form" action="{{ url_for('settings.editSelfLanguagePost') }}" method="post"
+                  onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
                   class="mt-5">
                 <div class="mb-4">
                     <label for="user-language" class="form-label input-field-margin">{{ gettext('Language') }}</label>
@@ -38,9 +38,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
-                    <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}
-                </button>
+                {{ macros.buttonSubmitAutomaticallyDisabled(classes='input-field-margin') }}
             </form>
         </div>
     </div>
@@ -54,6 +52,7 @@
             {% endcall %}
 
             <form role="form" action="{{ url_for('settings.editSelfTileHunting') }}" method="post"
+                  onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
                   class="mt-5">
                 <div class="mb-4">
                     <div class="d-flex align-items-center">
@@ -102,9 +101,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
-                    <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}
-                </button>
+                {{ macros.buttonSubmitAutomaticallyDisabled(classes='input-field-margin') }}
             </form>
         </div>
     </div>
@@ -218,7 +215,8 @@
     <div class="row mt-5 text-start">
         <div class="col col-6 mx-auto">
             <h3 class="text-center mb-5">{{ gettext('Select Information to show for each distance-based workout') }}</h3>
-            <form role="form" action="{{ url_for('settings.editDistanceWorkoutInfoItems') }}" method="post">
+            <form role="form" action="{{ url_for('settings.editDistanceWorkoutInfoItems') }}" method="post"
+                  onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);">
                 {% for infoItem in infoItems %}
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" role="switch"
@@ -231,9 +229,7 @@
                     </div>
                 {% endfor %}
 
-                <button type="submit" class="btn btn-primary mt-4 d-flex align-items-center">
-                    <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}
-                </button>
+                {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-4') }}
             </form>
         </div>
     </div>
@@ -256,6 +252,7 @@
             </div>
 
             <form id="ntfy-form" role="form" action="{{ url_for('settings.editMaintenanceReminderNotifications') }}" method="post"
+                  onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
                   class="mt-5">
                 <div class="mb-4">
                     <div class="d-flex align-items-center">
@@ -319,9 +316,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary input-field-margin d-flex align-items-center">
-                    <span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}
-                </button>
+                {{ macros.buttonSubmitAutomaticallyDisabled(classes='input-field-margin', id='buttonSaveLongDistanceTour') }}
             </form>
         </div>
     </div>

@@ -18,7 +18,7 @@
                             {% call macros.headline(gettext('Edit Count Month Goal')) %}
                                 <span class="material-symbols-outlined fs-1">format_list_numbered</span>
                             {% endcall %}
-                            <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                            <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto button-automatically-disabled" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
                                 <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                             </button>
 
@@ -36,7 +36,7 @@
                 <div class="row mt-5 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
                         <form role="form" action="{% if goal %}{{ url_for('monthGoalsCount.editPost', goal_id=goal_id) }}{% else %}{{ url_for('monthGoalsCount.addPost') }}{% endif %}"
-                              method="post">
+                              method="post" onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);">
                             <div class="mb-3">
                                 <label for="month-goal-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>
                                 <div class="d-flex align-items-center">
@@ -95,7 +95,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-5 input-field-margin') }}
                         </form>
                     </div>
                 </div>

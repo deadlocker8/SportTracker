@@ -432,7 +432,7 @@
                             </a>
                         {% endif %}
 
-                        <button type="button" class="btn btn-danger btn-sm ms-3 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete-modal-gpx">
+                        <button type="button" class="btn btn-danger btn-sm ms-3 d-flex align-items-center button-automatically-disabled" data-bs-toggle="modal" data-bs-target="#delete-modal-gpx">
                             <span class="material-symbols-outlined filled fs-4">delete</span>
                         </button>
 
@@ -562,7 +562,7 @@
                         <span class="material-symbols-outlined fs-4">content_copy</span>
                     </a>
 
-                    <button type="button" class="btn btn-danger btn-sm ms-3 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete-modal-shared-link" id="buttonSharedLinkDeleteModal">
+                    <button type="button" class="btn btn-danger btn-sm ms-3 d-flex align-items-center button-automatically-disabled" data-bs-toggle="modal" data-bs-target="#delete-modal-shared-link" id="buttonSharedLinkDeleteModal">
                         <span class="material-symbols-outlined filled fs-4">delete</span>
                     </button>
 
@@ -572,7 +572,7 @@
                 </div>
             </div>
 
-            <button type="button" class="{% if hasShareCode %}hidden{% endif %} btn btn-primary btn-sm d-flex align-items-center" id="buttonCreateSharedLink" data-url="{{ url_for(createUrl) }}">
+            <button type="button" class="{% if hasShareCode %}hidden{% endif %} btn btn-primary btn-sm d-flex align-items-center button-automatically-disabled" id="buttonCreateSharedLink" data-url="{{ url_for(createUrl) }}">
                 <span class="material-symbols-outlined fs-4 me-2">add_link</span>{{ gettext('Create link') }}
             </button>
 

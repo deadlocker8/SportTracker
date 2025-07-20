@@ -88,7 +88,7 @@
                                 <i class="material-symbols-outlined fs-2">laps</i>
                             {% endcall %}
                             {% if current_user.id|string == longDistanceTour.ownerId %}
-                                <button id="button-delete" type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                                <button id="button-delete" type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto button-automatically-disabled" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
                                     <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                                 </button>
                             {% endif %}
@@ -111,6 +111,7 @@
                     <div class="col col-11 col-md-9 mx-auto">
                         <form role="form" action="{% if longDistanceTour %}{{ url_for('longDistanceTours.editPost', tour_id=tour_id) }}{% else %}{{ url_for('longDistanceTours.addPost') }}{% endif %}"
                               method="post"
+                              onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
                               enctype=multipart/form-data>
                             <div class="mb-3">
                                 <label for="long-distance-tour-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>
@@ -142,7 +143,7 @@
 
                             {{ long_distance_tour_planned_tours_selector(longDistanceTour, plannedTours) }}
 
-                            <button type="submit" id="buttonSaveLongDistanceTour" class="btn btn-success mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-5 input-field-margin', id='buttonSaveLongDistanceTour') }}
                         </form>
                     </div>
                 </div>

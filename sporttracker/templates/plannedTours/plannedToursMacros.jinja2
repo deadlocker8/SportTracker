@@ -239,7 +239,8 @@
 {%- endmacro %}
 
 {% macro plannedTourFilter(plannedTourFilterState, redirectUrl, classes="mt-2 pt-2")%}
-    <form class="{{ classes }}" method="POST" action="{{ url_for('plannedTours.applyFilter') }}">
+    <form class="{{ classes }}" method="POST" action="{{ url_for('plannedTours.applyFilter') }}"
+          onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);">
         <input type="hidden" name="redirectUrl" value="{{ redirectUrl }}">
 
         <div class="my-3 d-flex align-items-center justify-content-start justify-content-xxl-center gap-3 overflow-x-auto">
@@ -257,9 +258,9 @@
 
             {{ plannedTourFilterLongDistanceTours(plannedTourFilterState.is_long_distance_tours_include_selected, plannedTourFilterState.is_long_distance_tours_exclude_selected) }}
 
-            <a href="{{ url_for('plannedTours.resetFilter', redirectUrl=redirectUrl) }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap">{{ gettext('Reset Filter') }}</a>
+            <a href="{{ url_for('plannedTours.resetFilter', redirectUrl=redirectUrl) }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap ">{{ gettext('Reset Filter') }}</a>
 
-            <button id="buttonApplyFilter" type="submit" class="btn btn-sm btn-primary text-nowrap">{{ gettext('Apply Filter') }}</button>
+            {{ macros.buttonSubmitAutomaticallyDisabled(text=gettext('Apply Filter'), disabledText=gettext('Applying Filter...'), icon=none, classes='btn-sm btn-primary text-nowrap', id='buttonApplyFilter') }}
         </div>
     </form>
 {%- endmacro %}

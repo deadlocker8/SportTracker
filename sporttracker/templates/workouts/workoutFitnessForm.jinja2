@@ -23,7 +23,7 @@
                             {% call macros.headline(gettext('Edit Fitness Workout')) %}
                                 <span class="material-symbols-outlined fs-1">fitness_center</span>
                             {% endcall %}
-                            <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                            <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto button-automatically-disabled" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
                                 <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
                             </button>
 
@@ -42,6 +42,7 @@
                     <div class="col col-11 col-md-9 mx-auto">
                         <form role="form" action="{% if workout %}{{ url_for('fitnessWorkouts.editPost', workout_id=workout_id) }}{% else %}{{ url_for('fitnessWorkouts.addPost') }}{% endif %}"
                               method="post"
+                              onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
                               enctype=multipart/form-data>
 
                             <input type="hidden" class="form-control" id="workout-type" name="type" value="FITNESS">
@@ -72,7 +73,7 @@
 
                             {{ workoutMacros.workout_form_participants(workout, participants) }}
 
-                            <button type="submit" id="buttonSaveWorkout" class="btn btn-success mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-5 input-field-margin', id='buttonSaveWorkout') }}
                         </form>
                     </div>
                 </div>

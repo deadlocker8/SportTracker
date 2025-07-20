@@ -23,7 +23,7 @@
                 <div class="row mt-5 text-start">
                     <div class="col col-11 col-md-9 mx-auto">
                         <form role="form" action="{{ url_for('monthGoalsDuration.addMultiplePost') }}"
-                              method="post">
+                              method="post" onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);">
                             <div class="mb-3">
                                 <label for="month-goal-type" class="form-label input-field-margin">{{ gettext('Type') }}</label>
                                 <div class="d-flex align-items-center">
@@ -123,7 +123,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary mt-5 input-field-margin d-flex align-items-center"><span class="material-symbols-outlined filled text-light">save</span>&nbsp;{{ gettext('Save') }}</button>
+
+                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-5 input-field-margin') }}
                         </form>
                     </div>
                 </div>

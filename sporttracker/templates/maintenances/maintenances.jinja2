@@ -96,13 +96,14 @@
                     {{ macros.workout_type_quick_filter(url_for('maintenances.listMaintenances'), false) }}
                 </div>
 
-                <form class="mt-2 pt-2" method="POST" action="{{ url_for('maintenances.applyFilter') }}">
+                <form class="mt-2 pt-2" method="POST" action="{{ url_for('maintenances.applyFilter') }}"
+                      onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);">
                     <div class="my-3 d-flex align-items-center justify-content-start justify-content-xxl-center gap-3 overflow-x-auto">
                         {{ maintenanceFilterCustomWorkoutField(maintenanceFilterState) }}
 
                         <a href="{{ url_for('maintenances.resetFilter') }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap">{{ gettext('Reset Filter') }}</a>
 
-                        <button id="buttonApplyFilter" type="submit" class="btn btn-sm btn-primary text-nowrap">{{ gettext('Apply Filter') }}</button>
+                        {{ macros.buttonSubmitAutomaticallyDisabled(text=gettext('Apply Filter'), disabledText=gettext('Applying Filter...'), icon=none, classes='btn-sm btn-primary text-nowrap', id='buttonApplyFilter') }}
                     </div>
                 </form>
 
