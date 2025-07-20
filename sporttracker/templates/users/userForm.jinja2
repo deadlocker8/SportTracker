@@ -19,8 +19,13 @@
                                 <span class="material-symbols-outlined filled fs-1">groups</span>
                             {% endcall %}
                             {% if not user.isAdmin %}
-                                <a href="{{ url_for('users.delete', user_id=user_id) }}"
-                                   class="btn btn-danger mt-3">{{ gettext('Delete') }}</a>
+                                <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                                    <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
+                                </button>
+
+                                {% call macros.deleteModal(gettext('Delete User?'), gettext('Do you really want to delete the user "%(user)s" (ID: %(id)d)?', user=user.username | e, id=user_id)) %}
+                                    <a href="{{ url_for('users.delete', user_id=user_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                                {% endcall %}
                             {% endif %}
                         {% else %}
                              {% call macros.headline(gettext('New User')) %}
