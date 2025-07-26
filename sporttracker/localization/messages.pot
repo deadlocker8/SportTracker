@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-13 12:09+0200\n"
+"POT-Creation-Date: 2025-07-26 22:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -92,8 +92,8 @@ msgid "Number Of Workouts"
 msgstr ""
 
 #: ../blueprints/AnnualAchievements.py:173
-#: ../templates/monthGoals/monthGoalDurationForm.jinja2:87
-#: ../templates/monthGoals/monthGoalDurationForm.jinja2:105
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:85
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:103
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:95
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:113
 #: ../templates/workouts/workoutMacros.jinja2:341
@@ -163,8 +163,8 @@ msgstr ""
 msgid "FIT file does not contain session data"
 msgstr ""
 
-#: ../blueprints/Maps.py:585
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:154
+#: ../blueprints/Maps.py:591
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:155
 #: ../templates/maps/mapLongDistanceTour.jinja2:101
 #: ../templates/maps/mapLongDistanceTour.jinja2:185
 msgid "Stage"
@@ -186,25 +186,25 @@ msgid "Password must be at least {0} characters long"
 msgstr ""
 
 #: ../blueprints/Settings.py:446 ../blueprints/Settings.py:489
-#: ../templates/settings/settings.jinja2:284
+#: ../templates/settings/settings.jinja2:281
 msgid "Ntfy Server URL"
 msgstr ""
 
 #: ../blueprints/Settings.py:447 ../blueprints/Settings.py:490
-#: ../templates/settings/settings.jinja2:292
+#: ../templates/settings/settings.jinja2:289
 msgid "Ntfy Topic Name"
 msgstr ""
 
 #: ../blueprints/Settings.py:448 ../blueprints/Settings.py:491
-#: ../templates/login.jinja2:19 ../templates/settings/settings.jinja2:300
-#: ../templates/users/userForm.jinja2:45
+#: ../templates/login.jinja2:19 ../templates/settings/settings.jinja2:297
+#: ../templates/users/userForm.jinja2:51
 msgid "Username"
 msgstr ""
 
 #: ../blueprints/Settings.py:449 ../blueprints/Settings.py:492
-#: ../templates/login.jinja2:23 ../templates/settings/settings.jinja2:14
-#: ../templates/settings/settings.jinja2:308
-#: ../templates/users/userForm.jinja2:54
+#: ../templates/login.jinja2:23 ../templates/settings/settings.jinja2:15
+#: ../templates/settings/settings.jinja2:305
+#: ../templates/users/userForm.jinja2:60
 msgid "Password"
 msgstr ""
 
@@ -374,8 +374,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: ../templates/achievements.jinja2:59
-#: ../templates/annualAchievements.jinja2:133 ../templates/macros.jinja2:85
+#: ../templates/achievements.jinja2:59 ../templates/macros.jinja2:85
 msgid "Achievements"
 msgstr ""
 
@@ -397,6 +396,10 @@ msgstr ""
 
 #: ../templates/annualAchievements.jinja2:54
 msgid "Average"
+msgstr ""
+
+#: ../templates/annualAchievements.jinja2:133 ../templates/macros.jinja2:101
+msgid "Annual Statistics"
 msgstr ""
 
 #: ../templates/icons.jinja2:55
@@ -423,7 +426,6 @@ msgstr ""
 msgid "Analytics"
 msgstr ""
 
-#: ../templates/charts/chartCalendar.jinja2:5
 #: ../templates/charts/chartChooser.jinja2:6
 #: ../templates/charts/chartChooser.jinja2:17
 #: ../templates/charts/chartDistancePerCustomFieldChooser.jinja2:6
@@ -445,12 +447,9 @@ msgstr ""
 msgid "Charts"
 msgstr ""
 
+#: ../templates/charts/chartCalendar.jinja2:5
 #: ../templates/charts/chartCalendar.jinja2:16 ../templates/macros.jinja2:93
 msgid "Calendar"
-msgstr ""
-
-#: ../templates/macros.jinja2:101
-msgid "Annual Statistics"
 msgstr ""
 
 #: ../templates/macros.jinja2:111
@@ -489,7 +488,7 @@ msgstr ""
 
 #: ../templates/macros.jinja2:187 ../templates/maps/mapMacros.jinja2:134
 #: ../templates/maps/mapTileHunting.jinja2:6
-#: ../templates/settings/settings.jinja2:52
+#: ../templates/settings/settings.jinja2:50
 msgid "Tile Hunting"
 msgstr ""
 
@@ -503,9 +502,9 @@ msgid "Search"
 msgstr ""
 
 #: ../templates/macros.jinja2:242
-#: ../templates/maintenances/maintenanceForm.jinja2:125
-#: ../templates/settings/settings.jinja2:333
-#: ../templates/settings/settings.jinja2:345
+#: ../templates/maintenances/maintenanceForm.jinja2:126
+#: ../templates/settings/settings.jinja2:328
+#: ../templates/settings/settings.jinja2:340
 #: ../templates/workouts/workoutMacros.jinja2:476
 msgid "Settings"
 msgstr ""
@@ -519,6 +518,14 @@ msgstr ""
 #: ../templates/workouts/workouts.jinja2:95
 #: ../templates/workouts/workouts.jinja2:117
 msgid "Cancel"
+msgstr ""
+
+#: ../templates/macros.jinja2:315
+msgid "Save"
+msgstr ""
+
+#: ../templates/macros.jinja2:315
+msgid "Saving..."
 msgstr ""
 
 #: ../templates/search.jinja2:4
@@ -672,9 +679,9 @@ msgstr ""
 #: ../templates/monthGoals/monthGoalDurationForm.jinja2:27
 #: ../templates/plannedTours/plannedTourForm.jinja2:26
 #: ../templates/plannedTours/plannedTourForm.jinja2:31
-#: ../templates/settings/settings.jinja2:161
-#: ../templates/settings/settings.jinja2:206
-#: ../templates/users/userForm.jinja2:23
+#: ../templates/settings/settings.jinja2:158
+#: ../templates/settings/settings.jinja2:203
+#: ../templates/users/userForm.jinja2:23 ../templates/users/userForm.jinja2:27
 #: ../templates/workouts/workoutBikingForm.jinja2:26
 #: ../templates/workouts/workoutBikingForm.jinja2:30
 #: ../templates/workouts/workoutFitnessForm.jinja2:27
@@ -700,58 +707,52 @@ msgstr ""
 msgid "Delete (including all linked planned tours)"
 msgstr ""
 
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:98
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:99
+#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:33
+#: ../templates/maintenances/maintenanceForm.jinja2:32
+#: ../templates/monthGoals/monthGoalCountForm.jinja2:26
+#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:26
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:27
+#: ../templates/plannedTours/plannedTourForm.jinja2:31
+#: ../templates/settings/settings.jinja2:158
+#: ../templates/settings/settings.jinja2:203
+#: ../templates/users/userForm.jinja2:27
+#: ../templates/workouts/workoutBikingForm.jinja2:30
+#: ../templates/workouts/workoutFitnessForm.jinja2:31
+#: ../templates/workouts/workoutHikingForm.jinja2:30
+#: ../templates/workouts/workoutMacros.jinja2:440
+#: ../templates/workouts/workoutRunningForm.jinja2:30
+msgid "Deleting..."
+msgstr ""
+
 #: ../templates/longDistanceTours/longDistanceTourForm.jinja2:99
 msgid "Delete (only this long-distance tour)"
 msgstr ""
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:116
-#: ../templates/maintenances/maintenanceForm.jinja2:47
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:117
+#: ../templates/maintenances/maintenanceForm.jinja2:48
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:41
 #: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:28
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:41
 #: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:28
-#: ../templates/monthGoals/monthGoalDurationForm.jinja2:44
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:42
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:28
-#: ../templates/plannedTours/plannedTourForm.jinja2:47
-#: ../templates/settings/customFieldsForm.jinja2:61
-#: ../templates/settings/settings.jinja2:138
+#: ../templates/plannedTours/plannedTourForm.jinja2:48
+#: ../templates/settings/customFieldsForm.jinja2:62
+#: ../templates/settings/settings.jinja2:135
 msgid "Type"
 msgstr ""
 
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:132
-#: ../templates/plannedTours/plannedTourForm.jinja2:63
+#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:133
+#: ../templates/plannedTours/plannedTourForm.jinja2:64
 #: ../templates/plannedTours/plannedToursMacros.jinja2:157
-#: ../templates/settings/customFieldsForm.jinja2:52
-#: ../templates/settings/participantsForm.jinja2:50
-#: ../templates/settings/settings.jinja2:137
-#: ../templates/settings/settings.jinja2:187
+#: ../templates/settings/customFieldsForm.jinja2:53
+#: ../templates/settings/participantsForm.jinja2:51
+#: ../templates/settings/settings.jinja2:134
+#: ../templates/settings/settings.jinja2:184
 #: ../templates/workouts/workoutMacros.jinja2:283
 msgid "Name"
-msgstr ""
-
-#: ../templates/longDistanceTours/longDistanceTourForm.jinja2:145
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:77
-#: ../templates/maintenances/maintenanceForm.jinja2:133
-#: ../templates/monthGoals/monthGoalCountForm.jinja2:98
-#: ../templates/monthGoals/monthGoalCountMultipleForm.jinja2:107
-#: ../templates/monthGoals/monthGoalDistanceForm.jinja2:98
-#: ../templates/monthGoals/monthGoalDistanceMultipleForm.jinja2:110
-#: ../templates/monthGoals/monthGoalDurationForm.jinja2:120
-#: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:126
-#: ../templates/plannedTours/plannedTourForm.jinja2:96
-#: ../templates/settings/customFieldsForm.jinja2:84
-#: ../templates/settings/participantsForm.jinja2:58
-#: ../templates/settings/settings.jinja2:23
-#: ../templates/settings/settings.jinja2:42
-#: ../templates/settings/settings.jinja2:106
-#: ../templates/settings/settings.jinja2:235
-#: ../templates/settings/settings.jinja2:323
-#: ../templates/users/userForm.jinja2:66
-#: ../templates/workouts/workoutBikingForm.jinja2:72
-#: ../templates/workouts/workoutFitnessForm.jinja2:75
-#: ../templates/workouts/workoutHikingForm.jinja2:72
-#: ../templates/workouts/workoutRunningForm.jinja2:72
-msgid "Save"
 msgstr ""
 
 #: ../templates/longDistanceTours/longDistanceTours.jinja2:42
@@ -801,7 +802,7 @@ msgstr ""
 msgid "Do you really want to delete this maintenance event?"
 msgstr ""
 
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:58
+#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:59
 #: ../templates/maps/mapLongDistanceTour.jinja2:111
 #: ../templates/maps/mapSingleWorkout.jinja2:43
 #: ../templates/maps/mapSingleWorkout.jinja2:89
@@ -809,7 +810,7 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:66
+#: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:67
 msgid "Time"
 msgstr ""
 
@@ -833,23 +834,23 @@ msgid ""
 "maintenance events?"
 msgstr ""
 
-#: ../templates/maintenances/maintenanceForm.jinja2:61
+#: ../templates/maintenances/maintenanceForm.jinja2:62
 msgid "Description"
 msgstr ""
 
-#: ../templates/maintenances/maintenanceForm.jinja2:72
+#: ../templates/maintenances/maintenanceForm.jinja2:73
 msgid "Filter by custom workout field"
 msgstr ""
 
-#: ../templates/maintenances/maintenanceForm.jinja2:108
+#: ../templates/maintenances/maintenanceForm.jinja2:109
 msgid "Activate Reminder"
 msgstr ""
 
-#: ../templates/maintenances/maintenanceForm.jinja2:115
+#: ../templates/maintenances/maintenanceForm.jinja2:116
 msgid "Limit (in km)"
 msgstr ""
 
-#: ../templates/maintenances/maintenanceForm.jinja2:124
+#: ../templates/maintenances/maintenanceForm.jinja2:125
 msgid "Notifications can be configured in the "
 msgstr ""
 
@@ -873,22 +874,27 @@ msgstr ""
 msgid "Value:"
 msgstr ""
 
-#: ../templates/maintenances/maintenances.jinja2:103
-#: ../templates/plannedTours/plannedToursMacros.jinja2:260
+#: ../templates/maintenances/maintenances.jinja2:104
+#: ../templates/plannedTours/plannedToursMacros.jinja2:261
 msgid "Reset Filter"
 msgstr ""
 
-#: ../templates/maintenances/maintenances.jinja2:105
-#: ../templates/plannedTours/plannedToursMacros.jinja2:262
+#: ../templates/maintenances/maintenances.jinja2:106
+#: ../templates/plannedTours/plannedToursMacros.jinja2:263
 msgid "Apply Filter"
 msgstr ""
 
-#: ../templates/maintenances/maintenances.jinja2:137
+#: ../templates/maintenances/maintenances.jinja2:106
+#: ../templates/plannedTours/plannedToursMacros.jinja2:263
+msgid "Applying Filter..."
+msgstr ""
+
+#: ../templates/maintenances/maintenances.jinja2:138
 #, python-format
 msgid "Show all (+%(remaining)d)"
 msgstr ""
 
-#: ../templates/maintenances/maintenances.jinja2:150
+#: ../templates/maintenances/maintenances.jinja2:151
 msgid "days"
 msgstr ""
 
@@ -1044,35 +1050,33 @@ msgstr ""
 msgid "Show %(length)s linked Workouts"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:145
+#: ../templates/maps/mapMacros.jinja2:146
 msgid "Show visited tiles"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:159
-#: ../templates/maps/mapTileHunting.jinja2:70
+#: ../templates/maps/mapMacros.jinja2:163
 #: ../templates/maps/mapTileHuntingHeatmap.jinja2:43
 msgid "Show grid"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:170
+#: ../templates/maps/mapMacros.jinja2:176
 msgid "Only highlight new tiles"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:184
-#: ../templates/maps/mapTileHunting.jinja2:78
+#: ../templates/maps/mapMacros.jinja2:191
 msgid "Show max square"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:200
-#: ../templates/settings/settings.jinja2:99
+#: ../templates/maps/mapMacros.jinja2:208
+#: ../templates/settings/settings.jinja2:98
 msgid "Show planned tiles"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:216
+#: ../templates/maps/mapMacros.jinja2:224
 msgid "Years"
 msgstr ""
 
-#: ../templates/maps/mapMacros.jinja2:239
+#: ../templates/maps/mapMacros.jinja2:247
 msgid "Apply"
 msgstr ""
 
@@ -1109,8 +1113,8 @@ msgstr ""
 
 #: ../templates/maps/mapPlannedTour.jinja2:54
 #: ../templates/maps/mapPlannedTour.jinja2:104
-#: ../templates/plannedTours/plannedTourForm.jinja2:88
-#: ../templates/plannedTours/plannedToursMacros.jinja2:256
+#: ../templates/plannedTours/plannedTourForm.jinja2:89
+#: ../templates/plannedTours/plannedToursMacros.jinja2:257
 msgid "Direction"
 msgstr ""
 
@@ -1166,16 +1170,16 @@ msgid ""
 "color: {maxSquareColor};&quot;></span>"
 msgstr ""
 
-#: ../templates/maps/mapTileHunting.jinja2:83
+#: ../templates/maps/mapTileHunting.jinja2:69
 #: ../templates/maps/mapTileHuntingHeatmap.jinja2:51
 msgid "Zoom in to view visited tiles."
 msgstr ""
 
-#: ../templates/maps/mapTileHunting.jinja2:121
+#: ../templates/maps/mapTileHunting.jinja2:107
 msgid "Click bar to open in new tab"
 msgstr ""
 
-#: ../templates/maps/mapTileHunting.jinja2:134
+#: ../templates/maps/mapTileHunting.jinja2:120
 msgid "Number of new tiles"
 msgstr ""
 
@@ -1238,13 +1242,13 @@ msgstr ""
 
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:55
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:55
-#: ../templates/monthGoals/monthGoalDurationForm.jinja2:58
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:56
 msgid "Year"
 msgstr ""
 
 #: ../templates/monthGoals/monthGoalCountForm.jinja2:64
 #: ../templates/monthGoals/monthGoalDistanceForm.jinja2:64
-#: ../templates/monthGoals/monthGoalDurationForm.jinja2:67
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:65
 msgid "Month"
 msgstr ""
 
@@ -1336,20 +1340,20 @@ msgstr ""
 msgid "New Duration Month Goal"
 msgstr ""
 
-#: ../templates/monthGoals/monthGoalDurationForm.jinja2:81
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:79
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:89
 msgid "Minimum Duration"
 msgstr ""
 
-#: ../templates/monthGoals/monthGoalDurationForm.jinja2:94
-#: ../templates/monthGoals/monthGoalDurationForm.jinja2:112
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:92
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:110
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:102
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:120
 #: ../templates/workouts/workoutMacros.jinja2:348
 msgid "Minutes"
 msgstr ""
 
-#: ../templates/monthGoals/monthGoalDurationForm.jinja2:99
+#: ../templates/monthGoals/monthGoalDurationForm.jinja2:97
 #: ../templates/monthGoals/monthGoalDurationMultipleForm.jinja2:107
 msgid "Perfect Duration"
 msgstr ""
@@ -1383,19 +1387,19 @@ msgid ""
 " also unlink this planned tour from all assoicated long-distance tours."
 msgstr ""
 
-#: ../templates/plannedTours/plannedTourForm.jinja2:76
+#: ../templates/plannedTours/plannedTourForm.jinja2:77
 msgid "Arrival method"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTourForm.jinja2:82
+#: ../templates/plannedTours/plannedTourForm.jinja2:83
 msgid "Departure method"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTourForm.jinja2:90
+#: ../templates/plannedTours/plannedTourForm.jinja2:91
 msgid "No GPX or FIT file is linked to this planned tour"
 msgstr ""
 
-#: ../templates/plannedTours/plannedTourForm.jinja2:90
+#: ../templates/plannedTours/plannedTourForm.jinja2:91
 msgid "A GPX or FIT file is linked to this planned tour"
 msgstr ""
 
@@ -1452,11 +1456,11 @@ msgstr ""
 msgid "Not part of long-distance tour"
 msgstr ""
 
-#: ../templates/plannedTours/plannedToursMacros.jinja2:252
+#: ../templates/plannedTours/plannedToursMacros.jinja2:253
 msgid "Arrival Method"
 msgstr ""
 
-#: ../templates/plannedTours/plannedToursMacros.jinja2:254
+#: ../templates/plannedTours/plannedToursMacros.jinja2:255
 msgid "Departure Method"
 msgstr ""
 
@@ -1470,7 +1474,7 @@ msgstr ""
 msgid "New Custom Workout Field"
 msgstr ""
 
-#: ../templates/settings/customFieldsForm.jinja2:78
+#: ../templates/settings/customFieldsForm.jinja2:79
 msgid "Is required"
 msgstr ""
 
@@ -1488,45 +1492,45 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:66
+#: ../templates/settings/settings.jinja2:65
 msgid "Activate tile hunting map and statistics"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:80
+#: ../templates/settings/settings.jinja2:79
 msgid ""
 "Allow access to your tile hunting map without login (Generated link will "
 "be shown after saving)"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:85
+#: ../templates/settings/settings.jinja2:84
 #: ../templates/workouts/workoutMacros.jinja2:561
 msgid "Copied"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:92
+#: ../templates/settings/settings.jinja2:91
 msgid ""
 "This link can be used to add an overlay to OpenStreetMap based maps, e.g."
 " https://bikerouter.de/ to plan your next tile hunting route."
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:116
+#: ../templates/settings/settings.jinja2:113
 msgid "Custom Workout Fields"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:139
+#: ../templates/settings/settings.jinja2:136
 msgid "Is Required"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:140
-#: ../templates/settings/settings.jinja2:188
+#: ../templates/settings/settings.jinja2:137
+#: ../templates/settings/settings.jinja2:185
 msgid "Action"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:160
+#: ../templates/settings/settings.jinja2:157
 msgid "Delete Custom Field?"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:160
+#: ../templates/settings/settings.jinja2:157
 #, python-format
 msgid ""
 "Do you really want to delete the custom field \"%(name)s\"?<br><br>The "
@@ -1534,37 +1538,37 @@ msgid ""
 "field as a filter."
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:178
+#: ../templates/settings/settings.jinja2:175
 #: ../templates/workouts/workoutMacros.jinja2:459
 msgid "Participants"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:205
+#: ../templates/settings/settings.jinja2:202
 msgid "Delete Participant?"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:205
+#: ../templates/settings/settings.jinja2:202
 #, python-format
 msgid "Do you really want to delete the participant \"%(name)s\"?"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:220
+#: ../templates/settings/settings.jinja2:217
 msgid "Select Information to show for each distance-based workout"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:245
+#: ../templates/settings/settings.jinja2:241
 msgid "Maintenance Reminder Notifications"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:253
+#: ../templates/settings/settings.jinja2:249
 msgid "More information about ntfy and how to setup your own ntfy server:"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:268
+#: ../templates/settings/settings.jinja2:265
 msgid "Activate notifications for maintenance reminders via ntfy"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:317
+#: ../templates/settings/settings.jinja2:314
 msgid "Test"
 msgstr ""
 
@@ -1572,8 +1576,17 @@ msgstr ""
 msgid "Edit User"
 msgstr ""
 
-#: ../templates/users/userForm.jinja2:6 ../templates/users/userForm.jinja2:26
+#: ../templates/users/userForm.jinja2:6 ../templates/users/userForm.jinja2:31
 msgid "New User"
+msgstr ""
+
+#: ../templates/users/userForm.jinja2:26
+msgid "Delete User?"
+msgstr ""
+
+#: ../templates/users/userForm.jinja2:26
+#, python-format
+msgid "Do you really want to delete the user \"%(user)s\" (ID: %(id)d)?"
 msgstr ""
 
 #: ../templates/users/users.jinja2:31
@@ -1647,11 +1660,11 @@ msgstr ""
 msgid "Edit Fitness Workout"
 msgstr ""
 
-#: ../templates/workouts/workoutFitnessForm.jinja2:59
+#: ../templates/workouts/workoutFitnessForm.jinja2:60
 msgid "Workout Type"
 msgstr ""
 
-#: ../templates/workouts/workoutFitnessForm.jinja2:65
+#: ../templates/workouts/workoutFitnessForm.jinja2:66
 msgid "Workout Categories"
 msgstr ""
 
