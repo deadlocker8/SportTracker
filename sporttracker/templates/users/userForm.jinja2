@@ -24,7 +24,7 @@
                                 </button>
 
                                 {% call macros.deleteModal(gettext('Delete User?'), gettext('Do you really want to delete the user "%(user)s" (ID: %(id)d)?', user=user.username | e, id=user_id)) %}
-                                    <a href="{{ url_for('users.delete', user_id=user_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                                    {{ macros.buttonSubmitAutomaticallyDisabled(classes='btn btn-danger button-delete-modal-action', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl= url_for('users.delete', user_id=user_id)) }}
                                 {% endcall %}
                             {% endif %}
                         {% else %}
@@ -69,7 +69,7 @@
                                 <input type="hidden" name="old_username" value="{{ user.username }}">
                             {% endif %}
 
-                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='input-field-margin') }}
+                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-5 input-field-margin') }}
                         </form>
                     </div>
                 </div>

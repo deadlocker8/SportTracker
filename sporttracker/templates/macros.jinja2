@@ -286,11 +286,11 @@
                 <div class="modal-header">
                     <h5 class="modal-title">{{ title }}</h5>
                 </div>
-                <div class="modal-body {{ additionalClasses }}">
+                <div class="modal-body text-start {{ additionalClasses }}">
                     <p>{{ text }}</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ gettext('Cancel') }}</button>
+                    <button type="button" class="btn btn-secondary d-flex align-items-center button-automatically-disabled" data-bs-dismiss="modal"><span class="material-symbols-outlined text-light">close</span>&nbsp;{{ gettext('Cancel') }}</button>
                     {{ caller() }}
                 </div>
             </div>
@@ -312,8 +312,8 @@
     </div>
 {%- endmacro %}
 
-{% macro buttonSubmitAutomaticallyDisabled(text=gettext('Save'), disabledText=gettext('Saving...'), icon='save', classes='', id='') -%}
-    <button type="submit" id="{{ id }}" class="button-submit-automatically-disabled btn btn-primary d-flex align-items-center {{ classes }}">
+{% macro buttonSubmitAutomaticallyDisabled(text=gettext('Save'), disabledText=gettext('Saving...'), icon='save', classes='', id='', dataUrl='', dismissModal=false) -%}
+    <button type="submit" id="{{ id }}" class="button-submit-automatically-disabled btn btn-primary d-flex align-items-center {{ classes }}" {% if dataUrl %}data-url="{{ dataUrl }}"{% endif %} {% if dismissModal %}data-bs-dismiss="modal"{% endif %}>
         {% if icon %}<span class="material-symbols-outlined filled text-light">{{ icon }}</span>&nbsp;{% endif %}<span class="button-automatically-disabled-text">{{ text }}</span>
         <span class="spinner-border spinner-border-sm hidden" aria-hidden="true"></span>&nbsp;<span class="button-automatically-disabled-text-disabled hidden">{{ disabledText }}</span>
     </button>

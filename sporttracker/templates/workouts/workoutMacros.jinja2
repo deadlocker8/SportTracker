@@ -437,7 +437,7 @@
                         </button>
 
                         {% call macros.deleteModal(gettext('Delete GPX and FIT Track?'), gettext('Do you really want to delete this associated GPX and FIT file?'), 'gpx') %}
-                            <a data-url="{{ deleteUrl }}" class="btn btn-danger" id="buttonGpxTrackDelete" data-bs-dismiss="modal">{{ gettext('Delete') }}</a>
+                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='btn btn-danger', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl=deleteUrl, id='buttonGpxTrackDelete', dismissModal=true) }}
                         {% endcall %}
                     </div>
                     {% endif %}
@@ -567,7 +567,7 @@
                     </button>
 
                     {% call macros.deleteModal(gettext('Delete shared link?'), gettext('Do you really want to delete this shared link?'), 'shared-link') %}
-                        <a class="btn btn-danger" id="buttonSharedLinkDelete" data-bs-dismiss="modal">{{ gettext('Delete') }}</a>
+                        <a class="btn btn-danger d-flex align-items-center" id="buttonSharedLinkDelete" data-bs-dismiss="modal"><span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}</a>
                     {% endcall %}
                 </div>
             </div>

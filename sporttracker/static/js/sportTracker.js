@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function()
     {
         buttonGpxTrackDelete.addEventListener('click', function()
         {
+            automaticallyToggleSubmitButtons(buttonGpxTrackDelete, true);
+
             const url = buttonGpxTrackDelete.dataset.url;
             let xhr = new XMLHttpRequest();
             xhr.open('GET', url);
@@ -15,6 +17,8 @@ document.addEventListener('DOMContentLoaded', function()
                     document.getElementById('gpxControlsEnabled').classList.toggle('hidden', true);
                     document.getElementById('gpxControlsDisabled').classList.toggle('hidden', false);
                 }
+
+                automaticallyToggleSubmitButtons(buttonGpxTrackDelete, false);
             };
             xhr.send();
         });
@@ -178,6 +182,19 @@ document.addEventListener('DOMContentLoaded', function()
             document.getElementById('isTileHuntingShowPlannedTilesActivated').disabled = !isTileHuntingAccessActivated.checked;
         });
     }
+
+    let buttonsDeleteModalAction = document.querySelectorAll('.button-delete-modal-action');
+    if(buttonsDeleteModalAction !== null)
+    {
+        for(let i = 0; i < buttonsDeleteModalAction.length; i++)
+        {
+            buttonsDeleteModalAction[i].addEventListener('click', function()
+            {
+                automaticallyToggleSubmitButtons(buttonsDeleteModalAction[i], true);
+                window.location.href = buttonsDeleteModalAction[i].dataset.url;
+            });
+        }
+    }
 });
 
 function toggleFitFileImport(buttonImportFromFitFile, disable)
@@ -195,23 +212,27 @@ function toggleFitFileImport(buttonImportFromFitFile, disable)
 function automaticallyDisableButtonsOnFormSubmit(form)
 {
     let buttonSubmitAutomaticallyDisabled = form.getElementsByClassName('button-submit-automatically-disabled')[0];
-    buttonSubmitAutomaticallyDisabled.disabled = true;
+    automaticallyToggleSubmitButtons(buttonSubmitAutomaticallyDisabled, true);
+    return true;
+}
+
+function automaticallyToggleSubmitButtons(buttonSubmitAutomaticallyDisabled, showProgressSpinner)
+{
+    buttonSubmitAutomaticallyDisabled.disabled = showProgressSpinner;
 
     // hide icon and text
     let icon = buttonSubmitAutomaticallyDisabled.querySelector('.material-symbols-outlined');
     if(icon !== null)
     {
-        icon.classList.toggle('hidden', true);
+        icon.classList.toggle('hidden', showProgressSpinner);
     }
-    buttonSubmitAutomaticallyDisabled.querySelector('.button-automatically-disabled-text').classList.toggle('hidden', true);
+    buttonSubmitAutomaticallyDisabled.querySelector('.button-automatically-disabled-text').classList.toggle('hidden', showProgressSpinner);
 
     // show spinner and disabled text
-    buttonSubmitAutomaticallyDisabled.querySelector('.spinner-border').classList.toggle('hidden', false);
-    buttonSubmitAutomaticallyDisabled.querySelector('.button-automatically-disabled-text-disabled').classList.toggle('hidden', false);
+    buttonSubmitAutomaticallyDisabled.querySelector('.spinner-border').classList.toggle('hidden', !showProgressSpinner);
+    buttonSubmitAutomaticallyDisabled.querySelector('.button-automatically-disabled-text-disabled').classList.toggle('hidden', !showProgressSpinner);
 
     // disable other buttons that could interfere with the form submit
     let buttonsToDisable = document.querySelectorAll('.button-automatically-disabled');
-    buttonsToDisable.forEach((button) => button.disabled = true);
-
-    return true;
+    buttonsToDisable.forEach((button) => button.disabled = showProgressSpinner);
 }

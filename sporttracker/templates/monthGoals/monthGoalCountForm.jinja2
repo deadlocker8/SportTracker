@@ -23,7 +23,7 @@
                             </button>
 
                             {% call macros.deleteModal(gettext('Delete Count Month Goal?'), gettext('Do you really want to delete this count month goal?')) %}
-                                <a href="{{ url_for('monthGoalsCount.delete', goal_id=goal_id) }}" class="btn btn-danger">{{ gettext('Delete') }}</a>
+                                {{ macros.buttonSubmitAutomaticallyDisabled(classes='btn btn-danger button-delete-modal-action', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl=url_for('monthGoalsCount.delete', goal_id=goal_id)) }}
                             {% endcall %}
                         {% else %}
                             {% call macros.headline(gettext('New Count Month Goal')) %}
