@@ -1,4 +1,5 @@
 - [ ] escape strings from user input in frontend
+- [ ] add suer feedback for long-running actions
 - [ ] adapt/add selenium tests
 - [ ] update localization
 - [ ] update icon overview 
