@@ -7,6 +7,7 @@
 - fix: page titles
 - fix: improve responsiveness of button groups in planned tour form (#241)
 - fix: improve responsiveness of button groups in fitness workout form (#241)
+- chore: update dependencies (#237)
 
 # 1.41.0 - (13.07.25)
 - add: maintenances: allow to apply a custom field as distance filter (e.g. which bike) (#211)
