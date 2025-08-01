@@ -1,6 +1,7 @@
 # 1.42.0 - (XX.XX.XX)
 - add: redirect to planned tour map instead of edit page on click on specific tour on all panned tours map (#242)
 - add: confirmation dialog when deleting users (#230)
+- add: added user feedback on long-running actions + prevent sending the same form multiple times (#226)
 - fix: custom workout fields of type integer and float are now saved correctly again (#239)
 - fix: highlight selected year in annual achievements
 - fix: page titles
