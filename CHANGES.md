@@ -1,4 +1,4 @@
-# 1.42.0 - (XX.XX.XX)
+# 1.42.0 - (01.08.25)
 - add: redirect to planned tour map instead of edit page on click on specific tour on all panned tours map (#242)
 - add: confirmation dialog when deleting users (#230)
 - add: added user feedback on long-running actions + prevent sending the same form multiple times (#226)
