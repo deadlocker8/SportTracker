@@ -14,6 +14,8 @@ class TrackPoint:
 
 
 class FitToGpxConverter:
+    CONVERSION_FACTOR = (2**32) / 360
+
     @staticmethod
     def __parse_track_point(frame: fitdecode.records.FitDataMessage) -> TrackPoint | None:
         if not frame.has_field('position_lat') or not frame.has_field('position_long'):
@@ -25,8 +27,8 @@ class FitToGpxConverter:
             return None
 
         # convert latitude and longitude from integer to degrees
-        latitude = latitude / ((2**32) / 360)
-        longitude = longitude / ((2**32) / 360)
+        latitude = latitude / FitToGpxConverter.CONVERSION_FACTOR
+        longitude = longitude / FitToGpxConverter.CONVERSION_FACTOR
 
         timestamp = frame.get_value('timestamp')
 
