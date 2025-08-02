@@ -1,3 +1,6 @@
+# 1.43.0 - (XX.XX.XXXX)
+- fix: fix calculation of number of new visited tiles for workout
+
 # 1.42.0 - (01.08.25)
 - add: redirect to planned tour map instead of edit page on click on specific tour on all panned tours map (#242)
 - add: confirmation dialog when deleting users (#230)

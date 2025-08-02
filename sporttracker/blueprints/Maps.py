@@ -150,8 +150,6 @@ def construct_blueprint(
         tileHuntingNumberOfNewVisitedTiles = 0
 
         quickFilterState = QuickFilterState().reset(get_available_years(current_user.id))
-        quickFilterState.disable_all_workout_types()
-        quickFilterState.toggle_workout_type(workout.type)
 
         tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
         visitedTileService = __create_visited_tile_service(quickFilterState, tileHuntingFilterState)
