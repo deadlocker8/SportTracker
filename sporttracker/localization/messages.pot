@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-26 22:29+0200\n"
+"POT-Creation-Date: 2025-08-03 20:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,70 +17,66 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: ../blueprints/Achievements.py:47 ../blueprints/Achievements.py:129
+#: ../blueprints/Achievements.py:51 ../blueprints/Achievements.py:130
 msgid "Month Goal Streak"
 msgstr ""
 
-#: ../blueprints/Achievements.py:48 ../blueprints/Achievements.py:130
+#: ../blueprints/Achievements.py:52 ../blueprints/Achievements.py:131
 msgid ""
 "You have achieved all your monthly goals for <span class=\"fw-"
 "bold\">{currentStreak}</span> months in a row!<br>(Best: <span class"
 "=\"fw-bold\">{maxStreak}</span>)"
 msgstr ""
 
-#: ../blueprints/Achievements.py:57 ../blueprints/Achievements.py:139
-msgid "no date"
-msgstr ""
-
-#: ../blueprints/Achievements.py:72 ../blueprints/AnnualAchievements.py:253
+#: ../blueprints/Achievements.py:71 ../blueprints/AnnualAchievements.py:253
 msgid "Longest Workout"
 msgstr ""
 
-#: ../blueprints/Achievements.py:73
+#: ../blueprints/Achievements.py:72
 msgid ""
-"You completed <span class=\"fw-bold\">{longestWorkoutDistance} km</span> "
-"in one trip on <span class=\"fw-bold\">{longestWorkoutDate}</span>!"
+"You completed <span class=\"fw-bold\">{longestWorkoutDistance}</span> in "
+"one trip on <span class=\"fw-bold\">{longestWorkoutDate}</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:89 ../blueprints/AnnualAchievements.py:129
+#: ../blueprints/Achievements.py:90 ../blueprints/AnnualAchievements.py:129
 msgid "Total Distance"
 msgstr ""
 
-#: ../blueprints/Achievements.py:90
+#: ../blueprints/Achievements.py:91
 msgid ""
 "You completed a total of <span class=\"fw-bold\">{totalDistance} "
 "km</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:106 ../blueprints/Achievements.py:188
+#: ../blueprints/Achievements.py:107 ../blueprints/Achievements.py:184
 msgid "Best Month"
 msgstr ""
 
-#: ../blueprints/Achievements.py:107
+#: ../blueprints/Achievements.py:108
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
 "<span class=\"fw-bold\">{bestMonthDistance}</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:156 ../blueprints/AnnualAchievements.py:333
+#: ../blueprints/Achievements.py:150 ../blueprints/AnnualAchievements.py:333
 msgid "Longest Duration"
 msgstr ""
 
-#: ../blueprints/Achievements.py:157
+#: ../blueprints/Achievements.py:151
 msgid ""
-"You completed <span class=\"fw-bold\">{longestDuration} h </span> in one "
+"You completed <span class=\"fw-bold\">{longestDuration}</span> in one "
 "workout on <span class=\"fw-bold\">{longestDurationDate}</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:173 ../blueprints/AnnualAchievements.py:168
+#: ../blueprints/Achievements.py:169 ../blueprints/AnnualAchievements.py:168
 msgid "Total Duration"
 msgstr ""
 
-#: ../blueprints/Achievements.py:174
+#: ../blueprints/Achievements.py:170
 msgid "You completed a total of <span class=\"fw-bold\">{totalDuration} h</span>!"
 msgstr ""
 
-#: ../blueprints/Achievements.py:189
+#: ../blueprints/Achievements.py:185
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
 "<span class=\"fw-bold\">{bestMonthDuration}</span>!"
@@ -163,7 +159,7 @@ msgstr ""
 msgid "FIT file does not contain session data"
 msgstr ""
 
-#: ../blueprints/Maps.py:591
+#: ../blueprints/Maps.py:589
 #: ../templates/longDistanceTours/longDistanceTourForm.jinja2:155
 #: ../templates/maps/mapLongDistanceTour.jinja2:101
 #: ../templates/maps/mapLongDistanceTour.jinja2:185
@@ -242,9 +238,12 @@ msgstr ""
 msgid "Username \"{0}\" already exists"
 msgstr ""
 
-#: ../logic/AchievementCalculator.py:73 ../logic/AchievementCalculator.py:79
-#: ../logic/AchievementCalculator.py:168 ../logic/AchievementCalculator.py:174
+#: ../logic/model/Achievement.py:45 ../logic/model/Achievement.py:95
 msgid "No month"
+msgstr ""
+
+#: ../logic/model/Achievement.py:66 ../logic/model/Achievement.py:117
+msgid "no date"
 msgstr ""
 
 #: ../logic/model/CustomWorkoutField.py:32
@@ -356,7 +355,7 @@ msgid ""
 "Limit: {limit} km, Exceeded by: {limitExceededDistance} km"
 msgstr ""
 
-#: ../templates/about.jinja2:6 ../templates/macros.jinja2:204
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:213
 msgid "About"
 msgstr ""
 
@@ -368,13 +367,13 @@ msgstr ""
 msgid "Show more"
 msgstr ""
 
-#: ../templates/achievements.jinja2:49
+#: ../templates/achievements.jinja2:54
 #: ../templates/annualAchievements.jinja2:58
 #: ../templates/plannedTours/plannedToursMacros.jinja2:87
 msgid "Close"
 msgstr ""
 
-#: ../templates/achievements.jinja2:59 ../templates/macros.jinja2:85
+#: ../templates/achievements.jinja2:64 ../templates/macros.jinja2:94
 msgid "Achievements"
 msgstr ""
 
@@ -398,7 +397,7 @@ msgstr ""
 msgid "Average"
 msgstr ""
 
-#: ../templates/annualAchievements.jinja2:133 ../templates/macros.jinja2:101
+#: ../templates/annualAchievements.jinja2:133 ../templates/macros.jinja2:110
 msgid "Annual Statistics"
 msgstr ""
 
@@ -406,23 +405,23 @@ msgstr ""
 msgid "Icons"
 msgstr ""
 
-#: ../templates/macros.jinja2:41 ../templates/users/users.jinja2:6
+#: ../templates/macros.jinja2:50 ../templates/users/users.jinja2:6
 #: ../templates/users/users.jinja2:17
 msgid "Users"
 msgstr ""
 
-#: ../templates/macros.jinja2:54 ../templates/maps/mapMultipleWorkouts.jinja2:6
+#: ../templates/macros.jinja2:63 ../templates/maps/mapMultipleWorkouts.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:104
 #: ../templates/workouts/workouts.jinja2:5
 #: ../templates/workouts/workouts.jinja2:25
 msgid "Workouts"
 msgstr ""
 
-#: ../templates/macros.jinja2:62 ../templates/monthGoals/monthGoals.jinja2:6
+#: ../templates/macros.jinja2:71 ../templates/monthGoals/monthGoals.jinja2:6
 msgid "Goals"
 msgstr ""
 
-#: ../templates/macros.jinja2:69
+#: ../templates/macros.jinja2:78
 msgid "Analytics"
 msgstr ""
 
@@ -443,26 +442,26 @@ msgstr ""
 #: ../templates/charts/chartNewTilesPerYear.jinja2:16
 #: ../templates/charts/chartSpeedPerWorkoutChooser.jinja2:6
 #: ../templates/charts/chartSpeedPerWorkoutChooser.jinja2:18
-#: ../templates/macros.jinja2:77
+#: ../templates/macros.jinja2:86
 msgid "Charts"
 msgstr ""
 
 #: ../templates/charts/chartCalendar.jinja2:5
-#: ../templates/charts/chartCalendar.jinja2:16 ../templates/macros.jinja2:93
+#: ../templates/charts/chartCalendar.jinja2:16 ../templates/macros.jinja2:102
 msgid "Calendar"
 msgstr ""
 
-#: ../templates/macros.jinja2:111
+#: ../templates/macros.jinja2:120
 #: ../templates/maps/mapMultipleWorkouts.jinja2:17
 #: ../templates/maps/mapNotFound.jinja2:6
 msgid "Map"
 msgstr ""
 
-#: ../templates/macros.jinja2:118
+#: ../templates/macros.jinja2:127
 msgid "Tours"
 msgstr ""
 
-#: ../templates/macros.jinja2:133
+#: ../templates/macros.jinja2:142
 #: ../templates/maps/mapMultipleWorkouts.jinja2:9
 #: ../templates/plannedTours/plannedTours.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:19
@@ -471,37 +470,37 @@ msgstr ""
 
 #: ../templates/longDistanceTours/longDistanceTours.jinja2:6
 #: ../templates/longDistanceTours/longDistanceTours.jinja2:18
-#: ../templates/macros.jinja2:146
+#: ../templates/macros.jinja2:155
 #: ../templates/plannedTours/plannedToursMacros.jinja2:216
 msgid "Long-distance Tours"
 msgstr ""
 
-#: ../templates/macros.jinja2:160
+#: ../templates/macros.jinja2:169
 msgid "More"
 msgstr ""
 
-#: ../templates/macros.jinja2:173
+#: ../templates/macros.jinja2:182
 #: ../templates/maintenances/maintenances.jinja2:76
 #: ../templates/maintenances/maintenances.jinja2:89
 msgid "Maintenance"
 msgstr ""
 
-#: ../templates/macros.jinja2:187 ../templates/maps/mapMacros.jinja2:134
+#: ../templates/macros.jinja2:196 ../templates/maps/mapMacros.jinja2:134
 #: ../templates/maps/mapTileHunting.jinja2:6
 #: ../templates/settings/settings.jinja2:50
 msgid "Tile Hunting"
 msgstr ""
 
-#: ../templates/macros.jinja2:195
+#: ../templates/macros.jinja2:204
 #: ../templates/maps/mapTileHuntingHeatmap.jinja2:6
 msgid "Tile Hunting Heatmap"
 msgstr ""
 
-#: ../templates/macros.jinja2:213
+#: ../templates/macros.jinja2:222
 msgid "Search"
 msgstr ""
 
-#: ../templates/macros.jinja2:242
+#: ../templates/macros.jinja2:251
 #: ../templates/maintenances/maintenanceForm.jinja2:126
 #: ../templates/settings/settings.jinja2:328
 #: ../templates/settings/settings.jinja2:340
@@ -509,22 +508,22 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: ../templates/macros.jinja2:251
+#: ../templates/macros.jinja2:260
 msgid "Logout"
 msgstr ""
 
-#: ../templates/macros.jinja2:293
+#: ../templates/macros.jinja2:302
 #: ../templates/workouts/workoutChooser.jinja2:86
 #: ../templates/workouts/workouts.jinja2:95
 #: ../templates/workouts/workouts.jinja2:117
 msgid "Cancel"
 msgstr ""
 
-#: ../templates/macros.jinja2:315
+#: ../templates/macros.jinja2:324
 msgid "Save"
 msgstr ""
 
-#: ../templates/macros.jinja2:315
+#: ../templates/macros.jinja2:324
 msgid "Saving..."
 msgstr ""
 
