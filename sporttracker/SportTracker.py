@@ -192,6 +192,7 @@ class SportTracker(FlaskBaseApp):
                 'currentYear': datetime.now().year,
                 'fitnessWorkoutTypes': [x for x in FitnessWorkoutType],
                 'fitnessWorkoutCategoryTypes': [x for x in FitnessWorkoutCategoryType],
+                'isDebug': self._isDebug,
             }
 
         def format_decimal(value: int | float, decimals: int = 1) -> str:

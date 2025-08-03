@@ -184,16 +184,22 @@ document.addEventListener('DOMContentLoaded', function()
     }
 
     let buttonsDeleteModalAction = document.querySelectorAll('.button-delete-modal-action');
-    if(buttonsDeleteModalAction !== null)
+    for(let i = 0; i < buttonsDeleteModalAction.length; i++)
     {
-        for(let i = 0; i < buttonsDeleteModalAction.length; i++)
+        buttonsDeleteModalAction[i].addEventListener('click', function()
         {
-            buttonsDeleteModalAction[i].addEventListener('click', function()
-            {
-                automaticallyToggleSubmitButtons(buttonsDeleteModalAction[i], true);
-                window.location.href = buttonsDeleteModalAction[i].dataset.url;
-            });
-        }
+            automaticallyToggleSubmitButtons(buttonsDeleteModalAction[i], true);
+            window.location.href = buttonsDeleteModalAction[i].dataset.url;
+        });
+    }
+
+    let badgesDebug = document.querySelectorAll('.badge-debug');
+    for(let i = 0; i < badgesDebug.length; i++)
+    {
+        badgesDebug[i].addEventListener('click', function()
+        {
+            badgesDebug[i].style.display = 'none';
+        });
     }
 });
 

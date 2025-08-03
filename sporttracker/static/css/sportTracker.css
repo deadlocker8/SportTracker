@@ -279,6 +279,10 @@ select[disabled] {
     max-height: 30vh;
 }
 
+.badge-debug:hover {
+    cursor: pointer;
+}
+
 .debug {
     outline: 1px solid red !important;
 }
