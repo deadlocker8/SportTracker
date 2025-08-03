@@ -39,7 +39,12 @@
                         <div class="list-group text-start">
                         {% for historyItem in achievement.historyItems %}
                             <div class="list-group-item d-flex align-items-center justify-content-between">
-                                <div>{{ historyItem.date }}</div>
+                                {% set historyItemLink = historyItem.get_link() %}
+                                {% if historyItemLink is not none %}
+                                    {{ historyItemLink }}
+                                {% else %}
+                                    <div>{{ historyItem.date }}</div>
+                                {% endif %}
                                 <div>{{ historyItem.get_value_formatted() }}</div>
                             </div>
                         {% endfor %}

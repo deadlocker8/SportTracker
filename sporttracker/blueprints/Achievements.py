@@ -1,14 +1,18 @@
 import logging
 from datetime import datetime
 
-from flask import Blueprint, render_template, url_for
-from flask_babel import gettext, format_datetime
+from flask import Blueprint, render_template
+from flask_babel import gettext
 from flask_login import login_required
 
 from sporttracker.helpers import Helpers
 from sporttracker.logic import Constants
 from sporttracker.logic.AchievementCalculator import AchievementCalculator
-from sporttracker.logic.model.Achievement import Achievement
+from sporttracker.logic.model.Achievement import (
+    Achievement,
+    LongestWorkoutDistanceAchievementHistoryItem,
+    LongestWorkoutDurationAchievementHistoryItem,
+)
 from sporttracker.logic.model.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -53,15 +57,10 @@ def construct_blueprint():
             )
         )
 
-        longestDistance = 0.0
-        longestWorkoutDate = gettext('no date')
-        longestWorkout = AchievementCalculator.get_workout_with_longest_distance_by_type(workoutType)
-        if longestWorkout is not None:
-            longestDistance = longestWorkout.distance / 1000
-            longestWorkoutDate = format_datetime(longestWorkout.start_time, format='dd.MM.yyyy')
-            longestWorkoutDate = (
-                f'<a href="{url_for("maps.showSingleWorkout", workout_id=longestWorkout.id)}">{longestWorkoutDate}</a>'
-            )
+        longestWorkout = LongestWorkoutDistanceAchievementHistoryItem.get_dummy_instance()
+        longestWorkouts = AchievementCalculator.get_workouts_with_longest_distances_by_type(workoutType)
+        if longestWorkouts:
+            longestWorkout = longestWorkouts[0]
 
         achievementList.append(
             Achievement(
@@ -71,12 +70,14 @@ def construct_blueprint():
                 color=workoutType.border_color,
                 title=gettext('Longest Workout'),
                 description=gettext(
-                    'You completed <span class="fw-bold">{longestWorkoutDistance} km</span> in one trip on <span class="fw-bold">{longestWorkoutDate}</span>!'
+                    'You completed <span class="fw-bold">{longestWorkoutDistance}</span> in one trip on <span class="fw-bold">{longestWorkoutDate}</span>!'
                 ).format(
-                    longestWorkoutDistance=Helpers.format_decimal(longestDistance, decimals=2),
-                    longestWorkoutDate=longestWorkoutDate,
+                    longestWorkoutDistance=longestWorkout.get_value_formatted(),
+                    longestWorkoutDate=longestWorkout.get_date_formatted()
+                    if longestWorkout.get_link() is None
+                    else longestWorkout.get_link(),
                 ),
-                historyItems=[],
+                historyItems=longestWorkouts,
             )
         )
 
@@ -108,7 +109,7 @@ def construct_blueprint():
                     '<span class="fw-bold">{bestMonthName}</span> was your best month with <span class="fw-bold">'
                     '{bestMonthDistance}</span>!'
                 ).format(
-                    bestMonthName=bestMonths[0].date,
+                    bestMonthName=bestMonths[0].get_date_formatted(),
                     bestMonthDistance=bestMonths[0].get_value_formatted(),
                 ),
                 historyItems=bestMonths,
@@ -135,17 +136,10 @@ def construct_blueprint():
             )
         )
 
-        longestDuration = 0
-        longestDurationDate = gettext('no date')
-        longestWorkout = AchievementCalculator.get_workout_with_longest_duration_by_type(workoutType)
-        if longestWorkout is not None:
-            longestDuration = longestWorkout.duration
-            longestDurationDate = format_datetime(longestWorkout.start_time, format='dd.MM.yyyy')
-
-            if longestWorkout.type == WorkoutType.FITNESS:
-                longestDurationDate = f'<a href="{url_for("fitnessWorkouts.edit", workout_id=longestWorkout.id)}">{longestDurationDate}</a>'
-            else:
-                longestDurationDate = f'<a href="{url_for("distanceWorkouts.edit", workout_id=longestWorkout.id)}">{longestDurationDate}</a>'
+        longestWorkout = LongestWorkoutDurationAchievementHistoryItem.get_dummy_instance()
+        longestWorkouts = AchievementCalculator.get_workouts_with_longest_durations_by_type(workoutType)
+        if longestWorkouts:
+            longestWorkout = longestWorkouts[0]
 
         achievementList.append(
             Achievement(
@@ -155,12 +149,14 @@ def construct_blueprint():
                 color=workoutType.border_color,
                 title=gettext('Longest Duration'),
                 description=gettext(
-                    'You completed <span class="fw-bold">{longestDuration} h </span> in one workout on <span class="fw-bold">{longestDurationDate}</span>!'
+                    'You completed <span class="fw-bold">{longestDuration}</span> in one workout on <span class="fw-bold">{longestDurationDate}</span>!'
                 ).format(
-                    longestDuration=Helpers.format_duration(longestDuration),
-                    longestDurationDate=longestDurationDate,
+                    longestDuration=longestWorkout.get_value_formatted(),
+                    longestDurationDate=longestWorkout.get_date_formatted()
+                    if longestWorkout.get_link() is None
+                    else longestWorkout.get_link(),
                 ),
-                historyItems=[],
+                historyItems=longestWorkouts,
             )
         )
 
@@ -190,7 +186,7 @@ def construct_blueprint():
                     '<span class="fw-bold">{bestMonthName}</span> was your best month with <span class="fw-bold">'
                     '{bestMonthDuration}</span>!'
                 ).format(
-                    bestMonthName=bestMonths[0].date,
+                    bestMonthName=bestMonths[0].get_date_formatted(),
                     bestMonthDuration=bestMonths[0].get_value_formatted(),
                 ),
                 historyItems=bestMonths,

@@ -1,11 +1,15 @@
 from datetime import datetime, date
 from statistics import mean
 
-from flask_babel import format_datetime, gettext
 from flask_login import current_user
 from sqlalchemy import asc, func, extract
 
-from sporttracker.logic.model.Achievement import DistanceAchievementHistoryItem, DurationAchievementHistoryItem
+from sporttracker.logic.model.Achievement import (
+    LongestWorkoutDistanceAchievementHistoryItem,
+    LongestWorkoutDurationAchievementHistoryItem,
+    BestMonthDistanceAchievementHistoryItem,
+    BestMonthDurationAchievementHistoryItem,
+)
 from sporttracker.logic.model.DistanceWorkout import (
     get_distance_per_month_by_type,
     DistanceWorkout,
@@ -18,17 +22,27 @@ from sporttracker.logic.model.db import db
 
 class AchievementCalculator:
     BEST_MONTH_HISTORY_SIZE = 5
+    LONGEST_WORKOUT_HISTORY_SIZE = 5
 
     @staticmethod
-    def get_workout_with_longest_distance_by_type(
+    def get_workouts_with_longest_distances_by_type(
         workoutType: WorkoutType,
-    ) -> DistanceWorkout | None:
-        return (
+    ) -> list[LongestWorkoutDistanceAchievementHistoryItem]:
+        longestWorkouts = (
             DistanceWorkout.query.filter(DistanceWorkout.type == workoutType)
             .filter(DistanceWorkout.user_id == current_user.id)
             .order_by(DistanceWorkout.distance.desc())
-            .first()
+            .limit(AchievementCalculator.LONGEST_WORKOUT_HISTORY_SIZE)
+            .all()
         )
+
+        historyItems = []
+        for workout in longestWorkouts:
+            historyItems.append(
+                LongestWorkoutDistanceAchievementHistoryItem(workout.start_time, workout.distance / 1000, workout.id)
+            )
+
+        return historyItems
 
     @staticmethod
     def get_longest_distance_by_type_and_year(workoutType: WorkoutType, year: int) -> float:
@@ -66,26 +80,24 @@ class AchievementCalculator:
         return value / 1000
 
     @staticmethod
-    def get_best_distance_months_by_type(workoutType: WorkoutType) -> list[DistanceAchievementHistoryItem]:
+    def get_best_distance_months_by_type(workoutType: WorkoutType) -> list[BestMonthDistanceAchievementHistoryItem]:
         maxDate, minDate = AchievementCalculator._get_min_and_max_date(workoutType)
 
         if minDate is None or maxDate is None:
-            return [DistanceAchievementHistoryItem(gettext('No month'), 0)]
+            return [BestMonthDistanceAchievementHistoryItem.get_dummy_instance()]
 
         monthDistanceSums = get_distance_per_month_by_type(workoutType, minDate.year, maxDate.year)
         monthDistanceSums = [month for month in monthDistanceSums if month.distanceSum > 0.0]
 
         if not monthDistanceSums:
-            return [DistanceAchievementHistoryItem(gettext('No month'), 0)]
+            return [BestMonthDistanceAchievementHistoryItem.get_dummy_instance()]
 
         bestMonths = sorted(monthDistanceSums, key=lambda monthDistanceSum: monthDistanceSum.distanceSum, reverse=True)
 
         result = []
         for month in bestMonths[: AchievementCalculator.BEST_MONTH_HISTORY_SIZE]:
             bestMonthDate = date(year=month.year, month=month.month, day=1)
-            result.append(
-                DistanceAchievementHistoryItem(format_datetime(bestMonthDate, format='MMMM yyyy'), month.distanceSum)
-            )
+            result.append(BestMonthDistanceAchievementHistoryItem(bestMonthDate, month.distanceSum))
 
         return result
 
@@ -129,13 +141,26 @@ class AchievementCalculator:
         return highestStreak, currentStreak
 
     @staticmethod
-    def get_workout_with_longest_duration_by_type(workoutType: WorkoutType) -> Workout | None:
-        return (
+    def get_workouts_with_longest_durations_by_type(
+        workoutType: WorkoutType,
+    ) -> list[LongestWorkoutDurationAchievementHistoryItem]:
+        longestWorkouts = (
             Workout.query.filter(Workout.type == workoutType)
             .filter(Workout.user_id == current_user.id)
             .order_by(Workout.duration.desc())
-            .first()
+            .limit(AchievementCalculator.LONGEST_WORKOUT_HISTORY_SIZE)
+            .all()
         )
+
+        historyItems = []
+        for workout in longestWorkouts:
+            historyItems.append(
+                LongestWorkoutDurationAchievementHistoryItem(
+                    workout.start_time, workout.duration, workout.id, workout.type
+                )
+            )
+
+        return historyItems
 
     @staticmethod
     def get_longest_duration_by_type_and_year(workoutType: WorkoutType, year: int) -> int:
@@ -161,26 +186,24 @@ class AchievementCalculator:
         return value
 
     @staticmethod
-    def get_best_duration_month_by_type(workoutType: WorkoutType) -> list[DurationAchievementHistoryItem]:
+    def get_best_duration_month_by_type(workoutType: WorkoutType) -> list[BestMonthDurationAchievementHistoryItem]:
         maxDate, minDate = AchievementCalculator._get_min_and_max_date(workoutType)
 
         if minDate is None or maxDate is None:
-            return [DurationAchievementHistoryItem(gettext('No month'), 0)]
+            return [BestMonthDurationAchievementHistoryItem.get_dummy_instance()]
 
         monthDurationSums = get_duration_per_month_by_type(workoutType, minDate.year, maxDate.year)
         monthDurationSums = [month for month in monthDurationSums if month.durationSum > 0.0]
 
         if not monthDurationSums:
-            return [DurationAchievementHistoryItem(gettext('No month'), 0)]
+            return [BestMonthDurationAchievementHistoryItem.get_dummy_instance()]
 
         bestMonths = sorted(monthDurationSums, key=lambda monthDistanceSum: monthDistanceSum.durationSum, reverse=True)
 
         result = []
         for month in bestMonths[: AchievementCalculator.BEST_MONTH_HISTORY_SIZE]:
             bestMonthDate = date(year=month.year, month=month.month, day=1)
-            result.append(
-                DurationAchievementHistoryItem(format_datetime(bestMonthDate, format='MMMM yyyy'), month.durationSum)
-            )
+            result.append(BestMonthDurationAchievementHistoryItem(bestMonthDate, month.durationSum))
 
         return result
 

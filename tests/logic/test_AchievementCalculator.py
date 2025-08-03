@@ -4,11 +4,10 @@ import pytest
 from flask_login import FlaskLoginClient, login_user
 
 from sporttracker.logic.AchievementCalculator import AchievementCalculator
-from sporttracker.logic.model.Achievement import DistanceAchievementHistoryItem, DurationAchievementHistoryItem
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount
-from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import create_user, Language, User
+from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME
 
@@ -60,15 +59,15 @@ def create_count_goal(year, month, countMinimum=1):
 
 
 class TestAchievementCalculatorGetLongestDistanceByType:
-    def test_get_workout_with_longest_distance_by_type_no_workouts_should_return_none(self, app):
+    def test_get_workouts_with_longest_distances_by_type_no_workouts_should_return_none(self, app):
         with app.test_request_context():
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            result = AchievementCalculator.get_workout_with_longest_distance_by_type(WorkoutType.BIKING)
-            assert result is None
+            result = AchievementCalculator.get_workouts_with_longest_distances_by_type(WorkoutType.BIKING)
+            assert len(result) == 0
 
-    def test_get_workout_with_longest_distance_by_type_multiple_workouts_should_return_max_distance(self, app):
+    def test_get_workouts_with_longest_distances_by_type_multiple_workouts_should_return_max_distance(self, app):
         with app.test_request_context():
             user = db.session.get(User, 1)
             login_user(user, remember=False)
@@ -78,22 +77,28 @@ class TestAchievementCalculatorGetLongestDistanceByType:
             db.session.add(create_dummy_workout(WorkoutType.BIKING, datetime.date(2023, 3, 1), 22))
             db.session.commit()
 
-            result = AchievementCalculator.get_workout_with_longest_distance_by_type(WorkoutType.BIKING)
-            assert result is not None
-            assert 2 == result.id
-            assert 50000 == result.distance
+            result = AchievementCalculator.get_workouts_with_longest_distances_by_type(WorkoutType.BIKING)
+            assert len(result) == 3
+            assert result[0].get_date_formatted() == '01.02.2023'
+            assert result[0].get_value_formatted() == '50.0 km'
+
+            assert result[1].get_date_formatted() == '01.01.2023'
+            assert result[1].get_value_formatted() == '30.0 km'
+
+            assert result[2].get_date_formatted() == '01.03.2023'
+            assert result[2].get_value_formatted() == '22.0 km'
 
 
 class TestAchievementCalculatorGetLongestDurationByType:
-    def test_get_workout_with_longest_duration_by_type_no_workouts_should_return_none(self, app):
+    def test_get_workouts_with_longest_durations_by_type_no_workouts_should_return_none(self, app):
         with app.test_request_context():
             user = db.session.get(User, 1)
             login_user(user, remember=False)
 
-            result = AchievementCalculator.get_workout_with_longest_duration_by_type(WorkoutType.FITNESS)
-            assert result is None
+            result = AchievementCalculator.get_workouts_with_longest_durations_by_type(WorkoutType.FITNESS)
+            assert len(result) == 0
 
-    def test_get_workout_with_longest_duration_by_type_multiple_workouts_should_return_max_duration(self, app):
+    def test_get_workouts_with_longest_durations_by_type_multiple_workouts_should_return_max_duration(self, app):
         with app.test_request_context():
             user = db.session.get(User, 1)
             login_user(user, remember=False)
@@ -103,10 +108,16 @@ class TestAchievementCalculatorGetLongestDurationByType:
             db.session.add(create_dummy_workout(WorkoutType.FITNESS, datetime.date(2023, 3, 1), 22, duration=3000))
             db.session.commit()
 
-            result = AchievementCalculator.get_workout_with_longest_duration_by_type(WorkoutType.FITNESS)
-            assert result is not None
-            assert 2 == result.id
-            assert 4000 == result.duration
+            result = AchievementCalculator.get_workouts_with_longest_durations_by_type(WorkoutType.FITNESS)
+            assert len(result) == 3
+            assert result[0].get_date_formatted() == '01.02.2023'
+            assert result[0].get_value_formatted() == '1:06 h'
+
+            assert result[1].get_date_formatted() == '01.03.2023'
+            assert result[1].get_value_formatted() == '0:50 h'
+
+            assert result[2].get_date_formatted() == '01.01.2023'
+            assert result[2].get_value_formatted() == '0:33 h'
 
 
 class TestAchievementCalculatorGetTotalDistanceByType:
@@ -162,7 +173,9 @@ class TestAchievementCalculatorGetBestDistanceMonthByType:
             login_user(user, remember=False)
 
             result = AchievementCalculator.get_best_distance_months_by_type(WorkoutType.BIKING)
-            assert [DistanceAchievementHistoryItem('No month', 0)] == result
+            assert len(result) == 1
+            assert result[0].get_value_formatted() == '0.0 km'
+            assert result[0].get_date_formatted() == 'No month'
 
     def test_get_best_distance_months_by_type_single_months(self, app):
         with app.test_request_context():
@@ -173,7 +186,9 @@ class TestAchievementCalculatorGetBestDistanceMonthByType:
             db.session.commit()
 
             result = AchievementCalculator.get_best_distance_months_by_type(WorkoutType.BIKING)
-            assert [DistanceAchievementHistoryItem('January 2023', 30)] == result
+            assert len(result) == 1
+            assert result[0].get_value_formatted() == '30.0 km'
+            assert result[0].get_date_formatted() == 'January 2023'
 
     def test_get_best_distance_months_by_type_multiple_months(self, app):
         with app.test_request_context():
@@ -187,11 +202,15 @@ class TestAchievementCalculatorGetBestDistanceMonthByType:
             db.session.commit()
 
             result = AchievementCalculator.get_best_distance_months_by_type(WorkoutType.BIKING)
-            assert [
-                DistanceAchievementHistoryItem('February 2023', 52),
-                DistanceAchievementHistoryItem('January 2023', 30),
-                DistanceAchievementHistoryItem('March 2023', 22),
-            ] == result
+            assert len(result) == 3
+            assert result[0].get_value_formatted() == '52.0 km'
+            assert result[0].get_date_formatted() == 'February 2023'
+
+            assert result[1].get_value_formatted() == '30.0 km'
+            assert result[1].get_date_formatted() == 'January 2023'
+
+            assert result[2].get_value_formatted() == '22.0 km'
+            assert result[2].get_date_formatted() == 'March 2023'
 
 
 class TestAchievementCalculatorGetBestDurationMonthByType:
@@ -201,7 +220,9 @@ class TestAchievementCalculatorGetBestDurationMonthByType:
             login_user(user, remember=False)
 
             result = AchievementCalculator.get_best_duration_month_by_type(WorkoutType.FITNESS)
-            assert [DurationAchievementHistoryItem('No month', 0)] == result
+            assert len(result) == 1
+            assert result[0].get_value_formatted() == '0:00 h'
+            assert result[0].get_date_formatted() == 'No month'
 
     def test_get_best_duration_month_by_type_single_months(self, app):
         with app.test_request_context():
@@ -212,7 +233,9 @@ class TestAchievementCalculatorGetBestDurationMonthByType:
             db.session.commit()
 
             result = AchievementCalculator.get_best_duration_month_by_type(WorkoutType.FITNESS)
-            assert [DurationAchievementHistoryItem('January 2023', 3000)] == result
+            assert len(result) == 1
+            assert result[0].get_value_formatted() == '0:50 h'
+            assert result[0].get_date_formatted() == 'January 2023'
 
     def test_get_best_duration_month_by_type_multiple_months(self, app):
         with app.test_request_context():
@@ -226,11 +249,15 @@ class TestAchievementCalculatorGetBestDurationMonthByType:
             db.session.commit()
 
             result = AchievementCalculator.get_best_duration_month_by_type(WorkoutType.FITNESS)
-            assert [
-                DurationAchievementHistoryItem('February 2023', 7000),
-                DurationAchievementHistoryItem('March 2023', 3500),
-                DurationAchievementHistoryItem('January 2023', 2000),
-            ] == result
+            assert len(result) == 3
+            assert result[0].get_value_formatted() == '1:56 h'
+            assert result[0].get_date_formatted() == 'February 2023'
+
+            assert result[1].get_value_formatted() == '0:58 h'
+            assert result[1].get_date_formatted() == 'March 2023'
+
+            assert result[2].get_value_formatted() == '0:33 h'
+            assert result[2].get_date_formatted() == 'January 2023'
 
 
 class TestAchievementCalculatorGetStreaksByType:

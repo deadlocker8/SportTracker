@@ -1,28 +1,135 @@
 from __future__ import annotations
 
 import enum
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from datetime import datetime, date
 from typing import Sequence
 
+from flask import url_for
+from flask_babel import gettext, format_datetime
+
 from sporttracker.helpers import Helpers
+from sporttracker.logic.model.WorkoutType import WorkoutType
 
 
 @dataclass
-class AchievementHistoryItem:
-    date: str
-    value: int | float
+class AchievementHistoryItem(ABC):
+    date: datetime | date | None
+
+    @abstractmethod
+    def get_date_formatted(self) -> str:
+        pass
+
+    @abstractmethod
+    def get_value_formatted(self) -> str:
+        pass
+
+    @abstractmethod
+    def get_link(self) -> str | None:
+        pass
 
 
 @dataclass
-class DistanceAchievementHistoryItem(AchievementHistoryItem):
+class DistanceAchievementHistoryItem(AchievementHistoryItem, ABC):
+    value: float
+
     def get_value_formatted(self) -> str:
         return f'{Helpers.format_decimal(self.value, decimals=2)} km'
 
 
 @dataclass
-class DurationAchievementHistoryItem(AchievementHistoryItem):
+class BestMonthDistanceAchievementHistoryItem(DistanceAchievementHistoryItem):
+    def get_date_formatted(self) -> str:
+        if self.date is None:
+            return gettext('No month')
+
+        return format_datetime(self.date, format='MMMM yyyy')
+
+    def get_link(self) -> str | None:
+        if self.date is None:
+            return None
+
+        return f'<a href="{url_for("workouts.listWorkouts", year=self.date.year, month=self.date.month)}">{self.get_date_formatted()}</a>'
+
+    @staticmethod
+    def get_dummy_instance() -> BestMonthDistanceAchievementHistoryItem:
+        return BestMonthDistanceAchievementHistoryItem(None, 0.0)
+
+
+@dataclass
+class LongestWorkoutDistanceAchievementHistoryItem(DistanceAchievementHistoryItem):
+    workout_id: int | None
+
+    def get_date_formatted(self) -> str:
+        if self.date is None:
+            return gettext('no date')
+
+        return format_datetime(self.date, format='dd.MM.yyyy')
+
+    def get_link(self) -> str | None:
+        if self.workout_id is None:
+            return None
+
+        return (
+            f'<a href="{url_for("maps.showSingleWorkout", workout_id=self.workout_id)}">{self.get_date_formatted()}</a>'
+        )
+
+    @staticmethod
+    def get_dummy_instance() -> LongestWorkoutDistanceAchievementHistoryItem:
+        return LongestWorkoutDistanceAchievementHistoryItem(None, 0.0, None)
+
+
+@dataclass
+class DurationAchievementHistoryItem(AchievementHistoryItem, ABC):
+    value: int
+
     def get_value_formatted(self) -> str:
-        return f'{Helpers.format_duration(int(self.value))} h'
+        return f'{Helpers.format_duration(self.value)} h'
+
+
+@dataclass
+class BestMonthDurationAchievementHistoryItem(DurationAchievementHistoryItem):
+    def get_date_formatted(self) -> str:
+        if self.date is None:
+            return gettext('No month')
+
+        return format_datetime(self.date, format='MMMM yyyy')
+
+    def get_link(self) -> str | None:
+        if self.date is None:
+            return None
+
+        return f'<a href="{url_for("workouts.listWorkouts", year=self.date.year, month=self.date.month)}">{self.get_date_formatted()}</a>'
+
+    @staticmethod
+    def get_dummy_instance() -> BestMonthDurationAchievementHistoryItem:
+        return BestMonthDurationAchievementHistoryItem(None, 0)
+
+
+@dataclass
+class LongestWorkoutDurationAchievementHistoryItem(DurationAchievementHistoryItem):
+    workout_id: int | None
+    workout_type: WorkoutType | None
+
+    def get_date_formatted(self) -> str:
+        if self.date is None:
+            return gettext('no date')
+
+        return format_datetime(self.date, format='dd.MM.yyyy')
+
+    def get_link(self) -> str | None:
+        if self.workout_id is None:
+            return None
+
+        if self.workout_type == WorkoutType.FITNESS:
+            return f'<a href="{url_for("fitnessWorkouts.edit", workout_id=self.workout_id)}">{self.get_date_formatted()}</a>'
+        else:
+            return f'<a href="{url_for("distanceWorkouts.edit", workout_id=self.workout_id)}">{self.get_date_formatted()}</a>'
+
+    @staticmethod
+    def get_dummy_instance() -> LongestWorkoutDurationAchievementHistoryItem:
+        return LongestWorkoutDurationAchievementHistoryItem(None, 0, None, None)
 
 
 @dataclass
