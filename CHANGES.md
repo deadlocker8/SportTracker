@@ -1,6 +1,7 @@
-# 1.43.0 - (XX.XX.XXXX)
+# 1.43.0 - (XX.XX.XX)
 - add: show badge in navbar if started in debug mode (#246)
 - add: longest workout achievement: show best 5 workouts on click (#247)
+- add: new chart: workout hour heatmap (#245)
 - fix: fix calculation of number of new visited tiles for workout
 
 # 1.42.0 - (01.08.25)
