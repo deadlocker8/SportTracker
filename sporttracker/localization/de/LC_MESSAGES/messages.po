@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-03 20:29+0200\n"
-"PO-Revision-Date: 2025-08-03 20:30+0200\n"
+"POT-Creation-Date: 2025-08-10 23:14+0200\n"
+"PO-Revision-Date: 2025-08-10 23:14+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -587,6 +587,11 @@ msgstr "Am häufigsten durchgeführte Workouts"
 msgid "Number of new visited tiles per year"
 msgstr "Anzahl neu besuchter Kacheln pro Jahr"
 
+#: ../templates/charts/chartChooser.jinja2:98
+#: ../templates/charts/chartHeatmap.jinja2:2
+msgid "Heatmap"
+msgstr "Heatmap"
+
 #: ../templates/charts/chartDistancePerCustomField.jinja2:21
 #: ../templates/charts/chartDistancePerMonth.jinja2:28
 #: ../templates/charts/chartDistancePerParticipant.jinja2:21
@@ -622,6 +627,10 @@ msgstr "Workout per Name auswählen"
 #: ../templates/charts/chartSpeedPerWorkoutChooser.jinja2:27
 msgid "Note: Only names with at least two workouts are listed"
 msgstr "Hinweis: Es werden nur Namen mit mindestens zwei Workouts angezeigt"
+
+#: ../templates/charts/chartHeatmap.jinja2:36
+msgid "Time of day"
+msgstr "Uhrzeit"
 
 #: ../templates/charts/chartMostPerformedWorkouts.jinja2:16
 #, python-format
