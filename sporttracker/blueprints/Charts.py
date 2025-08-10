@@ -1,15 +1,15 @@
 import calendar
 import logging
 from dataclasses import dataclass
-from datetime import date
-from typing import Any
+from datetime import date, time
+from typing import Any, Literal
 
 import flask_babel
 from babel.dates import get_day_names
 from flask import Blueprint, render_template, redirect, url_for
 from flask_babel import gettext, format_datetime
 from flask_login import login_required, current_user
-from sqlalchemy import extract, func, String, asc, desc
+from sqlalchemy import extract, func, String, asc, desc, cast, Time
 
 from sporttracker.helpers.Helpers import format_duration
 from sporttracker.logic import Constants
@@ -449,8 +449,8 @@ def construct_blueprint(
 
         return f'background-image: repeating-linear-gradient(45deg, {",".join(colorStops)})'
 
-    def __get_single_week_day_pattern() -> list[str]:
-        patternWithSundayAsFirstDay = list(get_day_names(width='narrow', locale=flask_babel.get_locale()).values())
+    def __get_single_week_day_pattern(width: Literal['abbreviated', 'narrow', 'short', 'wide'] = 'narrow') -> list[str]:
+        patternWithSundayAsFirstDay = list(get_day_names(width=width, locale=flask_babel.get_locale()).values())
         patternWithMondayAsFirstDay = patternWithSundayAsFirstDay[1:] + patternWithSundayAsFirstDay[0:1]
         return patternWithMondayAsFirstDay
 
@@ -644,5 +644,48 @@ def construct_blueprint(
             )
 
         return result
+
+    @charts.route('/heatmap')
+    @login_required
+    def chartHeatmap():
+        numberOfWorkoutsPerDayPerHour = (
+            Workout.query.with_entities(
+                extract('dow', Workout.start_time).label('weekday'),  # sunday = 0 in PostgreSQL
+                extract('hour', Workout.start_time).label('hour'),
+                func.count().label('count'),
+            )
+            .filter(Workout.user_id == current_user.id)
+            .filter(
+                # filter workouts from old imports where the start time was simply set to exactly 12:00:00.000
+                cast(Workout.start_time, Time) != time(hour=12, minute=0, second=0, microsecond=0)
+            )
+            .group_by('weekday', 'hour')
+            .order_by('weekday', 'hour')
+            .all()
+        )
+
+        # create a 7x24 matrix filled with zeros
+        counts = [[0 for _ in range(24)] for _ in range(7)]
+
+        total = 0
+        for weekday, hour, count in numberOfWorkoutsPerDayPerHour:
+            weekday = int(weekday)
+            hour = int(hour)
+            counts[weekday][hour] = count
+            total += count
+
+        # move sunday (index 0) to the end
+        counts = counts[1:] + counts[:1]
+
+        # reverse because plotly wants the y-axis from 0 up
+        counts.reverse()
+
+        chartDataHeatmap: dict[str, Any] = {
+            'rows': counts,
+            'weekDayNames': list(reversed(__get_single_week_day_pattern('wide'))),
+            'hourNames': [f'{hour}' for hour in range(24)],
+        }
+
+        return render_template('charts/chartHeatmap.jinja2', chartDataHeatmap=chartDataHeatmap)
 
     return charts
