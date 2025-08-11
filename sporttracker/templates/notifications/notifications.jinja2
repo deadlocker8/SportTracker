@@ -1,9 +1,40 @@
 <!DOCTYPE html>
 
+{% macro render_notification(notification) -%}
+    <div class="row py-2">
+        <div class="col col-12 col-lg-6 mx-auto">
+            <div class="card mb-4">
+                <div class="card-header bg-dark-subtle fw-bold d-flex align-items-center justify-content-between pe-1">
+                    <div class="d-flex align-items-center">
+                        <div style="width: 2rem; height: 2rem;" class="rounded d-flex align-items-center justify-content-center {{ notification.type.color }} {{ notification.type.font_color }}  }}">
+                            {% if notification.type.is_font_awesome_icon %}
+                                <i class="fa-solid {{ notification.type.icon }} fa-fw"></i>
+                            {% else %}
+                                <span class="material-symbols-outlined filled">{{ notification.type.icon }}</span>
+                            {% endif %}
+                        </div>
+                        <span class="ms-3">{{ notification.type.get_localized_title() }}</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="fw-normal text-body-secondary me-2">{{ notification.get_localized_time_delta() }}</span>
+                        <a href="{{ url_for('notifications.delete', notification_id=notification.id) }}" class="d-flex align-items-center text-decoration-none">
+                            <span class="material-symbols-outlined text-dark">close</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body text-start">
+                    <div>{{ notification.title | e }}</div>
+                    <div>{{ notification.message | e }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {{ gettext('Goals') }}</title>
+        <title>SportTracker - {{ gettext('Notifications') }}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -21,7 +52,7 @@
                 </div>
 
                 {% for notification in notifications %}
-                    {{ notification.title }}
+                    {{ render_notification(notification) }}
                 {% endfor %}
             </section>
         </div>
