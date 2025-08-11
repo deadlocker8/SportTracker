@@ -1,57 +1,89 @@
-{% import 'charts/chartMacros.jinja2' as chartMacros with context %}
-{% call chartMacros.chart(gettext('Heatmap')) %}
-     const data = [
-        {
-            z: {{ chartDataHeatmap['rows'] }},
-            y: {{ chartDataHeatmap['weekDayNames'] }},
-            x: {{ chartDataHeatmap['hourNames'] }},
-            type: 'heatmap',
-            xgap :	5,
-            ygap :	5,
-            colorscale: [
-                [0, 'rgba(0,0,0,0)'],  // override color for value = 0
-                [0.0001, 'rgb(12,51,131)'],  // the following color stops are from the color scale "Portland" https://github.com/plotly/plotly.js/blob/master/src/components/colorscale/scales.js#L76
-                [0.25, 'rgb(10,136,186)'],
-                [0.5, 'rgb(242,211,56)'],
-                [0.75, 'rgb(242,143,56)'],
-                [1, 'rgb(217,30,30)']
-            ],
-            colorbar: {
-                tickfont: {
-                    color: '#FFFFFF'
-                },
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Heatmap') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('calendar') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        {% call macros.headline(gettext('Heatmap')) %}
+                            <span class="material-symbols-outlined fs-1">background_grid_small</span>
+                        {% endcall %}
+                    </div>
+                </div>
+
+                {{ macros.workout_type_quick_filter(url_for('charts.chartHeatmap'), false) }}
+
+                <div id="chartContainer"></div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+        <script>
+            if('{{ chartDataHeatmap['isAllEmpty'] }}' === 'False')
+            {
+                const data = [
+                    {
+                        z: {{ chartDataHeatmap['rows'] }},
+                        y: {{ chartDataHeatmap['weekDayNames'] }},
+                        x: {{ chartDataHeatmap['hourNames'] }},
+                        type: 'heatmap',
+                        xgap: 5,
+                        ygap: 5,
+                        colorscale: [
+                            [0, 'rgba(0,0,0,0)'],  // override color for value = 0
+                            [0.0001, 'rgb(12,51,131)'],  // the following color stops are from the color scale "Portland" https://github.com/plotly/plotly.js/blob/master/src/components/colorscale/scales.js#L76
+                            [0.25, 'rgb(10,136,186)'],
+                            [0.5, 'rgb(242,211,56)'],
+                            [0.75, 'rgb(242,143,56)'],
+                            [1, 'rgb(217,30,30)']
+                        ],
+                        colorbar: {
+                            tickfont: {
+                                color: '#FFFFFF'
+                            },
+                        }
+                    },
+                ];
+
+                const plotlyLayout = {
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    xaxis: {
+                        type: 'category',
+                        showline: true,
+                        showgrid: false,
+                        color: '#FFFFFF',
+                        title: {
+                            text: '{{ gettext('Time of day') }}',
+                        },
+                    },
+                    yaxis: {
+                        showline: true,
+                        showgrid: false,
+                        color: '#FFFFFF'
+                    },
+                    legend: {
+                        font: {
+                            color: '#FFFFFF'
+                        }
+                    }
+                }
+
+                const plotlyConfig = {
+                    responsive: true,
+                    displayModeBar: false
+                };
+
+                Plotly.newPlot('chartContainer', data, plotlyLayout, plotlyConfig);
             }
-        },
-    ];
-
-    const plotlyLayout = {
-        paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)',
-        xaxis: {
-            type: 'category',
-            showline: true,
-            showgrid: false,
-            color: '#FFFFFF',
-            title: {
-                text: '{{ gettext('Time of day') }}',
-            },
-        },
-        yaxis: {
-            showline: true,
-            showgrid: false,
-            color: '#FFFFFF'
-        },
-        legend: {
-            font: {
-                color: '#FFFFFF'
-            }
-        }
-    }
-
-    const plotlyConfig = {
-        responsive: true,
-        displayModeBar: false
-    };
-
-    Plotly.newPlot('chartContainer', data, plotlyLayout, plotlyConfig);
-{% endcall %}
+        </script>
+    </body>
+</html>

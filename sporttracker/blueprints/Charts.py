@@ -648,6 +648,8 @@ def construct_blueprint(
     @charts.route('/heatmap')
     @login_required
     def chartHeatmap():
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
+
         numberOfWorkoutsPerDayPerHour = (
             Workout.query.with_entities(
                 extract('dow', Workout.start_time).label('weekday'),  # sunday = 0 in PostgreSQL
@@ -659,6 +661,7 @@ def construct_blueprint(
                 # filter workouts from old imports where the start time was simply set to exactly 12:00:00.000
                 cast(Workout.start_time, Time) != time(hour=12, minute=0, second=0, microsecond=0)
             )
+            .filter(Workout.type.in_(quickFilterState.get_active_workout_types()))
             .group_by('weekday', 'hour')
             .order_by('weekday', 'hour')
             .all()
@@ -684,8 +687,13 @@ def construct_blueprint(
             'rows': counts,
             'weekDayNames': list(reversed(__get_single_week_day_pattern('wide'))),
             'hourNames': [f'{hour}' for hour in range(24)],
+            'isAllEmpty': all(hour == 0 for day in counts for hour in day),
         }
 
-        return render_template('charts/chartHeatmap.jinja2', chartDataHeatmap=chartDataHeatmap)
+        return render_template(
+            'charts/chartHeatmap.jinja2',
+            chartDataHeatmap=chartDataHeatmap,
+            quickFilterState=quickFilterState,
+        )
 
     return charts
