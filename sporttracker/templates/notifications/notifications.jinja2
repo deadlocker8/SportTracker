@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Goals') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('notifications') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row mb-3">
+                    <div class="col col-12 mx-auto">
+                        {% call macros.headline(gettext('Notifications')) %}
+                            <span class="material-symbols-outlined filled fs-1">notifications</span>
+                        {% endcall %}
+                    </div>
+                </div>
+
+                {% for notification in notifications %}
+                    {{ notification.title }}
+                {% endfor %}
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>

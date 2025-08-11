@@ -223,6 +223,8 @@
                                    name="searchText" value="{% if searchText %}{{ searchText }}{% endif %}">
                         </form>
 
+                        {{ navbar_notification_button() }}
+
                         {{ navbar_user() }}
                     {% endif %}
                 {% endif %}
@@ -232,8 +234,8 @@
 {%- endmacro %}
 
 {% macro navbar_user(showSettings=true) -%}
-    <div class="dropdown" data-bs-theme="dark">
-        <a class="nav-link dropdown-toggle d-flex align-items-center justify-content-start text-white mx-lg-3 me-3 mt-3 mb-2 my-lg-0"
+    <div class="dropdown ms-0 ms-lg-2" data-bs-theme="dark">
+        <a class="nav-link dropdown-toggle d-flex align-items-center justify-content-start text-white my-lg-0"
            href="#" role="button" data-bs-toggle="dropdown">
             <div class="d-flex align-items-center">
                 <span class="navbar-icon">
@@ -264,6 +266,21 @@
         </ul>
     </div>
 {%- endmacro %}
+
+{% macro navbar_notification_button() -%}
+    <div class="d-flex align-items-center justify-content-between mt-3 mt-lg-0 mb-2 mb-lg-0">
+        <a class="btn btn-outline-light d-flex align-items-center" href="{{ url_for('notifications.listNotifications') }}">
+            <span class="navbar-icon">
+                <span class="material-symbols-outlined filled fs-5">notifications</span>
+            </span>
+            {% if totalNumberOfNotifications == 0 %}
+                <span class="badge rounded-pill text-bg-secondary ms-1">0</span>
+            {% else %}
+                <span class="badge rounded-pill text-bg-danger ms-1">{{ totalNumberOfNotifications }}</span>
+            {% endif %}
+        </a>
+    </div>
+{% endmacro -%}
 
 {% macro workout_type_quick_filter(redirectUrl, onlyDistanceBasedTypes) -%}
     <div class="d-flex flex-row align-items-center justify-content-center">

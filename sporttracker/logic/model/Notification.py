@@ -21,6 +21,10 @@ class Notification(db.Model):  # type: ignore[name-defined]
         return f'Participant(id: {self.id}, name: {self.name}, user_id: {self.user_id})'
 
 
+def get_total_number_of_notifications() -> int:
+    return Notification.query.filter(Notification.user_id == current_user.id).count()
+
+
 def get_notifications() -> list[Notification]:
     return Notification.query.filter(Notification.user_id == current_user.id).order_by(Notification.id.desc()).all()
 

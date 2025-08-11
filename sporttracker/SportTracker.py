@@ -42,6 +42,7 @@ from sporttracker.blueprints import (
     DistanceWorkouts,
     FitnessWorkouts,
     LongDistanceTours,
+    Notifications,
 )
 from sporttracker.helpers import Helpers
 from sporttracker.helpers.SettingsChecker import SettingsChecker
@@ -51,20 +52,18 @@ from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.MaintenanceEventsCollector import (
     get_number_of_triggered_maintenance_reminders,
 )
-from sporttracker.logic.model.LongDistanceTour import get_new_long_distance_tour_ids, get_updated_long_distance_tour_ids
-from sporttracker.logic.model.TravelDirection import TravelDirection
-from sporttracker.logic.model.TravelType import TravelType
-from sporttracker.logic.service.PlannedTourService import PlannedTourService
-from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
-from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.logic.model import Notification
 from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutFieldType
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCategoryType
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
+from sporttracker.logic.model.LongDistanceTour import get_new_long_distance_tour_ids, get_updated_long_distance_tour_ids
 from sporttracker.logic.model.PlannedTour import (
     get_new_planned_tour_ids,
     get_updated_planned_tour_ids,
 )
+from sporttracker.logic.model.TravelDirection import TravelDirection
+from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.model.User import (
     User,
     Language,
@@ -77,6 +76,9 @@ from sporttracker.logic.model.db import db, migrate
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.logic.service.FitnessWorkoutService import FitnessWorkoutService
 from sporttracker.logic.service.NtfyService import NtfyService
+from sporttracker.logic.service.PlannedTourService import PlannedTourService
+from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
+from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 LOGGER.propagate = False
@@ -189,6 +191,7 @@ class SportTracker(FlaskBaseApp):
                 'newLongDistanceTourIds': get_new_long_distance_tour_ids(),
                 'updatedLongDistanceTourIds': get_updated_long_distance_tour_ids(),
                 'numberOfTriggeredMaintenanceReminders': get_number_of_triggered_maintenance_reminders(),
+                'totalNumberOfNotifications': Notification.get_total_number_of_notifications(),
                 'currentYear': datetime.now().year,
                 'fitnessWorkoutTypes': [x for x in FitnessWorkoutType],
                 'fitnessWorkoutCategoryTypes': [x for x in FitnessWorkoutCategoryType],
@@ -345,6 +348,7 @@ class SportTracker(FlaskBaseApp):
             )
         )
         app.register_blueprint(AnnualAchievements.construct_blueprint())
+        app.register_blueprint(Notifications.construct_blueprint())
 
     def __prepare_database(self, app):
         with app.app_context():

@@ -283,6 +283,11 @@ select[disabled] {
     cursor: pointer;
 }
 
+.btn .badge {
+    position:relative;
+    top: 0;  /* override bootstrap -1px to avoid misalignment */
+}
+
 .debug {
     outline: 1px solid red !important;
 }
