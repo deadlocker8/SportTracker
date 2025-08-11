@@ -49,9 +49,6 @@ from sporttracker.helpers.SettingsChecker import SettingsChecker
 from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.MaintenanceEventsCollector import (
-    get_number_of_triggered_maintenance_reminders,
-)
 from sporttracker.logic.model import Notification
 from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutFieldType
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
@@ -190,7 +187,6 @@ class SportTracker(FlaskBaseApp):
                 'updatedPlannedTourIds': get_updated_planned_tour_ids(),
                 'newLongDistanceTourIds': get_new_long_distance_tour_ids(),
                 'updatedLongDistanceTourIds': get_updated_long_distance_tour_ids(),
-                'numberOfTriggeredMaintenanceReminders': get_number_of_triggered_maintenance_reminders(),
                 'totalNumberOfNotifications': Notification.get_total_number_of_notifications(),
                 'currentYear': datetime.now().year,
                 'fitnessWorkoutTypes': [x for x in FitnessWorkoutType],

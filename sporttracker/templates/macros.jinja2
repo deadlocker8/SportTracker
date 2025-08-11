@@ -125,13 +125,6 @@
                                     <span class="navbar-icon">
                                         <i class="fa-solid fa-lightbulb fa-fw fs-6"></i>
                                     </span>&nbsp;{{ gettext('Tours') }}
-                                    {% set numberOfUpdatedPlannedTours = newPlannedTourIds|length + updatedPlannedTourIds|length %}
-                                    {% set numberOfUpdatedLongDistanceTours = newLongDistanceTourIds|length + updatedLongDistanceTourIds|length %}
-                                    {% if numberOfUpdatedPlannedTours > 0 or numberOfUpdatedLongDistanceTours > 0 %}
-                                        <span class="badge rounded-pill bg-danger ms-1">
-                                            {{ numberOfUpdatedPlannedTours + numberOfUpdatedLongDistanceTours }}
-                                        </span>
-                                    {% endif %}
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
@@ -140,11 +133,6 @@
                                             <span class="navbar-icon">
                                                 <i class="fa-solid fa-lightbulb fa-fw fs-6"></i>
                                             </span>&nbsp;{{ gettext('Planned Tours') }}
-                                            {% if numberOfUpdatedPlannedTours > 0 %}
-                                                <span class="badge rounded-pill bg-danger ms-1">
-                                                    {{ numberOfUpdatedPlannedTours }}
-                                                </span>
-                                            {% endif %}
                                         </a>
                                     </li>
                                     <li>
@@ -153,11 +141,6 @@
                                             <span class="navbar-icon">
                                                 <span class="material-symbols-outlined fs-5">laps</span>
                                             </span>&nbsp;{{ gettext('Long-distance Tours') }}
-                                            {% if numberOfUpdatedLongDistanceTours > 0 %}
-                                                <span class="badge rounded-pill bg-danger ms-1">
-                                                    {{ numberOfUpdatedLongDistanceTours }}
-                                                </span>
-                                            {% endif %}
                                         </a>
                                     </li>
                                 </ul>
@@ -167,11 +150,6 @@
                                     <span class="navbar-icon">
                                         <span class="material-symbols-outlined fs-5">format_list_bulleted</span>
                                     </span>&nbsp;{{ gettext('More') }}
-                                    {% if numberOfTriggeredMaintenanceReminders > 0 %}
-                                        <span class="badge rounded-pill bg-danger ms-1">
-                                            {{ numberOfUpdatedPlannedTours + numberOfTriggeredMaintenanceReminders }}
-                                        </span>
-                                    {% endif %}
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
@@ -180,11 +158,6 @@
                                             <span class="navbar-icon">
                                                 <i class="fa-solid fa-wrench fa-fw fs-6"></i>
                                             </span>&nbsp;{{ gettext('Maintenance') }}
-                                            {% if numberOfTriggeredMaintenanceReminders > 0 %}
-                                                <span class="badge rounded-pill bg-danger ms-1">
-                                                    {{ numberOfTriggeredMaintenanceReminders }}
-                                                </span>
-                                            {% endif %}
                                         </a>
                                     </li>
                                     {% if current_user.isTileHuntingActivated %}

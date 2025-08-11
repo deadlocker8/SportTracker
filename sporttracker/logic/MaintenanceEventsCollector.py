@@ -3,7 +3,6 @@ from datetime import datetime
 from operator import attrgetter
 
 import natsort
-from flask_login import current_user
 from natsort import natsorted
 
 from sporttracker.blueprints.MaintenanceEventInstances import MaintenanceEventInstanceModel
@@ -13,7 +12,6 @@ from sporttracker.logic.model.Maintenance import Maintenance
 from sporttracker.logic.model.MaintenanceEventInstance import (
     MaintenanceEventInstance,
     get_maintenance_events_by_maintenance_id,
-    get_latest_maintenance_event_by_maintenance_id,
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.filterStates.MaintenanceFilterState import MaintenanceFilterState
@@ -134,37 +132,3 @@ def __convert_events_to_models(
     )
 
     return eventModels
-
-
-def get_number_of_triggered_maintenance_reminders() -> int:
-    if not current_user.is_authenticated:
-        return 0
-
-    maintenanceList = Maintenance.query.filter(Maintenance.user_id == current_user.id).all()
-
-    numberOfTriggeredMaintenanceReminders = 0
-    for maintenance in maintenanceList:
-        latestEvent: MaintenanceEventInstance | None = get_latest_maintenance_event_by_maintenance_id(maintenance.id)
-
-        if latestEvent is None:
-            continue
-
-        now = datetime.now()
-
-        customWorkoutField = get_custom_field_by_id(maintenance.custom_workout_field_id)
-        customWorkoutFieldName = None if customWorkoutField is None else customWorkoutField.name
-        distanceUntilToday = get_distance_between_dates(
-            latestEvent.event_date,
-            now,
-            [maintenance.type],
-            customWorkoutFieldName,  # type: ignore[arg-type]
-            maintenance.custom_workout_field_value,  # type: ignore[arg-type]
-        )
-
-        if not maintenance.is_reminder_active:
-            continue
-
-        if distanceUntilToday >= maintenance.reminder_limit:
-            numberOfTriggeredMaintenanceReminders += 1
-
-    return numberOfTriggeredMaintenanceReminders
