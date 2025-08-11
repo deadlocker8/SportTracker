@@ -3,6 +3,7 @@
 - add: longest workout achievement: show best 5 workouts on click (#247)
 - add: new chart: workout hour heatmap (#245)
 - fix: fix calculation of number of new visited tiles for workout
+- fix: progress indicator on save is now correctly shown in workout forms (#249)
 
 # 1.42.0 - (01.08.25)
 - add: redirect to planned tour map instead of edit page on click on specific tour on all panned tours map (#242)

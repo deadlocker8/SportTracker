@@ -217,8 +217,11 @@ function toggleFitFileImport(buttonImportFromFitFile, disable)
 
 function automaticallyDisableButtonsOnFormSubmit(form)
 {
-    let buttonSubmitAutomaticallyDisabled = form.getElementsByClassName('button-submit-automatically-disabled')[0];
-    automaticallyToggleSubmitButtons(buttonSubmitAutomaticallyDisabled, true);
+    let buttonsSubmitAutomaticallyDisabled = form.getElementsByClassName('button-submit-automatically-disabled');
+    for(let i = 0; i < buttonsSubmitAutomaticallyDisabled.length; i++)
+    {
+        automaticallyToggleSubmitButtons(buttonsSubmitAutomaticallyDisabled[i], true);
+    }
     return true;
 }
 
