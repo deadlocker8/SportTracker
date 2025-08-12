@@ -216,3 +216,12 @@ class NotificationService(Observable):
                 message_details=None,
                 item_id=tour.id,
             )
+
+        if owner.id != current_user.id:
+            self.__add_notification(
+                user_id=owner.id,
+                notification_type=notification_type_updated,
+                message=message_template_updated.format(owner=current_user.username.capitalize(), tour_name=tour.name),
+                message_details=None,
+                item_id=tour.id,
+            )
