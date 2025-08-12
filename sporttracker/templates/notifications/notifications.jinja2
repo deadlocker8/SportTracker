@@ -29,9 +29,11 @@
                             <div>{{ notification.message_details | e }}</div>
                         {% endif %}
                     </div>
-                    <a href="{{ notification.type.get_action_url(notification.item_id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center ms-3">
-                        <span class="material-symbols-outlined filled text-light fs-5">open_in_new</span>&nbsp;Open
-                    </a>
+                    {% if notification.type.get_action_url(notification.item_id) is not none %}
+                        <a href="{{ notification.type.get_action_url(notification.item_id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center ms-3">
+                            <span class="material-symbols-outlined filled text-light fs-5">open_in_new</span>&nbsp;Open
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
