@@ -91,7 +91,7 @@ class NotificationService(Observable):
                 item_id=maintenance.id,
             )
 
-    def on_new_planned_tour(self, planned_tour: PlannedTour) -> None:
+    def on_planned_tour_created(self, planned_tour: PlannedTour) -> None:
         owner = User.query.filter(User.id == planned_tour.user_id).first()
         if owner is None:
             return
@@ -102,6 +102,22 @@ class NotificationService(Observable):
             self.__add_notification(
                 user_id=user.id,
                 notification_type=NotificationType.NEW_SHARED_PLANNED_TOUR,
+                message=messageTemplate.format(owner=owner.username.capitalize(), tour_name=planned_tour.name),
+                message_details=None,
+                item_id=planned_tour.id,
+            )
+
+    def on_planned_tour_updated(self, planned_tour: PlannedTour) -> None:
+        owner = User.query.filter(User.id == planned_tour.user_id).first()
+        if owner is None:
+            return
+
+        for user in planned_tour.shared_users:
+            messageTemplate = gettext('{owner} has updated the planned tour "{tour_name}"')
+
+            self.__add_notification(
+                user_id=user.id,
+                notification_type=NotificationType.EDITED_SHARED_PLANNED_TOUR,
                 message=messageTemplate.format(owner=owner.username.capitalize(), tour_name=planned_tour.name),
                 message_details=None,
                 item_id=planned_tour.id,

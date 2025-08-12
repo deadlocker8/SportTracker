@@ -107,7 +107,7 @@ class PlannedTourService:
         self.__update_gpx_preview_image_for_long_distance_tours(
             [t.long_distance_tour_id for t in linkedLongDistanceTours]
         )
-        self._notification_service.on_new_planned_tour(plannedTour)
+        self._notification_service.on_planned_tour_created(plannedTour)
 
         return plannedTour
 
@@ -212,6 +212,8 @@ class PlannedTourService:
             self._gpx_service.add_planned_tiles_for_planned_tour(
                 plannedTour, self._tile_hunting_settings['baseZoomLevel'], user_id
             )
+
+        self._notification_service.on_planned_tour_updated(plannedTour)
 
         return plannedTour
 
