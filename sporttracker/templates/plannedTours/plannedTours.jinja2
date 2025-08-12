@@ -47,11 +47,6 @@
                                                 {{ plannedTour.name | e}}
                                             </div>
                                         </div>
-                                        {% if plannedTour.id in newPlannedTourIds %}
-                                            <span class="badge text-bg-danger">{{ gettext('new') }}</span>
-                                        {% elif plannedTour.id in updatedPlannedTourIds %}
-                                            <span class="badge text-bg-danger">{{ gettext('updated') }}</span>
-                                        {% endif %}
                                     </div>
                                 </div>
 

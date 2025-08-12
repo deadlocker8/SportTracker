@@ -71,45 +71,6 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
         return user.username
 
 
-def get_new_planned_tour_ids() -> list[int]:
-    if not current_user.is_authenticated:
-        return []
-
-    last_viewed_date = User.query.filter(User.id == current_user.id).first().planned_tours_last_viewed_date
-
-    rows = (
-        PlannedTour.query.with_entities(PlannedTour.id)
-        .filter(PlannedTour.shared_users.any(id=current_user.id))
-        .filter(PlannedTour.creation_date > last_viewed_date)
-        .all()
-    )
-
-    return [int(row[0]) for row in rows]
-
-
-def get_updated_planned_tour_ids() -> list[int]:
-    if not current_user.is_authenticated:
-        return []
-
-    last_viewed_date = User.query.filter(User.id == current_user.id).first().planned_tours_last_viewed_date
-
-    rows = (
-        PlannedTour.query.with_entities(PlannedTour.id)
-        .filter(
-            or_(
-                PlannedTour.user_id == current_user.id,
-                PlannedTour.shared_users.any(id=current_user.id),
-            )
-        )
-        .filter(PlannedTour.creation_date != PlannedTour.last_edit_date)
-        .filter(PlannedTour.last_edit_user_id != current_user.id)
-        .filter(PlannedTour.last_edit_date > last_viewed_date)
-        .all()
-    )
-
-    return [int(row[0]) for row in rows]
-
-
 def get_planned_tours(workoutTypes: list[WorkoutType]) -> list[PlannedTour]:
     plannedTours = (
         PlannedTour.query.filter(
@@ -130,7 +91,7 @@ def get_planned_tours_by_ids(ids: list[int]) -> list[PlannedTour]:
 
 
 def get_planned_tours_filtered(
-    workoutTypes: list[WorkoutType], plannedTourFilterState: 'PlannedTourFilterState'
+    workoutTypes: list[WorkoutType], plannedTourFilterState: PlannedTourFilterState
 ) -> list[PlannedTour]:
     plannedToursQuery = (
         PlannedTour.query.filter(

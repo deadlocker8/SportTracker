@@ -53,11 +53,6 @@ from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutFieldType
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCategoryType
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
-from sporttracker.logic.model.LongDistanceTour import get_new_long_distance_tour_ids, get_updated_long_distance_tour_ids
-from sporttracker.logic.model.PlannedTour import (
-    get_new_planned_tour_ids,
-    get_updated_planned_tour_ids,
-)
 from sporttracker.logic.model.TravelDirection import TravelDirection
 from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.model.User import (
@@ -189,10 +184,6 @@ class SportTracker(FlaskBaseApp):
                 'customWorkoutFieldTypes': [x for x in CustomWorkoutFieldType],
                 'travelTypes': [x for x in TravelType],
                 'travelDirections': [x for x in TravelDirection],
-                'newPlannedTourIds': get_new_planned_tour_ids(),
-                'updatedPlannedTourIds': get_updated_planned_tour_ids(),
-                'newLongDistanceTourIds': get_new_long_distance_tour_ids(),
-                'updatedLongDistanceTourIds': get_updated_long_distance_tour_ids(),
                 'totalNumberOfNotifications': NotificationService.get_total_number_of_notifications(),
                 'currentYear': datetime.now().year,
                 'fitnessWorkoutTypes': [x for x in FitnessWorkoutType],

@@ -67,45 +67,6 @@ def get_long_distance_tour_by_id(tour_id: int) -> LongDistanceTour | None:
     )
 
 
-def get_new_long_distance_tour_ids() -> list[int]:
-    if not current_user.is_authenticated:
-        return []
-
-    last_viewed_date = User.query.filter(User.id == current_user.id).first().long_distance_tours_last_viewed_date
-
-    rows = (
-        LongDistanceTour.query.with_entities(LongDistanceTour.id)
-        .filter(LongDistanceTour.shared_users.any(id=current_user.id))
-        .filter(LongDistanceTour.creation_date > last_viewed_date)
-        .all()
-    )
-
-    return [int(row[0]) for row in rows]
-
-
-def get_updated_long_distance_tour_ids() -> list[int]:
-    if not current_user.is_authenticated:
-        return []
-
-    last_viewed_date = User.query.filter(User.id == current_user.id).first().long_distance_tours_last_viewed_date
-
-    rows = (
-        LongDistanceTour.query.with_entities(LongDistanceTour.id)
-        .filter(
-            or_(
-                LongDistanceTour.user_id == current_user.id,
-                LongDistanceTour.shared_users.any(id=current_user.id),
-            )
-        )
-        .filter(LongDistanceTour.creation_date != LongDistanceTour.last_edit_date)
-        .filter(LongDistanceTour.last_edit_user_id != current_user.id)
-        .filter(LongDistanceTour.last_edit_date > last_viewed_date)
-        .all()
-    )
-
-    return [int(row[0]) for row in rows]
-
-
 def get_long_distance_tours(workoutTypes: list[WorkoutType]) -> list[LongDistanceTour]:
     longDistanceTours = (
         LongDistanceTour.query.filter(

@@ -38,11 +38,6 @@
                                                 {{ longDistanceTour.name | e}}
                                             </div>
                                         </div>
-                                        {% if longDistanceTour.id in newLongDistanceTourIds %}
-                                            <span class="badge text-bg-danger">{{ gettext('new') }}</span>
-                                        {% elif longDistanceTour.id in updatedLongDistanceTourIds %}
-                                            <span class="badge text-bg-danger">{{ gettext('updated') }}</span>
-                                        {% endif %}
                                     </div>
                                 </div>
 
