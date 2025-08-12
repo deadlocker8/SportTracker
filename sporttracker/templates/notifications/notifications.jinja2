@@ -22,9 +22,14 @@
                         </a>
                     </div>
                 </div>
-                <div class="card-body text-start">
-                    <div>{{ notification.title | e }}</div>
-                    <div>{{ notification.message | e }}</div>
+                <div class="card-body text-start d-flex align-items-center justify-content-between">
+                    <div>
+                        <div>{{ notification.title | e }}</div>
+                        <div>{{ notification.message | e }}</div>
+                    </div>
+                    <a href="{{ notification.type.get_action_url(notification.item_id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center ms-3">
+                        <span class="material-symbols-outlined filled text-light fs-5">open_in_new</span>&nbsp;Open
+                    </a>
                 </div>
             </div>
         </div>

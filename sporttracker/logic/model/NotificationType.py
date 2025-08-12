@@ -1,10 +1,17 @@
 import enum
 
+from flask import url_for
 from flask_babel import gettext
 
 
 class NotificationType(enum.Enum):
-    MAINTENANCE_REMINDER = 'MAINTENANCE_REMINDER', 'fa-wrench', True, 'bg-danger', 'text-light'
+    MAINTENANCE_REMINDER = (
+        'MAINTENANCE_REMINDER',
+        'fa-wrench',
+        True,
+        'bg-danger',
+        'text-light',
+    )
     NEW_SHARED_PLANNED_TOUR = 'NEW_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-primary', 'text-light'
     EDITED_SHARED_PLANNED_TOUR = 'EDITED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-primary', 'text-light'
     NEW_SHARED_LONG_DISTANCE_TOUR = 'NEW_SHARED_LONG_DISTANCE_TOUR', 'fa-lightbulb', True, 'bg-primary', 'text-light'
@@ -51,3 +58,17 @@ class NotificationType(enum.Enum):
             return gettext('Updated shared long-distance tour')
 
         raise ValueError(f'Could not get localized name for unsupported NotificationType: {self}')
+
+    def get_action_url(self, item_id: int | None) -> str:
+        if self == self.MAINTENANCE_REMINDER:
+            return url_for('maintenances.listMaintenances')
+        elif self == self.NEW_SHARED_PLANNED_TOUR:
+            return url_for('maps.showPlannedTour', tour_id=item_id)
+        elif self == self.EDITED_SHARED_PLANNED_TOUR:
+            return url_for('maps.showPlannedTour', tour_id=item_id)
+        elif self == self.NEW_SHARED_LONG_DISTANCE_TOUR:
+            return url_for('maps.showLongDistanceTour', tour_id=item_id)
+        elif self == self.EDITED_SHARED_LONG_DISTANCE_TOUR:
+            return url_for('maps.showLongDistanceTour', tour_id=item_id)
+
+        raise ValueError(f'Could not get action url for unsupported NotificationType: {self}')
