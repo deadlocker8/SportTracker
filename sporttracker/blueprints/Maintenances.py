@@ -7,7 +7,7 @@ from flask_pydantic import validate
 from pydantic import BaseModel, field_validator
 
 from sporttracker.logic import Constants
-from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events
+from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events, create_maintenance_model
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_distance_workout_types_with_values
 from sporttracker.logic.model.Maintenance import Maintenance, get_maintenance_by_id
 from sporttracker.logic.model.MaintenanceEventInstance import (
@@ -75,6 +75,19 @@ def construct_blueprint():
             customFieldsByWorkoutType=customFieldsByWorkoutType,
             hasCustomWorkoutFields=hasCustomWorkoutFields,
             maintenanceFilterState=maintenanceFilterState,
+        )
+
+    @maintenances.route('/<int:maintenance_id>')
+    @login_required
+    def showSingleMaintenance(maintenance_id: int):
+        maintenance = get_maintenance_by_id(maintenance_id)
+
+        if maintenance is None:
+            abort(404)
+
+        return render_template(
+            'maintenances/maintenance.jinja2',
+            maintenanceWithEvents=create_maintenance_model(maintenance),
         )
 
     @maintenances.route('/add')

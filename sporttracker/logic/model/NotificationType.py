@@ -61,7 +61,7 @@ class NotificationType(enum.Enum):
 
     def get_action_url(self, item_id: int | None) -> str:
         if self == self.MAINTENANCE_REMINDER:
-            return url_for('maintenances.listMaintenances')
+            return url_for('maintenances.showSingleMaintenance', maintenance_id=item_id)
         elif self == self.NEW_SHARED_PLANNED_TOUR:
             return url_for('maps.showPlannedTour', tour_id=item_id)
         elif self == self.EDITED_SHARED_PLANNED_TOUR:

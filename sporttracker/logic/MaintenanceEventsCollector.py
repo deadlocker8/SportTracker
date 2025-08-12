@@ -50,37 +50,42 @@ def get_maintenances_with_events(
         if maintenance.type not in quickFilterState.get_active_workout_types():
             continue
 
-        events: list[MaintenanceEventInstance] = get_maintenance_events_by_maintenance_id(maintenance.id, user_id)
-
-        eventModels: list[MaintenanceEventInstanceModel] = __convert_events_to_models(events, maintenance)
-
-        isLimitExceeded = False
-        limitExceededDistance = None
-        if maintenance.is_reminder_active and eventModels:
-            distanceUntilToday = eventModels[-1].distanceSinceEvent
-            if distanceUntilToday >= maintenance.reminder_limit:
-                isLimitExceeded = True
-                limitExceededDistance = distanceUntilToday - maintenance.reminder_limit
-
-        customWorkoutField = get_custom_field_by_id(maintenance.custom_workout_field_id)
-        customWorkoutFieldName = None if customWorkoutField is None else customWorkoutField.name
-
-        model = MaintenanceWithEventsModel(
-            id=maintenance.id,
-            type=maintenance.type,
-            description=maintenance.description,
-            isLimitActive=maintenance.is_reminder_active,
-            limit=maintenance.reminder_limit,
-            isLimitExceeded=isLimitExceeded,
-            limitExceededDistance=limitExceededDistance,
-            events=eventModels,
-            custom_workout_field_name=customWorkoutFieldName,  # type: ignore[arg-type]
-            custom_workout_field_value=maintenance.custom_workout_field_value,
-        )
-
+        model = create_maintenance_model(maintenance)
         maintenancesWithEvents.append(model)
 
     return maintenancesWithEvents
+
+
+def create_maintenance_model(maintenance: Maintenance) -> MaintenanceWithEventsModel:
+    events: list[MaintenanceEventInstance] = get_maintenance_events_by_maintenance_id(
+        maintenance.id, maintenance.user_id
+    )
+
+    eventModels: list[MaintenanceEventInstanceModel] = __convert_events_to_models(events, maintenance)
+
+    isLimitExceeded = False
+    limitExceededDistance = None
+    if maintenance.is_reminder_active and eventModels:
+        distanceUntilToday = eventModels[-1].distanceSinceEvent or 0
+        if distanceUntilToday >= maintenance.reminder_limit:
+            isLimitExceeded = True
+            limitExceededDistance = distanceUntilToday - maintenance.reminder_limit
+
+    customWorkoutField = get_custom_field_by_id(maintenance.custom_workout_field_id)
+    customWorkoutFieldName = None if customWorkoutField is None else customWorkoutField.name
+
+    return MaintenanceWithEventsModel(
+        id=maintenance.id,
+        type=maintenance.type,
+        description=maintenance.description,  # type: ignore[arg-type]
+        isLimitActive=maintenance.is_reminder_active,
+        limit=maintenance.reminder_limit,
+        isLimitExceeded=isLimitExceeded,
+        limitExceededDistance=limitExceededDistance,
+        events=eventModels,
+        custom_workout_field_name=customWorkoutFieldName,  # type: ignore[arg-type]
+        custom_workout_field_value=maintenance.custom_workout_field_value,  # type: ignore[arg-type]
+    )
 
 
 def __convert_events_to_models(

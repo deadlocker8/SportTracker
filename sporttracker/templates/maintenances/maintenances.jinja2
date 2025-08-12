@@ -1,75 +1,5 @@
 <!DOCTYPE html>
 
-{% macro render_maintenance_event(maintenance, maintenanceEvent) -%}
-    {% if maintenanceEvent.id is none %}
-        <span class="timeline-icon">
-                <i class="fa-solid fa-calendar-day text-secondary fa-sm fa-fw fs-5 p-2"></i>
-            </span>
-
-        <div class="d-flex align-items-center">
-            <div class="fw-bold fs-5">{{ gettext('Today') }}</div>
-            {% if maintenance.isLimitExceeded %}
-                <div class="d-flex align-items-center badge text-bg-danger ms-3">
-                    <span class="material-symbols-outlined filled fs-5 me-1">warning</span>
-                    <span>{{ maintenance.limitExceededDistance // 1000 }} km {{ gettext('over limit') }}</span>
-                </div>
-            {% endif %}
-        </div>
-    {% else %}
-        <span class="timeline-icon">
-            <i class="fa-solid fa-wrench text-secondary fa-sm fa-fw fs-5 p-2"></i>
-        </span>
-
-        <div class="d-flex align-items-center">
-            <div class="fw-bold fs-5">{{ maintenanceEvent.eventDate | format_date() }}</div>
-            <a href="{{ url_for('maintenanceEventInstances.edit', event_id=maintenanceEvent.id) }}" class="btn btn-sm d-inline-flex align-items-center ms-2">
-                <span class="material-symbols-outlined filled text-primary fs-5">edit</span>
-            </a>
-        </div>
-    {% endif %}
-{%- endmacro %}
-
-{% macro maintenanceFilterCustomWorkoutField(maintenanceFilterState) -%}
-    <button class="btn btn-sm {% if maintenanceFilterState.is_active() %}btn-light{% else %}btn-outline-light{% endif %} dropdown-toggle d-inline-flex align-items-center {% if not hasCustomWorkoutFields %}disabled{% endif %}" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-        <span class="material-symbols-outlined fs-5">filter_alt</span>
-        <span class="ms-2">{{ gettext('Custom Workout Field') }}</span>
-    </button>
-
-    <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
-        <div class="text-nowrap mb-2">
-            <label class="form-label" for="customWorkoutFieldId">
-                <span>{{ gettext('Custom Workout Field:') }}</span>
-            </label>
-
-            <select class="form-select" id="customWorkoutFieldId" name="customWorkoutFieldId">
-                <option class="maintenance-event-custom-field-select-placeholder"></option>
-
-                {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
-                    {% for field in customFields %}
-                        <option value="{{ field.custom_field.id }}" data-workout-type="{{ workoutType.name }}">{{ workoutType.get_localized_name() }}: {{ field.custom_field.name | e }}</option>
-                    {% endfor %}
-                {% endfor %}
-            </select>
-        </div>
-
-        <div class="text-nowrap mb-2">
-            <label class="form-label" for="customWorkoutFieldValue">
-                <span>{{ gettext('Value:') }}</span>
-            </label>
-
-            <select class="form-select" id="customWorkoutFieldValue" name="customWorkoutFieldValue">
-                {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
-                    {% for field in customFields %}
-                        {% for value in field.values %}
-                            <option value="{{ value | e }}" data-workout-type="{{ workoutType.name }}" data-field-id="{{ field.custom_field.id }}">{{ value | e }}</option>
-                        {% endfor %}
-                    {% endfor %}
-                {% endfor %}
-            </select>
-        </div>
-    </div>
-{%- endmacro %}
-
 <html>
     <head>
         <meta charset="UTF-8">
@@ -81,6 +11,7 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('maintenance') }}
         {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
+        {% import 'maintenances/maintenanceMacros.jinja2' as maintenanceMacros with context %}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
@@ -99,7 +30,7 @@
                 <form class="mt-2 pt-2" method="POST" action="{{ url_for('maintenances.applyFilter') }}"
                       onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);">
                     <div class="my-3 d-flex align-items-center justify-content-start justify-content-xxl-center gap-3 overflow-x-auto">
-                        {{ maintenanceFilterCustomWorkoutField(maintenanceFilterState) }}
+                        {{ maintenanceMacros.maintenanceFilterCustomWorkoutField(maintenanceFilterState) }}
 
                         <a href="{{ url_for('maintenances.resetFilter') }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap">{{ gettext('Reset Filter') }}</a>
 
@@ -144,7 +75,7 @@
 
                                         <ul class="timeline-with-icons {% if maintenanceEvent.id is none %}timeline-dashed{% endif %}">
                                             <li class="timeline-item">
-                                                {{ render_maintenance_event(maintenancesWithEvent, maintenanceEvent) }}
+                                                {{ maintenanceMacros.render_maintenance_event(maintenancesWithEvent, maintenanceEvent) }}
 
                                                 {% if not loop.last %}
                                                     <div class="text-start fst-italic">
