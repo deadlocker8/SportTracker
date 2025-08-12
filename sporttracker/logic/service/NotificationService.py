@@ -188,25 +188,31 @@ class NotificationService(Observable):
                 self.__add_notification(
                     user_id=user.id,
                     notification_type=notification_type_revoked,
-                    message=message_template_revoked.format(owner=owner.username.capitalize(), tour_name=tour.name),
+                    message=message_template_revoked.format(
+                        owner=current_user.username.capitalize(), tour_name=tour.name
+                    ),
                     message_details=None,
                     item_id=None,
                 )
 
         for user in tour.shared_users:
-            if user in previous_shared_users:
-                self.__add_notification(
-                    user_id=user.id,
-                    notification_type=notification_type_updated,
-                    message=message_template_updated.format(owner=owner.username.capitalize(), tour_name=tour.name),
-                    message_details=None,
-                    item_id=tour.id,
-                )
-            else:
+            if user not in previous_shared_users:
                 self.__add_notification(
                     user_id=user.id,
                     notification_type=notification_type_new,
-                    message=message_template_new.format(owner=owner.username.capitalize(), tour_name=tour.name),
+                    message=message_template_new.format(owner=current_user.username.capitalize(), tour_name=tour.name),
                     message_details=None,
                     item_id=tour.id,
                 )
+                continue
+
+            if user.id == current_user.id:
+                continue
+
+            self.__add_notification(
+                user_id=user.id,
+                notification_type=notification_type_updated,
+                message=message_template_updated.format(owner=current_user.username.capitalize(), tour_name=tour.name),
+                message_details=None,
+                item_id=tour.id,
+            )
