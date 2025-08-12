@@ -99,13 +99,46 @@ class NotificationService(Observable):
             True,
         )
 
-    def on_planned_tour_updated(self, planned_tour: PlannedTour) -> None:
-        self.__on_planned_tour_event(
-            planned_tour,
-            gettext('{owner} has updated the planned tour "{tour_name}"'),
-            NotificationType.EDITED_SHARED_PLANNED_TOUR,
-            True,
-        )
+    def on_planned_tour_updated(self, planned_tour: PlannedTour, previous_shared_users: list[User]) -> None:
+        owner = User.query.filter(User.id == planned_tour.user_id).first()
+        if owner is None:
+            return
+
+        newMessageTemplate = gettext('{owner} has shared the planned tour "{tour_name}" with you')
+        editedMessageTemplate = gettext('{owner} has updated the planned tour "{tour_name}"')
+        revokedMessageTemplate = gettext('{owner} has revoked your access to the planned tour "{tour_name}"')
+
+        for user in previous_shared_users:
+            if user not in planned_tour.shared_users:
+                self.__add_notification(
+                    user_id=user.id,
+                    notification_type=NotificationType.REVOKED_SHARED_PLANNED_TOUR,
+                    message=revokedMessageTemplate.format(
+                        owner=owner.username.capitalize(), tour_name=planned_tour.name
+                    ),
+                    message_details=None,
+                    item_id=None,
+                )
+
+        for user in planned_tour.shared_users:
+            if user in previous_shared_users:
+                self.__add_notification(
+                    user_id=user.id,
+                    notification_type=NotificationType.EDITED_SHARED_PLANNED_TOUR,
+                    message=editedMessageTemplate.format(
+                        owner=owner.username.capitalize(), tour_name=planned_tour.name
+                    ),
+                    message_details=None,
+                    item_id=planned_tour.id,
+                )
+            else:
+                self.__add_notification(
+                    user_id=user.id,
+                    notification_type=NotificationType.NEW_SHARED_PLANNED_TOUR,
+                    message=newMessageTemplate.format(owner=owner.username.capitalize(), tour_name=planned_tour.name),
+                    message_details=None,
+                    item_id=planned_tour.id,
+                )
 
     def on_planned_tour_deleted(self, planned_tour: PlannedTour) -> None:
         self.__on_planned_tour_event(

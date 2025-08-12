@@ -161,6 +161,8 @@ class PlannedTourService:
         if plannedTour is None:
             raise ValueError(f'No planned tour with ID {tour_id} found')
 
+        previousSharedUsers = plannedTour.shared_users
+
         plannedTour.type = WorkoutType(form_model.type)  # type: ignore[call-arg]
         plannedTour.name = form_model.name  # type: ignore[assignment]
         plannedTour.last_edit_date = datetime.now()  # type: ignore[assignment]
@@ -215,7 +217,7 @@ class PlannedTourService:
                 plannedTour, self._tile_hunting_settings['baseZoomLevel'], user_id
             )
 
-        self._notification_service.on_planned_tour_updated(plannedTour)
+        self._notification_service.on_planned_tour_updated(plannedTour, previousSharedUsers)
 
         return plannedTour
 
