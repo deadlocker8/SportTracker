@@ -15,6 +15,7 @@ class NotificationType(enum.Enum):
     NEW_SHARED_PLANNED_TOUR = 'NEW_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-primary', 'text-light'
     EDITED_SHARED_PLANNED_TOUR = 'EDITED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-primary', 'text-light'
     DELETED_SHARED_PLANNED_TOUR = 'DELETED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-primary', 'text-light'
+    REVOKED_SHARED_PLANNED_TOUR = 'REVOKED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-primary', 'text-light'
     NEW_SHARED_LONG_DISTANCE_TOUR = 'NEW_SHARED_LONG_DISTANCE_TOUR', 'fa-lightbulb', True, 'bg-primary', 'text-light'
     EDITED_SHARED_LONG_DISTANCE_TOUR = (
         'EDITED_SHARED_LONG_DISTANCE_TOUR',
@@ -25,6 +26,13 @@ class NotificationType(enum.Enum):
     )
     DELETED_SHARED_LONG_DISTANCE_TOUR = (
         'DELETED_SHARED_LONG_DISTANCE_TOUR',
+        'fa-lightbulb',
+        True,
+        'bg-primary',
+        'text-light',
+    )
+    REVOKED_SHARED_LONG_DISTANCE_TOUR = (
+        'REVOKED_SHARED_LONG_DISTANCE_TOUR',
         'fa-lightbulb',
         True,
         'bg-primary',
@@ -62,12 +70,16 @@ class NotificationType(enum.Enum):
             return gettext('Updated shared planned tour')
         elif self == self.DELETED_SHARED_PLANNED_TOUR:
             return gettext('Deleted shared planned tour')
+        elif self == self.REVOKED_SHARED_PLANNED_TOUR:
+            return gettext('Access to shared planned tour revoked')
         elif self == self.NEW_SHARED_LONG_DISTANCE_TOUR:
             return gettext('New shared long-distance tour')
         elif self == self.EDITED_SHARED_LONG_DISTANCE_TOUR:
             return gettext('Updated shared long-distance tour')
         elif self == self.DELETED_SHARED_LONG_DISTANCE_TOUR:
             return gettext('Deleted shared long-distance tour')
+        elif self == self.REVOKED_SHARED_LONG_DISTANCE_TOUR:
+            return gettext('Access to shared long-distance tour revoked')
 
         raise ValueError(f'Could not get localized name for unsupported NotificationType: {self}')
 
@@ -80,11 +92,15 @@ class NotificationType(enum.Enum):
             return url_for('maps.showPlannedTour', tour_id=item_id)
         elif self == self.DELETED_SHARED_PLANNED_TOUR:
             return None
+        elif self == self.REVOKED_SHARED_PLANNED_TOUR:
+            return None
         elif self == self.NEW_SHARED_LONG_DISTANCE_TOUR:
             return url_for('maps.showLongDistanceTour', tour_id=item_id)
         elif self == self.EDITED_SHARED_LONG_DISTANCE_TOUR:
             return url_for('maps.showLongDistanceTour', tour_id=item_id)
         elif self == self.DELETED_SHARED_LONG_DISTANCE_TOUR:
+            return None
+        elif self == self.REVOKED_SHARED_LONG_DISTANCE_TOUR:
             return None
 
         raise ValueError(f'Could not get action url for unsupported NotificationType: {self}')
