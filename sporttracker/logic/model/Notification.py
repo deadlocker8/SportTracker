@@ -27,6 +27,9 @@ class Notification(db.Model):  # type: ignore[name-defined]
 
 
 def get_total_number_of_notifications() -> int:
+    if not current_user.is_authenticated:
+        return 0
+
     return Notification.query.filter(Notification.user_id == current_user.id).count()
 
 
