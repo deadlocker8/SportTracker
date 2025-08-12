@@ -31,7 +31,7 @@ class NtfyService(Listener):
 
         title = f'{Constants.APP_NAME}: {notification.type.get_localized_title()}'
         message = notification.message
-        if title:
+        if notification.message_details is not None:
             message = f'{message}\n\n{notification.message_details}'
 
         try:
