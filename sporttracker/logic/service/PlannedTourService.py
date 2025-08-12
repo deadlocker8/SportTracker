@@ -146,6 +146,8 @@ class PlannedTourService:
         db.session.delete(plannedTour)
         db.session.commit()
 
+        self._notification_service.on_planned_tour_deleted(plannedTour)
+
     def edit_planned_tour(
         self,
         tour_id: int,

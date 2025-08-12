@@ -92,33 +92,45 @@ class NotificationService(Observable):
             )
 
     def on_planned_tour_created(self, planned_tour: PlannedTour) -> None:
-        owner = User.query.filter(User.id == planned_tour.user_id).first()
-        if owner is None:
-            return
-
-        for user in planned_tour.shared_users:
-            messageTemplate = gettext('{owner} has shared the planned tour "{tour_name}" with you')
-
-            self.__add_notification(
-                user_id=user.id,
-                notification_type=NotificationType.NEW_SHARED_PLANNED_TOUR,
-                message=messageTemplate.format(owner=owner.username.capitalize(), tour_name=planned_tour.name),
-                message_details=None,
-                item_id=planned_tour.id,
-            )
+        self.__on_planned_tour_event(
+            planned_tour,
+            gettext('{owner} has shared the planned tour "{tour_name}" with you'),
+            NotificationType.NEW_SHARED_PLANNED_TOUR,
+            True,
+        )
 
     def on_planned_tour_updated(self, planned_tour: PlannedTour) -> None:
+        self.__on_planned_tour_event(
+            planned_tour,
+            gettext('{owner} has updated the planned tour "{tour_name}"'),
+            NotificationType.EDITED_SHARED_PLANNED_TOUR,
+            True,
+        )
+
+    def on_planned_tour_deleted(self, planned_tour: PlannedTour) -> None:
+        self.__on_planned_tour_event(
+            planned_tour,
+            gettext('{owner} has deleted the planned tour "{tour_name}"'),
+            NotificationType.DELETED_SHARED_PLANNED_TOUR,
+            False,
+        )
+
+    def __on_planned_tour_event(
+        self,
+        planned_tour: PlannedTour,
+        message_template: str,
+        notification_type: NotificationType,
+        include_item_id: bool = True,
+    ) -> None:
         owner = User.query.filter(User.id == planned_tour.user_id).first()
         if owner is None:
             return
 
         for user in planned_tour.shared_users:
-            messageTemplate = gettext('{owner} has updated the planned tour "{tour_name}"')
-
             self.__add_notification(
                 user_id=user.id,
-                notification_type=NotificationType.EDITED_SHARED_PLANNED_TOUR,
-                message=messageTemplate.format(owner=owner.username.capitalize(), tour_name=planned_tour.name),
+                notification_type=notification_type,
+                message=message_template.format(owner=owner.username.capitalize(), tour_name=planned_tour.name),
                 message_details=None,
-                item_id=planned_tour.id,
+                item_id=planned_tour.id if include_item_id else None,
             )
