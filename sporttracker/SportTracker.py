@@ -49,7 +49,6 @@ from sporttracker.helpers.SettingsChecker import SettingsChecker
 from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.model import Notification
 from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutFieldType
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCategoryType
@@ -72,6 +71,7 @@ from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db, migrate
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.logic.service.FitnessWorkoutService import FitnessWorkoutService
+from sporttracker.logic.service.NotificationService import NotificationService
 from sporttracker.logic.service.NtfyService import NtfyService
 from sporttracker.logic.service.PlannedTourService import PlannedTourService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
@@ -187,7 +187,7 @@ class SportTracker(FlaskBaseApp):
                 'updatedPlannedTourIds': get_updated_planned_tour_ids(),
                 'newLongDistanceTourIds': get_new_long_distance_tour_ids(),
                 'updatedLongDistanceTourIds': get_updated_long_distance_tour_ids(),
-                'totalNumberOfNotifications': Notification.get_total_number_of_notifications(),
+                'totalNumberOfNotifications': NotificationService.get_total_number_of_notifications(),
                 'currentYear': datetime.now().year,
                 'fitnessWorkoutTypes': [x for x in FitnessWorkoutType],
                 'fitnessWorkoutCategoryTypes': [x for x in FitnessWorkoutCategoryType],

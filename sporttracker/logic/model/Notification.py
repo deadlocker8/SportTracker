@@ -1,7 +1,6 @@
 from datetime import datetime
 
 import flask_babel
-from flask_login import current_user
 from sqlalchemy import Integer, String, DateTime
 from sqlalchemy.orm import mapped_column, Mapped
 
@@ -24,36 +23,3 @@ class Notification(db.Model):  # type: ignore[name-defined]
     def get_localized_time_delta(self) -> str:
         timedelta = flask_babel.format_timedelta(datetime.now() - self.date_time, 'short')  # type: ignore[operator]
         return flask_babel.gettext(f'{timedelta} ago', timedelta=timedelta)
-
-
-def get_total_number_of_notifications() -> int:
-    if not current_user.is_authenticated:
-        return 0
-
-    return Notification.query.filter(Notification.user_id == current_user.id).count()
-
-
-def get_all_notifications() -> list[Notification]:
-    return Notification.query.filter(Notification.user_id == current_user.id).order_by(Notification.id.desc()).all()
-
-
-def get_notification_by_id(notification_id: int) -> Notification | None:
-    return (
-        Notification.query.filter(Notification.user_id == current_user.id)
-        .filter(Notification.id == notification_id)
-        .first()
-    )
-
-
-def add_notification(notification_type: NotificationType, title: str, message: str, item_id: int | None = None) -> None:
-    notification = Notification(
-        date_time=datetime.now(),
-        title=title,
-        message=message,
-        type=notification_type,
-        item_id=item_id,
-        user_id=current_user.id,
-    )
-
-    db.session.add(notification)
-    db.session.commit()

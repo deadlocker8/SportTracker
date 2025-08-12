@@ -4,8 +4,8 @@ from flask import Blueprint, render_template, abort, redirect, url_for
 from flask_login import login_required
 
 from sporttracker.logic import Constants
-from sporttracker.logic.model import Notification
 from sporttracker.logic.model.db import db
+from sporttracker.logic.service.NotificationService import NotificationService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -18,13 +18,13 @@ def construct_blueprint():
     def listNotifications():
         return render_template(
             'notifications/notifications.jinja2',
-            notifications=Notification.get_all_notifications(),
+            notifications=NotificationService.get_all_notifications(),
         )
 
     @notifications.route('/delete/<int:notification_id>')
     @login_required
     def delete(notification_id: int):
-        notification = Notification.get_notification_by_id(notification_id)
+        notification = NotificationService.get_notification_by_id(notification_id)
 
         if notification is None:
             abort(404)
