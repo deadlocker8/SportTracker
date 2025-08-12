@@ -26,8 +26,8 @@ def upgrade():
             'notification',
             sa.Column('id', sa.Integer(), nullable=False),
             sa.Column('date_time', sa.DateTime(), nullable=False),
-            sa.Column('title', sa.String(), nullable=False),
             sa.Column('message', sa.String(), nullable=False),
+            sa.Column('message_details', sa.String(), nullable=True),
             sa.Column(
                 'type',
                 sa.Enum(

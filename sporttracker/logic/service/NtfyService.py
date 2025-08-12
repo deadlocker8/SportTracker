@@ -30,9 +30,9 @@ class NtfyService(Listener):
         ntfy_settings = user.get_ntfy_settings()
 
         title = f'{Constants.APP_NAME}: {notification.type.get_localized_title()}'
-        message = notification.title
+        message = notification.message
         if title:
-            message = f'{message}\n\n{notification.message}'
+            message = f'{message}\n\n{notification.message_details}'
 
         try:
             LOGGER.debug(f'Sending ntfy message of type {notification.type.name} for user {user.id}')

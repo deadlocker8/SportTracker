@@ -37,12 +37,17 @@ class NotificationService(Observable):
         )
 
     def __add_notification(
-        self, user_id: int, notification_type: NotificationType, title: str, message: str, item_id: int | None = None
+        self,
+        user_id: int,
+        notification_type: NotificationType,
+        message: str,
+        message_details: str | None,
+        item_id: int | None = None,
     ) -> None:
         notification = Notification(
             date_time=datetime.now(),
-            title=title,
             message=message,
+            message_details=message_details,
             type=notification_type,
             item_id=item_id,
             user_id=user_id,
@@ -73,14 +78,14 @@ class NotificationService(Observable):
             if maintenance.limitExceededDistance is not None:
                 limitExceededDistance = maintenance.limitExceededDistance // 1000
 
-            titleTemplate = gettext('Maintenance "{name}" exceeds configured limit')
-            messageTemplate = gettext('Limit: {limit} km, Exceeded by: {limitExceededDistance} km')
+            messageTemplate = gettext('Maintenance "{name}" exceeds configured limit')
+            messageDetailsTemplate = gettext('Limit: {limit} km, Exceeded by: {limitExceededDistance} km')
 
             self.__add_notification(
                 user_id=user_id,
                 notification_type=NotificationType.MAINTENANCE_REMINDER,
-                title=titleTemplate.format(name=maintenance.description),
-                message=messageTemplate.format(
+                message=messageTemplate.format(name=maintenance.description),
+                message_details=messageDetailsTemplate.format(
                     limit=maintenance.limit // 1000, limitExceededDistance=limitExceededDistance
                 ),
                 item_id=maintenance.id,
@@ -97,7 +102,7 @@ class NotificationService(Observable):
             self.__add_notification(
                 user_id=user.id,
                 notification_type=NotificationType.NEW_SHARED_PLANNED_TOUR,
-                title='',
                 message=messageTemplate.format(owner=owner.username.capitalize(), tour_name=planned_tour.name),
+                message_details=None,
                 item_id=planned_tour.id,
             )

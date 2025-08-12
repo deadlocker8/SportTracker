@@ -11,8 +11,8 @@ from sporttracker.logic.model.db import db
 class Notification(db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     date_time: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
-    title: Mapped[String] = mapped_column(String, nullable=False)
     message: Mapped[String] = mapped_column(String, nullable=False)
+    message_details: Mapped[String] = mapped_column(String, nullable=True)
     type = db.Column(db.Enum(NotificationType))
     item_id = db.Column(db.Integer, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
