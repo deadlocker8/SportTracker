@@ -22,4 +22,7 @@ class Notification(db.Model):  # type: ignore[name-defined]
 
     def get_localized_time_delta(self) -> str:
         timedelta = flask_babel.format_timedelta(datetime.now() - self.date_time, 'short')  # type: ignore[operator]
+        if not timedelta:
+            return flask_babel.gettext('now')
+
         return flask_babel.gettext(f'{timedelta} ago', timedelta=timedelta)
