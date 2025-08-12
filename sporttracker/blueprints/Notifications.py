@@ -10,7 +10,7 @@ from sporttracker.logic.service.NotificationService import NotificationService
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def construct_blueprint():
+def construct_blueprint(notification_service: NotificationService):
     notifications = Blueprint('notifications', __name__, static_folder='static', url_prefix='/notifications')
 
     @notifications.route('/')
@@ -18,13 +18,13 @@ def construct_blueprint():
     def listNotifications():
         return render_template(
             'notifications/notifications.jinja2',
-            notifications=NotificationService.get_all_notifications(),
+            notifications=notification_service.get_all_notifications(),
         )
 
     @notifications.route('/delete/<int:notification_id>')
     @login_required
     def delete(notification_id: int):
-        notification = NotificationService.get_notification_by_id(notification_id)
+        notification = notification_service.get_notification_by_id(notification_id)
 
         if notification is None:
             abort(404)

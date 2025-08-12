@@ -10,12 +10,12 @@ from sporttracker.api.FormModels import DistanceWorkoutApiFormModel
 from sporttracker.blueprints.Workouts import BaseWorkoutFormModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.Observable import Observable
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.Participant import get_participants_by_ids
 from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.service.NotificationService import NotificationService
 from sporttracker.logic.service.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -43,12 +43,19 @@ class DistanceWorkoutFormModel(BaseWorkoutFormModel):
         return value
 
 
-class DistanceWorkoutService(Observable):
-    def __init__(self, gpx_service: GpxService, temp_folder_path: str, tile_hunting_settings: dict[str, Any]) -> None:
+class DistanceWorkoutService:
+    def __init__(
+        self,
+        gpx_service: GpxService,
+        temp_folder_path: str,
+        tile_hunting_settings: dict[str, Any],
+        notification_service: NotificationService,
+    ) -> None:
         super().__init__()
         self._gpx_service = gpx_service
         self._temp_folder_path = temp_folder_path
         self._tile_hunting_settings = tile_hunting_settings
+        self._notification_service = notification_service
 
     def add_workout(
         self,
@@ -93,7 +100,7 @@ class DistanceWorkoutService(Observable):
             )
 
         LOGGER.debug(f'Saved new distance workout: {workout}')
-        self._notify_listeners({'user_id': user_id, 'workout_type': workout.type})
+        self._notification_service.on_distance_workout_updated(user_id, workout.type)
         return workout
 
     def add_workout_via_api(
@@ -124,7 +131,7 @@ class DistanceWorkoutService(Observable):
         db.session.commit()
 
         LOGGER.debug(f'Saved new distance workout: {workout}')
-        self._notify_listeners({'user_id': user_id, 'workout_type': workout.type})
+        self._notification_service.on_distance_workout_updated(user_id, workout.type)
         return workout
 
     def __handle_fit_import(self, form_model: DistanceWorkoutFormModel) -> dict[str, FileStorage]:
@@ -157,7 +164,7 @@ class DistanceWorkoutService(Observable):
         db.session.commit()
 
         LOGGER.debug(f'Deleted distance workout: {workout}')
-        self._notify_listeners({'user_id': user_id, 'workout_type': workout.type})
+        self._notification_service.on_distance_workout_updated(user_id, workout.type)
 
     def edit_workout(
         self,
@@ -208,7 +215,7 @@ class DistanceWorkoutService(Observable):
             )
 
         LOGGER.debug(f'Updated distance workout: {workout}')
-        self._notify_listeners({'user_id': user_id, 'workout_type': workout.type})
+        self._notification_service.on_distance_workout_updated(user_id, workout.type)
         return workout
 
     @staticmethod

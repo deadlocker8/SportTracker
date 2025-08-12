@@ -132,13 +132,16 @@ class SportTracker(FlaskBaseApp):
             app.config['NEW_VISITED_TILE_CACHE'],
             app.config['MAX_SQUARE_CACHE'],
         )
+        notificationService = NotificationService()
+        app.config['NOTIFICATION_SERVICE'] = notificationService
+
         distanceWorkoutService = DistanceWorkoutService(
-            app.config['GPX_SERVICE'], app.config['TEMP_FOLDER'], self._settings['tileHunting']
+            app.config['GPX_SERVICE'], app.config['TEMP_FOLDER'], self._settings['tileHunting'], notificationService
         )
         app.config['DISTANCE_WORKOUT_SERVICE'] = distanceWorkoutService
 
         ntfyService = NtfyService()
-        distanceWorkoutService.add_listener(ntfyService)
+        notificationService.add_listener(ntfyService)
 
         app.config['FITNESS_WORKOUT_SERVICE'] = FitnessWorkoutService()
 
@@ -344,7 +347,7 @@ class SportTracker(FlaskBaseApp):
             )
         )
         app.register_blueprint(AnnualAchievements.construct_blueprint())
-        app.register_blueprint(Notifications.construct_blueprint())
+        app.register_blueprint(Notifications.construct_blueprint(app.config['NOTIFICATION_SERVICE']))
 
     def __prepare_database(self, app):
         with app.app_context():
