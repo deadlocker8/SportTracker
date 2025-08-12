@@ -8,6 +8,7 @@ from sporttracker.logic.Observable import Observable
 from sporttracker.logic.model.DistanceWorkout import get_available_years
 from sporttracker.logic.model.Notification import Notification
 from sporttracker.logic.model.NotificationType import NotificationType
+from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
@@ -35,8 +36,8 @@ class NotificationService(Observable):
             .first()
         )
 
-    def add_notification(
-        self, notification_type: NotificationType, title: str, message: str, item_id: int | None = None
+    def __add_notification(
+        self, user_id: int, notification_type: NotificationType, title: str, message: str, item_id: int | None = None
     ) -> None:
         notification = Notification(
             date_time=datetime.now(),
@@ -44,7 +45,7 @@ class NotificationService(Observable):
             message=message,
             type=notification_type,
             item_id=item_id,
-            user_id=current_user.id,
+            user_id=user_id,
         )
 
         db.session.add(notification)
@@ -75,11 +76,28 @@ class NotificationService(Observable):
             titleTemplate = gettext('Maintenance "{name}" exceeds configured limit')
             messageTemplate = gettext('Limit: {limit} km, Exceeded by: {limitExceededDistance} km')
 
-            self.add_notification(
+            self.__add_notification(
+                user_id=user_id,
                 notification_type=NotificationType.MAINTENANCE_REMINDER,
                 title=titleTemplate.format(name=maintenance.description),
                 message=messageTemplate.format(
                     limit=maintenance.limit // 1000, limitExceededDistance=limitExceededDistance
                 ),
                 item_id=maintenance.id,
+            )
+
+    def on_new_planned_tour(self, planned_tour: PlannedTour) -> None:
+        owner = User.query.filter(User.id == planned_tour.user_id).first()
+        if owner is None:
+            return
+
+        for user in planned_tour.shared_users:
+            messageTemplate = gettext('{owner} has shared the planned tour "{tour_name}" with you')
+
+            self.__add_notification(
+                user_id=user.id,
+                notification_type=NotificationType.NEW_SHARED_PLANNED_TOUR,
+                title='',
+                message=messageTemplate.format(owner=owner.username.capitalize(), tour_name=planned_tour.name),
+                item_id=planned_tour.id,
             )

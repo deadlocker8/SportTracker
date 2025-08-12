@@ -23,6 +23,7 @@ from sporttracker.logic.model.TravelDirection import TravelDirection
 from sporttracker.logic.model.User import get_users_by_ids
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.service.NotificationService import NotificationService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -57,10 +58,12 @@ class PlannedTourService:
         gpx_service: GpxService,
         gpx_preview_image_settings: dict[str, Any],
         tile_hunting_settings: dict[str, Any],
+        notification_service: NotificationService,
     ) -> None:
         self._gpx_service = gpx_service
         self._gpx_preview_image_settings = gpx_preview_image_settings
         self._tile_hunting_settings = tile_hunting_settings
+        self._notification_service = notification_service
 
     def add_planned_tour(
         self,
@@ -104,6 +107,7 @@ class PlannedTourService:
         self.__update_gpx_preview_image_for_long_distance_tours(
             [t.long_distance_tour_id for t in linkedLongDistanceTours]
         )
+        self._notification_service.on_new_planned_tour(plannedTour)
 
         return plannedTour
 

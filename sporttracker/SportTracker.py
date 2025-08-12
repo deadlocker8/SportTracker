@@ -146,7 +146,10 @@ class SportTracker(FlaskBaseApp):
         app.config['FITNESS_WORKOUT_SERVICE'] = FitnessWorkoutService()
 
         app.config['PLANNED_TOUR_SERVICE'] = PlannedTourService(
-            app.config['GPX_SERVICE'], self._settings['gpxPreviewImages'], self._settings['tileHunting']
+            app.config['GPX_SERVICE'],
+            self._settings['gpxPreviewImages'],
+            self._settings['tileHunting'],
+            notificationService,
         )
 
         if self._prepareDatabase:
