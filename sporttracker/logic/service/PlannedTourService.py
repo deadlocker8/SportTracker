@@ -11,10 +11,7 @@ from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_workout_ids_by_planned_tour
 from sporttracker.logic.model.GpxVisitedTile import GpxVisitedTile
-from sporttracker.logic.model.LongDistanceTour import (
-    LongDistanceTourPlannedTourAssociation,
-    get_long_distance_tour_by_id,
-)
+from sporttracker.logic.model.LongDistanceTour import LongDistanceTourPlannedTourAssociation
 from sporttracker.logic.model.PlannedTour import PlannedTour
 from sqlalchemy.sql import or_
 
@@ -239,8 +236,10 @@ class PlannedTourService:
         return PlannedTour.query.filter(PlannedTour.share_code == shareCode).first()
 
     def __update_gpx_preview_image_for_long_distance_tours(self, linkedLongDistanceTourIds: list[int]):
+        from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourService
+
         for linkedLongDistanceTourId in linkedLongDistanceTourIds:
-            longDistanceTour = get_long_distance_tour_by_id(linkedLongDistanceTourId)
+            longDistanceTour = LongDistanceTourService.get_long_distance_tour_by_id(linkedLongDistanceTourId)
             if longDistanceTour is None:
                 continue
 

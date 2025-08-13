@@ -189,10 +189,8 @@ def __filter_by_long_distance_tours(
     if includeLongDistanceTours and excludeLongDistanceTours:
         return plannedTours
 
-    from sporttracker.logic.model.LongDistanceTour import (
-        LongDistanceTourPlannedTourAssociation,
-        get_long_distance_tour_by_id,
-    )
+    from sporttracker.logic.model.LongDistanceTour import LongDistanceTourPlannedTourAssociation
+    from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourService
 
     filteredTours = []
 
@@ -203,7 +201,9 @@ def __filter_by_long_distance_tours(
 
         numberOfAllowedLongDistanceTours = 0
         for longDistanceTourAssociation in longDistanceTours:
-            longDistanceTour = get_long_distance_tour_by_id(longDistanceTourAssociation.long_distance_tour_id)
+            longDistanceTour = LongDistanceTourService.get_long_distance_tour_by_id(
+                longDistanceTourAssociation.long_distance_tour_id
+            )
             if longDistanceTour is None:
                 continue
 

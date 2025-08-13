@@ -1,11 +1,5 @@
-from operator import attrgetter
-
-import natsort
-from flask_login import current_user
-from natsort import natsorted
 from sqlalchemy import Integer, DateTime, String, Table, Column, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
-from sqlalchemy.sql import or_
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
 from sporttracker.logic.model.User import User
@@ -52,31 +46,3 @@ class LongDistanceTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
             f'shared_users: {[user.id for user in self.shared_users]}, '
             f'linked_planned_tours: {[p.planned_tour_id for p in self.linked_planned_tours]})'
         )
-
-
-def get_long_distance_tour_by_id(tour_id: int) -> LongDistanceTour | None:
-    return (
-        LongDistanceTour.query.filter(
-            or_(
-                LongDistanceTour.user_id == current_user.id,
-                LongDistanceTour.shared_users.any(id=current_user.id),
-            )
-        )
-        .filter(LongDistanceTour.id == tour_id)
-        .first()
-    )
-
-
-def get_long_distance_tours(workoutTypes: list[WorkoutType]) -> list[LongDistanceTour]:
-    longDistanceTours = (
-        LongDistanceTour.query.filter(
-            or_(
-                LongDistanceTour.user_id == current_user.id,
-                LongDistanceTour.shared_users.any(id=current_user.id),
-            )
-        )
-        .filter(LongDistanceTour.type.in_(workoutTypes))
-        .all()
-    )
-
-    return natsorted(longDistanceTours, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))

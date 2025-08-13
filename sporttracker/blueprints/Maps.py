@@ -27,7 +27,6 @@ from sporttracker.logic.model.DistanceWorkout import (
     get_available_years,
     DistanceWorkout,
 )
-from sporttracker.logic.model.LongDistanceTour import get_long_distance_tour_by_id
 from sporttracker.logic.model.PlannedTour import get_planned_tours_filtered
 from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
 from sporttracker.logic.model.WorkoutType import WorkoutType
@@ -39,6 +38,7 @@ from sporttracker.logic.model.filterStates.TileHuntingFilterState import (
     TileHuntingFilterState,
 )
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourService
 from sporttracker.logic.service.PlannedTourService import PlannedTourService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
@@ -566,7 +566,7 @@ def construct_blueprint(
     @maps.route('/map/longDistanceTour/<int:tour_id>')
     @login_required
     def showLongDistanceTour(tour_id: int):
-        longDistanceTour = get_long_distance_tour_by_id(tour_id)
+        longDistanceTour = LongDistanceTourService.get_long_distance_tour_by_id(tour_id)
 
         if longDistanceTour is None:
             abort(404)

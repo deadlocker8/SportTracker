@@ -16,7 +16,6 @@ from sporttracker.logic.model.DistanceWorkout import (
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.LongDistanceTour import (
     LongDistanceTourPlannedTourAssociation,
-    get_long_distance_tour_by_id,
 )
 from sporttracker.logic.model.PlannedTour import (
     PlannedTour,
@@ -34,6 +33,7 @@ from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.logic.model.filterStates.PlannedTourFilterState import get_planned_tour_filter_state_by_user
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
+from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourService
 from sporttracker.logic.service.PlannedTourService import (
     PlannedTourFormModel,
     PlannedTourEditFormModel,
@@ -210,7 +210,9 @@ def construct_blueprint(
 
         userIdsForSharedLongDistanceTour = set()
         for longDistanceTourAssociation in longDistanceTours:
-            longDistanceTour = get_long_distance_tour_by_id(longDistanceTourAssociation.long_distance_tour_id)
+            longDistanceTour = LongDistanceTourService.get_long_distance_tour_by_id(
+                longDistanceTourAssociation.long_distance_tour_id
+            )
             if longDistanceTour is None:
                 continue
 

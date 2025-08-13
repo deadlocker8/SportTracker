@@ -6,23 +6,16 @@ from typing import Any
 from flask import Blueprint, render_template, Response, request, redirect, url_for, abort
 from flask_login import login_required, current_user
 from flask_pydantic import validate
-from pydantic import BaseModel
 
 from sporttracker.blueprints.PlannedTours import PlannedTourModel, __get_user_models
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
-from sporttracker.logic.model.LongDistanceTour import (
-    LongDistanceTour,
-    get_long_distance_tour_by_id,
-    get_long_distance_tours,
-    LongDistanceTourPlannedTourAssociation,
-)
+from sporttracker.logic.model.LongDistanceTour import LongDistanceTour
 from sporttracker.logic.model.PlannedTour import get_planned_tours
-from sporttracker.logic.model.User import User, get_user_by_id, get_all_users_except_self_and_admin, get_users_by_ids
+from sporttracker.logic.model.User import User, get_user_by_id, get_all_users_except_self_and_admin
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user, QuickFilterState
+from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourFormModel, LongDistanceTourService
 from sporttracker.logic.service.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -91,15 +84,9 @@ class LongDistanceTourModel:
         return completedDistance
 
 
-class LongDistanceTourFormModel(BaseModel):
-    name: str
-    type: str
-    sharedUsers: list[str] | str | None = None
-    linkedPlannedTours: list[str] | str | None = None
-
-
 def construct_blueprint(
-    gpxService: GpxService, gpxPreviewImageSettings: dict[str, Any], plannedToursService: PlannedTourService
+    gpxPreviewImageSettings: dict[str, Any],
+    longDistanceTourService: LongDistanceTourService,
 ) -> Blueprint:
     longDistanceTours = Blueprint(
         'longDistanceTours', __name__, static_folder='static', url_prefix='/longDistanceTours'
@@ -110,7 +97,9 @@ def construct_blueprint(
     def listLongDistanceTours():
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
 
-        longDistanceTourList = get_long_distance_tours(quickFilterState.get_active_distance_workout_types())
+        longDistanceTourList = longDistanceTourService.get_long_distance_tours(
+            quickFilterState.get_active_distance_workout_types()
+        )
 
         return render_template(
             'longDistanceTours/longDistanceTours.jinja2',
@@ -132,37 +121,20 @@ def construct_blueprint(
     @login_required
     @validate()
     def addPost(form: LongDistanceTourFormModel):
-        sharedUserIds = [int(item) for item in request.form.getlist('sharedUsers')]
-        sharedUsers = get_users_by_ids(sharedUserIds)
+        shared_user_ids = [int(item) for item in request.form.getlist('sharedUsers')]
 
-        longDistanceTour = LongDistanceTour(
-            name=form.name,
-            type=WorkoutType(form.type),  # type: ignore[call-arg]
+        long_distance_tour = longDistanceTourService.add_long_distance_tour(
+            form_model=form,
+            shared_user_ids=shared_user_ids,
             user_id=current_user.id,
-            creation_date=datetime.now(),
-            last_edit_date=datetime.now(),
-            last_edit_user_id=current_user.id,
-            shared_users=sharedUsers,
         )
 
-        db.session.add(longDistanceTour)
-        db.session.commit()
-
-        longDistanceTour.linked_planned_tours = __get_linked_planned_tour_associations(longDistanceTour.id)
-        db.session.commit()
-        LOGGER.debug(f'Saved new long-distance tour: {longDistanceTour}')
-
-        __add_shared_users_to_all_linked_planned_tours(plannedToursService, longDistanceTour, sharedUsers)
-
-        gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(longDistanceTour, gpxService)
-        gpxPreviewImageService.generate_image(gpxPreviewImageSettings)
-
-        return redirect(url_for('longDistanceTours.listLongDistanceTours'))
+        return redirect(url_for('maps.showLongDistanceTour', tour_id=long_distance_tour.id))
 
     @longDistanceTours.route('/edit/<int:tour_id>')
     @login_required
     def edit(tour_id: int):
-        longDistanceTour = get_long_distance_tour_by_id(tour_id)
+        longDistanceTour = longDistanceTourService.get_long_distance_tour_by_id(tour_id)
 
         if longDistanceTour is None:
             abort(404)
@@ -181,58 +153,28 @@ def construct_blueprint(
     @login_required
     @validate()
     def editPost(tour_id: int, form: LongDistanceTourFormModel):
-        longDistanceTour = get_long_distance_tour_by_id(tour_id)
+        try:
+            shared_user_ids = [int(item) for item in request.form.getlist('sharedUsers')]
 
-        if longDistanceTour is None:
+            long_distance_tour = longDistanceTourService.edit_long_distance_tour(
+                tour_id=tour_id,
+                form_model=form,
+                shared_user_ids=shared_user_ids,
+                user_id=current_user.id,
+            )
+
+            return redirect(url_for('maps.showLongDistanceTour', tour_id=long_distance_tour.id))
+        except ValueError:
             abort(404)
-
-        longDistanceTour.type = WorkoutType(form.type)  # type: ignore[call-arg]
-        longDistanceTour.name = form.name  # type: ignore[assignment]
-        longDistanceTour.last_edit_date = datetime.now()  # type: ignore[assignment]
-        longDistanceTour.last_edit_user_id = current_user.id
-
-        sharedUserIds = [int(item) for item in request.form.getlist('sharedUsers')]
-        sharedUsers = get_users_by_ids(sharedUserIds)
-        longDistanceTour.shared_users = sharedUsers
-
-        longDistanceTour.linked_planned_tours = []
-        db.session.commit()
-        longDistanceTour.linked_planned_tours = __get_linked_planned_tour_associations(tour_id)
-        db.session.commit()
-        LOGGER.debug(f'Updated long-distance tour: {longDistanceTour}')
-
-        __add_shared_users_to_all_linked_planned_tours(plannedToursService, longDistanceTour, sharedUsers)
-
-        gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(longDistanceTour, gpxService)
-        gpxPreviewImageService.generate_image(gpxPreviewImageSettings)
-
-        return redirect(url_for('longDistanceTours.listLongDistanceTours'))
 
     @longDistanceTours.route('/delete/<int:tour_id>/<int:delete_linked_tours>')
     @login_required
     def delete(tour_id: int, delete_linked_tours: int):
-        longDistanceTour = get_long_distance_tour_by_id(tour_id)
-
-        if longDistanceTour is None:
+        try:
+            longDistanceTourService.delete_long_distance_tour_by_id(tour_id, current_user.id, delete_linked_tours == 1)
+            return redirect(url_for('longDistanceTours.listLongDistanceTours'))
+        except ValueError:
             abort(404)
-
-        if current_user.id != longDistanceTour.user_id:
-            abort(403)
-
-        linkedPlannedTours = longDistanceTour.linked_planned_tours
-
-        LOGGER.debug(f'Deleted long-distance tour: {longDistanceTour}')
-        db.session.delete(longDistanceTour)
-        db.session.commit()
-
-        if delete_linked_tours == 1:
-            for linkedPlannedTour in linkedPlannedTours:
-                try:
-                    plannedToursService.delete_planned_tour_by_id(linkedPlannedTour.planned_tour_id, current_user.id)
-                except ValueError as e:
-                    LOGGER.error(e)
-
-        return redirect(url_for('longDistanceTours.listLongDistanceTours'))
 
     @longDistanceTours.route('/setLastViewedDate')
     @login_required
@@ -249,30 +191,3 @@ def construct_blueprint(
 def __get_available_planned_tours(quickFilterState: QuickFilterState) -> list[PlannedTourModel]:
     plannedTours = get_planned_tours(quickFilterState.get_active_distance_workout_types())
     return [PlannedTourModel.create_from_tour(t, False) for t in plannedTours]
-
-
-def __get_linked_planned_tour_associations(tour_id):
-    linkedPlannedTourIds = [int(item) for item in request.form.getlist('linkedPlannedTours')]
-    linkedPlannedTours = []
-    for order, linkedPlannedTourId in enumerate(linkedPlannedTourIds):
-        linkedPlannedTours.append(
-            LongDistanceTourPlannedTourAssociation(
-                long_distance_tour_id=tour_id, planned_tour_id=linkedPlannedTourId, order=order
-            )
-        )
-    return linkedPlannedTours
-
-
-def __add_shared_users_to_all_linked_planned_tours(
-    plannedToursService: PlannedTourService, longDistanceTour: LongDistanceTour, sharedUsers: list[User]
-) -> None:
-    for linkedPlannedTour in longDistanceTour.linked_planned_tours:
-        plannedTour = plannedToursService.get_planned_tour_by_id(linkedPlannedTour.planned_tour_id)
-        if plannedTour is None:
-            continue
-
-        for sharedUser in sharedUsers:
-            if sharedUser not in plannedTour.shared_users:
-                plannedTour.shared_users.append(sharedUser)
-                LOGGER.debug(f'Added shared user {sharedUser.id} to linked planned tour {plannedTour.id}')
-            db.session.commit()

@@ -9,8 +9,8 @@ from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
-from sporttracker.logic.model.LongDistanceTour import get_long_distance_tour_by_id
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourService
 from sporttracker.logic.service.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -118,7 +118,7 @@ def construct_blueprint(
     @gpxTracks.route('/previewImage/longDistanceTour/<int:tour_id>')
     @login_required
     def getPreviewImageByLongDistanceTourId(tour_id: int):
-        longDistanceTour = get_long_distance_tour_by_id(tour_id)
+        longDistanceTour = LongDistanceTourService.get_long_distance_tour_by_id(tour_id)
 
         if longDistanceTour is None:
             abort(404)

@@ -66,6 +66,7 @@ from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db, migrate
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.logic.service.FitnessWorkoutService import FitnessWorkoutService
+from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourService
 from sporttracker.logic.service.NotificationService import NotificationService
 from sporttracker.logic.service.NtfyService import NtfyService
 from sporttracker.logic.service.PlannedTourService import PlannedTourService
@@ -144,6 +145,13 @@ class SportTracker(FlaskBaseApp):
             app.config['GPX_SERVICE'],
             self._settings['gpxPreviewImages'],
             self._settings['tileHunting'],
+            notificationService,
+        )
+
+        app.config['LONG_DISTANCE_TOUR_SERVICE'] = LongDistanceTourService(
+            app.config['GPX_SERVICE'],
+            self._settings['gpxPreviewImages'],
+            app.config['PLANNED_TOUR_SERVICE'],
             notificationService,
         )
 
@@ -337,7 +345,7 @@ class SportTracker(FlaskBaseApp):
         )
         app.register_blueprint(
             LongDistanceTours.construct_blueprint(
-                app.config['GPX_SERVICE'], self._settings['gpxPreviewImages'], app.config['PLANNED_TOUR_SERVICE']
+                self._settings['gpxPreviewImages'], app.config['LONG_DISTANCE_TOUR_SERVICE']
             )
         )
         app.register_blueprint(AnnualAchievements.construct_blueprint())
