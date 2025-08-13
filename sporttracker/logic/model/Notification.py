@@ -25,4 +25,4 @@ class Notification(db.Model):  # type: ignore[name-defined]
         if not timedelta:
             return flask_babel.gettext('now')
 
-        return flask_babel.gettext(f'{timedelta} ago', timedelta=timedelta)
+        return flask_babel.gettext('{timedelta} ago').format(timedelta=timedelta)

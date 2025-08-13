@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-10 23:14+0200\n"
-"PO-Revision-Date: 2025-08-10 23:14+0200\n"
+"POT-Creation-Date: 2025-08-14 00:10+0200\n"
+"PO-Revision-Date: 2025-08-14 00:10+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -173,7 +173,7 @@ msgstr "Ungültige Dateiendung. Erlaubte Endung: *.fit"
 msgid "FIT file does not contain session data"
 msgstr "FIT-Datei enthält keine Session-Daten"
 
-#: ../blueprints/Maps.py:589
+#: ../blueprints/Maps.py:588
 #: ../templates/longDistanceTours/longDistanceTourForm.jinja2:155
 #: ../templates/maps/mapLongDistanceTour.jinja2:101
 #: ../templates/maps/mapLongDistanceTour.jinja2:185
@@ -297,6 +297,50 @@ msgstr "Zeitbasiert"
 msgid "Repetition-based"
 msgstr "Wiederholungsbasiert"
 
+#: ../logic/model/Notification.py:26
+msgid "now"
+msgstr "jetzt"
+
+#: ../logic/model/Notification.py:28
+msgid "{timedelta} ago"
+msgstr "vor {timedelta}"
+
+#: ../logic/model/NotificationType.py:66
+msgid "Maintenance limit exceeded"
+msgstr "Wartungslimit überschritten"
+
+#: ../logic/model/NotificationType.py:68
+msgid "New shared planned tour"
+msgstr "Neue geteilte geplante Tour"
+
+#: ../logic/model/NotificationType.py:70
+msgid "Updated shared planned tour"
+msgstr "Geteilte geplante Tour bearbeitet"
+
+#: ../logic/model/NotificationType.py:72
+msgid "Deleted shared planned tour"
+msgstr "Geteilte geplante Tour gelöscht"
+
+#: ../logic/model/NotificationType.py:74
+msgid "Access to shared planned tour revoked"
+msgstr "Zugriff auf geteilte geplante Tour entzogen"
+
+#: ../logic/model/NotificationType.py:76
+msgid "New shared long-distance tour"
+msgstr "Neue geteilte Etappentour"
+
+#: ../logic/model/NotificationType.py:78
+msgid "Updated shared long-distance tour"
+msgstr "Geteilte Etappentour bearbeitet"
+
+#: ../logic/model/NotificationType.py:80
+msgid "Deleted shared long-distance tour"
+msgstr "Geteilte Etappentour gelöscht"
+
+#: ../logic/model/NotificationType.py:82
+msgid "Access to shared long-distance tour revoked"
+msgstr "Zugriff auf geteilte Etappentour entzogen"
+
 #: ../logic/model/TravelDirection.py:29
 msgid "Single"
 msgstr "Nur hin"
@@ -363,17 +407,51 @@ msgstr "Wandern"
 msgid "Fitness Workout"
 msgstr "Fitness Workout"
 
-#: ../logic/service/NtfyService.py:58
-msgid ""
-"SportTracker: Maintenance \"{name}\" exceeds configured limit\n"
-"\n"
-"Limit: {limit} km, Exceeded by: {limitExceededDistance} km"
-msgstr ""
-"SportTracker: Wartung \"{name}\" übersteigt das konfigurierte Limit\n"
-"\n"
-"Limit: {limit} km, Überschritten um: {limitExceededDistance} km"
+#: ../logic/service/NotificationService.py:88
+msgid "Maintenance \"{name}\" exceeds configured limit"
+msgstr "Wartung \"{name}\" übersteigt das konfigurierte Limit"
 
-#: ../templates/about.jinja2:6 ../templates/macros.jinja2:213
+#: ../logic/service/NotificationService.py:89
+msgid "Limit: {limit} km, Exceeded by: {limitExceededDistance} km"
+msgstr "Limit: {limit} km, Überschritten um: {limitExceededDistance} km"
+
+#: ../logic/service/NotificationService.py:104
+#: ../logic/service/NotificationService.py:114
+msgid "{owner} has shared the planned tour \"{tour_name}\" with you"
+msgstr "{owner} hat die geplante Tour \"{tour_name}\" mit dir geteilt"
+
+#: ../logic/service/NotificationService.py:116
+msgid "{owner} has updated the planned tour \"{tour_name}\""
+msgstr "{owner} hat die geplante Tour \"{tour_name}\" bearbeitet"
+
+#: ../logic/service/NotificationService.py:118
+msgid "{owner} has revoked your access to the planned tour \"{tour_name}\""
+msgstr ""
+"{owner} hat deinen Zugriff auf die geplante Tour \"{tour_name}\" zurückgezogen"
+
+#: ../logic/service/NotificationService.py:124
+msgid "{owner} has deleted the planned tour \"{tour_name}\""
+msgstr "{owner} hat die geplante Tour \"{tour_name}\" gelöscht"
+
+#: ../logic/service/NotificationService.py:132
+#: ../logic/service/NotificationService.py:142
+msgid "{owner} has shared the long-distance tour \"{tour_name}\" with you"
+msgstr "{owner} hat die Etappentour \"{tour_name}\" mit dir geteilt"
+
+#: ../logic/service/NotificationService.py:144
+msgid "{owner} has updated the long-distance tour \"{tour_name}\""
+msgstr "{owner} hat die Etappentour \"{tour_name}\" bearbeitet"
+
+#: ../logic/service/NotificationService.py:146
+msgid "{owner} has revoked your access to the long-distance tour \"{tour_name}\""
+msgstr ""
+"{owner} hat deinen Zugriff auf die Etappentour \"{tour_name}\" zurückgezogen"
+
+#: ../logic/service/NotificationService.py:152
+msgid "{owner} has deleted the long-distance tour \"{tour_name}\""
+msgstr "{owner} hat die Etappentour \"{tour_name}\" gelöscht"
+
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:186
 msgid "About"
 msgstr "Über"
 
@@ -428,7 +506,7 @@ msgid "Users"
 msgstr "Benutzer"
 
 #: ../templates/macros.jinja2:63 ../templates/maps/mapMultipleWorkouts.jinja2:6
-#: ../templates/plannedTours/plannedTours.jinja2:104
+#: ../templates/plannedTours/plannedTours.jinja2:99
 #: ../templates/workouts/workouts.jinja2:5
 #: ../templates/workouts/workouts.jinja2:25
 msgid "Workouts"
@@ -477,7 +555,7 @@ msgstr "Karte"
 msgid "Tours"
 msgstr "Touren"
 
-#: ../templates/macros.jinja2:142 ../templates/maps/mapMultipleWorkouts.jinja2:9
+#: ../templates/macros.jinja2:135 ../templates/maps/mapMultipleWorkouts.jinja2:9
 #: ../templates/plannedTours/plannedTours.jinja2:6
 #: ../templates/plannedTours/plannedTours.jinja2:19
 msgid "Planned Tours"
@@ -485,35 +563,37 @@ msgstr "Geplante Touren"
 
 #: ../templates/longDistanceTours/longDistanceTours.jinja2:6
 #: ../templates/longDistanceTours/longDistanceTours.jinja2:18
-#: ../templates/macros.jinja2:155
+#: ../templates/macros.jinja2:143
 #: ../templates/plannedTours/plannedToursMacros.jinja2:216
 msgid "Long-distance Tours"
 msgstr "Etappentouren"
 
-#: ../templates/macros.jinja2:169
+#: ../templates/macros.jinja2:152
 msgid "More"
 msgstr "Mehr"
 
-#: ../templates/macros.jinja2:182 ../templates/maintenances/maintenances.jinja2:76
-#: ../templates/maintenances/maintenances.jinja2:89
+#: ../templates/macros.jinja2:160 ../templates/maintenances/maintenance.jinja2:6
+#: ../templates/maintenances/maintenance.jinja2:20
+#: ../templates/maintenances/maintenances.jinja2:6
+#: ../templates/maintenances/maintenances.jinja2:20
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: ../templates/macros.jinja2:196 ../templates/maps/mapMacros.jinja2:134
+#: ../templates/macros.jinja2:169 ../templates/maps/mapMacros.jinja2:134
 #: ../templates/maps/mapTileHunting.jinja2:6
 #: ../templates/settings/settings.jinja2:50
 msgid "Tile Hunting"
 msgstr "Tile Hunting"
 
-#: ../templates/macros.jinja2:204 ../templates/maps/mapTileHuntingHeatmap.jinja2:6
+#: ../templates/macros.jinja2:177 ../templates/maps/mapTileHuntingHeatmap.jinja2:6
 msgid "Tile Hunting Heatmap"
 msgstr "Tile Hunting Heatmap"
 
-#: ../templates/macros.jinja2:222
+#: ../templates/macros.jinja2:195
 msgid "Search"
 msgstr "Suche"
 
-#: ../templates/macros.jinja2:251
+#: ../templates/macros.jinja2:226
 #: ../templates/maintenances/maintenanceForm.jinja2:126
 #: ../templates/settings/settings.jinja2:328
 #: ../templates/settings/settings.jinja2:340
@@ -521,25 +601,25 @@ msgstr "Suche"
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../templates/macros.jinja2:260
+#: ../templates/macros.jinja2:235
 msgid "Logout"
 msgstr "Logout"
 
-#: ../templates/macros.jinja2:302 ../templates/workouts/workoutChooser.jinja2:86
+#: ../templates/macros.jinja2:292 ../templates/workouts/workoutChooser.jinja2:86
 #: ../templates/workouts/workouts.jinja2:95
 #: ../templates/workouts/workouts.jinja2:117
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ../templates/macros.jinja2:324
+#: ../templates/macros.jinja2:314
 msgid "Save"
 msgstr "Speichern"
 
-#: ../templates/macros.jinja2:324
+#: ../templates/macros.jinja2:314
 msgid "Saving..."
 msgstr "Speichere..."
 
-#: ../templates/search.jinja2:4
+#: ../templates/notifications/notifications.jinja2:44 ../templates/search.jinja2:4
 msgid "of"
 msgstr "von"
 
@@ -547,6 +627,7 @@ msgstr "von"
 msgid "Search Results"
 msgstr "Suchergebnisse"
 
+#: ../templates/notifications/notifications.jinja2:98
 #: ../templates/search.jinja2:64
 msgid "No search results"
 msgstr "Keine Suchergebnisse"
@@ -588,7 +669,8 @@ msgid "Number of new visited tiles per year"
 msgstr "Anzahl neu besuchter Kacheln pro Jahr"
 
 #: ../templates/charts/chartChooser.jinja2:98
-#: ../templates/charts/chartHeatmap.jinja2:2
+#: ../templates/charts/chartHeatmap.jinja2:5
+#: ../templates/charts/chartHeatmap.jinja2:16
 msgid "Heatmap"
 msgstr "Heatmap"
 
@@ -628,7 +710,7 @@ msgstr "Workout per Name auswählen"
 msgid "Note: Only names with at least two workouts are listed"
 msgstr "Hinweis: Es werden nur Namen mit mindestens zwei Workouts angezeigt"
 
-#: ../templates/charts/chartHeatmap.jinja2:36
+#: ../templates/charts/chartHeatmap.jinja2:65
 msgid "Time of day"
 msgstr "Uhrzeit"
 
@@ -775,32 +857,22 @@ msgstr "Typ"
 msgid "Name"
 msgstr "Name"
 
-#: ../templates/longDistanceTours/longDistanceTours.jinja2:42
-#: ../templates/plannedTours/plannedTours.jinja2:51
-msgid "new"
-msgstr "neu"
-
-#: ../templates/longDistanceTours/longDistanceTours.jinja2:44
-#: ../templates/plannedTours/plannedTours.jinja2:53
-msgid "updated"
-msgstr "editiert"
-
-#: ../templates/longDistanceTours/longDistanceTours.jinja2:61
+#: ../templates/longDistanceTours/longDistanceTours.jinja2:56
 #: ../templates/maps/mapLongDistanceTour.jinja2:47
 #: ../templates/maps/mapLongDistanceTour.jinja2:64
 msgid "Stages"
 msgstr "Etappen"
 
-#: ../templates/longDistanceTours/longDistanceTours.jinja2:78
-#: ../templates/plannedTours/plannedTours.jinja2:96
+#: ../templates/longDistanceTours/longDistanceTours.jinja2:73
+#: ../templates/plannedTours/plannedTours.jinja2:91
 msgid "shared"
 msgstr "geteilt"
 
-#: ../templates/longDistanceTours/longDistanceTours.jinja2:82
+#: ../templates/longDistanceTours/longDistanceTours.jinja2:77
 #: ../templates/maps/mapLongDistanceTour.jinja2:169
 #: ../templates/maps/mapPlannedTour.jinja2:62
 #: ../templates/maps/mapPlannedTour.jinja2:146
-#: ../templates/plannedTours/plannedTours.jinja2:108
+#: ../templates/plannedTours/plannedTours.jinja2:103
 msgid "last edited"
 msgstr "bearbeitet"
 
@@ -833,6 +905,17 @@ msgstr "Datum"
 #: ../templates/maintenanceEvents/maintenanceEventForm.jinja2:67
 msgid "Time"
 msgstr "Uhrzeit"
+
+#: ../templates/maintenances/maintenance.jinja2:52
+#: ../templates/maintenances/maintenances.jinja2:69
+#, python-format
+msgid "Show all (+%(remaining)d)"
+msgstr "Alle anzeigen (+%(remaining)d)"
+
+#: ../templates/maintenances/maintenance.jinja2:65
+#: ../templates/maintenances/maintenances.jinja2:82
+msgid "days"
+msgstr "Tage"
 
 #: ../templates/maintenances/maintenanceForm.jinja2:11
 #: ../templates/maintenances/maintenanceForm.jinja2:24
@@ -876,49 +959,40 @@ msgstr "Limit (in km)"
 msgid "Notifications can be configured in the "
 msgstr "Konfigurieren von Benachrichtigungen in den "
 
-#: ../templates/maintenances/maintenances.jinja2:10
+#: ../templates/maintenances/maintenanceMacros.jinja2:8
 msgid "Today"
 msgstr "Heute"
 
-#: ../templates/maintenances/maintenances.jinja2:14
+#: ../templates/maintenances/maintenanceMacros.jinja2:12
 msgid "over limit"
 msgstr "über Limit"
 
-#: ../templates/maintenances/maintenances.jinja2:35
+#: ../templates/maintenances/maintenanceMacros.jinja2:33
 msgid "Custom Workout Field"
 msgstr "Benutzerdefiniertes Feld"
 
-#: ../templates/maintenances/maintenances.jinja2:41
+#: ../templates/maintenances/maintenanceMacros.jinja2:39
 msgid "Custom Workout Field:"
 msgstr "Benutzerdefiniertes Feld:"
 
-#: ../templates/maintenances/maintenances.jinja2:57
+#: ../templates/maintenances/maintenanceMacros.jinja2:55
 msgid "Value:"
 msgstr "Wert:"
 
-#: ../templates/maintenances/maintenances.jinja2:104
+#: ../templates/maintenances/maintenances.jinja2:35
 #: ../templates/plannedTours/plannedToursMacros.jinja2:261
 msgid "Reset Filter"
 msgstr "Filter zurücksetzen"
 
-#: ../templates/maintenances/maintenances.jinja2:106
+#: ../templates/maintenances/maintenances.jinja2:37
 #: ../templates/plannedTours/plannedToursMacros.jinja2:263
 msgid "Apply Filter"
 msgstr "Filter anwenden"
 
-#: ../templates/maintenances/maintenances.jinja2:106
+#: ../templates/maintenances/maintenances.jinja2:37
 #: ../templates/plannedTours/plannedToursMacros.jinja2:263
 msgid "Applying Filter..."
 msgstr "Filter anwenden..."
-
-#: ../templates/maintenances/maintenances.jinja2:138
-#, python-format
-msgid "Show all (+%(remaining)d)"
-msgstr "Alle anzeigen (+%(remaining)d)"
-
-#: ../templates/maintenances/maintenances.jinja2:151
-msgid "days"
-msgstr "Tage"
 
 #: ../templates/maps/mapLongDistanceTour.jinja2:7
 msgid "Shared Long-distance Tour"
@@ -1122,13 +1196,13 @@ msgstr "neue Kacheln"
 
 #: ../templates/maps/mapPlannedTour.jinja2:48
 #: ../templates/maps/mapPlannedTour.jinja2:96
-#: ../templates/plannedTours/plannedTours.jinja2:78
+#: ../templates/plannedTours/plannedTours.jinja2:73
 msgid "Arrival"
 msgstr "Anreise"
 
 #: ../templates/maps/mapPlannedTour.jinja2:51
 #: ../templates/maps/mapPlannedTour.jinja2:100
-#: ../templates/plannedTours/plannedTours.jinja2:82
+#: ../templates/plannedTours/plannedTours.jinja2:77
 msgid "Departure"
 msgstr "Abreise"
 
@@ -1395,6 +1469,11 @@ msgstr "Mehrere neue Zeitziele"
 #: ../templates/monthGoals/monthGoals.jinja2:19
 msgid "Month Goals"
 msgstr "Monatsziele"
+
+#: ../templates/notifications/notifications.jinja2:78
+#: ../templates/notifications/notifications.jinja2:89
+msgid "Notifications"
+msgstr "Benachrichtigungen"
 
 #: ../templates/plannedTours/plannedTourForm.jinja2:6
 #: ../templates/plannedTours/plannedTourForm.jinja2:21
@@ -1931,3 +2010,6 @@ msgstr "Monat wählen"
 
 #~ msgid "Do you really want to delete the custom field \"%(name)s\"?"
 #~ msgstr "Willst du das benutzerdefinierte Feld \"%(name)s\" wirklich löschen?"
+
+#~ msgid "updated"
+#~ msgstr "editiert"
