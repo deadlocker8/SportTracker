@@ -6,6 +6,8 @@ Create Date: 2025-08-11 21:05:01.656418
 
 """
 
+from datetime import datetime
+
 import sqlalchemy as sa
 from alembic import op
 from sqlalchemy import Inspector
@@ -53,6 +55,14 @@ def upgrade():
             sa.PrimaryKeyConstraint('id'),
         )
 
+    inspector = Inspector.from_engine(op.get_bind().engine)
+    columns = inspector.get_columns('user')
+    columnNames = [column['name'] for column in columns]
+    if 'long_distance_tours_last_viewed_date' in columnNames:
+        op.drop_column('user', 'long_distance_tours_last_viewed_date')
+    if 'planned_tours_last_viewed_date' in columnNames:
+        op.drop_column('user', 'planned_tours_last_viewed_date')
+
 
 def downgrade():
     inspector = Inspector.from_engine(op.get_bind().engine)
@@ -60,3 +70,23 @@ def downgrade():
 
     if 'notification' in tableNames:
         op.drop_table('notification')
+
+    columns = inspector.get_columns('user')
+    columnNames = [column['name'] for column in columns]
+    if 'long_distance_tours_last_viewed_date' not in columnNames:
+        op.add_column(
+            'user',
+            sa.Column('long_distance_tours_last_viewed_date', sa.DateTime(), nullable=True),
+        )
+        op.execute(
+            f'UPDATE "user" SET "long_distance_tours_last_viewed_date" = \'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\' WHERE "user"."long_distance_tours_last_viewed_date" IS NULL;'
+        )
+
+    if 'planned_tours_last_viewed_date' not in columnNames:
+        op.add_column(
+            'user',
+            sa.Column('planned_tours_last_viewed_date', sa.DateTime(), nullable=True),
+        )
+        op.execute(
+            f'UPDATE "user" SET planned_tours_last_viewed_date=\'{datetime.now().isoformat()}\' WHERE planned_tours_last_viewed_date IS NULL;'
+        )

@@ -1,9 +1,8 @@
 import logging
 import uuid
-from datetime import datetime
 from typing import Any
 
-from flask import Blueprint, render_template, redirect, url_for, abort, request, Response
+from flask import Blueprint, render_template, redirect, url_for, abort, request
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 
@@ -167,15 +166,6 @@ def construct_blueprint(
             return redirect(url_for('plannedTours.listPlannedTours'))
         except ValueError:
             abort(404)
-
-    @plannedTours.route('/setLastViewedDate')
-    @login_required
-    def set_last_viewed_date():
-        user = User.query.filter(User.id == current_user.id).first()
-        user.planned_tours_last_viewed_date = datetime.now()
-        db.session.commit()
-
-        return Response(status=204)
 
     @plannedTours.route('/createShareCode')
     @login_required

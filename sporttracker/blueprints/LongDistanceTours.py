@@ -3,16 +3,15 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
-from flask import Blueprint, render_template, Response, request, redirect, url_for, abort
+from flask import Blueprint, render_template, request, redirect, url_for, abort
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 
 from sporttracker.blueprints.PlannedTours import __get_user_models
 from sporttracker.logic import Constants
 from sporttracker.logic.model.LongDistanceTour import LongDistanceTour
-from sporttracker.logic.model.User import User, get_user_by_id, get_all_users_except_self_and_admin
+from sporttracker.logic.model.User import get_user_by_id, get_all_users_except_self_and_admin
 from sporttracker.logic.model.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
 from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourFormModel, LongDistanceTourService
 from sporttracker.logic.service.PlannedTourService import PlannedTourService, PlannedTourModel
@@ -178,14 +177,5 @@ def construct_blueprint(
             return redirect(url_for('longDistanceTours.listLongDistanceTours'))
         except ValueError:
             abort(404)
-
-    @longDistanceTours.route('/setLastViewedDate')
-    @login_required
-    def set_last_viewed_date():
-        user = User.query.filter(User.id == current_user.id).first()
-        user.long_distance_tours_last_viewed_date = datetime.now()
-        db.session.commit()
-
-        return Response(status=204)
 
     return longDistanceTours

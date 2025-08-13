@@ -1,10 +1,9 @@
 import enum
-from datetime import datetime
 
 from flask_babel import gettext
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin, current_user
-from sqlalchemy import Integer, String, Boolean, DateTime
+from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.model.NtfySettings import NtfySettings
@@ -41,8 +40,6 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     distance_workout_info_items = db.relationship(
         'DistanceWorkoutInfoItem', backref='user', lazy=True, cascade='delete'
     )
-    planned_tours_last_viewed_date: Mapped[DateTime] = mapped_column(DateTime)
-    long_distance_tours_last_viewed_date: Mapped[DateTime] = mapped_column(DateTime)
     isTileHuntingActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     isTileHuntingAccessActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     tileHuntingShareCode: Mapped[str] = mapped_column(String, nullable=True)
@@ -56,8 +53,6 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
             f'username: {self.username}, '
             f'isAdmin: {self.isAdmin}, '
             f'language: {self.language}, '
-            f'planned_tours_last_viewed_date: {self.planned_tours_last_viewed_date}, '
-            f'long_distance_tours_last_viewed_date: {self.long_distance_tours_last_viewed_date}, '
             f'isTileHuntingActivated: {self.isTileHuntingActivated}, '
             f'isTileHuntingAccessActivated: {self.isTileHuntingAccessActivated}, '
             f'tileHuntingShareCode: {self.tileHuntingShareCode}, '
@@ -104,8 +99,6 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
         password=Bcrypt().generate_password_hash(password).decode('utf-8'),
         isAdmin=isAdmin,
         language=language,
-        planned_tours_last_viewed_date=datetime.now(),
-        long_distance_tours_last_viewed_date=datetime.now(),
         isTileHuntingActivated=True,
         isTileHuntingAccessActivated=False,
         tileHuntingShareCode=None,

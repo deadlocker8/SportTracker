@@ -89,18 +89,5 @@
         </div>
 
         {{ macros.scripts() }}
-        <script>
-            const url = "{{ url_for('longDistanceTours.set_last_viewed_date') }}";
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', url);
-            xhr.onload = function()
-            {
-                if(xhr.status !== 204)
-                {
-                    console.error(xhr.response);
-                }
-            };
-            xhr.send();
-        </script>
     </body>
 </html>
