@@ -2,6 +2,7 @@
 - add: show badge in navbar if started in debug mode (#246)
 - add: longest workout achievement: show best 5 workouts on click (#247)
 - add: new chart: workout hour heatmap (#245)
+- add: redirect to long-distance tour map instead of all long-distance tours page after saving a long-distance tour
 - fix: fix calculation of number of new visited tiles for workout
 - fix: progress indicator on save is now correctly shown in workout forms (#249)
 
