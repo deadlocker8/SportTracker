@@ -71,25 +71,6 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
         return user.username
 
 
-def get_planned_tours(workoutTypes: list[WorkoutType]) -> list[PlannedTour]:
-    plannedTours = (
-        PlannedTour.query.filter(
-            or_(
-                PlannedTour.user_id == current_user.id,
-                PlannedTour.shared_users.any(id=current_user.id),
-            )
-        )
-        .filter(PlannedTour.type.in_(workoutTypes))
-        .all()
-    )
-
-    return natsorted(plannedTours, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
-
-
-def get_planned_tours_by_ids(ids: list[int]) -> list[PlannedTour]:
-    return [p for p in get_planned_tours(WorkoutType.get_distance_workout_types()) if p.id in ids]
-
-
 def get_planned_tours_filtered(
     workoutTypes: list[WorkoutType], plannedTourFilterState: PlannedTourFilterState
 ) -> list[PlannedTour]:

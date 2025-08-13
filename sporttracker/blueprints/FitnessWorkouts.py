@@ -10,12 +10,12 @@ from sporttracker.logic.model.FitnessWorkoutCategory import (
     FitnessWorkoutCategoryType,
 )
 from sporttracker.logic.model.Participant import get_participants
-from sporttracker.logic.model.PlannedTour import get_planned_tours
 from sporttracker.logic.model.Workout import get_workout_names_by_type
 from sporttracker.logic.service.FitnessWorkoutService import (
     FitnessWorkoutFormModel,
     FitnessWorkoutService,
 )
+from sporttracker.logic.service.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -78,7 +78,7 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
             customFields=get_custom_fields_by_workout_type_with_values(workout.type),
             participants=get_participants(),
             workoutNames=get_workout_names_by_type(workout.type),
-            plannedTours=get_planned_tours([workout.type]),
+            plannedTours=PlannedTourService.get_planned_tours([workout.type]),
         )
 
     @fitnessWorkouts.route('/edit/<int:workout_id>', methods=['POST'])

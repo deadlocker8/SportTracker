@@ -36,7 +36,6 @@ from sporttracker.logic.model.FitnessWorkoutCategory import (
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import get_participants
-from sporttracker.logic.model.PlannedTour import get_planned_tours
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.Workout import get_available_years
 from sporttracker.logic.model.WorkoutType import WorkoutType
@@ -392,7 +391,7 @@ def construct_blueprint(
     @api.route('/plannedTours')
     @login_required
     def listPlannedTours():
-        plannedTours = get_planned_tours(WorkoutType.get_distance_workout_types())
+        plannedTours = PlannedTourService.get_planned_tours(WorkoutType.get_distance_workout_types())
         return jsonify([MAPPER_PLANNED_TOUR.map(p) for p in plannedTours])
 
     @api.route('/maintenances')

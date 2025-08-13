@@ -30,7 +30,6 @@ from sporttracker.logic.model.MonthGoal import (
     get_goal_summaries_by_year_and_month_and_types,
 )
 from sporttracker.logic.model.Participant import get_participants
-from sporttracker.logic.model.PlannedTour import get_planned_tours
 from sporttracker.logic.model.User import get_user_by_id
 from sporttracker.logic.model.Workout import (
     get_workout_names_by_type,
@@ -38,6 +37,7 @@ from sporttracker.logic.model.Workout import (
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user, QuickFilterState
+from sporttracker.logic.service.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -196,7 +196,7 @@ def construct_blueprint():
             customFields=get_custom_fields_by_workout_type_with_values(workoutType),
             participants=get_participants(),
             workoutNames=get_workout_names_by_type(workoutType),
-            plannedTours=get_planned_tours([workoutType]),
+            plannedTours=PlannedTourService.get_planned_tours([workoutType]),
         )
 
     return workouts

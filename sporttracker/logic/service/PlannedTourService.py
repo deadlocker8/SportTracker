@@ -1,28 +1,116 @@
 import logging
+from dataclasses import dataclass
 from datetime import datetime
+from operator import attrgetter
 from typing import Any
 
+import natsort
 from flask_login import current_user
+from natsort import natsorted
 from pydantic import BaseModel
 from sqlalchemy import tuple_
+from sqlalchemy.sql import or_
 from werkzeug.datastructures import FileStorage
 
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_workout_ids_by_planned_tour
+from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.GpxVisitedTile import GpxVisitedTile
 from sporttracker.logic.model.LongDistanceTour import LongDistanceTourPlannedTourAssociation
 from sporttracker.logic.model.PlannedTour import PlannedTour
-from sqlalchemy.sql import or_
-
-from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.model.TravelDirection import TravelDirection
-from sporttracker.logic.model.User import get_users_by_ids
+from sporttracker.logic.model.TravelType import TravelType
+from sporttracker.logic.model.User import get_users_by_ids, get_user_by_id
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 from sporttracker.logic.service.NotificationService import NotificationService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
+
+
+@dataclass
+class SharedUserModel:
+    id: int
+    name: str
+
+
+@dataclass
+class LinkedWorkout:
+    id: int
+    startTime: datetime
+    distance: float
+    duration: int
+    elevation_sum: int
+
+
+@dataclass
+class PlannedTourModel:
+    id: int
+    name: str
+    creationDate: datetime
+    lastEditDate: datetime
+    type: WorkoutType
+    gpxMetadata: GpxMetadata | None
+    sharedUsers: list[str]
+    ownerId: str
+    ownerName: str
+    arrivalMethod: TravelType
+    departureMethod: TravelType
+    direction: TravelDirection
+    share_code: str | None
+    linkedWorkouts: list[LinkedWorkout]
+
+    @staticmethod
+    def __get_linked_workouts_by_planned_tour(plannedTour: PlannedTour) -> list[LinkedWorkout]:
+        linkedWorkout = (
+            DistanceWorkout.query.filter(DistanceWorkout.user_id == current_user.id)
+            .filter(DistanceWorkout.planned_tour == plannedTour)
+            .order_by(DistanceWorkout.start_time.asc())
+            .all()
+        )
+
+        if linkedWorkout is None:
+            return []
+
+        result = []
+        for workout in linkedWorkout:
+            result.append(
+                LinkedWorkout(
+                    int(workout.id), workout.start_time, workout.distance, workout.duration, workout.elevation_sum
+                )
+            )
+
+        return result
+
+    @staticmethod
+    def create_from_tour(
+        plannedTour: PlannedTour,
+        includeLinkedWorkouts: bool,
+    ) -> 'PlannedTourModel':
+        gpxMetadata = plannedTour.get_gpx_metadata()
+
+        linkedWorkouts = []
+        if includeLinkedWorkouts:
+            linkedWorkouts = PlannedTourModel.__get_linked_workouts_by_planned_tour(plannedTour)
+
+        return PlannedTourModel(
+            id=plannedTour.id,
+            name=plannedTour.name,  # type: ignore[arg-type]
+            creationDate=plannedTour.creation_date,  # type: ignore[arg-type]
+            lastEditDate=plannedTour.last_edit_date,  # type: ignore[arg-type]
+            type=plannedTour.type,
+            gpxMetadata=gpxMetadata,
+            sharedUsers=[str(user.id) for user in plannedTour.shared_users],
+            ownerId=str(plannedTour.user_id),
+            ownerName=get_user_by_id(plannedTour.user_id).username,
+            arrivalMethod=plannedTour.arrival_method,
+            departureMethod=plannedTour.departure_method,
+            direction=plannedTour.direction,
+            share_code=plannedTour.share_code,
+            linkedWorkouts=linkedWorkouts,
+        )
 
 
 class PlannedTourFormModel(BaseModel):
@@ -269,3 +357,23 @@ class PlannedTourService:
         )
 
         return len(newVisitedTiles) - numberOfAlreadyVisitedTiles
+
+    @staticmethod
+    def get_planned_tours(workoutTypes: list[WorkoutType]) -> list[PlannedTour]:
+        plannedTours = (
+            PlannedTour.query.filter(
+                or_(
+                    PlannedTour.user_id == current_user.id,
+                    PlannedTour.shared_users.any(id=current_user.id),
+                )
+            )
+            .filter(PlannedTour.type.in_(workoutTypes))
+            .all()
+        )
+
+        return natsorted(plannedTours, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
+
+    @staticmethod
+    def get_available_planned_tours(quickFilterState: QuickFilterState) -> list[PlannedTourModel]:
+        plannedTours = PlannedTourService.get_planned_tours(quickFilterState.get_active_distance_workout_types())
+        return [PlannedTourModel.create_from_tour(t, False) for t in plannedTours]
