@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, render_template, abort, redirect, url_for
+from flask import Blueprint, render_template, abort, redirect, url_for, request
 from flask_login import login_required
 
 from sporttracker.logic import Constants
@@ -16,9 +16,19 @@ def construct_blueprint(notification_service: NotificationService):
     @notifications.route('/')
     @login_required
     def listNotifications():
+        page_number = request.args.get('pageNumber')
+
+        try:
+            page_number_value = int(page_number)  # type: ignore[arg-type]
+        except (TypeError, ValueError):
+            page_number_value = 1
+
+        if page_number_value < 1:
+            page_number_value = 1
+
         return render_template(
             'notifications/notifications.jinja2',
-            notifications=notification_service.get_all_notifications(),
+            pagination=notification_service.get_notifications_paginated(page_number_value),
         )
 
     @notifications.route('/delete/<int:notification_id>')

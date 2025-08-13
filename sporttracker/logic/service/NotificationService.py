@@ -2,6 +2,7 @@ from datetime import datetime
 
 from flask_babel import gettext
 from flask_login import current_user
+from flask_sqlalchemy.pagination import Pagination
 
 from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.logic.Observable import Observable
@@ -26,8 +27,13 @@ class NotificationService(Observable):
         return Notification.query.filter(Notification.user_id == current_user.id).count()
 
     @staticmethod
-    def get_all_notifications() -> list[Notification]:
-        return Notification.query.filter(Notification.user_id == current_user.id).order_by(Notification.id.desc()).all()
+    def get_notifications_paginated(page_number: int) -> Pagination:
+        return db.paginate(
+            Notification.query.filter(Notification.user_id == current_user.id).order_by(Notification.id.desc()),
+            per_page=10,
+            page=page_number,
+            error_out=False,
+        )
 
     @staticmethod
     def get_notification_by_id(notification_id: int) -> Notification | None:

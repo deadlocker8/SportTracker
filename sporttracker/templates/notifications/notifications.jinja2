@@ -40,6 +40,38 @@
     </div>
 {%- endmacro %}
 
+{% macro render_pagination(pagination) %}
+    <h4>{{ pagination.first }} - {{ pagination.last }} {{ gettext('of') }} {{ pagination.total }}</h4>
+
+    <nav>
+        <ul class="pagination justify-content-center mt-3">
+            <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('notifications.listNotifications', pageNumber=pagination.prev_num) }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            {% for pageNumber in pagination.iter_pages() %}
+                {% if pageNumber %}
+                    {% if pageNumber != pagination.page %}
+                        <li class="page-item"><a class="page-link" href="{{ url_for('notifications.listNotifications', pageNumber=pageNumber) }}">{{ pageNumber }}</a></li>
+                    {% else %}
+                        <li class="page-item active"><a class="page-link" href="{{ url_for('notifications.listNotifications', pageNumber=pageNumber) }}">{{ pageNumber }}</a></li>
+                    {% endif %}
+                {% else %}
+                    <li class="page-item disabled"><a class="page-link">...</a></li>
+                {% endif %}
+            {% endfor %}
+
+            <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('notifications.listNotifications', pageNumber=pagination.next_num) }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endmacro %}
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -60,9 +92,30 @@
                     </div>
                 </div>
 
-                {% for notification in notifications %}
-                    {{ render_notification(notification) }}
-                {% endfor %}
+                {% if pagination.total == 0 %}
+                    <div class="row my-5">
+                        <div class="col col-12 fst-italic">
+                            <h4>{{ gettext('No search results') }}</h4>
+                        </div>
+                    </div>
+
+                {% else %}
+                    <div class="row mb-3">
+                        <div class="col col-12">
+                            {{ render_pagination(pagination) }}
+                        </div>
+                    </div>
+
+                    {% for notification in pagination.items %}
+                        {{ render_notification(notification) }}
+                    {% endfor %}
+
+                    <div class="row mb-3">
+                        <div class="col col-12">
+                            {{ render_pagination(pagination) }}
+                        </div>
+                    </div>
+                {% endif %}
             </section>
         </div>
 
