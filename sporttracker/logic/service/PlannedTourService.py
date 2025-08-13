@@ -8,7 +8,7 @@ import natsort
 from flask_login import current_user
 from natsort import natsorted
 from pydantic import BaseModel
-from sqlalchemy import tuple_
+from sqlalchemy import tuple_, asc, func
 from sqlalchemy.sql import or_
 from werkzeug.datastructures import FileStorage
 
@@ -24,6 +24,7 @@ from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.model.User import get_users_by_ids, get_user_by_id
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.model.filterStates.PlannedTourFilterState import PlannedTourFilterState
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 from sporttracker.logic.service.NotificationService import NotificationService
 
@@ -377,3 +378,138 @@ class PlannedTourService:
     def get_available_planned_tours(quickFilterState: QuickFilterState) -> list[PlannedTourModel]:
         plannedTours = PlannedTourService.get_planned_tours(quickFilterState.get_active_distance_workout_types())
         return [PlannedTourModel.create_from_tour(t, False) for t in plannedTours]
+
+    @staticmethod
+    def get_planned_tours_filtered(
+        workoutTypes: list[WorkoutType], plannedTourFilterState: PlannedTourFilterState
+    ) -> list[PlannedTour]:
+        plannedToursQuery = (
+            PlannedTour.query.filter(
+                or_(
+                    PlannedTour.user_id == current_user.id,
+                    PlannedTour.shared_users.any(id=current_user.id),
+                )
+            )
+            .filter(PlannedTour.type.in_(workoutTypes))
+            .filter(PlannedTour.arrival_method.in_(plannedTourFilterState.get_selected_arrival_methods()))
+            .filter(PlannedTour.departure_method.in_(plannedTourFilterState.get_selected_departure_methods()))
+            .filter(PlannedTour.direction.in_(plannedTourFilterState.get_selected_directions()))
+        )
+
+        if plannedTourFilterState.name_filter is not None:
+            plannedToursQuery = plannedToursQuery.filter(PlannedTour.name.icontains(plannedTourFilterState.name_filter))
+
+        plannedToursQuery = plannedToursQuery.order_by(asc(func.lower(PlannedTour.name)))
+        plannedTours = plannedToursQuery.all()
+
+        plannedTours = PlannedTourService.__filter_by_distance(
+            plannedTours,
+            plannedTourFilterState.minimum_distance,  # type: ignore[arg-type]
+            plannedTourFilterState.maximum_distance,  # type: ignore[arg-type]
+        )
+
+        plannedTours = PlannedTourService.__filter_by_status(
+            plannedTours,
+            plannedTourFilterState.is_done_selected,  # type: ignore[arg-type]
+            plannedTourFilterState.is_todo_selected,  # type: ignore[arg-type]
+        )
+
+        plannedTours = PlannedTourService.__filter_by_long_distance_tours(
+            plannedTours,
+            plannedTourFilterState.is_long_distance_tours_include_selected,  # type: ignore[arg-type]
+            plannedTourFilterState.is_long_distance_tours_exclude_selected,  # type: ignore[arg-type]
+        )
+
+        return natsorted(plannedTours, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
+
+    @staticmethod
+    def __filter_by_distance(
+        plannedTours: list[PlannedTour],
+        minimumDistance: int | None,
+        maximumDistance: int | None,
+    ) -> list[PlannedTour]:
+        if minimumDistance is None and maximumDistance is None:
+            return plannedTours
+
+        filteredTours = []
+        for plannedTour in plannedTours:
+            gpxMetadata = plannedTour.get_gpx_metadata()
+            if gpxMetadata is None:
+                continue
+
+            if minimumDistance is not None and gpxMetadata.length < minimumDistance:
+                continue
+
+            if maximumDistance is not None and gpxMetadata.length > maximumDistance:
+                continue
+
+            filteredTours.append(plannedTour)
+
+        return filteredTours
+
+    @staticmethod
+    def __filter_by_status(plannedTours: list[PlannedTour], includeDone: bool, includeTodo: bool) -> list[PlannedTour]:
+        if includeDone and includeTodo:
+            return plannedTours
+
+        from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
+
+        filteredTours = []
+        for plannedTour in plannedTours:
+            numberOfLinkedWorkouts = (
+                DistanceWorkout.query.filter(DistanceWorkout.user_id == current_user.id)
+                .filter(DistanceWorkout.planned_tour == plannedTour)
+                .order_by(DistanceWorkout.start_time.asc())
+                .count()
+            )
+
+            if includeDone and numberOfLinkedWorkouts > 0:
+                filteredTours.append(plannedTour)
+                continue
+
+            if includeTodo and numberOfLinkedWorkouts == 0:
+                filteredTours.append(plannedTour)
+
+        return filteredTours
+
+    @staticmethod
+    def __filter_by_long_distance_tours(
+        plannedTours: list[PlannedTour], includeLongDistanceTours: bool, excludeLongDistanceTours: bool
+    ) -> list[PlannedTour]:
+        if includeLongDistanceTours and excludeLongDistanceTours:
+            return plannedTours
+
+        from sporttracker.logic.model.LongDistanceTour import LongDistanceTourPlannedTourAssociation
+        from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourService
+
+        filteredTours = []
+
+        for plannedTour in plannedTours:
+            longDistanceTours = LongDistanceTourPlannedTourAssociation.query.filter(
+                LongDistanceTourPlannedTourAssociation.planned_tour_id == plannedTour.id
+            ).all()
+
+            numberOfAllowedLongDistanceTours = 0
+            for longDistanceTourAssociation in longDistanceTours:
+                longDistanceTour = LongDistanceTourService.get_long_distance_tour_by_id(
+                    longDistanceTourAssociation.long_distance_tour_id
+                )
+                if longDistanceTour is None:
+                    continue
+
+                if current_user.id == longDistanceTour.user_id:
+                    numberOfAllowedLongDistanceTours += 1
+                    continue
+
+                sharedUserIds = [u.id for u in longDistanceTour.shared_users]
+                if current_user.id in sharedUserIds:
+                    numberOfAllowedLongDistanceTours += 1
+
+            if includeLongDistanceTours and numberOfAllowedLongDistanceTours > 0:
+                filteredTours.append(plannedTour)
+                continue
+
+            if excludeLongDistanceTours and numberOfAllowedLongDistanceTours == 0:
+                filteredTours.append(plannedTour)
+
+        return filteredTours

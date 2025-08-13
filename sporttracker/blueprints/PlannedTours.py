@@ -12,9 +12,6 @@ from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.LongDistanceTour import (
     LongDistanceTourPlannedTourAssociation,
 )
-from sporttracker.logic.model.PlannedTour import (
-    get_planned_tours_filtered,
-)
 from sporttracker.logic.model.TravelDirection import TravelDirection
 from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.model.User import (
@@ -51,7 +48,9 @@ def construct_blueprint(
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
         plannedTourFilterState = get_planned_tour_filter_state_by_user(current_user.id)
 
-        tours = get_planned_tours_filtered(quickFilterState.get_active_distance_workout_types(), plannedTourFilterState)
+        tours = plannedTourService.get_planned_tours_filtered(
+            quickFilterState.get_active_distance_workout_types(), plannedTourFilterState
+        )
 
         plannedTourList: list[PlannedTourModel] = []
         for tour in tours:

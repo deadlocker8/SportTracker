@@ -27,7 +27,6 @@ from sporttracker.logic.model.DistanceWorkout import (
     get_available_years,
     DistanceWorkout,
 )
-from sporttracker.logic.model.PlannedTour import get_planned_tours_filtered
 from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
@@ -192,7 +191,7 @@ def construct_blueprint(
     @maps.route('/map/plannedTour/<int:tour_id>')
     @login_required
     def showPlannedTour(tour_id: int):
-        plannedTour = PlannedTourService.get_planned_tour_by_id(tour_id)
+        plannedTour = plannedTourService.get_planned_tour_by_id(tour_id)
 
         if plannedTour is None:
             abort(404)
@@ -260,7 +259,7 @@ def construct_blueprint(
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
         plannedTourFilterState = get_planned_tour_filter_state_by_user(current_user.id)
 
-        plannedTours = get_planned_tours_filtered(
+        plannedTours = plannedTourService.get_planned_tours_filtered(
             quickFilterState.get_active_distance_workout_types(), plannedTourFilterState
         )
 
