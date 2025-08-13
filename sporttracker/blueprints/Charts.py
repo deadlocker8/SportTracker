@@ -117,7 +117,7 @@ def construct_blueprint(
     def chartDistancePerCustomField(workout_type: str, custom_field_id: int):
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
 
-        customField = get_custom_field_by_id(custom_field_id)
+        customField = get_custom_field_by_id(custom_field_id, current_user.id)
         if customField is None:
             return redirect(url_for('charts.chartDistancePerCustomFieldChooser'))
 

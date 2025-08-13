@@ -70,9 +70,9 @@ def get_custom_fields_by_workout_type(workoutType: WorkoutType) -> list[CustomWo
     return natsorted(fields, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
 
 
-def get_custom_field_by_id(customFieldId: int) -> CustomWorkoutField | None:
+def get_custom_field_by_id(customFieldId: int, userId: int) -> CustomWorkoutField | None:
     return (
-        CustomWorkoutField.query.filter(CustomWorkoutField.user_id == current_user.id)
+        CustomWorkoutField.query.filter(CustomWorkoutField.user_id == userId)
         .filter(CustomWorkoutField.id == customFieldId)
         .first()
     )

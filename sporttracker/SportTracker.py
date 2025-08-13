@@ -170,17 +170,6 @@ class SportTracker(FlaskBaseApp):
                 upgrade()
                 LOGGER.info('Upgrading database DONE')
 
-        if self._prepareDatabase:
-            with app.app_context():
-                self.__create_admin_user()
-
-                if self._generateDummyData:
-                    if User.query.count() > 1:
-                        raise RuntimeError('Could not generate dummy data because there are already existing users!')
-
-                    dummyDataGenerator = DummyDataGenerator(app.config['GPX_SERVICE'])
-                    dummyDataGenerator.generate()
-
         @app.context_processor
         def inject_static_access() -> dict[str, Any]:
             return {
@@ -260,12 +249,28 @@ class SportTracker(FlaskBaseApp):
         app.config['BABEL_TRANSLATION_DIRECTORIES'] = os.path.join(currentDirectory, 'localization')
 
         def get_locale():
+            if current_user is None or not hasattr(current_user, 'is_authenticated'):
+                return Language.ENGLISH.shortCode
+
             if current_user.is_authenticated:
                 return current_user.language.shortCode
 
             return request.accept_languages.best_match(app.config['LANGUAGES'].keys())
 
         Babel(app, locale_selector=get_locale)
+
+        if self._prepareDatabase:
+            with app.app_context():
+                self.__create_admin_user()
+
+                if self._generateDummyData:
+                    if User.query.count() > 1:
+                        raise RuntimeError('Could not generate dummy data because there are already existing users!')
+
+                    dummyDataGenerator = DummyDataGenerator(
+                        app.config['GPX_SERVICE'], app.config['NOTIFICATION_SERVICE']
+                    )
+                    dummyDataGenerator.generate()
 
         return app
 

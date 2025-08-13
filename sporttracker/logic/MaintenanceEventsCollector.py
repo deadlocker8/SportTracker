@@ -71,7 +71,7 @@ def create_maintenance_model(maintenance: Maintenance) -> MaintenanceWithEventsM
             isLimitExceeded = True
             limitExceededDistance = distanceUntilToday - maintenance.reminder_limit
 
-    customWorkoutField = get_custom_field_by_id(maintenance.custom_workout_field_id)
+    customWorkoutField = get_custom_field_by_id(maintenance.custom_workout_field_id, maintenance.user_id)
     customWorkoutFieldName = None if customWorkoutField is None else customWorkoutField.name
 
     return MaintenanceWithEventsModel(
@@ -95,12 +95,13 @@ def __convert_events_to_models(
         return []
 
     eventModels: list[MaintenanceEventInstanceModel] = []
-    customWorkoutField = get_custom_field_by_id(maintenance.custom_workout_field_id)
+    customWorkoutField = get_custom_field_by_id(maintenance.custom_workout_field_id, maintenance.user_id)
     customWorkoutFieldName = None if customWorkoutField is None else customWorkoutField.name
 
     previousEventDate = events[0].event_date
     for event in events:
         distanceSinceEvent = get_distance_between_dates(
+            maintenance.user_id,
             previousEventDate,
             event.event_date,
             [maintenance.type],
@@ -118,6 +119,7 @@ def __convert_events_to_models(
     # add additional pseudo maintenance event representing today
     now = datetime.now()
     distanceUntilToday = get_distance_between_dates(
+        maintenance.user_id,
         previousEventDate,
         now,
         [maintenance.type],

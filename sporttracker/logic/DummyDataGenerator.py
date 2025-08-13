@@ -30,6 +30,7 @@ from sporttracker.logic.model.FitnessWorkoutCategory import (
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.db import db
+from sporttracker.logic.service.NotificationService import NotificationService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -48,11 +49,12 @@ class DummyDataGenerator:
     GPX_FILE_NAMES = ['gpxTrack_1.gpx', 'gpxTrack_2.gpx']
     MAINTENANCE_EVENT_NAMES = ['chain oiled', 'new pedals', 'new front tire']
 
-    def __init__(self, gpxService: GpxService):
+    def __init__(self, gpxService: GpxService, notificationService: NotificationService):
         self._now = datetime.now().date()
         self._previousMonth = self._now - timedelta(days=30)
         self._previousPreviousMonth = self._previousMonth - timedelta(days=30)
         self._gpxService = gpxService
+        self._notificationService = notificationService
 
     def generate(self) -> None:
         user = self.__generate_demo_user('demo', 'demo')
@@ -63,7 +65,8 @@ class DummyDataGenerator:
 
             self.__generate_demo_custom_field(user)
 
-            plannedTour = self.__generate_demo_planned_tours(user, user2)
+            plannedTour = self.__generate_demo_planned_tours(user, user2, [1])
+            self.__generate_demo_planned_tours(user2, user, [0, 1])
 
             self.__generate_demo_workouts(
                 user=user,
@@ -367,6 +370,8 @@ class DummyDataGenerator:
 
         db.session.commit()
 
+        self._notificationService.on_distance_workout_updated(user.id, WorkoutType.BIKING)
+
     def __generate_demo_participants(self, user) -> None:
         db.session.add(Participant(name='John Doe', user_id=user.id))
         db.session.add(Participant(name='Jane', user_id=user.id))
@@ -387,7 +392,7 @@ class DummyDataGenerator:
         )
         db.session.commit()
 
-    def __generate_demo_planned_tours(self, user, user2) -> PlannedTour:
+    def __generate_demo_planned_tours(self, user: User, sharedUser: User, sharedIndexes: list[int]) -> PlannedTour:
         fake = Faker()
 
         lastPlannedTour = None
@@ -396,11 +401,11 @@ class DummyDataGenerator:
             fakeTime = fake.date_time_between_dates(datetime.now() - timedelta(days=90), datetime.now())
 
             shared_users = []
-            if index == 1:
-                shared_users = [user2]
+            if index in sharedIndexes:
+                shared_users = [sharedUser]
 
             share_code = None
-            if index == 1:
+            if index in sharedIndexes:
                 share_code = uuid.uuid4().hex
 
             plannedTour = PlannedTour(
@@ -421,6 +426,9 @@ class DummyDataGenerator:
             db.session.add(plannedTour)
 
             self._gpxService.add_planned_tiles_for_planned_tour(plannedTour, 14, user.id)
+
+            if index in sharedIndexes:
+                self._notificationService.on_planned_tour_created(plannedTour)
 
             lastPlannedTour = plannedTour
 

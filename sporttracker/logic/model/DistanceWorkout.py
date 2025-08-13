@@ -118,6 +118,7 @@ def get_available_years(userId) -> list[int]:
 
 
 def get_distance_between_dates(
+    userId: int,
     startDateTime: datetime | DateTime,
     endDateTime: datetime | DateTime,
     workoutTypes: list[WorkoutType],
@@ -127,7 +128,7 @@ def get_distance_between_dates(
     query = (
         DistanceWorkout.query.with_entities(func.sum(DistanceWorkout.distance))
         .filter(DistanceWorkout.type.in_(workoutTypes))
-        .filter(DistanceWorkout.user_id == current_user.id)
+        .filter(DistanceWorkout.user_id == userId)
         .filter(DistanceWorkout.start_time.between(startDateTime, endDateTime))
     )
 
