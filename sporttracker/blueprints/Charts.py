@@ -688,6 +688,7 @@ def construct_blueprint(
             'weekDayNames': list(reversed(__get_single_week_day_pattern('wide'))),
             'hourNames': [f'{hour}' for hour in range(24)],
             'isAllEmpty': all(hour == 0 for day in counts for hour in day),
+            'title': gettext('Heatmap Weekdays'),
         }
 
         return render_template(

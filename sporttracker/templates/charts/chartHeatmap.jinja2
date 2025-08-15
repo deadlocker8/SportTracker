@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {{ gettext('Heatmap') }}</title>
+        <title>SportTracker - {{ chartDataHeatmap['title'] }}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -11,9 +11,9 @@
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
-                <div class="row">
+                <div class="row mb-3">
                     <div class="col col-12 mx-auto">
-                        {% call macros.headline(gettext('Heatmap')) %}
+                        {% call macros.headline(chartDataHeatmap['title']) %}
                             <span class="material-symbols-outlined fs-1">background_grid_small</span>
                         {% endcall %}
                     </div>
