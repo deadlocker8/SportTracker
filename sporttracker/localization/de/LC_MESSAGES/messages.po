@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-14 00:10+0200\n"
-"PO-Revision-Date: 2025-08-14 00:10+0200\n"
+"POT-Creation-Date: 2025-08-15 20:15+0200\n"
+"PO-Revision-Date: 2025-08-15 20:15+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -110,7 +110,7 @@ msgstr "Anzahl Workouts"
 msgid "Hours"
 msgstr "Stunden"
 
-#: ../blueprints/AnnualAchievements.py:293 ../logic/model/User.py:85
+#: ../blueprints/AnnualAchievements.py:293 ../logic/model/User.py:80
 #: ../templates/charts/chartAverageSpeed.jinja2:2
 #: ../templates/charts/chartChooser.jinja2:42
 msgid "Average Speed"
@@ -129,33 +129,41 @@ msgstr "Passwort darf nicht leer sein"
 msgid "Incorrect password"
 msgstr "Ungültiges Passwort"
 
-#: ../blueprints/Charts.py:141
+#: ../blueprints/Charts.py:142
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: ../blueprints/Charts.py:150
+#: ../blueprints/Charts.py:151
 msgid "Distance per custom field"
 msgstr "Strecke pro benutzerdefiniertem Feld"
 
-#: ../blueprints/Charts.py:178
+#: ../blueprints/Charts.py:179
 msgid "You"
 msgstr "Du"
 
-#: ../blueprints/Charts.py:195
+#: ../blueprints/Charts.py:196
 msgid "Distance per participant for workout type "
 msgstr "Strecke pro Teilnehmer für Workouttyp "
 
-#: ../blueprints/Charts.py:278 ../templates/charts/chartChooser.jinja2:63
+#: ../blueprints/Charts.py:279 ../templates/charts/chartChooser.jinja2:63
 msgid "Duration per Workout"
 msgstr "Dauer pro Workout"
 
-#: ../blueprints/Charts.py:355 ../templates/charts/chartChooser.jinja2:70
+#: ../blueprints/Charts.py:356 ../templates/charts/chartChooser.jinja2:70
 msgid "Speed per Workout"
 msgstr "Geschwindigkeit pro Workout"
 
-#: ../blueprints/Charts.py:612
+#: ../blueprints/Charts.py:613
 msgid "Tiles"
 msgstr "Kacheln"
+
+#: ../blueprints/Charts.py:703 ../templates/charts/chartChooser.jinja2:98
+msgid "Heatmap Weekdays"
+msgstr "Heatmap Wochentage"
+
+#: ../blueprints/Charts.py:738 ../templates/charts/chartChooser.jinja2:105
+msgid "Heatmap Months"
+msgstr "Heatmap Monate"
 
 #: ../blueprints/DistanceWorkouts.py:146
 msgid "Error importing data from FIT file"
@@ -365,7 +373,7 @@ msgstr "Auto"
 msgid "Train"
 msgstr "Zug"
 
-#: ../logic/model/User.py:81 ../templates/maps/mapLongDistanceTour.jinja2:107
+#: ../logic/model/User.py:76 ../templates/maps/mapLongDistanceTour.jinja2:107
 #: ../templates/maps/mapLongDistanceTour.jinja2:129
 #: ../templates/maps/mapPlannedTour.jinja2:41
 #: ../templates/maps/mapPlannedTour.jinja2:88
@@ -375,18 +383,18 @@ msgstr "Zug"
 msgid "Distance"
 msgstr "Strecke"
 
-#: ../logic/model/User.py:83 ../templates/maps/mapLongDistanceTour.jinja2:115
+#: ../logic/model/User.py:78 ../templates/maps/mapLongDistanceTour.jinja2:115
 #: ../templates/maps/mapSingleWorkout.jinja2:49
 #: ../templates/maps/mapSingleWorkout.jinja2:97
 #: ../templates/workouts/workoutMacros.jinja2:335
 msgid "Duration"
 msgstr "Dauer"
 
-#: ../logic/model/User.py:87 ../templates/workouts/workoutMacros.jinja2:361
+#: ../logic/model/User.py:82 ../templates/workouts/workoutMacros.jinja2:361
 msgid "Average Heart Rate"
 msgstr "Durchschnittliche Herzfrequenz"
 
-#: ../logic/model/User.py:89 ../templates/maps/mapLongDistanceTour.jinja2:119
+#: ../logic/model/User.py:84 ../templates/maps/mapLongDistanceTour.jinja2:119
 #: ../templates/maps/mapSingleWorkout.jinja2:125
 msgid "Elevation Sum"
 msgstr "Summe Höhenmeter"
@@ -667,12 +675,6 @@ msgstr "Am häufigsten durchgeführte Workouts"
 #: ../templates/charts/chartChooser.jinja2:91
 msgid "Number of new visited tiles per year"
 msgstr "Anzahl neu besuchter Kacheln pro Jahr"
-
-#: ../templates/charts/chartChooser.jinja2:98
-#: ../templates/charts/chartHeatmap.jinja2:5
-#: ../templates/charts/chartHeatmap.jinja2:16
-msgid "Heatmap"
-msgstr "Heatmap"
 
 #: ../templates/charts/chartDistancePerCustomField.jinja2:21
 #: ../templates/charts/chartDistancePerMonth.jinja2:28
