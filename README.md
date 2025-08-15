@@ -149,6 +149,27 @@ Update the section `gpxPreviewImages` in your settings.json to contain the follo
 ```
 Where http://localhost:3000 is the address and port number of your georender instance started in step 1.
 
+
+### Notifications
+SportTracker creates several notifications on certain events:
+
+- a maintenance reminder limit is exceeded
+- planned tours:
+  - a planned tour is shared with you
+  - a shared planned tour has been updated
+  - your access to a shared planned tour has been revoked
+  - a shared planned has been deleted
+- long-distance tours:
+  - a long-distance tour is shared with you
+  - a shared long-distance tour has been updated
+  - your access to a shared long-distance tour has been revoked
+  - a shared long-distance has been deleted
+
+All those notifications will be shown in the notification center (reachable via the notification counter in the navbar).
+SportTracker can also be configured to send these notifications via `ntfy` too.
+
+![](screenshots/notifications.jpg)
+
 ### Available languages
 - German
 - English
