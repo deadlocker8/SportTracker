@@ -44,6 +44,8 @@ def upgrade():
                     'REVOKED_SHARED_LONG_DISTANCE_TOUR',
                     name='notificationtype',
                 ),
+                key='type',
+                name='type',
                 nullable=False,
             ),
             sa.Column('item_id', sa.Integer(), nullable=True),
