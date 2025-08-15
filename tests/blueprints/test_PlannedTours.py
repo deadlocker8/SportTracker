@@ -234,8 +234,15 @@ class TestPlannedTours(SeleniumTestBaseClass):
         assert len(cards) == 1
         # check share icon is displayed
         assert cards[0].find_element(By.XPATH, '//div[contains(text(), "shared")]')
-        # check notification "new" is shown
-        assert cards[0].find_element(By.XPATH, '//span[contains(text(), "new")]')
+
+        # check notification is shown
+        selenium.get(self.build_url('/notifications'))
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Notifications')
+        )
+        notificationTitles = selenium.find_elements(By.CLASS_NAME, 'notification-title')
+        assert len(notificationTitles) == 1
+        assert notificationTitles[0].text == 'New shared planned tour'
 
         # check other user can not delete planned tour
         self.__open_edit_form(selenium)
@@ -263,13 +270,13 @@ class TestPlannedTours(SeleniumTestBaseClass):
         # check notification "updated" is shown
         self.logout(selenium)
         self.login(selenium)
-        selenium.get(self.build_url('/plannedTours'))
+        selenium.get(self.build_url('/notifications'))
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Notifications')
         )
-        cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
-        assert len(cards) == 1
-        assert cards[0].find_element(By.XPATH, '//span[contains(text(), "updated")]')
+        notificationTitles = selenium.find_elements(By.CLASS_NAME, 'notification-title')
+        assert len(notificationTitles) == 1
+        assert notificationTitles[0].text == 'Updated shared planned tour'
 
     def test_new_tour_share_via_link(self, server, selenium: WebDriver):
         self.login(selenium)

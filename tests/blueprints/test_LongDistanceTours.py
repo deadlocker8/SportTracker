@@ -249,6 +249,15 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
         # check share icon is displayed
         assert cards[0].find_element(By.XPATH, '//div[contains(text(), "shared")]')
 
+        # check notification is shown
+        selenium.get(self.build_url('/notifications'))
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Notifications')
+        )
+        notificationTitles = selenium.find_elements(By.CLASS_NAME, 'notification-title')
+        assert len(notificationTitles) == 1
+        assert notificationTitles[0].text == 'New shared long-distance tour'
+
         # check other user can not delete long-distance tour
         self.__open_edit_form(selenium)
         with pytest.raises(NoSuchElementException):
@@ -277,9 +286,10 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
         # check notification "updated" is shown
         self.logout(selenium)
         self.login(selenium)
-        selenium.get(self.build_url('/longDistanceTours'))
+        selenium.get(self.build_url('/notifications'))
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Long-distance Tours')
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Notifications')
         )
-        cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
-        assert len(cards) == 1
+        notificationTitles = selenium.find_elements(By.CLASS_NAME, 'notification-title')
+        assert len(notificationTitles) == 1
+        assert notificationTitles[0].text == 'Updated shared long-distance tour'
