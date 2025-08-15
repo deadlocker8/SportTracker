@@ -5,7 +5,7 @@ from datetime import date, time
 from typing import Any, Literal
 
 import flask_babel
-from babel.dates import get_day_names
+from babel.dates import get_day_names, get_month_names
 from flask import Blueprint, render_template, redirect, url_for
 from flask_babel import gettext, format_datetime
 from flask_login import login_required, current_user
@@ -45,6 +45,7 @@ class WorkoutName:
 
 AXIS_DELTA_MAX = 0.01
 AXIS_DELTA_MIN = 0.05
+NO_START_TIME_PLACEHOLDER = time(hour=12, minute=0, second=0, microsecond=0)
 
 
 def construct_blueprint(
@@ -645,11 +646,26 @@ def construct_blueprint(
 
         return result
 
-    @charts.route('/heatmap')
+    @charts.route('/heatmap/<string:y_axis>')
     @login_required
-    def chartHeatmap():
+    def chartHeatmap(y_axis: str):
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
 
+        if y_axis == 'weekdays':
+            chartDataHeatmap = __create_weekdays_heatmap_data(quickFilterState)
+        elif y_axis == 'months':
+            chartDataHeatmap = __create_months_heatmap_data(quickFilterState)
+        else:
+            return redirect(url_for('charts.chartChooser'))
+
+        return render_template(
+            'charts/chartHeatmap.jinja2',
+            y_axis=y_axis,
+            chartDataHeatmap=chartDataHeatmap,
+            quickFilterState=quickFilterState,
+        )
+
+    def __create_weekdays_heatmap_data(quickFilterState: QuickFilterState) -> dict[str, Any]:
         numberOfWorkoutsPerDayPerHour = (
             Workout.query.with_entities(
                 extract('dow', Workout.start_time).label('weekday'),  # sunday = 0 in PostgreSQL
@@ -657,10 +673,8 @@ def construct_blueprint(
                 func.count().label('count'),
             )
             .filter(Workout.user_id == current_user.id)
-            .filter(
-                # filter workouts from old imports where the start time was simply set to exactly 12:00:00.000
-                cast(Workout.start_time, Time) != time(hour=12, minute=0, second=0, microsecond=0)
-            )
+            # filter workouts from old imports where the start time was simply set to exactly 12:00:00.000
+            .filter(cast(Workout.start_time, Time) != NO_START_TIME_PLACEHOLDER)
             .filter(Workout.type.in_(quickFilterState.get_active_workout_types()))
             .group_by('weekday', 'hour')
             .order_by('weekday', 'hour')
@@ -670,12 +684,10 @@ def construct_blueprint(
         # create a 7x24 matrix filled with zeros
         counts = [[0 for _ in range(24)] for _ in range(7)]
 
-        total = 0
         for weekday, hour, count in numberOfWorkoutsPerDayPerHour:
             weekday = int(weekday)
             hour = int(hour)
             counts[weekday][hour] = count
-            total += count
 
         # move sunday (index 0) to the end
         counts = counts[1:] + counts[:1]
@@ -683,18 +695,47 @@ def construct_blueprint(
         # reverse because plotly wants the y-axis from 0 up
         counts.reverse()
 
-        chartDataHeatmap: dict[str, Any] = {
+        return {
             'rows': counts,
-            'weekDayNames': list(reversed(__get_single_week_day_pattern('wide'))),
+            'yAxisNames': list(reversed(__get_single_week_day_pattern('wide'))),
             'hourNames': [f'{hour}' for hour in range(24)],
             'isAllEmpty': all(hour == 0 for day in counts for hour in day),
             'title': gettext('Heatmap Weekdays'),
         }
 
-        return render_template(
-            'charts/chartHeatmap.jinja2',
-            chartDataHeatmap=chartDataHeatmap,
-            quickFilterState=quickFilterState,
+    def __create_months_heatmap_data(quickFilterState: QuickFilterState) -> dict[str, Any]:
+        numberOfWorkoutsPerMonthPerHour = (
+            Workout.query.with_entities(
+                extract('month', Workout.start_time).label('month'),  # january = 1 in PostgreSQL
+                extract('hour', Workout.start_time).label('hour'),
+                func.count().label('count'),
+            )
+            .filter(Workout.user_id == current_user.id)
+            # filter workouts from old imports where the start time was simply set to exactly 12:00:00.000
+            .filter(cast(Workout.start_time, Time) != NO_START_TIME_PLACEHOLDER)
+            .filter(Workout.type.in_(quickFilterState.get_active_workout_types()))
+            .group_by('month', 'hour')
+            .order_by('month', 'hour')
+            .all()
         )
+
+        # create a 12x24 matrix filled with zeros
+        counts = [[0 for _ in range(24)] for _ in range(12)]
+
+        for month, hour, count in numberOfWorkoutsPerMonthPerHour:
+            month = int(month)
+            hour = int(hour)
+            counts[month - 1][hour] = count
+
+        # reverse because plotly wants the y-axis from 0 up
+        counts.reverse()
+
+        return {
+            'rows': counts,
+            'yAxisNames': list(reversed(list(get_month_names(width='wide', locale=flask_babel.get_locale()).values()))),
+            'hourNames': [f'{hour}' for hour in range(24)],
+            'isAllEmpty': all(hour == 0 for month in counts for hour in month),
+            'title': gettext('Heatmap Months'),
+        }
 
     return charts

@@ -19,7 +19,7 @@
                     </div>
                 </div>
 
-                {{ macros.workout_type_quick_filter(url_for('charts.chartHeatmap'), false) }}
+                {{ macros.workout_type_quick_filter(url_for('charts.chartHeatmap', y_axis=y_axis), false) }}
 
                 <div id="chartContainer"></div>
             </section>
@@ -32,7 +32,7 @@
                 const data = [
                     {
                         z: {{ chartDataHeatmap['rows'] }},
-                        y: {{ chartDataHeatmap['weekDayNames'] }},
+                        y: {{ chartDataHeatmap['yAxisNames'] }},
                         x: {{ chartDataHeatmap['hourNames'] }},
                         type: 'heatmap',
                         xgap: 5,
