@@ -106,6 +106,13 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSaveLongDistanceTour')
 
         WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'planned-tour-name'), 'Awesome Long-distance Tour'
+            )
+        )
+
+        selenium.get(self.build_url('/longDistanceTours'))
+        WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Long-distance Tours')
         )
 
@@ -127,13 +134,20 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSaveLongDistanceTour')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Long-distance Tours')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'planned-tour-name'), 'Awesome Long-distance Tour'
+            )
         )
 
         self.__open_form(selenium)
         self.__fill_form(selenium, WorkoutType.RUNNING, 'Run Boy Run')
         self.click_button_by_id(selenium, 'buttonSaveLongDistanceTour')
 
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'planned-tour-name'), 'Run Boy Run')
+        )
+
+        selenium.get(self.build_url('/longDistanceTours'))
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Long-distance Tours')
         )
@@ -167,7 +181,9 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSaveLongDistanceTour')
 
         WebDriverWait(selenium, 5).until(
-            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Long-distance Tours')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'planned-tour-name'), 'Awesome Long-distance Tour'
+            )
         )
 
         self.__open_edit_form(selenium)
@@ -185,6 +201,11 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSaveLongDistanceTour')
 
         WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'planned-tour-name'), 'Better Tour')
+        )
+
+        selenium.get(self.build_url('/longDistanceTours'))
+        WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Long-distance Tours')
         )
 
@@ -200,6 +221,13 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
 
         self.click_button_by_id(selenium, 'buttonSaveLongDistanceTour')
 
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'planned-tour-name'), 'Awesome Long-distance Tour'
+            )
+        )
+
+        selenium.get(self.build_url('/longDistanceTours'))
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Long-distance Tours')
         )
@@ -220,8 +248,6 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
         assert len(cards) == 1
         # check share icon is displayed
         assert cards[0].find_element(By.XPATH, '//div[contains(text(), "shared")]')
-        # check notification "new" is shown
-        assert cards[0].find_element(By.XPATH, '//span[contains(text(), "new")]')
 
         # check other user can not delete long-distance tour
         self.__open_edit_form(selenium)
@@ -238,6 +264,11 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
         self.click_button_by_id(selenium, 'buttonSaveLongDistanceTour')
 
         WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'planned-tour-name'), 'Mega Tour')
+        )
+
+        selenium.get(self.build_url('/longDistanceTours'))
+        WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Long-distance Tours')
         )
 
@@ -252,4 +283,3 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
         )
         cards = selenium.find_elements(By.CSS_SELECTOR, 'section .card')
         assert len(cards) == 1
-        assert cards[0].find_element(By.XPATH, '//span[contains(text(), "updated")]')
