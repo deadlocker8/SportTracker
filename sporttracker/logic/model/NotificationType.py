@@ -12,31 +12,31 @@ class NotificationType(enum.Enum):
         'bg-danger',
         'text-light',
     )
-    NEW_SHARED_PLANNED_TOUR = 'NEW_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-primary', 'text-light'
-    EDITED_SHARED_PLANNED_TOUR = 'EDITED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-primary', 'text-light'
-    DELETED_SHARED_PLANNED_TOUR = 'DELETED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-primary', 'text-light'
-    REVOKED_SHARED_PLANNED_TOUR = 'REVOKED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-primary', 'text-light'
-    NEW_SHARED_LONG_DISTANCE_TOUR = 'NEW_SHARED_LONG_DISTANCE_TOUR', 'fa-lightbulb', True, 'bg-primary', 'text-light'
+    NEW_SHARED_PLANNED_TOUR = 'NEW_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark'
+    EDITED_SHARED_PLANNED_TOUR = 'EDITED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark'
+    DELETED_SHARED_PLANNED_TOUR = 'DELETED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark'
+    REVOKED_SHARED_PLANNED_TOUR = 'REVOKED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark'
+    NEW_SHARED_LONG_DISTANCE_TOUR = 'NEW_SHARED_LONG_DISTANCE_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark'
     EDITED_SHARED_LONG_DISTANCE_TOUR = (
         'EDITED_SHARED_LONG_DISTANCE_TOUR',
         'fa-lightbulb',
         True,
-        'bg-primary',
-        'text-light',
+        'bg-warning',
+        'text-dark',
     )
     DELETED_SHARED_LONG_DISTANCE_TOUR = (
         'DELETED_SHARED_LONG_DISTANCE_TOUR',
         'fa-lightbulb',
         True,
-        'bg-primary',
-        'text-light',
+        'bg-warning',
+        'text-dark',
     )
     REVOKED_SHARED_LONG_DISTANCE_TOUR = (
         'REVOKED_SHARED_LONG_DISTANCE_TOUR',
         'fa-lightbulb',
         True,
-        'bg-primary',
-        'text-light',
+        'bg-warning',
+        'text-dark',
     )
 
     icon: str
