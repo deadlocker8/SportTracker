@@ -2,6 +2,7 @@ import logging
 from dataclasses import dataclass
 
 from flask import Blueprint, render_template, redirect, url_for, abort, request
+from flask_babel import gettext
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel, field_validator
@@ -83,7 +84,7 @@ def construct_blueprint():
         maintenance = get_maintenance_by_id(maintenance_id)
 
         if maintenance is None:
-            abort(404)
+            return render_template('maps/mapNotFound.jinja2', errorText=gettext('Maintenance does not exist anymore'))
 
         return render_template(
             'maintenances/maintenance.jinja2',

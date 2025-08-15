@@ -176,7 +176,7 @@ def construct_blueprint(
         workout = distanceWorkoutService.get_distance_workout_by_share_code(shareCode)
 
         if workout is None:
-            return render_template('maps/mapNotFound.jinja2')
+            return render_template('maps/mapNotFound.jinja2', errorText=flask_babel.gettext('Unknown shared link'))
 
         return render_template(
             'maps/mapSingleWorkout.jinja2',
@@ -194,7 +194,7 @@ def construct_blueprint(
         plannedTour = plannedTourService.get_planned_tour_by_id(tour_id)
 
         if plannedTour is None:
-            abort(404)
+            return render_template('maps/mapNotFound.jinja2', errorText=flask_babel.gettext('Unknown planned tour'))
 
         tileRenderUrl = url_for(
             'maps.renderAllTiles',
@@ -228,7 +228,7 @@ def construct_blueprint(
         plannedTour = PlannedTourService.get_planned_tour_by_share_code(shareCode)
 
         if plannedTour is None:
-            return render_template('maps/mapNotFound.jinja2')
+            return render_template('maps/mapNotFound.jinja2', errorText=flask_babel.gettext('Unknown shared link'))
 
         return render_template(
             'maps/mapPlannedTour.jinja2',
@@ -568,7 +568,9 @@ def construct_blueprint(
         longDistanceTour = LongDistanceTourService.get_long_distance_tour_by_id(tour_id)
 
         if longDistanceTour is None:
-            abort(404)
+            return render_template(
+                'maps/mapNotFound.jinja2', errorText=flask_babel.gettext('Unknown long-distance tour')
+            )
 
         tileRenderUrl = url_for(
             'maps.renderAllTiles',

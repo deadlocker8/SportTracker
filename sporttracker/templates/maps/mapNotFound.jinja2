@@ -12,7 +12,11 @@
 
         <div class="align-middle d-flex flex-column align-items-center justify-content-center mx-5 mt-5">
             <span class="material-symbols-outlined filled fs-1 mb-3 text-danger" id="errorIcon">error</span>
-            <h3>{{ gettext('Unknown shared link') }}</h3>
+            <h3>{{ errorText }}</h3>
+
+            <a href="/" class="btn btn-primary mt-5 d-flex align-items-center">
+                <span class="material-symbols-outlined filled">home</span>&nbsp;{{ gettext('Home') }}
+            </a>
         </div>
 
         {{ macros.scripts() }}

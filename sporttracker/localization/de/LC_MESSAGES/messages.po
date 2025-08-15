@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-15 20:17+0200\n"
-"PO-Revision-Date: 2025-08-15 20:17+0200\n"
+"POT-Creation-Date: 2025-08-15 20:37+0200\n"
+"PO-Revision-Date: 2025-08-15 20:37+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -180,6 +180,22 @@ msgstr "Ungültige Dateiendung. Erlaubte Endung: *.fit"
 #: ../blueprints/DistanceWorkouts.py:174
 msgid "FIT file does not contain session data"
 msgstr "FIT-Datei enthält keine Session-Daten"
+
+#: ../blueprints/Maintenances.py:87
+msgid "Maintenance does not exist anymore"
+msgstr "Wartung existiert nicht mehr"
+
+#: ../blueprints/Maps.py:179 ../blueprints/Maps.py:231
+msgid "Unknown shared link"
+msgstr "Unbekannter geteilter Link"
+
+#: ../blueprints/Maps.py:197
+msgid "Unknown planned tour"
+msgstr "Unbekannte geplante Tour"
+
+#: ../blueprints/Maps.py:571
+msgid "Unknown long-distance tour"
+msgstr "Unbekannte Etappentour"
 
 #: ../blueprints/Maps.py:588
 #: ../templates/longDistanceTours/longDistanceTourForm.jinja2:155
@@ -1176,9 +1192,9 @@ msgstr "Jahre"
 msgid "Apply"
 msgstr "Übernehmen"
 
-#: ../templates/maps/mapNotFound.jinja2:15
-msgid "Unknown shared link"
-msgstr "Unbekannter geteilter Link"
+#: ../templates/maps/mapNotFound.jinja2:18
+msgid "Home"
+msgstr "Zur Startseite"
 
 #: ../templates/maps/mapPlannedTour.jinja2:7
 msgid "Shared Planned Tour"
@@ -2018,3 +2034,6 @@ msgstr "Monat wählen"
 
 #~ msgid "updated"
 #~ msgstr "editiert"
+
+#~ msgid "Unknown maintenance"
+#~ msgstr "Unbekannte Wartung"
