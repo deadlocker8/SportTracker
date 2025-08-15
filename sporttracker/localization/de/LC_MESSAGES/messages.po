@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-15 20:15+0200\n"
-"PO-Revision-Date: 2025-08-15 20:15+0200\n"
+"POT-Creation-Date: 2025-08-15 20:17+0200\n"
+"PO-Revision-Date: 2025-08-15 20:17+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -635,7 +635,6 @@ msgstr "von"
 msgid "Search Results"
 msgstr "Suchergebnisse"
 
-#: ../templates/notifications/notifications.jinja2:98
 #: ../templates/search.jinja2:64
 msgid "No search results"
 msgstr "Keine Suchergebnisse"
@@ -1476,6 +1475,10 @@ msgstr "Monatsziele"
 #: ../templates/notifications/notifications.jinja2:89
 msgid "Notifications"
 msgstr "Benachrichtigungen"
+
+#: ../templates/notifications/notifications.jinja2:98
+msgid "No notifications"
+msgstr "Keine Benachrichtigungen"
 
 #: ../templates/plannedTours/plannedTourForm.jinja2:6
 #: ../templates/plannedTours/plannedTourForm.jinja2:21
