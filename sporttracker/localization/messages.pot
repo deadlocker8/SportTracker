@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-15 20:37+0200\n"
+"POT-Creation-Date: 2025-08-15 20:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -179,11 +179,11 @@ msgstr ""
 msgid "Unknown planned tour"
 msgstr ""
 
-#: ../blueprints/Maps.py:571
+#: ../blueprints/Maps.py:572
 msgid "Unknown long-distance tour"
 msgstr ""
 
-#: ../blueprints/Maps.py:588
+#: ../blueprints/Maps.py:590
 #: ../templates/longDistanceTours/longDistanceTourForm.jinja2:155
 #: ../templates/maps/mapLongDistanceTour.jinja2:101
 #: ../templates/maps/mapLongDistanceTour.jinja2:185
@@ -456,6 +456,10 @@ msgstr ""
 
 #: ../logic/service/NotificationService.py:152
 msgid "{owner} has deleted the long-distance tour \"{tour_name}\""
+msgstr ""
+
+#: ../logic/service/NtfyService.py:49
+msgid "Show in SportTracker"
 msgstr ""
 
 #: ../templates/about.jinja2:6 ../templates/macros.jinja2:186

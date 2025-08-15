@@ -2,6 +2,7 @@ import logging
 from typing import Any
 
 from TheCodeLabs_BaseUtils.NtfyHelper import NtfyHelper
+from flask_babel import gettext
 
 from sporttracker.logic import Constants
 from sporttracker.logic.Observable import Listener
@@ -43,7 +44,10 @@ class NtfyService(Listener):
                 topicName=ntfy_settings.topic,
                 message=message,
                 tags=['bell'],
-                headers={'Title': title},
+                headers={
+                    'Title': title,
+                    'Actions': f'action=view, label={gettext("Show in SportTracker")}, url={notification.type.get_action_url(notification.item_id, external=True)}, clear=true',
+                },
             )
         except Exception as e:
             LOGGER.error(f'Error while sending ntfy message: {e}')

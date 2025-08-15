@@ -83,21 +83,21 @@ class NotificationType(enum.Enum):
 
         raise ValueError(f'Could not get localized name for unsupported NotificationType: {self}')
 
-    def get_action_url(self, item_id: int | None) -> str | None:
+    def get_action_url(self, item_id: int | None, external: bool = False) -> str | None:
         if self == self.MAINTENANCE_REMINDER:
-            return url_for('maintenances.showSingleMaintenance', maintenance_id=item_id)
+            return url_for('maintenances.showSingleMaintenance', maintenance_id=item_id, _external=external)
         elif self == self.NEW_SHARED_PLANNED_TOUR:
-            return url_for('maps.showPlannedTour', tour_id=item_id)
+            return url_for('maps.showPlannedTour', tour_id=item_id, _external=external)
         elif self == self.EDITED_SHARED_PLANNED_TOUR:
-            return url_for('maps.showPlannedTour', tour_id=item_id)
+            return url_for('maps.showPlannedTour', tour_id=item_id, _external=external)
         elif self == self.DELETED_SHARED_PLANNED_TOUR:
             return None
         elif self == self.REVOKED_SHARED_PLANNED_TOUR:
             return None
         elif self == self.NEW_SHARED_LONG_DISTANCE_TOUR:
-            return url_for('maps.showLongDistanceTour', tour_id=item_id)
+            return url_for('maps.showLongDistanceTour', tour_id=item_id, _external=external)
         elif self == self.EDITED_SHARED_LONG_DISTANCE_TOUR:
-            return url_for('maps.showLongDistanceTour', tour_id=item_id)
+            return url_for('maps.showLongDistanceTour', tour_id=item_id, _external=external)
         elif self == self.DELETED_SHARED_LONG_DISTANCE_TOUR:
             return None
         elif self == self.REVOKED_SHARED_LONG_DISTANCE_TOUR:
