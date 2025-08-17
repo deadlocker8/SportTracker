@@ -18,6 +18,11 @@ from sporttracker.logic.model.CustomWorkoutField import (
     get_custom_fields_grouped_by_distance_workout_types_with_values,
 )
 from sporttracker.logic.model.Maintenance import Maintenance
+from sporttracker.logic.model.NotificationProviderType import NotificationProviderType
+from sporttracker.logic.model.NotificationSettings import (
+    NotificationSettings,
+    get_notification_settings_by_user_by_provider_type,
+)
 from sporttracker.logic.model.NtfySettings import NtfySettings
 from sporttracker.logic.model.Participant import Participant, get_participants
 from sporttracker.logic.model.User import (
@@ -99,6 +104,7 @@ def construct_blueprint():
             infoItems=__get_info_items(),
             tileRenderUrl=__get_tile_render_url(),
             ntfySettings=__get_ntfy_settings(),
+            allNotificationSettings=__get_notification_settings(),
         )
 
     @settings.route('/editSelfPost', methods=['POST'])
@@ -579,5 +585,14 @@ def construct_blueprint():
             ntfy_topic=ntfySettings.topic,
             ntfy_username=ntfySettings.username,
         )
+
+    def __get_notification_settings() -> list[NotificationSettings]:
+        allNotificationSettings = []
+        for providerType in NotificationProviderType:
+            allNotificationSettings.append(
+                get_notification_settings_by_user_by_provider_type(current_user.id, providerType)
+            )
+
+        return allNotificationSettings
 
     return settings

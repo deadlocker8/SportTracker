@@ -53,6 +53,7 @@ from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutFieldType
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCategoryType
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
+from sporttracker.logic.model.NotificationType import NotificationType
 from sporttracker.logic.model.TravelDirection import TravelDirection
 from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.model.User import (
@@ -186,6 +187,7 @@ class SportTracker(FlaskBaseApp):
                 'fitnessWorkoutTypes': [x for x in FitnessWorkoutType],
                 'fitnessWorkoutCategoryTypes': [x for x in FitnessWorkoutCategoryType],
                 'isDebug': self._isDebug,
+                'notificationTypes': NotificationType.get_sorted(),
             }
 
         def format_decimal(value: int | float, decimals: int = 1) -> str:
