@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import enum
 
 from flask import url_for
@@ -5,24 +7,19 @@ from flask_babel import gettext
 
 
 class NotificationType(enum.Enum):
-    MAINTENANCE_REMINDER = (
-        'MAINTENANCE_REMINDER',
-        'fa-wrench',
-        True,
-        'bg-danger',
-        'text-light',
-    )
-    NEW_SHARED_PLANNED_TOUR = 'NEW_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark'
-    EDITED_SHARED_PLANNED_TOUR = 'EDITED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark'
-    DELETED_SHARED_PLANNED_TOUR = 'DELETED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark'
-    REVOKED_SHARED_PLANNED_TOUR = 'REVOKED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark'
-    NEW_SHARED_LONG_DISTANCE_TOUR = 'NEW_SHARED_LONG_DISTANCE_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark'
+    MAINTENANCE_REMINDER = ('MAINTENANCE_REMINDER', 'fa-wrench', True, 'bg-danger', 'text-light', 0)
+    NEW_SHARED_PLANNED_TOUR = 'NEW_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark', 1
+    EDITED_SHARED_PLANNED_TOUR = 'EDITED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark', 2
+    DELETED_SHARED_PLANNED_TOUR = 'DELETED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark', 3
+    REVOKED_SHARED_PLANNED_TOUR = 'REVOKED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark', 4
+    NEW_SHARED_LONG_DISTANCE_TOUR = 'NEW_SHARED_LONG_DISTANCE_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark', 5
     EDITED_SHARED_LONG_DISTANCE_TOUR = (
         'EDITED_SHARED_LONG_DISTANCE_TOUR',
         'fa-lightbulb',
         True,
         'bg-warning',
         'text-dark',
+        6,
     )
     DELETED_SHARED_LONG_DISTANCE_TOUR = (
         'DELETED_SHARED_LONG_DISTANCE_TOUR',
@@ -30,6 +27,7 @@ class NotificationType(enum.Enum):
         True,
         'bg-warning',
         'text-dark',
+        7,
     )
     REVOKED_SHARED_LONG_DISTANCE_TOUR = (
         'REVOKED_SHARED_LONG_DISTANCE_TOUR',
@@ -37,12 +35,14 @@ class NotificationType(enum.Enum):
         True,
         'bg-warning',
         'text-dark',
+        8,
     )
 
     icon: str
     is_font_awesome_icon: bool
     color: str
     font_color: str
+    order: int
 
     def __new__(
         cls,
@@ -51,6 +51,7 @@ class NotificationType(enum.Enum):
         is_font_awesome_icon: bool,
         color: str,
         font_color: str,
+        order: int,
     ):
         member = object.__new__(cls)
         member._value_ = name
@@ -58,6 +59,7 @@ class NotificationType(enum.Enum):
         member.is_font_awesome_icon = is_font_awesome_icon
         member.color = color
         member.font_color = font_color
+        member.order = order
         return member
 
     def get_localized_title(self) -> str:
@@ -104,3 +106,7 @@ class NotificationType(enum.Enum):
             return None
 
         raise ValueError(f'Could not get action url for unsupported NotificationType: {self}')
+
+    @staticmethod
+    def get_sorted() -> list[NotificationType]:
+        return sorted([n for n in NotificationType], key=lambda entry: entry.order)
