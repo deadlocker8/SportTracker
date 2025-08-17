@@ -166,9 +166,15 @@ SportTracker creates several notifications on certain events:
   - a shared long-distance has been deleted
 
 All those notifications will be shown in the notification center (reachable via the notification counter in the navbar).
-SportTracker can also be configured to send these notifications via `ntfy` too.
+SportTracker can also be configured to send these notifications via a notification provider.
+
+Supported notification providers:
+- `ntfy` (More information about ntfy and how to set up your own ntfy server: https://github.com/binwiederhier/ntfy)
 
 ![](screenshots/notifications.jpg)
+
+For each notification provider you can choose, which notifications should be sent:
+![](screenshots/notifications_settings.jpg)
 
 ### Available languages
 - German
