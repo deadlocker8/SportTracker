@@ -311,8 +311,8 @@
     </div>
 {%- endmacro %}
 
-{% macro buttonSubmitAutomaticallyDisabled(text=gettext('Save'), disabledText=gettext('Saving...'), icon='save', classes='', id='', dataUrl='', dismissModal=false, isDisabled=false) -%}
-    <button type="submit" id="{{ id }}" class="button-submit-automatically-disabled btn btn-primary d-flex align-items-center {{ classes }}" {% if dataUrl %}data-url="{{ dataUrl }}"{% endif %} {% if dismissModal %}data-bs-dismiss="modal"{% endif %}
+{% macro buttonSubmitAutomaticallyDisabled(text=gettext('Save'), disabledText=gettext('Saving...'), icon='save', classes='', id='', dataUrl='', dismissModal=false, isDisabled=false, type="submit") -%}
+    <button type="{{ type }}" id="{{ id }}" class="button-submit-automatically-disabled btn btn-primary d-flex align-items-center {{ classes }}" {% if dataUrl %}data-url="{{ dataUrl }}"{% endif %} {% if dismissModal %}data-bs-dismiss="modal"{% endif %}
             {% if isDisabled %}disabled{% endif %}>
         {% if icon %}<span class="material-symbols-outlined filled text-light me-1">{{ icon }}</span>{% endif %}<span class="button-automatically-disabled-text">{{ text }}</span>
         <span class="spinner-border spinner-border-sm hidden me-1" aria-hidden="true"></span><span class="button-automatically-disabled-text-disabled hidden">{{ disabledText }}</span>

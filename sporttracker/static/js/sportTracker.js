@@ -129,12 +129,12 @@ document.addEventListener('DOMContentLoaded', function()
         });
     }
 
-    let checkboxMaintenanceReminderNotifications = document.getElementById('isMaintenanceRemindersNotificationsActivated');
-    if(checkboxMaintenanceReminderNotifications !== null)
+    let checkboxNtfySettingsIsActive = document.getElementById('ntfySettingsIsActive');
+    if(checkboxNtfySettingsIsActive !== null)
     {
-        checkboxMaintenanceReminderNotifications.addEventListener('click', function()
+        checkboxNtfySettingsIsActive.addEventListener('click', function()
         {
-            document.getElementById('ntfy-settings').classList.toggle('hidden', !checkboxMaintenanceReminderNotifications.checked);
+            document.getElementById('ntfy-settings').classList.toggle('hidden', !checkboxNtfySettingsIsActive.checked);
         });
     }
 
@@ -168,6 +168,37 @@ document.addEventListener('DOMContentLoaded', function()
                     warningMessageContainer.classList.toggle('alert-danger', true);
                     warningMessageContainer.classList.toggle('alert-success', false);
                     warningMessageContainer.innerText = JSON.parse(xhr.response)['message'];
+                }
+            };
+            xhr.send(formData);
+        });
+    }
+
+    let buttonNtfySettingsSave = document.getElementById('button-ntfy-settings-save');
+    if(buttonNtfySettingsSave !== null)
+    {
+        buttonNtfySettingsSave.addEventListener('click', function()
+        {
+            let form = document.getElementById('ntfy-form');
+            let warningMessageContainer = document.getElementById('warningMessageNtfy');
+            let formData = new FormData(form);
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', form.action);
+            xhr.onload = function()
+            {
+                let ntfyErrorMessage = JSON.parse(xhr.response)['ntfyErrorMessage'];
+
+                if(xhr.status !== 200 || ntfyErrorMessage !== null)
+                {
+                    warningMessageContainer.classList.toggle('hidden', false);
+                    warningMessageContainer.classList.toggle('alert-danger', true);
+                    warningMessageContainer.classList.toggle('alert-success', false);
+                    warningMessageContainer.innerText = ntfyErrorMessage;
+                }
+                else
+                {
+                    window.location.href = buttonNtfySettingsSave.dataset.url;
                 }
             };
             xhr.send(formData);

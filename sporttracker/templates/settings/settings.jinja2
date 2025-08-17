@@ -236,150 +236,160 @@
 {%- endmacro %}
 
 {% macro settings_ntfy() -%}
-    <div class="row mt-5 text-start">
-        <div class="col col-11 col-md-9 mx-auto">
-            {% call macros.headline(gettext('Maintenance Reminder Notifications'), '', 'fs-3') %}
-                <span class="material-symbols-outlined fs-2">notifications</span>
-            {% endcall %}
-
-            <div class="row mt-3">
-                <div class="col col-12 mx-auto d-flex align-items-center justify-content-start">
-                    <span class="material-symbols-outlined fs-4 me-2">info</span>
-                    <span>
-                        {{ gettext('More information about ntfy and how to setup your own ntfy server:') }} <a href="https://github.com/binwiederhier/ntfy" target="_blank">https://github.com/binwiederhier/ntfy</a>
-                    </span>
+    <div class="modal fade" tabindex="-1" id="notification-provider-modal-ntfy" data-bs-theme="dark">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content max-height-90">
+                <div class="modal-header d-flex align-items-center justify-content-start">
+                    <span class="material-symbols-outlined fs-3">notifications</span>
+                    <div class="fs-5 ms-2">{{ gettext('Notification Provider Settings') }} - ntfy</div>
                 </div>
+
+                <form id="ntfy-form" role="form" action="{{ url_for('settings.editNtfySettings') }}" method="post"
+                      onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);" class="overflow-y-auto">
+                    <div class="modal-body">
+                        <div class="row mt-3 text-start">
+                            <div class="col col-11 col-md-9 mx-auto">
+                                <div class="row mb-5">
+                                    <div class="col col-12 mx-auto d-flex align-items-center justify-content-start">
+                                        <span class="material-symbols-outlined fs-4 me-2">info</span>
+                                        <span>
+                                            {{ gettext('More information about ntfy and how to setup your own ntfy server:') }} <a href="https://github.com/binwiederhier/ntfy" target="_blank">https://github.com/binwiederhier/ntfy</a>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <span class="material-symbols-outlined me-3">notifications</span>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox"
+                                                   id="ntfySettingsIsActive"
+                                                   name="is_active"
+                                                   {% if allNotificationSettings['NTFY'].is_active %}checked{% endif %}/>
+                                            <label class="form-check-label" for="ntfySettingsIsActive">{{ gettext('Activate notifications via ntfy') }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="ntfy-settings" class="{% if not allNotificationSettings['NTFY'].is_active %}hidden{% endif %}">
+                                    <div class="mb-3 text-center text-danger hidden" id="warningMessageContainerImportFromFitFile">
+                                        <i class="material-symbols-outlined filled align-middle">warning</i>
+                                        <span id="warning-message" class="align-middle"></span>
+                                    </div>
+
+                                    <div class="alert alert-danger {% if not ntfyErrorMessage %} hidden{% endif %}" role="alert" id="warningMessageNtfy">
+                                        {{ ntfyErrorMessage }}
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="ntfy-url" class="form-label input-field-margin">{{ gettext('Ntfy Server URL') }}</label>
+                                        <div class="d-flex align-items-center">
+                                            <span class="material-symbols-outlined filled me-3">travel_explore</span>
+                                            <input type="text" class="form-control" id="ntfy-url" name="ntfy_url" placeholder="https://example.com" value="{% if ntfySettings.ntfy_url %}{{ ntfySettings.ntfy_url | e }}{% endif %}">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="ntfy-topic" class="form-label input-field-margin">{{ gettext('Ntfy Topic Name') }}</label>
+                                        <div class="d-flex align-items-center">
+                                            <span class="material-symbols-outlined filled me-3">sell</span>
+                                            <input type="text" class="form-control" id="ntfy-topic" name="ntfy_topic" value="{% if ntfySettings.ntfy_topic %}{{ ntfySettings.ntfy_topic | e }}{% endif %}">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="ntfy-username" class="form-label input-field-margin">{{ gettext('Username') }}</label>
+                                        <div class="d-flex align-items-center">
+                                            <span class="material-symbols-outlined filled me-3">person</span>
+                                            <input type="text" class="form-control" id="ntfy-username" name="ntfy_username" value="{% if ntfySettings.ntfy_username %}{{ ntfySettings.ntfy_username | e }}{% endif %}">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="ntfy-password" class="form-label input-field-margin">{{ gettext('Password') }}</label>
+                                        <div class="d-flex align-items-center">
+                                            <span class="material-symbols-outlined filled me-3">vpn_key</span>
+                                            <input type="password" class="form-control" id="ntfy-password" name="ntfy_password">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <button type="button" id="btn-ntfy-test" class="btn btn-secondary input-field-margin d-flex align-items-center" data-url="{{ url_for('settings.testReminderNotifications') }}">
+                                            <span class="material-symbols-outlined filled text-light">send</span>&nbsp;{{ gettext('Test') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer overflow-y-auto">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ gettext('Close') }}</button>
+                        {{ macros.buttonSubmitAutomaticallyDisabled(id='button-ntfy-settings-save', type='button', dataUrl=url_for('settings.settingsShow')) }}
+                    </div>
+                </form>
             </div>
-
-            <form id="ntfy-form" role="form" action="{{ url_for('settings.editMaintenanceReminderNotifications') }}" method="post"
-                  onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
-                  class="mt-5">
-                <div class="mb-4">
-                    <div class="d-flex align-items-center">
-                        <span class="material-symbols-outlined me-3">notifications</span>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox"
-                                   id="isMaintenanceRemindersNotificationsActivated"
-                                   name="isMaintenanceRemindersNotificationsActivated"
-                                   {% if current_user.isMaintenanceRemindersNotificationsActivated %}checked{% endif %}/>
-                            <label class="form-check-label" for="isTileHuntingActivated">{{ gettext('Activate notifications for maintenance reminders via ntfy') }}</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="ntfy-settings" class="{% if not current_user.isMaintenanceRemindersNotificationsActivated %}hidden{% endif %}">
-                    <div class="mb-3 text-center text-danger hidden" id="warningMessageContainerImportFromFitFile">
-                        <i class="material-symbols-outlined filled align-middle">warning</i>
-                        <span id="warning-message" class="align-middle"></span>
-                    </div>
-
-                    <div class="alert alert-danger {% if not ntfyErrorMessage %} hidden{% endif %}" role="alert" id="warningMessageNtfy">
-                        {{ ntfyErrorMessage }}
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="ntfy-url" class="form-label input-field-margin">{{ gettext('Ntfy Server URL') }}</label>
-                        <div class="d-flex align-items-center">
-                            <span class="material-symbols-outlined filled me-3">travel_explore</span>
-                            <input type="text" class="form-control" id="ntfy-url" name="ntfy_url" placeholder="https://example.com" value="{% if ntfySettings.ntfy_url %}{{ ntfySettings.ntfy_url | e }}{% endif %}">
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="ntfy-topic" class="form-label input-field-margin">{{ gettext('Ntfy Topic Name') }}</label>
-                        <div class="d-flex align-items-center">
-                            <span class="material-symbols-outlined filled me-3">sell</span>
-                            <input type="text" class="form-control" id="ntfy-topic" name="ntfy_topic" value="{% if ntfySettings.ntfy_topic %}{{ ntfySettings.ntfy_topic | e }}{% endif %}">
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="ntfy-username" class="form-label input-field-margin">{{ gettext('Username') }}</label>
-                        <div class="d-flex align-items-center">
-                            <span class="material-symbols-outlined filled me-3">person</span>
-                            <input type="text" class="form-control" id="ntfy-username" name="ntfy_username" value="{% if ntfySettings.ntfy_username %}{{ ntfySettings.ntfy_username | e }}{% endif %}">
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="ntfy-password" class="form-label input-field-margin">{{ gettext('Password') }}</label>
-                        <div class="d-flex align-items-center">
-                            <span class="material-symbols-outlined filled me-3">vpn_key</span>
-                            <input type="password" class="form-control" id="ntfy-password" name="ntfy_password">
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <button type="button" id="btn-ntfy-test" class="btn btn-secondary input-field-margin d-flex align-items-center" data-url="{{ url_for('settings.testReminderNotifications') }}">
-                            <span class="material-symbols-outlined filled text-light">send</span>&nbsp;{{ gettext('Test') }}
-                        </button>
-                    </div>
-                </div>
-
-                {{ macros.buttonSubmitAutomaticallyDisabled(classes='input-field-margin', id='buttonSaveLongDistanceTour') }}
-            </form>
         </div>
     </div>
 {%- endmacro %}
 
 {% macro settings_notifications() -%}
-<div class="row mt-5 text-start">
-    <div class="col col-11 col-md-9 mx-auto">
-        {% call macros.headline(gettext('Notifications'), '', 'fs-3') %}
-            <span class="material-symbols-outlined fs-2">notifications</span>
-        {% endcall %}
+    <div class="row mt-5 text-start">
+        <div class="col col-11 col-md-9 mx-auto">
+            {% call macros.headline(gettext('Notifications'), '', 'fs-3') %}
+                <span class="material-symbols-outlined fs-2">notifications</span>
+            {% endcall %}
 
-        <div class="d-flex flex-row gap-5 justify-content-center mt-5">
-            <div class="d-flex flex-column align-items-start mt-5">
-                <div class="mt-4 mb-2"></div>
-                <div class="fw-bold mx-auto mt-5 mb-3">{{ gettext('Benachrichtigungstyp') }}</div>
-                {% for notificationType in notificationTypes %}
-                    <div class="mb-3">{{ notificationType.get_localized_title() }}</div>
+            <div class="d-flex flex-row gap-5 justify-content-center mt-5">
+                <div class="d-flex flex-column align-items-start mt-5">
+                    <div class="mt-4 mb-2"></div>
+                    <div class="fw-bold mx-auto mt-5 mb-3">{{ gettext('Benachrichtigungstyp') }}</div>
+                    {% for notificationType in notificationTypes %}
+                        <div class="mb-3">{{ notificationType.get_localized_title() }}</div>
+                    {% endfor %}
+                </div>
+
+                {% for notificationSettings in allNotificationSettings.values() %}
+                    <div class="d-flex flex-column ms-5 align-items-center">
+                        <div class="fw-bold mb-3">{{ notificationSettings.provider_type.name }}</div>
+
+                        {% if notificationSettings.is_active %}
+                            <span class="badge rounded-pill text-bg-success mb-3">{{ gettext('enabled') }}</span>
+                        {% else %}
+                            <span class="badge rounded-pill text-bg-danger mb-3">{{ gettext('disabled') }}</span>
+                        {% endif %}
+
+                        <button class="btn btn-sm btn-primary d-inline-flex align-items-center mb-5"
+                                data-bs-toggle="modal"
+                                data-bs-target="#notification-provider-modal-ntfy">
+                            <span class="material-symbols-outlined filled fs-5">settings</span>&nbsp;{{ gettext('Settings') }}
+                        </button>
+
+                        <form role="form" action="{{ url_for('settings.editNotificationSettings', notification_settings_id=notificationSettings.id) }}"
+                              method="post"
+                              onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
+                        class="d-flex flex-column align-items-center mt-3">
+                            {% for notificationType in notificationTypes %}
+                                {% set typeStatus=notificationSettings.get_notification_types()[notificationType] %}
+
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                           {% if typeStatus is true %}checked{% endif %}
+                                           id="infoItem-{{ notificationSettings.provider_type.name }}-{{ notificationType.name }}"
+                                           name="{{ notificationType.name }}"
+                                           {% if notificationSettings.is_active is false %}disabled{% endif %}>
+                                    <label class="form-check-label visually-hidden" for="infoItem-{{ notificationSettings.provider_type.name }}-{{ notificationType.name }}">
+                                        {{ notificationType.name }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+
+                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-4', isDisabled=notificationSettings.is_active is false) }}
+                        </form>
+                    </div>
                 {% endfor %}
             </div>
-
-            {% for notificationSettings in allNotificationSettings %}
-                <div class="d-flex flex-column ms-5 align-items-center">
-                    <div class="fw-bold mb-3">{{ notificationSettings.provider_type.name }}</div>
-
-                    {% if notificationSettings.is_active %}
-                        <span class="badge rounded-pill text-bg-success mb-3">{{ gettext('enabled') }}</span>
-                    {% else %}
-                        <span class="badge rounded-pill text-bg-danger mb-3">{{ gettext('disabled') }}</span>
-                    {% endif %}
-
-                    <button class="btn btn-sm btn-primary d-inline-flex align-items-center mb-5"
-                            data-bs-toggle="modal"
-                            data-bs-target="#annual-achievement-modal-{{ index }}">
-                        <span class="material-symbols-outlined filled fs-5">settings</span>&nbsp;{{ gettext('Settings') }}
-                    </button>
-
-                    <form role="form" action="{{ url_for('settings.editNotificationSettings', notification_settings_id=notificationSettings.id) }}"
-                          method="post"
-                          onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
-                    class="d-flex flex-column align-items-center mt-3">
-                        {% for notificationType in notificationTypes %}
-                            {% set typeStatus=notificationSettings.get_notification_types()[notificationType] %}
-
-                            <div class="form-check form-switch mb-3">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                       {% if typeStatus is true %}checked{% endif %}
-                                       id="infoItem-{{ notificationSettings.provider_type.name }}-{{ notificationType.name }}"
-                                       name="{{ notificationType.name }}"
-                                       {% if notificationSettings.is_active is false %}disabled{% endif %}>
-                                <label class="form-check-label visually-hidden" for="infoItem-{{ notificationSettings.provider_type.name }}-{{ notificationType.name }}">
-                                    {{ notificationType.name }}
-                                </label>
-                            </div>
-                        {% endfor %}
-
-                        {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-4', isDisabled=notificationSettings.is_active is false) }}
-                    </form>
-                </div>
-            {% endfor %}
         </div>
     </div>
-</div>
 {%- endmacro %}
 
 <html>
@@ -434,6 +444,8 @@
                 <hr class="mt-5"/>
 
                 {{ settings_notifications() }}
+
+                {{ settings_ntfy()  }}
             </section>
         </div>
 

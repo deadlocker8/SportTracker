@@ -90,8 +90,8 @@ class ParticipantFormModel(BaseModel):
     name: str
 
 
-class EditMaintenanceReminderNotificationsModel(BaseModel):
-    isMaintenanceRemindersNotificationsActivated: bool | None = None
+class EditNtfySettingsModel(BaseModel):
+    is_active: bool | None = None
     ntfy_url: str | None = None
     ntfy_topic: str | None = None
     ntfy_username: str | None = None
@@ -112,7 +112,7 @@ def construct_blueprint():
             infoItems=__get_info_items(),
             tileRenderUrl=__get_tile_render_url(),
             ntfySettings=__get_ntfy_settings(),
-            allNotificationSettings=__get_notification_settings(),
+            allNotificationSettings=__get_all_notification_settings(),
         )
 
     @settings.route('/editSelfPost', methods=['POST'])
@@ -136,6 +136,7 @@ def construct_blueprint():
                 infoItems=__get_info_items(),
                 tileRenderUrl=__get_tile_render_url(),
                 ntfySettings=__get_ntfy_settings(),
+                allNotificationSettings=__get_all_notification_settings(),
             )
 
         if len(password) < MIN_PASSWORD_LENGTH:
@@ -148,6 +149,7 @@ def construct_blueprint():
                 infoItems=__get_info_items(),
                 tileRenderUrl=__get_tile_render_url(),
                 ntfySettings=__get_ntfy_settings(),
+                allNotificationSettings=__get_all_notification_settings(),
             )
 
         user.password = Bcrypt().generate_password_hash(password).decode('utf-8')
@@ -432,29 +434,26 @@ def construct_blueprint():
 
         return redirect(url_for('settings.settingsShow'))
 
-    @settings.route('/editMaintenanceReminderNotifications', methods=['POST'])
+    @settings.route('/editNtfySettings', methods=['POST'])
     @login_required
     @validate()
-    def editMaintenanceReminderNotifications(form: EditMaintenanceReminderNotificationsModel):
+    def editNtfySettings(form: EditNtfySettingsModel):
         user = User.query.filter(User.id == current_user.id).first()
 
         if user is None:
             abort(404)
 
-        user.isMaintenanceRemindersNotificationsActivated = bool(form.isMaintenanceRemindersNotificationsActivated)
-
         existingNtfySettings = user.get_ntfy_settings()
 
-        if not user.isMaintenanceRemindersNotificationsActivated:
+        if not bool(form.is_active):
             if existingNtfySettings is not None:
                 db.session.delete(existingNtfySettings)
                 db.session.commit()
 
-                LOGGER.debug(
-                    f'Updated maintenance reminder notification settings for user: {user.username} to '
-                    f'"isMaintenanceRemindersNotificationsActivated": {bool(form.isMaintenanceRemindersNotificationsActivated)}'
-                )
-                return redirect(url_for('settings.settingsShow'))
+                LOGGER.debug(f'Removed ntfy settings for user: {user.username}')
+                __update_ntfy_active_status(False)
+
+                return jsonify({'ntfyErrorMessage': None})
 
         validations = [
             (form.ntfy_url, gettext('Ntfy Server URL')),
@@ -466,16 +465,9 @@ def construct_blueprint():
         for validation in validations:
             value, name = validation
             if value is None or value.strip() == '':
-                return render_template(
-                    'settings/settings.jinja2',
-                    ntfyErrorMessage=gettext('Ntfy Settings: {0} must not be empty').format(name),
-                    userLanguage=current_user.language.name,
-                    customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(),
-                    participants=get_participants(),
-                    infoItems=__get_info_items(),
-                    tileRenderUrl=__get_tile_render_url(),
-                    ntfySettings=form,
-                )
+                __update_ntfy_active_status(False)
+
+                return jsonify({'ntfyErrorMessage': gettext('Ntfy Settings: {0} must not be empty').format(name)})
 
         if existingNtfySettings is None:
             existingNtfySettings = NtfySettings()
@@ -488,17 +480,27 @@ def construct_blueprint():
         db.session.add(existingNtfySettings)
         db.session.commit()
 
-        LOGGER.debug(
-            f'Updated maintenance reminder notification settings for user: {user.username} to '
-            f'"isMaintenanceRemindersNotificationsActivated": {bool(form.isMaintenanceRemindersNotificationsActivated)}'
-        )
+        LOGGER.debug(f'Updated ntfy settings for user: {user.username}')
 
-        return redirect(url_for('settings.settingsShow'))
+        __update_ntfy_active_status(True)
+
+        return jsonify({'ntfyErrorMessage': None})
+
+    def __update_ntfy_active_status(new_status: bool) -> None:
+        notificationSettings = get_notification_settings_by_user_by_provider_type(
+            current_user.id, NotificationProviderType.NTFY
+        )
+        notificationSettings.is_active = new_status
+        LOGGER.debug(
+            f'Updated notification settings of type "{NotificationProviderType.NTFY.name}" for user: '
+            f'{current_user.username} to "is_active": {new_status}'
+        )
+        db.session.commit()
 
     @settings.route('/testReminderNotifications', methods=['POST'])
     @login_required
     @validate()
-    def testReminderNotifications(form: EditMaintenanceReminderNotificationsModel):
+    def testReminderNotifications(form: EditNtfySettingsModel):
         validations = [
             (form.ntfy_url, gettext('Ntfy Server URL')),
             (form.ntfy_topic, gettext('Ntfy Topic Name')),
@@ -612,23 +614,23 @@ def construct_blueprint():
         tileRenderUrl = tileRenderUrl + '/{z}/{x}/{y}.png'
         return tileRenderUrl
 
-    def __get_ntfy_settings() -> EditMaintenanceReminderNotificationsModel:
+    def __get_ntfy_settings() -> EditNtfySettingsModel:
         ntfySettings = current_user.get_ntfy_settings()
         if ntfySettings is None:
-            return EditMaintenanceReminderNotificationsModel(isMaintenanceRemindersNotificationsActivated=False)
+            return EditNtfySettingsModel(is_active=False)
 
-        return EditMaintenanceReminderNotificationsModel(
-            isMaintenanceRemindersNotificationsActivated=True,
+        return EditNtfySettingsModel(
+            is_active=True,
             ntfy_url=ntfySettings.server_url,
             ntfy_topic=ntfySettings.topic,
             ntfy_username=ntfySettings.username,
         )
 
-    def __get_notification_settings() -> list[NotificationSettings]:
-        allNotificationSettings = []
+    def __get_all_notification_settings() -> dict[str, NotificationSettings]:
+        allNotificationSettings = {}
         for providerType in NotificationProviderType:
-            allNotificationSettings.append(
-                get_notification_settings_by_user_by_provider_type(current_user.id, providerType)
+            allNotificationSettings[providerType.name] = get_notification_settings_by_user_by_provider_type(
+                current_user.id, providerType
             )
 
         return allNotificationSettings
