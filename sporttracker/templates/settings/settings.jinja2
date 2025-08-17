@@ -314,7 +314,7 @@
                                     </div>
 
                                     <div class="mb-4">
-                                        <button type="button" id="btn-ntfy-test" class="btn btn-secondary input-field-margin d-flex align-items-center" data-url="{{ url_for('settings.testReminderNotifications') }}">
+                                        <button type="button" id="btn-ntfy-test" class="btn btn-secondary input-field-margin d-flex align-items-center button-automatically-disabled" data-url="{{ url_for('settings.testReminderNotifications') }}">
                                             <span class="material-symbols-outlined filled text-light">send</span>&nbsp;{{ gettext('Test') }}
                                         </button>
                                     </div>
@@ -323,7 +323,7 @@
                         </div>
                     </div>
                     <div class="modal-footer overflow-y-auto">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ gettext('Close') }}</button>
+                        <button type="button" class="btn btn-secondary d-flex align-items-center button-automatically-disabled" data-bs-dismiss="modal"><span class="material-symbols-outlined text-light">close</span>&nbsp;{{ gettext('Cancel') }}</button>
                         {{ macros.buttonSubmitAutomaticallyDisabled(id='button-ntfy-settings-save', type='button', dataUrl=url_for('settings.settingsShow')) }}
                     </div>
                 </form>

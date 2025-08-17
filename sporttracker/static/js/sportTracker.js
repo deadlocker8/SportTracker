@@ -179,6 +179,8 @@ document.addEventListener('DOMContentLoaded', function()
     {
         buttonNtfySettingsSave.addEventListener('click', function()
         {
+            automaticallyToggleSubmitButtons(buttonNtfySettingsSave, true);
+
             let form = document.getElementById('ntfy-form');
             let warningMessageContainer = document.getElementById('warningMessageNtfy');
             let formData = new FormData(form);
@@ -195,6 +197,7 @@ document.addEventListener('DOMContentLoaded', function()
                     warningMessageContainer.classList.toggle('alert-danger', true);
                     warningMessageContainer.classList.toggle('alert-success', false);
                     warningMessageContainer.innerText = ntfyErrorMessage;
+                    automaticallyToggleSubmitButtons(buttonNtfySettingsSave, false);
                 }
                 else
                 {
