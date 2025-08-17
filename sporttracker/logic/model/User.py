@@ -44,7 +44,6 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     isTileHuntingAccessActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     tileHuntingShareCode: Mapped[str] = mapped_column(String, nullable=True)
     isTileHuntingShowPlannedTilesActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    isMaintenanceRemindersNotificationsActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
     def __repr__(self):
         return (
@@ -57,7 +56,6 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
             f'isTileHuntingAccessActivated: {self.isTileHuntingAccessActivated}, '
             f'tileHuntingShareCode: {self.tileHuntingShareCode}, '
             f'isTileHuntingShowPlannedTilesActivated: {self.isTileHuntingShowPlannedTilesActivated}, '
-            f'isMaintenanceRemindersNotificationsActivated: {self.isMaintenanceRemindersNotificationsActivated})'
         )
 
     def get_ntfy_settings(self) -> NtfySettings | None:
@@ -103,7 +101,6 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
         isTileHuntingAccessActivated=False,
         tileHuntingShareCode=None,
         isTileHuntingShowPlannedTilesActivated=True,
-        isMaintenanceRemindersNotificationsActivated=False,
     )
     db.session.add(user)
     db.session.commit()

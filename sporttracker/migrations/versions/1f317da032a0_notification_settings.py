@@ -51,17 +51,25 @@ def upgrade():
     connection = op.get_bind()
     existingRows = connection.execute(text('SELECT * FROM notification_settings;')).fetchall()
     if not existingRows:
-        userIdRows = connection.execute(text('SELECT "user".id FROM "user";')).fetchall()
+        userRows = connection.execute(
+            text('SELECT "user".id, "user"."isMaintenanceRemindersNotificationsActivated" FROM "user";')
+        ).fetchall()
 
         notificationTypes = json.dumps({notificationType.name: True for notificationType in NotificationType})
 
-        for userIdRow in userIdRows:
+        for row in userRows:
+            userId, isMaintenanceRemindersNotificationsActivated = row
             connection.execute(
                 text(
                     f'INSERT INTO notification_settings (provider_type, user_id, is_active, notification_types) '
-                    f"VALUES ('NTFY', {userIdRow[0]}, True, '{notificationTypes}');"
+                    f"VALUES ('NTFY', {userId}, {isMaintenanceRemindersNotificationsActivated}, '{notificationTypes}');"
                 )
             )
+
+    columns = inspector.get_columns('user')
+    columnNames = [column['name'] for column in columns]
+    if 'isMaintenanceRemindersNotificationsActivated' in columnNames:
+        op.drop_column('user', 'isMaintenanceRemindersNotificationsActivated')
 
 
 def downgrade():
