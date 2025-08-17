@@ -497,10 +497,10 @@ def construct_blueprint():
         )
         db.session.commit()
 
-    @settings.route('/testReminderNotifications', methods=['POST'])
+    @settings.route('/testNtfyNotifications', methods=['POST'])
     @login_required
     @validate()
-    def testReminderNotifications(form: EditNtfySettingsModel):
+    def testNtfyNotifications(form: EditNtfySettingsModel):
         validations = [
             (form.ntfy_url, gettext('Ntfy Server URL')),
             (form.ntfy_topic, gettext('Ntfy Topic Name')),
@@ -519,11 +519,11 @@ def construct_blueprint():
                 password=form.ntfy_password,
                 baseUrl=form.ntfy_url,
                 topicName=form.ntfy_topic,
-                message=gettext('SportTracker: Maintenance reminder test notification'),
+                message=gettext('SportTracker: Test notification'),
                 tags=['bell'],
             )
 
-            LOGGER.debug(f'Sent maintenance reminder test notification settings for user: {current_user.id}')
+            LOGGER.debug(f'Sent ntfy test notification for user: {current_user.id}')
             return jsonify({'message': gettext('Test notification successfully sent')})
         except Exception as e:
             return jsonify({'message': gettext('Error sending test notification {0}').format(e)}), 500
