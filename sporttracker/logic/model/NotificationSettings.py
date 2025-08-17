@@ -1,3 +1,4 @@
+from flask_login import current_user
 from sqlalchemy import Integer, JSON
 from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import Mapped, mapped_column
@@ -59,6 +60,22 @@ def get_notification_settings_by_user_by_provider_type(
         raise ValueError(
             f'Could not find notification settings for user id "{user_id}" and provider type "{provider_type}"'
         )
+
+    if notificationSettings.update_missing_values():
+        db.session.commit()
+
+    return notificationSettings
+
+
+def get_notification_settings_by_id(notification_settings_id: int) -> NotificationSettings:
+    notificationSettings = (
+        NotificationSettings.query.filter(NotificationSettings.user_id == current_user.id)
+        .filter(NotificationSettings.id == notification_settings_id)
+        .first()
+    )
+
+    if notificationSettings is None:
+        raise ValueError(f'Could not find notification settings with id "{notification_settings_id}"')
 
     if notificationSettings.update_missing_values():
         db.session.commit()

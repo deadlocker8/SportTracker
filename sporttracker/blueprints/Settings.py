@@ -22,7 +22,9 @@ from sporttracker.logic.model.NotificationProviderType import NotificationProvid
 from sporttracker.logic.model.NotificationSettings import (
     NotificationSettings,
     get_notification_settings_by_user_by_provider_type,
+    get_notification_settings_by_id,
 )
+from sporttracker.logic.model.NotificationType import NotificationType
 from sporttracker.logic.model.NtfySettings import NtfySettings
 from sporttracker.logic.model.Participant import Participant, get_participants
 from sporttracker.logic.model.User import (
@@ -53,6 +55,12 @@ class EditSelfTileHuntingFormModel(BaseModel):
 
 
 class EditDistanceWorkoutInfoItemsModel(BaseModel):
+    model_config = ConfigDict(
+        extra='allow',
+    )
+
+
+class EditNotificationsSettingsModel(BaseModel):
     model_config = ConfigDict(
         extra='allow',
     )
@@ -517,6 +525,36 @@ def construct_blueprint():
             return jsonify({'message': gettext('Test notification successfully sent')})
         except Exception as e:
             return jsonify({'message': gettext('Error sending test notification {0}').format(e)}), 500
+
+    @settings.route('/editNotificationSettings/<int:notification_settings_id>', methods=['POST'])
+    @login_required
+    @validate()
+    def editNotificationSettings(notification_settings_id: int, form: EditNotificationsSettingsModel):
+        try:
+            notificationSettings = get_notification_settings_by_id(notification_settings_id)
+        except ValueError:
+            abort(404)
+
+        if form.model_extra is None:
+            abort(400)
+
+        notificationTypes = {}
+        for notificationType in NotificationType.get_sorted():
+            for itemName, itemValue in form.model_extra.items():
+                if notificationType.name == itemName:
+                    notificationTypes[notificationType] = itemValue.strip().lower() == 'on'
+                    break
+            else:
+                notificationTypes[notificationType] = False
+
+        notificationSettings.update(notificationTypes)
+        db.session.commit()
+
+        LOGGER.debug(
+            f'Updated notification settings for provider "{notificationSettings.provider_type.name}" for user: {current_user.id}'
+        )
+
+        return redirect(url_for('settings.settingsShow'))
 
     def __is_allowed_custom_field_name(form: CustomWorkoutFieldFormModel):
         if form.name.lower() in RESERVED_FIELD_NAMES:

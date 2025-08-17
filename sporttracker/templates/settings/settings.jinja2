@@ -354,7 +354,8 @@
                         <span class="material-symbols-outlined filled fs-5">settings</span>&nbsp;{{ gettext('Settings') }}
                     </button>
 
-                    <form role="form" action="{{ url_for('settings.editDistanceWorkoutInfoItems') }}" method="post"
+                    <form role="form" action="{{ url_for('settings.editNotificationSettings', notification_settings_id=notificationSettings.id) }}"
+                          method="post"
                           onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
                     class="d-flex flex-column align-items-center mt-3">
                         {% for notificationType in notificationTypes %}
