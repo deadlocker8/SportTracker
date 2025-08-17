@@ -58,8 +58,10 @@ class NtfyService(Listener):
                 message=message,
                 tags=['bell'],
                 headers={
-                    'Title': title,
-                    'Actions': f'action=view, label={gettext("Show in SportTracker")}, url={notification.type.get_action_url(notification.item_id, external=True)}, clear=true',
+                    'Title': title.encode('utf-8'),
+                    'Actions': f'action=view, label={gettext("Show in SportTracker")}, url={notification.type.get_action_url(notification.item_id, external=True)}, clear=true'.encode(
+                        'utf-8'
+                    ),
                 },
             )
         except Exception as e:
