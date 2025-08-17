@@ -65,6 +65,7 @@ def upgrade():
                     f"VALUES ('NTFY', {userId}, {isMaintenanceRemindersNotificationsActivated}, '{notificationTypes}');"
                 )
             )
+            connection.commit()
 
     columns = inspector.get_columns('user')
     columnNames = [column['name'] for column in columns]
