@@ -6,6 +6,8 @@ from flask_babel import gettext
 
 from sporttracker.logic import Constants
 from sporttracker.logic.Observable import Listener
+from sporttracker.logic.model.NotificationProviderType import NotificationProviderType
+from sporttracker.logic.model.NotificationSettings import get_notification_settings_by_user_by_provider_type
 from sporttracker.logic.model.User import User
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -25,7 +27,18 @@ class NtfyService(Listener):
         if user is None:
             return
 
-        if not user.isMaintenanceRemindersNotificationsActivated:
+        try:
+            notification_settings = get_notification_settings_by_user_by_provider_type(
+                user.id, NotificationProviderType.NTFY
+            )
+        except ValueError as e:
+            LOGGER.error(e)
+            return
+
+        if not notification_settings.is_active:
+            return
+
+        if not notification_settings.get_notification_types()[notification.type]:
             return
 
         ntfy_settings = user.get_ntfy_settings()
