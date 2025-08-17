@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-15 20:55+0200\n"
+"POT-Creation-Date: 2025-08-17 19:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -106,7 +106,7 @@ msgstr ""
 msgid "Unknown user"
 msgstr ""
 
-#: ../blueprints/Authentication.py:36 ../blueprints/Settings.py:118
+#: ../blueprints/Authentication.py:36 ../blueprints/Settings.py:132
 #: ../blueprints/Users.py:78 ../blueprints/Users.py:132
 msgid "Password must not be empty"
 msgstr ""
@@ -200,61 +200,61 @@ msgstr ""
 msgid "End Month must be greater or equal Start Month."
 msgstr ""
 
-#: ../blueprints/Settings.py:130 ../blueprints/Users.py:83
+#: ../blueprints/Settings.py:145 ../blueprints/Users.py:83
 #: ../blueprints/Users.py:140
 msgid "Password must be at least {0} characters long"
 msgstr ""
 
-#: ../blueprints/Settings.py:446 ../blueprints/Settings.py:489
-#: ../templates/settings/settings.jinja2:281
+#: ../blueprints/Settings.py:459 ../blueprints/Settings.py:505
+#: ../templates/settings/settings.jinja2:285
 msgid "Ntfy Server URL"
 msgstr ""
 
-#: ../blueprints/Settings.py:447 ../blueprints/Settings.py:490
-#: ../templates/settings/settings.jinja2:289
+#: ../blueprints/Settings.py:460 ../blueprints/Settings.py:506
+#: ../templates/settings/settings.jinja2:293
 msgid "Ntfy Topic Name"
 msgstr ""
 
-#: ../blueprints/Settings.py:448 ../blueprints/Settings.py:491
-#: ../templates/login.jinja2:19 ../templates/settings/settings.jinja2:297
+#: ../blueprints/Settings.py:461 ../blueprints/Settings.py:507
+#: ../templates/login.jinja2:19 ../templates/settings/settings.jinja2:301
 #: ../templates/users/userForm.jinja2:51
 msgid "Username"
 msgstr ""
 
-#: ../blueprints/Settings.py:449 ../blueprints/Settings.py:492
+#: ../blueprints/Settings.py:462 ../blueprints/Settings.py:508
 #: ../templates/login.jinja2:23 ../templates/settings/settings.jinja2:15
-#: ../templates/settings/settings.jinja2:305
+#: ../templates/settings/settings.jinja2:309
 #: ../templates/users/userForm.jinja2:60
 msgid "Password"
 msgstr ""
 
-#: ../blueprints/Settings.py:457 ../blueprints/Settings.py:498
+#: ../blueprints/Settings.py:470 ../blueprints/Settings.py:514
 msgid "Ntfy Settings: {0} must not be empty"
 msgstr ""
 
-#: ../blueprints/Settings.py:506
-msgid "SportTracker: Maintenance reminder test notification"
+#: ../blueprints/Settings.py:522
+msgid "SportTracker: Test notification"
 msgstr ""
 
-#: ../blueprints/Settings.py:511
+#: ../blueprints/Settings.py:527
 msgid "Test notification successfully sent"
 msgstr ""
 
-#: ../blueprints/Settings.py:513
+#: ../blueprints/Settings.py:529
 msgid "Error sending test notification {0}"
 msgstr ""
 
-#: ../blueprints/Settings.py:518
+#: ../blueprints/Settings.py:564
 msgid ""
 "The specified field name \"{0}\" conflicts with a reserved field name and"
 " therefore can't be used as custom field name."
 msgstr ""
 
-#: ../blueprints/Settings.py:532
+#: ../blueprints/Settings.py:578
 msgid "The specified field name \"{0}\" already exists."
 msgstr ""
 
-#: ../blueprints/Settings.py:541
+#: ../blueprints/Settings.py:587
 msgid "The specified participant name \"{0}\" already exists."
 msgstr ""
 
@@ -314,39 +314,39 @@ msgstr ""
 msgid "{timedelta} ago"
 msgstr ""
 
-#: ../logic/model/NotificationType.py:66
+#: ../logic/model/NotificationType.py:68
 msgid "Maintenance limit exceeded"
 msgstr ""
 
-#: ../logic/model/NotificationType.py:68
+#: ../logic/model/NotificationType.py:70
 msgid "New shared planned tour"
 msgstr ""
 
-#: ../logic/model/NotificationType.py:70
+#: ../logic/model/NotificationType.py:72
 msgid "Updated shared planned tour"
 msgstr ""
 
-#: ../logic/model/NotificationType.py:72
+#: ../logic/model/NotificationType.py:74
 msgid "Deleted shared planned tour"
 msgstr ""
 
-#: ../logic/model/NotificationType.py:74
+#: ../logic/model/NotificationType.py:76
 msgid "Access to shared planned tour revoked"
 msgstr ""
 
-#: ../logic/model/NotificationType.py:76
+#: ../logic/model/NotificationType.py:78
 msgid "New shared long-distance tour"
 msgstr ""
 
-#: ../logic/model/NotificationType.py:78
+#: ../logic/model/NotificationType.py:80
 msgid "Updated shared long-distance tour"
 msgstr ""
 
-#: ../logic/model/NotificationType.py:80
+#: ../logic/model/NotificationType.py:82
 msgid "Deleted shared long-distance tour"
 msgstr ""
 
-#: ../logic/model/NotificationType.py:82
+#: ../logic/model/NotificationType.py:84
 msgid "Access to shared long-distance tour revoked"
 msgstr ""
 
@@ -611,8 +611,9 @@ msgstr ""
 
 #: ../templates/macros.jinja2:226
 #: ../templates/maintenances/maintenanceForm.jinja2:126
-#: ../templates/settings/settings.jinja2:328
-#: ../templates/settings/settings.jinja2:340
+#: ../templates/settings/settings.jinja2:364
+#: ../templates/settings/settings.jinja2:398
+#: ../templates/settings/settings.jinja2:410
 #: ../templates/workouts/workoutMacros.jinja2:476
 msgid "Settings"
 msgstr ""
@@ -621,7 +622,7 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: ../templates/macros.jinja2:292
+#: ../templates/macros.jinja2:292 ../templates/settings/settings.jinja2:326
 #: ../templates/workouts/workoutChooser.jinja2:86
 #: ../templates/workouts/workouts.jinja2:95
 #: ../templates/workouts/workouts.jinja2:117
@@ -1474,6 +1475,7 @@ msgstr ""
 
 #: ../templates/notifications/notifications.jinja2:78
 #: ../templates/notifications/notifications.jinja2:89
+#: ../templates/settings/settings.jinja2:338
 msgid "Notifications"
 msgstr ""
 
@@ -1670,20 +1672,32 @@ msgstr ""
 msgid "Select Information to show for each distance-based workout"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:241
-msgid "Maintenance Reminder Notifications"
+#: ../templates/settings/settings.jinja2:244
+msgid "Notification Provider Settings"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:249
+#: ../templates/settings/settings.jinja2:256
 msgid "More information about ntfy and how to setup your own ntfy server:"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:265
-msgid "Activate notifications for maintenance reminders via ntfy"
+#: ../templates/settings/settings.jinja2:269
+msgid "Activate notifications via ntfy"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:314
+#: ../templates/settings/settings.jinja2:318
 msgid "Test"
+msgstr ""
+
+#: ../templates/settings/settings.jinja2:345
+msgid "Notification type"
+msgstr ""
+
+#: ../templates/settings/settings.jinja2:356
+msgid "enabled"
+msgstr ""
+
+#: ../templates/settings/settings.jinja2:358
+msgid "disabled"
 msgstr ""
 
 #: ../templates/users/userForm.jinja2:6 ../templates/users/userForm.jinja2:18
