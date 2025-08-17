@@ -6,6 +6,8 @@ from flask_login import UserMixin, current_user
 from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
+from sporttracker.logic.model.NotificationProviderType import NotificationProviderType
+from sporttracker.logic.model.NotificationSettings import NotificationSettings
 from sporttracker.logic.model.NtfySettings import NtfySettings
 from sporttracker.logic.model.db import db
 from sporttracker.logic.model.filterStates.MaintenanceFilterState import MaintenanceFilterState
@@ -129,6 +131,14 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
     tileHuntingFilterState.reset()
     db.session.add(tileHuntingFilterState)
     db.session.commit()
+
+    for providerType in NotificationProviderType:
+        notificationSettings = NotificationSettings(
+            provider_type=providerType, is_active=False, notification_types={}, user_id=user.id
+        )
+        db.session.add(notificationSettings)
+        notificationSettings.update_missing_values()
+        db.session.commit()
 
     return user
 
