@@ -21,8 +21,8 @@ from sporttracker.api import Api
 from sporttracker.api.Api import API_BLUEPRINT_NAME
 from sporttracker.blueprints import (
     General,
-    Search,
 )
+from sporttracker.search import SearchBlueprint
 from sporttracker.map import MapBlueprint
 from sporttracker.chart import ChartBlueprint
 from sporttracker.gpx import GpxBlueprint
@@ -325,7 +325,7 @@ class SportTracker(FlaskBaseApp):
             )
         )
         app.register_blueprint(AchievementBlueprint.construct_blueprint())
-        app.register_blueprint(Search.construct_blueprint())
+        app.register_blueprint(SearchBlueprint.construct_blueprint())
         app.register_blueprint(
             GpxBlueprint.construct_blueprint(
                 app.config['GPX_SERVICE'], app.config['DISTANCE_WORKOUT_SERVICE'], self._settings['gpxPreviewImages']
