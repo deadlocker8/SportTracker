@@ -14,7 +14,7 @@ from sporttracker.logic.model.DistanceWorkout import (
     get_distance_per_month_by_type,
     DistanceWorkout,
 )
-from sporttracker.monthGoals.MonthGoalModel import get_goal_summaries_by_year_and_month_and_types
+from sporttracker.monthGoal.MonthGoalModel import get_goal_summaries_by_year_and_month_and_types
 from sporttracker.logic.model.Workout import Workout, get_duration_per_month_by_type
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db

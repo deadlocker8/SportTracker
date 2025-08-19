@@ -68,7 +68,7 @@ from sporttracker.logic.service.PlannedTourService import PlannedTourService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.maintenance import MaintenanceBlueprint, MaintenanceEventInstanceBlueprint
-from sporttracker.monthGoals import (
+from sporttracker.monthGoal import (
     MonthGoalBlueprint,
     MonthGoalsDistanceBlueprint,
     MonthGoalsCountBlueprint,

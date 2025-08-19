@@ -7,66 +7,66 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 
 from sporttracker.logic import Constants
-from sporttracker.monthGoals.MonthGoalModel import MonthGoalCount, get_month_goal_count_by_id
+from sporttracker.monthGoal.MonthGoalModel import MonthGoalDistance, get_month_goal_distance_by_id
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-class MonthGoalCountFormModel(BaseModel):
+class MonthGoalDistanceFormModel(BaseModel):
     type: str
     year: int
     month: int
-    count_minimum: int
-    count_perfect: int
+    distance_minimum: float
+    distance_perfect: float
 
 
-class MonthGoalCountMultipleFormModel(BaseModel):
+class MonthGoalDistanceMultipleFormModel(BaseModel):
     type: str
     start_year: int
     start_month: int
     end_year: int
     end_month: int
-    count_minimum: int
-    count_perfect: int
+    distance_minimum: float
+    distance_perfect: float
 
 
 def construct_blueprint():
-    monthGoalsCount = Blueprint('monthGoalsCount', __name__, static_folder='static', url_prefix='/goalsCount')
+    monthGoalsDistance = Blueprint('monthGoalsDistance', __name__, static_folder='static', url_prefix='/goalsDistance')
 
-    @monthGoalsCount.route('/add')
+    @monthGoalsDistance.route('/add')
     @login_required
     def add():
-        return render_template('monthGoals/monthGoalCountForm.jinja2')
+        return render_template('monthGoals/monthGoalDistanceForm.jinja2')
 
-    @monthGoalsCount.route('/post', methods=['POST'])
+    @monthGoalsDistance.route('/post', methods=['POST'])
     @login_required
     @validate()
-    def addPost(form: MonthGoalCountFormModel):
-        monthGoal = MonthGoalCount(
+    def addPost(form: MonthGoalDistanceFormModel):
+        monthGoal = MonthGoalDistance(
             type=WorkoutType(form.type),  # type: ignore[call-arg]
             year=form.year,
             month=form.month,
-            count_minimum=form.count_minimum,
-            count_perfect=form.count_perfect,
+            distance_minimum=form.distance_minimum * 1000,
+            distance_perfect=form.distance_perfect * 1000,
             user_id=current_user.id,
         )
-        LOGGER.debug(f'Saved new month goal of type "count": {monthGoal}')
+        LOGGER.debug(f'Saved new month goal of type "distance": {monthGoal}')
         db.session.add(monthGoal)
         db.session.commit()
 
         return redirect(url_for('monthGoals.listMonthGoals'))
 
-    @monthGoalsCount.route('/addMultiple')
+    @monthGoalsDistance.route('/addMultiple')
     @login_required
     def addMultiple():
-        return render_template('monthGoals/monthGoalCountMultipleForm.jinja2')
+        return render_template('monthGoals/monthGoalDistanceMultipleForm.jinja2')
 
-    @monthGoalsCount.route('/postMultiple', methods=['POST'])
+    @monthGoalsDistance.route('/postMultiple', methods=['POST'])
     @login_required
     @validate()
-    def addMultiplePost(form: MonthGoalCountMultipleFormModel):
+    def addMultiplePost(form: MonthGoalDistanceMultipleFormModel):
         currentYear = form.start_year
         currentMonth = form.start_month
 
@@ -79,12 +79,12 @@ def construct_blueprint():
         monthGoals = []
         while currentYear < form.end_year or (currentYear == form.end_year and currentMonth <= form.end_month):
             monthGoals.append(
-                MonthGoalCount(
+                MonthGoalDistance(
                     type=WorkoutType(form.type),  # type: ignore[call-arg]
                     year=currentYear,
                     month=currentMonth,
-                    count_minimum=form.count_minimum,
-                    count_perfect=form.count_perfect,
+                    distance_minimum=form.distance_minimum * 1000,
+                    distance_perfect=form.distance_perfect * 1000,
                     user_id=current_user.id,
                 )
             )
@@ -95,36 +95,36 @@ def construct_blueprint():
                 currentMonth = 1
 
         LOGGER.debug(
-            f'Saved {len(monthGoals)} new month goals of type "count" from {form.start_year}-{form.start_month} to {form.end_year}-{form.end_month}'
+            f'Saved {len(monthGoals)} new month goals of type "distance" from {form.start_year}-{form.start_month} to {form.end_year}-{form.end_month}'
         )
         db.session.add_all(monthGoals)
         db.session.commit()
 
         return redirect(url_for('monthGoals.listMonthGoals'))
 
-    @monthGoalsCount.route('/edit/<int:goal_id>')
+    @monthGoalsDistance.route('/edit/<int:goal_id>')
     @login_required
     def edit(goal_id: int):
-        monthGoal = get_month_goal_count_by_id(goal_id)
+        monthGoal = get_month_goal_distance_by_id(goal_id)
 
         if monthGoal is None:
             abort(404)
 
-        goalModel = MonthGoalCountFormModel(
+        goalModel = MonthGoalDistanceFormModel(
             type=monthGoal.type.name,
             year=monthGoal.year,
             month=monthGoal.month,
-            count_minimum=monthGoal.count_minimum,
-            count_perfect=monthGoal.count_perfect,
+            distance_minimum=monthGoal.distance_minimum / 1000,
+            distance_perfect=monthGoal.distance_perfect / 1000,
         )
 
-        return render_template('monthGoals/monthGoalCountForm.jinja2', goal=goalModel, goal_id=goal_id)
+        return render_template('monthGoals/monthGoalDistanceForm.jinja2', goal=goalModel, goal_id=goal_id)
 
-    @monthGoalsCount.route('/edit/<int:goal_id>', methods=['POST'])
+    @monthGoalsDistance.route('/edit/<int:goal_id>', methods=['POST'])
     @login_required
     @validate()
-    def editPost(goal_id: int, form: MonthGoalCountFormModel):
-        monthGoal = get_month_goal_count_by_id(goal_id)
+    def editPost(goal_id: int, form: MonthGoalDistanceFormModel):
+        monthGoal = get_month_goal_distance_by_id(goal_id)
 
         if monthGoal is None:
             abort(404)
@@ -132,27 +132,27 @@ def construct_blueprint():
         monthGoal.type = WorkoutType(form.type)  # type: ignore[call-arg]
         monthGoal.year = form.year
         monthGoal.month = form.month
-        monthGoal.count_minimum = form.count_minimum
-        monthGoal.count_perfect = form.count_perfect
+        monthGoal.distance_minimum = form.distance_minimum * 1000  # type: ignore[assignment]
+        monthGoal.distance_perfect = form.distance_perfect * 1000  # type: ignore[assignment]
         monthGoal.user_id = current_user.id
 
-        LOGGER.debug(f'Updated month goal of type "count": {monthGoal}')
+        LOGGER.debug(f'Updated month goal of type "distance": {monthGoal}')
         db.session.commit()
 
         return redirect(url_for('monthGoals.listMonthGoals'))
 
-    @monthGoalsCount.route('/delete/<int:goal_id>')
+    @monthGoalsDistance.route('/delete/<int:goal_id>')
     @login_required
     def delete(goal_id: int):
-        monthGoal = get_month_goal_count_by_id(goal_id)
+        monthGoal = get_month_goal_distance_by_id(goal_id)
 
         if monthGoal is None:
             abort(404)
 
-        LOGGER.debug(f'Deleted month goal of type "count": {monthGoal}')
+        LOGGER.debug(f'Deleted month goal of type "distance": {monthGoal}')
         db.session.delete(monthGoal)
         db.session.commit()
 
         return redirect(url_for('monthGoals.listMonthGoals'))
 
-    return monthGoalsCount
+    return monthGoalsDistance

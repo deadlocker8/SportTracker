@@ -34,7 +34,7 @@ from sporttracker.logic.model.FitnessWorkoutCategory import (
     FitnessWorkoutCategoryType,
 )
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
-from sporttracker.monthGoals.MonthGoalModel import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
+from sporttracker.monthGoal.MonthGoalModel import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import get_participants
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.Workout import get_available_years
