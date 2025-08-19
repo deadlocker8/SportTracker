@@ -3,8 +3,8 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
-from sporttracker.logic.model.TravelDirection import TravelDirection
-from sporttracker.logic.model.TravelType import TravelType
+from sporttracker.plannedTour.TravelDirection import TravelDirection
+from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.logic.model.User import User, get_user_by_id
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db

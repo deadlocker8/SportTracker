@@ -12,11 +12,11 @@ from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.Participant import get_participants_by_ids
-from sporttracker.logic.model.PlannedTour import PlannedTour
+from sporttracker.plannedTour.PlannedTourModel import PlannedTour
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.logic.service.NotificationService import NotificationService
-from sporttracker.logic.service.PlannedTourService import PlannedTourService
+from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

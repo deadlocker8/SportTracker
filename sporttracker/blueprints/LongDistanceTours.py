@@ -7,14 +7,14 @@ from flask import Blueprint, render_template, request, redirect, url_for, abort
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 
-from sporttracker.blueprints.PlannedTours import __get_user_models
+from sporttracker.plannedTour.PlannedTourBlueprint import __get_user_models
 from sporttracker.logic import Constants
 from sporttracker.logic.model.LongDistanceTour import LongDistanceTour
 from sporttracker.logic.model.User import get_user_by_id, get_all_users_except_self_and_admin
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
 from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourFormModel, LongDistanceTourService
-from sporttracker.logic.service.PlannedTourService import PlannedTourService, PlannedTourModel
+from sporttracker.plannedTour.PlannedTourService import PlannedTourService, PlannedTourModel
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

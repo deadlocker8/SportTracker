@@ -7,7 +7,7 @@ from sqlalchemy.orm import aliased
 
 from sporttracker.logic.GpxService import VisitedTile
 from sporttracker.logic.model.GpxPlannedTile import GpxPlannedTile
-from sporttracker.logic.model.PlannedTour import PlannedTour
+from sporttracker.plannedTour.PlannedTourModel import PlannedTour
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.filterStates.TileHuntingFilterState import TileHuntingFilterState

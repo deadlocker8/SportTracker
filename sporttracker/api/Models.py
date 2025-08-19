@@ -77,7 +77,7 @@ class PlannedTourApiModel:
 
 
 @dataclass
-class MaintenanceTourApiModel:
+class MaintenanceApiModel:
     id: int
     workout_type: str
     description: str

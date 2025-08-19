@@ -37,7 +37,7 @@ from sporttracker.logic.model.Workout import (
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user, QuickFilterState
-from sporttracker.logic.service.PlannedTourService import PlannedTourService
+from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

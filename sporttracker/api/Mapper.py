@@ -8,7 +8,7 @@ from sporttracker.api.Models import (
     FitnessWorkoutApiModel,
     ParticipantApiModel,
     PlannedTourApiModel,
-    MaintenanceTourApiModel,
+    MaintenanceApiModel,
     CustomFieldApiModel,
 )
 from sporttracker.maintenance.MaintenanceEventsCollector import MaintenanceWithEventsModel
@@ -17,7 +17,7 @@ from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.monthGoal.MonthGoalModel import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import Participant
-from sporttracker.logic.model.PlannedTour import PlannedTour
+from sporttracker.plannedTour.PlannedTourService import PlannedTourModel
 
 
 class Mapper:
@@ -126,7 +126,7 @@ MAPPER_PARTICIPANT = Mapper(
 )
 
 MAPPER_PLANNED_TOUR = Mapper(
-    PlannedTour,
+    PlannedTourModel,
     PlannedTourApiModel,
     {
         'id': lambda source: source.id,
@@ -137,7 +137,7 @@ MAPPER_PLANNED_TOUR = Mapper(
 
 MAPPER_MAINTENANCE = Mapper(
     MaintenanceWithEventsModel,
-    MaintenanceTourApiModel,
+    MaintenanceApiModel,
     {
         'id': lambda source: source.id,
         'workout_type': lambda source: source.type.name,

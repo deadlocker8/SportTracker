@@ -17,12 +17,12 @@ from sporttracker.logic.model.LongDistanceTour import (
     LongDistanceTourPlannedTourAssociation,
     LongDistanceTour,
 )
-from sporttracker.logic.model.PlannedTour import PlannedTour
+from sporttracker.plannedTour.PlannedTourModel import PlannedTour
 from sporttracker.logic.model.User import get_users_by_ids, User
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.logic.service.NotificationService import NotificationService
-from sporttracker.logic.service.PlannedTourService import PlannedTourService
+from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

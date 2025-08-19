@@ -10,7 +10,7 @@ from sporttracker.logic.model.DistanceWorkout import get_available_years
 from sporttracker.logic.model.LongDistanceTour import LongDistanceTour
 from sporttracker.logic.model.Notification import Notification
 from sporttracker.logic.model.NotificationType import NotificationType
-from sporttracker.logic.model.PlannedTour import PlannedTour
+from sporttracker.plannedTour.PlannedTourModel import PlannedTour
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db

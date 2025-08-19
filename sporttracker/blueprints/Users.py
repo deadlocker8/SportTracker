@@ -19,7 +19,7 @@ from sporttracker.logic.model.User import (
 )
 from sporttracker.logic.model.db import db
 from sporttracker.maintenance.MaintenanceFilterStateModel import get_maintenance_filter_state_by_user
-from sporttracker.logic.model.filterStates.PlannedTourFilterState import get_planned_tour_filter_state_by_user
+from sporttracker.plannedTour.PlannedTourFilterStateModel import get_planned_tour_filter_state_by_user
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
 from sporttracker.logic.model.filterStates.TileHuntingFilterState import get_tile_hunting_filter_state_by_user
 

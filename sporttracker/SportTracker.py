@@ -31,7 +31,6 @@ from sporttracker.blueprints import (
     GpxTracks,
     Settings,
     QuickFilter,
-    PlannedTours,
     AnnualAchievements,
     DistanceWorkouts,
     FitnessWorkouts,
@@ -48,8 +47,9 @@ from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCategoryType
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.NotificationType import NotificationType
-from sporttracker.logic.model.TravelDirection import TravelDirection
-from sporttracker.logic.model.TravelType import TravelType
+from sporttracker.plannedTour import PlannedTourBlueprint
+from sporttracker.plannedTour.TravelDirection import TravelDirection
+from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.logic.model.User import (
     User,
     Language,
@@ -64,7 +64,7 @@ from sporttracker.logic.service.FitnessWorkoutService import FitnessWorkoutServi
 from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourService
 from sporttracker.logic.service.NotificationService import NotificationService
 from sporttracker.logic.service.NtfyService import NtfyService
-from sporttracker.logic.service.PlannedTourService import PlannedTourService
+from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.maintenance import MaintenanceBlueprint, MaintenanceEventInstanceBlueprint
@@ -347,7 +347,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(MaintenanceBlueprint.construct_blueprint())
         app.register_blueprint(MaintenanceEventInstanceBlueprint.construct_blueprint())
         app.register_blueprint(
-            PlannedTours.construct_blueprint(
+            PlannedTourBlueprint.construct_blueprint(
                 app.config['GPX_SERVICE'], self._settings['gpxPreviewImages'], app.config['PLANNED_TOUR_SERVICE']
             )
         )

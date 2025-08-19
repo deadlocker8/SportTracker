@@ -7,7 +7,7 @@ import requests
 
 from sporttracker.logic import Constants
 from sporttracker.logic.model.LongDistanceTour import LongDistanceTour
-from sporttracker.logic.service.PlannedTourService import PlannedTourService
+from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

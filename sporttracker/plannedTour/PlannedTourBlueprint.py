@@ -11,8 +11,8 @@ from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.LongDistanceTour import (
     LongDistanceTourPlannedTourAssociation,
 )
-from sporttracker.logic.model.TravelDirection import TravelDirection
-from sporttracker.logic.model.TravelType import TravelType
+from sporttracker.plannedTour.TravelDirection import TravelDirection
+from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.logic.model.User import (
     User,
     get_all_users_except_self_and_admin,
@@ -20,10 +20,10 @@ from sporttracker.logic.model.User import (
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
-from sporttracker.logic.model.filterStates.PlannedTourFilterState import get_planned_tour_filter_state_by_user
+from sporttracker.plannedTour.PlannedTourFilterStateModel import get_planned_tour_filter_state_by_user
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
 from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourService
-from sporttracker.logic.service.PlannedTourService import (
+from sporttracker.plannedTour.PlannedTourService import (
     PlannedTourFormModel,
     PlannedTourEditFormModel,
     PlannedTourService,

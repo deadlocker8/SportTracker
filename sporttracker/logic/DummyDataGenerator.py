@@ -17,9 +17,6 @@ from sporttracker.maintenance.MaintenanceModel import Maintenance
 from sporttracker.maintenance.MaintenanceEventInstanceModel import MaintenanceEventInstance
 from sporttracker.monthGoal.MonthGoalModel import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import Participant
-from sporttracker.logic.model.PlannedTour import PlannedTour
-from sporttracker.logic.model.TravelDirection import TravelDirection
-from sporttracker.logic.model.TravelType import TravelType
 from sporttracker.logic.model.Workout import Workout
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User, create_user, Language
@@ -31,6 +28,9 @@ from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.logic.service.NotificationService import NotificationService
+from sporttracker.plannedTour.PlannedTourModel import PlannedTour
+from sporttracker.plannedTour.TravelDirection import TravelDirection
+from sporttracker.plannedTour.TravelType import TravelType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

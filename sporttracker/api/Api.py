@@ -44,7 +44,7 @@ from sporttracker.maintenance.MaintenanceFilterStateModel import MaintenanceFilt
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.logic.service.FitnessWorkoutService import FitnessWorkoutService
-from sporttracker.logic.service.PlannedTourService import PlannedTourService
+from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

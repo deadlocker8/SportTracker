@@ -8,9 +8,9 @@ from sporttracker.logic.model.LongDistanceTour import LongDistanceTour
 from sporttracker.maintenance.MaintenanceModel import Maintenance
 from sporttracker.maintenance.MaintenanceEventInstanceModel import MaintenanceEventInstance
 from sporttracker.logic.model.NotificationType import NotificationType
-from sporttracker.logic.model.PlannedTour import PlannedTour
-from sporttracker.logic.model.TravelDirection import TravelDirection
-from sporttracker.logic.model.TravelType import TravelType
+from sporttracker.plannedTour.PlannedTourModel import PlannedTour
+from sporttracker.plannedTour.TravelDirection import TravelDirection
+from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.logic.model.User import create_user, Language, User
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db

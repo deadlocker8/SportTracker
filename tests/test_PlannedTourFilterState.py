@@ -1,6 +1,6 @@
-from sporttracker.logic.model.TravelDirection import TravelDirection
-from sporttracker.logic.model.TravelType import TravelType
-from sporttracker.logic.model.filterStates.PlannedTourFilterState import PlannedTourFilterState
+from sporttracker.plannedTour.TravelDirection import TravelDirection
+from sporttracker.plannedTour.TravelType import TravelType
+from sporttracker.plannedTour.PlannedTourFilterStateModel import PlannedTourFilterState
 
 
 class TestPlannedTourFilterState:

@@ -13,8 +13,8 @@ from alembic import op
 from sqlalchemy import Inspector, text
 from sqlalchemy.dialects import postgresql
 
-from sporttracker.logic.model.TravelDirection import TravelDirection
-from sporttracker.logic.model.TravelType import TravelType
+from sporttracker.plannedTour.TravelDirection import TravelDirection
+from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.logic.model.WorkoutType import WorkoutType
 
 # revision identifiers, used by Alembic.

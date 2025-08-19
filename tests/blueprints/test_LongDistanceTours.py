@@ -53,7 +53,7 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
             expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'New Planned Tour')
         )
 
-        from tests.blueprints.test_PlannedTours import TestPlannedTours
+        from tests.test_PlannedTours import TestPlannedTours
 
         TestPlannedTours.fill_form(
             selenium, WorkoutType.BIKING, name, 'arrival-method-2', 'departure-method-2', 'direction-2'

@@ -18,7 +18,7 @@ from sporttracker.logic.service.DistanceWorkoutService import (
     DistanceWorkoutService,
     DistanceWorkoutFormModel,
 )
-from sporttracker.logic.service.PlannedTourService import PlannedTourService
+from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

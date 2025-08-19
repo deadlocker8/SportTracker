@@ -11,7 +11,7 @@ from sporttracker.logic.model.NotificationSettings import NotificationSettings
 from sporttracker.logic.model.NtfySettings import NtfySettings
 from sporttracker.logic.model.db import db
 from sporttracker.maintenance.MaintenanceFilterStateModel import MaintenanceFilterState
-from sporttracker.logic.model.filterStates.PlannedTourFilterState import PlannedTourFilterState
+from sporttracker.plannedTour.PlannedTourFilterStateModel import PlannedTourFilterState
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.filterStates.TileHuntingFilterState import TileHuntingFilterState
 
