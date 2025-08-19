@@ -7,13 +7,13 @@ from pydantic import ConfigDict, field_validator
 from werkzeug.datastructures import FileStorage
 
 from sporttracker.api.FormModels import DistanceWorkoutApiFormModel
-from sporttracker.blueprints.Workouts import BaseWorkoutFormModel
+from sporttracker.workout.WorkoutBlueprint import BaseWorkoutFormModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.logic.model.Participant import get_participants_by_ids
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.logic.service.NotificationService import NotificationService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService

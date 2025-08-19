@@ -28,22 +28,22 @@ from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_distance_workout_types_with_values
-from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
-from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
-from sporttracker.logic.model.FitnessWorkoutCategory import (
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
+from sporttracker.workout.fitness.FitnessWorkoutCategory import (
     FitnessWorkoutCategoryType,
 )
-from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
+from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import get_participants
 from sporttracker.logic.model.User import User
-from sporttracker.logic.model.Workout import get_available_years
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutEntity import get_available_years
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
-from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
-from sporttracker.logic.service.FitnessWorkoutService import FitnessWorkoutService
+from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.workout.fitness.FitnessWorkoutService import FitnessWorkoutService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

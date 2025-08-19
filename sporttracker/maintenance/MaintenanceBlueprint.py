@@ -14,7 +14,7 @@ from sporttracker.maintenance.MaintenanceEntity import Maintenance, get_maintena
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     get_maintenance_events_by_maintenance_id,
 )
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import get_maintenance_filter_state_by_user
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user

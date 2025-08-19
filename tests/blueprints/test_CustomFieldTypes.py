@@ -9,7 +9,7 @@ from sporttracker.logic.model.CustomWorkoutField import (
     CustomWorkoutFieldType,
     RESERVED_FIELD_NAMES,
 )
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import create_user, Language, User
 from sporttracker.logic.model.db import db
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass

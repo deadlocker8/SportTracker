@@ -22,7 +22,6 @@ from sporttracker.api.Api import API_BLUEPRINT_NAME
 from sporttracker.blueprints import (
     General,
     Authentication,
-    Workouts,
     Charts,
     Users,
     Achievements,
@@ -32,8 +31,6 @@ from sporttracker.blueprints import (
     Settings,
     QuickFilter,
     AnnualAchievements,
-    DistanceWorkouts,
-    FitnessWorkouts,
     Notifications,
 )
 from sporttracker.helpers import Helpers
@@ -42,9 +39,12 @@ from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutFieldType
-from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
-from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCategoryType
-from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
+from sporttracker.workout import WorkoutBlueprint
+from sporttracker.workout.distance import DistanceWorkoutBlueprint
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.workout.fitness import FitnessWorkoutBlueprint
+from sporttracker.workout.fitness.FitnessWorkoutCategory import FitnessWorkoutCategoryType
+from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.NotificationType import NotificationType
 from sporttracker.longDistanceTour import LongDistanceTourBlueprint
 from sporttracker.plannedTour import PlannedTourBlueprint
@@ -57,10 +57,10 @@ from sporttracker.logic.model.User import (
     DistanceWorkoutInfoItem,
     DistanceWorkoutInfoItemType,
 )
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db, migrate
-from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
-from sporttracker.logic.service.FitnessWorkoutService import FitnessWorkoutService
+from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.workout.fitness.FitnessWorkoutService import FitnessWorkoutService
 from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 from sporttracker.logic.service.NotificationService import NotificationService
 from sporttracker.logic.service.NtfyService import NtfyService
@@ -296,15 +296,15 @@ class SportTracker(FlaskBaseApp):
     def _register_blueprints(self, app):
         app.register_blueprint(Authentication.construct_blueprint())
         app.register_blueprint(General.construct_blueprint())
-        app.register_blueprint(Workouts.construct_blueprint())
+        app.register_blueprint(WorkoutBlueprint.construct_blueprint())
         app.register_blueprint(
-            DistanceWorkouts.construct_blueprint(
+            DistanceWorkoutBlueprint.construct_blueprint(
                 app.config['GPX_SERVICE'],
                 app.config['TEMP_FOLDER'],
                 app.config['DISTANCE_WORKOUT_SERVICE'],
             )
         )
-        app.register_blueprint(FitnessWorkouts.construct_blueprint(app.config['FITNESS_WORKOUT_SERVICE']))
+        app.register_blueprint(FitnessWorkoutBlueprint.construct_blueprint(app.config['FITNESS_WORKOUT_SERVICE']))
         app.register_blueprint(MonthGoalBlueprint.construct_blueprint())
         app.register_blueprint(MonthGoalsDistanceBlueprint.construct_blueprint())
         app.register_blueprint(MonthGoalsCountBlueprint.construct_blueprint())

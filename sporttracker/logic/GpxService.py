@@ -18,7 +18,7 @@ from werkzeug.datastructures.file_storage import FileStorage
 from sporttracker.logic import Constants
 from sporttracker.logic.FitToGpxConverter import FitToGpxConverter
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
-from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.GpxPlannedTile import GpxPlannedTile
 from sporttracker.logic.model.GpxVisitedTile import GpxVisitedTile

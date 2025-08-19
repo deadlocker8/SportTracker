@@ -8,7 +8,7 @@ from sqlalchemy.orm import aliased
 from sporttracker.logic.GpxService import VisitedTile
 from sporttracker.logic.model.GpxPlannedTile import GpxPlannedTile
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 from sporttracker.logic.model.filterStates.TileHuntingFilterState import TileHuntingFilterState
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
@@ -16,10 +16,10 @@ from sporttracker.logic.tileHunting.NewVisitedTileCache import (
     NewTilesPerDistanceWorkout,
     NewVisitedTileCache,
 )
-from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.logic.model.GpxVisitedTile import GpxVisitedTile
 from sporttracker.logic.model.db import db
-from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 
 
 @dataclass

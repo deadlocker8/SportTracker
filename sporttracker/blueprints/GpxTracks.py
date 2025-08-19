@@ -8,8 +8,8 @@ from sporttracker.logic import Constants
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
-from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
-from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 

@@ -3,7 +3,7 @@ from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 

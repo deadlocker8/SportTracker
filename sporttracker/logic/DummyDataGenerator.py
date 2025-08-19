@@ -10,7 +10,7 @@ from faker import Faker
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutField, CustomWorkoutFieldType
-from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.longDistanceTour.LongDistanceTourEntity import (
     LongDistanceTour,
@@ -20,15 +20,15 @@ from sporttracker.maintenance.MaintenanceEntity import Maintenance
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import MaintenanceEventInstance
 from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import Participant
-from sporttracker.logic.model.Workout import Workout
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutEntity import Workout
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User, create_user, Language
-from sporttracker.logic.model.FitnessWorkoutCategory import (
+from sporttracker.workout.fitness.FitnessWorkoutCategory import (
     update_workout_categories_by_workout_id,
     FitnessWorkoutCategoryType,
 )
-from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
-from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
+from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
+from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.logic.service.NotificationService import NotificationService
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour

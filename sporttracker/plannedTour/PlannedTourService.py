@@ -14,7 +14,10 @@ from werkzeug.datastructures import FileStorage
 
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_workout_ids_by_planned_tour
+from sporttracker.workout.distance.DistanceWorkoutEntity import (
+    DistanceWorkout,
+    get_distance_workout_ids_by_planned_tour,
+)
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.GpxVisitedTile import GpxVisitedTile
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTourPlannedTourAssociation
@@ -22,7 +25,7 @@ from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.logic.model.User import get_users_by_ids, get_user_by_id
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import PlannedTourFilterState
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
@@ -452,7 +455,7 @@ class PlannedTourService:
         if includeDone and includeTodo:
             return plannedTours
 
-        from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
+        from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 
         filteredTours = []
         for plannedTour in plannedTours:

@@ -15,7 +15,7 @@ from sqlalchemy.dialects import postgresql
 
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 
 # revision identifiers, used by Alembic.
 revision = 'e6d14acbc655'

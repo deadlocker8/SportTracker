@@ -10,8 +10,8 @@ from sporttracker.plannedTour.PlannedTourEntity import (
     PlannedTour,
     distance_workout_planned_tour_association,
 )
-from sporttracker.logic.model.Workout import Workout
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutEntity import Workout
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 

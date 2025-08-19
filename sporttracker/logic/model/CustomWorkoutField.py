@@ -9,8 +9,8 @@ from natsort import natsorted
 from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
-from sporttracker.logic.model.Workout import Workout
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutEntity import Workout
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 

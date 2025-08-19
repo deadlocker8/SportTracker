@@ -10,7 +10,7 @@ from flask import url_for
 from flask_babel import gettext, format_datetime
 
 from sporttracker.helpers import Helpers
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 
 
 @dataclass

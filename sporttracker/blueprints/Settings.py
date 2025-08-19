@@ -33,7 +33,7 @@ from sporttracker.logic.model.User import (
     DistanceWorkoutInfoItem,
     DistanceWorkoutInfoItemType,
 )
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import get_maintenance_filter_state_by_user
 

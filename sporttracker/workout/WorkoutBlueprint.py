@@ -13,13 +13,13 @@ from pydantic import BaseModel, field_validator
 from sporttracker.logic import Constants
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type_with_values
-from sporttracker.logic.model.DistanceWorkout import (
+from sporttracker.workout.distance.DistanceWorkoutEntity import (
     DistanceWorkout,
     get_available_years,
 )
-from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
-from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCategoryType
-from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
+from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
+from sporttracker.workout.fitness.FitnessWorkoutCategory import FitnessWorkoutCategoryType
+from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     MaintenanceEvent,
@@ -31,11 +31,11 @@ from sporttracker.monthGoal.MonthGoalEntity import (
 )
 from sporttracker.logic.model.Participant import get_participants
 from sporttracker.logic.model.User import get_user_by_id
-from sporttracker.logic.model.Workout import (
+from sporttracker.workout.WorkoutEntity import (
     get_workout_names_by_type,
     get_workouts_by_year_and_month_by_type,
 )
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user, QuickFilterState
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 

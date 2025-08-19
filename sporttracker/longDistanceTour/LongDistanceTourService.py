@@ -19,7 +19,7 @@ from sporttracker.longDistanceTour.LongDistanceTourEntity import (
 )
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.logic.model.User import get_users_by_ids, User
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.logic.service.NotificationService import NotificationService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService

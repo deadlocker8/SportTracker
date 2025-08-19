@@ -6,7 +6,7 @@ from datetime import datetime, UTC
 
 import fitdecode  # type: ignore[import-untyped]
 
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 
 
 @dataclass

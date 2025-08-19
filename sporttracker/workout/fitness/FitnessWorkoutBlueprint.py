@@ -6,12 +6,12 @@ from flask_pydantic import validate
 
 from sporttracker.logic import Constants
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type_with_values
-from sporttracker.logic.model.FitnessWorkoutCategory import (
+from sporttracker.workout.fitness.FitnessWorkoutCategory import (
     FitnessWorkoutCategoryType,
 )
 from sporttracker.logic.model.Participant import get_participants
-from sporttracker.logic.model.Workout import get_workout_names_by_type
-from sporttracker.logic.service.FitnessWorkoutService import (
+from sporttracker.workout.WorkoutEntity import get_workout_names_by_type
+from sporttracker.workout.fitness.FitnessWorkoutService import (
     FitnessWorkoutFormModel,
     FitnessWorkoutService,
 )

@@ -4,7 +4,7 @@ from flask import Blueprint, redirect, request
 from flask_login import login_required, current_user
 
 from sporttracker.logic import Constants
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
 

@@ -9,8 +9,8 @@ from sqlalchemy import Integer
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.helpers.Helpers import format_duration
-from sporttracker.logic.model.Workout import get_workouts_by_year_and_month_by_type
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutEntity import get_workouts_by_year_and_month_by_type
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 

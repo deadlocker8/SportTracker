@@ -2,7 +2,7 @@ from __future__ import annotations
 from sqlalchemy import JSON
 from sqlalchemy.ext.mutable import MutableDict
 
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 

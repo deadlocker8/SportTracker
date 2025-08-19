@@ -1,9 +1,9 @@
-from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
+from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped
 
-from sporttracker.logic.model.Workout import Workout
-from sporttracker.logic.model.FitnessWorkoutCategory import (
+from sporttracker.workout.WorkoutEntity import Workout
+from sporttracker.workout.fitness.FitnessWorkoutCategory import (
     FitnessWorkoutCategory,
     FitnessWorkoutCategoryType,
 )

@@ -20,15 +20,15 @@ from sqlalchemy import func, extract
 
 from sporttracker.longDistanceTour.LongDistanceTourBlueprint import LongDistanceTourModel
 from sporttracker.plannedTour.PlannedTourBlueprint import PlannedTourModel
-from sporttracker.blueprints.Workouts import DistanceWorkoutModel
+from sporttracker.workout.WorkoutBlueprint import DistanceWorkoutModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService, GpxParser
-from sporttracker.logic.model.DistanceWorkout import (
+from sporttracker.workout.distance.DistanceWorkoutEntity import (
     get_available_years,
     DistanceWorkout,
 )
 from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user, QuickFilterState
@@ -36,7 +36,7 @@ from sporttracker.logic.model.filterStates.TileHuntingFilterState import (
     get_tile_hunting_filter_state_by_user,
     TileHuntingFilterState,
 )
-from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache

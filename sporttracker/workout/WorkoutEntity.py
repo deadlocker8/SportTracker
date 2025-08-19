@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from sporttracker.logic.model.Participant import Participant, workout_participant_association
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.db import db
 

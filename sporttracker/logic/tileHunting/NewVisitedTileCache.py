@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import text
 
 from sporttracker.logic import Constants
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

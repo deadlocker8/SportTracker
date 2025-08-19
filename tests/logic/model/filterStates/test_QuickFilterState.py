@@ -1,4 +1,4 @@
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 
 

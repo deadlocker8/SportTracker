@@ -7,13 +7,13 @@ from natsort import natsorted
 
 from sporttracker.maintenance.MaintenanceEventInstanceBlueprint import MaintenanceEventInstanceModel
 from sporttracker.logic.model.CustomWorkoutField import get_custom_field_by_id
-from sporttracker.logic.model.DistanceWorkout import get_distance_between_dates
+from sporttracker.workout.distance.DistanceWorkoutEntity import get_distance_between_dates
 from sporttracker.maintenance.MaintenanceEntity import Maintenance
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     MaintenanceEventInstance,
     get_maintenance_events_by_maintenance_id,
 )
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 

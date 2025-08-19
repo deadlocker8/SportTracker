@@ -13,7 +13,7 @@ from sporttracker.logic.model.Achievement import (
     LongestWorkoutDistanceAchievementHistoryItem,
     LongestWorkoutDurationAchievementHistoryItem,
 )
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

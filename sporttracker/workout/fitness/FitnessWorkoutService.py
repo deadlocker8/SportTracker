@@ -3,17 +3,17 @@ import logging
 from pydantic import ConfigDict
 
 from sporttracker.api.FormModels import FitnessWorkoutApiFormModel
-from sporttracker.blueprints.Workouts import BaseWorkoutFormModel
+from sporttracker.workout.WorkoutBlueprint import BaseWorkoutFormModel
 from sporttracker.logic import Constants
-from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
-from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
-from sporttracker.logic.model.FitnessWorkoutCategory import (
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
+from sporttracker.workout.fitness.FitnessWorkoutCategory import (
     FitnessWorkoutCategoryType,
     update_workout_categories_by_workout_id,
 )
-from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
+from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.Participant import get_participants_by_ids
-from sporttracker.logic.model.WorkoutType import WorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
