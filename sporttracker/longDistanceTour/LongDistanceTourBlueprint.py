@@ -100,7 +100,7 @@ def construct_blueprint(
         )
 
         return render_template(
-            'longDistanceTours/longDistanceTours.jinja2',
+            'longDistanceTour/longDistanceTours.jinja2',
             longDistanceTours=[LongDistanceTourModel.create_from_tour(t) for t in longDistanceTourList],
             quickFilterState=quickFilterState,
             isGpxPreviewImagesEnabled=gpxPreviewImageSettings['enabled'],
@@ -110,7 +110,7 @@ def construct_blueprint(
     @login_required
     def add():
         return render_template(
-            'longDistanceTours/longDistanceTourForm.jinja2',
+            'longDistanceTour/longDistanceTourForm.jinja2',
             users=__get_user_models(get_all_users_except_self_and_admin()),
             plannedTours=PlannedTourService.get_available_planned_tours(
                 get_quick_filter_state_by_user(current_user.id)
@@ -142,7 +142,7 @@ def construct_blueprint(
         tourModel = LongDistanceTourModel.create_from_tour(longDistanceTour)
 
         return render_template(
-            'longDistanceTours/longDistanceTourForm.jinja2',
+            'longDistanceTour/longDistanceTourForm.jinja2',
             longDistanceTour=tourModel,
             tour_id=tour_id,
             users=__get_user_models(get_all_users_except_self_and_admin()),
