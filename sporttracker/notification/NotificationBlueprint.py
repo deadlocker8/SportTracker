@@ -27,7 +27,7 @@ def construct_blueprint(notification_service: NotificationService):
             page_number_value = 1
 
         return render_template(
-            'notifications/notifications.jinja2',
+            'notification/notifications.jinja2',
             pagination=notification_service.get_notifications_paginated(page_number_value),
         )
 
