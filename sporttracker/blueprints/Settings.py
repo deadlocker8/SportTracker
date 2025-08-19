@@ -17,7 +17,7 @@ from sporttracker.logic.model.CustomWorkoutField import (
     RESERVED_FIELD_NAMES,
     get_custom_fields_grouped_by_distance_workout_types_with_values,
 )
-from sporttracker.logic.model.Maintenance import Maintenance
+from sporttracker.maintenance.MaintenanceModel import Maintenance
 from sporttracker.logic.model.NotificationProviderType import NotificationProviderType
 from sporttracker.logic.model.NotificationSettings import (
     NotificationSettings,
@@ -35,7 +35,7 @@ from sporttracker.logic.model.User import (
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
-from sporttracker.logic.model.filterStates.MaintenanceFilterState import get_maintenance_filter_state_by_user
+from sporttracker.maintenance.MaintenanceFilterStateModel import get_maintenance_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

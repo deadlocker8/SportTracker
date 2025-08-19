@@ -26,7 +26,7 @@ from sporttracker.api.Mapper import (
 )
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events
+from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_distance_workout_types_with_values
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
@@ -40,7 +40,7 @@ from sporttracker.logic.model.User import User
 from sporttracker.logic.model.Workout import get_available_years
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
-from sporttracker.logic.model.filterStates.MaintenanceFilterState import MaintenanceFilterState
+from sporttracker.maintenance.MaintenanceFilterStateModel import MaintenanceFilterState
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.logic.service.FitnessWorkoutService import FitnessWorkoutService

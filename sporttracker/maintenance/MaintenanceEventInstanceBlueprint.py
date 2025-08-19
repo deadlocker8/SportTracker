@@ -8,8 +8,8 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 
 from sporttracker.logic import Constants
-from sporttracker.logic.model.Maintenance import get_maintenance_by_id
-from sporttracker.logic.model.MaintenanceEventInstance import (
+from sporttracker.maintenance.MaintenanceModel import get_maintenance_by_id
+from sporttracker.maintenance.MaintenanceEventInstanceModel import (
     get_maintenance_event_by_id,
     MaintenanceEventInstance,
 )

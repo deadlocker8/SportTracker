@@ -31,8 +31,6 @@ from sporttracker.blueprints import (
     GpxTracks,
     Settings,
     QuickFilter,
-    Maintenances,
-    MaintenanceEventInstances,
     PlannedTours,
     AnnualAchievements,
     DistanceWorkouts,
@@ -69,6 +67,7 @@ from sporttracker.logic.service.NtfyService import NtfyService
 from sporttracker.logic.service.PlannedTourService import PlannedTourService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.maintenance import MaintenanceBlueprint, MaintenanceEventInstanceBlueprint
 from sporttracker.monthGoals import (
     MonthGoalBlueprint,
     MonthGoalsDistanceBlueprint,
@@ -345,8 +344,8 @@ class SportTracker(FlaskBaseApp):
             )
         )
         app.register_blueprint(QuickFilter.construct_blueprint())
-        app.register_blueprint(Maintenances.construct_blueprint())
-        app.register_blueprint(MaintenanceEventInstances.construct_blueprint())
+        app.register_blueprint(MaintenanceBlueprint.construct_blueprint())
+        app.register_blueprint(MaintenanceEventInstanceBlueprint.construct_blueprint())
         app.register_blueprint(
             PlannedTours.construct_blueprint(
                 app.config['GPX_SERVICE'], self._settings['gpxPreviewImages'], app.config['PLANNED_TOUR_SERVICE']

@@ -8,15 +8,15 @@ from flask_pydantic import validate
 from pydantic import BaseModel, field_validator
 
 from sporttracker.logic import Constants
-from sporttracker.logic.MaintenanceEventsCollector import get_maintenances_with_events, create_maintenance_model
+from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events, create_maintenance_model
 from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_distance_workout_types_with_values
-from sporttracker.logic.model.Maintenance import Maintenance, get_maintenance_by_id
-from sporttracker.logic.model.MaintenanceEventInstance import (
+from sporttracker.maintenance.MaintenanceModel import Maintenance, get_maintenance_by_id
+from sporttracker.maintenance.MaintenanceEventInstanceModel import (
     get_maintenance_events_by_maintenance_id,
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
-from sporttracker.logic.model.filterStates.MaintenanceFilterState import get_maintenance_filter_state_by_user
+from sporttracker.maintenance.MaintenanceFilterStateModel import get_maintenance_filter_state_by_user
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

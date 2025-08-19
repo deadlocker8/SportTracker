@@ -5,8 +5,8 @@ from flask_login import FlaskLoginClient, login_user
 
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.LongDistanceTour import LongDistanceTour
-from sporttracker.logic.model.Maintenance import Maintenance
-from sporttracker.logic.model.MaintenanceEventInstance import MaintenanceEventInstance
+from sporttracker.maintenance.MaintenanceModel import Maintenance
+from sporttracker.maintenance.MaintenanceEventInstanceModel import MaintenanceEventInstance
 from sporttracker.logic.model.NotificationType import NotificationType
 from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.TravelDirection import TravelDirection

@@ -5,16 +5,16 @@ from operator import attrgetter
 import natsort
 from natsort import natsorted
 
-from sporttracker.blueprints.MaintenanceEventInstances import MaintenanceEventInstanceModel
+from sporttracker.maintenance.MaintenanceEventInstanceBlueprint import MaintenanceEventInstanceModel
 from sporttracker.logic.model.CustomWorkoutField import get_custom_field_by_id
 from sporttracker.logic.model.DistanceWorkout import get_distance_between_dates
-from sporttracker.logic.model.Maintenance import Maintenance
-from sporttracker.logic.model.MaintenanceEventInstance import (
+from sporttracker.maintenance.MaintenanceModel import Maintenance
+from sporttracker.maintenance.MaintenanceEventInstanceModel import (
     MaintenanceEventInstance,
     get_maintenance_events_by_maintenance_id,
 )
 from sporttracker.logic.model.WorkoutType import WorkoutType
-from sporttracker.logic.model.filterStates.MaintenanceFilterState import MaintenanceFilterState
+from sporttracker.maintenance.MaintenanceFilterStateModel import MaintenanceFilterState
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 
 

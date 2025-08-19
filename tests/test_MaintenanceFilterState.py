@@ -1,4 +1,4 @@
-from sporttracker.logic.model.filterStates.MaintenanceFilterState import MaintenanceFilterState
+from sporttracker.maintenance.MaintenanceFilterStateModel import MaintenanceFilterState
 
 
 class TestMaintenanceFilterState:

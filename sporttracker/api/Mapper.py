@@ -11,7 +11,7 @@ from sporttracker.api.Models import (
     MaintenanceTourApiModel,
     CustomFieldApiModel,
 )
-from sporttracker.logic.MaintenanceEventsCollector import MaintenanceWithEventsModel
+from sporttracker.maintenance.MaintenanceEventsCollector import MaintenanceWithEventsModel
 from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutField
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.FitnessWorkout import FitnessWorkout

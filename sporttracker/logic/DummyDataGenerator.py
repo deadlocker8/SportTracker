@@ -13,8 +13,8 @@ from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutField, Cust
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.LongDistanceTour import LongDistanceTour, LongDistanceTourPlannedTourAssociation
-from sporttracker.logic.model.Maintenance import Maintenance
-from sporttracker.logic.model.MaintenanceEventInstance import MaintenanceEventInstance
+from sporttracker.maintenance.MaintenanceModel import Maintenance
+from sporttracker.maintenance.MaintenanceEventInstanceModel import MaintenanceEventInstance
 from sporttracker.monthGoals.MonthGoalModel import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.PlannedTour import PlannedTour
