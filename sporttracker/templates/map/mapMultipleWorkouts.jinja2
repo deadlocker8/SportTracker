@@ -22,7 +22,7 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('map') }}
 
-        {% import 'plannedTours/plannedToursMacros.jinja2' as plannedTourMacros with context %}
+        {% import 'plannedTour/plannedToursMacros.jinja2' as plannedTourMacros with context %}
         {% import 'map/mapMacros.jinja2' as mapMacros with context %}
         {{ mapMacros.mapLocale() }}
 
