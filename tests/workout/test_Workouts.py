@@ -8,7 +8,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
 
-from tests.test_DistanceWorkouts import prepare_test_data  # noqa
+from tests.workout.test_DistanceWorkouts import prepare_test_data  # noqa
 
 
 class TestWorkouts(SeleniumTestBaseClass):

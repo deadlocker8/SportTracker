@@ -7,7 +7,7 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.User import create_user, Language
+from sporttracker.user.UserEntity import create_user, Language
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
 
@@ -53,7 +53,7 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
             expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'New Planned Tour')
         )
 
-        from tests.test_PlannedTours import TestPlannedTours
+        from tests.plannedTour.test_PlannedTours import TestPlannedTours
 
         TestPlannedTours.fill_form(
             selenium, WorkoutType.BIKING, name, 'arrival-method-2', 'departure-method-2', 'direction-2'

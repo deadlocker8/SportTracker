@@ -1,7 +1,7 @@
 import pytest
 from flask import session
 
-from sporttracker.logic.model.User import create_user, Language
+from sporttracker.user.UserEntity import create_user, Language
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
 
 

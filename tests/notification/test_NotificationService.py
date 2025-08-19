@@ -11,7 +11,7 @@ from sporttracker.notification.NotificationType import NotificationType
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
-from sporttracker.logic.model.User import create_user, Language, User
+from sporttracker.user.UserEntity import create_user, Language, User
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.notification.NotificationService import NotificationService

@@ -6,7 +6,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
-from sporttracker.logic.model.User import create_user, Language
+from sporttracker.user.UserEntity import create_user, Language
 
 
 @pytest.fixture(autouse=True)

@@ -4,13 +4,13 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from sporttracker.logic.model.CustomWorkoutField import (
+from sporttracker.user.CustomWorkoutFieldEntity import (
     CustomWorkoutField,
     CustomWorkoutFieldType,
     RESERVED_FIELD_NAMES,
 )
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.User import create_user, Language, User
+from sporttracker.user.UserEntity import create_user, Language, User
 from sporttracker.logic.model.db import db
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
@@ -22,7 +22,7 @@ def prepare_test_data(app):
         create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH)
 
 
-class TestCustomFieldTypes(SeleniumTestBaseClass):
+class TestCustomWorkoutFields(SeleniumTestBaseClass):
     def __open_add_form(self, selenium):
         self.login(selenium)
         selenium.get(self.build_url('/settings/customFields/add/BIKING'))

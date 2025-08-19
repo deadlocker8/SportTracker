@@ -4,8 +4,8 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from sporttracker.logic.model.Participant import Participant
-from sporttracker.logic.model.User import create_user, Language, User
+from sporttracker.user.ParticipantEntity import Participant
+from sporttracker.user.UserEntity import create_user, Language, User
 from sporttracker.logic.model.db import db
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
