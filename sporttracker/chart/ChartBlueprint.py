@@ -12,7 +12,7 @@ from flask_login import login_required, current_user
 from sqlalchemy import extract, func, String, asc, desc, cast, Time
 
 from sporttracker.helpers.Helpers import format_duration
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.user.CustomWorkoutFieldEntity import (
     get_custom_field_by_id,
     get_custom_fields_grouped_by_distance_workout_types_with_values,
@@ -29,7 +29,7 @@ from sporttracker.workout.WorkoutEntity import (
     get_duration_per_month_by_type,
 )
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
 from sporttracker.tileHunting.TileHuntingFilterStateEntity import TileHuntingFilterState
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService

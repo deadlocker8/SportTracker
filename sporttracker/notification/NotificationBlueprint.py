@@ -3,8 +3,8 @@ import logging
 from flask import Blueprint, render_template, abort, redirect, url_for, request
 from flask_login import login_required
 
-from sporttracker.logic import Constants
-from sporttracker.logic.model.db import db
+from sporttracker import Constants
+from sporttracker.db import db
 from sporttracker.notification.NotificationService import NotificationService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

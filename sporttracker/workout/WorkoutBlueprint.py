@@ -10,8 +10,8 @@ from flask_babel import format_datetime
 from flask_login import login_required, current_user
 from pydantic import BaseModel, field_validator
 
-from sporttracker.logic import Constants
-from sporttracker.logic.DateTimeAccess import DateTimeAccess
+from sporttracker import Constants
+from sporttracker.helpers.DateTimeAccess import DateTimeAccess
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
 from sporttracker.workout.distance.DistanceWorkoutEntity import (
     DistanceWorkout,

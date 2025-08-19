@@ -6,7 +6,7 @@ from flask import Blueprint, render_template, redirect, url_for, abort, request
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.longDistanceTour.LongDistanceTourEntity import (
     LongDistanceTourPlannedTourAssociation,
@@ -19,7 +19,7 @@ from sporttracker.user.UserEntity import (
     get_user_by_id,
 )
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
 from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService

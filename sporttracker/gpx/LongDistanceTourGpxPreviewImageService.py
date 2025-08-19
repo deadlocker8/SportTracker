@@ -5,7 +5,7 @@ from typing import Any
 
 import requests
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 

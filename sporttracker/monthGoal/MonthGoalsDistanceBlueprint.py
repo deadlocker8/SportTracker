@@ -6,10 +6,10 @@ from flask_login import login_required, current_user
 from flask_pydantic import validate
 from pydantic import BaseModel
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, get_month_goal_distance_by_id
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

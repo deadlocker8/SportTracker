@@ -3,9 +3,9 @@ import logging
 from flask import Blueprint, redirect, request
 from flask_login import login_required, current_user
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

@@ -4,7 +4,7 @@ from flask_babel import gettext
 from sqlalchemy import Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 
 class FitnessWorkoutCategoryType(enum.Enum):

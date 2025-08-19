@@ -13,7 +13,7 @@ from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.user.UserEntity import create_user, Language, User
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 from sporttracker.notification.NotificationService import NotificationService
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
 

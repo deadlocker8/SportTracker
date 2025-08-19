@@ -9,8 +9,8 @@ from flask_login import login_required, current_user, fresh_login_required
 from flask_pydantic import validate
 from pydantic import BaseModel, field_validator, ConfigDict
 
-from sporttracker.logic import Constants
-from sporttracker.logic.Constants import MIN_PASSWORD_LENGTH
+from sporttracker import Constants
+from sporttracker.Constants import MIN_PASSWORD_LENGTH
 from sporttracker.user.CustomWorkoutFieldEntity import (
     CustomWorkoutField,
     CustomWorkoutFieldType,
@@ -34,7 +34,7 @@ from sporttracker.user.UserEntity import (
     DistanceWorkoutInfoItemType,
 )
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import get_maintenance_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

@@ -10,7 +10,7 @@ from natsort import natsorted
 from pydantic import BaseModel
 from sqlalchemy.sql import or_
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.gpx.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
 from sporttracker.longDistanceTour.LongDistanceTourEntity import (
@@ -20,7 +20,7 @@ from sporttracker.longDistanceTour.LongDistanceTourEntity import (
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.user.UserEntity import get_users_by_ids, User
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 

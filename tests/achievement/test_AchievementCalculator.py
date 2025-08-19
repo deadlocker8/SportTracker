@@ -8,7 +8,7 @@ from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount
 from sporttracker.user.UserEntity import create_user, Language, User
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME
 
 

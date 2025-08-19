@@ -8,7 +8,7 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 from sporttracker.user.ParticipantEntity import Participant, workout_participant_association
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.user.UserEntity import User
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 
 class Workout(db.Model):  # type: ignore[name-defined]

@@ -7,7 +7,7 @@ from flask_babel import gettext
 from flask_login import login_required, current_user
 
 from sporttracker.helpers import Helpers
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.achievement.AchievementCalculator import AchievementCalculator
 from sporttracker.achievement.AchievementEntity import (
     AnnualAchievement,

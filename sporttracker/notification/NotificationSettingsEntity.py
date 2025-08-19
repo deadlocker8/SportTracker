@@ -5,7 +5,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from sporttracker.notification.provider.NotificationProviderType import NotificationProviderType
 from sporttracker.notification.NotificationType import NotificationType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 
 class NotificationSettings(db.Model):  # type: ignore[name-defined]

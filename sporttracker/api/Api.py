@@ -24,7 +24,7 @@ from sporttracker.api.Mapper import (
     MAPPER_MAINTENANCE,
     MAPPER_CUSTOM_FIELD,
 )
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_grouped_by_distance_workout_types_with_values
@@ -39,7 +39,7 @@ from sporttracker.user.ParticipantEntity import get_participants
 from sporttracker.user.UserEntity import User
 from sporttracker.workout.WorkoutEntity import get_available_years
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService

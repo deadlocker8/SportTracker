@@ -15,7 +15,7 @@ from gpxpy.gpx import GPX, GPXTrack, GPXTrackPoint
 from sqlalchemy import delete
 from werkzeug.datastructures.file_storage import FileStorage
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.fit.FitToGpxConverter import FitToGpxConverter
 from sporttracker.gpx.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
@@ -25,7 +25,7 @@ from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
 from sporttracker.tileHunting.GpxPlannedTileEntity import GpxPlannedTile
 from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

@@ -17,7 +17,7 @@ from sporttracker.workout.distance.DistanceWorkoutEntity import (
 from sporttracker.monthGoal.MonthGoalEntity import get_goal_summaries_by_year_and_month_and_types
 from sporttracker.workout.WorkoutEntity import Workout, get_duration_per_month_by_type
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 
 class AchievementCalculator:

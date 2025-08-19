@@ -13,7 +13,7 @@ from alembic import op
 from sqlalchemy import Inspector, text
 from sqlalchemy.dialects import postgresql
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 
 # revision identifiers, used by Alembic.
 revision = 'ab63039e89ac'

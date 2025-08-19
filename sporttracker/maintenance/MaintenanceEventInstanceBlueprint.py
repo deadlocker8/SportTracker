@@ -7,13 +7,13 @@ from flask_login import login_required
 from flask_pydantic import validate
 from pydantic import BaseModel
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.maintenance.MaintenanceEntity import get_maintenance_by_id
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     get_maintenance_event_by_id,
     MaintenanceEventInstance,
 )
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

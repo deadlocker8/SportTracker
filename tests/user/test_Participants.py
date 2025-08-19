@@ -6,7 +6,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from sporttracker.user.ParticipantEntity import Participant
 from sporttracker.user.UserEntity import create_user, Language, User
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
 

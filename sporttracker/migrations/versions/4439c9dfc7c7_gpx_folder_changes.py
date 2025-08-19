@@ -14,7 +14,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 from alembic import op
 from sqlalchemy import text
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 
 # revision identifiers, used by Alembic.
 revision = '4439c9dfc7c7'

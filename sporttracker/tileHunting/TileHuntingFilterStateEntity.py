@@ -3,7 +3,7 @@ from __future__ import annotations
 from sqlalchemy import Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 
 class TileHuntingFilterState(db.Model):  # type: ignore[name-defined]

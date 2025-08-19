@@ -4,7 +4,7 @@ from typing import Any
 from flask import Blueprint, abort, Response, send_file, send_from_directory
 from flask_login import login_required, current_user
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.gpx.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.gpx.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService

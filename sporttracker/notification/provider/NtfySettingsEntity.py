@@ -1,7 +1,7 @@
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import mapped_column, Mapped
 
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 
 class NtfySettings(db.Model):  # type: ignore[name-defined]

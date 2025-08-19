@@ -6,7 +6,7 @@ from natsort import natsorted
 from sqlalchemy import Integer, String, Column, ForeignKey, Table
 from sqlalchemy.orm import mapped_column, Mapped
 
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 
 class Participant(db.Model):  # type: ignore[name-defined]

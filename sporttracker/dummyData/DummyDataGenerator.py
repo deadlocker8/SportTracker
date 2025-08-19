@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from faker import Faker
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutField, CustomWorkoutFieldType
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
@@ -29,7 +29,7 @@ from sporttracker.workout.fitness.FitnessWorkoutCategory import (
 )
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection

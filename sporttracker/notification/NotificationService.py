@@ -5,7 +5,7 @@ from flask_login import current_user
 from flask_sqlalchemy.pagination import Pagination
 
 from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
-from sporttracker.logic.Observable import Observable
+from sporttracker.notification.Observable import Observable
 from sporttracker.workout.distance.DistanceWorkoutEntity import get_available_years
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
 from sporttracker.notification.NotificationEntity import Notification
@@ -13,7 +13,7 @@ from sporttracker.notification.NotificationType import NotificationType
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.user.UserEntity import User
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 

@@ -2,7 +2,7 @@ import logging
 
 from sqlalchemy import extract
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
 from sporttracker.workout.WorkoutType import WorkoutType

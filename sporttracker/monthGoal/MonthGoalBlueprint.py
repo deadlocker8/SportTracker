@@ -4,7 +4,7 @@ from itertools import groupby
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.user.UserEntity import User
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user

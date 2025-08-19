@@ -4,8 +4,8 @@ import os
 from flask import Blueprint, redirect, url_for, render_template
 from flask_login import login_required, current_user
 
-from sporttracker.logic import Constants
-from sporttracker.logic.ChangelogParser import ChangelogParser
+from sporttracker import Constants
+from sporttracker.helpers.ChangelogParser import ChangelogParser
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

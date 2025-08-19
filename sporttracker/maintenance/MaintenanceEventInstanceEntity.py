@@ -5,10 +5,10 @@ from flask_login import current_user
 from sqlalchemy import Integer, DateTime, extract
 from sqlalchemy.orm import mapped_column, Mapped
 
-from sporttracker.logic.DateTimeAccess import DateTimeAccess
+from sporttracker.helpers.DateTimeAccess import DateTimeAccess
 from sporttracker.maintenance.MaintenanceEntity import Maintenance
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 
 @dataclass

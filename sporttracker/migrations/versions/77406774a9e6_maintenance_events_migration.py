@@ -13,7 +13,7 @@ import sqlalchemy as sa
 from sqlalchemy import text, Inspector
 from sqlalchemy.dialects import postgresql
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 
 revision = '77406774a9e6'
 down_revision = '3c3147e8e24c'

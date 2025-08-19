@@ -7,7 +7,7 @@ from sporttracker.workout.fitness.FitnessWorkoutCategory import (
     FitnessWorkoutCategory,
     FitnessWorkoutCategoryType,
 )
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 
 class FitnessWorkout(Workout):  # type: ignore[name-defined]

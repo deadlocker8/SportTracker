@@ -8,7 +8,7 @@ from flask_login import login_required, current_user
 from flask_pydantic import validate
 
 from sporttracker.plannedTour.PlannedTourBlueprint import __get_user_models
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
 from sporttracker.user.UserEntity import get_user_by_id, get_all_users_except_self_and_admin
 from sporttracker.workout.WorkoutType import WorkoutType

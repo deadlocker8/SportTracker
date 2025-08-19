@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, abort, redirect, url_for, request
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
 from sporttracker.workout.fitness.FitnessWorkoutCategory import (
     FitnessWorkoutCategoryType,

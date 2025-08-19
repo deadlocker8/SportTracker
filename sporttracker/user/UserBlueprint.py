@@ -9,15 +9,15 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 from sqlalchemy import asc, func
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.authentication.AdminWrapper import admin_role_required
-from sporttracker.logic.Constants import MIN_PASSWORD_LENGTH
+from sporttracker.Constants import MIN_PASSWORD_LENGTH
 from sporttracker.user.UserEntity import (
     User,
     Language,
     create_user,
 )
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import get_maintenance_filter_state_by_user
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user

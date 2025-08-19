@@ -4,7 +4,7 @@ from enum import Enum
 
 from PIL import Image, ImageColor
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.tileHunting.VisitedTileService import VisitedTileService, TileColorPosition, TileCountPosition
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

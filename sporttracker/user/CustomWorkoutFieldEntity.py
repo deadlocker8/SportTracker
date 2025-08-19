@@ -11,7 +11,7 @@ from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.workout.WorkoutEntity import Workout
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 
 class CustomWorkoutFieldType(enum.Enum):

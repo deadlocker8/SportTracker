@@ -4,8 +4,8 @@ from typing import Any
 from TheCodeLabs_BaseUtils.NtfyHelper import NtfyHelper
 from flask_babel import gettext
 
-from sporttracker.logic import Constants
-from sporttracker.logic.Observable import Listener
+from sporttracker import Constants
+from sporttracker.notification.Observable import Listener
 from sporttracker.notification.provider.NotificationProviderType import NotificationProviderType
 from sporttracker.notification.NotificationSettingsEntity import get_notification_settings_by_user_by_provider_type
 from sporttracker.user.UserEntity import User

@@ -15,7 +15,7 @@ from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 from sporttracker.tileHunting.TileHuntingFilterStateEntity import TileHuntingFilterState
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 
 

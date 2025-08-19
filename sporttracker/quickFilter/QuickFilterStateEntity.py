@@ -3,7 +3,7 @@ from sqlalchemy import JSON
 from sqlalchemy.ext.mutable import MutableDict
 
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 
 class QuickFilterState(db.Model):  # type: ignore[name-defined]

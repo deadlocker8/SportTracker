@@ -6,8 +6,7 @@ import re
 import sys
 from dataclasses import dataclass
 
-
-from sporttracker.logic import Constants
+from sporttracker import Constants
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -107,6 +106,6 @@ class ChangelogParser:
 
 
 if __name__ == '__main__':
-    parser = ChangelogParser(r'C:\dev\SportTracker\CHANGES.md')
+    parser = ChangelogParser(r'/CHANGES.md')
     result = parser.parse()
     print(result)

@@ -4,7 +4,7 @@ from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 
 
 class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]

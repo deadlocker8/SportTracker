@@ -12,7 +12,7 @@ from sqlalchemy import tuple_, asc, func
 from sqlalchemy.sql import or_
 from werkzeug.datastructures import FileStorage
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.workout.distance.DistanceWorkoutEntity import (
     DistanceWorkout,
@@ -26,7 +26,7 @@ from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.user.UserEntity import get_users_by_ids, get_user_by_id
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db
+from sporttracker.db import db
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import PlannedTourFilterState
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 from sporttracker.notification.NotificationService import NotificationService

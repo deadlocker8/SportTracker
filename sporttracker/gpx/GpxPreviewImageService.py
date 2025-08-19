@@ -5,7 +5,7 @@ from typing import Any
 
 import requests
 
-from sporttracker.logic import Constants
+from sporttracker import Constants
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

@@ -31,8 +31,8 @@ from sporttracker.notification import NotificationBlueprint
 from sporttracker.quickFilter import QuickFilterBlueprint
 from sporttracker.helpers import Helpers
 from sporttracker.helpers.SettingsChecker import SettingsChecker
-from sporttracker.logic import Constants
-from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
+from sporttracker import Constants
+from sporttracker.dummyData.DummyDataGenerator import DummyDataGenerator
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutFieldType
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
@@ -56,7 +56,7 @@ from sporttracker.user.UserEntity import (
     DistanceWorkoutInfoItemType,
 )
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.db import db, migrate
+from sporttracker.db import db, migrate
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.workout.fitness.FitnessWorkoutService import FitnessWorkoutService
 from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
