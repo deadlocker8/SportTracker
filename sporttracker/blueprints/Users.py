@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from sqlalchemy import asc, func
 
 from sporttracker.logic import Constants
-from sporttracker.logic.AdminWrapper import admin_role_required
+from sporttracker.authentication.AdminWrapper import admin_role_required
 from sporttracker.logic.Constants import MIN_PASSWORD_LENGTH
 from sporttracker.logic.model.User import (
     User,

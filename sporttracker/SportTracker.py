@@ -21,7 +21,6 @@ from sporttracker.api import Api
 from sporttracker.api.Api import API_BLUEPRINT_NAME
 from sporttracker.blueprints import (
     General,
-    Authentication,
     Charts,
     Users,
     Search,
@@ -29,6 +28,7 @@ from sporttracker.blueprints import (
     GpxTracks,
     Settings,
 )
+from sporttracker.authentication import AuthenticationBlueprint
 from sporttracker.achievement import AchievementBlueprint, AnnualAchievementBlueprint
 from sporttracker.notification import NotificationBlueprint
 from sporttracker.quickFilter import QuickFilterBlueprint
@@ -293,7 +293,7 @@ class SportTracker(FlaskBaseApp):
         return ''.join(secrets.choice(alphabet) for i in range(20))
 
     def _register_blueprints(self, app):
-        app.register_blueprint(Authentication.construct_blueprint())
+        app.register_blueprint(AuthenticationBlueprint.construct_blueprint())
         app.register_blueprint(General.construct_blueprint())
         app.register_blueprint(WorkoutBlueprint.construct_blueprint())
         app.register_blueprint(
