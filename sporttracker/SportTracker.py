@@ -21,10 +21,10 @@ from sporttracker.api import Api
 from sporttracker.api.Api import API_BLUEPRINT_NAME
 from sporttracker.blueprints import (
     General,
-    Charts,
     Search,
     Maps,
 )
+from sporttracker.chart import ChartBlueprint
 from sporttracker.gpx import GpxBlueprint
 from sporttracker.user import UserBlueprint, SettingsBlueprint
 from sporttracker.authentication import AuthenticationBlueprint
@@ -308,7 +308,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(MonthGoalsCountBlueprint.construct_blueprint())
         app.register_blueprint(MonthGoalsDurationBlueprint.construct_blueprint())
         app.register_blueprint(
-            Charts.construct_blueprint(
+            ChartBlueprint.construct_blueprint(
                 app.config['NEW_VISITED_TILE_CACHE'],
                 app.config['MAX_SQUARE_CACHE'],
                 app.config['DISTANCE_WORKOUT_SERVICE'],
