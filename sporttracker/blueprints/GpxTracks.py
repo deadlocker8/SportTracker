@@ -10,7 +10,7 @@ from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
-from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourService
+from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

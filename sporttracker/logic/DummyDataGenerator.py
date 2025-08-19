@@ -12,7 +12,10 @@ from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutField, CustomWorkoutFieldType
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
-from sporttracker.logic.model.LongDistanceTour import LongDistanceTour, LongDistanceTourPlannedTourAssociation
+from sporttracker.longDistanceTour.LongDistanceTourEntity import (
+    LongDistanceTour,
+    LongDistanceTourPlannedTourAssociation,
+)
 from sporttracker.maintenance.MaintenanceModel import Maintenance
 from sporttracker.maintenance.MaintenanceEventInstanceModel import MaintenanceEventInstance
 from sporttracker.monthGoal.MonthGoalModel import MonthGoalDistance, MonthGoalCount, MonthGoalDuration

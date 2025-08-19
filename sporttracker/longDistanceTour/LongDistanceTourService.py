@@ -13,7 +13,7 @@ from sqlalchemy.sql import or_
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
-from sporttracker.logic.model.LongDistanceTour import (
+from sporttracker.longDistanceTour.LongDistanceTourEntity import (
     LongDistanceTourPlannedTourAssociation,
     LongDistanceTour,
 )

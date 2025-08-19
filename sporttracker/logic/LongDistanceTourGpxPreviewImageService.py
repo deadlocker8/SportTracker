@@ -6,7 +6,7 @@ from typing import Any
 import requests
 
 from sporttracker.logic import Constants
-from sporttracker.logic.model.LongDistanceTour import LongDistanceTour
+from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

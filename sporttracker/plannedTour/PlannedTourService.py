@@ -17,7 +17,7 @@ from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distance_workout_ids_by_planned_tour
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.GpxVisitedTile import GpxVisitedTile
-from sporttracker.logic.model.LongDistanceTour import LongDistanceTourPlannedTourAssociation
+from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTourPlannedTourAssociation
 from sporttracker.plannedTour.PlannedTourModel import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
@@ -325,7 +325,7 @@ class PlannedTourService:
         return PlannedTour.query.filter(PlannedTour.share_code == shareCode).first()
 
     def __update_gpx_preview_image_for_long_distance_tours(self, linkedLongDistanceTourIds: list[int]):
-        from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourService
+        from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 
         for linkedLongDistanceTourId in linkedLongDistanceTourIds:
             longDistanceTour = LongDistanceTourService.get_long_distance_tour_by_id(linkedLongDistanceTourId)
@@ -479,8 +479,8 @@ class PlannedTourService:
         if includeLongDistanceTours and excludeLongDistanceTours:
             return plannedTours
 
-        from sporttracker.logic.model.LongDistanceTour import LongDistanceTourPlannedTourAssociation
-        from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourService
+        from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTourPlannedTourAssociation
+        from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 
         filteredTours = []
 

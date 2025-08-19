@@ -7,7 +7,7 @@ from flask_sqlalchemy.pagination import Pagination
 from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.logic.Observable import Observable
 from sporttracker.logic.model.DistanceWorkout import get_available_years
-from sporttracker.logic.model.LongDistanceTour import LongDistanceTour
+from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
 from sporttracker.logic.model.Notification import Notification
 from sporttracker.logic.model.NotificationType import NotificationType
 from sporttracker.plannedTour.PlannedTourModel import PlannedTour

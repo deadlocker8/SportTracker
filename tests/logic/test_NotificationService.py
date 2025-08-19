@@ -4,7 +4,7 @@ import pytest
 from flask_login import FlaskLoginClient, login_user
 
 from sporttracker.logic.model.DistanceWorkout import DistanceWorkout
-from sporttracker.logic.model.LongDistanceTour import LongDistanceTour
+from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
 from sporttracker.maintenance.MaintenanceModel import Maintenance
 from sporttracker.maintenance.MaintenanceEventInstanceModel import MaintenanceEventInstance
 from sporttracker.logic.model.NotificationType import NotificationType

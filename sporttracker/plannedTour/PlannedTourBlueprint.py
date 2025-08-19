@@ -8,7 +8,7 @@ from flask_pydantic import validate
 
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.model.LongDistanceTour import (
+from sporttracker.longDistanceTour.LongDistanceTourEntity import (
     LongDistanceTourPlannedTourAssociation,
 )
 from sporttracker.plannedTour.TravelDirection import TravelDirection
@@ -22,7 +22,7 @@ from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.plannedTour.PlannedTourFilterStateModel import get_planned_tour_filter_state_by_user
 from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
-from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourService
+from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 from sporttracker.plannedTour.PlannedTourService import (
     PlannedTourFormModel,
     PlannedTourEditFormModel,

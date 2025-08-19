@@ -18,7 +18,7 @@ from flask import (
 from flask_login import login_required, current_user
 from sqlalchemy import func, extract
 
-from sporttracker.blueprints.LongDistanceTours import LongDistanceTourModel
+from sporttracker.longDistanceTour.LongDistanceTourBlueprint import LongDistanceTourModel
 from sporttracker.plannedTour.PlannedTourBlueprint import PlannedTourModel
 from sporttracker.blueprints.Workouts import DistanceWorkoutModel
 from sporttracker.logic import Constants
@@ -37,7 +37,7 @@ from sporttracker.logic.model.filterStates.TileHuntingFilterState import (
     TileHuntingFilterState,
 )
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
-from sporttracker.logic.service.LongDistanceTourService import LongDistanceTourService
+from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
