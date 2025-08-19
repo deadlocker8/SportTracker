@@ -19,9 +19,7 @@ from flask_migrate import upgrade, stamp
 
 from sporttracker.api import Api
 from sporttracker.api.Api import API_BLUEPRINT_NAME
-from sporttracker.blueprints import (
-    General,
-)
+from sporttracker.general import GeneralBlueprint
 from sporttracker.search import SearchBlueprint
 from sporttracker.map import MapBlueprint
 from sporttracker.chart import ChartBlueprint
@@ -293,7 +291,7 @@ class SportTracker(FlaskBaseApp):
 
     def _register_blueprints(self, app):
         app.register_blueprint(AuthenticationBlueprint.construct_blueprint())
-        app.register_blueprint(General.construct_blueprint())
+        app.register_blueprint(GeneralBlueprint.construct_blueprint())
         app.register_blueprint(WorkoutBlueprint.construct_blueprint())
         app.register_blueprint(
             DistanceWorkoutBlueprint.construct_blueprint(
