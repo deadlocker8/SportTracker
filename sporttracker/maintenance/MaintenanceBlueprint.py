@@ -9,7 +9,7 @@ from pydantic import BaseModel, field_validator
 
 from sporttracker.logic import Constants
 from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events, create_maintenance_model
-from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_grouped_by_distance_workout_types_with_values
+from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_grouped_by_distance_workout_types_with_values
 from sporttracker.maintenance.MaintenanceEntity import Maintenance, get_maintenance_by_id
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     get_maintenance_events_by_maintenance_id,

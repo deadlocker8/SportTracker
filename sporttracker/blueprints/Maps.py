@@ -31,7 +31,7 @@ from sporttracker.workout.distance.DistanceWorkoutEntity import (
     get_available_years,
     DistanceWorkout,
 )
-from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
+from sporttracker.user.UserEntity import get_user_by_tile_hunting_shared_code
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user

@@ -9,7 +9,7 @@ from sporttracker.workout.WorkoutBlueprint import DistanceWorkoutModel, FitnessW
 from sporttracker.logic import Constants
 from sporttracker.workout.WorkoutEntity import Workout
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.User import User
+from sporttracker.user.UserEntity import User
 from sporttracker.logic.model.db import db
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
 

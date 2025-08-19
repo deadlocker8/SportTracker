@@ -11,7 +11,7 @@ from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTou
 from sporttracker.notification.NotificationEntity import Notification
 from sporttracker.notification.NotificationType import NotificationType
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
-from sporttracker.logic.model.User import User
+from sporttracker.user.UserEntity import User
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState

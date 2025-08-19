@@ -12,7 +12,7 @@ from pydantic import BaseModel, field_validator
 
 from sporttracker.logic import Constants
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
-from sporttracker.logic.model.CustomWorkoutField import get_custom_fields_by_workout_type_with_values
+from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
 from sporttracker.workout.distance.DistanceWorkoutEntity import (
     DistanceWorkout,
     get_available_years,
@@ -29,8 +29,8 @@ from sporttracker.monthGoal.MonthGoalEntity import (
     MonthGoalSummary,
     get_goal_summaries_by_year_and_month_and_types,
 )
-from sporttracker.logic.model.Participant import get_participants
-from sporttracker.logic.model.User import get_user_by_id
+from sporttracker.user.ParticipantEntity import get_participants
+from sporttracker.user.UserEntity import get_user_by_id
 from sporttracker.workout.WorkoutEntity import (
     get_workout_names_by_type,
     get_workouts_by_year_and_month_by_type,

@@ -5,9 +5,9 @@ from sqlalchemy import Integer, String, DateTime, extract, func, asc
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from sporttracker.logic.model.Participant import Participant, workout_participant_association
+from sporttracker.user.ParticipantEntity import Participant, workout_participant_association
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.User import User
+from sporttracker.user.UserEntity import User
 from sporttracker.logic.model.db import db
 
 

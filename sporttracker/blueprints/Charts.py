@@ -13,7 +13,7 @@ from sqlalchemy import extract, func, String, asc, desc, cast, Time
 
 from sporttracker.helpers.Helpers import format_duration
 from sporttracker.logic import Constants
-from sporttracker.logic.model.CustomWorkoutField import (
+from sporttracker.user.CustomWorkoutFieldEntity import (
     get_custom_field_by_id,
     get_custom_fields_grouped_by_distance_workout_types_with_values,
 )
@@ -21,7 +21,7 @@ from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.tileHunting.VisitedTileService import VisitedTileService
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout, get_distance_per_month_by_type
-from sporttracker.logic.model.Participant import Participant
+from sporttracker.user.ParticipantEntity import Participant
 from sporttracker.workout.WorkoutEntity import (
     Workout,
     get_workouts_by_year_and_month,

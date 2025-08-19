@@ -12,7 +12,7 @@ from sporttracker.workout.fitness.FitnessWorkoutCategory import (
     update_workout_categories_by_workout_id,
 )
 from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
-from sporttracker.logic.model.Participant import get_participants_by_ids
+from sporttracker.user.ParticipantEntity import get_participants_by_ids
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 

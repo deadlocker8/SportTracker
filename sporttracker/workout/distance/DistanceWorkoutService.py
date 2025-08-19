@@ -11,7 +11,7 @@ from sporttracker.workout.WorkoutBlueprint import BaseWorkoutFormModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
-from sporttracker.logic.model.Participant import get_participants_by_ids
+from sporttracker.user.ParticipantEntity import get_participants_by_ids
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db

@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import login_user, logout_user, login_required, current_user
 
 from sporttracker.helpers.Helpers import is_allowed_redirect_url
-from sporttracker.logic.model.User import User
+from sporttracker.user.UserEntity import User
 
 
 def construct_blueprint():

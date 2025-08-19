@@ -11,7 +11,7 @@ from pydantic import BaseModel, field_validator, ConfigDict
 
 from sporttracker.logic import Constants
 from sporttracker.logic.Constants import MIN_PASSWORD_LENGTH
-from sporttracker.logic.model.CustomWorkoutField import (
+from sporttracker.user.CustomWorkoutFieldEntity import (
     CustomWorkoutField,
     CustomWorkoutFieldType,
     RESERVED_FIELD_NAMES,
@@ -26,8 +26,8 @@ from sporttracker.notification.NotificationSettingsEntity import (
 )
 from sporttracker.notification.NotificationType import NotificationType
 from sporttracker.notification.provider.NtfySettingsEntity import NtfySettings
-from sporttracker.logic.model.Participant import Participant, get_participants
-from sporttracker.logic.model.User import (
+from sporttracker.user.ParticipantEntity import Participant, get_participants
+from sporttracker.user.UserEntity import (
     User,
     Language,
     DistanceWorkoutInfoItem,

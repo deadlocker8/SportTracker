@@ -12,7 +12,7 @@ from sqlalchemy import asc, func
 from sporttracker.logic import Constants
 from sporttracker.authentication.AdminWrapper import admin_role_required
 from sporttracker.logic.Constants import MIN_PASSWORD_LENGTH
-from sporttracker.logic.model.User import (
+from sporttracker.user.UserEntity import (
     User,
     Language,
     create_user,

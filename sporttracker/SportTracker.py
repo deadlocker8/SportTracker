@@ -22,12 +22,11 @@ from sporttracker.api.Api import API_BLUEPRINT_NAME
 from sporttracker.blueprints import (
     General,
     Charts,
-    Users,
     Search,
     Maps,
     GpxTracks,
-    Settings,
 )
+from sporttracker.user import UserBlueprint, SettingsBlueprint
 from sporttracker.authentication import AuthenticationBlueprint
 from sporttracker.achievement import AchievementBlueprint, AnnualAchievementBlueprint
 from sporttracker.notification import NotificationBlueprint
@@ -37,7 +36,7 @@ from sporttracker.helpers.SettingsChecker import SettingsChecker
 from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
 from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutFieldType
+from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutFieldType
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.workout import WorkoutBlueprint
@@ -51,7 +50,7 @@ from sporttracker.longDistanceTour import LongDistanceTourBlueprint
 from sporttracker.plannedTour import PlannedTourBlueprint
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
-from sporttracker.logic.model.User import (
+from sporttracker.user.UserEntity import (
     User,
     Language,
     create_user,
@@ -315,8 +314,8 @@ class SportTracker(FlaskBaseApp):
                 app.config['DISTANCE_WORKOUT_SERVICE'],
             )
         )
-        app.register_blueprint(Users.construct_blueprint())
-        app.register_blueprint(Settings.construct_blueprint())
+        app.register_blueprint(UserBlueprint.construct_blueprint())
+        app.register_blueprint(SettingsBlueprint.construct_blueprint())
         app.register_blueprint(
             Api.construct_blueprint(
                 app.config['GPX_SERVICE'],

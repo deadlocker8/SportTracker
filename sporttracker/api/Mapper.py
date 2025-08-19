@@ -12,11 +12,11 @@ from sporttracker.api.Models import (
     CustomFieldApiModel,
 )
 from sporttracker.maintenance.MaintenanceEventsCollector import MaintenanceWithEventsModel
-from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutField
+from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutField
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
-from sporttracker.logic.model.Participant import Participant
+from sporttracker.user.ParticipantEntity import Participant
 from sporttracker.plannedTour.PlannedTourService import PlannedTourModel
 
 

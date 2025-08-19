@@ -2,7 +2,7 @@ from sqlalchemy import Integer, DateTime, String, Table, Column, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
-from sporttracker.logic.model.User import User
+from sporttracker.user.UserEntity import User
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 

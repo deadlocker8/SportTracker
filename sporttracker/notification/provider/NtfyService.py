@@ -8,7 +8,7 @@ from sporttracker.logic import Constants
 from sporttracker.logic.Observable import Listener
 from sporttracker.notification.provider.NotificationProviderType import NotificationProviderType
 from sporttracker.notification.NotificationSettingsEntity import get_notification_settings_by_user_by_provider_type
-from sporttracker.logic.model.User import User
+from sporttracker.user.UserEntity import User
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

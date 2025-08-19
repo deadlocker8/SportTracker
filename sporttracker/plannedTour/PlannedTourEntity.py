@@ -5,7 +5,7 @@ from sporttracker.logic.DateTimeAccess import DateTimeAccess
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
-from sporttracker.logic.model.User import User, get_user_by_id
+from sporttracker.user.UserEntity import User, get_user_by_id
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 

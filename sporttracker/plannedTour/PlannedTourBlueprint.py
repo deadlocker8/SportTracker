@@ -13,7 +13,7 @@ from sporttracker.longDistanceTour.LongDistanceTourEntity import (
 )
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
-from sporttracker.logic.model.User import (
+from sporttracker.user.UserEntity import (
     User,
     get_all_users_except_self_and_admin,
     get_user_by_id,

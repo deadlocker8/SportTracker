@@ -6,7 +6,7 @@ import natsort
 from natsort import natsorted
 
 from sporttracker.maintenance.MaintenanceEventInstanceBlueprint import MaintenanceEventInstanceModel
-from sporttracker.logic.model.CustomWorkoutField import get_custom_field_by_id
+from sporttracker.user.CustomWorkoutFieldEntity import get_custom_field_by_id
 from sporttracker.workout.distance.DistanceWorkoutEntity import get_distance_between_dates
 from sporttracker.maintenance.MaintenanceEntity import Maintenance
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
