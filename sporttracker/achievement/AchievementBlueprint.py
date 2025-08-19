@@ -7,8 +7,8 @@ from flask_login import login_required
 
 from sporttracker.helpers import Helpers
 from sporttracker.logic import Constants
-from sporttracker.logic.AchievementCalculator import AchievementCalculator
-from sporttracker.logic.model.Achievement import (
+from sporttracker.achievement.AchievementCalculator import AchievementCalculator
+from sporttracker.achievement.AchievementEntity import (
     Achievement,
     LongestWorkoutDistanceAchievementHistoryItem,
     LongestWorkoutDurationAchievementHistoryItem,

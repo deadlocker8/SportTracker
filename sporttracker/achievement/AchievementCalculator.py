@@ -4,7 +4,7 @@ from statistics import mean
 from flask_login import current_user
 from sqlalchemy import asc, func, extract
 
-from sporttracker.logic.model.Achievement import (
+from sporttracker.achievement.AchievementEntity import (
     LongestWorkoutDistanceAchievementHistoryItem,
     LongestWorkoutDurationAchievementHistoryItem,
     BestMonthDistanceAchievementHistoryItem,

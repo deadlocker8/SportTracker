@@ -24,13 +24,12 @@ from sporttracker.blueprints import (
     Authentication,
     Charts,
     Users,
-    Achievements,
     Search,
     Maps,
     GpxTracks,
     Settings,
-    AnnualAchievements,
 )
+from sporttracker.achievement import AchievementBlueprint, AnnualAchievementBlueprint
 from sporttracker.notification import NotificationBlueprint
 from sporttracker.quickFilter import QuickFilterBlueprint
 from sporttracker.helpers import Helpers
@@ -326,7 +325,7 @@ class SportTracker(FlaskBaseApp):
                 app.config['FITNESS_WORKOUT_SERVICE'],
             )
         )
-        app.register_blueprint(Achievements.construct_blueprint())
+        app.register_blueprint(AchievementBlueprint.construct_blueprint())
         app.register_blueprint(Search.construct_blueprint())
         app.register_blueprint(
             GpxTracks.construct_blueprint(
@@ -356,7 +355,7 @@ class SportTracker(FlaskBaseApp):
                 self._settings['gpxPreviewImages'], app.config['LONG_DISTANCE_TOUR_SERVICE']
             )
         )
-        app.register_blueprint(AnnualAchievements.construct_blueprint())
+        app.register_blueprint(AnnualAchievementBlueprint.construct_blueprint())
         app.register_blueprint(NotificationBlueprint.construct_blueprint(app.config['NOTIFICATION_SERVICE']))
 
     def __prepare_database(self, app):
