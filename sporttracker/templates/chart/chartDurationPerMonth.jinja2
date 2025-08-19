@@ -1,12 +1,18 @@
-{% import 'charts/chartMacros.jinja2' as chartMacros with context %}
-{% call chartMacros.chart(chartTitle) %}
+{% import 'chart/chartMacros.jinja2' as chartMacros with context %}
+{% call chartMacros.chart(gettext('Duration per Month')) %}
      const data = [
-        {
-            labels: {{ chartDistancePerParticipantData['keys'] }},
-            values: {{ chartDistancePerParticipantData['values'] }},
-            type: 'pie',
-            text: {{ chartDistancePerParticipantData['values'] }}
-        },
+        {% for entry in chartDataDurationPerMonth %}
+            {
+                x: {{ entry['monthNames'] }},
+                y: {{ entry['values'] }},
+                type: 'bar',
+                marker: {
+                    color: '{{ entry.type.background_color_hex }}'
+                },
+                 text: {{ entry['texts'] }},
+                name: '{{ entry.type.name | capitalize }}',
+            },
+        {% endfor %}
     ];
 
     const plotlyLayout = {
@@ -14,11 +20,12 @@
         plot_bgcolor: 'rgba(0,0,0,0)',
         xaxis: {
             type: 'category',
-            color: '#FFFFFF'
+            color: '#FFFFFF',
+            automargin: true
         },
         yaxis: {
             title: {
-                text: '{{ gettext('Distance in km') }}',
+                text: '{{ gettext('Duration in s') }}',
             },
             rangemode: 'tozero',
             tickformat: '.0f',

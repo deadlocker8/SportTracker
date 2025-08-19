@@ -1,15 +1,16 @@
-{% import 'charts/chartMacros.jinja2' as chartMacros with context %}
-{% call chartMacros.chart(gettext('Distance per Year')) %}
+{% import 'chart/chartMacros.jinja2' as chartMacros with context %}
+{% call chartMacros.chart(gettext('Average Speed')) %}
      const data = [
-        {% for entry in chartDataDistancePerYear %}
+        {% for entry in chartDataAverageSpeed %}
             {
-                x: {{ entry['yearNames'] }},
+                x: {{ entry['dates'] }},
                 y: {{ entry['values'] }},
-                type: 'bar',
+                type: 'scatter',
+                fill: 'tozeroy',
                 marker: {
                     color: '{{ entry.type.background_color_hex }}'
                 },
-                text: {{ entry['texts'] }},
+                text: {{ entry['values'] }},
                 name: '{{ entry.type.name | capitalize }}'
             },
         {% endfor %}
@@ -19,12 +20,14 @@
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
         xaxis: {
-            type: 'category',
-            color: '#FFFFFF'
+            type: 'date',
+            color: '#FFFFFF',
+            automargin: true,
+            showgrid: false,
         },
         yaxis: {
             title: {
-                text: '{{ gettext('Distance in km') }}',
+                text: '{{ gettext('Speed in km/h') }}',
             },
             rangemode: 'tozero',
             tickformat: '.0f',

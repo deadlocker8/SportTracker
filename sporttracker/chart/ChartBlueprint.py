@@ -58,7 +58,7 @@ def construct_blueprint(
     @charts.route('/')
     @login_required
     def chartChooser():
-        return render_template('charts/chartChooser.jinja2')
+        return render_template('chart/chartChooser.jinja2')
 
     @charts.route('/distancePerYear')
     @login_required
@@ -70,7 +70,7 @@ def construct_blueprint(
             for workoutType in WorkoutType.get_distance_workout_types():
                 chartDataDistancePerYear.append(__get_distance_per_year_by_type(workoutType, minYear, maxYear))
 
-        return render_template('charts/chartDistancePerYear.jinja2', chartDataDistancePerYear=chartDataDistancePerYear)
+        return render_template('chart/chartDistancePerYear.jinja2', chartDataDistancePerYear=chartDataDistancePerYear)
 
     @charts.route('/distancePerMonth')
     @login_required
@@ -83,7 +83,7 @@ def construct_blueprint(
                 chartDataDistancePerMonth.append(__get_distance_per_month_by_type(workoutType, minYear, maxYear))
 
         return render_template(
-            'charts/chartDistancePerMonth.jinja2',
+            'chart/chartDistancePerMonth.jinja2',
             chartDataDistancePerMonth=chartDataDistancePerMonth,
         )
 
@@ -109,7 +109,7 @@ def construct_blueprint(
             WorkoutType.get_distance_workout_types()
         )
         return render_template(
-            'charts/chartDistancePerCustomFieldChooser.jinja2',
+            'chart/chartDistancePerCustomFieldChooser.jinja2',
             customFieldsByWorkoutType=customFieldsByWorkoutType,
         )
 
@@ -146,7 +146,7 @@ def construct_blueprint(
         chartDistancePerCustomFieldData = {'keys': keys, 'values': values}
 
         return render_template(
-            'charts/chartDistancePerCustomField.jinja2',
+            'chart/chartDistancePerCustomField.jinja2',
             chartDistancePerCustomFieldData=chartDistancePerCustomFieldData,
             chartTitle=f'{gettext("Distance per custom field")} "{customField.name}"',
         )
@@ -154,7 +154,7 @@ def construct_blueprint(
     @charts.route('/chartDistancePerParticipantChooser')
     @login_required
     def chartDistancePerParticipantChooser():
-        return render_template('charts/chartDistancePerParticipantChooser.jinja2')
+        return render_template('chart/chartDistancePerParticipantChooser.jinja2')
 
     @charts.route('/chartDistancePerParticipantChooser/<string:workout_type>')
     @login_required
@@ -190,7 +190,7 @@ def construct_blueprint(
         chartDistancePerParticipantData = {'keys': keys, 'values': values}
 
         return render_template(
-            'charts/chartDistancePerParticipant.jinja2',
+            'chart/chartDistancePerParticipant.jinja2',
             chartDistancePerParticipantData=chartDistancePerParticipantData,
             workout_type=workout_type,
             chartTitle=f'{gettext("Distance per participant for workout type ")} "{workout_type}"',
@@ -222,13 +222,13 @@ def construct_blueprint(
 
                 chartDataAverageSpeed.append({'dates': dates, 'values': speedData, 'type': workoutType})
 
-        return render_template('charts/chartAverageSpeed.jinja2', chartDataAverageSpeed=chartDataAverageSpeed)
+        return render_template('chart/chartAverageSpeed.jinja2', chartDataAverageSpeed=chartDataAverageSpeed)
 
     @charts.route('/durationPerWorkoutChooser')
     @login_required
     def chartDurationPerWorkoutChooser():
         return render_template(
-            'charts/chartDurationPerWorkoutChooser.jinja2',
+            'chart/chartDurationPerWorkoutChooser.jinja2',
             workoutNamesByWorkoutType=__get_workout_names_by_type(False),
         )
 
@@ -274,7 +274,7 @@ def construct_blueprint(
         }
 
         return render_template(
-            'charts/chartDurationPerWorkout.jinja2',
+            'chart/chartDurationPerWorkout.jinja2',
             chartDataDurationPerWorkout=chartDataDurationPerWorkout,
             chartTitle=f'{gettext("Duration per Workout")} "{workout.name}"',
         )
@@ -283,7 +283,7 @@ def construct_blueprint(
     @login_required
     def chartSpeedPerWorkoutChooser():
         return render_template(
-            'charts/chartSpeedPerWorkoutChooser.jinja2',
+            'chart/chartSpeedPerWorkoutChooser.jinja2',
             workoutNamesByWorkoutType=__get_workout_names_by_type(True),
         )
 
@@ -351,7 +351,7 @@ def construct_blueprint(
         }
 
         return render_template(
-            'charts/chartSpeedPerWorkout.jinja2',
+            'chart/chartSpeedPerWorkout.jinja2',
             chartDataSpeedPerWorkout=chartDataSpeedPerWorkout,
             chartTitle=f'{gettext("Speed per Workout")} "{workout.name}"',
         )
@@ -410,7 +410,7 @@ def construct_blueprint(
         calendarData['months'] = months
 
         return render_template(
-            'charts/chartCalendar.jinja2',
+            'chart/chartCalendar.jinja2',
             calendarData=calendarData,
             availableYears=get_available_years(current_user.id),
             selectedYear=year,
@@ -511,7 +511,7 @@ def construct_blueprint(
                 chartDataDurationPerMonth.append(__get_duration_per_month_by_type(workoutType, minYear, maxYear))
 
         return render_template(
-            'charts/chartDurationPerMonth.jinja2',
+            'chart/chartDurationPerMonth.jinja2',
             chartDataDurationPerMonth=chartDataDurationPerMonth,
         )
 
@@ -532,7 +532,7 @@ def construct_blueprint(
     @charts.route('/chartMostPerformedWorkoutsChooser')
     @login_required
     def chartMostPerformedWorkoutsChooser():
-        return render_template('charts/chartMostPerformedWorkoutsChooser.jinja2')
+        return render_template('chart/chartMostPerformedWorkoutsChooser.jinja2')
 
     @charts.route('/chartMostPerformedWorkoutsChooser/<string:workout_type>')
     @login_required
@@ -553,7 +553,7 @@ def construct_blueprint(
             )
 
         return render_template(
-            'charts/chartMostPerformedWorkouts.jinja2',
+            'chart/chartMostPerformedWorkouts.jinja2',
             chartMostPerformedWorkoutsData=chartMostPerformedWorkoutsData,
             workout_type=WorkoutType(workout_type),  # type: ignore[call-arg]
         )
@@ -582,7 +582,7 @@ def construct_blueprint(
             )
 
         return render_template(
-            'charts/chartNewTilesPerYear.jinja2',
+            'chart/chartNewTilesPerYear.jinja2',
             chartDataTotalNumberNewTilesPerYear=chartDataTotalNumberNewTilesPerYear,
             chartDataNumberNewTilesPerTypePerYear=chartDataNumberNewTilesPerTypePerYear,
         )
@@ -659,7 +659,7 @@ def construct_blueprint(
             return redirect(url_for('charts.chartChooser'))
 
         return render_template(
-            'charts/chartHeatmap.jinja2',
+            'chart/chartHeatmap.jinja2',
             y_axis=y_axis,
             chartDataHeatmap=chartDataHeatmap,
             quickFilterState=quickFilterState,

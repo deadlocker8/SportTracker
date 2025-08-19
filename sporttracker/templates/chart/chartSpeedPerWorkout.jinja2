@@ -1,18 +1,16 @@
-{% import 'charts/chartMacros.jinja2' as chartMacros with context %}
-{% call chartMacros.chart(gettext('Distance per Month')) %}
+{% import 'chart/chartMacros.jinja2' as chartMacros with context %}
+{% call chartMacros.chart(chartTitle) %}
      const data = [
-        {% for entry in chartDataDistancePerMonth %}
-            {
-                x: {{ entry['monthNames'] }},
-                y: {{ entry['values'] }},
-                type: 'bar',
-                marker: {
-                    color: '{{ entry.type.background_color_hex }}'
-                },
-                text: {{ entry['texts'] }},
-                name: '{{ entry.type.name | capitalize }}',
+        {
+            x: {{ chartDataSpeedPerWorkout['dates'] }},
+            y: {{ chartDataSpeedPerWorkout['values'] }},
+            type: 'bar',
+            marker: {
+                color: '{{ chartDataSpeedPerWorkout.type.background_color_hex }}'
             },
-        {% endfor %}
+            name: '{{ chartDataSpeedPerWorkout.type.name | capitalize }}',
+            text: {{ chartDataSpeedPerWorkout['texts'] }}
+        },
     ];
 
     const plotlyLayout = {
@@ -25,12 +23,13 @@
         },
         yaxis: {
             title: {
-                text: '{{ gettext('Distance in km') }}',
+                text: '{{ gettext('Speed in km/h') }}',
             },
             rangemode: 'tozero',
             tickformat: '.0f',
             showline: true,
-            color: '#FFFFFF'
+            color: '#FFFFFF',
+            range: [{{ chartDataSpeedPerWorkout.min }}, {{ chartDataSpeedPerWorkout.max }}]
         },
         barmode: 'group',
         legend: {
@@ -46,4 +45,5 @@
     };
 
     Plotly.newPlot('chartContainer', data, plotlyLayout, plotlyConfig);
+    let a = '{{ chartTitle }}';
 {% endcall %}
