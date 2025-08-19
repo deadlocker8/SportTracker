@@ -21,7 +21,7 @@ from sporttracker.logic.model.User import (
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user
-from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
+from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
 from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 from sporttracker.plannedTour.PlannedTourService import (
     PlannedTourFormModel,

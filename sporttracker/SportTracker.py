@@ -29,10 +29,10 @@ from sporttracker.blueprints import (
     Maps,
     GpxTracks,
     Settings,
-    QuickFilter,
     AnnualAchievements,
     Notifications,
 )
+from sporttracker.quickFilter import QuickFilterBlueprint
 from sporttracker.helpers import Helpers
 from sporttracker.helpers.SettingsChecker import SettingsChecker
 from sporttracker.logic import Constants
@@ -343,7 +343,7 @@ class SportTracker(FlaskBaseApp):
                 app.config['PLANNED_TOUR_SERVICE'],
             )
         )
-        app.register_blueprint(QuickFilter.construct_blueprint())
+        app.register_blueprint(QuickFilterBlueprint.construct_blueprint())
         app.register_blueprint(MaintenanceBlueprint.construct_blueprint())
         app.register_blueprint(MaintenanceEventInstanceBlueprint.construct_blueprint())
         app.register_blueprint(

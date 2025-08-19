@@ -31,7 +31,7 @@ from sporttracker.logic.model.User import get_user_by_tile_hunting_shared_code
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user
-from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user, QuickFilterState
+from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
 from sporttracker.logic.model.filterStates.TileHuntingFilterState import (
     get_tile_hunting_filter_state_by_user,
     TileHuntingFilterState,

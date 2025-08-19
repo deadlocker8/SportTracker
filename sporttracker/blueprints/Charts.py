@@ -27,7 +27,7 @@ from sporttracker.workout.WorkoutEntity import (
 )
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
-from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user, QuickFilterState
+from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
 from sporttracker.logic.model.filterStates.TileHuntingFilterState import TileHuntingFilterState
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache

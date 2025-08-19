@@ -12,7 +12,7 @@ from sporttracker.logic.model.NtfySettings import NtfySettings
 from sporttracker.logic.model.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import PlannedTourFilterState
-from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
+from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 from sporttracker.logic.model.filterStates.TileHuntingFilterState import TileHuntingFilterState
 
 

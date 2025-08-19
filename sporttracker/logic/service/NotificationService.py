@@ -15,7 +15,7 @@ from sporttracker.logic.model.User import User
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
-from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
+from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 
 
 class NotificationService(Observable):

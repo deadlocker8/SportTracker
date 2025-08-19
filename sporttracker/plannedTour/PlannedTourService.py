@@ -28,7 +28,7 @@ from sporttracker.logic.model.User import get_users_by_ids, get_user_by_id
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import PlannedTourFilterState
-from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
+from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 from sporttracker.logic.service.NotificationService import NotificationService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

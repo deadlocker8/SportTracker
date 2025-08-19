@@ -1,5 +1,5 @@
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
+from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 
 
 class TestQuickFilterState:

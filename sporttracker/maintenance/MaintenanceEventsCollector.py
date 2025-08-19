@@ -15,7 +15,7 @@ from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
 )
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
-from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
+from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 
 
 @dataclass

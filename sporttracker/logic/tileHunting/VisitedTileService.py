@@ -9,7 +9,7 @@ from sporttracker.logic.GpxService import VisitedTile
 from sporttracker.logic.model.GpxPlannedTile import GpxPlannedTile
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
+from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 from sporttracker.logic.model.filterStates.TileHuntingFilterState import TileHuntingFilterState
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import (

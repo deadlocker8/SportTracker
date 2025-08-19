@@ -7,7 +7,7 @@ from flask_login import login_required, current_user
 from sporttracker.logic import Constants
 from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.User import User
-from sporttracker.logic.model.filterStates.QuickFilterState import get_quick_filter_state_by_user
+from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
