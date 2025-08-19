@@ -26,7 +26,7 @@ from sporttracker.tileHunting.TileRenderService import TileRenderService, TileRe
 from sporttracker.tileHunting.VisitedTileService import VisitedTileService
 from sporttracker.workout.WorkoutBlueprint import DistanceWorkoutModel
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService, GpxParser
+from sporttracker.gpx.GpxService import GpxService, GpxParser
 from sporttracker.workout.distance.DistanceWorkoutEntity import (
     get_available_years,
     DistanceWorkout,

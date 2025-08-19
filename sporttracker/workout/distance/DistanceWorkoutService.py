@@ -9,7 +9,7 @@ from werkzeug.datastructures import FileStorage
 from sporttracker.api.FormModels import DistanceWorkoutApiFormModel
 from sporttracker.workout.WorkoutBlueprint import BaseWorkoutFormModel
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService
+from sporttracker.gpx.GpxService import GpxService
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.user.ParticipantEntity import get_participants_by_ids
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour

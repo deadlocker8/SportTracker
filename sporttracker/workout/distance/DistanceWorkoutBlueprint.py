@@ -10,7 +10,7 @@ from flask_pydantic import validate
 from sporttracker.workout.WorkoutBlueprint import BaseWorkoutFormModel
 from sporttracker.logic import Constants
 from sporttracker.logic.FitSessionParser import FitSessionParser, FitSession
-from sporttracker.logic.GpxService import GpxService
+from sporttracker.gpx.GpxService import GpxService
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
 from sporttracker.user.ParticipantEntity import get_participants
 from sporttracker.workout.WorkoutEntity import get_workout_names_by_type

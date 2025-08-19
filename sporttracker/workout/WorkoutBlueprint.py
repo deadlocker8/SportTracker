@@ -20,7 +20,7 @@ from sporttracker.workout.distance.DistanceWorkoutEntity import (
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.fitness.FitnessWorkoutCategory import FitnessWorkoutCategoryType
 from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
-from sporttracker.logic.model.GpxMetadata import GpxMetadata
+from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     MaintenanceEvent,
     get_maintenance_events_by_year_and_month_by_type,

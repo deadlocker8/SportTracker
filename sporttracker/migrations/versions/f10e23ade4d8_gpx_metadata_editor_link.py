@@ -15,7 +15,7 @@ from alembic import op
 from sqlalchemy import Inspector, text
 
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxParser
+from sporttracker.gpx.GpxService import GpxParser
 
 
 class GpxService:

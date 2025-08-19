@@ -24,8 +24,8 @@ from sporttracker.blueprints import (
     Charts,
     Search,
     Maps,
-    GpxTracks,
 )
+from sporttracker.gpx import GpxBlueprint
 from sporttracker.user import UserBlueprint, SettingsBlueprint
 from sporttracker.authentication import AuthenticationBlueprint
 from sporttracker.achievement import AchievementBlueprint, AnnualAchievementBlueprint
@@ -35,7 +35,7 @@ from sporttracker.helpers import Helpers
 from sporttracker.helpers.SettingsChecker import SettingsChecker
 from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
-from sporttracker.logic.GpxService import GpxService
+from sporttracker.gpx.GpxService import GpxService
 from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutFieldType
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
@@ -327,7 +327,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(AchievementBlueprint.construct_blueprint())
         app.register_blueprint(Search.construct_blueprint())
         app.register_blueprint(
-            GpxTracks.construct_blueprint(
+            GpxBlueprint.construct_blueprint(
                 app.config['GPX_SERVICE'], app.config['DISTANCE_WORKOUT_SERVICE'], self._settings['gpxPreviewImages']
             )
         )

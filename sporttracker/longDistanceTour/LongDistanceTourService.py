@@ -11,8 +11,8 @@ from pydantic import BaseModel
 from sqlalchemy.sql import or_
 
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
+from sporttracker.gpx.GpxService import GpxService
+from sporttracker.gpx.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
 from sporttracker.longDistanceTour.LongDistanceTourEntity import (
     LongDistanceTourPlannedTourAssociation,
     LongDistanceTour,

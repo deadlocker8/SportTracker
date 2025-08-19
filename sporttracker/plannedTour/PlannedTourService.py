@@ -13,12 +13,12 @@ from sqlalchemy.sql import or_
 from werkzeug.datastructures import FileStorage
 
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService
+from sporttracker.gpx.GpxService import GpxService
 from sporttracker.workout.distance.DistanceWorkoutEntity import (
     DistanceWorkout,
     get_distance_workout_ids_by_planned_tour,
 )
-from sporttracker.logic.model.GpxMetadata import GpxMetadata
+from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
 from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTourPlannedTourAssociation
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
@@ -335,7 +335,7 @@ class PlannedTourService:
             if longDistanceTour is None:
                 continue
 
-            from sporttracker.logic.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
+            from sporttracker.gpx.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
 
             gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(longDistanceTour, self._gpx_service)
             gpxPreviewImageService.generate_image(self._gpx_preview_image_settings)

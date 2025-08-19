@@ -2,7 +2,7 @@ from sqlalchemy import Integer, DateTime, String, Table, Column, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
-from sporttracker.logic.model.GpxMetadata import GpxMetadata
+from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.user.UserEntity import User, get_user_by_id

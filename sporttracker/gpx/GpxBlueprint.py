@@ -5,9 +5,9 @@ from flask import Blueprint, abort, Response, send_file, send_from_directory
 from flask_login import login_required, current_user
 
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
-from sporttracker.logic.GpxService import GpxService
-from sporttracker.logic.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
+from sporttracker.gpx.GpxPreviewImageService import GpxPreviewImageService
+from sporttracker.gpx.GpxService import GpxService
+from sporttracker.gpx.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService

@@ -7,7 +7,7 @@ from flask_login import login_required, current_user
 from flask_pydantic import validate
 
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService
+from sporttracker.gpx.GpxService import GpxService
 from sporttracker.longDistanceTour.LongDistanceTourEntity import (
     LongDistanceTourPlannedTourAssociation,
 )

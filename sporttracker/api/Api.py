@@ -25,7 +25,7 @@ from sporttracker.api.Mapper import (
     MAPPER_CUSTOM_FIELD,
 )
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService
+from sporttracker.gpx.GpxService import GpxService
 from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_grouped_by_distance_workout_types_with_values
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout

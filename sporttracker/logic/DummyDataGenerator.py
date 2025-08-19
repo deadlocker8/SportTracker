@@ -8,10 +8,10 @@ from dateutil.relativedelta import relativedelta
 from faker import Faker
 
 from sporttracker.logic import Constants
-from sporttracker.logic.GpxService import GpxService
+from sporttracker.gpx.GpxService import GpxService
 from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutField, CustomWorkoutFieldType
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
-from sporttracker.logic.model.GpxMetadata import GpxMetadata
+from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
 from sporttracker.longDistanceTour.LongDistanceTourEntity import (
     LongDistanceTour,
     LongDistanceTourPlannedTourAssociation,

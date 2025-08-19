@@ -5,7 +5,7 @@ from flask_login import current_user
 from sqlalchemy import extract, text, func, or_
 from sqlalchemy.orm import aliased
 
-from sporttracker.logic.GpxService import VisitedTile
+from sporttracker.gpx.GpxService import VisitedTile
 from sporttracker.tileHunting.GpxPlannedTileEntity import GpxPlannedTile
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
