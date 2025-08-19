@@ -22,8 +22,8 @@ from sporttracker.api.Api import API_BLUEPRINT_NAME
 from sporttracker.blueprints import (
     General,
     Search,
-    Maps,
 )
+from sporttracker.map import MapBlueprint
 from sporttracker.chart import ChartBlueprint
 from sporttracker.gpx import GpxBlueprint
 from sporttracker.user import UserBlueprint, SettingsBlueprint
@@ -332,7 +332,7 @@ class SportTracker(FlaskBaseApp):
             )
         )
         app.register_blueprint(
-            Maps.construct_blueprint(
+            MapBlueprint.construct_blueprint(
                 self._settings['tileHunting'],
                 app.config['NEW_VISITED_TILE_CACHE'],
                 app.config['MAX_SQUARE_CACHE'],
