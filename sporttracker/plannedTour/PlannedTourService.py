@@ -18,13 +18,13 @@ from sporttracker.logic.model.DistanceWorkout import DistanceWorkout, get_distan
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.GpxVisitedTile import GpxVisitedTile
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTourPlannedTourAssociation
-from sporttracker.plannedTour.PlannedTourModel import PlannedTour
+from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.logic.model.User import get_users_by_ids, get_user_by_id
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
-from sporttracker.plannedTour.PlannedTourFilterStateModel import PlannedTourFilterState
+from sporttracker.plannedTour.PlannedTourFilterStateEntity import PlannedTourFilterState
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 from sporttracker.logic.service.NotificationService import NotificationService
 

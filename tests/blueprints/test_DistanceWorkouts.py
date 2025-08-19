@@ -11,7 +11,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutField, CustomWorkoutFieldType
 from sporttracker.logic.model.Participant import Participant
-from sporttracker.plannedTour.PlannedTourModel import PlannedTour
+from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.logic.model.User import create_user, Language, User

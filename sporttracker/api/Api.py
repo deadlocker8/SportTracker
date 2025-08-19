@@ -34,13 +34,13 @@ from sporttracker.logic.model.FitnessWorkoutCategory import (
     FitnessWorkoutCategoryType,
 )
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
-from sporttracker.monthGoal.MonthGoalModel import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
+from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import get_participants
 from sporttracker.logic.model.User import User
 from sporttracker.logic.model.Workout import get_available_years
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
-from sporttracker.maintenance.MaintenanceFilterStateModel import MaintenanceFilterState
+from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
 from sporttracker.logic.model.filterStates.QuickFilterState import QuickFilterState
 from sporttracker.logic.service.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.logic.service.FitnessWorkoutService import FitnessWorkoutService

@@ -6,7 +6,7 @@ from sqlalchemy import Integer, String, DateTime, extract, func, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
-from sporttracker.plannedTour.PlannedTourModel import (
+from sporttracker.plannedTour.PlannedTourEntity import (
     PlannedTour,
     distance_workout_planned_tour_association,
 )

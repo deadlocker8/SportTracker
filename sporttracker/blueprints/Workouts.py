@@ -21,11 +21,11 @@ from sporttracker.logic.model.FitnessWorkout import FitnessWorkout
 from sporttracker.logic.model.FitnessWorkoutCategory import FitnessWorkoutCategoryType
 from sporttracker.logic.model.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
-from sporttracker.maintenance.MaintenanceEventInstanceModel import (
+from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     MaintenanceEvent,
     get_maintenance_events_by_year_and_month_by_type,
 )
-from sporttracker.monthGoal.MonthGoalModel import (
+from sporttracker.monthGoal.MonthGoalEntity import (
     MonthGoalSummary,
     get_goal_summaries_by_year_and_month_and_types,
 )

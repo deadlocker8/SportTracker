@@ -6,7 +6,7 @@ from sqlalchemy import Integer, DateTime, extract
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.logic.DateTimeAccess import DateTimeAccess
-from sporttracker.maintenance.MaintenanceModel import Maintenance
+from sporttracker.maintenance.MaintenanceEntity import Maintenance
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 

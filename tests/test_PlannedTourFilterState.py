@@ -1,6 +1,6 @@
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
-from sporttracker.plannedTour.PlannedTourFilterStateModel import PlannedTourFilterState
+from sporttracker.plannedTour.PlannedTourFilterStateEntity import PlannedTourFilterState
 
 
 class TestPlannedTourFilterState:
