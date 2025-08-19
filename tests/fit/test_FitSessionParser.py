@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-from sporttracker.logic.FitSessionParser import FitSessionParser
+from sporttracker.fit.FitSessionParser import FitSessionParser
 from sporttracker.workout.WorkoutType import WorkoutType
 from tests.TestConstants import ROOT_DIRECTORY
 

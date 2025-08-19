@@ -16,7 +16,7 @@ from sqlalchemy import delete
 from werkzeug.datastructures.file_storage import FileStorage
 
 from sporttracker.logic import Constants
-from sporttracker.logic.FitToGpxConverter import FitToGpxConverter
+from sporttracker.fit.FitToGpxConverter import FitToGpxConverter
 from sporttracker.gpx.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
