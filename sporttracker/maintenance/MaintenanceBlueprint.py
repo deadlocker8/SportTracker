@@ -70,7 +70,7 @@ def construct_blueprint():
         hasCustomWorkoutFields = any([len(fields) > 0 for fields in customFieldsByWorkoutType.values()])
 
         return render_template(
-            'maintenances/maintenances.jinja2',
+            'maintenance/maintenances.jinja2',
             maintenancesWithEvents=maintenancesWithEvents,
             quickFilterState=quickFilterState,
             customFieldsByWorkoutType=customFieldsByWorkoutType,
@@ -87,7 +87,7 @@ def construct_blueprint():
             return render_template('maps/mapNotFound.jinja2', errorText=gettext('Maintenance does not exist anymore'))
 
         return render_template(
-            'maintenances/maintenance.jinja2',
+            'maintenance/maintenance.jinja2',
             maintenanceWithEvents=create_maintenance_model(maintenance),
         )
 
@@ -95,7 +95,7 @@ def construct_blueprint():
     @login_required
     def add():
         return render_template(
-            'maintenances/maintenanceForm.jinja2',
+            'maintenance/maintenanceForm.jinja2',
             customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(
                 WorkoutType.get_distance_workout_types()
             ),
@@ -166,7 +166,7 @@ def construct_blueprint():
         )
 
         return render_template(
-            'maintenances/maintenanceForm.jinja2',
+            'maintenance/maintenanceForm.jinja2',
             maintenance=model,
             maintenance_id=maintenance_id,
             customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(
