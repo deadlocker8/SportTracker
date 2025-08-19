@@ -3,14 +3,14 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {% if workout %}{{ gettext('Edit Biking Workout') }}{% else %}{{ gettext('New Biking Workout') }}{% endif %}</title>
+        <title>SportTracker - {% if sport %}{{ gettext('Edit Running Workout') }}{% else %}{{ gettext('New Running Workout') }}{% endif %}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('workouts') }}
 
-        {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
+        {% import 'workout/workoutMacros.jinja2' as workoutMacros with context %}
 
         {{ macros.scripts() }}
 
@@ -19,8 +19,8 @@
                 <div class="row">
                     <div class="col col-12 mx-auto">
                         {% if workout %}
-                            {% call macros.headline(gettext('Edit Biking Workout')) %}
-                                <span class="material-symbols-outlined filled fs-1">directions_bike</span>
+                            {% call macros.headline(gettext('Edit Running Workout')) %}
+                                <span class="material-symbols-outlined filled fs-1">directions_run</span>
                             {% endcall %}
                             <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto button-automatically-disabled" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
                                 <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
@@ -30,8 +30,8 @@
                                 {{ macros.buttonSubmitAutomaticallyDisabled(classes='btn btn-danger button-delete-modal-action', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl=url_for('distanceWorkouts.delete', workout_id=workout_id)) }}
                             {% endcall %}
                         {% else %}
-                            {% call macros.headline(gettext('New Biking Workout')) %}
-                                <span class="material-symbols-outlined filled fs-1">directions_bike</span>
+                            {% call macros.headline(gettext('New Running Workout')) %}
+                                <span class="material-symbols-outlined filled fs-1">directions_run</span>
                             {% endcall %}
                         {% endif %}
                     </div>
@@ -44,7 +44,7 @@
                               onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
                               enctype=multipart/form-data>
 
-                            <input type="hidden" class="form-control" id="workout-type" name="type" value="BIKING">
+                            <input type="hidden" class="form-control" id="workout-type" name="type" value="RUNNING">
 
                             {{ workoutMacros.workout_form_name(workout, workoutNames) }}
 

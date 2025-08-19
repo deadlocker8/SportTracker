@@ -166,7 +166,7 @@ def construct_blueprint():
         nextMonthDate = monthRightSideDate + relativedelta(months=1)
 
         return render_template(
-            'workouts/workouts.jinja2',
+            'workout/workouts.jinja2',
             monthLeftSide=monthLeftSide,
             monthRightSide=monthRightSide,
             previousMonthDate=monthLeftSideDate,
@@ -183,7 +183,7 @@ def construct_blueprint():
     @login_required
     def add():
         return render_template(
-            'workouts/workoutChooser.jinja2',
+            'workout/workoutChooser.jinja2',
         )
 
     @workouts.route('/add/<string:workout_type>')
@@ -192,7 +192,7 @@ def construct_blueprint():
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
 
         return render_template(
-            f'workouts/workout{workout_type.capitalize()}Form.jinja2',
+            f'workout/workout{workout_type.capitalize()}Form.jinja2',
             customFields=get_custom_fields_by_workout_type_with_values(workoutType),
             participants=get_participants(),
             workoutNames=get_workout_names_by_type(workoutType),

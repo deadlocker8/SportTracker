@@ -274,7 +274,7 @@
         {% set backgroundColor='bg-secondary' %}
     {% endif %}
 
-    {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
+    {% import 'workout/workoutMacros.jinja2' as workoutMacros with context %}
     {{ workoutMacros.workout_type_icon_small(workoutType, fontSize='fs-4', backgroundColorOverride=backgroundColor) }}
 {%- endmacro %}
 

@@ -90,7 +90,7 @@ def construct_blueprint(
         )
 
         return render_template(
-            f'workouts/workout{workout.type.name.capitalize()}Form.jinja2',
+            f'workout/workout{workout.type.name.capitalize()}Form.jinja2',
             workout=workoutModel,
             workout_id=workout_id,
             customFields=get_custom_fields_by_workout_type_with_values(workout.type),
@@ -202,7 +202,7 @@ def construct_blueprint(
         )
 
         return render_template(
-            f'workouts/workout{fitSession.workout_type.name.capitalize()}Form.jinja2',
+            f'workout/workout{fitSession.workout_type.name.capitalize()}Form.jinja2',
             workoutFromFitImport=workoutFromFitImportModel,
             customFields=get_custom_fields_by_workout_type_with_values(fitSession.workout_type),
             participants=get_participants(),

@@ -72,7 +72,7 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
         )
 
         return render_template(
-            f'workouts/workout{workout.type.name.capitalize()}Form.jinja2',
+            f'workout/workout{workout.type.name.capitalize()}Form.jinja2',
             workout=workoutModel,
             workout_id=workout_id,
             customFields=get_custom_fields_by_workout_type_with_values(workout.type),
