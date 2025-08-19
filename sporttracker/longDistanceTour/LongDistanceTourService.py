@@ -1,3 +1,10 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+
 import logging
 from datetime import datetime
 from operator import attrgetter
@@ -22,7 +29,7 @@ from sporttracker.user.UserEntity import get_users_by_ids, User
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
 from sporttracker.notification.NotificationService import NotificationService
-from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -74,7 +81,9 @@ class LongDistanceTourService:
 
         self.__add_shared_users_to_all_linked_planned_tours(longDistanceTour, sharedUsers)
 
-        gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(longDistanceTour, self._gpx_service)
+        gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(
+            longDistanceTour, self._gpx_service, self._planned_tour_service
+        )
         gpxPreviewImageService.generate_image(self._gpx_preview_image_settings)
 
         self._notification_service.on_long_distance_tour_created(longDistanceTour)
@@ -137,7 +146,9 @@ class LongDistanceTourService:
 
         self.__add_shared_users_to_all_linked_planned_tours(longDistanceTour, sharedUsers)
 
-        gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(longDistanceTour, self._gpx_service)
+        gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(
+            longDistanceTour, self._gpx_service, self._planned_tour_service
+        )
         gpxPreviewImageService.generate_image(self._gpx_preview_image_settings)
 
         self._notification_service.on_long_distance_tour_updated(longDistanceTour, previousSharedUsers)

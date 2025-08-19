@@ -326,7 +326,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(SearchBlueprint.construct_blueprint())
         app.register_blueprint(
             GpxBlueprint.construct_blueprint(
-                app.config['GPX_SERVICE'], app.config['DISTANCE_WORKOUT_SERVICE'], self._settings['gpxPreviewImages']
+                app.config['GPX_SERVICE'], app.config['DISTANCE_WORKOUT_SERVICE'], app.config['PLANNED_TOUR_SERVICE']
             )
         )
         app.register_blueprint(

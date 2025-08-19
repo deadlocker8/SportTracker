@@ -14,6 +14,7 @@ from werkzeug.datastructures import FileStorage
 
 from sporttracker import Constants
 from sporttracker.gpx.GpxService import GpxService
+from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 from sporttracker.workout.distance.DistanceWorkoutEntity import (
     DistanceWorkout,
     get_distance_workout_ids_by_planned_tour,
@@ -328,8 +329,6 @@ class PlannedTourService:
         return PlannedTour.query.filter(PlannedTour.share_code == shareCode).first()
 
     def __update_gpx_preview_image_for_long_distance_tours(self, linkedLongDistanceTourIds: list[int]):
-        from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
-
         for linkedLongDistanceTourId in linkedLongDistanceTourIds:
             longDistanceTour = LongDistanceTourService.get_long_distance_tour_by_id(linkedLongDistanceTourId)
             if longDistanceTour is None:
@@ -337,7 +336,7 @@ class PlannedTourService:
 
             from sporttracker.gpx.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
 
-            gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(longDistanceTour, self._gpx_service)
+            gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(longDistanceTour, self._gpx_service, self)
             gpxPreviewImageService.generate_image(self._gpx_preview_image_settings)
 
     def get_number_of_new_visited_tiles(self, plannedTour: PlannedTour) -> int:
@@ -455,8 +454,6 @@ class PlannedTourService:
         if includeDone and includeTodo:
             return plannedTours
 
-        from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
-
         filteredTours = []
         for plannedTour in plannedTours:
             numberOfLinkedWorkouts = (
@@ -481,9 +478,6 @@ class PlannedTourService:
     ) -> list[PlannedTour]:
         if includeLongDistanceTours and excludeLongDistanceTours:
             return plannedTours
-
-        from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTourPlannedTourAssociation
-        from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 
         filteredTours = []
 

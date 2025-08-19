@@ -1,5 +1,4 @@
 import logging
-from typing import Any
 
 from flask import Blueprint, abort, Response, send_file, send_from_directory
 from flask_login import login_required, current_user
@@ -17,7 +16,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 def construct_blueprint(
-    gpxService: GpxService, distanceWorkoutService: DistanceWorkoutService, gpxPreviewSettings: dict[str, Any]
+    gpxService: GpxService, distanceWorkoutService: DistanceWorkoutService, plannedTourService: PlannedTourService
 ):
     gpxTracks = Blueprint('gpxTracks', __name__, static_folder='static', url_prefix='/gpxTracks')
 
@@ -123,7 +122,9 @@ def construct_blueprint(
         if longDistanceTour is None:
             abort(404)
 
-        gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(longDistanceTour, gpxService)
+        gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(
+            longDistanceTour, gpxService, plannedTourService
+        )
 
         if not gpxPreviewImageService.is_image_existing():
             return send_from_directory('static', path='images/map_placeholder.png', mimetype='image/png')

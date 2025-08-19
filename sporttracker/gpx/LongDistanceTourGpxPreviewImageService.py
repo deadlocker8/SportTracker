@@ -1,13 +1,19 @@
+from __future__ import annotations
+
+from typing import Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+
 import logging
 import os
 import tempfile
-from typing import Any
 
 import requests
 
 from sporttracker import Constants
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
-from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -17,9 +23,10 @@ class ImageGenerationException(Exception):
 
 
 class LongDistanceTourGpxPreviewImageService:
-    def __init__(self, longDistanceTour: LongDistanceTour, gpxService) -> None:
+    def __init__(self, longDistanceTour: LongDistanceTour, gpxService, plannedTourService: PlannedTourService) -> None:
         self._longDistanceTour = longDistanceTour
         self._gpxService = gpxService
+        self._plannedTourService = plannedTourService
 
         self._uniqueName = f'long_distance_tour_{self._longDistanceTour.id}'
         self._previewImageFileName = f'{self._uniqueName}.jpg'
@@ -50,11 +57,10 @@ class LongDistanceTourGpxPreviewImageService:
                 except Exception as err:
                     LOGGER.error(err)
 
-    @staticmethod
-    def __determine_gpx_file_names(linkedPlannedTours):
+    def __determine_gpx_file_names(self, linkedPlannedTours) -> list[str]:
         gpxFileNames = []
         for linkedPlannedTour in linkedPlannedTours:
-            plannedTour = PlannedTourService.get_planned_tour_by_id(linkedPlannedTour.planned_tour_id)
+            plannedTour = self._plannedTourService.get_planned_tour_by_id(linkedPlannedTour.planned_tour_id)
             if plannedTour is None:
                 continue
 

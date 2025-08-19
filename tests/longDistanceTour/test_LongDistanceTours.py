@@ -6,10 +6,11 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
-from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.user.UserEntity import create_user, Language
+from sporttracker.workout.WorkoutType import WorkoutType
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
+from tests.plannedTour.test_PlannedTours import TestPlannedTours
 
 TEST_USERNAME_2 = 'test_user_2'
 TEST_PASSWORD_2 = 'abcdef'
@@ -52,8 +53,6 @@ class TestLongDistanceTours(SeleniumTestBaseClass):
         WebDriverWait(selenium, 5).until(
             expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'New Planned Tour')
         )
-
-        from tests.plannedTour.test_PlannedTours import TestPlannedTours
 
         TestPlannedTours.fill_form(
             selenium, WorkoutType.BIKING, name, 'arrival-method-2', 'departure-method-2', 'direction-2'
