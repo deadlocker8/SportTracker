@@ -15,7 +15,7 @@ from sporttracker.logic.model.GpxMetadata import GpxMetadata
 from sporttracker.logic.model.LongDistanceTour import LongDistanceTour, LongDistanceTourPlannedTourAssociation
 from sporttracker.logic.model.Maintenance import Maintenance
 from sporttracker.logic.model.MaintenanceEventInstance import MaintenanceEventInstance
-from sporttracker.logic.model.MonthGoal import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
+from sporttracker.monthGoals.MonthGoalModel import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.logic.model.Participant import Participant
 from sporttracker.logic.model.PlannedTour import PlannedTour
 from sporttracker.logic.model.TravelDirection import TravelDirection

@@ -25,7 +25,7 @@ from sporttracker.logic.model.MaintenanceEventInstance import (
     MaintenanceEvent,
     get_maintenance_events_by_year_and_month_by_type,
 )
-from sporttracker.logic.model.MonthGoal import (
+from sporttracker.monthGoals.MonthGoalModel import (
     MonthGoalSummary,
     get_goal_summaries_by_year_and_month_and_types,
 )

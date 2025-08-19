@@ -7,7 +7,7 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 
 from sporttracker.logic import Constants
-from sporttracker.logic.model.MonthGoal import MonthGoalDistance, get_month_goal_distance_by_id
+from sporttracker.monthGoals.MonthGoalModel import MonthGoalDistance, get_month_goal_distance_by_id
 from sporttracker.logic.model.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 

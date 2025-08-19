@@ -23,11 +23,8 @@ from sporttracker.blueprints import (
     General,
     Authentication,
     Workouts,
-    MonthGoals,
     Charts,
     Users,
-    MonthGoalsDistance,
-    MonthGoalsCount,
     Achievements,
     Search,
     Maps,
@@ -38,7 +35,6 @@ from sporttracker.blueprints import (
     MaintenanceEventInstances,
     PlannedTours,
     AnnualAchievements,
-    MonthGoalsDuration,
     DistanceWorkouts,
     FitnessWorkouts,
     LongDistanceTours,
@@ -73,6 +69,12 @@ from sporttracker.logic.service.NtfyService import NtfyService
 from sporttracker.logic.service.PlannedTourService import PlannedTourService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.monthGoals import (
+    MonthGoalBlueprint,
+    MonthGoalsDistanceBlueprint,
+    MonthGoalsCountBlueprint,
+    MonthGoalsDurationBlueprint,
+)
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 LOGGER.propagate = False
@@ -304,10 +306,10 @@ class SportTracker(FlaskBaseApp):
             )
         )
         app.register_blueprint(FitnessWorkouts.construct_blueprint(app.config['FITNESS_WORKOUT_SERVICE']))
-        app.register_blueprint(MonthGoals.construct_blueprint())
-        app.register_blueprint(MonthGoalsDistance.construct_blueprint())
-        app.register_blueprint(MonthGoalsCount.construct_blueprint())
-        app.register_blueprint(MonthGoalsDuration.construct_blueprint())
+        app.register_blueprint(MonthGoalBlueprint.construct_blueprint())
+        app.register_blueprint(MonthGoalsDistanceBlueprint.construct_blueprint())
+        app.register_blueprint(MonthGoalsCountBlueprint.construct_blueprint())
+        app.register_blueprint(MonthGoalsDurationBlueprint.construct_blueprint())
         app.register_blueprint(
             Charts.construct_blueprint(
                 app.config['NEW_VISITED_TILE_CACHE'],
