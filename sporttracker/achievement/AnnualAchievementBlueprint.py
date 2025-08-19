@@ -34,7 +34,7 @@ def construct_blueprint():
     @login_required
     def showAnnualAchievementsByYear(year: int):
         return render_template(
-            'annualAchievements.jinja2',
+            'achievement/annualAchievements.jinja2',
             achievements=__get_annual_achievements(year),
             selectedYear=year,
             availableYears=get_available_years(current_user.id),

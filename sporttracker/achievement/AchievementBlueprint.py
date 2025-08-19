@@ -24,7 +24,7 @@ def construct_blueprint():
     @achievements.route('/')
     @login_required
     def showAchievements():
-        return render_template('achievements.jinja2', achievements=__get_achievements())
+        return render_template('achievement/achievements.jinja2', achievements=__get_achievements())
 
     def __get_achievements() -> dict[WorkoutType, list[Achievement]]:
         result = {}
