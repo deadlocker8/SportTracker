@@ -23,7 +23,7 @@
         {{ macros.navbar('map') }}
 
         {% import 'plannedTours/plannedToursMacros.jinja2' as plannedTourMacros with context %}
-        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+        {% import 'map/mapMacros.jinja2' as mapMacros with context %}
         {{ mapMacros.mapLocale() }}
 
         <div class="row mt-3">
@@ -72,7 +72,7 @@
             tileRenderUrl = '{{ tileRenderUrl }}';
         </script>
 
-        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+        {% import 'map/mapMacros.jinja2' as mapMacros with context %}
         {{ mapMacros.mapLocale() }}
 
         {{ macros.scripts() }}

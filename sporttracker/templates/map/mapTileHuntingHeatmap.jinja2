@@ -17,7 +17,7 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('tileHuntingHeatmap') }}
 
-        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+        {% import 'map/mapMacros.jinja2' as mapMacros with context %}
         {{ mapMacros.mapLocale() }}
 
         <div class="row mt-3 g-0">
@@ -65,7 +65,7 @@
             numberOfVisitsText = '{{ gettext('Visits') }}'
         </script>
 
-        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+        {% import 'map/mapMacros.jinja2' as mapMacros with context %}
         {{ mapMacros.mapLocale() }}
 
         {{ macros.scripts() }}

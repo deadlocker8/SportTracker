@@ -17,7 +17,7 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('tileHunting') }}
 
-        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+        {% import 'map/mapMacros.jinja2' as mapMacros with context %}
         {{ mapMacros.mapLocale() }}
 
         <div class="row my-3 g-0">
@@ -88,7 +88,7 @@
             tileRenderUrl = '{{ tileRenderUrl }}';
         </script>
 
-        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+        {% import 'map/mapMacros.jinja2' as mapMacros with context %}
         {{ mapMacros.mapLocale() }}
 
         {{ macros.scripts() }}

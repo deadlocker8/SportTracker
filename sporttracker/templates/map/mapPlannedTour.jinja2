@@ -16,7 +16,7 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('plannedTours') }}
         {% import 'workouts/workoutMacros.jinja2' as workoutMacros with context %}
-        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+        {% import 'map/mapMacros.jinja2' as mapMacros with context %}
 
         <div class="d-flex flex-row align-items-center justify-content-center my-3 px-3">
             <div class="d-flex align-items-center text-truncate justify-content-center">
@@ -159,7 +159,7 @@
             tileRenderUrl = '{{ tileRenderUrl }}';
         </script>
 
-        {% import 'maps/mapMacros.jinja2' as mapMacros with context %}
+        {% import 'map/mapMacros.jinja2' as mapMacros with context %}
         {{ mapMacros.mapLocale() }}
 
         {{ macros.scripts() }}

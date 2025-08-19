@@ -84,7 +84,7 @@ def construct_blueprint():
         maintenance = get_maintenance_by_id(maintenance_id)
 
         if maintenance is None:
-            return render_template('maps/mapNotFound.jinja2', errorText=gettext('Maintenance does not exist anymore'))
+            return render_template('map/mapNotFound.jinja2', errorText=gettext('Maintenance does not exist anymore'))
 
         return render_template(
             'maintenance/maintenance.jinja2',

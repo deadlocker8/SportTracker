@@ -119,7 +119,7 @@ def construct_blueprint(
             gpxInfo.append(createGpxInfo(workoutId, workoutName, workoutStartTime, workoutType))
 
         return render_template(
-            'maps/mapMultipleWorkouts.jinja2',
+            'map/mapMultipleWorkouts.jinja2',
             gpxInfo=gpxInfo,
             quickFilterState=quickFilterState,
             availableYears=get_available_years(current_user.id),
@@ -158,7 +158,7 @@ def construct_blueprint(
             tileHuntingNumberOfNewVisitedTiles = filtered[0].numberOfNewTiles
 
         return render_template(
-            'maps/mapSingleWorkout.jinja2',
+            'map/mapSingleWorkout.jinja2',
             workout=DistanceWorkoutModel.create_from_workout(workout),
             gpxUrl=url_for(
                 'gpxTracks.downloadGpxTrackByWorkoutId',
@@ -176,10 +176,10 @@ def construct_blueprint(
         workout = distanceWorkoutService.get_distance_workout_by_share_code(shareCode)
 
         if workout is None:
-            return render_template('maps/mapNotFound.jinja2', errorText=flask_babel.gettext('Unknown shared link'))
+            return render_template('map/mapNotFound.jinja2', errorText=flask_babel.gettext('Unknown shared link'))
 
         return render_template(
-            'maps/mapSingleWorkout.jinja2',
+            'map/mapSingleWorkout.jinja2',
             workout=DistanceWorkoutModel.create_from_workout(workout),
             gpxUrl=url_for(
                 'gpxTracks.downloadGpxTrackBySharedWorkout',
@@ -194,7 +194,7 @@ def construct_blueprint(
         plannedTour = plannedTourService.get_planned_tour_by_id(tour_id)
 
         if plannedTour is None:
-            return render_template('maps/mapNotFound.jinja2', errorText=flask_babel.gettext('Unknown planned tour'))
+            return render_template('map/mapNotFound.jinja2', errorText=flask_babel.gettext('Unknown planned tour'))
 
         tileRenderUrl = url_for(
             'maps.renderAllTiles',
@@ -208,7 +208,7 @@ def construct_blueprint(
         tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
 
         return render_template(
-            'maps/mapPlannedTour.jinja2',
+            'map/mapPlannedTour.jinja2',
             plannedTour=PlannedTourModel.create_from_tour(plannedTour, True),
             gpxUrl=url_for(
                 'gpxTracks.downloadGpxTrackByPlannedTourId',
@@ -228,10 +228,10 @@ def construct_blueprint(
         plannedTour = PlannedTourService.get_planned_tour_by_share_code(shareCode)
 
         if plannedTour is None:
-            return render_template('maps/mapNotFound.jinja2', errorText=flask_babel.gettext('Unknown shared link'))
+            return render_template('map/mapNotFound.jinja2', errorText=flask_babel.gettext('Unknown shared link'))
 
         return render_template(
-            'maps/mapPlannedTour.jinja2',
+            'map/mapPlannedTour.jinja2',
             plannedTour=PlannedTourModel.create_from_tour(plannedTour, False),
             gpxUrl=url_for(
                 'gpxTracks.downloadGpxTrackBySharedPlannedTour',
@@ -273,7 +273,7 @@ def construct_blueprint(
             )
 
         return render_template(
-            'maps/mapMultipleWorkouts.jinja2',
+            'map/mapMultipleWorkouts.jinja2',
             gpxInfo=gpxInfo,
             quickFilterState=quickFilterState,
             mapMode='plannedTours',
@@ -487,7 +487,7 @@ def construct_blueprint(
         }
 
         return render_template(
-            'maps/mapTileHunting.jinja2',
+            'map/mapTileHunting.jinja2',
             quickFilterState=quickFilterState,
             availableYears=get_available_years(current_user.id),
             redirectUrl='maps.showTileHuntingMap',
@@ -525,7 +525,7 @@ def construct_blueprint(
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
 
         return render_template(
-            'maps/mapTileHuntingHeatmap.jinja2',
+            'map/mapTileHuntingHeatmap.jinja2',
             quickFilterState=quickFilterState,
             availableYears=availableYears,
             redirectUrl='maps.showTileHuntingHeatMap',
@@ -569,7 +569,7 @@ def construct_blueprint(
 
         if longDistanceTour is None:
             return render_template(
-                'maps/mapNotFound.jinja2', errorText=flask_babel.gettext('Unknown long-distance tour')
+                'map/mapNotFound.jinja2', errorText=flask_babel.gettext('Unknown long-distance tour')
             )
 
         tileRenderUrl = url_for(
@@ -593,7 +593,7 @@ def construct_blueprint(
             )  # type: ignore[arg-type]
 
         return render_template(
-            'maps/mapLongDistanceTour.jinja2',
+            'map/mapLongDistanceTour.jinja2',
             longDistanceTour=longDistanceTourModel,
             gpxInfo=gpxInfo,
             editUrl=url_for('longDistanceTours.edit', tour_id=tour_id),
