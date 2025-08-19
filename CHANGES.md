@@ -5,6 +5,7 @@
 - add: redirect to long-distance tour map instead of all long-distance tours page after saving a long-distance tour
 - add: notifications are now persisted and shown in a notification center (#250)
 - add: your user settings now allow you to now choose which notifications should be sent via ntfy (#251)
+- add: refactored all modules to a modulith structure (#254)
 - fix: fix calculation of number of new visited tiles for workout
 - fix: progress indicator on save is now correctly shown in workout forms (#249)
 
