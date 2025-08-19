@@ -7,7 +7,7 @@ class SettingsChecker:
         'logging': ['enableRotatingLogFile', 'fileName', 'maxBytes', 'numberOfBackups'],
         'database': ['uri'],
         'gpxPreviewImages': ['enabled', 'geoRenderUrl'],
-        'tileHunting': ['baseZoomLevel', 'baseZoomLevel'],
+        'tileHunting': ['baseZoomLevel', 'borderColor', 'maxSquareColor'],
     }
 
     def __init__(self, settings: dict[str, Any]) -> None:

@@ -6,6 +6,7 @@
 - [ ] database migration
 - [ ] update API
 - [ ] add dummy data
+- [ ] update SettingsChecker
 - [ ] update README
 - [ ] update changelog
 - [ ] update screenshots
