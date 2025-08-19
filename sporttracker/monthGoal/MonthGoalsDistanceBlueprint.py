@@ -38,7 +38,7 @@ def construct_blueprint():
     @monthGoalsDistance.route('/add')
     @login_required
     def add():
-        return render_template('monthGoals/monthGoalDistanceForm.jinja2')
+        return render_template('monthGoal/monthGoalDistanceForm.jinja2')
 
     @monthGoalsDistance.route('/post', methods=['POST'])
     @login_required
@@ -61,7 +61,7 @@ def construct_blueprint():
     @monthGoalsDistance.route('/addMultiple')
     @login_required
     def addMultiple():
-        return render_template('monthGoals/monthGoalDistanceMultipleForm.jinja2')
+        return render_template('monthGoal/monthGoalDistanceMultipleForm.jinja2')
 
     @monthGoalsDistance.route('/postMultiple', methods=['POST'])
     @login_required
@@ -118,7 +118,7 @@ def construct_blueprint():
             distance_perfect=monthGoal.distance_perfect / 1000,
         )
 
-        return render_template('monthGoals/monthGoalDistanceForm.jinja2', goal=goalModel, goal_id=goal_id)
+        return render_template('monthGoal/monthGoalDistanceForm.jinja2', goal=goalModel, goal_id=goal_id)
 
     @monthGoalsDistance.route('/edit/<int:goal_id>', methods=['POST'])
     @login_required

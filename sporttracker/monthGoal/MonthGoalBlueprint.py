@@ -53,7 +53,7 @@ def construct_blueprint():
         goalsByYear = {k: list(g) for k, g in groupby(goals, key=lambda goal: goal.year)}
 
         return render_template(
-            'monthGoals/monthGoals.jinja2',
+            'monthGoal/monthGoals.jinja2',
             goalsByYear=goalsByYear,
             quickFilterState=quickFilterState,
         )
@@ -61,6 +61,6 @@ def construct_blueprint():
     @monthGoals.route('/add')
     @login_required
     def add():
-        return render_template('monthGoals/monthGoalChooser.jinja2')
+        return render_template('monthGoal/monthGoalChooser.jinja2')
 
     return monthGoals
