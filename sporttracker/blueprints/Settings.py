@@ -18,14 +18,14 @@ from sporttracker.logic.model.CustomWorkoutField import (
     get_custom_fields_grouped_by_distance_workout_types_with_values,
 )
 from sporttracker.maintenance.MaintenanceEntity import Maintenance
-from sporttracker.logic.model.NotificationProviderType import NotificationProviderType
-from sporttracker.logic.model.NotificationSettings import (
+from sporttracker.notification.provider.NotificationProviderType import NotificationProviderType
+from sporttracker.notification.NotificationSettingsEntity import (
     NotificationSettings,
     get_notification_settings_by_user_by_provider_type,
     get_notification_settings_by_id,
 )
-from sporttracker.logic.model.NotificationType import NotificationType
-from sporttracker.logic.model.NtfySettings import NtfySettings
+from sporttracker.notification.NotificationType import NotificationType
+from sporttracker.notification.provider.NtfySettingsEntity import NtfySettings
 from sporttracker.logic.model.Participant import Participant, get_participants
 from sporttracker.logic.model.User import (
     User,

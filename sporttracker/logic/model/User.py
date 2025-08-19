@@ -6,9 +6,9 @@ from flask_login import UserMixin, current_user
 from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
-from sporttracker.logic.model.NotificationProviderType import NotificationProviderType
-from sporttracker.logic.model.NotificationSettings import NotificationSettings
-from sporttracker.logic.model.NtfySettings import NtfySettings
+from sporttracker.notification.provider.NotificationProviderType import NotificationProviderType
+from sporttracker.notification.NotificationSettingsEntity import NotificationSettings
+from sporttracker.notification.provider.NtfySettingsEntity import NtfySettings
 from sporttracker.logic.model.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import PlannedTourFilterState

@@ -13,7 +13,7 @@ from alembic import op
 from sqlalchemy import Inspector, text
 from sqlalchemy.dialects import postgresql
 
-from sporttracker.logic.model.NotificationType import NotificationType
+from sporttracker.notification.NotificationType import NotificationType
 
 # revision identifiers, used by Alembic.
 revision = '1f317da032a0'

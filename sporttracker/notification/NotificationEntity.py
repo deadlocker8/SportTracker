@@ -4,7 +4,7 @@ import flask_babel
 from sqlalchemy import Integer, String, DateTime
 from sqlalchemy.orm import mapped_column, Mapped
 
-from sporttracker.logic.model.NotificationType import NotificationType
+from sporttracker.notification.NotificationType import NotificationType
 from sporttracker.logic.model.db import db
 
 

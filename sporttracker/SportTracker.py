@@ -30,8 +30,8 @@ from sporttracker.blueprints import (
     GpxTracks,
     Settings,
     AnnualAchievements,
-    Notifications,
 )
+from sporttracker.notification import NotificationBlueprint
 from sporttracker.quickFilter import QuickFilterBlueprint
 from sporttracker.helpers import Helpers
 from sporttracker.helpers.SettingsChecker import SettingsChecker
@@ -45,7 +45,7 @@ from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.fitness import FitnessWorkoutBlueprint
 from sporttracker.workout.fitness.FitnessWorkoutCategory import FitnessWorkoutCategoryType
 from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
-from sporttracker.logic.model.NotificationType import NotificationType
+from sporttracker.notification.NotificationType import NotificationType
 from sporttracker.longDistanceTour import LongDistanceTourBlueprint
 from sporttracker.plannedTour import PlannedTourBlueprint
 from sporttracker.plannedTour.TravelDirection import TravelDirection
@@ -62,8 +62,8 @@ from sporttracker.logic.model.db import db, migrate
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.workout.fitness.FitnessWorkoutService import FitnessWorkoutService
 from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
-from sporttracker.logic.service.NotificationService import NotificationService
-from sporttracker.logic.service.NtfyService import NtfyService
+from sporttracker.notification.NotificationService import NotificationService
+from sporttracker.notification.provider.NtfyService import NtfyService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
@@ -357,7 +357,7 @@ class SportTracker(FlaskBaseApp):
             )
         )
         app.register_blueprint(AnnualAchievements.construct_blueprint())
-        app.register_blueprint(Notifications.construct_blueprint(app.config['NOTIFICATION_SERVICE']))
+        app.register_blueprint(NotificationBlueprint.construct_blueprint(app.config['NOTIFICATION_SERVICE']))
 
     def __prepare_database(self, app):
         with app.app_context():

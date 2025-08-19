@@ -7,14 +7,14 @@ from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
 from sporttracker.maintenance.MaintenanceEntity import Maintenance
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import MaintenanceEventInstance
-from sporttracker.logic.model.NotificationType import NotificationType
+from sporttracker.notification.NotificationType import NotificationType
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.logic.model.User import create_user, Language, User
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
-from sporttracker.logic.service.NotificationService import NotificationService
+from sporttracker.notification.NotificationService import NotificationService
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
 
 

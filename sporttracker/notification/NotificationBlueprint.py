@@ -5,7 +5,7 @@ from flask_login import login_required
 
 from sporttracker.logic import Constants
 from sporttracker.logic.model.db import db
-from sporttracker.logic.service.NotificationService import NotificationService
+from sporttracker.notification.NotificationService import NotificationService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

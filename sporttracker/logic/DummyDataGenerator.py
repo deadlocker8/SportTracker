@@ -30,7 +30,7 @@ from sporttracker.workout.fitness.FitnessWorkoutCategory import (
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.logic.model.db import db
-from sporttracker.logic.service.NotificationService import NotificationService
+from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType

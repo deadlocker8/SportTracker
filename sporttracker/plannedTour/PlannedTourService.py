@@ -29,7 +29,7 @@ from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import PlannedTourFilterState
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
-from sporttracker.logic.service.NotificationService import NotificationService
+from sporttracker.notification.NotificationService import NotificationService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

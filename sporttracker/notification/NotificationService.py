@@ -8,8 +8,8 @@ from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances
 from sporttracker.logic.Observable import Observable
 from sporttracker.workout.distance.DistanceWorkoutEntity import get_available_years
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
-from sporttracker.logic.model.Notification import Notification
-from sporttracker.logic.model.NotificationType import NotificationType
+from sporttracker.notification.NotificationEntity import Notification
+from sporttracker.notification.NotificationType import NotificationType
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.logic.model.User import User
 from sporttracker.workout.WorkoutType import WorkoutType

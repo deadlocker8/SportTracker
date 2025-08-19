@@ -1,5 +1,5 @@
-from sporttracker.logic.model.NotificationSettings import NotificationSettings
-from sporttracker.logic.model.NotificationType import NotificationType
+from sporttracker.notification.NotificationSettingsEntity import NotificationSettings
+from sporttracker.notification.NotificationType import NotificationType
 
 
 class TestNotificationSettings:

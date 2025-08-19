@@ -21,7 +21,7 @@ from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.logic.model.User import get_users_by_ids, User
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
-from sporttracker.logic.service.NotificationService import NotificationService
+from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

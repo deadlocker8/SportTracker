@@ -3,8 +3,8 @@ from sqlalchemy import Integer, JSON
 from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import Mapped, mapped_column
 
-from sporttracker.logic.model.NotificationProviderType import NotificationProviderType
-from sporttracker.logic.model.NotificationType import NotificationType
+from sporttracker.notification.provider.NotificationProviderType import NotificationProviderType
+from sporttracker.notification.NotificationType import NotificationType
 from sporttracker.logic.model.db import db
 
 
