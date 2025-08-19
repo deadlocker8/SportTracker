@@ -18,14 +18,14 @@ from werkzeug.datastructures.file_storage import FileStorage
 from sporttracker.logic import Constants
 from sporttracker.logic.FitToGpxConverter import FitToGpxConverter
 from sporttracker.logic.GpxPreviewImageService import GpxPreviewImageService
+from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
+from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
-from sporttracker.logic.model.GpxPlannedTile import GpxPlannedTile
-from sporttracker.logic.model.GpxVisitedTile import GpxVisitedTile
+from sporttracker.tileHunting.GpxPlannedTileEntity import GpxPlannedTile
+from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.logic.model.db import db
-from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
-from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

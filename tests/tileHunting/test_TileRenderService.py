@@ -2,8 +2,8 @@ from unittest.mock import Mock
 
 from PIL import Image, ImageChops
 
-from sporttracker.logic.tileHunting.TileRenderService import TileRenderService, TileRenderColorMode
-from sporttracker.logic.tileHunting.VisitedTileService import TileColorPosition, TileCountPosition
+from sporttracker.tileHunting.TileRenderService import TileRenderService, TileRenderColorMode
+from sporttracker.tileHunting.VisitedTileService import TileColorPosition, TileCountPosition
 
 
 class TestTileRenderService:

@@ -17,6 +17,9 @@ from sporttracker.logic.model.CustomWorkoutField import (
     get_custom_field_by_id,
     get_custom_fields_grouped_by_distance_workout_types_with_values,
 )
+from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
+from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.tileHunting.VisitedTileService import VisitedTileService
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout, get_distance_per_month_by_type
 from sporttracker.logic.model.Participant import Participant
 from sporttracker.workout.WorkoutEntity import (
@@ -28,11 +31,8 @@ from sporttracker.workout.WorkoutEntity import (
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
-from sporttracker.logic.model.filterStates.TileHuntingFilterState import TileHuntingFilterState
+from sporttracker.tileHunting.TileHuntingFilterStateEntity import TileHuntingFilterState
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
-from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
-from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
-from sporttracker.logic.tileHunting.VisitedTileService import VisitedTileService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

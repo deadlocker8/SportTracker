@@ -19,7 +19,7 @@ from sporttracker.workout.distance.DistanceWorkoutEntity import (
     get_distance_workout_ids_by_planned_tour,
 )
 from sporttracker.logic.model.GpxMetadata import GpxMetadata
-from sporttracker.logic.model.GpxVisitedTile import GpxVisitedTile
+from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTourPlannedTourAssociation
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection

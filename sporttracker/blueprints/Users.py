@@ -21,7 +21,7 @@ from sporttracker.logic.model.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import get_maintenance_filter_state_by_user
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
-from sporttracker.logic.model.filterStates.TileHuntingFilterState import get_tile_hunting_filter_state_by_user
+from sporttracker.tileHunting.TileHuntingFilterStateEntity import get_tile_hunting_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

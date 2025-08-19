@@ -1,4 +1,4 @@
-from sporttracker.logic.model.filterStates.TileHuntingFilterState import TileHuntingFilterState
+from sporttracker.tileHunting.TileHuntingFilterStateEntity import TileHuntingFilterState
 
 
 class TestTileHuntingFilterState:

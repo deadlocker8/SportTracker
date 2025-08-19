@@ -39,6 +39,8 @@ from sporttracker.logic import Constants
 from sporttracker.logic.DummyDataGenerator import DummyDataGenerator
 from sporttracker.logic.GpxService import GpxService
 from sporttracker.logic.model.CustomWorkoutField import CustomWorkoutFieldType
+from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
+from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.workout import WorkoutBlueprint
 from sporttracker.workout.distance import DistanceWorkoutBlueprint
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
@@ -65,8 +67,6 @@ from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTo
 from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.notification.provider.NtfyService import NtfyService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
-from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
-from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.maintenance import MaintenanceBlueprint, MaintenanceEventInstanceBlueprint
 from sporttracker.monthGoal import (
     MonthGoalBlueprint,

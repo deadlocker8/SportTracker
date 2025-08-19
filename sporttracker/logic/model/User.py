@@ -13,7 +13,7 @@ from sporttracker.logic.model.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import PlannedTourFilterState
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
-from sporttracker.logic.model.filterStates.TileHuntingFilterState import TileHuntingFilterState
+from sporttracker.tileHunting.TileHuntingFilterStateEntity import TileHuntingFilterState
 
 
 class Language(enum.Enum):

@@ -20,6 +20,10 @@ from sqlalchemy import func, extract
 
 from sporttracker.longDistanceTour.LongDistanceTourBlueprint import LongDistanceTourModel
 from sporttracker.plannedTour.PlannedTourBlueprint import PlannedTourModel
+from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
+from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.tileHunting.TileRenderService import TileRenderService, TileRenderColorMode
+from sporttracker.tileHunting.VisitedTileService import VisitedTileService
 from sporttracker.workout.WorkoutBlueprint import DistanceWorkoutModel
 from sporttracker.logic import Constants
 from sporttracker.logic.GpxService import GpxService, GpxParser
@@ -32,17 +36,13 @@ from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.logic.model.db import db
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
-from sporttracker.logic.model.filterStates.TileHuntingFilterState import (
+from sporttracker.tileHunting.TileHuntingFilterStateEntity import (
     get_tile_hunting_filter_state_by_user,
     TileHuntingFilterState,
 )
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
-from sporttracker.logic.tileHunting.MaxSquareCache import MaxSquareCache
-from sporttracker.logic.tileHunting.NewVisitedTileCache import NewVisitedTileCache
-from sporttracker.logic.tileHunting.TileRenderService import TileRenderService, TileRenderColorMode
-from sporttracker.logic.tileHunting.VisitedTileService import VisitedTileService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
