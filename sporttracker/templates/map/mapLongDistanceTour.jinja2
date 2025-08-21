@@ -84,6 +84,10 @@
                                             <a href="{{ url_for('maps.showPlannedTour', tour_id=stage.id or -1) }}" class="text-center">
                                                 <img class="img-fluid p-2 preview-image" src="{{ url_for('gpxTracks.getPreviewImageByPlannedTourId', tour_id=stage.id) }}" alt="">
                                             </a>
+                                        {% else %}
+                                            <a href="{{ url_for('maps.showPlannedTour',tour_id=stage.id or -1) }}" class="btn btn-primary d-inline-flex align-items-center me-1">
+                                                <span class="material-symbols-outlined filled text-light fs-5">map</span>
+                                            </a>
                                         {% endif %}
                                         {% if stage.linkedWorkouts|length > 0 %}
                                             <a href="{{ url_for('maps.showSingleWorkout', workout_id=linkedWorkout.id) }}"

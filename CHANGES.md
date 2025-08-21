@@ -8,6 +8,7 @@
 - add: refactored all modules to a modulith structure (#254)
 - fix: fix calculation of number of new visited tiles for workout
 - fix: progress indicator on save is now correctly shown in workout forms (#249)
+- fix: allow to open planned tour / long distance tour map if preview images are disabled in settings (#255)
 
 # 1.42.0 - (01.08.25)
 - add: redirect to planned tour map instead of edit page on click on specific tour on all panned tours map (#242)

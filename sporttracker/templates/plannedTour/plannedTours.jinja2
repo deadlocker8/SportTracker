@@ -103,9 +103,17 @@
                                         {{ gettext('last edited') }}: {{ plannedTour.lastEditDate | format_date() }}
                                     </div>
 
-                                    <a href="{{ url_for('plannedTours.edit', tour_id=plannedTour.id) }}" class="btn btn-primary d-inline-flex align-items-center">
-                                        <span class="material-symbols-outlined filled text-light fs-5">edit</span>
-                                    </a>
+                                    <div>
+                                        {% if not isGpxPreviewImagesEnabled %}
+                                            <a href="{{ url_for('maps.showPlannedTour', tour_id=plannedTour.id) }}" class="btn btn-primary d-inline-flex align-items-center me-1">
+                                                <span class="material-symbols-outlined filled text-light fs-5">map</span>
+                                            </a>
+                                        {% endif %}
+
+                                        <a href="{{ url_for('plannedTours.edit', tour_id=plannedTour.id) }}" class="btn btn-primary d-inline-flex align-items-center">
+                                            <span class="material-symbols-outlined filled text-light fs-5">edit</span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
