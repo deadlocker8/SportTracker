@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+    from sporttracker.notification.NotificationService import NotificationService
 
 import logging
 from datetime import datetime
@@ -28,7 +29,6 @@ from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.user.UserEntity import get_users_by_ids, User
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
-from sporttracker.notification.NotificationService import NotificationService
 
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

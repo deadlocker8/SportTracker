@@ -1,8 +1,14 @@
+from __future__ import annotations
+
+from typing import Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from sporttracker.notification.NotificationService import NotificationService
+
 import logging
 from dataclasses import dataclass
 from datetime import datetime
 from operator import attrgetter
-from typing import Any
 
 import natsort
 from flask_login import current_user
@@ -30,7 +36,7 @@ from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import PlannedTourFilterState
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
-from sporttracker.notification.NotificationService import NotificationService
+
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

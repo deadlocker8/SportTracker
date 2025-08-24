@@ -4,18 +4,21 @@ from flask_babel import gettext
 from flask_login import current_user
 from flask_sqlalchemy.pagination import Pagination
 
-from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
-from sporttracker.notification.Observable import Observable
-from sporttracker.workout.distance.DistanceWorkoutEntity import get_available_years
+from sporttracker.db import db
+from sporttracker.helpers import Helpers
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
+from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
+from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
 from sporttracker.notification.NotificationEntity import Notification
 from sporttracker.notification.NotificationType import NotificationType
+from sporttracker.notification.Observable import Observable
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
-from sporttracker.user.UserEntity import User
-from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
-from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
+from sporttracker.user.UserEntity import User
+from sporttracker.workout.WorkoutEntity import Workout
+from sporttracker.workout.WorkoutType import WorkoutType
+from sporttracker.workout.distance.DistanceWorkoutEntity import get_available_years, DistanceWorkout
+from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 
 
 class NotificationService(Observable):
@@ -65,15 +68,18 @@ class NotificationService(Observable):
 
         self._notify_listeners({'notification': notification})
 
-    def on_distance_workout_updated(self, user_id: int, workout_type: WorkoutType) -> None:
+    def on_distance_workout_updated(self, user_id: int, workout: Workout, previousLongestDistance: int | None) -> None:
         user = User.query.filter(User.id == user_id).first()
         if user is None:
             return
 
-        quickFilterState = QuickFilterState().reset(get_available_years(user.id))
-        quickFilterState.update({t: t == workout_type for t in WorkoutType}, quickFilterState.years)
+        self.__check_maintenance_reminder_limits(user_id, workout.type)
+        self.__check_longest_distance_workout(user_id, workout, previousLongestDistance)
 
-        maintenances = get_maintenances_with_events(quickFilterState, MaintenanceFilterState(), user.id)
+    def __check_maintenance_reminder_limits(self, user_id: int, workout_type: WorkoutType) -> None:
+        quickFilterState = QuickFilterState().reset(get_available_years(user_id))
+        quickFilterState.update({t: t == workout_type for t in WorkoutType}, quickFilterState.years)
+        maintenances = get_maintenances_with_events(quickFilterState, MaintenanceFilterState(), user_id)
         for maintenance in maintenances:
             if not maintenance.isLimitActive:
                 continue
@@ -97,6 +103,49 @@ class NotificationService(Observable):
                 ),
                 item_id=maintenance.id,
             )
+
+    def __check_longest_distance_workout(
+        self, user_id: int, workout: DistanceWorkout, previousLongestDistance: int | None
+    ) -> None:
+        if previousLongestDistance is None:
+            return
+
+        if workout.distance <= previousLongestDistance:
+            return
+
+        messageTemplate = gettext('You completed a new distance record with {distance} km in one {workoutType} workout')
+
+        self.__add_notification(
+            user_id=user_id,
+            notification_type=NotificationType.LONGEST_WORKOUT,
+            message=messageTemplate.format(
+                distance=Helpers.format_decimal(workout.distance / 1000, 2),
+                workoutType=workout.type.get_localized_name(),
+            ),
+            message_details=None,
+            item_id=workout.id,
+        )
+
+    def __check_longest_duration_workout(
+        self, user_id: int, workout: FitnessWorkout, previousLongestDuration: int | None
+    ) -> None:
+        if previousLongestDuration is None:
+            return
+
+        if workout.duration <= previousLongestDuration:
+            return
+
+        messageTemplate = gettext('You completed a new duration record with {duration} h in one {workoutType} workout')
+
+        self.__add_notification(
+            user_id=user_id,
+            notification_type=NotificationType.LONGEST_WORKOUT,
+            message=messageTemplate.format(
+                duration=Helpers.format_duration(workout.duration), workoutType=workout.type.get_localized_name()
+            ),
+            message_details=None,
+            item_id=workout.id,
+        )
 
     def on_planned_tour_created(self, planned_tour: PlannedTour) -> None:
         self.__on_tour_create_or_deleted(

@@ -1,12 +1,18 @@
+from __future__ import annotations
+
 import logging
 import os
 from io import BytesIO
-from typing import Any
+from typing import Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from sporttracker.notification.NotificationService import NotificationService
 
 from sporttracker.workout.distance.DistanceWorkoutModel import DistanceWorkoutFormModel
 
 from werkzeug.datastructures import FileStorage
 
+from sporttracker.achievement.AchievementCalculator import AchievementCalculator
 from sporttracker.api.FormModels import DistanceWorkoutApiFormModel
 from sporttracker import Constants
 from sporttracker.gpx.GpxService import GpxService
@@ -15,7 +21,7 @@ from sporttracker.user.ParticipantEntity import get_participants_by_ids
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
-from sporttracker.notification.NotificationService import NotificationService
+
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -69,6 +75,8 @@ class DistanceWorkoutService:
             planned_tour=plannedTour,
         )
 
+        previousLongestDistance = DistanceWorkoutService.get_previous_longest_workout_distance(user_id, workout.type)
+
         db.session.add(workout)
         db.session.commit()
 
@@ -78,7 +86,7 @@ class DistanceWorkoutService:
             )
 
         LOGGER.debug(f'Saved new distance workout: {workout}')
-        self._notification_service.on_distance_workout_updated(user_id, workout.type)
+        self._notification_service.on_distance_workout_updated(user_id, workout, previousLongestDistance)
         return workout
 
     def add_workout_via_api(
@@ -105,11 +113,13 @@ class DistanceWorkoutService:
             planned_tour=planned_tour,
         )
 
+        previousLongestDistance = DistanceWorkoutService.get_previous_longest_workout_distance(user_id, workout.type)
+
         db.session.add(workout)
         db.session.commit()
 
         LOGGER.debug(f'Saved new distance workout: {workout}')
-        self._notification_service.on_distance_workout_updated(user_id, workout.type)
+        self._notification_service.on_distance_workout_updated(user_id, workout.type, previousLongestDistance)
         return workout
 
     def __handle_fit_import(self, form_model: DistanceWorkoutFormModel) -> dict[str, FileStorage]:
@@ -142,7 +152,7 @@ class DistanceWorkoutService:
         db.session.commit()
 
         LOGGER.debug(f'Deleted distance workout: {workout}')
-        self._notification_service.on_distance_workout_updated(user_id, workout.type)
+        self._notification_service.on_distance_workout_updated(user_id, workout, None)
 
     def edit_workout(
         self,
@@ -156,6 +166,8 @@ class DistanceWorkoutService:
 
         if workout is None:
             raise ValueError(f'No distance workout with ID {workout_id} found')
+
+        previousLongestDistance = DistanceWorkoutService.get_previous_longest_workout_distance(user_id, workout.type)
 
         if form_model.planned_tour_id == '-1':
             plannedTour = None
@@ -193,7 +205,7 @@ class DistanceWorkoutService:
             )
 
         LOGGER.debug(f'Updated distance workout: {workout}')
-        self._notification_service.on_distance_workout_updated(user_id, workout.type)
+        self._notification_service.on_distance_workout_updated(user_id, workout, previousLongestDistance)
         return workout
 
     @staticmethod
@@ -207,3 +219,19 @@ class DistanceWorkoutService:
     @staticmethod
     def get_distance_workout_by_share_code(shareCode: str) -> DistanceWorkout | None:
         return DistanceWorkout.query.filter(DistanceWorkout.share_code == shareCode).first()
+
+    @staticmethod
+    def get_previous_longest_workout_distance(user_id: int, workout_type: WorkoutType) -> int | None:
+        longestWorkouts = AchievementCalculator.get_workouts_with_longest_distances_by_type(user_id, workout_type)
+        if not longestWorkouts:
+            return None
+
+        longestWorkout = longestWorkouts[0]
+        if longestWorkout.workout_id is None:
+            return None
+
+        workout = DistanceWorkoutService.get_distance_workout_by_id(longestWorkout.workout_id, user_id)
+        if workout is None:
+            return None
+
+        return workout.distance

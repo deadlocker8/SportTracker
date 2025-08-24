@@ -74,7 +74,7 @@ class TestNotificationService:
             db.session.commit()
 
             notificationService = NotificationService()
-            notificationService.on_distance_workout_updated(user_1.id, WorkoutType.BIKING)
+            notificationService.on_distance_workout_updated(user_1.id, workout, None)
 
             notifications = notificationService.get_notifications_paginated(0).items
             assert len(notifications) == 0
@@ -118,7 +118,7 @@ class TestNotificationService:
             db.session.commit()
 
             notificationService = NotificationService()
-            notificationService.on_distance_workout_updated(user_1.id, WorkoutType.BIKING)
+            notificationService.on_distance_workout_updated(user_1.id, workout, None)
 
             notifications = notificationService.get_notifications_paginated(0).items
             assert len(notifications) == 1
