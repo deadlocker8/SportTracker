@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask import Blueprint, render_template
 from flask_babel import gettext
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from sporttracker.helpers import Helpers
 from sporttracker import Constants
@@ -41,7 +41,7 @@ def construct_blueprint():
 
     def __create_distance_based_achievements(workoutType: WorkoutType) -> list[Achievement]:
         achievementList = []
-        streak = AchievementCalculator.get_streaks_by_type(workoutType, datetime.now().date())
+        streak = AchievementCalculator.get_streaks_by_type(current_user.id, workoutType, datetime.now().date())
         achievementList.append(
             Achievement(
                 icon='sports_score',
@@ -58,7 +58,9 @@ def construct_blueprint():
         )
 
         longestWorkout = LongestWorkoutDistanceAchievementHistoryItem.get_dummy_instance()
-        longestWorkouts = AchievementCalculator.get_workouts_with_longest_distances_by_type(workoutType)
+        longestWorkouts = AchievementCalculator.get_workouts_with_longest_distances_by_type(
+            current_user.id, workoutType
+        )
         if longestWorkouts:
             longestWorkout = longestWorkouts[0]
 
@@ -90,14 +92,14 @@ def construct_blueprint():
                 title=gettext('Total Distance'),
                 description=gettext('You completed a total of <span class="fw-bold">{totalDistance} km</span>!').format(
                     totalDistance=Helpers.format_decimal(
-                        AchievementCalculator.get_total_distance_by_type(workoutType), decimals=2
+                        AchievementCalculator.get_total_distance_by_type(current_user.id, workoutType), decimals=2
                     )
                 ),
                 historyItems=[],
             )
         )
 
-        bestMonths = AchievementCalculator.get_best_distance_months_by_type(workoutType)
+        bestMonths = AchievementCalculator.get_best_distance_months_by_type(current_user.id, workoutType)
         achievementList.append(
             Achievement(
                 icon='calendar_month',
@@ -120,7 +122,7 @@ def construct_blueprint():
 
     def __create_duration_based_achievements(workoutType: WorkoutType) -> list[Achievement]:
         achievementList = []
-        streak = AchievementCalculator.get_streaks_by_type(workoutType, datetime.now().date())
+        streak = AchievementCalculator.get_streaks_by_type(current_user.id, workoutType, datetime.now().date())
         achievementList.append(
             Achievement(
                 icon='sports_score',
@@ -137,7 +139,9 @@ def construct_blueprint():
         )
 
         longestWorkout = LongestWorkoutDurationAchievementHistoryItem.get_dummy_instance()
-        longestWorkouts = AchievementCalculator.get_workouts_with_longest_durations_by_type(workoutType)
+        longestWorkouts = AchievementCalculator.get_workouts_with_longest_durations_by_type(
+            current_user.id, workoutType
+        )
         if longestWorkouts:
             longestWorkout = longestWorkouts[0]
 
@@ -168,13 +172,15 @@ def construct_blueprint():
                 color=workoutType.border_color,
                 title=gettext('Total Duration'),
                 description=gettext('You completed a total of <span class="fw-bold">{totalDuration} h</span>!').format(
-                    totalDuration=Helpers.format_duration(AchievementCalculator.get_total_duration_by_type(workoutType))
+                    totalDuration=Helpers.format_duration(
+                        AchievementCalculator.get_total_duration_by_type(current_user.id, workoutType)
+                    )
                 ),
                 historyItems=[],
             )
         )
 
-        bestMonths = AchievementCalculator.get_best_duration_month_by_type(workoutType)
+        bestMonths = AchievementCalculator.get_best_duration_month_by_type(current_user.id, workoutType)
         achievementList.append(
             Achievement(
                 icon='calendar_month',

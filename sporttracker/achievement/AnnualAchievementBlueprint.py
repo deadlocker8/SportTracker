@@ -102,7 +102,7 @@ def construct_blueprint():
         totalDistancePreviousYear = 0.0
 
         for currentYear in availableYears:
-            value = AchievementCalculator.get_total_distance_by_type_and_year(workoutType, currentYear)
+            value = AchievementCalculator.get_total_distance_by_type_and_year(current_user.id, workoutType, currentYear)
             values.append(value)
 
             if currentYear == year:
@@ -143,7 +143,7 @@ def construct_blueprint():
         totalDurationPreviousYear = 0
 
         for currentYear in availableYears:
-            value = AchievementCalculator.get_total_duration_by_type_and_year(workoutType, currentYear)
+            value = AchievementCalculator.get_total_duration_by_type_and_year(current_user.id, workoutType, currentYear)
             values.append(value)
             if currentYear == year:
                 totalDuration = value
@@ -188,7 +188,9 @@ def construct_blueprint():
         totalWorkoutCountPreviousYear = 0
 
         for currentYear in availableYears:
-            value = AchievementCalculator.get_total_number_of_workouts_by_type_and_year(workoutType, currentYear)
+            value = AchievementCalculator.get_total_number_of_workouts_by_type_and_year(
+                current_user.id, workoutType, currentYear
+            )
             values.append(value)
             if currentYear == year:
                 totalWorkoutCount = value
@@ -227,7 +229,9 @@ def construct_blueprint():
         longestWorkoutPreviousYear = 0.0
 
         for currentYear in availableYears:
-            value = AchievementCalculator.get_longest_distance_by_type_and_year(workoutType, currentYear)
+            value = AchievementCalculator.get_longest_distance_by_type_and_year(
+                current_user.id, workoutType, currentYear
+            )
             values.append(value)
             if currentYear == year:
                 longestWorkout = value
@@ -267,7 +271,7 @@ def construct_blueprint():
         averageSpeedPreviousYear = 0.0
 
         for currentYear in availableYears:
-            value = AchievementCalculator.get_average_speed_by_type_and_year(workoutType, currentYear)
+            value = AchievementCalculator.get_average_speed_by_type_and_year(current_user.id, workoutType, currentYear)
             values.append(value)
             if currentYear == year:
                 averageSpeed = value
@@ -307,7 +311,9 @@ def construct_blueprint():
         longestDurationPreviousYear = 0
 
         for currentYear in availableYears:
-            value = AchievementCalculator.get_longest_duration_by_type_and_year(workoutType, currentYear)
+            value = AchievementCalculator.get_longest_duration_by_type_and_year(
+                current_user.id, workoutType, currentYear
+            )
             values.append(value)
             if currentYear == year:
                 longestDuration = value
