@@ -37,6 +37,7 @@ class NotificationType(enum.Enum):
         'text-dark',
         8,
     )
+    LONGEST_WORKOUT = 'LONGEST_WORKOUT', 'trophy', False, 'bg-warning', 'text-dark', 9
 
     icon: str
     is_font_awesome_icon: bool
@@ -82,6 +83,8 @@ class NotificationType(enum.Enum):
             return gettext('Deleted shared long-distance tour')
         elif self == self.REVOKED_SHARED_LONG_DISTANCE_TOUR:
             return gettext('Access to shared long-distance tour revoked')
+        elif self == self.LONGEST_WORKOUT:
+            return gettext('Neues längstes Workout')
 
         raise ValueError(f'Could not get localized name for unsupported NotificationType: {self}')
 
@@ -104,6 +107,8 @@ class NotificationType(enum.Enum):
             return None
         elif self == self.REVOKED_SHARED_LONG_DISTANCE_TOUR:
             return None
+        elif self == self.LONGEST_WORKOUT:
+            return url_for('achievements.showAchievements', _external=external)
 
         raise ValueError(f'Could not get action url for unsupported NotificationType: {self}')
 
