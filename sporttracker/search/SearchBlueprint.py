@@ -5,9 +5,9 @@ from flask import Blueprint, render_template, request
 from flask_babel import format_datetime
 from flask_login import login_required, current_user
 
-from sporttracker.workout.WorkoutBlueprint import DistanceWorkoutModel, FitnessWorkoutModel
 from sporttracker import Constants
 from sporttracker.workout.WorkoutEntity import Workout
+from sporttracker.workout.WorkoutModel import DistanceWorkoutModel, FitnessWorkoutModel
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.user.UserEntity import User
 from sporttracker.db import db

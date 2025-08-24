@@ -7,17 +7,15 @@ from flask import Blueprint, render_template, abort, redirect, url_for, request,
 from flask_login import login_required, current_user
 from flask_pydantic import validate
 
-from sporttracker.workout.WorkoutBlueprint import BaseWorkoutFormModel
 from sporttracker import Constants
 from sporttracker.fit.FitSessionParser import FitSessionParser, FitSession
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
 from sporttracker.user.ParticipantEntity import get_participants
 from sporttracker.workout.WorkoutEntity import get_workout_names_by_type
-from sporttracker.workout.distance.DistanceWorkoutService import (
-    DistanceWorkoutService,
-    DistanceWorkoutFormModel,
-)
+from sporttracker.workout.WorkoutModel import BaseWorkoutFormModel
+from sporttracker.workout.distance.DistanceWorkoutModel import DistanceWorkoutFormModel
+from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

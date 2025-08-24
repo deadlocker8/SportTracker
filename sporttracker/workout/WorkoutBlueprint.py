@@ -1,5 +1,4 @@
 import logging
-from dataclasses import dataclass
 from datetime import datetime, date
 
 import flask_babel
@@ -8,136 +7,29 @@ from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template, redirect, url_for
 from flask_babel import format_datetime
 from flask_login import login_required, current_user
-from pydantic import BaseModel, field_validator
 
 from sporttracker import Constants
-from sporttracker.helpers.DateTimeAccess import DateTimeAccess
-from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
-from sporttracker.workout.distance.DistanceWorkoutEntity import (
-    DistanceWorkout,
-    get_available_years,
-)
-from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
-from sporttracker.workout.fitness.FitnessWorkoutCategory import FitnessWorkoutCategoryType
-from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
-from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
-    MaintenanceEvent,
     get_maintenance_events_by_year_and_month_by_type,
 )
 from sporttracker.monthGoal.MonthGoalEntity import (
-    MonthGoalSummary,
     get_goal_summaries_by_year_and_month_and_types,
 )
+from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
+from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
 from sporttracker.user.ParticipantEntity import get_participants
-from sporttracker.user.UserEntity import get_user_by_id
 from sporttracker.workout.WorkoutEntity import (
     get_workout_names_by_type,
     get_workouts_by_year_and_month_by_type,
 )
+from sporttracker.workout.WorkoutModel import MonthModel, DistanceWorkoutModel, FitnessWorkoutModel
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
-from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+from sporttracker.workout.distance.DistanceWorkoutEntity import (
+    get_available_years,
+)
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
-
-
-@dataclass
-class BaseWorkoutModel(DateTimeAccess):
-    id: int
-    name: str
-    type: str
-    start_time: datetime
-    duration: int
-    participants: list[str]
-    ownerName: str
-    average_heart_rate: int | None
-
-    def get_date_time(self) -> datetime:
-        return self.start_time
-
-
-@dataclass
-class DistanceWorkoutModel(BaseWorkoutModel):
-    distance: int
-    elevation_sum: int | None
-    gpx_metadata: GpxMetadata | None
-    share_code: str | None
-
-    @staticmethod
-    def create_from_workout(
-        workout: DistanceWorkout,
-    ) -> 'DistanceWorkoutModel':
-        return DistanceWorkoutModel(
-            id=workout.id,
-            name=workout.name,  # type: ignore[arg-type]
-            type=workout.type,
-            start_time=workout.start_time,  # type: ignore[arg-type]
-            distance=workout.distance,
-            duration=workout.duration,
-            average_heart_rate=workout.average_heart_rate,
-            elevation_sum=workout.elevation_sum,
-            gpx_metadata=workout.get_gpx_metadata(),
-            participants=[str(item.id) for item in workout.participants],
-            share_code=workout.share_code,
-            ownerName=get_user_by_id(workout.user_id).username,
-        )
-
-
-@dataclass
-class FitnessWorkoutModel(BaseWorkoutModel):
-    fitness_workout_categories: list[FitnessWorkoutCategoryType]
-    fitness_workout_type: FitnessWorkoutType | None = None
-
-    @staticmethod
-    def create_from_workout(
-        workout: FitnessWorkout,
-    ) -> 'FitnessWorkoutModel':
-        return FitnessWorkoutModel(
-            id=workout.id,
-            name=workout.name,  # type: ignore[arg-type]
-            type=workout.type,
-            start_time=workout.start_time,  # type: ignore[arg-type]
-            duration=workout.duration,
-            average_heart_rate=workout.average_heart_rate,
-            participants=[str(item.id) for item in workout.participants],
-            ownerName=get_user_by_id(workout.user_id).username,
-            fitness_workout_categories=workout.get_workout_categories(),
-            fitness_workout_type=workout.fitness_workout_type,
-        )
-
-
-@dataclass
-class MonthModel:
-    name: str
-    entries: list[DistanceWorkoutModel | FitnessWorkoutModel | MaintenanceEvent]
-    goals: list[MonthGoalSummary]
-
-
-class BaseWorkoutFormModel(BaseModel):
-    name: str
-    type: str
-    date: str
-    time: str
-    duration_hours: int
-    duration_minutes: int
-    duration_seconds: int
-    participants: list[str] | str | None = None
-    average_heart_rate: int | None = None
-
-    def calculate_start_time(self) -> datetime:
-        return datetime.strptime(f'{self.date} {self.time}', '%Y-%m-%d %H:%M')
-
-    def calculate_duration(self) -> int:
-        return 3600 * self.duration_hours + 60 * self.duration_minutes + self.duration_seconds
-
-    @field_validator(*['average_heart_rate'], mode='before')
-    def averageHeartRateCheck(cls, value: str, info) -> str | None:
-        if isinstance(value, str):
-            value = value.strip()
-        if value == '':
-            return None
-        return value
 
 
 def construct_blueprint():

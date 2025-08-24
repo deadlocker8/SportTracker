@@ -3,8 +3,8 @@ import logging
 from pydantic import ConfigDict
 
 from sporttracker.api.FormModels import FitnessWorkoutApiFormModel
-from sporttracker.workout.WorkoutBlueprint import BaseWorkoutFormModel
 from sporttracker import Constants
+from sporttracker.workout.WorkoutModel import BaseWorkoutFormModel
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.fitness.FitnessWorkoutCategory import (

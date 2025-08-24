@@ -24,9 +24,9 @@ from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.tileHunting.TileRenderService import TileRenderService, TileRenderColorMode
 from sporttracker.tileHunting.VisitedTileService import VisitedTileService
-from sporttracker.workout.WorkoutBlueprint import DistanceWorkoutModel
 from sporttracker import Constants
 from sporttracker.gpx.GpxService import GpxService, GpxParser
+from sporttracker.workout.WorkoutModel import DistanceWorkoutModel
 from sporttracker.workout.distance.DistanceWorkoutEntity import (
     get_available_years,
     DistanceWorkout,

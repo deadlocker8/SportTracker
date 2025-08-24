@@ -3,11 +3,11 @@ import os
 from io import BytesIO
 from typing import Any
 
-from pydantic import ConfigDict, field_validator
+from sporttracker.workout.distance.DistanceWorkoutModel import DistanceWorkoutFormModel
+
 from werkzeug.datastructures import FileStorage
 
 from sporttracker.api.FormModels import DistanceWorkoutApiFormModel
-from sporttracker.workout.WorkoutBlueprint import BaseWorkoutFormModel
 from sporttracker import Constants
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
@@ -19,28 +19,6 @@ from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
-
-
-class DistanceWorkoutFormModel(BaseWorkoutFormModel):
-    distance: float
-    planned_tour_id: str = '-1'
-    elevation_sum: int | None = None
-    gpx_file_name: str | None = None
-    has_fit_file: bool = False
-    share_code: str | None = None
-    fit_file_name: str | None = None  # only used during import from FIT file
-
-    model_config = ConfigDict(
-        extra='allow',
-    )
-
-    @field_validator(*['elevation_sum'], mode='before')
-    def elevationSumCheck(cls, value: str, info) -> str | None:
-        if isinstance(value, str):
-            value = value.strip()
-        if value == '':
-            return None
-        return value
 
 
 class DistanceWorkoutService:
