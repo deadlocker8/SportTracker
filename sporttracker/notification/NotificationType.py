@@ -84,7 +84,7 @@ class NotificationType(enum.Enum):
         elif self == self.REVOKED_SHARED_LONG_DISTANCE_TOUR:
             return gettext('Access to shared long-distance tour revoked')
         elif self == self.LONGEST_WORKOUT:
-            return gettext('Neues längstes Workout')
+            return gettext('New longest workout')
 
         raise ValueError(f'Could not get localized name for unsupported NotificationType: {self}')
 
