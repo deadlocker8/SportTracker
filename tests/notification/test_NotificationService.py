@@ -35,7 +35,7 @@ class TestNotificationService:
             raise ValueError(f'Could not find user with id {user_id}')
         return user
 
-    def test_on_distance_workout_updated_limit_not_exceeded(self, app):
+    def test_on_distance_workout_updated_check_maintenance_reminders_limit_not_exceeded(self, app):
         with app.test_request_context():
             user_1 = self.__get_user_by_id(2)
             login_user(user_1, remember=False)
@@ -79,7 +79,7 @@ class TestNotificationService:
             notifications = notificationService.get_notifications_paginated(0).items
             assert len(notifications) == 0
 
-    def test_on_distance_workout_updated_limit_exceeded(self, app):
+    def test_on_distance_workout_updated_check_maintenance_reminders_limit_exceeded(self, app):
         with app.test_request_context():
             user_1 = self.__get_user_by_id(2)
             login_user(user_1, remember=False)
@@ -127,6 +127,61 @@ class TestNotificationService:
             assert notifications[0].item_id == maintenance.id
             assert notifications[0].message == 'Maintenance "New front tire" exceeds configured limit'
             assert notifications[0].message_details == 'Limit: 10 km, Exceeded by: 13 km'
+
+    def test_on_distance_workout_updated_check_longest_workout_not_longer(self, app):
+        with app.test_request_context():
+            user_1 = self.__get_user_by_id(2)
+            login_user(user_1, remember=False)
+
+            workout = DistanceWorkout(
+                type=WorkoutType.BIKING,
+                name='Dummy Workout',
+                start_time=datetime(year=2025, month=8, day=15, hour=22, minute=1, second=0),
+                duration=3600,
+                distance=23 * 1000,
+                average_heart_rate=130,
+                elevation_sum=16,
+                user_id=user_1.id,  # type:ignore[union-attr]
+                custom_fields={},
+            )
+            db.session.add(workout)
+            db.session.commit()
+
+            notificationService = NotificationService()
+            notificationService.on_distance_workout_updated(user_1.id, workout, workout.distance * 2)
+
+            notifications = notificationService.get_notifications_paginated(0).items
+            assert len(notifications) == 0
+
+    def test_on_distance_workout_updated_check_longest_workout_is_longer(self, app):
+        with app.test_request_context():
+            user_1 = self.__get_user_by_id(2)
+            login_user(user_1, remember=False)
+
+            workout = DistanceWorkout(
+                type=WorkoutType.BIKING,
+                name='Dummy Workout',
+                start_time=datetime(year=2025, month=8, day=15, hour=22, minute=1, second=0),
+                duration=3600,
+                distance=23 * 1000,
+                average_heart_rate=130,
+                elevation_sum=16,
+                user_id=user_1.id,  # type:ignore[union-attr]
+                custom_fields={},
+            )
+            db.session.add(workout)
+            db.session.commit()
+
+            notificationService = NotificationService()
+            notificationService.on_distance_workout_updated(user_1.id, workout, workout.distance - 1000)
+
+            notifications = notificationService.get_notifications_paginated(0).items
+            assert len(notifications) == 1
+            assert notifications[0].type == NotificationType.LONGEST_WORKOUT
+            assert notifications[0].user_id == user_1.id
+            assert notifications[0].item_id == workout.id
+            assert notifications[0].message == 'You completed a new distance record with 23.0 km in one Biking workout'
+            assert notifications[0].message_details is None
 
     def test_on_planned_tour_created_should_add_notification_for_shared_user(self, app):
         with app.test_request_context():
