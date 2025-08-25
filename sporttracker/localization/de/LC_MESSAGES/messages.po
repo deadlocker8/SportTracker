@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-25 22:26+0200\n"
-"PO-Revision-Date: 2025-08-25 22:26+0200\n"
+"POT-Creation-Date: 2025-08-26 00:05+0200\n"
+"PO-Revision-Date: 2025-08-26 00:06+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -206,15 +206,15 @@ msgstr "Unbekannte Etappentour"
 msgid "Stage"
 msgstr "Etappe"
 
-#: ../monthGoal/MonthGoalsCountBlueprint.py:74
-#: ../monthGoal/MonthGoalsDistanceBlueprint.py:74
-#: ../monthGoal/MonthGoalsDurationBlueprint.py:98
+#: ../monthGoal/MonthGoalsCountBlueprint.py:75
+#: ../monthGoal/MonthGoalsDistanceBlueprint.py:75
+#: ../monthGoal/MonthGoalsDurationBlueprint.py:99
 msgid "End Year must be greater or equal Start Year."
 msgstr "Das Endjahr muss größer oder gleich dem Anfangsjahr sein."
 
-#: ../monthGoal/MonthGoalsCountBlueprint.py:77
-#: ../monthGoal/MonthGoalsDistanceBlueprint.py:77
-#: ../monthGoal/MonthGoalsDurationBlueprint.py:101
+#: ../monthGoal/MonthGoalsCountBlueprint.py:78
+#: ../monthGoal/MonthGoalsDistanceBlueprint.py:78
+#: ../monthGoal/MonthGoalsDurationBlueprint.py:102
 msgid "End Month must be greater or equal Start Month."
 msgstr "Der Endmonat muss größer oder gleich dem Startmonat sein."
 
@@ -226,15 +226,15 @@ msgstr "jetzt"
 msgid "{timedelta} ago"
 msgstr "vor {timedelta}"
 
-#: ../notification/NotificationService.py:94
+#: ../notification/NotificationService.py:106
 msgid "Maintenance \"{name}\" exceeds configured limit"
 msgstr "Wartung \"{name}\" übersteigt das konfigurierte Limit"
 
-#: ../notification/NotificationService.py:95
+#: ../notification/NotificationService.py:107
 msgid "Limit: {limit} km, Exceeded by: {limitExceededDistance} km"
 msgstr "Limit: {limit} km, Überschritten um: {limitExceededDistance} km"
 
-#: ../notification/NotificationService.py:116
+#: ../notification/NotificationService.py:128
 msgid ""
 "You completed a new distance record with {distance} km in one {workoutType} "
 "workout"
@@ -242,87 +242,109 @@ msgstr ""
 "Du hast einen neuen Distanzrekord mit {distance} km in einem {workoutType} "
 "Workout aufgestellt"
 
-#: ../notification/NotificationService.py:145
+#: ../notification/NotificationService.py:165
+msgid "distance month goal"
+msgstr "Streckenziel"
+
+#: ../notification/NotificationService.py:176
+msgid "count month goal"
+msgstr "Anzahlziel"
+
+#: ../notification/NotificationService.py:187
+msgid "duration month goal"
+msgstr "Zeitziel"
+
+#: ../notification/NotificationService.py:207
+msgid "You completed your {workoutType} {goalName} \"{goalPerfect}\" for {date}"
+msgstr ""
+"Du hast dein {workoutType} {goalName} \"{goalPerfect}\" für {date} "
+"abgeschlossen."
+
+#: ../notification/NotificationService.py:238
 msgid "You completed a new duration record with {duration} h in one {workoutType}"
 msgstr ""
 "Du hast einen neuen Dauerrekord mit {duration} Stunden in einer {workoutType} "
 "aufgestellt."
 
-#: ../notification/NotificationService.py:160
-#: ../notification/NotificationService.py:170
+#: ../notification/NotificationService.py:253
+#: ../notification/NotificationService.py:263
 msgid "{owner} has shared the planned tour \"{tour_name}\" with you"
 msgstr "{owner} hat die geplante Tour \"{tour_name}\" mit dir geteilt"
 
-#: ../notification/NotificationService.py:172
+#: ../notification/NotificationService.py:265
 msgid "{owner} has updated the planned tour \"{tour_name}\""
 msgstr "{owner} hat die geplante Tour \"{tour_name}\" bearbeitet"
 
-#: ../notification/NotificationService.py:174
+#: ../notification/NotificationService.py:267
 msgid "{owner} has revoked your access to the planned tour \"{tour_name}\""
 msgstr ""
 "{owner} hat deinen Zugriff auf die geplante Tour \"{tour_name}\" zurückgezogen"
 
-#: ../notification/NotificationService.py:180
+#: ../notification/NotificationService.py:273
 msgid "{owner} has deleted the planned tour \"{tour_name}\""
 msgstr "{owner} hat die geplante Tour \"{tour_name}\" gelöscht"
 
-#: ../notification/NotificationService.py:188
-#: ../notification/NotificationService.py:198
+#: ../notification/NotificationService.py:281
+#: ../notification/NotificationService.py:291
 msgid "{owner} has shared the long-distance tour \"{tour_name}\" with you"
 msgstr "{owner} hat die Etappentour \"{tour_name}\" mit dir geteilt"
 
-#: ../notification/NotificationService.py:200
+#: ../notification/NotificationService.py:293
 msgid "{owner} has updated the long-distance tour \"{tour_name}\""
 msgstr "{owner} hat die Etappentour \"{tour_name}\" bearbeitet"
 
-#: ../notification/NotificationService.py:202
+#: ../notification/NotificationService.py:295
 msgid "{owner} has revoked your access to the long-distance tour \"{tour_name}\""
 msgstr ""
 "{owner} hat deinen Zugriff auf die Etappentour \"{tour_name}\" zurückgezogen"
 
-#: ../notification/NotificationService.py:208
+#: ../notification/NotificationService.py:301
 msgid "{owner} has deleted the long-distance tour \"{tour_name}\""
 msgstr "{owner} hat die Etappentour \"{tour_name}\" gelöscht"
 
-#: ../notification/NotificationType.py:69
+#: ../notification/NotificationType.py:74
 msgid "Maintenance limit exceeded"
 msgstr "Wartungslimit überschritten"
 
-#: ../notification/NotificationType.py:71
+#: ../notification/NotificationType.py:76
 msgid "New shared planned tour"
 msgstr "Neue geteilte geplante Tour"
 
-#: ../notification/NotificationType.py:73
+#: ../notification/NotificationType.py:78
 msgid "Updated shared planned tour"
 msgstr "Geteilte geplante Tour bearbeitet"
 
-#: ../notification/NotificationType.py:75
+#: ../notification/NotificationType.py:80
 msgid "Deleted shared planned tour"
 msgstr "Geteilte geplante Tour gelöscht"
 
-#: ../notification/NotificationType.py:77
+#: ../notification/NotificationType.py:82
 msgid "Access to shared planned tour revoked"
 msgstr "Zugriff auf geteilte geplante Tour entzogen"
 
-#: ../notification/NotificationType.py:79
+#: ../notification/NotificationType.py:84
 msgid "New shared long-distance tour"
 msgstr "Neue geteilte Etappentour"
 
-#: ../notification/NotificationType.py:81
+#: ../notification/NotificationType.py:86
 msgid "Updated shared long-distance tour"
 msgstr "Geteilte Etappentour bearbeitet"
 
-#: ../notification/NotificationType.py:83
+#: ../notification/NotificationType.py:88
 msgid "Deleted shared long-distance tour"
 msgstr "Geteilte Etappentour gelöscht"
 
-#: ../notification/NotificationType.py:85
+#: ../notification/NotificationType.py:90
 msgid "Access to shared long-distance tour revoked"
 msgstr "Zugriff auf geteilte Etappentour entzogen"
 
-#: ../notification/NotificationType.py:87
+#: ../notification/NotificationType.py:92
 msgid "New longest workout"
 msgstr "Neues längstes Workout"
+
+#: ../notification/NotificationType.py:94
+msgid "Month goal completed"
+msgstr "Monatsziel abgeschlossen"
 
 #: ../notification/provider/NtfyService.py:62
 msgid "Show in SportTracker"
