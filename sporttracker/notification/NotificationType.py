@@ -40,9 +40,9 @@ class NotificationType(enum.Enum):
         8,
     )
     LONGEST_WORKOUT = 'LONGEST_WORKOUT', 'trophy', False, 'bg-info', 'text-dark', 9
-    MONTH_GOAL_DISTANCE = 'MONTH_GOAL_DISTANCE', 'flag', False, 'bg-success', 'text-dark', 10
-    MONTH_GOAL_COUNT = 'MONTH_GOAL_COUNT', 'flag', False, 'bg-success', 'text-dark', 11
-    MONTH_GOAL_DURATION = 'MONTH_GOAL_DURATION', 'flag', False, 'bg-success', 'text-dark', 12
+    MONTH_GOAL_DISTANCE = 'MONTH_GOAL_DISTANCE', 'flag', False, 'bg-success', 'text-light', 10
+    MONTH_GOAL_COUNT = 'MONTH_GOAL_COUNT', 'flag', False, 'bg-success', 'text-light', 11
+    MONTH_GOAL_DURATION = 'MONTH_GOAL_DURATION', 'flag', False, 'bg-success', 'text-light', 12
 
     icon: str
     is_font_awesome_icon: bool
@@ -91,7 +91,7 @@ class NotificationType(enum.Enum):
         elif self == self.LONGEST_WORKOUT:
             return gettext('New longest workout')
         elif self in [self.MONTH_GOAL_DISTANCE, self.MONTH_GOAL_COUNT, self.MONTH_GOAL_DURATION]:
-            return gettext('Month goal reached')
+            return gettext('Month goal completed')
 
         raise ValueError(f'Could not get localized name for unsupported NotificationType: {self}')
 
