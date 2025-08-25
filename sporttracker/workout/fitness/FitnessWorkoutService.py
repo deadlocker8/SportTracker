@@ -5,6 +5,7 @@ from pydantic import ConfigDict
 from sporttracker.achievement.AchievementCalculator import AchievementCalculator
 from sporttracker.api.FormModels import FitnessWorkoutApiFormModel
 from sporttracker import Constants
+from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.workout.WorkoutModel import BaseWorkoutFormModel
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
@@ -43,10 +44,11 @@ class FitnessWorkoutService:
     ) -> DistanceWorkout:
         participants = get_participants_by_ids(participant_ids)
 
+        startTime = form_model.calculate_start_time()
         workout = FitnessWorkout(
             name=form_model.name,
             type=WorkoutType(form_model.type),  # type: ignore[call-arg]
-            start_time=form_model.calculate_start_time(),
+            start_time=startTime,
             duration=form_model.calculate_duration(),
             average_heart_rate=form_model.average_heart_rate,
             custom_fields=form_model.model_extra,
@@ -56,6 +58,9 @@ class FitnessWorkoutService:
         )
 
         previousLongestDuration = self.get_previous_longest_workout_duration(user_id, workout.type)
+        previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
+            startTime.year, startTime.month, [workout.type], user_id
+        )
 
         db.session.add(workout)
         db.session.commit()
@@ -64,6 +69,7 @@ class FitnessWorkoutService:
 
         LOGGER.debug(f'Saved new fitness workout: {workout}')
         self._notification_service.on_duration_workout_updated(user_id, workout, previousLongestDuration)
+        self._notification_service.on_check_month_goals(user_id, workout, previousCompletedMonthGoals)
         return workout
 
     def add_workout_via_api(
@@ -74,10 +80,11 @@ class FitnessWorkoutService:
     ) -> DistanceWorkout:
         participants = get_participants_by_ids(form_model.participants)
 
+        startTime = form_model.calculate_start_time()
         workout = FitnessWorkout(
             name=form_model.name,
             type=WorkoutType(form_model.workout_type),  # type: ignore[call-arg]
-            start_time=form_model.calculate_start_time(),
+            start_time=startTime,
             duration=form_model.duration,
             average_heart_rate=form_model.average_heart_rate,
             custom_fields={} if form_model.custom_fields is None else form_model.custom_fields,
@@ -87,6 +94,9 @@ class FitnessWorkoutService:
         )
 
         previousLongestDuration = self.get_previous_longest_workout_duration(user_id, workout.type)
+        previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
+            startTime.year, startTime.month, [workout.type], user_id
+        )
 
         db.session.add(workout)
         db.session.commit()
@@ -95,6 +105,7 @@ class FitnessWorkoutService:
 
         LOGGER.debug(f'Saved new fitness workout: {workout}')
         self._notification_service.on_duration_workout_updated(user_id, workout, previousLongestDuration)
+        self._notification_service.on_check_month_goals(user_id, workout, previousCompletedMonthGoals)
         return workout
 
     def delete_workout_by_id(self, workout_id: int, user_id: int) -> None:
@@ -122,10 +133,15 @@ class FitnessWorkoutService:
         if workout is None:
             raise ValueError(f'No fitness workout with ID {workout_id} found')
 
+        startTime = form_model.calculate_start_time()
+
         previousLongestDuration = self.get_previous_longest_workout_duration(user_id, workout.type)
+        previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
+            startTime.year, startTime.month, [workout.type], user_id
+        )
 
         workout.name = form_model.name  # type: ignore[assignment]
-        workout.start_time = form_model.calculate_start_time()  # type: ignore[assignment]
+        workout.start_time = startTime  # type: ignore[assignment]
         workout.duration = form_model.calculate_duration()  # type: ignore[assignment]
         workout.average_heart_rate = form_model.average_heart_rate  # type: ignore[assignment]
         workout.participants = get_participants_by_ids(participant_ids)
@@ -141,6 +157,7 @@ class FitnessWorkoutService:
 
         LOGGER.debug(f'Updated fitness workout: {workout}')
         self._notification_service.on_duration_workout_updated(user_id, workout, previousLongestDuration)
+        self._notification_service.on_check_month_goals(user_id, workout, previousCompletedMonthGoals)
         return workout
 
     @staticmethod

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask_babel import gettext
+from flask_babel import gettext, format_datetime
 from flask_login import current_user
 from flask_sqlalchemy.pagination import Pagination
 
@@ -9,6 +9,13 @@ from sporttracker.helpers import Helpers
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
 from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
+from sporttracker.monthGoal.MonthGoalEntity import (
+    MonthGoalSummary,
+    MonthGoalDistanceSummary,
+    MonthGoalCountSummary,
+    MonthGoalDurationSummary,
+)
+from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.notification.NotificationEntity import Notification
 from sporttracker.notification.NotificationType import NotificationType
 from sporttracker.notification.Observable import Observable
@@ -68,7 +75,12 @@ class NotificationService(Observable):
 
         self._notify_listeners({'notification': notification})
 
-    def on_distance_workout_updated(self, user_id: int, workout: Workout, previousLongestDistance: int | None) -> None:
+    def on_distance_workout_updated(
+        self,
+        user_id: int,
+        workout: Workout,
+        previousLongestDistance: int | None,
+    ) -> None:
         user = User.query.filter(User.id == user_id).first()
         if user is None:
             return
@@ -124,6 +136,87 @@ class NotificationService(Observable):
             ),
             message_details=None,
             item_id=workout.id,
+        )
+
+    def on_check_month_goals(
+        self, user_id: int, workout: Workout, previousCompletedMonthGoals: list[MonthGoalSummary] | None
+    ) -> None:
+        if previousCompletedMonthGoals is None:
+            return
+
+        year = workout.start_time.year  # type: ignore[attr-defined]
+        month = workout.start_time.month  # type: ignore[attr-defined]
+
+        newCompletedGoals = MonthGoalService.get_goal_summaries_new_completed(
+            year=year,
+            month=month,
+            workoutTypes=[workout.type],
+            user_id=user_id,
+            previous_completed=previousCompletedMonthGoals,
+        )
+
+        for goal in newCompletedGoals:
+            if isinstance(goal, MonthGoalDistanceSummary):
+                self.__on_month_goal_reached(
+                    user_id=user_id,
+                    year=year,  # type: ignore[attr-defined]
+                    month=month,  # type: ignore[attr-defined]
+                    workout_type=goal.type,
+                    goalName=gettext('distance month goal'),
+                    goal_perfect=f'{Helpers.format_decimal(goal.goal_distance_perfect, decimals=1)} km',
+                    item_id=goal.id,
+                    notification_type=NotificationType.MONTH_GOAL_DISTANCE,
+                )
+            elif isinstance(goal, MonthGoalCountSummary):
+                self.__on_month_goal_reached(
+                    user_id=user_id,
+                    year=year,
+                    month=month,
+                    workout_type=goal.type,
+                    goalName=gettext('count month goal'),
+                    goal_perfect=f'{goal.goal_count_perfect}x',
+                    item_id=goal.id,
+                    notification_type=NotificationType.MONTH_GOAL_COUNT,
+                )
+            elif isinstance(goal, MonthGoalDurationSummary):
+                self.__on_month_goal_reached(
+                    user_id=user_id,
+                    year=year,
+                    month=month,
+                    workout_type=goal.type,
+                    goalName=gettext('duration month goal'),
+                    goal_perfect=f'{Helpers.format_duration(int(goal.goal_duration_perfect))} h',
+                    item_id=goal.id,
+                    notification_type=NotificationType.MONTH_GOAL_DURATION,
+                )
+            else:
+                raise ValueError(f'Unsupported month goal summary type "{goal}"')
+
+    def __on_month_goal_reached(
+        self,
+        user_id: int,
+        year: int,
+        month: int,
+        workout_type: WorkoutType,
+        goalName: str,
+        goal_perfect: str,
+        item_id: int,
+        notification_type: NotificationType,
+    ) -> None:
+        goalDate = datetime(year=year, month=month, day=1)
+        messageTemplate = gettext('You completed your {workoutType} {goalName} "{goalPerfect}" for {date}')
+
+        self.__add_notification(
+            user_id=user_id,
+            notification_type=notification_type,
+            message=messageTemplate.format(
+                goalName=goalName,
+                goalPerfect=goal_perfect,
+                workoutType=workout_type.get_localized_name(),
+                date=format_datetime(goalDate, format='MMMM yyyy'),
+            ),
+            message_details=None,
+            item_id=item_id,
         )
 
     def on_duration_workout_updated(self, user_id: int, workout: Workout, previousLongestDuration: int | None) -> None:

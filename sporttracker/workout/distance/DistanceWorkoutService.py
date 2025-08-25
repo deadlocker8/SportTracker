@@ -5,6 +5,8 @@ import os
 from io import BytesIO
 from typing import Any, TYPE_CHECKING
 
+from sporttracker.monthGoal.MonthGoalService import MonthGoalService
+
 if TYPE_CHECKING:
     from sporttracker.notification.NotificationService import NotificationService
 
@@ -58,10 +60,11 @@ class DistanceWorkoutService:
         else:
             plannedTour = PlannedTourService.get_planned_tour_by_id(int(form_model.planned_tour_id))
 
+        startTime = form_model.calculate_start_time()
         workout = DistanceWorkout(
             name=form_model.name,
             type=WorkoutType(form_model.type),  # type: ignore[call-arg]
-            start_time=form_model.calculate_start_time(),
+            start_time=startTime,
             duration=form_model.calculate_duration(),
             distance=form_model.distance * 1000,
             average_heart_rate=form_model.average_heart_rate,
@@ -75,6 +78,9 @@ class DistanceWorkoutService:
         )
 
         previousLongestDistance = self.get_previous_longest_workout_distance(user_id, workout.type)
+        previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
+            startTime.year, startTime.month, [workout.type], user_id
+        )
 
         db.session.add(workout)
         db.session.commit()
@@ -86,6 +92,7 @@ class DistanceWorkoutService:
 
         LOGGER.debug(f'Saved new distance workout: {workout}')
         self._notification_service.on_distance_workout_updated(user_id, workout, previousLongestDistance)
+        self._notification_service.on_check_month_goals(user_id, workout, previousCompletedMonthGoals)
         return workout
 
     def add_workout_via_api(
@@ -96,10 +103,11 @@ class DistanceWorkoutService:
     ) -> DistanceWorkout:
         participants = get_participants_by_ids(form_model.participants)
 
+        startTime = form_model.calculate_start_time()
         workout = DistanceWorkout(
             name=form_model.name,
             type=WorkoutType(form_model.workout_type),  # type: ignore[call-arg]
-            start_time=form_model.calculate_start_time(),
+            start_time=startTime,
             duration=form_model.duration,
             distance=form_model.distance,
             average_heart_rate=form_model.average_heart_rate,
@@ -113,12 +121,16 @@ class DistanceWorkoutService:
         )
 
         previousLongestDistance = self.get_previous_longest_workout_distance(user_id, workout.type)
+        previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
+            startTime.year, startTime.month, [workout.type], user_id
+        )
 
         db.session.add(workout)
         db.session.commit()
 
         LOGGER.debug(f'Saved new distance workout: {workout}')
         self._notification_service.on_distance_workout_updated(user_id, workout.type, previousLongestDistance)
+        self._notification_service.on_check_month_goals(user_id, workout, previousCompletedMonthGoals)
         return workout
 
     def __handle_fit_import(self, form_model: DistanceWorkoutFormModel) -> dict[str, FileStorage]:
@@ -166,7 +178,11 @@ class DistanceWorkoutService:
         if workout is None:
             raise ValueError(f'No distance workout with ID {workout_id} found')
 
+        startTime = form_model.calculate_start_time()
         previousLongestDistance = self.get_previous_longest_workout_distance(user_id, workout.type)
+        previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
+            startTime.year, startTime.month, [workout.type], user_id
+        )
 
         if form_model.planned_tour_id == '-1':
             plannedTour = None
@@ -174,7 +190,7 @@ class DistanceWorkoutService:
             plannedTour = PlannedTourService.get_planned_tour_by_id(int(form_model.planned_tour_id))
 
         workout.name = form_model.name  # type: ignore[assignment]
-        workout.start_time = form_model.calculate_start_time()  # type: ignore[assignment]
+        workout.start_time = startTime  # type: ignore[assignment]
         workout.distance = form_model.distance * 1000  # type: ignore[assignment]
         workout.duration = form_model.calculate_duration()  # type: ignore[assignment]
         workout.average_heart_rate = form_model.average_heart_rate  # type: ignore[assignment]
@@ -205,6 +221,7 @@ class DistanceWorkoutService:
 
         LOGGER.debug(f'Updated distance workout: {workout}')
         self._notification_service.on_distance_workout_updated(user_id, workout, previousLongestDistance)
+        self._notification_service.on_check_month_goals(user_id, workout, previousCompletedMonthGoals)
         return workout
 
     @staticmethod
