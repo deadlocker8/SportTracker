@@ -19,6 +19,7 @@ class TestNotificationSettings:
             NotificationType.EDITED_SHARED_LONG_DISTANCE_TOUR: True,
             NotificationType.DELETED_SHARED_LONG_DISTANCE_TOUR: True,
             NotificationType.REVOKED_SHARED_LONG_DISTANCE_TOUR: True,
+            NotificationType.LONGEST_WORKOUT: True,
         }
 
     def test_update(self) -> None:
@@ -34,6 +35,7 @@ class TestNotificationSettings:
                 NotificationType.EDITED_SHARED_LONG_DISTANCE_TOUR: False,
                 NotificationType.DELETED_SHARED_LONG_DISTANCE_TOUR: False,
                 NotificationType.REVOKED_SHARED_LONG_DISTANCE_TOUR: False,
+                NotificationType.LONGEST_WORKOUT: False,
             },
         )
 
@@ -47,4 +49,5 @@ class TestNotificationSettings:
             NotificationType.EDITED_SHARED_LONG_DISTANCE_TOUR: False,
             NotificationType.DELETED_SHARED_LONG_DISTANCE_TOUR: False,
             NotificationType.REVOKED_SHARED_LONG_DISTANCE_TOUR: False,
+            NotificationType.LONGEST_WORKOUT: False,
         }
