@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import enum
+from collections.abc import Callable
 
 from flask import url_for
 from flask_babel import gettext
@@ -118,34 +119,28 @@ class NotificationType(enum.Enum):
         elif self == self.LONGEST_WORKOUT:
             return url_for('achievements.showAchievements', _external=external)
         elif self == self.MONTH_GOAL_DISTANCE:
-            if item_id is None:
-                return None
-
-            monthGoal = MonthGoalService.get_month_goal_distance_by_id(item_id, user_id=current_user.id)
-            if monthGoal is None:
-                return url_for('workouts.listWorkouts', _external=external)
-
-            return url_for('workouts.listWorkouts', year=monthGoal.year, month=monthGoal.month, _external=external)
+            return self.__get_action_url_for_month_goal(
+                item_id, external, MonthGoalService.get_month_goal_distance_by_id
+            )
         elif self == self.MONTH_GOAL_COUNT:
-            if item_id is None:
-                return None
-
-            monthGoal = MonthGoalService.get_month_goal_count_by_id(item_id, user_id=current_user.id)
-            if monthGoal is None:
-                return url_for('workouts.listWorkouts', _external=external)
-
-            return url_for('workouts.listWorkouts', year=monthGoal.year, month=monthGoal.month, _external=external)
+            return self.__get_action_url_for_month_goal(item_id, external, MonthGoalService.get_month_goal_count_by_id)
         elif self == self.MONTH_GOAL_DURATION:
-            if item_id is None:
-                return None
-
-            monthGoal = MonthGoalService.get_month_goal_duration_by_id(item_id, user_id=current_user.id)
-            if monthGoal is None:
-                return url_for('workouts.listWorkouts', _external=external)
-
-            return url_for('workouts.listWorkouts', year=monthGoal.year, month=monthGoal.month, _external=external)
+            return self.__get_action_url_for_month_goal(
+                item_id, external, MonthGoalService.get_month_goal_duration_by_id
+            )
 
         raise ValueError(f'Could not get action url for unsupported NotificationType: {self}')
+
+    @staticmethod
+    def __get_action_url_for_month_goal(item_id: int | None, external: bool, fetch_method: Callable) -> str | None:
+        if item_id is None:
+            return None
+
+        monthGoal = fetch_method(item_id, user_id=current_user.id)
+        if monthGoal is None:
+            return url_for('workouts.listWorkouts', _external=external)
+
+        return url_for('workouts.listWorkouts', year=monthGoal.year, month=monthGoal.month, _external=external)
 
     @staticmethod
     def get_sorted() -> list[NotificationType]:
