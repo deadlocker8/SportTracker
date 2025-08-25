@@ -4,14 +4,12 @@ from datetime import date
 from typing import ClassVar
 
 from flask_babel import format_datetime
-from flask_login import current_user
 from sqlalchemy import Integer
 from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.helpers.Helpers import format_duration
 from sporttracker.workout.WorkoutEntity import get_workouts_by_year_and_month_by_type
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.user.UserEntity import User
 from sporttracker.db import db
 
 
@@ -229,61 +227,3 @@ class MonthGoalDuration(MonthGoal):
             f'duration_perfect: {self.duration_perfect}, '
             f'user_id: {self.user_id})'
         )
-
-
-def get_goal_summaries_by_year_and_month_and_types(
-    year: int, month: int, workoutTypes: list[WorkoutType]
-) -> list[MonthGoalSummary]:
-    goalsDistance = (
-        MonthGoalDistance.query.join(User)
-        .filter(User.username == current_user.username)
-        .filter(MonthGoalDistance.year == year)
-        .filter(MonthGoalDistance.month == month)
-        .filter(MonthGoalDistance.type.in_(workoutTypes))
-        .all()
-    )
-    goalsCount = (
-        MonthGoalCount.query.join(User)
-        .filter(User.username == current_user.username)
-        .filter(MonthGoalCount.year == year)
-        .filter(MonthGoalCount.month == month)
-        .filter(MonthGoalCount.type.in_(workoutTypes))
-        .all()
-    )
-    goalsDuration = (
-        MonthGoalDuration.query.join(User)
-        .filter(User.username == current_user.username)
-        .filter(MonthGoalDuration.year == year)
-        .filter(MonthGoalDuration.month == month)
-        .filter(MonthGoalDuration.type.in_(workoutTypes))
-        .all()
-    )
-
-    return [goal.get_summary() for goal in goalsDistance + goalsCount + goalsDuration]
-
-
-def get_month_goal_count_by_id(goal_id: int) -> MonthGoalCount | None:
-    return (
-        MonthGoalCount.query.join(User)
-        .filter(User.username == current_user.username)
-        .filter(MonthGoalCount.id == goal_id)
-        .first()
-    )
-
-
-def get_month_goal_distance_by_id(goal_id: int) -> MonthGoalDistance | None:
-    return (
-        MonthGoalDistance.query.join(User)
-        .filter(User.username == current_user.username)
-        .filter(MonthGoalDistance.id == goal_id)
-        .first()
-    )
-
-
-def get_month_goal_duration_by_id(goal_id: int) -> MonthGoalDuration | None:
-    return (
-        MonthGoalDuration.query.join(User)
-        .filter(User.username == current_user.username)
-        .filter(MonthGoalDuration.id == goal_id)
-        .first()
-    )

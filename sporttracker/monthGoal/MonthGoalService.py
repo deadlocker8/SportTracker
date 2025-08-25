@@ -1,0 +1,63 @@
+from sporttracker.monthGoal.MonthGoalEntity import (
+    MonthGoalCount,
+    MonthGoalDistance,
+    MonthGoalDuration,
+    MonthGoalSummary,
+)
+from sporttracker.user.UserEntity import User
+from sporttracker.workout.WorkoutType import WorkoutType
+
+
+class MonthGoalService:
+    @staticmethod
+    def get_month_goal_count_by_id(goal_id: int, user_id: int) -> MonthGoalCount | None:
+        return MonthGoalCount.query.join(User).filter(User.id == user_id).filter(MonthGoalCount.id == goal_id).first()
+
+    @staticmethod
+    def get_month_goal_distance_by_id(goal_id: int, user_id: int) -> MonthGoalDistance | None:
+        return (
+            MonthGoalDistance.query.join(User)
+            .filter(User.id == user_id)
+            .filter(MonthGoalDistance.id == goal_id)
+            .first()
+        )
+
+    @staticmethod
+    def get_month_goal_duration_by_id(goal_id: int, user_id: int) -> MonthGoalDuration | None:
+        return (
+            MonthGoalDuration.query.join(User)
+            .filter(User.id == user_id)
+            .filter(MonthGoalDuration.id == goal_id)
+            .first()
+        )
+
+    @staticmethod
+    def get_goal_summaries_by_year_and_month_and_types(
+        year: int, month: int, workoutTypes: list[WorkoutType], user_id: int
+    ) -> list[MonthGoalSummary]:
+        goalsDistance = (
+            MonthGoalDistance.query.join(User)
+            .filter(User.id == user_id)
+            .filter(MonthGoalDistance.year == year)
+            .filter(MonthGoalDistance.month == month)
+            .filter(MonthGoalDistance.type.in_(workoutTypes))
+            .all()
+        )
+        goalsCount = (
+            MonthGoalCount.query.join(User)
+            .filter(User.id == user_id)
+            .filter(MonthGoalCount.year == year)
+            .filter(MonthGoalCount.month == month)
+            .filter(MonthGoalCount.type.in_(workoutTypes))
+            .all()
+        )
+        goalsDuration = (
+            MonthGoalDuration.query.join(User)
+            .filter(User.id == user_id)
+            .filter(MonthGoalDuration.year == year)
+            .filter(MonthGoalDuration.month == month)
+            .filter(MonthGoalDuration.type.in_(workoutTypes))
+            .all()
+        )
+
+        return [goal.get_summary() for goal in goalsDistance + goalsCount + goalsDuration]

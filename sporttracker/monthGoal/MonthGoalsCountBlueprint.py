@@ -7,7 +7,8 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 
 from sporttracker import Constants
-from sporttracker.monthGoal.MonthGoalEntity import MonthGoalCount, get_month_goal_count_by_id
+from sporttracker.monthGoal.MonthGoalEntity import MonthGoalCount
+from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
 
@@ -105,7 +106,7 @@ def construct_blueprint():
     @monthGoalsCount.route('/edit/<int:goal_id>')
     @login_required
     def edit(goal_id: int):
-        monthGoal = get_month_goal_count_by_id(goal_id)
+        monthGoal = MonthGoalService.get_month_goal_count_by_id(goal_id, current_user.id)
 
         if monthGoal is None:
             abort(404)
@@ -124,7 +125,7 @@ def construct_blueprint():
     @login_required
     @validate()
     def editPost(goal_id: int, form: MonthGoalCountFormModel):
-        monthGoal = get_month_goal_count_by_id(goal_id)
+        monthGoal = MonthGoalService.get_month_goal_count_by_id(goal_id, current_user.id)
 
         if monthGoal is None:
             abort(404)
@@ -144,7 +145,7 @@ def construct_blueprint():
     @monthGoalsCount.route('/delete/<int:goal_id>')
     @login_required
     def delete(goal_id: int):
-        monthGoal = get_month_goal_count_by_id(goal_id)
+        monthGoal = MonthGoalService.get_month_goal_count_by_id(goal_id, current_user.id)
 
         if monthGoal is None:
             abort(404)

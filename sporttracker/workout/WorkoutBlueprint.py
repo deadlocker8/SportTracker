@@ -12,9 +12,7 @@ from sporttracker import Constants
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     get_maintenance_events_by_year_and_month_by_type,
 )
-from sporttracker.monthGoal.MonthGoalEntity import (
-    get_goal_summaries_by_year_and_month_and_types,
-)
+from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
@@ -121,9 +119,10 @@ def __get_month_model(
     return MonthModel(
         format_datetime(monthDate, format='MMMM yyyy'),
         entries,
-        get_goal_summaries_by_year_and_month_and_types(
+        MonthGoalService.get_goal_summaries_by_year_and_month_and_types(
             monthDate.year,
             monthDate.month,
             quickFilterState.get_active_workout_types(),
+            current_user.id,
         ),
     )

@@ -9,11 +9,11 @@ from sporttracker.achievement.AchievementEntity import (
     BestMonthDistanceAchievementHistoryItem,
     BestMonthDurationAchievementHistoryItem,
 )
+from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.workout.distance.DistanceWorkoutEntity import (
     get_distance_per_month_by_type,
     DistanceWorkout,
 )
-from sporttracker.monthGoal.MonthGoalEntity import get_goal_summaries_by_year_and_month_and_types
 from sporttracker.workout.WorkoutEntity import Workout, get_duration_per_month_by_type
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
@@ -121,7 +121,9 @@ class AchievementCalculator:
         isEndReached = False
 
         while not isEndReached:
-            summaries = get_goal_summaries_by_year_and_month_and_types(year, month, [workoutType])
+            summaries = MonthGoalService.get_goal_summaries_by_year_and_month_and_types(
+                year, month, [workoutType], user_id
+            )
             completedGoals = [s for s in summaries if s.percentage >= 100.0]
 
             if year == currentYear and month == currentMonth:
