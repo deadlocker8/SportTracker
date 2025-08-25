@@ -4,6 +4,7 @@ import enum
 
 from flask import url_for
 from flask_babel import gettext
+from flask_login import current_user
 
 
 class NotificationType(enum.Enum):
@@ -38,6 +39,9 @@ class NotificationType(enum.Enum):
         8,
     )
     LONGEST_WORKOUT = 'LONGEST_WORKOUT', 'trophy', False, 'bg-info', 'text-dark', 9
+    MONTH_GOAL_DISTANCE = 'MONTH_GOAL_DISTANCE', 'flag', False, 'bg-success', 'text-dark', 10
+    MONTH_GOAL_COUNT = 'MONTH_GOAL_COUNT', 'flag', False, 'bg-success', 'text-dark', 11
+    MONTH_GOAL_DURATION = 'MONTH_GOAL_DURATION', 'flag', False, 'bg-success', 'text-dark', 12
 
     icon: str
     is_font_awesome_icon: bool
@@ -85,10 +89,14 @@ class NotificationType(enum.Enum):
             return gettext('Access to shared long-distance tour revoked')
         elif self == self.LONGEST_WORKOUT:
             return gettext('New longest workout')
+        elif self in [self.MONTH_GOAL_DISTANCE, self.MONTH_GOAL_COUNT, self.MONTH_GOAL_DURATION]:
+            return gettext('Month goal reached')
 
         raise ValueError(f'Could not get localized name for unsupported NotificationType: {self}')
 
     def get_action_url(self, item_id: int | None, external: bool = False) -> str | None:
+        from sporttracker.monthGoal.MonthGoalService import MonthGoalService
+
         if self == self.MAINTENANCE_REMINDER:
             return url_for('maintenances.showSingleMaintenance', maintenance_id=item_id, _external=external)
         elif self == self.NEW_SHARED_PLANNED_TOUR:
@@ -109,6 +117,33 @@ class NotificationType(enum.Enum):
             return None
         elif self == self.LONGEST_WORKOUT:
             return url_for('achievements.showAchievements', _external=external)
+        elif self == self.MONTH_GOAL_DISTANCE:
+            if item_id is None:
+                return None
+
+            monthGoal = MonthGoalService.get_month_goal_distance_by_id(item_id, user_id=current_user.id)
+            if monthGoal is None:
+                return url_for('workouts.listWorkouts', _external=external)
+
+            return url_for('workouts.listWorkouts', year=monthGoal.year, month=monthGoal.month, _external=external)
+        elif self == self.MONTH_GOAL_COUNT:
+            if item_id is None:
+                return None
+
+            monthGoal = MonthGoalService.get_month_goal_count_by_id(item_id, user_id=current_user.id)
+            if monthGoal is None:
+                return url_for('workouts.listWorkouts', _external=external)
+
+            return url_for('workouts.listWorkouts', year=monthGoal.year, month=monthGoal.month, _external=external)
+        elif self == self.MONTH_GOAL_DURATION:
+            if item_id is None:
+                return None
+
+            monthGoal = MonthGoalService.get_month_goal_duration_by_id(item_id, user_id=current_user.id)
+            if monthGoal is None:
+                return url_for('workouts.listWorkouts', _external=external)
+
+            return url_for('workouts.listWorkouts', year=monthGoal.year, month=monthGoal.month, _external=external)
 
         raise ValueError(f'Could not get action url for unsupported NotificationType: {self}')
 

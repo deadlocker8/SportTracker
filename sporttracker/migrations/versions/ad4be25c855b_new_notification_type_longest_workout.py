@@ -7,6 +7,7 @@ Create Date: 2025-08-24 22:58:15.063853
 """
 
 from alembic import op
+from sqlalchemy import text
 
 # revision identifiers, used by Alembic.
 revision = 'ad4be25c855b'
@@ -16,7 +17,21 @@ depends_on = None
 
 
 def upgrade():
-    op.execute("ALTER TYPE notificationtype ADD VALUE 'LONGEST_WORKOUT'")
+    result = (
+        op.get_bind()
+        .execute(
+            text("""
+            SELECT e.enumlabel
+            FROM pg_enum e
+                     JOIN pg_type t ON e.enumtypid = t.oid
+            WHERE t.typname = 'notificationtype'
+              AND e.enumlabel = 'LONGEST_WORKOUT'
+            """)
+        )
+        .fetchone()
+    )
+    if not result:
+        op.execute("ALTER TYPE notificationtype ADD VALUE 'LONGEST_WORKOUT'")
 
 
 def downgrade():

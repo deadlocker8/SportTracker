@@ -20,6 +20,9 @@ class TestNotificationSettings:
             NotificationType.DELETED_SHARED_LONG_DISTANCE_TOUR: True,
             NotificationType.REVOKED_SHARED_LONG_DISTANCE_TOUR: True,
             NotificationType.LONGEST_WORKOUT: True,
+            NotificationType.MONTH_GOAL_DISTANCE: True,
+            NotificationType.MONTH_GOAL_COUNT: True,
+            NotificationType.MONTH_GOAL_DURATION: True,
         }
 
     def test_update(self) -> None:
@@ -36,6 +39,9 @@ class TestNotificationSettings:
                 NotificationType.DELETED_SHARED_LONG_DISTANCE_TOUR: False,
                 NotificationType.REVOKED_SHARED_LONG_DISTANCE_TOUR: False,
                 NotificationType.LONGEST_WORKOUT: False,
+                NotificationType.MONTH_GOAL_DISTANCE: True,
+                NotificationType.MONTH_GOAL_COUNT: False,
+                NotificationType.MONTH_GOAL_DURATION: True,
             },
         )
 
@@ -50,4 +56,7 @@ class TestNotificationSettings:
             NotificationType.DELETED_SHARED_LONG_DISTANCE_TOUR: False,
             NotificationType.REVOKED_SHARED_LONG_DISTANCE_TOUR: False,
             NotificationType.LONGEST_WORKOUT: False,
+            NotificationType.MONTH_GOAL_DISTANCE: True,
+            NotificationType.MONTH_GOAL_COUNT: False,
+            NotificationType.MONTH_GOAL_DURATION: True,
         }
