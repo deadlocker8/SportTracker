@@ -37,7 +37,7 @@ class NotificationType(enum.Enum):
         'text-dark',
         8,
     )
-    LONGEST_WORKOUT = 'LONGEST_WORKOUT', 'trophy', False, 'bg-warning', 'text-dark', 9
+    LONGEST_WORKOUT = 'LONGEST_WORKOUT', 'trophy', False, 'bg-info', 'text-dark', 9
 
     icon: str
     is_font_awesome_icon: bool
