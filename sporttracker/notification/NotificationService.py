@@ -126,6 +126,13 @@ class NotificationService(Observable):
             item_id=workout.id,
         )
 
+    def on_duration_workout_updated(self, user_id: int, workout: Workout, previousLongestDuration: int | None) -> None:
+        user = User.query.filter(User.id == user_id).first()
+        if user is None:
+            return
+
+        self.__check_longest_duration_workout(user_id, workout, previousLongestDuration)
+
     def __check_longest_duration_workout(
         self, user_id: int, workout: FitnessWorkout, previousLongestDuration: int | None
     ) -> None:
@@ -135,7 +142,7 @@ class NotificationService(Observable):
         if workout.duration <= previousLongestDuration:
             return
 
-        messageTemplate = gettext('You completed a new duration record with {duration} h in one {workoutType} workout')
+        messageTemplate = gettext('You completed a new duration record with {duration} h in one {workoutType}')
 
         self.__add_notification(
             user_id=user_id,

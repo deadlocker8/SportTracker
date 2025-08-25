@@ -35,7 +35,6 @@ class DistanceWorkoutService:
         tile_hunting_settings: dict[str, Any],
         notification_service: NotificationService,
     ) -> None:
-        super().__init__()
         self._gpx_service = gpx_service
         self._temp_folder_path = temp_folder_path
         self._tile_hunting_settings = tile_hunting_settings
@@ -75,7 +74,7 @@ class DistanceWorkoutService:
             planned_tour=plannedTour,
         )
 
-        previousLongestDistance = DistanceWorkoutService.get_previous_longest_workout_distance(user_id, workout.type)
+        previousLongestDistance = self.get_previous_longest_workout_distance(user_id, workout.type)
 
         db.session.add(workout)
         db.session.commit()
@@ -113,7 +112,7 @@ class DistanceWorkoutService:
             planned_tour=planned_tour,
         )
 
-        previousLongestDistance = DistanceWorkoutService.get_previous_longest_workout_distance(user_id, workout.type)
+        previousLongestDistance = self.get_previous_longest_workout_distance(user_id, workout.type)
 
         db.session.add(workout)
         db.session.commit()
@@ -167,7 +166,7 @@ class DistanceWorkoutService:
         if workout is None:
             raise ValueError(f'No distance workout with ID {workout_id} found')
 
-        previousLongestDistance = DistanceWorkoutService.get_previous_longest_workout_distance(user_id, workout.type)
+        previousLongestDistance = self.get_previous_longest_workout_distance(user_id, workout.type)
 
         if form_model.planned_tour_id == '-1':
             plannedTour = None

@@ -15,6 +15,8 @@ from sporttracker.user.UserEntity import create_user, Language, User
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
 from sporttracker.notification.NotificationService import NotificationService
+from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
+from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
 
 
@@ -181,6 +183,59 @@ class TestNotificationService:
             assert notifications[0].user_id == user_1.id
             assert notifications[0].item_id == workout.id
             assert notifications[0].message == 'You completed a new distance record with 23.0 km in one Biking workout'
+            assert notifications[0].message_details is None
+
+    def test_on_fitness_workout_updated_check_longest_workout_not_longer(self, app):
+        with app.test_request_context():
+            user_1 = self.__get_user_by_id(2)
+            login_user(user_1, remember=False)
+
+            workout = FitnessWorkout(
+                type=WorkoutType.FITNESS,
+                name='Dummy Workout',
+                start_time=datetime(year=2025, month=8, day=15, hour=22, minute=1, second=0),
+                duration=3600,
+                average_heart_rate=130,
+                user_id=user_1.id,  # type:ignore[union-attr]
+                fitness_workout_type=FitnessWorkoutType.DURATION_BASED,
+                custom_fields={},
+            )
+            db.session.add(workout)
+            db.session.commit()
+
+            notificationService = NotificationService()
+            notificationService.on_duration_workout_updated(user_1.id, workout, workout.duration * 2)
+
+            notifications = notificationService.get_notifications_paginated(0).items
+            assert len(notifications) == 0
+
+    def test_on_fitness_workout_updated_check_longest_workout_is_longer(self, app):
+        with app.test_request_context():
+            user_1 = self.__get_user_by_id(2)
+            login_user(user_1, remember=False)
+
+            workout = FitnessWorkout(
+                type=WorkoutType.FITNESS,
+                name='Dummy Workout',
+                start_time=datetime(year=2025, month=8, day=15, hour=22, minute=1, second=0),
+                duration=3600,
+                average_heart_rate=130,
+                user_id=user_1.id,  # type:ignore[union-attr]
+                fitness_workout_type=FitnessWorkoutType.DURATION_BASED,
+                custom_fields={},
+            )
+            db.session.add(workout)
+            db.session.commit()
+
+            notificationService = NotificationService()
+            notificationService.on_duration_workout_updated(user_1.id, workout, workout.duration - 60)
+
+            notifications = notificationService.get_notifications_paginated(0).items
+            assert len(notifications) == 1
+            assert notifications[0].type == NotificationType.LONGEST_WORKOUT
+            assert notifications[0].user_id == user_1.id
+            assert notifications[0].item_id == workout.id
+            assert notifications[0].message == 'You completed a new duration record with 1:00 h in one Fitness Workout'
             assert notifications[0].message_details is None
 
     def test_on_planned_tour_created_should_add_notification_for_shared_user(self, app):

@@ -137,7 +137,7 @@ class SportTracker(FlaskBaseApp):
         ntfyService = NtfyService()
         notificationService.add_listener(ntfyService)
 
-        app.config['FITNESS_WORKOUT_SERVICE'] = FitnessWorkoutService()
+        app.config['FITNESS_WORKOUT_SERVICE'] = FitnessWorkoutService(notificationService)
 
         app.config['PLANNED_TOUR_SERVICE'] = PlannedTourService(
             app.config['GPX_SERVICE'],

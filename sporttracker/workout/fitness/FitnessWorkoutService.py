@@ -2,8 +2,10 @@ import logging
 
 from pydantic import ConfigDict
 
+from sporttracker.achievement.AchievementCalculator import AchievementCalculator
 from sporttracker.api.FormModels import FitnessWorkoutApiFormModel
 from sporttracker import Constants
+from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.workout.WorkoutModel import BaseWorkoutFormModel
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
@@ -29,6 +31,9 @@ class FitnessWorkoutFormModel(BaseWorkoutFormModel):
 
 
 class FitnessWorkoutService:
+    def __init__(self, notification_service: NotificationService) -> None:
+        self._notification_service = notification_service
+
     def add_workout(
         self,
         form_model: FitnessWorkoutFormModel,
@@ -50,12 +55,15 @@ class FitnessWorkoutService:
             fitness_workout_type=FitnessWorkoutType(form_model.fitness_workout_type),  # type: ignore[call-arg]
         )
 
+        previousLongestDuration = self.get_previous_longest_workout_duration(user_id, workout.type)
+
         db.session.add(workout)
         db.session.commit()
 
         update_workout_categories_by_workout_id(workout.id, fitness_workout_categories)
 
         LOGGER.debug(f'Saved new fitness workout: {workout}')
+        self._notification_service.on_duration_workout_updated(user_id, workout, previousLongestDuration)
         return workout
 
     def add_workout_via_api(
@@ -78,12 +86,15 @@ class FitnessWorkoutService:
             fitness_workout_type=FitnessWorkoutType(form_model.fitness_workout_type),  # type: ignore[call-arg]
         )
 
+        previousLongestDuration = self.get_previous_longest_workout_duration(user_id, workout.type)
+
         db.session.add(workout)
         db.session.commit()
 
         update_workout_categories_by_workout_id(workout.id, fitness_workout_categories)
 
         LOGGER.debug(f'Saved new fitness workout: {workout}')
+        self._notification_service.on_duration_workout_updated(user_id, workout, previousLongestDuration)
         return workout
 
     def delete_workout_by_id(self, workout_id: int, user_id: int) -> None:
@@ -96,6 +107,7 @@ class FitnessWorkoutService:
         db.session.commit()
 
         LOGGER.debug(f'Deleted fitness workout: {workout}')
+        self._notification_service.on_duration_workout_updated(user_id, workout, None)
 
     def edit_workout(
         self,
@@ -109,6 +121,8 @@ class FitnessWorkoutService:
 
         if workout is None:
             raise ValueError(f'No fitness workout with ID {workout_id} found')
+
+        previousLongestDuration = self.get_previous_longest_workout_duration(user_id, workout.type)
 
         workout.name = form_model.name  # type: ignore[assignment]
         workout.start_time = form_model.calculate_start_time()  # type: ignore[assignment]
@@ -126,6 +140,7 @@ class FitnessWorkoutService:
         db.session.commit()
 
         LOGGER.debug(f'Updated fitness workout: {workout}')
+        self._notification_service.on_duration_workout_updated(user_id, workout, previousLongestDuration)
         return workout
 
     @staticmethod
@@ -135,3 +150,19 @@ class FitnessWorkoutService:
             .filter(FitnessWorkout.id == workout_id)
             .first()
         )
+
+    @staticmethod
+    def get_previous_longest_workout_duration(user_id: int, workout_type: WorkoutType) -> int | None:
+        longestWorkouts = AchievementCalculator.get_workouts_with_longest_durations_by_type(user_id, workout_type)
+        if not longestWorkouts:
+            return None
+
+        longestWorkout = longestWorkouts[0]
+        if longestWorkout.workout_id is None:
+            return None
+
+        workout = FitnessWorkoutService.get_fitness_workout_by_id(longestWorkout.workout_id, user_id)
+        if workout is None:
+            return None
+
+        return workout.duration
