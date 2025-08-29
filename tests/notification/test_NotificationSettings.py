@@ -23,6 +23,7 @@ class TestNotificationSettings:
             NotificationType.MONTH_GOAL_DISTANCE: True,
             NotificationType.MONTH_GOAL_COUNT: True,
             NotificationType.MONTH_GOAL_DURATION: True,
+            NotificationType.BEST_MONTH: True,
         }
 
     def test_update(self) -> None:
@@ -42,6 +43,7 @@ class TestNotificationSettings:
                 NotificationType.MONTH_GOAL_DISTANCE: True,
                 NotificationType.MONTH_GOAL_COUNT: False,
                 NotificationType.MONTH_GOAL_DURATION: True,
+                NotificationType.BEST_MONTH: True,
             },
         )
 
@@ -59,4 +61,5 @@ class TestNotificationSettings:
             NotificationType.MONTH_GOAL_DISTANCE: True,
             NotificationType.MONTH_GOAL_COUNT: False,
             NotificationType.MONTH_GOAL_DURATION: True,
+            NotificationType.BEST_MONTH: True,
         }

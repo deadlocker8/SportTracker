@@ -43,6 +43,7 @@ class NotificationType(enum.Enum):
     MONTH_GOAL_DISTANCE = 'MONTH_GOAL_DISTANCE', 'flag', False, 'bg-success', 'text-light', 10
     MONTH_GOAL_COUNT = 'MONTH_GOAL_COUNT', 'flag', False, 'bg-success', 'text-light', 11
     MONTH_GOAL_DURATION = 'MONTH_GOAL_DURATION', 'flag', False, 'bg-success', 'text-light', 12
+    BEST_MONTH = 'BEST_MONTH', 'calendar_month', False, 'bg-info', 'text-dark', 13
 
     icon: str
     is_font_awesome_icon: bool
@@ -92,6 +93,8 @@ class NotificationType(enum.Enum):
             return gettext('New longest workout')
         elif self in [self.MONTH_GOAL_DISTANCE, self.MONTH_GOAL_COUNT, self.MONTH_GOAL_DURATION]:
             return gettext('Month goal completed')
+        elif self == self.BEST_MONTH:
+            return gettext('New best month')
 
         raise ValueError(f'Could not get localized name for unsupported NotificationType: {self}')
 
@@ -128,6 +131,8 @@ class NotificationType(enum.Enum):
             return self.__get_action_url_for_month_goal(
                 item_id, external, MonthGoalService.get_month_goal_duration_by_id
             )
+        elif self == self.BEST_MONTH:
+            return url_for('achievements.showAchievements', _external=external)
 
         raise ValueError(f'Could not get action url for unsupported NotificationType: {self}')
 
