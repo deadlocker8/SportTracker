@@ -3,18 +3,19 @@ from datetime import datetime
 import pytest
 from flask_login import FlaskLoginClient, login_user
 
-from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.db import db
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
 from sporttracker.maintenance.MaintenanceEntity import Maintenance
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import MaintenanceEventInstance
+from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
+from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.notification.NotificationType import NotificationType
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.user.UserEntity import create_user, Language, User
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
-from sporttracker.notification.NotificationService import NotificationService
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
 from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
@@ -657,3 +658,202 @@ class TestNotificationService:
                 notifications[0].message == 'Test_user has updated the long-distance tour "Awesome long-distance tour"'
             )
             assert notifications[0].message_details is None
+
+    def test_on_check_month_goals_should_add_notification_for_reached_distance_goal(self, app):
+        with app.test_request_context():
+            user_1 = self.__get_user_by_id(2)
+            login_user(user_1, remember=False)
+
+            monthGoalDistance = MonthGoalDistance(
+                type=WorkoutType.BIKING,
+                year=2025,
+                month=8,
+                user_id=user_1.id,
+                distance_minimum=100 * 1000,
+                distance_perfect=200 * 1000,
+            )
+            db.session.add(monthGoalDistance)
+            db.session.commit()
+
+            workout = DistanceWorkout(
+                type=WorkoutType.BIKING,
+                name='Dummy Workout',
+                start_time=datetime(year=2025, month=8, day=15, hour=22, minute=1, second=0),
+                duration=3600,
+                distance=250 * 1000,
+                average_heart_rate=130,
+                elevation_sum=16,
+                user_id=user_1.id,  # type:ignore[union-attr]
+                custom_fields={},
+            )
+            db.session.add(workout)
+            db.session.commit()
+
+            notificationService = NotificationService()
+            notificationService.on_check_month_goals(user_1.id, workout, [])
+
+            notifications = notificationService.get_notifications_paginated(0).items
+            assert len(notifications) == 1
+            assert notifications[0].type == NotificationType.MONTH_GOAL_DISTANCE
+            assert notifications[0].user_id == user_1.id
+            assert notifications[0].item_id == monthGoalDistance.id
+            assert (
+                notifications[0].message == 'You completed your Biking distance month goal "200.0 km" for August 2025'
+            )
+            assert notifications[0].message_details is None
+
+    def test_on_check_month_goals_should_add_notification_for_reached_count_goal(self, app):
+        with app.test_request_context():
+            user_1 = self.__get_user_by_id(2)
+            login_user(user_1, remember=False)
+
+            monthGoalCount = MonthGoalCount(
+                type=WorkoutType.BIKING,
+                year=2025,
+                month=8,
+                user_id=user_1.id,
+                count_minimum=1,
+                count_perfect=1,
+            )
+            db.session.add(monthGoalCount)
+            db.session.commit()
+
+            workout = DistanceWorkout(
+                type=WorkoutType.BIKING,
+                name='Dummy Workout',
+                start_time=datetime(year=2025, month=8, day=15, hour=22, minute=1, second=0),
+                duration=3600,
+                distance=36 * 1000,
+                average_heart_rate=130,
+                elevation_sum=16,
+                user_id=user_1.id,  # type:ignore[union-attr]
+                custom_fields={},
+            )
+            db.session.add(workout)
+            db.session.commit()
+
+            notificationService = NotificationService()
+            notificationService.on_check_month_goals(user_1.id, workout, [])
+
+            notifications = notificationService.get_notifications_paginated(0).items
+            assert len(notifications) == 1
+            assert notifications[0].type == NotificationType.MONTH_GOAL_COUNT
+            assert notifications[0].user_id == user_1.id
+            assert notifications[0].item_id == monthGoalCount.id
+            assert notifications[0].message == 'You completed your Biking count month goal "1x" for August 2025'
+            assert notifications[0].message_details is None
+
+    def test_on_check_month_goals_should_add_notification_for_reached_duration_goal(self, app):
+        with app.test_request_context():
+            user_1 = self.__get_user_by_id(2)
+            login_user(user_1, remember=False)
+
+            monthGoalDuration = MonthGoalDuration(
+                type=WorkoutType.FITNESS,
+                year=2025,
+                month=8,
+                user_id=user_1.id,
+                duration_minimum=10 * 60,
+                duration_perfect=20 * 60,
+            )
+            db.session.add(monthGoalDuration)
+            db.session.commit()
+
+            workout = FitnessWorkout(
+                type=WorkoutType.FITNESS,
+                name='Dummy Workout',
+                start_time=datetime(year=2025, month=8, day=15, hour=22, minute=1, second=0),
+                duration=25 * 60,
+                average_heart_rate=130,
+                user_id=user_1.id,  # type:ignore[union-attr]
+                fitness_workout_type=FitnessWorkoutType.DURATION_BASED,
+                custom_fields={},
+            )
+            db.session.add(workout)
+            db.session.commit()
+
+            notificationService = NotificationService()
+            notificationService.on_check_month_goals(user_1.id, workout, [])
+
+            notifications = notificationService.get_notifications_paginated(0).items
+            assert len(notifications) == 1
+            assert notifications[0].type == NotificationType.MONTH_GOAL_DURATION
+            assert notifications[0].user_id == user_1.id
+            assert notifications[0].item_id == monthGoalDuration.id
+            assert (
+                notifications[0].message
+                == 'You completed your Fitness Workout duration month goal "0:20 h" for August 2025'
+            )
+            assert notifications[0].message_details is None
+
+    def test_on_check_month_goals_should_not_add_notification_if_no_goal_reached(self, app):
+        with app.test_request_context():
+            user_1 = self.__get_user_by_id(2)
+            login_user(user_1, remember=False)
+
+            monthGoalDistance = MonthGoalDistance(
+                type=WorkoutType.BIKING,
+                year=2025,
+                month=8,
+                user_id=user_1.id,
+                distance_minimum=100 * 1000,
+                distance_perfect=200 * 1000,
+            )
+            db.session.add(monthGoalDistance)
+            db.session.commit()
+
+            workout = DistanceWorkout(
+                type=WorkoutType.BIKING,
+                name='Dummy Workout',
+                start_time=datetime(year=2025, month=8, day=15, hour=22, minute=1, second=0),
+                duration=3600,
+                distance=50 * 1000,
+                average_heart_rate=130,
+                elevation_sum=16,
+                user_id=user_1.id,  # type:ignore[union-attr]
+                custom_fields={},
+            )
+            db.session.add(workout)
+            db.session.commit()
+
+            notificationService = NotificationService()
+            notificationService.on_check_month_goals(user_1.id, workout, [])
+
+            notifications = notificationService.get_notifications_paginated(0).items
+            assert len(notifications) == 0
+
+    def test_on_check_month_goals_should_not_add_notification_if_goal_was_already_reached_before(self, app):
+        with app.test_request_context():
+            user_1 = self.__get_user_by_id(2)
+            login_user(user_1, remember=False)
+
+            monthGoalDistance = MonthGoalDistance(
+                type=WorkoutType.BIKING,
+                year=2025,
+                month=8,
+                user_id=user_1.id,
+                distance_minimum=100 * 1000,
+                distance_perfect=200 * 1000,
+            )
+            db.session.add(monthGoalDistance)
+            db.session.commit()
+
+            workout = DistanceWorkout(
+                type=WorkoutType.BIKING,
+                name='Dummy Workout',
+                start_time=datetime(year=2025, month=8, day=15, hour=22, minute=1, second=0),
+                duration=3600,
+                distance=250 * 1000,
+                average_heart_rate=130,
+                elevation_sum=16,
+                user_id=user_1.id,  # type:ignore[union-attr]
+                custom_fields={},
+            )
+            db.session.add(workout)
+            db.session.commit()
+
+            notificationService = NotificationService()
+            notificationService.on_check_month_goals(user_1.id, workout, [monthGoalDistance.get_summary()])
+
+            notifications = notificationService.get_notifications_paginated(0).items
+            assert len(notifications) == 0
