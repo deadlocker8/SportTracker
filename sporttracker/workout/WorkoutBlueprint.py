@@ -4,7 +4,7 @@ from datetime import datetime, date
 import flask_babel
 from babel.dates import get_month_names
 from dateutil.relativedelta import relativedelta
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, abort, jsonify
 from flask_babel import format_datetime
 from flask_login import login_required, current_user
 
@@ -17,9 +17,11 @@ from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
 from sporttracker.user.ParticipantEntity import get_participants
+from sporttracker.workout.HeartRateEntity import HeartRateEntity
 from sporttracker.workout.WorkoutEntity import (
     get_workout_names_by_type,
     get_workouts_by_year_and_month_by_type,
+    Workout,
 )
 from sporttracker.workout.WorkoutModel import MonthModel, DistanceWorkoutModel, FitnessWorkoutModel
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -86,6 +88,24 @@ def construct_blueprint():
             workoutNames=get_workout_names_by_type(workoutType),
             plannedTours=PlannedTourService.get_planned_tours([workoutType]),
         )
+
+    @workouts.route('/heartRateData/<int:workout_id>')
+    @login_required
+    def getHeartRateData(workout_id: int):
+        workout = Workout.query.filter(Workout.user_id == current_user.id).filter(Workout.id == workout_id).first()
+
+        if workout is None:
+            abort(404)
+
+        heartRateData = HeartRateEntity.query.filter(HeartRateEntity.workout_id == workout_id).all()
+
+        timestamps = []
+        values = []
+        for row in heartRateData:
+            timestamps.append(row.timestamp.isoformat())
+            values.append(row.bpm)
+
+        return jsonify({'timestamps': timestamps, 'values': values})
 
     return workouts
 

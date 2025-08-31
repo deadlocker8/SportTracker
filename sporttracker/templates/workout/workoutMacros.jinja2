@@ -128,7 +128,12 @@
             <span class="material-symbols-outlined filled fs-4 text-body">share</span>
         {% endif %}
         {% if workout.participants %}
-            <span class="material-symbols-outlined filled fs-4 text-body">group</span>
+            <span class="material-symbols-outlined filled fs-4 text-body ms-2">group</span>
+        {% endif %}
+        {% if workout.has_heart_rate_data() %}
+            <a href="#" class="text-decoration-none ms-2 button-heart-rate-modal" data-url="{{ url_for('workouts.getHeartRateData', workout_id=workout.id) }}" data-workout-id="{{ workout.id }}">
+                <span class="material-symbols-outlined filled fs-4 text-body">ecg</span>
+            </a>
         {% endif %}
         {% if workout.gpx_metadata is not undefined and workout.gpx_metadata is not none %}
             <a href="{{ url_for('maps.showSingleWorkout', workout_id=workout.id) }}"
@@ -136,6 +141,37 @@
                 <span class="material-symbols-outlined filled fs-4 text-body">map</span>
             </a>
         {% endif %}
+    </div>
+{%- endmacro %}
+
+{% macro workout_heart_rate_modal(workout) -%}
+    <div class="modal fade" tabindex="-1" id="heart-rate-modal-{{ workout.id }}" data-bs-theme="dark">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content max-height-90">
+                <div class="modal-header d-flex align-items-center justify-content-start">
+                    {{ workout_type_icon_small(workout.type, fontSize='fs-3') }}
+                    <div class="fs-5 ms-3">
+                        {{ workout.start_time | format_date }} - {{ workout.name }}
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div id="heart-rate-modal-progress-spinner-{{ workout.id }}" class="d-flex align-items-center justify-content-center">
+                        <span class="spinner-border me-1"></span>
+                        <span class="fs-5 ms-3">{{ gettext('Loading heart rate data...') }}</span>
+                    </div>
+
+                    <div id="heart-rate-chart-container-{{ workout.id }}" class="w-100"></div>
+                    <div class="row">
+{#                        {{ annualAchievementStatisticCard(gettext('Min'), workoutType, achievement.all_year_data.min) }}#}
+{#                        {{ annualAchievementStatisticCard(gettext('Max'), workoutType, achievement.all_year_data.max) }}#}
+{#                        {{ annualAchievementStatisticCard(gettext('Average'), workoutType, achievement.all_year_data.average) }}#}
+                    </div>
+                </div>
+                <div class="modal-footer overflow-y-auto">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{ gettext('Close') }}</button>
+                </div>
+            </div>
+        </div>
     </div>
 {%- endmacro %}
 
@@ -195,6 +231,10 @@
             </div>
         </div>
     </div>
+
+    {% if workout.has_heart_rate_data() %}
+        {{ workout_heart_rate_modal(workout) }}
+    {% endif %}
 {%- endmacro %}
 
 {% macro render_fitness_workout_card(workout, renderAsRow=false, useSmallIcon=false) -%}
@@ -237,6 +277,10 @@
             </div>
         </div>
     </div>
+
+    {% if workout.has_heart_rate_data() %}
+        {{ workout_heart_rate_modal(workout) }}
+    {% endif %}
 {%- endmacro %}
 
 {% macro render_month(monthModel) -%}

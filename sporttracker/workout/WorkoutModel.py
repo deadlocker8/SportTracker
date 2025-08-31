@@ -12,6 +12,7 @@ from sporttracker.monthGoal.MonthGoalEntity import (
     MonthGoalSummary,
 )
 from sporttracker.user.UserEntity import get_user_by_id
+from sporttracker.workout.HeartRateEntity import HeartRateEntity
 from sporttracker.workout.distance.DistanceWorkoutEntity import (
     DistanceWorkout,
 )
@@ -33,6 +34,9 @@ class BaseWorkoutModel(DateTimeAccess):
 
     def get_date_time(self) -> datetime:
         return self.start_time
+
+    def has_heart_rate_data(self) -> bool:
+        return HeartRateEntity.query.filter(HeartRateEntity.workout_id == self.id).count()
 
 
 @dataclass
