@@ -34,6 +34,10 @@ The current status of each month goal is visualized via progress bars.
 
 ![](screenshots/goals.png)
 
+### Heart rate data
+The SportTracker API allows you to add heart rate data for any workout.
+![](screenshots/heart_rate_chart.png)
+
 ### GPX tracks / Map
 A GPX recoding can be attached to every distance-based workout. The GPX recordings can be viewed on a map.
 
