@@ -7,7 +7,6 @@ from natsort import natsorted
 
 from sporttracker.maintenance.MaintenanceEventInstanceBlueprint import MaintenanceEventInstanceModel
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_field_by_id
-from sporttracker.workout.distance.DistanceWorkoutEntity import get_distance_between_dates
 from sporttracker.maintenance.MaintenanceEntity import Maintenance
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     MaintenanceEventInstance,
@@ -16,6 +15,7 @@ from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
+from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 
 
 @dataclass
@@ -100,7 +100,7 @@ def __convert_events_to_models(
 
     previousEventDate = events[0].event_date
     for event in events:
-        distanceSinceEvent = get_distance_between_dates(
+        distanceSinceEvent = DistanceWorkoutService.get_distance_between_dates(
             maintenance.user_id,
             previousEventDate,
             event.event_date,
@@ -118,7 +118,7 @@ def __convert_events_to_models(
 
     # add additional pseudo maintenance event representing today
     now = datetime.now()
-    distanceUntilToday = get_distance_between_dates(
+    distanceUntilToday = DistanceWorkoutService.get_distance_between_dates(
         maintenance.user_id,
         previousEventDate,
         now,

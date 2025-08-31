@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import logging
 import os
+from datetime import datetime
 from io import BytesIO
 from typing import Any, TYPE_CHECKING
 
-from sqlalchemy import extract, func
+from sqlalchemy import extract, func, DateTime, String
 
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 
@@ -301,3 +302,26 @@ class DistanceWorkoutService:
             return []
 
         return [int(row.year) for row in rows]
+
+    @staticmethod
+    def get_distance_between_dates(
+        userId: int,
+        startDateTime: datetime | DateTime,
+        endDateTime: datetime | DateTime,
+        workoutTypes: list[WorkoutType],
+        customWorkoutFieldName: str | None = None,
+        customWorkoutFieldValue: str | None = None,
+    ) -> int:
+        query = (
+            DistanceWorkout.query.with_entities(func.sum(DistanceWorkout.distance))
+            .filter(DistanceWorkout.type.in_(workoutTypes))
+            .filter(DistanceWorkout.user_id == userId)
+            .filter(DistanceWorkout.start_time.between(startDateTime, endDateTime))
+        )
+
+        if customWorkoutFieldName is not None and customWorkoutFieldValue is not None:
+            query = query.filter(
+                DistanceWorkout.custom_fields[customWorkoutFieldName].astext.cast(String) == customWorkoutFieldValue
+            )
+
+        return int(query.scalar() or 0)

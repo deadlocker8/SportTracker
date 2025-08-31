@@ -1,8 +1,7 @@
 from dataclasses import dataclass
-from datetime import datetime
 
 from flask_login import current_user
-from sqlalchemy import Integer, String, DateTime, func, ForeignKey
+from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
@@ -11,7 +10,6 @@ from sporttracker.plannedTour.PlannedTourEntity import (
     distance_workout_planned_tour_association,
 )
 from sporttracker.workout.WorkoutEntity import Workout
-from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
 
 
@@ -66,29 +64,6 @@ class MonthDistanceSum:
     year: int
     month: int
     distanceSum: float
-
-
-def get_distance_between_dates(
-    userId: int,
-    startDateTime: datetime | DateTime,
-    endDateTime: datetime | DateTime,
-    workoutTypes: list[WorkoutType],
-    customWorkoutFieldName: str | None = None,
-    customWorkoutFieldValue: str | None = None,
-) -> int:
-    query = (
-        DistanceWorkout.query.with_entities(func.sum(DistanceWorkout.distance))
-        .filter(DistanceWorkout.type.in_(workoutTypes))
-        .filter(DistanceWorkout.user_id == userId)
-        .filter(DistanceWorkout.start_time.between(startDateTime, endDateTime))
-    )
-
-    if customWorkoutFieldName is not None and customWorkoutFieldValue is not None:
-        query = query.filter(
-            DistanceWorkout.custom_fields[customWorkoutFieldName].astext.cast(String) == customWorkoutFieldValue
-        )
-
-    return int(query.scalar() or 0)
 
 
 def get_distance_workout_ids_by_planned_tour(plannedTour: PlannedTour) -> list[int]:
