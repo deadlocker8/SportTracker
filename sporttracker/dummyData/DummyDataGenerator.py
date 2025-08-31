@@ -373,7 +373,7 @@ class DummyDataGenerator:
 
         db.session.commit()
 
-        self._notificationService.on_distance_workout_updated(user.id, Workout(type=WorkoutType.BIKING), None)
+        self._notificationService.on_distance_workout_updated(user.id, Workout(type=WorkoutType.BIKING), None, None)
 
     def __generate_demo_participants(self, user) -> None:
         db.session.add(Participant(name='John Doe', user_id=user.id))

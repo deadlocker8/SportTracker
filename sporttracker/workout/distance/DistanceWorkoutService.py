@@ -83,6 +83,12 @@ class DistanceWorkoutService:
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
         )
+        previousBestMonthDistance = DistanceWorkoutService.get_month_distance(
+            user_id=user_id,
+            workoutType=workout.type,
+            year=workout.start_time.year,  # type: ignore[attr-defined]
+            month=workout.start_time.month,  # type: ignore[attr-defined]
+        )
 
         db.session.add(workout)
         db.session.commit()
@@ -93,7 +99,9 @@ class DistanceWorkoutService:
             )
 
         LOGGER.debug(f'Saved new distance workout: {workout}')
-        self._notification_service.on_distance_workout_updated(user_id, workout, previousLongestDistance)
+        self._notification_service.on_distance_workout_updated(
+            user_id, workout, previousLongestDistance, previousBestMonthDistance
+        )
         self._notification_service.on_check_month_goals(user_id, workout, previousCompletedMonthGoals)
         return workout
 
@@ -126,12 +134,20 @@ class DistanceWorkoutService:
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
         )
+        previousBestMonthDistance = DistanceWorkoutService.get_month_distance(
+            user_id=user_id,
+            workoutType=workout.type,
+            year=workout.start_time.year,  # type: ignore[attr-defined]
+            month=workout.start_time.month,  # type: ignore[attr-defined]
+        )
 
         db.session.add(workout)
         db.session.commit()
 
         LOGGER.debug(f'Saved new distance workout: {workout}')
-        self._notification_service.on_distance_workout_updated(user_id, workout.type, previousLongestDistance)
+        self._notification_service.on_distance_workout_updated(
+            user_id, workout.type, previousLongestDistance, previousBestMonthDistance
+        )
         self._notification_service.on_check_month_goals(user_id, workout, previousCompletedMonthGoals)
         return workout
 
@@ -165,7 +181,7 @@ class DistanceWorkoutService:
         db.session.commit()
 
         LOGGER.debug(f'Deleted distance workout: {workout}')
-        self._notification_service.on_distance_workout_updated(user_id, workout, None)
+        self._notification_service.on_distance_workout_updated(user_id, workout, None, None)
 
     def edit_workout(
         self,
@@ -184,6 +200,12 @@ class DistanceWorkoutService:
         previousLongestDistance = self.get_longest_workout_distance(user_id, workout.type)
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
+        )
+        previousBestMonthDistance = DistanceWorkoutService.get_month_distance(
+            user_id=user_id,
+            workoutType=workout.type,
+            year=workout.start_time.year,  # type: ignore[attr-defined]
+            month=workout.start_time.month,  # type: ignore[attr-defined]
         )
 
         if form_model.planned_tour_id == '-1':
@@ -222,7 +244,9 @@ class DistanceWorkoutService:
             )
 
         LOGGER.debug(f'Updated distance workout: {workout}')
-        self._notification_service.on_distance_workout_updated(user_id, workout, previousLongestDistance)
+        self._notification_service.on_distance_workout_updated(
+            user_id, workout, previousLongestDistance, previousBestMonthDistance
+        )
         self._notification_service.on_check_month_goals(user_id, workout, previousCompletedMonthGoals)
         return workout
 
@@ -325,3 +349,15 @@ class DistanceWorkoutService:
             )
 
         return int(query.scalar() or 0)
+
+    @staticmethod
+    def get_month_distance(user_id: int, workoutType: WorkoutType, year: int, month: int) -> int:
+        return (
+            DistanceWorkout.query.with_entities(func.sum(DistanceWorkout.distance))
+            .filter(DistanceWorkout.type == workoutType)
+            .filter(DistanceWorkout.user_id == user_id)
+            .filter(extract('year', DistanceWorkout.start_time) == year)  # type: ignore[attr-defined]
+            .filter(extract('month', DistanceWorkout.start_time) == month)  # type: ignore[attr-defined]
+            .scalar()
+            or 0
+        )

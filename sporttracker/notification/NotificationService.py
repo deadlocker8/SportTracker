@@ -27,6 +27,7 @@ from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
+from sporttracker.workout.fitness.FitnessWorkoutService import FitnessWorkoutService
 
 
 class NotificationService(Observable):
@@ -77,10 +78,7 @@ class NotificationService(Observable):
         self._notify_listeners({'notification': notification})
 
     def on_distance_workout_updated(
-        self,
-        user_id: int,
-        workout: Workout,
-        previousLongestDistance: int | None,
+        self, user_id: int, workout: Workout, previousLongestDistance: int | None, previousBestMonthDistance: int | None
     ) -> None:
         user = User.query.filter(User.id == user_id).first()
         if user is None:
@@ -88,6 +86,7 @@ class NotificationService(Observable):
 
         self.__check_maintenance_reminder_limits(user_id, workout.type)
         self.__check_longest_distance_workout(user_id, workout, previousLongestDistance)
+        self.__check_best_month_distance(user_id, workout, previousBestMonthDistance)
 
     def __check_maintenance_reminder_limits(self, user_id: int, workout_type: WorkoutType) -> None:
         quickFilterState = QuickFilterState().reset(DistanceWorkoutService.get_available_years(user_id))
@@ -137,6 +136,37 @@ class NotificationService(Observable):
             ),
             message_details=None,
             item_id=workout.id,
+        )
+
+    def __check_best_month_distance(
+        self, user_id: int, workout: DistanceWorkout, previousBestMonthDistance: int | None
+    ) -> None:
+        if previousBestMonthDistance is None:
+            return
+
+        workoutMonthDistance = DistanceWorkoutService.get_month_distance(
+            user_id=user_id,
+            workoutType=workout.type,
+            year=workout.start_time.year,  # type: ignore[attr-defined]
+            month=workout.start_time.month,  # type: ignore[attr-defined]
+        )
+
+        if workoutMonthDistance <= previousBestMonthDistance:
+            return
+
+        monthDate = datetime(year=workout.start_time.year, month=workout.start_time.month, day=1).date()  # type: ignore[attr-defined]
+        messageTemplate = gettext('{month} is now your best {workoutType} month with {distance} km')
+
+        self.__add_notification(
+            user_id=user_id,
+            notification_type=NotificationType.BEST_MONTH,
+            message=messageTemplate.format(
+                month=format_datetime(monthDate, format='MMMM yyyy'),
+                distance=Helpers.format_decimal(workout.distance / 1000, 2),
+                workoutType=workout.type.get_localized_name(),
+            ),
+            message_details=None,
+            item_id=None,
         )
 
     def on_check_month_goals(
@@ -220,12 +250,15 @@ class NotificationService(Observable):
             item_id=item_id,
         )
 
-    def on_duration_workout_updated(self, user_id: int, workout: Workout, previousLongestDuration: int | None) -> None:
+    def on_duration_workout_updated(
+        self, user_id: int, workout: Workout, previousLongestDuration: int | None, previousBestMonthDuration: int | None
+    ) -> None:
         user = User.query.filter(User.id == user_id).first()
         if user is None:
             return
 
         self.__check_longest_duration_workout(user_id, workout, previousLongestDuration)
+        self.__check_best_month_duration(user_id, workout, previousBestMonthDuration)
 
     def __check_longest_duration_workout(
         self, user_id: int, workout: FitnessWorkout, previousLongestDuration: int | None
@@ -246,6 +279,37 @@ class NotificationService(Observable):
             ),
             message_details=None,
             item_id=workout.id,
+        )
+
+    def __check_best_month_duration(
+        self, user_id: int, workout: FitnessWorkout, previousBestMonthDuration: int | None
+    ) -> None:
+        if previousBestMonthDuration is None:
+            return
+
+        workoutMonthDuration = FitnessWorkoutService.get_month_duration(
+            user_id=user_id,
+            workoutType=workout.type,
+            year=workout.start_time.year,  # type: ignore[attr-defined]
+            month=workout.start_time.month,  # type: ignore[attr-defined]
+        )
+
+        if workoutMonthDuration <= previousBestMonthDuration:
+            return
+
+        monthDate = datetime(year=workout.start_time.year, month=workout.start_time.month, day=1).date()  # type: ignore[attr-defined]
+        messageTemplate = gettext('{month} is now your best {workoutType} month with {duration} h')
+
+        self.__add_notification(
+            user_id=user_id,
+            notification_type=NotificationType.BEST_MONTH,
+            message=messageTemplate.format(
+                month=format_datetime(monthDate, format='MMMM yyyy'),
+                duration=Helpers.format_duration(workoutMonthDuration),
+                workoutType=workout.type.get_localized_name(),
+            ),
+            message_details=None,
+            item_id=None,
         )
 
     def on_planned_tour_created(self, planned_tour: PlannedTour) -> None:

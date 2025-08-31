@@ -1,12 +1,17 @@
+from __future__ import annotations
+
 import logging
+from typing import TYPE_CHECKING
 
 from pydantic import ConfigDict
+from sqlalchemy import func, extract
 
+if TYPE_CHECKING:
+    from sporttracker.notification.NotificationService import NotificationService
 from sporttracker import Constants
 from sporttracker.api.FormModels import FitnessWorkoutApiFormModel
 from sporttracker.db import db
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
-from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.user.ParticipantEntity import get_participants_by_ids
 from sporttracker.workout.WorkoutEntity import Workout
 from sporttracker.workout.WorkoutModel import BaseWorkoutFormModel
@@ -61,6 +66,12 @@ class FitnessWorkoutService:
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
         )
+        previousBestMonthDuration = FitnessWorkoutService.get_month_duration(
+            user_id=user_id,
+            workoutType=workout.type,
+            year=workout.start_time.year,  # type: ignore[attr-defined]
+            month=workout.start_time.month,  # type: ignore[attr-defined]
+        )
 
         db.session.add(workout)
         db.session.commit()
@@ -68,7 +79,9 @@ class FitnessWorkoutService:
         update_workout_categories_by_workout_id(workout.id, fitness_workout_categories)
 
         LOGGER.debug(f'Saved new fitness workout: {workout}')
-        self._notification_service.on_duration_workout_updated(user_id, workout, previousLongestDuration)
+        self._notification_service.on_duration_workout_updated(
+            user_id, workout, previousLongestDuration, previousBestMonthDuration
+        )
         self._notification_service.on_check_month_goals(user_id, workout, previousCompletedMonthGoals)
         return workout
 
@@ -97,6 +110,12 @@ class FitnessWorkoutService:
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
         )
+        previousBestMonthDuration = FitnessWorkoutService.get_month_duration(
+            user_id=user_id,
+            workoutType=workout.type,
+            year=workout.start_time.year,  # type: ignore[attr-defined]
+            month=workout.start_time.month,  # type: ignore[attr-defined]
+        )
 
         db.session.add(workout)
         db.session.commit()
@@ -104,7 +123,9 @@ class FitnessWorkoutService:
         update_workout_categories_by_workout_id(workout.id, fitness_workout_categories)
 
         LOGGER.debug(f'Saved new fitness workout: {workout}')
-        self._notification_service.on_duration_workout_updated(user_id, workout, previousLongestDuration)
+        self._notification_service.on_duration_workout_updated(
+            user_id, workout, previousLongestDuration, previousBestMonthDuration
+        )
         self._notification_service.on_check_month_goals(user_id, workout, previousCompletedMonthGoals)
         return workout
 
@@ -118,7 +139,7 @@ class FitnessWorkoutService:
         db.session.commit()
 
         LOGGER.debug(f'Deleted fitness workout: {workout}')
-        self._notification_service.on_duration_workout_updated(user_id, workout, None)
+        self._notification_service.on_duration_workout_updated(user_id, workout, None, None)
 
     def edit_workout(
         self,
@@ -139,6 +160,12 @@ class FitnessWorkoutService:
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
         )
+        previousBestMonthDuration = FitnessWorkoutService.get_month_duration(
+            user_id=user_id,
+            workoutType=workout.type,
+            year=workout.start_time.year,  # type: ignore[attr-defined]
+            month=workout.start_time.month,  # type: ignore[attr-defined]
+        )
 
         workout.name = form_model.name  # type: ignore[assignment]
         workout.start_time = startTime  # type: ignore[assignment]
@@ -156,7 +183,9 @@ class FitnessWorkoutService:
         db.session.commit()
 
         LOGGER.debug(f'Updated fitness workout: {workout}')
-        self._notification_service.on_duration_workout_updated(user_id, workout, previousLongestDuration)
+        self._notification_service.on_duration_workout_updated(
+            user_id, workout, previousLongestDuration, previousBestMonthDuration
+        )
         self._notification_service.on_check_month_goals(user_id, workout, previousCompletedMonthGoals)
         return workout
 
@@ -181,3 +210,15 @@ class FitnessWorkoutService:
             return None
 
         return longestWorkout.duration
+
+    @staticmethod
+    def get_month_duration(user_id: int, workoutType: WorkoutType, year: int, month: int) -> int:
+        return (
+            FitnessWorkout.query.with_entities(func.sum(FitnessWorkout.duration))
+            .filter(FitnessWorkout.type == workoutType)
+            .filter(FitnessWorkout.user_id == user_id)
+            .filter(extract('year', FitnessWorkout.start_time) == year)  # type: ignore[attr-defined]
+            .filter(extract('month', FitnessWorkout.start_time) == month)  # type: ignore[attr-defined]
+            .scalar()
+            or 0
+        )
