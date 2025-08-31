@@ -34,6 +34,7 @@ from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
+from sporttracker.workout.heartRate.HeartRateEntity import HeartRateEntity
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -79,6 +80,7 @@ class DummyDataGenerator:
                 numberOfWorkoutsWithParticipants=2,
                 numberOfWorkoutsWithSharedLink=1,
                 numberOfWorkoutsWithLinkedPlannedTour=1,
+                numberOfWorkoutsWithHeartRateData=1,
                 plannedTour=plannedTour,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_BIKING,
                 distanceMin=15.0,
@@ -93,6 +95,7 @@ class DummyDataGenerator:
                 numberOfWorkoutsWithParticipants=0,
                 numberOfWorkoutsWithSharedLink=1,
                 numberOfWorkoutsWithLinkedPlannedTour=0,
+                numberOfWorkoutsWithHeartRateData=1,
                 plannedTour=plannedTour,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_RUNNING,
                 distanceMin=2.0,
@@ -107,6 +110,7 @@ class DummyDataGenerator:
                 numberOfWorkoutsWithParticipants=1,
                 numberOfWorkoutsWithSharedLink=1,
                 numberOfWorkoutsWithLinkedPlannedTour=0,
+                numberOfWorkoutsWithHeartRateData=1,
                 plannedTour=plannedTour,
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_HIKING,
                 distanceMin=6.0,
@@ -204,6 +208,7 @@ class DummyDataGenerator:
         numberOfWorkoutsWithParticipants: int,
         numberOfWorkoutsWithSharedLink: int,
         numberOfWorkoutsWithLinkedPlannedTour: int,
+        numberOfWorkoutsWithHeartRateData: int,
         plannedTour: PlannedTour,
         averageSpeed: int,
         distanceMin: float,
@@ -225,6 +230,9 @@ class DummyDataGenerator:
             indexesWithSharedLink = random.choices(range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithSharedLink)
             indexesWithLinkedPlannedTour = random.choices(
                 range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithLinkedPlannedTour
+            )
+            indexesWithHeartRateData = random.choices(
+                range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithHeartRateData
             )
 
             for index in range(numberOfWorkoutsPerMonth):
@@ -264,6 +272,9 @@ class DummyDataGenerator:
 
                 if index in indexesWithGpx:
                     self._gpxService.add_visited_tiles_for_workout(workout, 14, user.id)
+
+                if index in indexesWithHeartRateData:
+                    self.__generate_dummy_heart_rate_data(workout)
 
             lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
 
@@ -486,3 +497,19 @@ class DummyDataGenerator:
             )
             db.session.add(association)
             db.session.commit()
+
+    @staticmethod
+    def __generate_dummy_heart_rate_data(workout: Workout) -> None:
+        lastTime = datetime(
+            year=workout.start_time.year,  # type: ignore[attr-defined]
+            month=workout.start_time.month,  # type: ignore[attr-defined]
+            day=workout.start_time.day,  # type: ignore[attr-defined]
+            hour=workout.start_time.hour,  # type: ignore[attr-defined]
+            minute=workout.start_time.minute,  # type: ignore[attr-defined]
+            second=workout.start_time.second,  # type: ignore[attr-defined]
+            microsecond=0,
+        )
+
+        for x in range(1000):
+            lastTime = lastTime + timedelta(seconds=random.randint(1, 5))
+            db.session.add(HeartRateEntity(workout_id=workout.id, timestamp=lastTime, bpm=random.randint(85, 185)))
