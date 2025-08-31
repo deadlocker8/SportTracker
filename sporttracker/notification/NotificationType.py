@@ -91,8 +91,12 @@ class NotificationType(enum.Enum):
             return gettext('Access to shared long-distance tour revoked')
         elif self == self.LONGEST_WORKOUT:
             return gettext('New longest workout')
-        elif self in [self.MONTH_GOAL_DISTANCE, self.MONTH_GOAL_COUNT, self.MONTH_GOAL_DURATION]:
-            return gettext('Month goal completed')
+        elif self == self.MONTH_GOAL_DISTANCE:
+            return gettext('Distance month goal completed')
+        elif self == self.MONTH_GOAL_COUNT:
+            return gettext('Count month goal completed')
+        elif self == self.MONTH_GOAL_DURATION:
+            return gettext('Duration month goal completed')
         elif self == self.BEST_MONTH:
             return gettext('New best month')
 

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-31 13:34+0200\n"
-"PO-Revision-Date: 2025-08-31 13:34+0200\n"
+"POT-Creation-Date: 2025-08-31 15:06+0200\n"
+"PO-Revision-Date: 2025-08-31 15:07+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -267,7 +267,7 @@ msgstr ""
 #: ../notification/NotificationService.py:272
 msgid "You completed a new duration record with {duration} h in one {workoutType}"
 msgstr ""
-"Du hast einen neuen Dauerrekord mit {duration} Stunden in einem {workoutType} "
+"Du hast einen neuen Zeitrekord mit {duration} Stunden in einem {workoutType} "
 "aufgestellt."
 
 #: ../notification/NotificationService.py:301
@@ -351,10 +351,18 @@ msgid "New longest workout"
 msgstr "Neues längstes Workout"
 
 #: ../notification/NotificationType.py:95
-msgid "Month goal completed"
-msgstr "Monatsziel abgeschlossen"
+msgid "Distance month goal completed"
+msgstr "Streckenmonatsziel abgeschlossen"
 
 #: ../notification/NotificationType.py:97
+msgid "Count month goal completed"
+msgstr "Anzahlmonatsziel abgeschlossen"
+
+#: ../notification/NotificationType.py:99
+msgid "Duration month goal completed"
+msgstr "Zeitmonatsziel abgeschlossen"
+
+#: ../notification/NotificationType.py:101
 msgid "New best month"
 msgstr "Neuer Bester Monat"
 

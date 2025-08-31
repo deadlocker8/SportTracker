@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-31 13:34+0200\n"
+"POT-Creation-Date: 2025-08-31 15:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -330,10 +330,18 @@ msgid "New longest workout"
 msgstr ""
 
 #: ../notification/NotificationType.py:95
-msgid "Month goal completed"
+msgid "Distance month goal completed"
 msgstr ""
 
 #: ../notification/NotificationType.py:97
+msgid "Count month goal completed"
+msgstr ""
+
+#: ../notification/NotificationType.py:99
+msgid "Duration month goal completed"
+msgstr ""
+
+#: ../notification/NotificationType.py:101
 msgid "New best month"
 msgstr ""
 
