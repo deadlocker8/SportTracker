@@ -161,10 +161,32 @@
                     </div>
 
                     <div id="heart-rate-chart-container-{{ workout.id }}" class="w-100"></div>
-                    <div class="row">
-{#                        {{ annualAchievementStatisticCard(gettext('Min'), workoutType, achievement.all_year_data.min) }}#}
-{#                        {{ annualAchievementStatisticCard(gettext('Max'), workoutType, achievement.all_year_data.max) }}#}
-{#                        {{ annualAchievementStatisticCard(gettext('Average'), workoutType, achievement.all_year_data.average) }}#}
+
+                    <div class="row" id="heart-rate-modal-statistics-{{ workout.id }}">
+                        <div class="col-6 col-md-4 mb-3">
+                            <div class="card bg-body-secondary border-0 h-100" data-bs-theme="dark">
+                                <div class="card-body">
+                                    <div class="card-title">{{ gettext('Min') }}</div>
+                                    <h5 class="card-title text-danger fw-bold" id="heart-rate-modal-min-{{ workout.id }}" ></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 mb-3">
+                            <div class="card bg-body-secondary border-0 h-100" data-bs-theme="dark">
+                                <div class="card-body">
+                                    <div class="card-title">{{ gettext('Max') }}</div>
+                                    <h5 class="card-title text-danger fw-bold" id="heart-rate-modal-max-{{ workout.id }}" ></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 mx-auto mb-3">
+                            <div class="card bg-body-secondary border-0 h-100" data-bs-theme="dark">
+                                <div class="card-body">
+                                    <div class="card-title">{{ gettext('Average') }}</div>
+                                    <h5 class="card-title text-danger fw-bold" id="heart-rate-modal-average-{{ workout.id }}" ></h5>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer overflow-y-auto">

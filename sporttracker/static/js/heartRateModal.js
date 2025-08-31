@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', function()
             chartContainer.innerHTML = '';
             const progressSpinner = document.getElementById('heart-rate-modal-progress-spinner-' + workoutId);
             progressSpinner.classList.toggle('hidden', false);
+            const statisticsContainer = document.getElementById('heart-rate-modal-statistics-' + workoutId);
+            statisticsContainer.classList.toggle('hidden', true);
 
             const modal = document.getElementById('heart-rate-modal-' + workoutId);
             modal.addEventListener('shown.bs.modal', event => {
@@ -22,7 +24,11 @@ document.addEventListener('DOMContentLoaded', function()
                     {
                         let response = JSON.parse(xhr.response);
                         createHeartRateChart(chartContainer, response);
+                        document.getElementById('heart-rate-modal-min-' + workoutId).innerText = response.min;
+                        document.getElementById('heart-rate-modal-max-' + workoutId).innerText = response.max;
+                        document.getElementById('heart-rate-modal-average-' + workoutId).innerText = response.average;
                         progressSpinner.classList.toggle('hidden', true);
+                        statisticsContainer.classList.toggle('hidden', false);
                     }
                 };
                 xhr.send();
@@ -40,7 +46,7 @@ function createHeartRateChart(chartContainer, response)
             y: response.values,
             type: 'scatter',
             marker: {
-                color: '#FF0000'
+                color: '#DC3545'
             },
         },
     ];

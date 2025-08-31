@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime, date
+from statistics import mean
 
 import flask_babel
 from babel.dates import get_month_names
@@ -105,7 +106,15 @@ def construct_blueprint():
             timestamps.append(row.timestamp.isoformat())
             values.append(row.bpm)
 
-        return jsonify({'timestamps': timestamps, 'values': values})
+        return jsonify(
+            {
+                'timestamps': timestamps,
+                'values': values,
+                'min': f'{min(values)} bpm',
+                'max': f'{max(values)} bpm',
+                'average': f'{int(mean(values))} bpm',
+            }
+        )
 
     return workouts
 
