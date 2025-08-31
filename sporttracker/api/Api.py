@@ -7,6 +7,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import login_required, current_user, login_user
 from pydantic import ValidationError
 
+from sporttracker import Constants
 from sporttracker.api.FormModels import (
     MonthGoalDistanceApiFormModel,
     MonthGoalCountApiFormModel,
@@ -26,27 +27,27 @@ from sporttracker.api.Mapper import (
     MAPPER_MAINTENANCE,
     MAPPER_CUSTOM_FIELD,
 )
-from sporttracker import Constants
+from sporttracker.db import db
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
+from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
+from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
+from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_grouped_by_distance_workout_types_with_values
+from sporttracker.user.ParticipantEntity import get_participants
+from sporttracker.user.UserEntity import User
 from sporttracker.workout.HeartRateEntity import HeartRateEntity
+from sporttracker.workout.HeartRateService import HeartRateService
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
-from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
+from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.workout.fitness.FitnessWorkoutCategory import (
     FitnessWorkoutCategoryType,
 )
-from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
-from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
-from sporttracker.user.ParticipantEntity import get_participants
-from sporttracker.user.UserEntity import User
-from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
-from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
-from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
-from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.fitness.FitnessWorkoutService import FitnessWorkoutService
-from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -406,10 +407,7 @@ def construct_blueprint(
         return '', 200
 
     def __addHeartRateData(workout_id: int, form: HeartRateDataListModel) -> None:
-        LOGGER.debug(f'Deleting existing heart rate data for workout {workout_id}')
-        deleteStatement = HeartRateEntity.__table__.delete().where(HeartRateEntity.workout_id == workout_id)
-        db.session.execute(deleteStatement)
-        db.session.commit()
+        HeartRateService.delete_heart_rate_data(workout_id)
 
         for entry in form.data:
             timestamp = datetime.strptime(entry.timestamp, '%Y-%m-%d %H:%M:%S')
