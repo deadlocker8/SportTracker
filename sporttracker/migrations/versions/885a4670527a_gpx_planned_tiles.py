@@ -126,7 +126,7 @@ def downgrade():
     inspector = Inspector.from_engine(op.get_bind().engine)
     tableNames = inspector.get_table_names()
 
-    if 'gpx_planned_tile' not in tableNames:
+    if 'gpx_planned_tile' in tableNames:
         op.drop_table('gpx_planned_tile')
 
     columnNames = inspector.get_columns('filter_state_tile_hunting')
