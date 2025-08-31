@@ -4,7 +4,7 @@ import logging
 
 from sporttracker import Constants
 from sporttracker.db import db
-from sporttracker.workout.HeartRateEntity import HeartRateEntity
+from sporttracker.workout.heartRate.HeartRateEntity import HeartRateEntity
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

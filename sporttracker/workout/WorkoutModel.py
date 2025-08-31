@@ -12,7 +12,7 @@ from sporttracker.monthGoal.MonthGoalEntity import (
     MonthGoalSummary,
 )
 from sporttracker.user.UserEntity import get_user_by_id
-from sporttracker.workout.HeartRateService import HeartRateService
+from sporttracker.workout.heartRate.HeartRateService import HeartRateService
 from sporttracker.workout.distance.DistanceWorkoutEntity import (
     DistanceWorkout,
 )

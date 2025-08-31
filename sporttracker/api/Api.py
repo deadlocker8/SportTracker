@@ -37,8 +37,8 @@ from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_grouped_by_distance_workout_types_with_values
 from sporttracker.user.ParticipantEntity import get_participants
 from sporttracker.user.UserEntity import User
-from sporttracker.workout.HeartRateEntity import HeartRateEntity
-from sporttracker.workout.HeartRateService import HeartRateService
+from sporttracker.workout.heartRate.HeartRateEntity import HeartRateEntity
+from sporttracker.workout.heartRate.HeartRateService import HeartRateService
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService

@@ -18,7 +18,7 @@ from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
 from sporttracker.user.ParticipantEntity import get_participants
-from sporttracker.workout.HeartRateService import HeartRateService
+from sporttracker.workout.heartRate.HeartRateService import HeartRateService
 from sporttracker.workout.WorkoutEntity import (
     get_workout_names_by_type,
     get_workouts_by_year_and_month_by_type,
