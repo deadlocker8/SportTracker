@@ -164,9 +164,11 @@ SportTracker creates several notifications on certain events:
   - a shared long-distance tour has been updated
   - your access to a shared long-distance tour has been revoked
   - a shared long-distance has been deleted
-- the distance of a workout is longer than any other distance workout tha was performed before
-- the duration of a fitness workout is longer than any other fitness workout tha was performed before
+- the distance of a workout is longer than any other distance workout with the same type that was performed before
+- the duration of a fitness workout is longer than any other fitness workout that was performed before
 - a month goal is reached
+- the total distance of a month is greater than any previous month
+- the total duration of a month is greater than any previous month
 
 All those notifications will be shown in the notification center (reachable via the notification counter in the navbar).
 SportTracker can also be configured to send these notifications via a notification provider.

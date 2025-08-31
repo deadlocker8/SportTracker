@@ -8,6 +8,7 @@
 - add: refactored all modules to a modulith structure (#254)
 - add: new notification if longest workout is exceeded (#252)
 - add: new notification if a month goal is reached (#253)
+- add: new notification if the total distance/duration of a month is greater than any previous month (#257)
 - fix: fix calculation of number of new visited tiles for workout
 - fix: progress indicator on save is now correctly shown in workout forms (#249)
 - fix: allow to open planned tour / long distance tour map if preview images are disabled in settings (#255)
