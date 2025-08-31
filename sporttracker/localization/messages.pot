@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-26 00:05+0200\n"
+"POT-Creation-Date: 2025-08-31 13:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,73 +17,73 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: ../achievement/AchievementBlueprint.py:51
-#: ../achievement/AchievementBlueprint.py:132
+#: ../achievement/AchievementBlueprint.py:52
+#: ../achievement/AchievementBlueprint.py:137
 msgid "Month Goal Streak"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:52
-#: ../achievement/AchievementBlueprint.py:133
+#: ../achievement/AchievementBlueprint.py:53
+#: ../achievement/AchievementBlueprint.py:138
 msgid ""
 "You have achieved all your monthly goals for <span class=\"fw-"
 "bold\">{currentStreak}</span> months in a row!<br>(Best: <span class"
 "=\"fw-bold\">{maxStreak}</span>)"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:73
+#: ../achievement/AchievementBlueprint.py:74
 #: ../achievement/AnnualAchievementBlueprint.py:257
 msgid "Longest Workout"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:74
+#: ../achievement/AchievementBlueprint.py:75
 msgid ""
 "You completed <span class=\"fw-bold\">{longestWorkoutDistance}</span> in "
 "one trip on <span class=\"fw-bold\">{longestWorkoutDate}</span>!"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:92
+#: ../achievement/AchievementBlueprint.py:93
 #: ../achievement/AnnualAchievementBlueprint.py:129
 msgid "Total Distance"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:93
+#: ../achievement/AchievementBlueprint.py:94
 msgid ""
 "You completed a total of <span class=\"fw-bold\">{totalDistance} "
 "km</span>!"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:109
-#: ../achievement/AchievementBlueprint.py:190
+#: ../achievement/AchievementBlueprint.py:114
+#: ../achievement/AchievementBlueprint.py:195
 msgid "Best Month"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:110
+#: ../achievement/AchievementBlueprint.py:115
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
 "<span class=\"fw-bold\">{bestMonthDistance}</span>!"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:154
+#: ../achievement/AchievementBlueprint.py:159
 #: ../achievement/AnnualAchievementBlueprint.py:339
 msgid "Longest Duration"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:155
+#: ../achievement/AchievementBlueprint.py:160
 msgid ""
 "You completed <span class=\"fw-bold\">{longestDuration}</span> in one "
 "workout on <span class=\"fw-bold\">{longestDurationDate}</span>!"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:173
+#: ../achievement/AchievementBlueprint.py:178
 #: ../achievement/AnnualAchievementBlueprint.py:168
 msgid "Total Duration"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:174
+#: ../achievement/AchievementBlueprint.py:179
 msgid "You completed a total of <span class=\"fw-bold\">{totalDuration} h</span>!"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:191
+#: ../achievement/AchievementBlueprint.py:196
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
 "<span class=\"fw-bold\">{bestMonthDuration}</span>!"
@@ -134,39 +134,39 @@ msgstr ""
 msgid "Incorrect password"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:142
+#: ../chart/ChartBlueprint.py:141
 msgid "Unknown"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:151
+#: ../chart/ChartBlueprint.py:150
 msgid "Distance per custom field"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:179
+#: ../chart/ChartBlueprint.py:178
 msgid "You"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:196
+#: ../chart/ChartBlueprint.py:195
 msgid "Distance per participant for workout type "
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:279 ../templates/chart/chartChooser.jinja2:63
+#: ../chart/ChartBlueprint.py:278 ../templates/chart/chartChooser.jinja2:63
 msgid "Duration per Workout"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:356 ../templates/chart/chartChooser.jinja2:70
+#: ../chart/ChartBlueprint.py:355 ../templates/chart/chartChooser.jinja2:70
 msgid "Speed per Workout"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:613
+#: ../chart/ChartBlueprint.py:614
 msgid "Tiles"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:703 ../templates/chart/chartChooser.jinja2:98
+#: ../chart/ChartBlueprint.py:704 ../templates/chart/chartChooser.jinja2:98
 msgid "Heatmap Weekdays"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:738 ../templates/chart/chartChooser.jinja2:105
+#: ../chart/ChartBlueprint.py:739 ../templates/chart/chartChooser.jinja2:105
 msgid "Heatmap Months"
 msgstr ""
 
@@ -174,19 +174,19 @@ msgstr ""
 msgid "Maintenance does not exist anymore"
 msgstr ""
 
-#: ../map/MapBlueprint.py:179 ../map/MapBlueprint.py:231
+#: ../map/MapBlueprint.py:176 ../map/MapBlueprint.py:228
 msgid "Unknown shared link"
 msgstr ""
 
-#: ../map/MapBlueprint.py:197
+#: ../map/MapBlueprint.py:194
 msgid "Unknown planned tour"
 msgstr ""
 
-#: ../map/MapBlueprint.py:572
+#: ../map/MapBlueprint.py:571
 msgid "Unknown long-distance tour"
 msgstr ""
 
-#: ../map/MapBlueprint.py:590
+#: ../map/MapBlueprint.py:589
 #: ../templates/longDistanceTour/longDistanceTourForm.jinja2:155
 #: ../templates/map/mapLongDistanceTour.jinja2:105
 #: ../templates/map/mapLongDistanceTour.jinja2:189
@@ -227,102 +227,114 @@ msgid ""
 "{workoutType} workout"
 msgstr ""
 
-#: ../notification/NotificationService.py:165
+#: ../notification/NotificationService.py:158
+msgid "{month} is now your best {workoutType} month with {distance} km"
+msgstr ""
+
+#: ../notification/NotificationService.py:196
 msgid "distance month goal"
 msgstr ""
 
-#: ../notification/NotificationService.py:176
+#: ../notification/NotificationService.py:207
 msgid "count month goal"
 msgstr ""
 
-#: ../notification/NotificationService.py:187
+#: ../notification/NotificationService.py:218
 msgid "duration month goal"
 msgstr ""
 
-#: ../notification/NotificationService.py:207
+#: ../notification/NotificationService.py:238
 msgid "You completed your {workoutType} {goalName} \"{goalPerfect}\" for {date}"
 msgstr ""
 
-#: ../notification/NotificationService.py:238
+#: ../notification/NotificationService.py:272
 msgid "You completed a new duration record with {duration} h in one {workoutType}"
 msgstr ""
 
-#: ../notification/NotificationService.py:253
-#: ../notification/NotificationService.py:263
+#: ../notification/NotificationService.py:301
+msgid "{month} is now your best {workoutType} month with {duration} h"
+msgstr ""
+
+#: ../notification/NotificationService.py:318
+#: ../notification/NotificationService.py:328
 msgid "{owner} has shared the planned tour \"{tour_name}\" with you"
 msgstr ""
 
-#: ../notification/NotificationService.py:265
+#: ../notification/NotificationService.py:330
 msgid "{owner} has updated the planned tour \"{tour_name}\""
 msgstr ""
 
-#: ../notification/NotificationService.py:267
+#: ../notification/NotificationService.py:332
 msgid "{owner} has revoked your access to the planned tour \"{tour_name}\""
 msgstr ""
 
-#: ../notification/NotificationService.py:273
+#: ../notification/NotificationService.py:338
 msgid "{owner} has deleted the planned tour \"{tour_name}\""
 msgstr ""
 
-#: ../notification/NotificationService.py:281
-#: ../notification/NotificationService.py:291
+#: ../notification/NotificationService.py:346
+#: ../notification/NotificationService.py:356
 msgid "{owner} has shared the long-distance tour \"{tour_name}\" with you"
 msgstr ""
 
-#: ../notification/NotificationService.py:293
+#: ../notification/NotificationService.py:358
 msgid "{owner} has updated the long-distance tour \"{tour_name}\""
 msgstr ""
 
-#: ../notification/NotificationService.py:295
+#: ../notification/NotificationService.py:360
 msgid "{owner} has revoked your access to the long-distance tour \"{tour_name}\""
 msgstr ""
 
-#: ../notification/NotificationService.py:301
+#: ../notification/NotificationService.py:366
 msgid "{owner} has deleted the long-distance tour \"{tour_name}\""
 msgstr ""
 
-#: ../notification/NotificationType.py:74
+#: ../notification/NotificationType.py:75
 msgid "Maintenance limit exceeded"
 msgstr ""
 
-#: ../notification/NotificationType.py:76
+#: ../notification/NotificationType.py:77
 msgid "New shared planned tour"
 msgstr ""
 
-#: ../notification/NotificationType.py:78
+#: ../notification/NotificationType.py:79
 msgid "Updated shared planned tour"
 msgstr ""
 
-#: ../notification/NotificationType.py:80
+#: ../notification/NotificationType.py:81
 msgid "Deleted shared planned tour"
 msgstr ""
 
-#: ../notification/NotificationType.py:82
+#: ../notification/NotificationType.py:83
 msgid "Access to shared planned tour revoked"
 msgstr ""
 
-#: ../notification/NotificationType.py:84
+#: ../notification/NotificationType.py:85
 msgid "New shared long-distance tour"
 msgstr ""
 
-#: ../notification/NotificationType.py:86
+#: ../notification/NotificationType.py:87
 msgid "Updated shared long-distance tour"
 msgstr ""
 
-#: ../notification/NotificationType.py:88
+#: ../notification/NotificationType.py:89
 msgid "Deleted shared long-distance tour"
 msgstr ""
 
-#: ../notification/NotificationType.py:90
+#: ../notification/NotificationType.py:91
 msgid "Access to shared long-distance tour revoked"
 msgstr ""
 
-#: ../notification/NotificationType.py:92
+#: ../notification/NotificationType.py:93
 msgid "New longest workout"
 msgstr ""
 
-#: ../notification/NotificationType.py:94
+#: ../notification/NotificationType.py:95
 msgid "Month goal completed"
+msgstr ""
+
+#: ../notification/NotificationType.py:97
+msgid "New best month"
 msgstr ""
 
 #: ../notification/provider/NtfyService.py:62
