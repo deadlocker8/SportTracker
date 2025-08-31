@@ -793,14 +793,14 @@ components:
       required:
         - timestamp
         - bpm
-    properties:
-      timestamp:
-        example: 2023-11-19 12:45:22
-        description: Date time in the format YYYY-MM-DD HH:mm:SS
-      bpm:
-        type: integer
-        example: 123
-        description: Beats per minute
+      properties:
+        timestamp:
+          example: 2023-11-19 12:45:22
+          description: Date time in the format YYYY-MM-DD HH:mm:SS
+        bpm:
+          type: integer
+          example: 123
+          description: Beats per minute
 
     Version:
       type: object
