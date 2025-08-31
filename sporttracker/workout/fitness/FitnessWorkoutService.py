@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING
 from pydantic import ConfigDict
 from sqlalchemy import func, extract
 
+from sporttracker.workout.heartRate.HeartRateService import HeartRateService
+
 if TYPE_CHECKING:
     from sporttracker.notification.NotificationService import NotificationService
 from sporttracker import Constants
@@ -137,6 +139,8 @@ class FitnessWorkoutService:
 
         db.session.delete(workout)
         db.session.commit()
+
+        HeartRateService.delete_heart_rate_data(workout_id)
 
         LOGGER.debug(f'Deleted fitness workout: {workout}')
         self._notification_service.on_duration_workout_updated(user_id, workout, None, None)

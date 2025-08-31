@@ -9,6 +9,7 @@ from typing import Any, TYPE_CHECKING
 from sqlalchemy import extract, func, DateTime, String
 
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
+from sporttracker.workout.heartRate.HeartRateService import HeartRateService
 
 if TYPE_CHECKING:
     from sporttracker.notification.NotificationService import NotificationService
@@ -179,6 +180,8 @@ class DistanceWorkoutService:
 
         db.session.delete(workout)
         db.session.commit()
+
+        HeartRateService.delete_heart_rate_data(workout_id)
 
         LOGGER.debug(f'Deleted distance workout: {workout}')
         self._notification_service.on_distance_workout_updated(user_id, workout, None, None)

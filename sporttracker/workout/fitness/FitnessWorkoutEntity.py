@@ -22,6 +22,7 @@ class FitnessWorkout(Workout):  # type: ignore[name-defined]
     def __repr__(self):
         return (
             f'FitnessWorkout('
+            f'id: {self.id}, '
             f'name: {self.name}, '
             f'start_time: {self.start_time}, '
             f'duration: {self.duration}, '
