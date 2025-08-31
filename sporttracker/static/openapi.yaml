@@ -216,7 +216,7 @@ paths:
           description: "Okay"
   /api/v2/workouts/distanceWorkout/{workout_id}/addHeartRateData:
     post:
-      summary: Adds heart rate data to a distance-based workout. All existing heart rate data associated with the workout will be replaced!
+      summary: Adds heart rate data to a distance-based workout. All existing heart rate data associated with the workout will be replaced! This will also replace the value of the attribute "average_heart_rate" for given workout.
       tags:
         - distanceWorkout
       parameters:
@@ -236,7 +236,7 @@ paths:
 
   /api/v2/workouts/fitnessWorkout/{workout_id}/addHeartRateData:
     post:
-      summary: Adds heart rate data to a fitness workout. All existing heart rate data associated with the workout will be replaced!
+      summary: Adds heart rate data to a fitness workout. All existing heart rate data associated with the workout will be replaced! This will also replace the value of the attribute "average_heart_rate" for given workout.
       tags:
         - fitnessWorkout
       parameters:

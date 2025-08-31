@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+from statistics import mean
 from typing import Any
 
 from flask import Blueprint, jsonify, render_template, redirect, url_for, request, abort
@@ -37,6 +38,7 @@ from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_grouped_by_distance_workout_types_with_values
 from sporttracker.user.ParticipantEntity import get_participants
 from sporttracker.user.UserEntity import User
+from sporttracker.workout.WorkoutEntity import Workout
 from sporttracker.workout.heartRate.HeartRateEntity import HeartRateEntity
 from sporttracker.workout.heartRate.HeartRateService import HeartRateService
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -387,7 +389,7 @@ def construct_blueprint(
         except ValidationError as e:
             return jsonify({'error': str(e)}), 400
 
-        __addHeartRateData(workout_id, form)
+        __addHeartRateData(workout_id, form, workout)
         return '', 200
 
     @api.route('/workouts/fitnessWorkout/<int:workout_id>/addHeartRateData', methods=['POST'])
@@ -403,18 +405,24 @@ def construct_blueprint(
         except ValidationError as e:
             return jsonify({'error': str(e)}), 400
 
-        __addHeartRateData(workout_id, form)
+        __addHeartRateData(workout_id, form, workout)
         return '', 200
 
-    def __addHeartRateData(workout_id: int, form: HeartRateDataListModel) -> None:
+    def __addHeartRateData(workout_id: int, form: HeartRateDataListModel, workout: Workout) -> None:
         HeartRateService.delete_heart_rate_data(workout_id)
 
+        values = []
         for entry in form.data:
             timestamp = datetime.strptime(entry.timestamp, '%Y-%m-%d %H:%M:%S')
+            values.append(int(entry.bpm))
             db.session.add(HeartRateEntity(workout_id=workout_id, timestamp=timestamp, bpm=int(entry.bpm)))
         db.session.commit()
-
         LOGGER.debug(f'Added {len(form.data)} heart rate data points for workout {workout_id}')
+
+        averageHeartRate = int(mean(values))
+        workout.average_heart_rate = averageHeartRate
+        db.session.commit()
+        LOGGER.debug(f'Updated average heart rate for workout {workout_id} ({averageHeartRate} bpm)')
 
     @api.route('/settings/participants')
     @login_required
