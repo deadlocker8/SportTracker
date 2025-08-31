@@ -21,10 +21,7 @@ from werkzeug.datastructures import FileStorage
 from sporttracker import Constants
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
-from sporttracker.workout.distance.DistanceWorkoutEntity import (
-    DistanceWorkout,
-    get_distance_workout_ids_by_planned_tour,
-)
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
 from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTourPlannedTourAssociation
@@ -218,7 +215,7 @@ class PlannedTourService:
 
         self._gpx_service.delete_gpx(plannedTour, user_id)
 
-        linkedIds = get_distance_workout_ids_by_planned_tour(plannedTour)
+        linkedIds = self.__get_distance_workout_ids_by_planned_tour(user_id, plannedTour)
         for workoutId in linkedIds:
             workout = DistanceWorkout.query.filter().filter(DistanceWorkout.id == workoutId).first()
             workout.planned_tour = None
@@ -292,7 +289,7 @@ class PlannedTourService:
         # The list of shared users may have changed.
         # All workouts that link to this planned tour must be checked, whether they are owned by the owner of the
         # planned tour or if the planned tour is still shared to the owner of the workout.
-        linkedIds = get_distance_workout_ids_by_planned_tour(plannedTour)
+        linkedIds = self.__get_distance_workout_ids_by_planned_tour(user_id, plannedTour)
         for workoutId in linkedIds:
             workout = DistanceWorkout.query.filter().filter(DistanceWorkout.id == workoutId).first()
             if workout.user_id == plannedTour.user_id:
@@ -516,3 +513,17 @@ class PlannedTourService:
                 filteredTours.append(plannedTour)
 
         return filteredTours
+
+    @staticmethod
+    def __get_distance_workout_ids_by_planned_tour(user_id: int, plannedTour: PlannedTour) -> list[int]:
+        linkedIds = (
+            DistanceWorkout.query.with_entities(DistanceWorkout.id)
+            .filter(DistanceWorkout.user_id == user_id)
+            .filter(DistanceWorkout.planned_tour == plannedTour)
+            .all()
+        )
+
+        if linkedIds is None:
+            return []
+
+        return [int(row.id) for row in linkedIds]

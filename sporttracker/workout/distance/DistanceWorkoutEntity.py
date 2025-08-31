@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from flask_login import current_user
 from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
@@ -64,17 +63,3 @@ class MonthDistanceSum:
     year: int
     month: int
     distanceSum: float
-
-
-def get_distance_workout_ids_by_planned_tour(plannedTour: PlannedTour) -> list[int]:
-    linkedIds = (
-        DistanceWorkout.query.with_entities(DistanceWorkout.id)
-        .filter(DistanceWorkout.user_id == current_user.id)
-        .filter(DistanceWorkout.planned_tour == plannedTour)
-        .all()
-    )
-
-    if linkedIds is None:
-        return []
-
-    return [int(row.id) for row in linkedIds]
