@@ -284,3 +284,20 @@ class DistanceWorkoutService:
                     result.append(MonthDistanceSum(year=currentYear, month=currentMonth, distanceSum=0.0))
 
         return result
+
+    @staticmethod
+    def get_available_years(userId) -> list[int]:
+        year = extract('year', DistanceWorkout.start_time)
+
+        rows = (
+            DistanceWorkout.query.with_entities(year.label('year'))
+            .filter(DistanceWorkout.user_id == userId)
+            .group_by(year)
+            .order_by(year)
+            .all()
+        )
+
+        if rows is None:
+            return []
+
+        return [int(row.year) for row in rows]

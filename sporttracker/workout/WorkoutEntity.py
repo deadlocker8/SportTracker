@@ -65,23 +65,6 @@ def get_workouts_by_year_and_month(
     )
 
 
-def get_available_years(userId) -> list[int]:
-    year = extract('year', Workout.start_time)
-
-    rows = (
-        Workout.query.with_entities(year.label('year'))
-        .filter(Workout.user_id == userId)
-        .group_by(year)
-        .order_by(year)
-        .all()
-    )
-
-    if rows is None:
-        return []
-
-    return [int(row.year) for row in rows]
-
-
 def get_duration_per_month_by_type(workoutType: WorkoutType, minYear: int, maxYear: int) -> list[MonthDurationSum]:
     year = extract('year', Workout.start_time)
     month = extract('month', Workout.start_time)

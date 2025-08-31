@@ -37,7 +37,6 @@ from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.user.ParticipantEntity import get_participants
 from sporttracker.user.UserEntity import User
-from sporttracker.workout.WorkoutEntity import get_available_years
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
@@ -398,7 +397,9 @@ def construct_blueprint(
     @login_required
     def listMaintenances():
         maintenancesWithEvents = get_maintenances_with_events(
-            QuickFilterState().reset(get_available_years(current_user.id)), MaintenanceFilterState(), current_user.id
+            QuickFilterState().reset(DistanceWorkoutService.get_available_years(current_user.id)),
+            MaintenanceFilterState(),
+            current_user.id,
         )
         return jsonify([MAPPER_MAINTENANCE.map(m) for m in maintenancesWithEvents])
 

@@ -14,8 +14,8 @@ from sporttracker.achievement.AchievementEntity import (
     AnnualAchievementDifferenceType,
     AllYearData,
 )
-from sporttracker.workout.WorkoutEntity import get_available_years
 from sporttracker.workout.WorkoutType import WorkoutType
+from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -37,13 +37,13 @@ def construct_blueprint():
             'achievement/annualAchievements.jinja2',
             achievements=__get_annual_achievements(year),
             selectedYear=year,
-            availableYears=get_available_years(current_user.id),
+            availableYears=DistanceWorkoutService.get_available_years(current_user.id),
         )
 
     def __get_annual_achievements(year: int) -> dict[WorkoutType, list[AnnualAchievement]]:
         result = {}
 
-        availableYears = get_available_years(current_user.id)
+        availableYears = DistanceWorkoutService.get_available_years(current_user.id)
         yearNames = [str(year) for year in availableYears]
 
         for workoutType in WorkoutType.get_distance_workout_types():

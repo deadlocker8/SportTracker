@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from flask_login import current_user
-from sqlalchemy import Integer, String, DateTime, extract, func, ForeignKey
+from sqlalchemy import Integer, String, DateTime, func, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
@@ -66,23 +66,6 @@ class MonthDistanceSum:
     year: int
     month: int
     distanceSum: float
-
-
-def get_available_years(userId) -> list[int]:
-    year = extract('year', DistanceWorkout.start_time)
-
-    rows = (
-        DistanceWorkout.query.with_entities(year.label('year'))
-        .filter(DistanceWorkout.user_id == userId)
-        .group_by(year)
-        .order_by(year)
-        .all()
-    )
-
-    if rows is None:
-        return []
-
-    return [int(row.year) for row in rows]
 
 
 def get_distance_between_dates(

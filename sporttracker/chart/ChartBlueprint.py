@@ -25,7 +25,6 @@ from sporttracker.user.ParticipantEntity import Participant
 from sporttracker.workout.WorkoutEntity import (
     Workout,
     get_workouts_by_year_and_month,
-    get_available_years,
     get_duration_per_month_by_type,
 )
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -412,7 +411,7 @@ def construct_blueprint(
         return render_template(
             'chart/chartCalendar.jinja2',
             calendarData=calendarData,
-            availableYears=get_available_years(current_user.id),
+            availableYears=DistanceWorkoutService.get_available_years(current_user.id),
             selectedYear=year,
             quickFilterState=quickFilterState,
         )
@@ -571,7 +570,7 @@ def construct_blueprint(
             visitedTileService = VisitedTileService(
                 newVisitedTileCache,
                 maxSquareCache,
-                QuickFilterState().reset(get_available_years(current_user.id)),
+                QuickFilterState().reset(DistanceWorkoutService.get_available_years(current_user.id)),
                 TileHuntingFilterState().reset(),
                 distanceWorkoutService,
             )

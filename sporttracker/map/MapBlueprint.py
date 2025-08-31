@@ -27,10 +27,7 @@ from sporttracker.tileHunting.VisitedTileService import VisitedTileService
 from sporttracker import Constants
 from sporttracker.gpx.GpxService import GpxService, GpxParser
 from sporttracker.workout.WorkoutModel import DistanceWorkoutModel
-from sporttracker.workout.distance.DistanceWorkoutEntity import (
-    get_available_years,
-    DistanceWorkout,
-)
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.user.UserEntity import get_user_by_tile_hunting_shared_code
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
@@ -122,7 +119,7 @@ def construct_blueprint(
             'map/mapMultipleWorkouts.jinja2',
             gpxInfo=gpxInfo,
             quickFilterState=quickFilterState,
-            availableYears=get_available_years(current_user.id),
+            availableYears=distanceWorkoutService.get_available_years(current_user.id),
             mapMode='workouts',
             redirectUrl='maps.showAllWorkoutsOnMap',
         )
@@ -148,7 +145,7 @@ def construct_blueprint(
 
         tileHuntingNumberOfNewVisitedTiles = 0
 
-        quickFilterState = QuickFilterState().reset(get_available_years(current_user.id))
+        quickFilterState = QuickFilterState().reset(distanceWorkoutService.get_available_years(current_user.id))
 
         tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
         visitedTileService = __create_visited_tile_service(quickFilterState, tileHuntingFilterState)
@@ -338,7 +335,9 @@ def construct_blueprint(
         if current_user.id != user_id:
             abort(403)
 
-        return __renderTile(user_id, zoom, x, y, QuickFilterState().reset(get_available_years(user_id)))
+        return __renderTile(
+            user_id, zoom, x, y, QuickFilterState().reset(distanceWorkoutService.get_available_years(user_id))
+        )
 
     @maps.route('/map/renderAllTilesWithFilter/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')
     def renderAllTilesWithFilter(user_id: int, zoom: int, x: int, y: int):
@@ -387,7 +386,7 @@ def construct_blueprint(
         if current_user.id != user_id:
             abort(403)
 
-        availableYears = get_available_years(user_id)
+        availableYears = distanceWorkoutService.get_available_years(user_id)
 
         tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
         visitedTileService = __create_visited_tile_service(
@@ -424,7 +423,7 @@ def construct_blueprint(
         tileHuntingFilterState.is_show_planned_tiles_active = user.isTileHuntingShowPlannedTilesActivated  # type: ignore[assignment]
 
         visitedTileService = __create_visited_tile_service(
-            QuickFilterState().reset(get_available_years(user.id)), tileHuntingFilterState
+            QuickFilterState().reset(distanceWorkoutService.get_available_years(user.id)), tileHuntingFilterState
         )
         tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
 
@@ -489,7 +488,7 @@ def construct_blueprint(
         return render_template(
             'map/mapTileHunting.jinja2',
             quickFilterState=quickFilterState,
-            availableYears=get_available_years(current_user.id),
+            availableYears=distanceWorkoutService.get_available_years(current_user.id),
             redirectUrl='maps.showTileHuntingMap',
             tileRenderUrl=tileRenderUrl,
             totalNumberOfTiles=totalNumberOfTiles,
@@ -521,7 +520,7 @@ def construct_blueprint(
         )
         numberOfVisitsUrl = numberOfVisitsUrl.split('/0.0/0.0')[0]
 
-        availableYears = get_available_years(current_user.id)
+        availableYears = distanceWorkoutService.get_available_years(current_user.id)
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
 
         return render_template(
@@ -547,7 +546,7 @@ def construct_blueprint(
             latitude, longitude, tileHuntingSettings['baseZoomLevel']
         )
 
-        availableYears = get_available_years(user_id)
+        availableYears = distanceWorkoutService.get_available_years(user_id)
 
         tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
         visitedTileService = __create_visited_tile_service(

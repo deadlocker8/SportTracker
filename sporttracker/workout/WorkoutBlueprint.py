@@ -23,9 +23,7 @@ from sporttracker.workout.WorkoutEntity import (
 )
 from sporttracker.workout.WorkoutModel import MonthModel, DistanceWorkoutModel, FitnessWorkoutModel
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.workout.distance.DistanceWorkoutEntity import (
-    get_available_years,
-)
+from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -65,7 +63,7 @@ def construct_blueprint():
             quickFilterState=quickFilterState,
             year=year,
             month=month,
-            availableYears=get_available_years(current_user.id) or [datetime.now().year],
+            availableYears=DistanceWorkoutService.get_available_years(current_user.id) or [datetime.now().year],
             monthNames=list(get_month_names(width='wide', locale=flask_babel.get_locale()).values()),
         )
 
