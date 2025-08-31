@@ -12,6 +12,7 @@ from sporttracker.achievement.AchievementEntity import (
     Achievement,
     LongestWorkoutDistanceAchievementHistoryItem,
     LongestWorkoutDurationAchievementHistoryItem,
+    BestMonthDistanceAchievementHistoryItem,
 )
 from sporttracker.workout.WorkoutType import WorkoutType
 
@@ -99,7 +100,11 @@ def construct_blueprint():
             )
         )
 
+        bestMonth = BestMonthDistanceAchievementHistoryItem.get_dummy_instance()
         bestMonths = AchievementCalculator.get_best_distance_months_by_type(current_user.id, workoutType)
+        if bestMonths:
+            bestMonth = bestMonths[0]
+
         achievementList.append(
             Achievement(
                 icon='calendar_month',
@@ -111,8 +116,8 @@ def construct_blueprint():
                     '<span class="fw-bold">{bestMonthName}</span> was your best month with <span class="fw-bold">'
                     '{bestMonthDistance}</span>!'
                 ).format(
-                    bestMonthName=bestMonths[0].get_date_formatted(),
-                    bestMonthDistance=bestMonths[0].get_value_formatted(),
+                    bestMonthName=bestMonth.get_date_formatted(),
+                    bestMonthDistance=bestMonth.get_value_formatted(),
                 ),
                 historyItems=bestMonths,
             )

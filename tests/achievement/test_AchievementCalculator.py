@@ -173,9 +173,7 @@ class TestAchievementCalculatorGetBestDistanceMonthByType:
             login_user(user, remember=False)
 
             result = AchievementCalculator.get_best_distance_months_by_type(user.id, WorkoutType.BIKING)  # type: ignore[union-attr]
-            assert len(result) == 1
-            assert result[0].get_value_formatted() == '0.0 km'
-            assert result[0].get_date_formatted() == 'No month'
+            assert len(result) == 0
 
     def test_get_best_distance_months_by_type_single_months(self, app):
         with app.test_request_context():

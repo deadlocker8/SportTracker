@@ -84,7 +84,7 @@ class AchievementCalculator:
         maxDate, minDate = AchievementCalculator._get_min_and_max_date(user_id, workoutType)
 
         if minDate is None or maxDate is None:
-            return [BestMonthDistanceAchievementHistoryItem.get_dummy_instance()]
+            return []
 
         monthDistanceSums = DistanceWorkoutService.get_distance_per_month_by_type(
             user_id, workoutType, minDate.year, maxDate.year
@@ -92,7 +92,7 @@ class AchievementCalculator:
         monthDistanceSums = [month for month in monthDistanceSums if month.distanceSum > 0.0]
 
         if not monthDistanceSums:
-            return [BestMonthDistanceAchievementHistoryItem.get_dummy_instance()]
+            return []
 
         bestMonths = sorted(monthDistanceSums, key=lambda monthDistanceSum: monthDistanceSum.distanceSum, reverse=True)
 
