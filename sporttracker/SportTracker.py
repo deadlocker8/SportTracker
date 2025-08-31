@@ -83,6 +83,7 @@ class SportTracker(FlaskBaseApp):
         rootDir: str,
         logger: logging.Logger,
         isDebug: bool,
+        isStage: bool,
         generateDummyData: bool,
         prepareDatabase: bool,
         settingsPath: str = '../settings.json',
@@ -91,6 +92,7 @@ class SportTracker(FlaskBaseApp):
         super().__init__(appName, rootDir, logger, settingsPath=settingsPath, serveFavicon=True)
 
         self._isDebug = isDebug
+        self._isStage = isStage
         self._generateDummyData = generateDummyData
         self._prepareDatabase = prepareDatabase
 
@@ -184,6 +186,7 @@ class SportTracker(FlaskBaseApp):
                 'fitnessWorkoutTypes': [x for x in FitnessWorkoutType],
                 'fitnessWorkoutCategoryTypes': [x for x in FitnessWorkoutCategoryType],
                 'isDebug': self._isDebug,
+                'isStage': self._isStage,
                 'notificationTypes': NotificationType.get_sorted(),
             }
 
@@ -367,6 +370,7 @@ def create_test_app():
         LOGGER,
         False,
         False,
+        False,
         True,
         settingsPath='../settings-test.json',
     )
@@ -375,15 +379,16 @@ def create_test_app():
 
 # needed for creation of database revisions
 def create_app():
-    server = SportTracker(Constants.APP_NAME, os.path.dirname(__file__), LOGGER, False, False, False)
+    server = SportTracker(Constants.APP_NAME, os.path.dirname(__file__), LOGGER, False, False, False, False)
     return server.init_app()
 
 
 @click.command()
 @click.option('--debug', '-d', is_flag=True, help='Enable debug mode')
+@click.option('--stage', '-s', is_flag=True, help='Enable stage mode')
 @click.option('--dummy', '-dummy', is_flag=True, help='Generate dummy workouts')
-def start(debug, dummy):
-    sportTracker = SportTracker(Constants.APP_NAME, os.path.dirname(__file__), LOGGER, debug, dummy, True)
+def start(debug, stage, dummy):
+    sportTracker = SportTracker(Constants.APP_NAME, os.path.dirname(__file__), LOGGER, debug, stage, dummy, True)
     sportTracker.start_server()
 
 

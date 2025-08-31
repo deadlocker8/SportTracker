@@ -32,6 +32,11 @@
                         <div class="badge-debug badge text-bg-danger me-1">Debug</div>
                     </div>
                 {% endif %}
+                {% if isStage %}
+                    <div>
+                        <div class="badge-debug badge text-bg-warning me-1">Stage</div>
+                    </div>
+                {% endif %}
             </div>
 
             {% if current_user.is_authenticated %}
