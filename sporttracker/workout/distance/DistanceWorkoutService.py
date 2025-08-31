@@ -5,6 +5,8 @@ import os
 from io import BytesIO
 from typing import Any, TYPE_CHECKING
 
+from sqlalchemy import extract, func
+
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 
 if TYPE_CHECKING:
@@ -14,11 +16,10 @@ from sporttracker.workout.distance.DistanceWorkoutModel import DistanceWorkoutFo
 
 from werkzeug.datastructures import FileStorage
 
-from sporttracker.achievement.AchievementCalculator import AchievementCalculator
 from sporttracker.api.FormModels import DistanceWorkoutApiFormModel
 from sporttracker import Constants
 from sporttracker.gpx.GpxService import GpxService
-from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout, MonthDistanceSum
 from sporttracker.user.ParticipantEntity import get_participants_by_ids
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -77,7 +78,7 @@ class DistanceWorkoutService:
             planned_tour=plannedTour,
         )
 
-        previousLongestDistance = self.get_previous_longest_workout_distance(user_id, workout.type)
+        previousLongestDistance = self.get_longest_workout_distance(user_id, workout.type)
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
         )
@@ -120,7 +121,7 @@ class DistanceWorkoutService:
             planned_tour=planned_tour,
         )
 
-        previousLongestDistance = self.get_previous_longest_workout_distance(user_id, workout.type)
+        previousLongestDistance = self.get_longest_workout_distance(user_id, workout.type)
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
         )
@@ -179,7 +180,7 @@ class DistanceWorkoutService:
             raise ValueError(f'No distance workout with ID {workout_id} found')
 
         startTime = form_model.calculate_start_time()
-        previousLongestDistance = self.get_previous_longest_workout_distance(user_id, workout.type)
+        previousLongestDistance = self.get_longest_workout_distance(user_id, workout.type)
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
         )
@@ -237,17 +238,49 @@ class DistanceWorkoutService:
         return DistanceWorkout.query.filter(DistanceWorkout.share_code == shareCode).first()
 
     @staticmethod
-    def get_previous_longest_workout_distance(user_id: int, workout_type: WorkoutType) -> int | None:
-        longestWorkouts = AchievementCalculator.get_workouts_with_longest_distances_by_type(user_id, workout_type)
-        if not longestWorkouts:
+    def get_longest_workout_distance(user_id: int, workout_type: WorkoutType) -> int | None:
+        longestWorkout = (
+            DistanceWorkout.query.filter(DistanceWorkout.type == workout_type)
+            .filter(DistanceWorkout.user_id == user_id)
+            .order_by(DistanceWorkout.distance.desc())
+            .first()
+        )
+
+        if longestWorkout is None:
             return None
 
-        longestWorkout = longestWorkouts[0]
-        if longestWorkout.workout_id is None:
-            return None
+        return longestWorkout.distance
 
-        workout = DistanceWorkoutService.get_distance_workout_by_id(longestWorkout.workout_id, user_id)
-        if workout is None:
-            return None
+    @staticmethod
+    def get_distance_per_month_by_type(
+        user_id: int, workoutType: WorkoutType, minYear: int, maxYear: int
+    ) -> list[MonthDistanceSum]:
+        year = extract('year', DistanceWorkout.start_time)
+        month = extract('month', DistanceWorkout.start_time)
 
-        return workout.distance
+        rows = (
+            DistanceWorkout.query.with_entities(
+                func.sum(DistanceWorkout.distance / 1000).label('distanceSum'),
+                year.label('year'),
+                month.label('month'),
+            )
+            .filter(DistanceWorkout.type == workoutType)
+            .filter(DistanceWorkout.user_id == user_id)
+            .group_by(year, month)
+            .order_by(year, month)
+            .all()
+        )
+
+        result = []
+        for currentYear in range(minYear, maxYear + 1):
+            for currentMonth in range(1, 13):
+                for row in rows:
+                    if row.year == currentYear and row.month == currentMonth:
+                        result.append(
+                            MonthDistanceSum(year=currentYear, month=currentMonth, distanceSum=float(row.distanceSum))
+                        )
+                        break
+                else:
+                    result.append(MonthDistanceSum(year=currentYear, month=currentMonth, distanceSum=0.0))
+
+        return result

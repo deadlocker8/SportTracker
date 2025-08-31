@@ -2,22 +2,22 @@ import logging
 
 from pydantic import ConfigDict
 
-from sporttracker.achievement.AchievementCalculator import AchievementCalculator
-from sporttracker.api.FormModels import FitnessWorkoutApiFormModel
 from sporttracker import Constants
+from sporttracker.api.FormModels import FitnessWorkoutApiFormModel
+from sporttracker.db import db
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.notification.NotificationService import NotificationService
+from sporttracker.user.ParticipantEntity import get_participants_by_ids
+from sporttracker.workout.WorkoutEntity import Workout
 from sporttracker.workout.WorkoutModel import BaseWorkoutFormModel
+from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
-from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.fitness.FitnessWorkoutCategory import (
     FitnessWorkoutCategoryType,
     update_workout_categories_by_workout_id,
 )
+from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
-from sporttracker.user.ParticipantEntity import get_participants_by_ids
-from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -170,16 +170,14 @@ class FitnessWorkoutService:
 
     @staticmethod
     def get_previous_longest_workout_duration(user_id: int, workout_type: WorkoutType) -> int | None:
-        longestWorkouts = AchievementCalculator.get_workouts_with_longest_durations_by_type(user_id, workout_type)
-        if not longestWorkouts:
+        longestWorkout = (
+            Workout.query.filter(Workout.type == workout_type)
+            .filter(Workout.user_id == user_id)
+            .order_by(Workout.duration.desc())
+            .first()
+        )
+
+        if longestWorkout is None:
             return None
 
-        longestWorkout = longestWorkouts[0]
-        if longestWorkout.workout_id is None:
-            return None
-
-        workout = FitnessWorkoutService.get_fitness_workout_by_id(longestWorkout.workout_id, user_id)
-        if workout is None:
-            return None
-
-        return workout.duration
+        return longestWorkout.duration

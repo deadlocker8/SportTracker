@@ -68,38 +68,6 @@ class MonthDistanceSum:
     distanceSum: float
 
 
-def get_distance_per_month_by_type(workoutType: WorkoutType, minYear: int, maxYear: int) -> list[MonthDistanceSum]:
-    year = extract('year', DistanceWorkout.start_time)
-    month = extract('month', DistanceWorkout.start_time)
-
-    rows = (
-        DistanceWorkout.query.with_entities(
-            func.sum(DistanceWorkout.distance / 1000).label('distanceSum'),
-            year.label('year'),
-            month.label('month'),
-        )
-        .filter(DistanceWorkout.type == workoutType)
-        .filter(DistanceWorkout.user_id == current_user.id)
-        .group_by(year, month)
-        .order_by(year, month)
-        .all()
-    )
-
-    result = []
-    for currentYear in range(minYear, maxYear + 1):
-        for currentMonth in range(1, 13):
-            for row in rows:
-                if row.year == currentYear and row.month == currentMonth:
-                    result.append(
-                        MonthDistanceSum(year=currentYear, month=currentMonth, distanceSum=float(row.distanceSum))
-                    )
-                    break
-            else:
-                result.append(MonthDistanceSum(year=currentYear, month=currentMonth, distanceSum=0.0))
-
-    return result
-
-
 def get_available_years(userId) -> list[int]:
     year = extract('year', DistanceWorkout.start_time)
 

@@ -20,7 +20,7 @@ from sporttracker.user.CustomWorkoutFieldEntity import (
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.tileHunting.VisitedTileService import VisitedTileService
-from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout, get_distance_per_month_by_type
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.user.ParticipantEntity import Participant
 from sporttracker.workout.WorkoutEntity import (
     Workout,
@@ -456,7 +456,9 @@ def construct_blueprint(
         return patternWithMondayAsFirstDay
 
     def __get_distance_per_month_by_type(workoutType: WorkoutType, minYear: int, maxYear: int) -> dict[str, Any]:
-        monthDistanceSums = get_distance_per_month_by_type(workoutType, minYear, maxYear)
+        monthDistanceSums = DistanceWorkoutService.get_distance_per_month_by_type(
+            current_user.id, workoutType, minYear, maxYear
+        )
         monthNames = []
         values = []
         texts = []

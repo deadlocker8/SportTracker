@@ -10,13 +10,11 @@ from sporttracker.achievement.AchievementEntity import (
     BestMonthDurationAchievementHistoryItem,
 )
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
-from sporttracker.workout.distance.DistanceWorkoutEntity import (
-    get_distance_per_month_by_type,
-    DistanceWorkout,
-)
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.WorkoutEntity import Workout, get_duration_per_month_by_type
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
+from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 
 
 class AchievementCalculator:
@@ -88,7 +86,9 @@ class AchievementCalculator:
         if minDate is None or maxDate is None:
             return [BestMonthDistanceAchievementHistoryItem.get_dummy_instance()]
 
-        monthDistanceSums = get_distance_per_month_by_type(workoutType, minDate.year, maxDate.year)
+        monthDistanceSums = DistanceWorkoutService.get_distance_per_month_by_type(
+            user_id, workoutType, minDate.year, maxDate.year
+        )
         monthDistanceSums = [month for month in monthDistanceSums if month.distanceSum > 0.0]
 
         if not monthDistanceSums:
