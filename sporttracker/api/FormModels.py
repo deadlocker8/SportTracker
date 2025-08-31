@@ -58,3 +58,12 @@ class FitnessWorkoutApiFormModel(BaseModel):
 
     def calculate_start_time(self) -> datetime:
         return datetime.strptime(f'{self.date} {self.start_time}', '%Y-%m-%d %H:%M')
+
+
+class HeartRateDataModel(BaseModel):
+    timestamp: str
+    bpm: int
+
+
+class HeartRateDataListModel(BaseModel):
+    data: list[HeartRateDataModel]

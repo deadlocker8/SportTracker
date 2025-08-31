@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from typing import Any
 
 from flask import Blueprint, jsonify, render_template, redirect, url_for, request, abort
@@ -12,6 +13,7 @@ from sporttracker.api.FormModels import (
     MonthGoalDurationApiFormModel,
     DistanceWorkoutApiFormModel,
     FitnessWorkoutApiFormModel,
+    HeartRateDataListModel,
 )
 from sporttracker.api.Mapper import (
     MAPPER_MONTH_GOAL_DISTANCE,
@@ -28,6 +30,7 @@ from sporttracker import Constants
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_grouped_by_distance_workout_types_with_values
+from sporttracker.workout.HeartRateEntity import HeartRateEntity
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.fitness.FitnessWorkoutCategory import (
@@ -369,6 +372,51 @@ def construct_blueprint(
 
         LOGGER.debug(f'Saved new fitness workout via api: {workout.id}')
         return {'id': workout.id}, 200
+
+    @api.route('/workouts/distanceWorkout/<int:workout_id>/addHeartRateData', methods=['POST'])
+    @login_required
+    def addHeartRateDataDistanceWorkout(workout_id: int):
+        workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
+
+        if workout is None:
+            abort(404)
+
+        try:
+            form = HeartRateDataListModel.model_validate_json(request.data)
+        except ValidationError as e:
+            return jsonify({'error': str(e)}), 400
+
+        __addHeartRateData(workout_id, form)
+        return '', 200
+
+    @api.route('/workouts/fitnessWorkout/<int:workout_id>/addHeartRateData', methods=['POST'])
+    @login_required
+    def addHeartRateDataFitnessWorkout(workout_id: int):
+        workout = fitnessWorkoutService.get_fitness_workout_by_id(workout_id, current_user.id)
+
+        if workout is None:
+            abort(404)
+
+        try:
+            form = HeartRateDataListModel.model_validate_json(request.data)
+        except ValidationError as e:
+            return jsonify({'error': str(e)}), 400
+
+        __addHeartRateData(workout_id, form)
+        return '', 200
+
+    def __addHeartRateData(workout_id: int, form: HeartRateDataListModel) -> None:
+        LOGGER.debug(f'Deleting existing heart rate data for workout {workout_id}')
+        deleteStatement = HeartRateEntity.__table__.delete().where(HeartRateEntity.workout_id == workout_id)
+        db.session.execute(deleteStatement)
+        db.session.commit()
+
+        for entry in form.data:
+            timestamp = datetime.strptime(entry.timestamp, '%Y-%m-%d %H:%M:%S')
+            db.session.add(HeartRateEntity(workout_id=workout_id, timestamp=timestamp, bpm=int(entry.bpm)))
+        db.session.commit()
+
+        LOGGER.debug(f'Added {len(form.data)} heart rate data points for workout {workout_id}')
 
     @api.route('/settings/participants')
     @login_required

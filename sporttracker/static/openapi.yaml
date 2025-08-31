@@ -214,6 +214,45 @@ paths:
       responses:
         200:
           description: "Okay"
+  /api/v2/workouts/distanceWorkout/{workout_id}/addHeartRateData:
+    post:
+      summary: Adds heart rate data to a distance-based workout. All existing heart rate data associated with the workout will be replaced!
+      tags:
+        - distanceWorkout
+      parameters:
+        - in: path
+          name: workout_id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HeartRateDataListModel'
+      responses:
+        200:
+          description: "Okay"
+
+  /api/v2/workouts/fitnessWorkout/{workout_id}/addHeartRateData:
+    post:
+      summary: Adds heart rate data to a fitness workout. All existing heart rate data associated with the workout will be replaced!
+      tags:
+        - fitnessWorkout
+      parameters:
+        - in: path
+          name: workout_id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HeartRateDataListModel'
+      responses:
+        200:
+          description: "Okay"
 
   /api/v2/settings/participants:
     summary: Lists all available participants
@@ -317,7 +356,7 @@ components:
         start_time:
           type: string
           example: 11:23
-          description: Workout start time in the format HH:MM
+          description: Workout start time in the format HH:mm
         distance:
           type: integer
           description: Workout distance in meters
@@ -365,7 +404,7 @@ components:
         start_time:
           type: string
           example: 11:23
-          description: Workout start time in the format HH:MM
+          description: Workout start time in the format HH:mm
         distance:
           type: integer
           description: Workout distance in meters
@@ -420,7 +459,7 @@ components:
         start_time:
           type: string
           example: 11:23
-          description: Workout start time in the format HH:MM
+          description: Workout start time in the format HH:mm
         duration:
           type: integer
           description: Workout duration in seconds
@@ -471,7 +510,7 @@ components:
         start_time:
           type: string
           example: 11:23
-          description: Workout start time in the format HH:MM
+          description: Workout start time in the format HH:mm
         duration:
           type: integer
           description: Workout duration in seconds
@@ -738,6 +777,30 @@ components:
         limit_exceeded_distance:
           type: integer
           description: Distance in meters by which the reminder limit is exceeded
+
+    HeartRateDataListModel:
+      type: object
+      required:
+       - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HeartRateDataModel'
+
+    HeartRateDataModel:
+      type: object
+      required:
+        - timestamp
+        - bpm
+    properties:
+      timestamp:
+        example: 2023-11-19 12:45:22
+        description: Date time in the format YYYY-MM-DD HH:mm:SS
+      bpm:
+        type: integer
+        example: 123
+        description: Beats per minute
 
     Version:
       type: object
