@@ -339,54 +339,56 @@
                 <span class="material-symbols-outlined fs-2">notifications</span>
             {% endcall %}
 
-            <div class="d-flex flex-row gap-5 justify-content-center mt-5">
-                <div class="d-flex flex-column align-items-start mt-5">
-                    <div class="mt-4 mb-2"></div>
-                    <div class="fw-bold mx-auto mt-5 mb-3">{{ gettext('Notification type') }}</div>
-                    {% for notificationType in notificationTypes %}
-                        <div class="mb-3">{{ notificationType.get_localized_title() }}</div>
+            <div class=" mx-3 mt-5 overflow-x-auto text-center">
+                <div class="d-inline-flex flex-row justify-content-center">
+                    <div class="d-flex flex-column align-items-start mt-5">
+                        <div class="mt-4 mb-2"></div>
+                        <div class="fw-bold mx-auto mt-5 mb-3">{{ gettext('Notification type') }}</div>
+                        {% for notificationType in notificationTypes %}
+                            <div class="mb-3 text-nowrap">{{ notificationType.get_localized_title() }}</div>
+                        {% endfor %}
+                    </div>
+
+                    {% for notificationSettings in allNotificationSettings.values() %}
+                        <div class="d-flex flex-column ms-5 align-items-center">
+                            <div class="fw-bold mb-3">{{ notificationSettings.provider_type.name }}</div>
+
+                            {% if notificationSettings.is_active %}
+                                <span class="badge rounded-pill text-bg-success mb-3">{{ gettext('enabled') }}</span>
+                            {% else %}
+                                <span class="badge rounded-pill text-bg-danger mb-3">{{ gettext('disabled') }}</span>
+                            {% endif %}
+
+                            <button class="btn btn-sm btn-primary d-inline-flex align-items-center mb-5"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#notification-provider-modal-ntfy">
+                                <span class="material-symbols-outlined filled fs-5">settings</span>&nbsp;{{ gettext('Settings') }}
+                            </button>
+
+                            <form role="form" action="{{ url_for('settings.editNotificationSettings', notification_settings_id=notificationSettings.id) }}"
+                                  method="post"
+                                  onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
+                            class="d-flex flex-column align-items-center mt-3">
+                                {% for notificationType in notificationTypes %}
+                                    {% set typeStatus=notificationSettings.get_notification_types()[notificationType] %}
+
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                               {% if typeStatus is true %}checked{% endif %}
+                                               id="infoItem-{{ notificationSettings.provider_type.name }}-{{ notificationType.name }}"
+                                               name="{{ notificationType.name }}"
+                                               {% if notificationSettings.is_active is false %}disabled{% endif %}>
+                                        <label class="form-check-label visually-hidden" for="infoItem-{{ notificationSettings.provider_type.name }}-{{ notificationType.name }}">
+                                            {{ notificationType.name }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+
+                                {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-4', isDisabled=notificationSettings.is_active is false) }}
+                            </form>
+                        </div>
                     {% endfor %}
                 </div>
-
-                {% for notificationSettings in allNotificationSettings.values() %}
-                    <div class="d-flex flex-column ms-5 align-items-center">
-                        <div class="fw-bold mb-3">{{ notificationSettings.provider_type.name }}</div>
-
-                        {% if notificationSettings.is_active %}
-                            <span class="badge rounded-pill text-bg-success mb-3">{{ gettext('enabled') }}</span>
-                        {% else %}
-                            <span class="badge rounded-pill text-bg-danger mb-3">{{ gettext('disabled') }}</span>
-                        {% endif %}
-
-                        <button class="btn btn-sm btn-primary d-inline-flex align-items-center mb-5"
-                                data-bs-toggle="modal"
-                                data-bs-target="#notification-provider-modal-ntfy">
-                            <span class="material-symbols-outlined filled fs-5">settings</span>&nbsp;{{ gettext('Settings') }}
-                        </button>
-
-                        <form role="form" action="{{ url_for('settings.editNotificationSettings', notification_settings_id=notificationSettings.id) }}"
-                              method="post"
-                              onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
-                        class="d-flex flex-column align-items-center mt-3">
-                            {% for notificationType in notificationTypes %}
-                                {% set typeStatus=notificationSettings.get_notification_types()[notificationType] %}
-
-                                <div class="form-check form-switch mb-3">
-                                    <input class="form-check-input" type="checkbox" role="switch"
-                                           {% if typeStatus is true %}checked{% endif %}
-                                           id="infoItem-{{ notificationSettings.provider_type.name }}-{{ notificationType.name }}"
-                                           name="{{ notificationType.name }}"
-                                           {% if notificationSettings.is_active is false %}disabled{% endif %}>
-                                    <label class="form-check-label visually-hidden" for="infoItem-{{ notificationSettings.provider_type.name }}-{{ notificationType.name }}">
-                                        {{ notificationType.name }}
-                                    </label>
-                                </div>
-                            {% endfor %}
-
-                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-4', isDisabled=notificationSettings.is_active is false) }}
-                        </form>
-                    </div>
-                {% endfor %}
             </div>
         </div>
     </div>
