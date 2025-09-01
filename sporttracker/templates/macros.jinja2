@@ -21,7 +21,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
         <div class="container-fluid">
             <div class="d-flex flex-row align-items-center">
-                <a class="navbar-brand d-flex align-items-center justify-content-center" href="/">
+                <a class="navbar-brand d-flex align-items-center justify-content-center me-2" href="/">
                     <img alt="SportTracker logo" src="{{ url_for('static', filename="images/SportTracker.png") }}"
                          width="35" height="35" class="d-inline-block align-text-top">
                     <span class="ms-2">SportTracker - {{ versionName }}</span>
@@ -29,12 +29,12 @@
 
                 {% if isDebug %}
                     <div>
-                        <div class="badge-debug badge text-bg-danger me-1">Debug</div>
+                        <div class="badge-debug badge text-bg-danger mx-1">Debug</div>
                     </div>
                 {% endif %}
                 {% if isStage %}
                     <div>
-                        <div class="badge-debug badge text-bg-warning me-1">Stage</div>
+                        <div class="badge-debug badge text-bg-warning mx-1">Stage</div>
                     </div>
                 {% endif %}
             </div>
