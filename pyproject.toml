@@ -35,7 +35,7 @@ natsort = "8.4.0"
 ruff = "0.13.2"
 pre-commit = "4.3.0"
 mypy = "1.18.2"
-pytest = "8.4.1"
+pytest = "8.4.2"
 pytest-selenium = "4.1.0"
 selenium = "4.35.0"
 
