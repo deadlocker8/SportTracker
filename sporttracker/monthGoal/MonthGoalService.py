@@ -75,5 +75,19 @@ class MonthGoalService:
     ) -> list[MonthGoalSummary]:
         currentCompleted = MonthGoalService.get_goal_summaries_for_completed_goals(year, month, workoutTypes, user_id)
 
-        previousCompletedIds = [g.id for g in previous_completed]
-        return [g for g in currentCompleted if g.id not in previousCompletedIds]
+        return [
+            g
+            for g in currentCompleted
+            if not MonthGoalService.__is_part_of_previous_completed_goals(g, previous_completed)
+        ]
+
+    @staticmethod
+    def __is_part_of_previous_completed_goals(
+        month_goal_summary: MonthGoalSummary, previous_completed: list[MonthGoalSummary]
+    ) -> bool:
+        previousCompletedIdsWithSameType = [
+            g.id
+            for g in previous_completed
+            if g.type_name == month_goal_summary.type_name  # type: ignore[attr-defined]
+        ]
+        return month_goal_summary.id in previousCompletedIdsWithSameType
