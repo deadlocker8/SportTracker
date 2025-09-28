@@ -9,6 +9,7 @@ from typing import Any, TYPE_CHECKING
 from sqlalchemy import extract, func, DateTime, String
 
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
+from sporttracker.workout import WorkoutEntity
 from sporttracker.workout.heartRate.HeartRateService import HeartRateService
 
 if TYPE_CHECKING:
@@ -84,11 +85,10 @@ class DistanceWorkoutService:
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
         )
-        previousBestMonthDistance = DistanceWorkoutService.get_month_distance(
+
+        previousBestMonthDistance = DistanceWorkoutService.get_best_month_distance(
             user_id=user_id,
             workoutType=workout.type,
-            year=workout.start_time.year,  # type: ignore[attr-defined]
-            month=workout.start_time.month,  # type: ignore[attr-defined]
         )
 
         db.session.add(workout)
@@ -135,11 +135,9 @@ class DistanceWorkoutService:
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
         )
-        previousBestMonthDistance = DistanceWorkoutService.get_month_distance(
+        previousBestMonthDistance = DistanceWorkoutService.get_best_month_distance(
             user_id=user_id,
             workoutType=workout.type,
-            year=workout.start_time.year,  # type: ignore[attr-defined]
-            month=workout.start_time.month,  # type: ignore[attr-defined]
         )
 
         db.session.add(workout)
@@ -204,11 +202,9 @@ class DistanceWorkoutService:
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
         )
-        previousBestMonthDistance = DistanceWorkoutService.get_month_distance(
+        previousBestMonthDistance = DistanceWorkoutService.get_best_month_distance(
             user_id=user_id,
             workoutType=workout.type,
-            year=workout.start_time.year,  # type: ignore[attr-defined]
-            month=workout.start_time.month,  # type: ignore[attr-defined]
         )
 
         if form_model.planned_tour_id == '-1':
@@ -364,3 +360,29 @@ class DistanceWorkoutService:
             .scalar()
             or 0
         )
+
+    @staticmethod
+    def get_best_distance_months_by_type(user_id: int, workoutType: WorkoutType) -> list[MonthDistanceSum]:
+        maxDate, minDate = WorkoutEntity.get_min_and_max_date(user_id, workoutType)
+
+        if minDate is None or maxDate is None:
+            return []
+
+        monthDistanceSums = DistanceWorkoutService.get_distance_per_month_by_type(
+            user_id, workoutType, minDate.year, maxDate.year
+        )
+        monthDistanceSums = [month for month in monthDistanceSums if month.distanceSum > 0.0]
+
+        if not monthDistanceSums:
+            return []
+
+        return sorted(monthDistanceSums, key=lambda monthDistanceSum: monthDistanceSum.distanceSum, reverse=True)
+
+    @staticmethod
+    def get_best_month_distance(user_id: int, workoutType: WorkoutType) -> int:
+        bestMonths = DistanceWorkoutService.get_best_distance_months_by_type(user_id, workoutType)
+
+        if not bestMonths:
+            return 0
+
+        return int(bestMonths[0].distanceSum * 1000)

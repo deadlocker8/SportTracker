@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import date
 from statistics import mean
 
 from sqlalchemy import asc, func, extract
@@ -11,10 +11,11 @@ from sporttracker.achievement.AchievementEntity import (
 )
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
-from sporttracker.workout.WorkoutEntity import Workout, get_duration_per_month_by_type
+from sporttracker.workout.WorkoutEntity import Workout
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.workout.fitness.FitnessWorkoutService import FitnessWorkoutService
 
 
 class AchievementCalculator:
@@ -81,20 +82,7 @@ class AchievementCalculator:
     def get_best_distance_months_by_type(
         user_id: int, workoutType: WorkoutType
     ) -> list[BestMonthDistanceAchievementHistoryItem]:
-        maxDate, minDate = AchievementCalculator._get_min_and_max_date(user_id, workoutType)
-
-        if minDate is None or maxDate is None:
-            return []
-
-        monthDistanceSums = DistanceWorkoutService.get_distance_per_month_by_type(
-            user_id, workoutType, minDate.year, maxDate.year
-        )
-        monthDistanceSums = [month for month in monthDistanceSums if month.distanceSum > 0.0]
-
-        if not monthDistanceSums:
-            return []
-
-        bestMonths = sorted(monthDistanceSums, key=lambda monthDistanceSum: monthDistanceSum.distanceSum, reverse=True)
+        bestMonths = DistanceWorkoutService.get_best_distance_months_by_type(user_id, workoutType)
 
         result = []
         for month in bestMonths[: AchievementCalculator.BEST_MONTH_HISTORY_SIZE]:
@@ -194,18 +182,10 @@ class AchievementCalculator:
     def get_best_duration_month_by_type(
         user_id: int, workoutType: WorkoutType
     ) -> list[BestMonthDurationAchievementHistoryItem]:
-        maxDate, minDate = AchievementCalculator._get_min_and_max_date(user_id, workoutType)
+        bestMonths = FitnessWorkoutService.get_best_duration_months_by_type(user_id, workoutType)
 
-        if minDate is None or maxDate is None:
+        if not bestMonths:
             return [BestMonthDurationAchievementHistoryItem.get_dummy_instance()]
-
-        monthDurationSums = get_duration_per_month_by_type(workoutType, minDate.year, maxDate.year)
-        monthDurationSums = [month for month in monthDurationSums if month.durationSum > 0.0]
-
-        if not monthDurationSums:
-            return [BestMonthDurationAchievementHistoryItem.get_dummy_instance()]
-
-        bestMonths = sorted(monthDurationSums, key=lambda monthDistanceSum: monthDistanceSum.durationSum, reverse=True)
 
         result = []
         for month in bestMonths[: AchievementCalculator.BEST_MONTH_HISTORY_SIZE]:
@@ -213,18 +193,6 @@ class AchievementCalculator:
             result.append(BestMonthDurationAchievementHistoryItem(bestMonthDate, month.durationSum))
 
         return result
-
-    @staticmethod
-    def _get_min_and_max_date(user_id: int, workoutType: WorkoutType) -> tuple[datetime | None, datetime | None]:
-        result = db.session.query(
-            func.min(Workout.start_time),
-            func.max(Workout.start_time).filter(Workout.type == workoutType).filter(Workout.user_id == user_id),
-        ).first()
-        if result is None:
-            return None, None
-
-        minDate, maxDate = result
-        return maxDate, minDate
 
     @staticmethod
     def _get_first_workout(user_id: int, workoutType: WorkoutType) -> Workout | None:

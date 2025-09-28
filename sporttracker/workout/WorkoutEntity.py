@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 
 from flask_login import current_user
 from sqlalchemy import Integer, String, DateTime, extract, func, asc
@@ -120,3 +121,15 @@ def get_workouts_by_year_and_month_by_type(year: int, month: int, workoutTypes: 
         .order_by(Workout.start_time.desc())
         .all()
     )
+
+
+def get_min_and_max_date(user_id: int, workoutType: WorkoutType) -> tuple[datetime | None, datetime | None]:
+    result = db.session.query(
+        func.min(Workout.start_time),
+        func.max(Workout.start_time).filter(Workout.type == workoutType).filter(Workout.user_id == user_id),
+    ).first()
+    if result is None:
+        return None, None
+
+    minDate, maxDate = result
+    return maxDate, minDate

@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 from pydantic import ConfigDict
 from sqlalchemy import func, extract
 
+from sporttracker.workout import WorkoutEntity
 from sporttracker.workout.heartRate.HeartRateService import HeartRateService
 
 if TYPE_CHECKING:
@@ -15,7 +16,7 @@ from sporttracker.api.FormModels import FitnessWorkoutApiFormModel
 from sporttracker.db import db
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.user.ParticipantEntity import get_participants_by_ids
-from sporttracker.workout.WorkoutEntity import Workout
+from sporttracker.workout.WorkoutEntity import Workout, MonthDurationSum, get_duration_per_month_by_type
 from sporttracker.workout.WorkoutModel import BaseWorkoutFormModel
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
@@ -68,11 +69,8 @@ class FitnessWorkoutService:
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
         )
-        previousBestMonthDuration = FitnessWorkoutService.get_month_duration(
-            user_id=user_id,
-            workoutType=workout.type,
-            year=workout.start_time.year,  # type: ignore[attr-defined]
-            month=workout.start_time.month,  # type: ignore[attr-defined]
+        previousBestMonthDuration = FitnessWorkoutService.get_best_month_duration(
+            user_id=user_id, workoutType=workout.type
         )
 
         db.session.add(workout)
@@ -112,11 +110,8 @@ class FitnessWorkoutService:
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
         )
-        previousBestMonthDuration = FitnessWorkoutService.get_month_duration(
-            user_id=user_id,
-            workoutType=workout.type,
-            year=workout.start_time.year,  # type: ignore[attr-defined]
-            month=workout.start_time.month,  # type: ignore[attr-defined]
+        previousBestMonthDuration = FitnessWorkoutService.get_best_month_duration(
+            user_id=user_id, workoutType=workout.type
         )
 
         db.session.add(workout)
@@ -164,11 +159,8 @@ class FitnessWorkoutService:
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
         )
-        previousBestMonthDuration = FitnessWorkoutService.get_month_duration(
-            user_id=user_id,
-            workoutType=workout.type,
-            year=workout.start_time.year,  # type: ignore[attr-defined]
-            month=workout.start_time.month,  # type: ignore[attr-defined]
+        previousBestMonthDuration = FitnessWorkoutService.get_best_month_duration(
+            user_id=user_id, workoutType=workout.type
         )
 
         workout.name = form_model.name  # type: ignore[assignment]
@@ -226,3 +218,27 @@ class FitnessWorkoutService:
             .scalar()
             or 0
         )
+
+    @staticmethod
+    def get_best_duration_months_by_type(user_id: int, workoutType: WorkoutType) -> list[MonthDurationSum]:
+        maxDate, minDate = WorkoutEntity.get_min_and_max_date(user_id, workoutType)
+
+        if minDate is None or maxDate is None:
+            return []
+
+        monthDurationSums = get_duration_per_month_by_type(workoutType, minDate.year, maxDate.year)
+        monthDurationSums = [month for month in monthDurationSums if month.durationSum > 0.0]
+
+        if not monthDurationSums:
+            return []
+
+        return sorted(monthDurationSums, key=lambda monthDistanceSum: monthDistanceSum.durationSum, reverse=True)
+
+    @staticmethod
+    def get_best_month_duration(user_id: int, workoutType: WorkoutType) -> int:
+        bestMonths = FitnessWorkoutService.get_best_duration_months_by_type(user_id, workoutType)
+
+        if not bestMonths:
+            return 0
+
+        return bestMonths[0].durationSum
