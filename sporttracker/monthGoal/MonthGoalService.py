@@ -74,4 +74,6 @@ class MonthGoalService:
         year: int, month: int, workoutTypes: list[WorkoutType], user_id: int, previous_completed: list[MonthGoalSummary]
     ) -> list[MonthGoalSummary]:
         currentCompleted = MonthGoalService.get_goal_summaries_for_completed_goals(year, month, workoutTypes, user_id)
-        return [g for g in currentCompleted if g not in previous_completed]
+
+        previousCompletedIds = [g.id for g in previous_completed]
+        return [g for g in currentCompleted if g.id not in previousCompletedIds]
