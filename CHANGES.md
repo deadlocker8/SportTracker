@@ -1,5 +1,6 @@
 # 1.43.1 - (XX.XX.XX)
 - fix: error message on saving new distance workout via api (#259)
+- fix: best month notification is now only send if the total distance/duration of a month relly is greater than any previous month (#258)
 
 # 1.43.0 - (01.09.25)
 - add: show badge in navbar if started in debug mode (#246)
