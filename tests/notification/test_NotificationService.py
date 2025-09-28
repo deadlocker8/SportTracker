@@ -230,6 +230,20 @@ class TestNotificationService:
             db.session.add(workout)
             db.session.commit()
 
+            workout = DistanceWorkout(
+                type=WorkoutType.BIKING,
+                name='Dummy Workout 2',
+                start_time=datetime(year=2025, month=8, day=15, hour=20, minute=1, second=0),
+                duration=3600,
+                distance=50 * 1000,
+                average_heart_rate=130,
+                elevation_sum=16,
+                user_id=user_1.id,  # type:ignore[union-attr]
+                custom_fields={},
+            )
+            db.session.add(workout)
+            db.session.commit()
+
             notificationService = NotificationService()
             notificationService.on_distance_workout_updated(user_1.id, workout, None, 0)
 
@@ -238,7 +252,7 @@ class TestNotificationService:
             assert notifications[0].type == NotificationType.BEST_MONTH
             assert notifications[0].user_id == user_1.id
             assert notifications[0].item_id is None
-            assert notifications[0].message == 'August 2025 is now your best Biking month with 23.0 km'
+            assert notifications[0].message == 'August 2025 is now your best Biking month with 73.0 km'
             assert notifications[0].message_details is None
 
     def test_on_fitness_workout_updated_check_longest_workout_not_longer(self, app):

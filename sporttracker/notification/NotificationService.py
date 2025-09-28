@@ -162,7 +162,7 @@ class NotificationService(Observable):
             notification_type=NotificationType.BEST_MONTH,
             message=messageTemplate.format(
                 month=format_datetime(monthDate, format='MMMM yyyy'),
-                distance=Helpers.format_decimal(workout.distance / 1000, 2),
+                distance=Helpers.format_decimal(workoutMonthDistance / 1000, 2),
                 workoutType=workout.type.get_localized_name(),
             ),
             message_details=None,
