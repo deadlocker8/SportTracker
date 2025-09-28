@@ -16,7 +16,7 @@ thecodelabs-baseutils = { version = "*", source = "TheCodeLabs" }
 thecodelabs-flaskutils = { version = "*", source = "TheCodeLabs" }
 flask = "3.1.2"
 gevent = "25.8.2"
-click = "8.2.1"
+click = "8.3.0"
 Flask-SQLAlchemy = "3.1.1"
 Flask-Pydantic = "0.13.2"
 Flask-Login = "0.6.3"
