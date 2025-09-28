@@ -147,7 +147,7 @@ class DistanceWorkoutService:
 
         LOGGER.debug(f'Saved new distance workout: {workout}')
         self._notification_service.on_distance_workout_updated(
-            user_id, workout.type, previousLongestDistance, previousBestMonthDistance
+            user_id, workout, previousLongestDistance, previousBestMonthDistance
         )
         self._notification_service.on_check_month_goals(user_id, workout, previousCompletedMonthGoals)
         return workout
