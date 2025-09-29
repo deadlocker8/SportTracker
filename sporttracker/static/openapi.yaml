@@ -795,6 +795,7 @@ components:
         - bpm
       properties:
         timestamp:
+          type: string
           example: 2023-11-19 12:45:22
           description: Date time in the format YYYY-MM-DD HH:mm:SS
         bpm:
