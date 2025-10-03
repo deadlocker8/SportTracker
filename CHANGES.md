@@ -1,4 +1,5 @@
 # 1.43.1 - (28.09.25)
+- add: notification page: add button to dismiss all notifications (#262)
 - fix: error message on saving new distance workout via api (#259)
 - fix: best month notifications are now only send if the total distance/duration of a month relly is greater than any previous month (#258)
 - fix: month goal notifications are now only send if the goal was not already reached in the same month before (#260)
