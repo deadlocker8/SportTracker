@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-31 17:37+0200\n"
-"PO-Revision-Date: 2025-08-31 17:38+0200\n"
+"POT-Creation-Date: 2025-10-03 21:30+0200\n"
+"PO-Revision-Date: 2025-10-03 21:31+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -122,7 +122,7 @@ msgstr "Anzahl Workouts"
 #: ../templates/monthGoal/monthGoalDurationForm.jinja2:103
 #: ../templates/monthGoal/monthGoalDurationMultipleForm.jinja2:95
 #: ../templates/monthGoal/monthGoalDurationMultipleForm.jinja2:113
-#: ../templates/workout/workoutMacros.jinja2:406
+#: ../templates/workout/workoutMacros.jinja2:407
 msgid "Hours"
 msgstr "Stunden"
 
@@ -226,15 +226,15 @@ msgstr "jetzt"
 msgid "{timedelta} ago"
 msgstr "vor {timedelta}"
 
-#: ../notification/NotificationService.py:106
+#: ../notification/NotificationService.py:122
 msgid "Maintenance \"{name}\" exceeds configured limit"
 msgstr "Wartung \"{name}\" übersteigt das konfigurierte Limit"
 
-#: ../notification/NotificationService.py:107
+#: ../notification/NotificationService.py:123
 msgid "Limit: {limit} km, Exceeded by: {limitExceededDistance} km"
 msgstr "Limit: {limit} km, Überschritten um: {limitExceededDistance} km"
 
-#: ../notification/NotificationService.py:128
+#: ../notification/NotificationService.py:144
 msgid ""
 "You completed a new distance record with {distance} km in one {workoutType} "
 "workout"
@@ -242,71 +242,71 @@ msgstr ""
 "Du hast einen neuen Distanzrekord mit {distance} km in einem {workoutType} "
 "Workout aufgestellt"
 
-#: ../notification/NotificationService.py:158
+#: ../notification/NotificationService.py:174
 msgid "{month} is now your best {workoutType} month with {distance} km"
 msgstr "{month} ist jetzt dein bester {workoutType} Monat mit {distance} km"
 
-#: ../notification/NotificationService.py:196
+#: ../notification/NotificationService.py:212
 msgid "distance month goal"
 msgstr "Streckenziel"
 
-#: ../notification/NotificationService.py:207
+#: ../notification/NotificationService.py:223
 msgid "count month goal"
 msgstr "Anzahlziel"
 
-#: ../notification/NotificationService.py:218
+#: ../notification/NotificationService.py:234
 msgid "duration month goal"
 msgstr "Zeitziel"
 
-#: ../notification/NotificationService.py:238
+#: ../notification/NotificationService.py:254
 msgid "You completed your {workoutType} {goalName} \"{goalPerfect}\" for {date}"
 msgstr ""
 "Du hast dein {workoutType} {goalName} \"{goalPerfect}\" für {date} "
 "abgeschlossen."
 
-#: ../notification/NotificationService.py:272
+#: ../notification/NotificationService.py:288
 msgid "You completed a new duration record with {duration} h in one {workoutType}"
 msgstr ""
 "Du hast einen neuen Zeitrekord mit {duration} Stunden in einem {workoutType} "
 "aufgestellt."
 
-#: ../notification/NotificationService.py:301
+#: ../notification/NotificationService.py:317
 msgid "{month} is now your best {workoutType} month with {duration} h"
 msgstr "{month} ist jetzt dein bester {workoutType} Monat mit {duration} h"
 
-#: ../notification/NotificationService.py:318
-#: ../notification/NotificationService.py:328
+#: ../notification/NotificationService.py:334
+#: ../notification/NotificationService.py:344
 msgid "{owner} has shared the planned tour \"{tour_name}\" with you"
 msgstr "{owner} hat die geplante Tour \"{tour_name}\" mit dir geteilt"
 
-#: ../notification/NotificationService.py:330
+#: ../notification/NotificationService.py:346
 msgid "{owner} has updated the planned tour \"{tour_name}\""
 msgstr "{owner} hat die geplante Tour \"{tour_name}\" bearbeitet"
 
-#: ../notification/NotificationService.py:332
+#: ../notification/NotificationService.py:348
 msgid "{owner} has revoked your access to the planned tour \"{tour_name}\""
 msgstr ""
 "{owner} hat deinen Zugriff auf die geplante Tour \"{tour_name}\" zurückgezogen"
 
-#: ../notification/NotificationService.py:338
+#: ../notification/NotificationService.py:354
 msgid "{owner} has deleted the planned tour \"{tour_name}\""
 msgstr "{owner} hat die geplante Tour \"{tour_name}\" gelöscht"
 
-#: ../notification/NotificationService.py:346
-#: ../notification/NotificationService.py:356
+#: ../notification/NotificationService.py:362
+#: ../notification/NotificationService.py:372
 msgid "{owner} has shared the long-distance tour \"{tour_name}\" with you"
 msgstr "{owner} hat die Etappentour \"{tour_name}\" mit dir geteilt"
 
-#: ../notification/NotificationService.py:358
+#: ../notification/NotificationService.py:374
 msgid "{owner} has updated the long-distance tour \"{tour_name}\""
 msgstr "{owner} hat die Etappentour \"{tour_name}\" bearbeitet"
 
-#: ../notification/NotificationService.py:360
+#: ../notification/NotificationService.py:376
 msgid "{owner} has revoked your access to the long-distance tour \"{tour_name}\""
 msgstr ""
 "{owner} hat deinen Zugriff auf die Etappentour \"{tour_name}\" zurückgezogen"
 
-#: ../notification/NotificationService.py:366
+#: ../notification/NotificationService.py:382
 msgid "{owner} has deleted the long-distance tour \"{tour_name}\""
 msgstr "{owner} hat die Etappentour \"{tour_name}\" gelöscht"
 
@@ -394,7 +394,7 @@ msgstr "Auto"
 msgid "Train"
 msgstr "Zug"
 
-#: ../templates/about.jinja2:6 ../templates/macros.jinja2:186
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:191
 msgid "About"
 msgstr "Über"
 
@@ -418,22 +418,22 @@ msgstr "Benutzer"
 msgid "Password"
 msgstr "Passwort"
 
-#: ../templates/macros.jinja2:50 ../templates/user/users.jinja2:6
+#: ../templates/macros.jinja2:55 ../templates/user/users.jinja2:6
 #: ../templates/user/users.jinja2:17
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../templates/macros.jinja2:63 ../templates/map/mapMultipleWorkouts.jinja2:6
+#: ../templates/macros.jinja2:68 ../templates/map/mapMultipleWorkouts.jinja2:6
 #: ../templates/plannedTour/plannedTours.jinja2:99
 #: ../templates/workout/workouts.jinja2:5 ../templates/workout/workouts.jinja2:25
 msgid "Workouts"
 msgstr "Workouts"
 
-#: ../templates/macros.jinja2:71 ../templates/monthGoal/monthGoals.jinja2:6
+#: ../templates/macros.jinja2:76 ../templates/monthGoal/monthGoals.jinja2:6
 msgid "Goals"
 msgstr "Monatsziele"
 
-#: ../templates/macros.jinja2:78
+#: ../templates/macros.jinja2:83
 msgid "Analytics"
 msgstr "Auswertung"
 
@@ -454,34 +454,34 @@ msgstr "Auswertung"
 #: ../templates/chart/chartNewTilesPerYear.jinja2:16
 #: ../templates/chart/chartSpeedPerWorkoutChooser.jinja2:6
 #: ../templates/chart/chartSpeedPerWorkoutChooser.jinja2:18
-#: ../templates/macros.jinja2:86
+#: ../templates/macros.jinja2:91
 msgid "Charts"
 msgstr "Diagramme"
 
-#: ../templates/achievement/achievements.jinja2:64 ../templates/macros.jinja2:94
+#: ../templates/achievement/achievements.jinja2:64 ../templates/macros.jinja2:99
 msgid "Achievements"
 msgstr "Errungenschaften"
 
 #: ../templates/chart/chartCalendar.jinja2:5
-#: ../templates/chart/chartCalendar.jinja2:16 ../templates/macros.jinja2:102
+#: ../templates/chart/chartCalendar.jinja2:16 ../templates/macros.jinja2:107
 msgid "Calendar"
 msgstr "Kalender"
 
 #: ../templates/achievement/annualAchievements.jinja2:133
-#: ../templates/macros.jinja2:110
+#: ../templates/macros.jinja2:115
 msgid "Annual Statistics"
 msgstr "Jahresstatistik"
 
-#: ../templates/macros.jinja2:120 ../templates/map/mapMultipleWorkouts.jinja2:17
+#: ../templates/macros.jinja2:125 ../templates/map/mapMultipleWorkouts.jinja2:17
 #: ../templates/map/mapNotFound.jinja2:6
 msgid "Map"
 msgstr "Karte"
 
-#: ../templates/macros.jinja2:127
+#: ../templates/macros.jinja2:132
 msgid "Tours"
 msgstr "Touren"
 
-#: ../templates/macros.jinja2:135 ../templates/map/mapMultipleWorkouts.jinja2:9
+#: ../templates/macros.jinja2:140 ../templates/map/mapMultipleWorkouts.jinja2:9
 #: ../templates/plannedTour/plannedTours.jinja2:6
 #: ../templates/plannedTour/plannedTours.jinja2:19
 msgid "Planned Tours"
@@ -489,61 +489,61 @@ msgstr "Geplante Touren"
 
 #: ../templates/longDistanceTour/longDistanceTours.jinja2:6
 #: ../templates/longDistanceTour/longDistanceTours.jinja2:18
-#: ../templates/macros.jinja2:143
+#: ../templates/macros.jinja2:148
 #: ../templates/plannedTour/plannedToursMacros.jinja2:216
 msgid "Long-distance Tours"
 msgstr "Etappentouren"
 
-#: ../templates/macros.jinja2:152
+#: ../templates/macros.jinja2:157
 msgid "More"
 msgstr "Mehr"
 
-#: ../templates/macros.jinja2:160 ../templates/maintenance/maintenance.jinja2:6
+#: ../templates/macros.jinja2:165 ../templates/maintenance/maintenance.jinja2:6
 #: ../templates/maintenance/maintenance.jinja2:20
 #: ../templates/maintenance/maintenances.jinja2:6
 #: ../templates/maintenance/maintenances.jinja2:20
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: ../templates/macros.jinja2:169 ../templates/map/mapMacros.jinja2:134
+#: ../templates/macros.jinja2:174 ../templates/map/mapMacros.jinja2:134
 #: ../templates/map/mapTileHunting.jinja2:6
 #: ../templates/settings/settings.jinja2:50
 msgid "Tile Hunting"
 msgstr "Tile Hunting"
 
-#: ../templates/macros.jinja2:177 ../templates/map/mapTileHuntingHeatmap.jinja2:6
+#: ../templates/macros.jinja2:182 ../templates/map/mapTileHuntingHeatmap.jinja2:6
 msgid "Tile Hunting Heatmap"
 msgstr "Tile Hunting Heatmap"
 
-#: ../templates/macros.jinja2:195
+#: ../templates/macros.jinja2:200
 msgid "Search"
 msgstr "Suche"
 
-#: ../templates/macros.jinja2:226
+#: ../templates/macros.jinja2:231
 #: ../templates/maintenance/maintenanceForm.jinja2:126
-#: ../templates/settings/settings.jinja2:364
-#: ../templates/settings/settings.jinja2:398
-#: ../templates/settings/settings.jinja2:410
-#: ../templates/workout/workoutMacros.jinja2:541
+#: ../templates/settings/settings.jinja2:365
+#: ../templates/settings/settings.jinja2:400
+#: ../templates/settings/settings.jinja2:412
+#: ../templates/workout/workoutMacros.jinja2:542
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../templates/macros.jinja2:235
+#: ../templates/macros.jinja2:240
 msgid "Logout"
 msgstr "Logout"
 
-#: ../templates/macros.jinja2:292 ../templates/settings/settings.jinja2:326
+#: ../templates/macros.jinja2:297 ../templates/settings/settings.jinja2:326
 #: ../templates/workout/workoutChooser.jinja2:86
 #: ../templates/workout/workouts.jinja2:95
 #: ../templates/workout/workouts.jinja2:117
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ../templates/macros.jinja2:314
+#: ../templates/macros.jinja2:319
 msgid "Save"
 msgstr "Speichern"
 
-#: ../templates/macros.jinja2:314
+#: ../templates/macros.jinja2:319
 msgid "Saving..."
 msgstr "Speichere..."
 
@@ -566,7 +566,7 @@ msgstr "Mehr anzeigen"
 #: ../templates/achievement/achievements.jinja2:54
 #: ../templates/achievement/annualAchievements.jinja2:58
 #: ../templates/plannedTour/plannedToursMacros.jinja2:87
-#: ../templates/workout/workoutMacros.jinja2:192
+#: ../templates/workout/workoutMacros.jinja2:193
 msgid "Close"
 msgstr "Schließen"
 
@@ -575,12 +575,12 @@ msgid "Details"
 msgstr "Details"
 
 #: ../templates/achievement/annualAchievements.jinja2:51
-#: ../templates/workout/workoutMacros.jinja2:168
+#: ../templates/workout/workoutMacros.jinja2:169
 msgid "Min"
 msgstr "Min"
 
 #: ../templates/achievement/annualAchievements.jinja2:52
-#: ../templates/workout/workoutMacros.jinja2:176
+#: ../templates/workout/workoutMacros.jinja2:177
 msgid "Max"
 msgstr "Max"
 
@@ -589,7 +589,7 @@ msgid "Total"
 msgstr "Gesamt"
 
 #: ../templates/achievement/annualAchievements.jinja2:54
-#: ../templates/workout/workoutMacros.jinja2:184
+#: ../templates/workout/workoutMacros.jinja2:185
 msgid "Average"
 msgstr "Durchschnitt"
 
@@ -746,8 +746,8 @@ msgstr "Neue Etappentour"
 #: ../templates/workout/workoutFitnessForm.jinja2:31
 #: ../templates/workout/workoutHikingForm.jinja2:26
 #: ../templates/workout/workoutHikingForm.jinja2:30
-#: ../templates/workout/workoutMacros.jinja2:505
-#: ../templates/workout/workoutMacros.jinja2:635
+#: ../templates/workout/workoutMacros.jinja2:506
+#: ../templates/workout/workoutMacros.jinja2:636
 #: ../templates/workout/workoutRunningForm.jinja2:26
 #: ../templates/workout/workoutRunningForm.jinja2:30
 msgid "Delete"
@@ -778,7 +778,7 @@ msgstr "Löschen (inkl. verknüpfter geplanter Touren)"
 #: ../templates/workout/workoutBikingForm.jinja2:30
 #: ../templates/workout/workoutFitnessForm.jinja2:31
 #: ../templates/workout/workoutHikingForm.jinja2:30
-#: ../templates/workout/workoutMacros.jinja2:505
+#: ../templates/workout/workoutMacros.jinja2:506
 #: ../templates/workout/workoutRunningForm.jinja2:30
 msgid "Deleting..."
 msgstr "Lösche..."
@@ -808,7 +808,7 @@ msgstr "Typ"
 #: ../templates/settings/participantsForm.jinja2:51
 #: ../templates/settings/settings.jinja2:134
 #: ../templates/settings/settings.jinja2:184
-#: ../templates/workout/workoutMacros.jinja2:348
+#: ../templates/workout/workoutMacros.jinja2:349
 msgid "Name"
 msgstr "Name"
 
@@ -941,7 +941,7 @@ msgstr "Willst du dieses Wartungsereignis wirklich löschen?"
 #: ../templates/map/mapLongDistanceTour.jinja2:115
 #: ../templates/map/mapSingleWorkout.jinja2:43
 #: ../templates/map/mapSingleWorkout.jinja2:89
-#: ../templates/workout/workoutMacros.jinja2:368
+#: ../templates/workout/workoutMacros.jinja2:369
 msgid "Date"
 msgstr "Datum"
 
@@ -974,7 +974,7 @@ msgstr "Strecke"
 #: ../templates/map/mapLongDistanceTour.jinja2:119
 #: ../templates/map/mapSingleWorkout.jinja2:49
 #: ../templates/map/mapSingleWorkout.jinja2:97
-#: ../templates/workout/workoutMacros.jinja2:400 ../user/UserEntity.py:78
+#: ../templates/workout/workoutMacros.jinja2:401 ../user/UserEntity.py:78
 msgid "Duration"
 msgstr "Dauer"
 
@@ -1428,7 +1428,7 @@ msgstr "Minimale Dauer"
 #: ../templates/monthGoal/monthGoalDurationForm.jinja2:110
 #: ../templates/monthGoal/monthGoalDurationMultipleForm.jinja2:102
 #: ../templates/monthGoal/monthGoalDurationMultipleForm.jinja2:120
-#: ../templates/workout/workoutMacros.jinja2:413
+#: ../templates/workout/workoutMacros.jinja2:414
 msgid "Minutes"
 msgstr "Minuten"
 
@@ -1452,7 +1452,11 @@ msgstr "Monatsziele"
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: ../templates/notification/notifications.jinja2:98
+#: ../templates/notification/notifications.jinja2:97
+msgid "Dismiss all notifications"
+msgstr "Alle Benachrichtigungen löschen"
+
+#: ../templates/notification/notifications.jinja2:104
 msgid "No notifications"
 msgstr "Keine Benachrichtigungen"
 
@@ -1596,7 +1600,7 @@ msgstr ""
 "Link wird nach dem Speichern angezeigt)"
 
 #: ../templates/settings/settings.jinja2:84
-#: ../templates/workout/workoutMacros.jinja2:626
+#: ../templates/workout/workoutMacros.jinja2:627
 msgid "Copied"
 msgstr "Kopiert"
 
@@ -1638,7 +1642,7 @@ msgstr ""
 "Filter verwenden, entfernt."
 
 #: ../templates/settings/settings.jinja2:175
-#: ../templates/workout/workoutMacros.jinja2:524
+#: ../templates/workout/workoutMacros.jinja2:525
 msgid "Participants"
 msgstr "Teilnehmer"
 
@@ -1684,15 +1688,15 @@ msgstr "Ntfy Topicname"
 msgid "Test"
 msgstr "Testen"
 
-#: ../templates/settings/settings.jinja2:345
+#: ../templates/settings/settings.jinja2:346
 msgid "Notification type"
 msgstr "Benachrichtigungstyp"
 
-#: ../templates/settings/settings.jinja2:356
+#: ../templates/settings/settings.jinja2:357
 msgid "enabled"
 msgstr "aktiviert"
 
-#: ../templates/settings/settings.jinja2:358
+#: ../templates/settings/settings.jinja2:359
 msgid "disabled"
 msgstr "deaktiviert"
 
@@ -1805,79 +1809,79 @@ msgstr "Gemischt"
 msgid "Loading heart rate data..."
 msgstr "Lade Herzfrequenzdaten..."
 
-#: ../templates/workout/workoutMacros.jinja2:376
+#: ../templates/workout/workoutMacros.jinja2:377
 msgid "Start Time"
 msgstr "Startuhrzeit"
 
-#: ../templates/workout/workoutMacros.jinja2:389
+#: ../templates/workout/workoutMacros.jinja2:390
 msgid "Distance (in km)"
 msgstr "Strecke (in km)"
 
-#: ../templates/workout/workoutMacros.jinja2:419
+#: ../templates/workout/workoutMacros.jinja2:420
 msgid "Seconds"
 msgstr "Sekunden"
 
-#: ../templates/workout/workoutMacros.jinja2:426 ../user/UserEntity.py:82
+#: ../templates/workout/workoutMacros.jinja2:427 ../user/UserEntity.py:82
 msgid "Average Heart Rate"
 msgstr "Durchschnittliche Herzfrequenz"
 
-#: ../templates/workout/workoutMacros.jinja2:439
+#: ../templates/workout/workoutMacros.jinja2:440
 msgid "Elevation Sum (in m)"
 msgstr "Summe Höhenmeter (in m)"
 
-#: ../templates/workout/workoutMacros.jinja2:452
+#: ../templates/workout/workoutMacros.jinja2:453
 msgid "A FIT file is linked to this workout"
 msgstr "Eine FIT-Datei ist mit diesem Workout verknüpft"
 
-#: ../templates/workout/workoutMacros.jinja2:455
+#: ../templates/workout/workoutMacros.jinja2:456
 msgid "No GPX or FIT file is linked to this workout"
 msgstr "Mit diesem Workout ist keine GPX- oder FIT-Datei verknüpft"
 
-#: ../templates/workout/workoutMacros.jinja2:455
+#: ../templates/workout/workoutMacros.jinja2:456
 msgid "A GPX or FIT file is linked to this workout"
 msgstr "Eine GPX- oder FIT-Datei ist mit diesem Workout verknüpft"
 
-#: ../templates/workout/workoutMacros.jinja2:466
+#: ../templates/workout/workoutMacros.jinja2:467
 msgid "GPX/FIT Track"
 msgstr "GPX/FIT Track"
 
-#: ../templates/workout/workoutMacros.jinja2:504
+#: ../templates/workout/workoutMacros.jinja2:505
 msgid "Delete GPX and FIT Track?"
 msgstr "GPX und FIT Track löschen?"
 
-#: ../templates/workout/workoutMacros.jinja2:504
+#: ../templates/workout/workoutMacros.jinja2:505
 msgid "Do you really want to delete this associated GPX and FIT file?"
 msgstr "Willst du die verknüpfte GPX- und FIT-Datei wirklich löschen?"
 
-#: ../templates/workout/workoutMacros.jinja2:539
+#: ../templates/workout/workoutMacros.jinja2:540
 msgid "Add participants in the "
 msgstr "Hinzufügen von Teilnehmern in den "
 
-#: ../templates/workout/workoutMacros.jinja2:612
+#: ../templates/workout/workoutMacros.jinja2:613
 msgid "Share via link"
 msgstr "Als Link teilen"
 
-#: ../templates/workout/workoutMacros.jinja2:634
+#: ../templates/workout/workoutMacros.jinja2:635
 msgid "Delete shared link?"
 msgstr "Geteilten Link löschen?"
 
-#: ../templates/workout/workoutMacros.jinja2:634
+#: ../templates/workout/workoutMacros.jinja2:635
 msgid "Do you really want to delete this shared link?"
 msgstr "Willst du diesen geteilten Link wirklich löschen?"
 
-#: ../templates/workout/workoutMacros.jinja2:641
+#: ../templates/workout/workoutMacros.jinja2:642
 msgid "Create link"
 msgstr "Link erzeugen"
 
-#: ../templates/workout/workoutMacros.jinja2:652
+#: ../templates/workout/workoutMacros.jinja2:653
 msgid "Based on Planned Tour"
 msgstr "Basiert auf geplanter Tour"
 
-#: ../templates/workout/workoutMacros.jinja2:657
+#: ../templates/workout/workoutMacros.jinja2:658
 msgid "Not based on a Planned Tour"
 msgstr "Basiert auf keiner geplanten Tour"
 
-#: ../templates/workout/workoutMacros.jinja2:659
+#: ../templates/workout/workoutMacros.jinja2:660
 msgid "shared by "
 msgstr "geteilt von "
 
