@@ -45,4 +45,11 @@ def construct_blueprint(notification_service: NotificationService):
 
         return redirect(url_for('notifications.listNotifications'))
 
+    @notifications.route('/deleteAll')
+    @login_required
+    def delete_all():
+        notification_service.delete_all_notifications()
+
+        return redirect(url_for('notifications.listNotifications'))
+
     return notifications

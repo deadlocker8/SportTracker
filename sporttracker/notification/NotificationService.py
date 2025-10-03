@@ -1,9 +1,11 @@
+import logging
 from datetime import datetime
 
 from flask_babel import gettext, format_datetime
 from flask_login import current_user
 from flask_sqlalchemy.pagination import Pagination
 
+from sporttracker import Constants
 from sporttracker.db import db
 from sporttracker.helpers import Helpers
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
@@ -28,6 +30,8 @@ from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.fitness.FitnessWorkoutService import FitnessWorkoutService
+
+LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 class NotificationService(Observable):
@@ -54,6 +58,18 @@ class NotificationService(Observable):
             .filter(Notification.id == notification_id)
             .first()
         )
+
+    @staticmethod
+    def delete_all_notifications() -> None:
+        allNotifications = (
+            Notification.query.filter(Notification.user_id == current_user.id).order_by(Notification.id.desc()).all()
+        )
+
+        LOGGER.debug(f'Deleting all notifications ({len(allNotifications)}) for user {current_user.id}')
+
+        for notification in allNotifications:
+            db.session.delete(notification)
+            db.session.commit()
 
     def __add_notification(
         self,

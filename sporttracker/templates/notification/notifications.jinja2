@@ -92,6 +92,12 @@
                     </div>
                 </div>
 
+                <div class="mb-4">
+                    <a href="{{ url_for('notifications.delete_all') }}" class="btn btn-sm btn-primary d-inline-flex flex-row align-items-center justify-content-center {% if mapMode == 'workouts' %}btn-available-year{% endif %}">
+                        <div class="material-symbols-outlined filled">delete</div>&nbsp;{{ gettext('Dismiss all notifications') }}
+                    </a>
+                </div>
+
                 {% if pagination.total == 0 %}
                     <div class="row my-5">
                         <div class="col col-12 fst-italic">
