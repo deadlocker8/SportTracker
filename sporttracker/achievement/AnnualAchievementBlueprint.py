@@ -14,6 +14,7 @@ from sporttracker.achievement.AchievementEntity import (
     AnnualAchievementDifferenceType,
     AllYearData,
 )
+from sporttracker.helpers.Helpers import format_percentage
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 
@@ -129,6 +130,7 @@ def construct_blueprint():
             title=gettext('Total Distance'),
             description=__format_distance(totalDistance),
             difference_to_previous_year=__format_distance(abs(totalDistanceDifference)),
+            difference_percentage=format_percentage(totalDistancePreviousYear, totalDistance),
             difference_type=AnnualAchievementDifferenceType.get_by_difference(totalDistanceDifference),
             all_year_data=totalDistanceAllYearData,
             unit='km',
@@ -168,6 +170,7 @@ def construct_blueprint():
             title=gettext('Total Duration'),
             description=__format_duration(totalDuration),
             difference_to_previous_year=__format_duration(abs(totalDurationDifference)),
+            difference_percentage=format_percentage(totalDurationPreviousYear, totalDuration),
             difference_type=AnnualAchievementDifferenceType.get_by_difference(totalDurationDifference),
             all_year_data=totalDurationAllYearData,
             unit=gettext('Hours'),
@@ -215,6 +218,7 @@ def construct_blueprint():
             title=title,
             description=str(totalWorkoutCount),
             difference_to_previous_year=str(abs(totalWorkoutCountDifference)),
+            difference_percentage=format_percentage(totalWorkoutCountPreviousYear, totalWorkoutCount),
             difference_type=AnnualAchievementDifferenceType.get_by_difference(totalWorkoutCountDifference),
             all_year_data=totalWorkoutCountAllYearData,
             unit='',
@@ -257,6 +261,7 @@ def construct_blueprint():
             title=gettext('Longest Workout'),
             description=__format_distance(longestWorkout),
             difference_to_previous_year=__format_distance(abs(longestWorkoutDifference)),
+            difference_percentage=format_percentage(longestWorkoutPreviousYear, longestWorkout),
             difference_type=AnnualAchievementDifferenceType.get_by_difference(longestWorkoutDifference),
             all_year_data=longestWorkoutAllYearData,
             unit='km',
@@ -297,6 +302,7 @@ def construct_blueprint():
             title=gettext('Average Speed'),
             description=__format_speed(averageSpeed),
             difference_to_previous_year=__format_speed(abs(averageSpeedDifference)),
+            difference_percentage=format_percentage(averageSpeedPreviousYear, averageSpeed),
             difference_type=AnnualAchievementDifferenceType.get_by_difference(averageSpeedDifference),
             all_year_data=averageSpeedAllYearData,
             unit='km/h',
@@ -339,6 +345,7 @@ def construct_blueprint():
             title=gettext('Longest Duration'),
             description=__format_duration(longestDuration),
             difference_to_previous_year=__format_duration(abs(longestDurationDifference)),
+            difference_percentage=format_percentage(longestDurationPreviousYear, longestDuration),
             difference_type=AnnualAchievementDifferenceType.get_by_difference(longestDurationDifference),
             all_year_data=longestDurationAllYearData,
             unit='km',

@@ -188,6 +188,7 @@ class AllYearData:
 @dataclass
 class AnnualAchievement(Achievement):
     difference_to_previous_year: str
+    difference_percentage: str
     difference_type: AnnualAchievementDifferenceType
     all_year_data: AllYearData
     unit: str

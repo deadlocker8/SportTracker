@@ -17,11 +17,15 @@
         </div>
         <div class="card height-75">
             <div class="card-body mt-1 mb-2 d-flex flex-column align-items-center justify-content-between">
-                <div class="mb-3">
+                <div class="mb-3 d-flex flex-column align-items-center ">
                     <h4 class="card-text mt-4 fw-bold mb-1">{{ achievement.description }}</h4>
                     <span class="fw-semibold d-inline-flex align-items-center {{ achievement.difference_type.color }}">
                         <span class="material-symbols-outlined fs-5 me-1">{{ achievement.difference_type.icon }}</span>
                         {{ achievement.difference_to_previous_year }}
+                    </span>
+                    <span class="fw-normal d-inline-flex align-items-center {{ achievement.difference_type.color }} font-extra-small mt-1">
+                        <span class="material-symbols-outlined fs-6 me-1">{{ achievement.difference_type.icon }}</span>
+                        {{ achievement.difference_percentage }}
                     </span>
                     <p class="card-title mt-2">{{ achievement.title }}</p>
                 </div>

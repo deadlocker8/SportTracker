@@ -288,6 +288,10 @@ select[disabled] {
     top: 0;  /* override bootstrap -1px to avoid misalignment */
 }
 
+.font-extra-small {
+    font-size: 0.75rem;
+}
+
 .debug {
     outline: 1px solid red !important;
 }
