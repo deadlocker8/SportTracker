@@ -4,6 +4,7 @@
 - add: annual achievements: show percentage difference to previous year (#263)
 - add: new settings option to specify the minimum zoom level for tiles to be shown on the tile hunting map (#265)
 - add: new chart: accumulated distance (#264)
+- add: chart average speed: add range slider
 - fix: error message on saving new distance workout via api (#259)
 - fix: best month notifications are now only send if the total distance/duration of a month relly is greater than any previous month (#258)
 - fix: month goal notifications are now only send if the goal was not already reached in the same month before (#260)
