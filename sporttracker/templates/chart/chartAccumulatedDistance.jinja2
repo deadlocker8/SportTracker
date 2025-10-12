@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SportTracker - {{ gettext('Total Distance') }}</title>
+        <title>SportTracker - {{ gettext('Total Distance per Day') }}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
     </head>
@@ -13,7 +13,7 @@
             <section class="py-5 text-center container">
                 <div class="row mb-3">
                     <div class="col col-12 mx-auto">
-                        {% call macros.headline(gettext('Total Distance')) %}
+                        {% call macros.headline(gettext('Total Distance per Day')) %}
                             <span class="material-symbols-outlined fs-1">show_chart</span>
                         {% endcall %}
                     </div>
@@ -33,9 +33,9 @@
                     y: {{ chartDataAccumulatedDistance['values'] }},
                     type: 'scatter',
                     fill: 'tozeroy',
-                        marker: {
-                            color: '#0D6EFD'
-                        },
+                    marker: {
+                        color: '#0D6EFD'
+                    },
                     text: {{ chartDataAccumulatedDistance['texts'] }},
                 },
             ];

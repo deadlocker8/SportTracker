@@ -760,16 +760,15 @@ def construct_blueprint(
 
             previousTotalDistance = 0.0
             for workout in workouts:
-                if workout.duration is None or workout.duration == 0:
-                    continue
-
                 workoutDistance = workout.distance / 1000
                 totalDistance = previousTotalDistance + workoutDistance
                 previousTotalDistance = totalDistance
 
                 dates.append(workout.start_time.isoformat())
                 distanceData.append(totalDistance)
-                texts.append(f'{Helpers.format_decimal(totalDistance)} km')
+                texts.append(
+                    f'{Helpers.format_decimal(totalDistance)} km (+{Helpers.format_decimal(workoutDistance)} km)'
+                )
 
         chartDataAccumulatedDistance = {'dates': dates, 'values': distanceData, 'texts': texts}
 
