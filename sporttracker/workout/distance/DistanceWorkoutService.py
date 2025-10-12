@@ -10,6 +10,7 @@ from sqlalchemy import extract, func, DateTime, String
 
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.workout import WorkoutEntity
+from sporttracker.workout.WorkoutEntity import Workout
 from sporttracker.workout.heartRate.HeartRateService import HeartRateService
 
 if TYPE_CHECKING:
@@ -277,7 +278,7 @@ class DistanceWorkoutService:
 
     @staticmethod
     def get_distance_per_month_by_type(
-        user_id: int, workoutType: WorkoutType, minYear: int, maxYear: int
+        user_id: int, workoutTypes: list[WorkoutType], minYear: int, maxYear: int
     ) -> list[MonthDistanceSum]:
         year = extract('year', DistanceWorkout.start_time)
         month = extract('month', DistanceWorkout.start_time)
@@ -288,7 +289,7 @@ class DistanceWorkoutService:
                 year.label('year'),
                 month.label('month'),
             )
-            .filter(DistanceWorkout.type == workoutType)
+            .filter(Workout.type.in_(workoutTypes))
             .filter(DistanceWorkout.user_id == user_id)
             .group_by(year, month)
             .order_by(year, month)
@@ -369,7 +370,7 @@ class DistanceWorkoutService:
             return []
 
         monthDistanceSums = DistanceWorkoutService.get_distance_per_month_by_type(
-            user_id, workoutType, minDate.year, maxDate.year
+            user_id, [workoutType], minDate.year, maxDate.year
         )
         monthDistanceSums = [month for month in monthDistanceSums if month.distanceSum > 0.0]
 

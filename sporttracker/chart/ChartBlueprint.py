@@ -457,7 +457,7 @@ def construct_blueprint(
 
     def __get_distance_per_month_by_type(workoutType: WorkoutType, minYear: int, maxYear: int) -> dict[str, Any]:
         monthDistanceSums = DistanceWorkoutService.get_distance_per_month_by_type(
-            current_user.id, workoutType, minYear, maxYear
+            current_user.id, [workoutType], minYear, maxYear
         )
         monthNames = []
         values = []
