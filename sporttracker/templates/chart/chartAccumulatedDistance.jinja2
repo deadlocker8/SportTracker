@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Total Distance') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('charts') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row mb-3">
+                    <div class="col col-12 mx-auto">
+                        {% call macros.headline(gettext('Total Distance')) %}
+                            <span class="material-symbols-outlined fs-1">show_chart</span>
+                        {% endcall %}
+                    </div>
+                </div>
+
+                {{ macros.workout_type_quick_filter(url_for('charts.chartAccumulatedDistance'), true) }}
+
+                <div id="chartContainer"></div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+        <script>
+            const data = [
+                {
+                    x: {{ chartDataAccumulatedDistance['dates'] }},
+                    y: {{ chartDataAccumulatedDistance['values'] }},
+                    type: 'scatter',
+                    fill: 'tozeroy',
+                        marker: {
+                            color: '#0D6EFD'
+                        },
+                    text: {{ chartDataAccumulatedDistance['texts'] }},
+                },
+            ];
+
+            const plotlyLayout = {
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                xaxis: {
+                    type: 'date',
+                    color: '#FFFFFF',
+                    automargin: true,
+                    showgrid: false,
+                    rangeslider: {},
+                },
+                yaxis: {
+                    title: {
+                        text: '{{ gettext('Total distance in km') }}',
+                    },
+                    rangemode: 'tozero',
+                    tickformat: '.0f',
+                    showline: true,
+                    color: '#FFFFFF',
+                },
+                barmode: 'group',
+                legend: {
+                    font: {
+                        color: '#FFFFFF'
+                    }
+                }
+            }
+
+            const plotlyConfig = {
+                responsive: true,
+                displayModeBar: false
+            };
+
+            Plotly.newPlot('chartContainer', data, plotlyLayout, plotlyConfig);
+        </script>
+    </body>
+</html>

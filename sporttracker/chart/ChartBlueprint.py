@@ -3,6 +3,7 @@ import logging
 from dataclasses import dataclass
 from datetime import date, time
 from typing import Any, Literal
+from sporttracker.helpers import Helpers
 
 import flask_babel
 from babel.dates import get_day_names, get_month_names
@@ -738,5 +739,44 @@ def construct_blueprint(
             'isAllEmpty': all(hour == 0 for month in counts for hour in month),
             'title': gettext('Heatmap Months'),
         }
+
+    @charts.route('/chartAccumulatedDistance')
+    @login_required
+    def chartAccumulatedDistance():
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
+        minYear, maxYear = __get_min_and_max_year()
+
+        dates = []
+        distanceData = []
+        texts = []
+
+        if minYear is not None and maxYear is not None:
+            workouts = (
+                DistanceWorkout.query.filter(DistanceWorkout.user_id == current_user.id)
+                .filter(Workout.type.in_(quickFilterState.get_active_distance_workout_types()))
+                .order_by(DistanceWorkout.start_time.asc())
+                .all()
+            )
+
+            previousTotalDistance = 0.0
+            for workout in workouts:
+                if workout.duration is None or workout.duration == 0:
+                    continue
+
+                workoutDistance = workout.distance / 1000
+                totalDistance = previousTotalDistance + workoutDistance
+                previousTotalDistance = totalDistance
+
+                dates.append(workout.start_time.isoformat())
+                distanceData.append(totalDistance)
+                texts.append(f'{Helpers.format_decimal(totalDistance)} km')
+
+        chartDataAccumulatedDistance = {'dates': dates, 'values': distanceData, 'texts': texts}
+
+        return render_template(
+            'chart/chartAccumulatedDistance.jinja2',
+            chartDataAccumulatedDistance=chartDataAccumulatedDistance,
+            quickFilterState=quickFilterState,
+        )
 
     return charts

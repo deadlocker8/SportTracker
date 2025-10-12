@@ -105,6 +105,13 @@
                             <div class="fs-3 text-light">{{ gettext('Heatmap Months') }}</div>
                         </a>
                     </div>
+                    <div class="col col-12 col-md-6 mb-5">
+                        <a href="{{ url_for('charts.chartAccumulatedDistance') }}"
+                           class="btn btn-link text-decoration-none">
+                            <div class="material-symbols-outlined filled rounded-circle fs-1 p-3 text-dark bg-primary-subtle mb-2">show_chart</div>
+                            <div class="fs-3 text-light">{{ gettext('Total Distance') }}</div>
+                        </a>
+                    </div>
                 </div>
             </section>
         </div>
