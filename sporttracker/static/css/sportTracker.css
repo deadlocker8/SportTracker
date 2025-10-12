@@ -250,6 +250,10 @@ body {
     fill: #FFFFFF !important;
 }
 
+#chartContainer {
+    height: 75vmin;
+}
+
 .button-long-distance-tour-unlink-planned-tour:hover {
     cursor: pointer;
 }
