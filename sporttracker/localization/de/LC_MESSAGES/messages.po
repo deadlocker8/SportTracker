@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-03 21:30+0200\n"
-"PO-Revision-Date: 2025-10-03 21:31+0200\n"
+"POT-Creation-Date: 2025-10-12 17:21+0200\n"
+"PO-Revision-Date: 2025-10-12 17:21+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -36,7 +36,7 @@ msgstr ""
 "</span>)"
 
 #: ../achievement/AchievementBlueprint.py:74
-#: ../achievement/AnnualAchievementBlueprint.py:257
+#: ../achievement/AnnualAchievementBlueprint.py:261
 msgid "Longest Workout"
 msgstr "Längstes Workout"
 
@@ -49,7 +49,10 @@ msgstr ""
 "<span class=\"fw-bold\">{longestWorkoutDistance}</span> zurückgelegt!"
 
 #: ../achievement/AchievementBlueprint.py:93
-#: ../achievement/AnnualAchievementBlueprint.py:129
+#: ../achievement/AnnualAchievementBlueprint.py:130
+#: ../templates/chart/chartAccumulatedDistance.jinja2:5
+#: ../templates/chart/chartAccumulatedDistance.jinja2:16
+#: ../templates/chart/chartChooser.jinja2:112
 msgid "Total Distance"
 msgstr "Gesamtstrecke"
 
@@ -74,7 +77,7 @@ msgstr ""
 "class=\"fw-bold\">{bestMonthDistance}</span>!"
 
 #: ../achievement/AchievementBlueprint.py:159
-#: ../achievement/AnnualAchievementBlueprint.py:339
+#: ../achievement/AnnualAchievementBlueprint.py:345
 msgid "Longest Duration"
 msgstr "Längste Dauer"
 
@@ -87,7 +90,7 @@ msgstr ""
 "Workout <span class=\"fw-bold\">{longestDuration}</span> trainiert!"
 
 #: ../achievement/AchievementBlueprint.py:178
-#: ../achievement/AnnualAchievementBlueprint.py:168
+#: ../achievement/AnnualAchievementBlueprint.py:170
 msgid "Total Duration"
 msgstr "Gesamtdauer"
 
@@ -112,12 +115,12 @@ msgstr "Kein Monat"
 msgid "no date"
 msgstr "kein Datum"
 
-#: ../achievement/AnnualAchievementBlueprint.py:62
-#: ../achievement/AnnualAchievementBlueprint.py:85
+#: ../achievement/AnnualAchievementBlueprint.py:63
+#: ../achievement/AnnualAchievementBlueprint.py:86
 msgid "Number Of Workouts"
 msgstr "Anzahl Workouts"
 
-#: ../achievement/AnnualAchievementBlueprint.py:173
+#: ../achievement/AnnualAchievementBlueprint.py:176
 #: ../templates/monthGoal/monthGoalDurationForm.jinja2:85
 #: ../templates/monthGoal/monthGoalDurationForm.jinja2:103
 #: ../templates/monthGoal/monthGoalDurationMultipleForm.jinja2:95
@@ -126,7 +129,7 @@ msgstr "Anzahl Workouts"
 msgid "Hours"
 msgstr "Stunden"
 
-#: ../achievement/AnnualAchievementBlueprint.py:297
+#: ../achievement/AnnualAchievementBlueprint.py:302
 #: ../templates/chart/chartAverageSpeed.jinja2:2
 #: ../templates/chart/chartChooser.jinja2:42 ../user/UserEntity.py:80
 msgid "Average Speed"
@@ -147,39 +150,39 @@ msgstr "Passwort darf nicht leer sein"
 msgid "Incorrect password"
 msgstr "Ungültiges Passwort"
 
-#: ../chart/ChartBlueprint.py:141
+#: ../chart/ChartBlueprint.py:142
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: ../chart/ChartBlueprint.py:150
+#: ../chart/ChartBlueprint.py:151
 msgid "Distance per custom field"
 msgstr "Strecke pro benutzerdefiniertem Feld"
 
-#: ../chart/ChartBlueprint.py:178
+#: ../chart/ChartBlueprint.py:179
 msgid "You"
 msgstr "Du"
 
-#: ../chart/ChartBlueprint.py:195
+#: ../chart/ChartBlueprint.py:196
 msgid "Distance per participant for workout type "
 msgstr "Strecke pro Teilnehmer für Workouttyp "
 
-#: ../chart/ChartBlueprint.py:278 ../templates/chart/chartChooser.jinja2:63
+#: ../chart/ChartBlueprint.py:279 ../templates/chart/chartChooser.jinja2:63
 msgid "Duration per Workout"
 msgstr "Dauer pro Workout"
 
-#: ../chart/ChartBlueprint.py:355 ../templates/chart/chartChooser.jinja2:70
+#: ../chart/ChartBlueprint.py:356 ../templates/chart/chartChooser.jinja2:70
 msgid "Speed per Workout"
 msgstr "Geschwindigkeit pro Workout"
 
-#: ../chart/ChartBlueprint.py:614
+#: ../chart/ChartBlueprint.py:615
 msgid "Tiles"
 msgstr "Kacheln"
 
-#: ../chart/ChartBlueprint.py:704 ../templates/chart/chartChooser.jinja2:98
+#: ../chart/ChartBlueprint.py:705 ../templates/chart/chartChooser.jinja2:98
 msgid "Heatmap Weekdays"
 msgstr "Heatmap Wochentage"
 
-#: ../chart/ChartBlueprint.py:739 ../templates/chart/chartChooser.jinja2:105
+#: ../chart/ChartBlueprint.py:740 ../templates/chart/chartChooser.jinja2:105
 msgid "Heatmap Months"
 msgstr "Heatmap Monate"
 
@@ -467,7 +470,7 @@ msgstr "Errungenschaften"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: ../templates/achievement/annualAchievements.jinja2:133
+#: ../templates/achievement/annualAchievements.jinja2:137
 #: ../templates/macros.jinja2:115
 msgid "Annual Statistics"
 msgstr "Jahresstatistik"
@@ -564,36 +567,40 @@ msgid "Show more"
 msgstr "Mehr anzeigen"
 
 #: ../templates/achievement/achievements.jinja2:54
-#: ../templates/achievement/annualAchievements.jinja2:58
+#: ../templates/achievement/annualAchievements.jinja2:62
 #: ../templates/plannedTour/plannedToursMacros.jinja2:87
 #: ../templates/workout/workoutMacros.jinja2:193
 msgid "Close"
 msgstr "Schließen"
 
-#: ../templates/achievement/annualAchievements.jinja2:31
+#: ../templates/achievement/annualAchievements.jinja2:35
 msgid "Details"
 msgstr "Details"
 
-#: ../templates/achievement/annualAchievements.jinja2:51
+#: ../templates/achievement/annualAchievements.jinja2:55
 #: ../templates/workout/workoutMacros.jinja2:169
 msgid "Min"
 msgstr "Min"
 
-#: ../templates/achievement/annualAchievements.jinja2:52
+#: ../templates/achievement/annualAchievements.jinja2:56
 #: ../templates/workout/workoutMacros.jinja2:177
 msgid "Max"
 msgstr "Max"
 
-#: ../templates/achievement/annualAchievements.jinja2:53
+#: ../templates/achievement/annualAchievements.jinja2:57
 msgid "Total"
 msgstr "Gesamt"
 
-#: ../templates/achievement/annualAchievements.jinja2:54
+#: ../templates/achievement/annualAchievements.jinja2:58
 #: ../templates/workout/workoutMacros.jinja2:185
 msgid "Average"
 msgstr "Durchschnitt"
 
-#: ../templates/chart/chartAverageSpeed.jinja2:30
+#: ../templates/chart/chartAccumulatedDistance.jinja2:55
+msgid "Total distance in km"
+msgstr "Gesamtstrecke in km"
+
+#: ../templates/chart/chartAverageSpeed.jinja2:31
 #: ../templates/chart/chartSpeedPerWorkout.jinja2:26
 msgid "Speed in km/h"
 msgstr "Geschwindigkeit in km/h"
@@ -1254,11 +1261,11 @@ msgstr ""
 msgid "Zoom in to view visited tiles."
 msgstr "Hineinzoomen, um besuchte Kacheln anzuzeigen."
 
-#: ../templates/map/mapTileHunting.jinja2:107
+#: ../templates/map/mapTileHunting.jinja2:108
 msgid "Click bar to open in new tab"
 msgstr "Balken anklicken, um in neuem Tab zu öffnen"
 
-#: ../templates/map/mapTileHunting.jinja2:120
+#: ../templates/map/mapTileHunting.jinja2:121
 msgid "Number of new tiles"
 msgstr "Anzahl neuer Kacheln"
 
@@ -1266,7 +1273,7 @@ msgstr "Anzahl neuer Kacheln"
 msgid "Number of visits"
 msgstr "Anzahl der Besuche"
 
-#: ../templates/map/mapTileHuntingHeatmap.jinja2:65
+#: ../templates/map/mapTileHuntingHeatmap.jinja2:66
 msgid "Visits"
 msgstr "Besuche"
 
