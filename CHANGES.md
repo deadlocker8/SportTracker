@@ -1,6 +1,8 @@
 # 1.43.1 - (28.09.25)
+- BREAKING CHANGE: you must update your settings.json (new option "mapMinZoomLevel" in section "tileHunting", see settings-example.json)
 - add: notification page: add button to dismiss all notifications (#262)
 - add: annual achievements: show percentage difference to previous year (#263)
+- add: added new settings option to specify the minimum zoom level for tiles to be shown on the tile hunting map (#265)
 - fix: error message on saving new distance workout via api (#259)
 - fix: best month notifications are now only send if the total distance/duration of a month relly is greater than any previous month (#258)
 - fix: month goal notifications are now only send if the goal was not already reached in the same month before (#260)
