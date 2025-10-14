@@ -3,7 +3,8 @@
 - add: notification page: add button to dismiss all notifications (#262)
 - add: annual achievements: show percentage difference to previous year (#263)
 - add: new settings option to specify the minimum zoom level for tiles to be shown on the tile hunting map (#265)
-- add: new chart: accumulated distance (#264)
+- add: new chart: accumulated distance per day (#264)
+- add: new chart: accumulated distance per month (#264)
 - add: chart average speed: add range slider
 - add: increased height of all charts
 - fix: error message on saving new distance workout via api (#259)
