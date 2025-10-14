@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-12 17:21+0200\n"
+"POT-Creation-Date: 2025-10-14 23:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,9 +43,6 @@ msgstr ""
 
 #: ../achievement/AchievementBlueprint.py:93
 #: ../achievement/AnnualAchievementBlueprint.py:130
-#: ../templates/chart/chartAccumulatedDistance.jinja2:5
-#: ../templates/chart/chartAccumulatedDistance.jinja2:16
-#: ../templates/chart/chartChooser.jinja2:112
 msgid "Total Distance"
 msgstr ""
 
@@ -137,39 +134,39 @@ msgstr ""
 msgid "Incorrect password"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:142
+#: ../chart/ChartBlueprint.py:143
 msgid "Unknown"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:151
+#: ../chart/ChartBlueprint.py:152
 msgid "Distance per custom field"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:179
+#: ../chart/ChartBlueprint.py:180
 msgid "You"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:196
+#: ../chart/ChartBlueprint.py:197
 msgid "Distance per participant for workout type "
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:279 ../templates/chart/chartChooser.jinja2:63
+#: ../chart/ChartBlueprint.py:280 ../templates/chart/chartChooser.jinja2:63
 msgid "Duration per Workout"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:356 ../templates/chart/chartChooser.jinja2:70
+#: ../chart/ChartBlueprint.py:357 ../templates/chart/chartChooser.jinja2:70
 msgid "Speed per Workout"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:615
+#: ../chart/ChartBlueprint.py:618
 msgid "Tiles"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:705 ../templates/chart/chartChooser.jinja2:98
+#: ../chart/ChartBlueprint.py:708 ../templates/chart/chartChooser.jinja2:98
 msgid "Heatmap Weekdays"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:740 ../templates/chart/chartChooser.jinja2:105
+#: ../chart/ChartBlueprint.py:743 ../templates/chart/chartChooser.jinja2:105
 msgid "Heatmap Months"
 msgstr ""
 
@@ -521,8 +518,8 @@ msgstr ""
 
 #: ../templates/macros.jinja2:297 ../templates/settings/settings.jinja2:326
 #: ../templates/workout/workoutChooser.jinja2:86
-#: ../templates/workout/workouts.jinja2:95
-#: ../templates/workout/workouts.jinja2:117
+#: ../templates/workout/workoutMacros.jinja2:734
+#: ../templates/workout/workoutMacros.jinja2:756
 msgid "Cancel"
 msgstr ""
 
@@ -581,8 +578,25 @@ msgstr ""
 msgid "Average"
 msgstr ""
 
+#: ../templates/chart/chartAccumulatedDistance.jinja2:5
+#: ../templates/chart/chartAccumulatedDistance.jinja2:16
+#: ../templates/chart/chartChooser.jinja2:112
+msgid "Total Distance per Day"
+msgstr ""
+
 #: ../templates/chart/chartAccumulatedDistance.jinja2:55
+#: ../templates/chart/chartAccumulatedDistancePerMonth.jinja2:75
 msgid "Total distance in km"
+msgstr ""
+
+#: ../templates/chart/chartAccumulatedDistancePerMonth.jinja2:5
+#: ../templates/chart/chartAccumulatedDistancePerMonth.jinja2:18
+#: ../templates/chart/chartChooser.jinja2:119
+msgid "Total Distance by Month"
+msgstr ""
+
+#: ../templates/chart/chartAccumulatedDistancePerMonth.jinja2:33
+msgid "Select Year & Month"
 msgstr ""
 
 #: ../templates/chart/chartAverageSpeed.jinja2:31
@@ -1857,6 +1871,14 @@ msgstr ""
 msgid "shared by "
 msgstr ""
 
+#: ../templates/workout/workoutMacros.jinja2:722
+msgid "Choose year"
+msgstr ""
+
+#: ../templates/workout/workoutMacros.jinja2:744
+msgid "Choose month"
+msgstr ""
+
 #: ../templates/workout/workoutRunningForm.jinja2:6
 #: ../templates/workout/workoutRunningForm.jinja2:22
 msgid "Edit Running Workout"
@@ -1868,14 +1890,6 @@ msgstr ""
 
 #: ../templates/workout/workouts.jinja2:60
 msgid "Toggle months by swiping left or right"
-msgstr ""
-
-#: ../templates/workout/workouts.jinja2:83
-msgid "Choose year"
-msgstr ""
-
-#: ../templates/workout/workouts.jinja2:105
-msgid "Choose month"
 msgstr ""
 
 #: ../user/CustomWorkoutFieldEntity.py:32
