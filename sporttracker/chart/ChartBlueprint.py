@@ -1,5 +1,6 @@
 import calendar
 import logging
+from collections import defaultdict
 from dataclasses import dataclass
 from datetime import date, time
 from typing import Any, Literal
@@ -25,8 +26,8 @@ from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.user.ParticipantEntity import Participant
 from sporttracker.workout.WorkoutEntity import (
     Workout,
-    get_workouts_by_year_and_month,
     get_duration_per_month_by_type,
+    get_workouts_by_year_and_month_and_workout_types,
 )
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
@@ -372,7 +373,9 @@ def construct_blueprint(
             currentMonthDate = date(year=year, month=monthNumber, day=1)
             __, numberOfDays = calendar.monthrange(year, monthNumber)
 
-            workouts = get_workouts_by_year_and_month(year, monthNumber)
+            workouts = get_workouts_by_year_and_month_and_workout_types(
+                year, monthNumber, quickFilterState.get_active_workout_types()
+            )
 
             days = []
             for dayNumber in range(1, numberOfDays + 1):
@@ -776,6 +779,52 @@ def construct_blueprint(
             'chart/chartAccumulatedDistance.jinja2',
             chartDataAccumulatedDistance=chartDataAccumulatedDistance,
             quickFilterState=quickFilterState,
+        )
+
+    @charts.route('/chartAccumulatedDistancePerMonth', defaults={'year': None, 'month': None})
+    @charts.route('/chartAccumulatedDistancePerMonth/<int:year>/<int:month>')
+    @login_required
+    def chartAccumulatedDistancePerMonth(year: int, month: int):
+        today = date.today()
+        if year is None:
+            year = today.year
+
+        if month is None:
+            month = today.month
+
+        chartDataAccumulatedDistancePerMonth = []
+        for workoutType in WorkoutType.get_distance_workout_types():
+            workouts = get_workouts_by_year_and_month_and_workout_types(
+                year=year,
+                month=month,
+                workoutTypes=[workoutType],
+            )
+
+            distanceSumByDay: dict[int, float] = defaultdict(float)
+            for workout in workouts:
+                distanceSumByDay[workout.start_time.day] += workout.distance / 1000  # type: ignore[attr-defined]
+
+            maxMonthDay = calendar.monthrange(year, month)[1]
+
+            days = []
+            distanceData = []
+            texts = []
+            totalDistance = 0.0
+            for day in range(1, maxMonthDay + 1):
+                days.append(day)
+
+                distanceSum = distanceSumByDay.get(day, 0.0)
+                totalDistance += distanceSum
+                distanceData.append(totalDistance)
+                texts.append(f'{Helpers.format_decimal(totalDistance)} km (+{Helpers.format_decimal(distanceSum)} km)')
+
+            chartDataAccumulatedDistancePerMonth.append(
+                {'days': days, 'values': distanceData, 'texts': texts, 'type': workoutType}
+            )
+
+        return render_template(
+            'chart/chartAccumulatedDistancePerMonth.jinja2',
+            chartDataAccumulatedDistancePerMonth=chartDataAccumulatedDistancePerMonth,
         )
 
     return charts

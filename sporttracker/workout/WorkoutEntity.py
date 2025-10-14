@@ -52,15 +52,17 @@ class MonthDurationSum:
     durationSum: int
 
 
-def get_workouts_by_year_and_month(
+def get_workouts_by_year_and_month_and_workout_types(
     year: int,
     month: int,
+    workoutTypes: list[WorkoutType],
 ) -> list[Workout]:
     return (
         Workout.query.join(User)
         .filter(User.username == current_user.username)
         .filter(extract('year', Workout.start_time) == year)
         .filter(extract('month', Workout.start_time) == month)
+        .filter(Workout.type.in_(workoutTypes))
         .order_by(Workout.start_time.desc())
         .all()
     )

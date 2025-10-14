@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Total Distance per Month') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('charts') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row mb-3">
+                    <div class="col col-12 mx-auto">
+                        {% call macros.headline(gettext('Total Distance by Month')) %}
+                            <span class="material-symbols-outlined fs-1">show_chart</span>
+                        {% endcall %}
+                    </div>
+                </div>
+
+                <div id="chartContainer"></div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+        <script>
+            const data = [
+                {% for entry in chartDataAccumulatedDistancePerMonth %}
+                    {
+                        x: {{ entry['days'] }},
+                        y: {{ entry['values'] }},
+                        type: 'scatter',
+                        mode: 'lines+markers',
+                        line: {
+                            color: '{{ entry.type.background_color_hex }}',
+                            width: 10,
+                            shape: 'linear',
+                        },
+                        text: {{ entry['texts'] }},
+                        name: '{{ entry.type.name | capitalize }}'
+                    },
+                {% endfor %}
+            ];
+
+            const plotlyLayout = {
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                xaxis: {
+                    {#type: 'category',#}
+                    color: '#FFFFFF',
+                    automargin: true,
+                    showgrid: true,
+                    rangemode: 'tozero',
+                },
+                yaxis: {
+                    title: {
+                        text: '{{ gettext('Total distance in km') }}',
+                    },
+                    rangemode: 'tozero',
+                    tickformat: '.0f',
+                    showline: true,
+                    showgrid: false,
+                    color: '#FFFFFF',
+                },
+                legend: {
+                    font: {
+                        color: '#FFFFFF'
+                    }
+                }
+            }
+
+            const plotlyConfig = {
+                responsive: true,
+                displayModeBar: false
+            };
+
+            Plotly.newPlot('chartContainer', data, plotlyLayout, plotlyConfig);
+        </script>
+    </body>
+</html>
