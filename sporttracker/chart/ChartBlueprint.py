@@ -2,7 +2,7 @@ import calendar
 import logging
 from collections import defaultdict
 from dataclasses import dataclass
-from datetime import date, time
+from datetime import date, time, datetime
 from typing import Any, Literal
 from sporttracker.helpers import Helpers
 
@@ -781,7 +781,7 @@ def construct_blueprint(
             quickFilterState=quickFilterState,
         )
 
-    @charts.route('/chartAccumulatedDistancePerMonth', defaults={'year': None, 'month': None})
+    @charts.route('/chartAccumulatedDistancePerMonth/', defaults={'year': None, 'month': None})
     @charts.route('/chartAccumulatedDistancePerMonth/<int:year>/<int:month>')
     @login_required
     def chartAccumulatedDistancePerMonth(year: int, month: int):
@@ -822,9 +822,15 @@ def construct_blueprint(
                 {'days': days, 'values': distanceData, 'texts': texts, 'type': workoutType}
             )
 
+        selectedMonthDate = date(year=year, month=month, day=1)
+
         return render_template(
             'chart/chartAccumulatedDistancePerMonth.jinja2',
             chartDataAccumulatedDistancePerMonth=chartDataAccumulatedDistancePerMonth,
+            currentMonthDate=datetime.today(),
+            availableYears=DistanceWorkoutService.get_available_years(current_user.id) or [datetime.now().year],
+            monthNames=list(get_month_names(width='wide', locale=flask_babel.get_locale()).values()),
+            selectedMonthDate=format_datetime(selectedMonthDate, format='MMMM yyyy'),
         )
 
     return charts

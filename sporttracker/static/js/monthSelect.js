@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function()
         buttonsSelectMonth[i].addEventListener('click', function() {
             let month = this.dataset.month;
             let baseUrl = document.getElementById('modalMonthSelect').dataset.url
+            console.log(baseUrl);
             window.location = baseUrl + selectedYear + '/' + month;
         });
     }
