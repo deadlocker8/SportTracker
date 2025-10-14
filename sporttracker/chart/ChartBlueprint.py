@@ -770,7 +770,7 @@ def construct_blueprint(
                 dates.append(workout.start_time.isoformat())
                 distanceData.append(totalDistance)
                 texts.append(
-                    f'{Helpers.format_decimal(totalDistance)} km (+{Helpers.format_decimal(workoutDistance)} km)'
+                    f'{workout.start_time.strftime("%d.%m.%y")} = {Helpers.format_decimal(totalDistance)} km (+{Helpers.format_decimal(workoutDistance)} km)'
                 )
 
         chartDataAccumulatedDistance = {'dates': dates, 'values': distanceData, 'texts': texts}
@@ -811,12 +811,16 @@ def construct_blueprint(
             texts = []
             totalDistance = 0.0
             for day in range(1, maxMonthDay + 1):
+                dayDate = date(year=year, month=month, day=day)
                 days.append(day)
 
                 distanceSum = distanceSumByDay.get(day, 0.0)
                 totalDistance += distanceSum
                 distanceData.append(totalDistance)
-                texts.append(f'{Helpers.format_decimal(totalDistance)} km (+{Helpers.format_decimal(distanceSum)} km)')
+
+                texts.append(
+                    f'{format_datetime(dayDate, format="dd. MMMM")} = {Helpers.format_decimal(totalDistance)} km (+{Helpers.format_decimal(distanceSum)} km)'
+                )
 
             chartDataAccumulatedDistancePerMonth.append(
                 {'days': days, 'values': distanceData, 'texts': texts, 'type': workoutType}
