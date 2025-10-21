@@ -1,4 +1,4 @@
-# 1.44.0 - (XX.XX.XX)
+# 1.44.0 - (21.10.25)
 - BREAKING CHANGE: you must update your settings.json (new option "mapMinZoomLevel" in section "tileHunting", see settings-example.json)
 - add: notification page: add button to dismiss all notifications (#262)
 - add: annual achievements: show percentage difference to previous year (#263)
