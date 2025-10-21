@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "@raruto/leaflet-elevation": "^2.5.1",
+    "@raruto/leaflet-elevation": "^2.5.2",
     "assert": "^2.1.0",
     "bootstrap": "^5.3.8",
     "bootstrap5-autocomplete": "^1.1.40",
