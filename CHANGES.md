@@ -9,6 +9,7 @@
 - add: increased height of all charts
 - chore: update dependencies (#266)
 - chore: update georender (#266)
+- chore: update to python 3.13 (#269)
 
 # 1.43.1 - (28.09.25)
 - fix: error message on saving new distance workout via api (#259)

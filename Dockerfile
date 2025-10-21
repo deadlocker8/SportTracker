@@ -1,4 +1,4 @@
-FROM python:3.12-alpine AS poetry
+FROM python:3.13-alpine AS poetry
 
 RUN apk update && apk upgrade && \
     apk add curl gcc python3-dev libc-dev build-base linux-headers postgresql-dev && \
@@ -25,7 +25,7 @@ WORKDIR /opt/SportTracker/js
 
 RUN npm ci && npm run build
 
-FROM python:3.12-alpine
+FROM python:3.13-alpine
 
 RUN apk update && apk upgrade && \
     apk add postgresql-libs && \
