@@ -7,6 +7,8 @@
 - add: new chart: accumulated distance per month (#264)
 - add: chart average speed: add range slider
 - add: increased height of all charts
+- chore: update dependencies (#266)
+- chore: update georender (#266)
 
 # 1.43.1 - (28.09.25)
 - fix: error message on saving new distance workout via api (#259)
