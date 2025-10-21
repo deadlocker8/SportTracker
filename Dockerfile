@@ -13,7 +13,7 @@ WORKDIR /opt/SportTracker
 RUN /root/.local/bin/poetry install --without dev
 RUN ln -s $($HOME/.local/share/pypoetry/venv/bin/poetry env info -p) /opt/SportTracker/myvenv
 
-FROM node:24-alpine AS npm
+FROM node:25-alpine AS npm
 
 RUN apk update && apk upgrade && \
     rm -rf /var/cache/apk
