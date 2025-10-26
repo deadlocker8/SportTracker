@@ -1,5 +1,6 @@
 # 1.45.0 - (XX.XX.XX)
 - fix: annual achievements: fix percentage if previous year has no values (#271)
+- fix: annual achievements: do not show sum for longest workout and average speed (#272)
 
 # 1.44.0 - (21.10.25)
 - BREAKING CHANGE: you must update your settings.json (new option "mapMinZoomLevel" in section "tileHunting", see settings-example.json)

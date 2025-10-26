@@ -249,7 +249,7 @@ def construct_blueprint():
             labels=[__format_distance(x) for x in values],
             min=__format_distance(min(values)) if values else '-',
             max=__format_distance(max(values)) if values else '-',
-            sum=__format_distance(sum(values)) if values else '-',
+            sum='-',
             average=__format_distance(mean(values)) if values else '-',
         )
 
@@ -290,7 +290,7 @@ def construct_blueprint():
             labels=[__format_speed(x) for x in values],
             min=__format_speed(min(values)) if values else '-',
             max=__format_speed(max(values)) if values else '-',
-            sum=__format_speed(sum(values)) if values else '-',
+            sum='-',
             average=__format_speed(mean(values)) if values else '-',
         )
 
@@ -333,7 +333,7 @@ def construct_blueprint():
             labels=[__format_duration(x) for x in values],
             min=__format_duration(min(values)) if values else '-',
             max=__format_duration(max(values)) if values else '-',
-            sum=__format_duration(sum(values)) if values else '-',
+            sum='-',
             average=__format_duration(mean(values)) if values else '-',
         )
 
