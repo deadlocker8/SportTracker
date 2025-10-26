@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-14 23:50+0200\n"
+"POT-Creation-Date: 2025-10-26 21:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1997,5 +1997,15 @@ msgstr ""
 
 #: ../workout/fitness/FitnessWorkoutType.py:38
 msgid "Repetition-based"
+msgstr ""
+
+#: ../workout/fitness/FitnessWorkoutType.py:45
+msgctxt "short"
+msgid "Timed"
+msgstr ""
+
+#: ../workout/fitness/FitnessWorkoutType.py:47
+msgctxt "short"
+msgid "Reps"
 msgstr ""
 

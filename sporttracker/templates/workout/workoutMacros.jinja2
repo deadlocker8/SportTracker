@@ -62,7 +62,7 @@
 {% macro render_fitness_workout_type(workout, renderAsRow) -%}
     <div class="d-flex {% if renderAsRow %}flex-row{% else %}flex-column{% endif %}">
         <span class="material-symbols-outlined fs-3 text-secondary {% if renderAsRow %}me-2{% endif %}">{{ workout.fitness_workout_type.icon }}</span>
-        <div class="fs-5 text-center">{{ render_workout_unit(workout.fitness_workout_type.get_localized_name()) }}</div>
+        <div class="fs-5 text-center">{{ render_workout_unit(workout.fitness_workout_type.get_localized_short_name()) }}</div>
     </div>
 {%- endmacro %}
 

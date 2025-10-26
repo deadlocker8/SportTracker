@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-14 23:50+0200\n"
-"PO-Revision-Date: 2025-10-14 23:51+0200\n"
+"POT-Creation-Date: 2025-10-26 21:21+0100\n"
+"PO-Revision-Date: 2025-10-26 21:22+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -2037,6 +2037,16 @@ msgstr "Zeitbasiert"
 msgid "Repetition-based"
 msgstr "Wiederholungsbasiert"
 
+#: ../workout/fitness/FitnessWorkoutType.py:45
+msgctxt "short"
+msgid "Timed"
+msgstr "Zeitbasiert"
+
+#: ../workout/fitness/FitnessWorkoutType.py:47
+msgctxt "short"
+msgid "Reps"
+msgstr "Wiederh."
+
 #~ msgid "Momth"
 #~ msgstr "Monat"
 
@@ -2167,3 +2177,11 @@ msgstr "Wiederholungsbasiert"
 
 #~ msgid "Total Distance per Month"
 #~ msgstr "Gesamtstrecke pro Monat"
+
+#~ msgctxt "short"
+#~ msgid "Time-based"
+#~ msgstr "Zeitbasiert"
+
+#~ msgctxt "short"
+#~ msgid "Rep.-based"
+#~ msgstr "Wiederholungsb."

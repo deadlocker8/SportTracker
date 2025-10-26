@@ -1,6 +1,6 @@
 import enum
 
-from flask_babel import gettext
+from flask_babel import gettext, pgettext
 
 
 class FitnessWorkoutType(enum.Enum):
@@ -36,5 +36,14 @@ class FitnessWorkoutType(enum.Enum):
             return gettext('Time-based')
         elif self == self.REPETITION_BASED:
             return gettext('Repetition-based')
+
+        raise ValueError(f'Could not get localized name for unsupported FitnessWorkoutType: {self}')
+
+    def get_localized_short_name(self) -> str:
+        # must be done this way to include translations in *.po and *.mo file
+        if self == self.DURATION_BASED:
+            return pgettext('short', 'Timed')
+        elif self == self.REPETITION_BASED:
+            return pgettext('short', 'Reps')
 
         raise ValueError(f'Could not get localized name for unsupported FitnessWorkoutType: {self}')
