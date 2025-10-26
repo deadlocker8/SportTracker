@@ -34,8 +34,11 @@ def is_allowed_redirect_url(url: str | None, allowedHost: str) -> bool:
 
 
 def format_percentage(previous_value: float, current_value: float) -> str:
+    if previous_value == 0 and current_value == 0:
+        return '0 %'
+
     if previous_value == 0:
-        return '100 %'
+        return '∞ %'
 
     percentage = abs((current_value - previous_value)) / previous_value * 100
     return f'{int(percentage)} %'
