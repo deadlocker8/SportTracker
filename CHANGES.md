@@ -1,4 +1,5 @@
 # 1.45.0 - (XX.XX.XX)
+- BREAKING CHANGE: you must update your settings.json (new option "timeout" in section "gpxPreviewImages", see settings-example.json)
 - fix: workout overview: fix overlapping text on mobile (#270)
 - fix: annual achievements: fix percentage if previous year has no values (#271)
 - fix: annual achievements: do not show sum for longest workout and average speed (#272)

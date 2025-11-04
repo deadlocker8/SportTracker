@@ -18,7 +18,8 @@
     },
     "gpxPreviewImages": {
         "enabled": false,
-        "geoRenderUrl": "http://localhost:3000"
+        "geoRenderUrl": "http://localhost:3000",
+        "timeout": 30
     },
     "tileHunting": {
         "baseZoomLevel": 14,

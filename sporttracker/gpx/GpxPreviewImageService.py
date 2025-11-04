@@ -38,7 +38,8 @@ class GpxPreviewImageService:
 
                 with open(tempGpxFilePath, 'rb') as fd:
                     files = {'gpx': fd}
-                    response = requests.post(gpxPreviewImageSettings['geoRenderUrl'], files=files)
+                    timeout = gpxPreviewImageSettings['timeout']
+                    response = requests.post(gpxPreviewImageSettings['geoRenderUrl'], files=files, timeout=timeout)
                     response.raise_for_status()
 
                     with open(self.get_preview_image_path(), 'wb') as f:
