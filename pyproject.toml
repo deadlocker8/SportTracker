@@ -76,5 +76,6 @@ pythonpath = "sporttracker"
 [tool.bandit]
 exclude_dirs = ["./tests/*"]
 skips = [
-    'B311'  # random
+    'B311',  # random
+    'B404'   # import_subprocess
 ]
