@@ -76,6 +76,7 @@ pythonpath = "sporttracker"
 [tool.bandit]
 exclude_dirs = [
     "./tests/*",
+    "./sporttracker/migrations/*",
     "./sporttracker/localization/UpdateLocalization.py"
 ]
 skips = [
