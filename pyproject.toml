@@ -32,6 +32,7 @@ fitdecode = "0.11.0"
 natsort = "8.4.0"
 
 [tool.poetry.group.dev.dependencies]
+bandit = "1.8.6"
 ruff = "0.14.1"
 pre-commit = "4.3.0"
 mypy = "1.18.2"
@@ -71,3 +72,9 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 pythonpath = "sporttracker"
+
+[tool.bandit]
+exclude_dirs = ["./tests/*"]
+skips = [
+    'B311'  # random
+]
