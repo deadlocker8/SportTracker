@@ -2,7 +2,7 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 
-from sqlalchemy import text
+from sqlalchemy import text, bindparam
 
 from sporttracker import Constants
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -53,19 +53,19 @@ class NewVisitedTileCache:
     def __determine_number_of_new_tiles_per_workout(
         userId: int, workoutTypes: list[WorkoutType], years: list[int]
     ) -> list[NewTilesPerDistanceWorkout]:
+        activeWorkoutTypes = [x.name for x in workoutTypes]
+
         workoutTypeOperator = ''
         workoutTypeOperator2 = ''
         if workoutTypes:
-            activeWorkoutTypes = ','.join([f"'{x.name}'" for x in workoutTypes])
-            workoutTypeOperator = f'AND w_inner."type" in ({activeWorkoutTypes})'
-            workoutTypeOperator2 = f'AND w."type" in ({activeWorkoutTypes})'
+            workoutTypeOperator = 'AND w_inner."type" in :active_workout_types'
+            workoutTypeOperator2 = 'AND w."type" in :active_workout_types'
 
         yearOperator = ''
         yearOperator2 = ''
         if years:
-            activeYears = ','.join([f"'{x}'" for x in years])
-            yearOperator = f'AND EXTRACT(year FROM w_inner."start_time") in ({activeYears})'
-            yearOperator2 = f'AND EXTRACT(year FROM w."start_time") in ({activeYears})'
+            yearOperator = 'AND EXTRACT(year FROM w_inner."start_time") in :active_years'
+            yearOperator2 = 'AND EXTRACT(year FROM w."start_time") in :active_years'
 
         rows = db.session.execute(
             text(f"""SELECT t."id",
@@ -89,10 +89,17 @@ class NewVisitedTileCache:
         FROM distance_workout AS t
         JOIN workout w ON t."id" = w."id"
         WHERE t."gpx_metadata_id" IS NOT NULL
-        AND w."user_id" = {userId}
+        AND w."user_id" = :user_id
         {workoutTypeOperator2}
         {yearOperator2}
-        ORDER BY w."start_time\"""")
+        ORDER BY w."start_time\"""")  # nosec B608 user input is escaped by params, actual f-string is used to build query dynamically
+            .bindparams(bindparam('active_workout_types', expanding=True))
+            .bindparams(bindparam('active_years', expanding=True)),
+            params={
+                'user_id': userId,
+                'active_workout_types': activeWorkoutTypes,
+                'active_years': years,
+            },
         ).fetchall()
 
         return [

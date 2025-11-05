@@ -215,17 +215,22 @@ class VisitedTileService:
     @staticmethod
     def __get_new_visited_tiles_by_workout(workout: DistanceWorkout) -> list[tuple[int, int]]:
         rows = db.session.execute(
-            text(f"""SELECT *
+            text("""SELECT *
             FROM gpx_visited_tile
-            WHERE gpx_visited_tile."workout_id" = {workout.id}
+            WHERE gpx_visited_tile."workout_id" = :workout_id
               AND NOT EXISTS (SELECT
                               FROM distance_workout AS prev
                                        join gpx_visited_tile AS visitied ON prev."id" = visitied."workout_id"
                                        JOIN workout w_inner ON prev."id" = w_inner."id"
-                              WHERE w_inner."start_time" < '{workout.start_time}'
-                                AND w_inner."user_id" = {workout.user.id}
+                              WHERE w_inner."start_time" < :workout_start_time
+                                AND w_inner."user_id" = :workout_user_id
                                 AND gpx_visited_tile."x" = visitied."x"
-                                AND gpx_visited_tile."y" = visitied."y")""")
+                                AND gpx_visited_tile."y" = visitied."y")"""),
+            params={
+                'workout_id': workout.id,
+                'workout_start_time': workout.start_time,
+                'workout_user_id': workout.user.id,
+            },
         ).fetchall()
 
         return [(row[1], row[2]) for row in rows]
