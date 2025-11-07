@@ -1,7 +1,7 @@
 import logging
 import os
 import uuid
-from gettext import gettext
+from flask_babel import gettext
 
 from flask import Blueprint, render_template, abort, redirect, url_for, request, session
 from flask_login import login_required, current_user

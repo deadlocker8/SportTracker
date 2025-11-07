@@ -1,6 +1,6 @@
 import logging
 from dataclasses import dataclass
-from gettext import gettext
+from flask_babel import gettext
 
 from flask import Blueprint, render_template, redirect, url_for, abort
 from flask_bcrypt import Bcrypt
