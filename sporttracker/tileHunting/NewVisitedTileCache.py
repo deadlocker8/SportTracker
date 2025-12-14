@@ -67,6 +67,7 @@ class NewVisitedTileCache:
             yearOperator = 'AND EXTRACT(year FROM w_inner."start_time") in :active_years'
             yearOperator2 = 'AND EXTRACT(year FROM w."start_time") in :active_years'
 
+        # B608 will be disabled because user input is escaped by params, actual f-string is used to build query dynamically
         rows = db.session.execute(
             text(f"""SELECT t."id",
                w."type",
@@ -92,7 +93,7 @@ class NewVisitedTileCache:
         AND w."user_id" = :user_id
         {workoutTypeOperator2}
         {yearOperator2}
-        ORDER BY w."start_time\"""")  # nosec B608 user input is escaped by params, actual f-string is used to build query dynamically
+        ORDER BY w."start_time\"""")  # nosec B608
             .bindparams(bindparam('active_workout_types', expanding=True))
             .bindparams(bindparam('active_years', expanding=True)),
             params={
