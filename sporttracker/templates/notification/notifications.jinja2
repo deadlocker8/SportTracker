@@ -10,7 +10,7 @@
                             {% if notification.type.is_font_awesome_icon %}
                                 <i class="fa-solid {{ notification.type.icon }} fa-fw"></i>
                             {% else %}
-                                <span class="material-symbols-outlined filled">{{ notification.type.icon }}</span>
+                                <span class="material-symbols-outlined {% if not notification.type.is_outlined_icon %}filled{% endif %}">{{ notification.type.icon }}</span>
                             {% endif %}
                         </div>
                         <span class="ms-3 notification-title">{{ notification.type.get_localized_title() }}</span>

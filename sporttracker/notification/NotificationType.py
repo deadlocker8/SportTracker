@@ -9,15 +9,40 @@ from flask_login import current_user
 
 
 class NotificationType(enum.Enum):
-    MAINTENANCE_REMINDER = ('MAINTENANCE_REMINDER', 'fa-wrench', True, 'bg-danger', 'text-light', 0)
-    NEW_SHARED_PLANNED_TOUR = 'NEW_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark', 1
-    EDITED_SHARED_PLANNED_TOUR = 'EDITED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark', 2
-    DELETED_SHARED_PLANNED_TOUR = 'DELETED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark', 3
-    REVOKED_SHARED_PLANNED_TOUR = 'REVOKED_SHARED_PLANNED_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark', 4
-    NEW_SHARED_LONG_DISTANCE_TOUR = 'NEW_SHARED_LONG_DISTANCE_TOUR', 'fa-lightbulb', True, 'bg-warning', 'text-dark', 5
+    MAINTENANCE_REMINDER = ('MAINTENANCE_REMINDER', 'fa-wrench', False, True, 'bg-danger', 'text-light', 0)
+    NEW_SHARED_PLANNED_TOUR = 'NEW_SHARED_PLANNED_TOUR', 'fa-lightbulb', False, True, 'bg-warning', 'text-dark', 1
+    EDITED_SHARED_PLANNED_TOUR = 'EDITED_SHARED_PLANNED_TOUR', 'fa-lightbulb', False, True, 'bg-warning', 'text-dark', 2
+    DELETED_SHARED_PLANNED_TOUR = (
+        'DELETED_SHARED_PLANNED_TOUR',
+        'fa-lightbulb',
+        False,
+        True,
+        'bg-warning',
+        'text-dark',
+        3,
+    )
+    REVOKED_SHARED_PLANNED_TOUR = (
+        'REVOKED_SHARED_PLANNED_TOUR',
+        'fa-lightbulb',
+        False,
+        True,
+        'bg-warning',
+        'text-dark',
+        4,
+    )
+    NEW_SHARED_LONG_DISTANCE_TOUR = (
+        'NEW_SHARED_LONG_DISTANCE_TOUR',
+        'fa-lightbulb',
+        False,
+        True,
+        'bg-warning',
+        'text-dark',
+        5,
+    )
     EDITED_SHARED_LONG_DISTANCE_TOUR = (
         'EDITED_SHARED_LONG_DISTANCE_TOUR',
         'fa-lightbulb',
+        False,
         True,
         'bg-warning',
         'text-dark',
@@ -26,6 +51,7 @@ class NotificationType(enum.Enum):
     DELETED_SHARED_LONG_DISTANCE_TOUR = (
         'DELETED_SHARED_LONG_DISTANCE_TOUR',
         'fa-lightbulb',
+        False,
         True,
         'bg-warning',
         'text-dark',
@@ -34,18 +60,20 @@ class NotificationType(enum.Enum):
     REVOKED_SHARED_LONG_DISTANCE_TOUR = (
         'REVOKED_SHARED_LONG_DISTANCE_TOUR',
         'fa-lightbulb',
+        False,
         True,
         'bg-warning',
         'text-dark',
         8,
     )
-    LONGEST_WORKOUT = 'LONGEST_WORKOUT', 'trophy', False, 'bg-info', 'text-dark', 9
-    MONTH_GOAL_DISTANCE = 'MONTH_GOAL_DISTANCE', 'flag', False, 'bg-success', 'text-light', 10
-    MONTH_GOAL_COUNT = 'MONTH_GOAL_COUNT', 'flag', False, 'bg-success', 'text-light', 11
-    MONTH_GOAL_DURATION = 'MONTH_GOAL_DURATION', 'flag', False, 'bg-success', 'text-light', 12
-    BEST_MONTH = 'BEST_MONTH', 'calendar_month', False, 'bg-info', 'text-dark', 13
+    LONGEST_WORKOUT = 'LONGEST_WORKOUT', 'trophy', False, False, 'bg-info', 'text-dark', 9
+    MONTH_GOAL_DISTANCE = 'MONTH_GOAL_DISTANCE', 'flag', False, False, 'bg-success', 'text-light', 10
+    MONTH_GOAL_COUNT = 'MONTH_GOAL_COUNT', 'flag', False, False, 'bg-success', 'text-light', 11
+    MONTH_GOAL_DURATION = 'MONTH_GOAL_DURATION', 'flag', False, False, 'bg-success', 'text-light', 12
+    BEST_MONTH = 'BEST_MONTH', 'calendar_month', False, False, 'bg-info', 'text-dark', 13
 
     icon: str
+    is_outlined_icon: bool
     is_font_awesome_icon: bool
     color: str
     font_color: str
@@ -55,6 +83,7 @@ class NotificationType(enum.Enum):
         cls,
         name: str,
         icon: str,
+        is_outlined_icon: bool,
         is_font_awesome_icon: bool,
         color: str,
         font_color: str,
@@ -63,6 +92,7 @@ class NotificationType(enum.Enum):
         member = object.__new__(cls)
         member._value_ = name
         member.icon = icon
+        member.is_outlined_icon = is_outlined_icon
         member.is_font_awesome_icon = is_font_awesome_icon
         member.color = color
         member.font_color = font_color
