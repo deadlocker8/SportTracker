@@ -223,6 +223,14 @@
                     {% call group('long-distance tours') %}
                         {{ materialize_icon('stage completed', 'check_circle', true) }}
                     {% endcall %}
+
+                    {% call group('notification types') %}
+                        {{ fontawesome_icon('maintenance reminder', 'fa-wrench') }}
+                        {{ fontawesome_icon('planned tours', 'fa-lightbulb') }}
+                        {{ materialize_icon('longest workout / best month', 'trophy', true) }}
+                        {{ materialize_icon('month goals', 'flag', true) }}
+                        {{ materialize_icon('annual achievements reminder', 'info', false) }}
+                    {% endcall %}
                 </div>
 
                 <div class="d-flex flex-column justify-content-between">
