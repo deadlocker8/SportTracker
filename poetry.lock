@@ -534,14 +534,14 @@ docs = ["sphinx"]
 
 [[package]]
 name = "flask-pydantic"
-version = "0.13.2"
+version = "0.14.0"
 description = "Flask extension for integration with Pydantic library."
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
 files = [
-    {file = "flask_pydantic-0.13.2-py3-none-any.whl", hash = "sha256:7939855451ab64e3676122406b27177518e91ff12f655ac6d918d39c7834360c"},
-    {file = "flask_pydantic-0.13.2.tar.gz", hash = "sha256:ac6a4cb58a5d1ad6b99ce9c936f059101042800ed582360c9326b32867a9fdd3"},
+    {file = "flask_pydantic-0.14.0-py3-none-any.whl", hash = "sha256:82a5914d90983f21976c39f97ea2901eba54536ac4b24850e9d52a0676448301"},
+    {file = "flask_pydantic-0.14.0.tar.gz", hash = "sha256:eb27fa6fd62d952b421df05c72349b5b1dc6fadacbd52879aac80cc519e4eab6"},
 ]
 
 [package.dependencies]
@@ -2369,4 +2369,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "de861d18953cce5d6f7f254c1dc38702834acb9a7ca4c5277b1ac5bf54e08965"
+content-hash = "0091597fd0cf24f8a4e23136a1046352236142ccdc96739cf92dd6208b6eed11"
