@@ -319,13 +319,14 @@ class DistanceWorkoutService:
             .filter(DistanceWorkout.user_id == userId)
             .group_by(year)
             .order_by(year)
-            .all()
+            .first()
         )
 
         if rows is None:
-            return []
+            return [datetime.now().year]
 
-        return [int(row.year) for row in rows]
+        firstYear = int(rows[0])
+        return list(range(firstYear, datetime.now().year + 1))
 
     @staticmethod
     def get_distance_between_dates(

@@ -1,5 +1,6 @@
 # 1.46.0 - (XX.XX.X)
 - add: new notification to remind about annual statistics as soon as year is over (#277)
+- fix: year selectors now show all years in including the current year even if there are no workouts yet (#278)
 
 # 1.45.0 - (14.12.25)
 - BREAKING CHANGE: you must update your settings.json (new option "timeout" in section "gpxPreviewImages", see settings-example.json)
