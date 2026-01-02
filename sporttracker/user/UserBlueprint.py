@@ -1,5 +1,7 @@
 import logging
 from dataclasses import dataclass
+from datetime import datetime
+
 from flask_babel import gettext
 
 from flask import Blueprint, render_template, redirect, url_for, abort
@@ -83,7 +85,13 @@ def construct_blueprint():
                 errorMessage=gettext('Password must be at least {0} characters long').format(MIN_PASSWORD_LENGTH),
             )
 
-        create_user(username=username, password=password, isAdmin=False, language=Language.ENGLISH)
+        create_user(
+            username=username,
+            password=password,
+            isAdmin=False,
+            language=Language.ENGLISH,
+            currentYear=datetime.now().year,
+        )
         LOGGER.debug(f'Saved new user: {username}')
 
         return redirect(url_for('users.listUsers'))

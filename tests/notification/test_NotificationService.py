@@ -26,8 +26,8 @@ def prepare_test_data(app):
     app.test_client_class = FlaskLoginClient
 
     with app.app_context():
-        create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH)
-        create_user('USER_2', TEST_PASSWORD, False, Language.ENGLISH)
+        create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH, 2025)
+        create_user('USER_2', TEST_PASSWORD, False, Language.ENGLISH, 2025)
 
 
 class TestNotificationService:

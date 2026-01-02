@@ -14,6 +14,7 @@ from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     get_maintenance_events_by_year_and_month_by_type,
 )
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
+from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
@@ -31,13 +32,15 @@ from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkout
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def construct_blueprint():
+def construct_blueprint(notification_service: NotificationService):
     workouts = Blueprint('workouts', __name__, static_folder='static', url_prefix='/workouts')
 
     @workouts.route('/', defaults={'year': None, 'month': None})
     @workouts.route('/<int:year>/<int:month>')
     @login_required
     def listWorkouts(year: int, month: int):
+        notification_service.on_workout_overview_opened(current_user.id)
+
         if year is None or month is None:
             now = datetime.now().date()
             return redirect(url_for('workouts.listWorkouts', year=now.year, month=now.month))

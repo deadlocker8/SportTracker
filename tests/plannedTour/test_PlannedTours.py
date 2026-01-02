@@ -20,8 +20,8 @@ TEST_PASSWORD_2 = 'abcdef'
 @pytest.fixture(autouse=True)
 def prepare_test_data(app):
     with app.app_context():
-        create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH)
-        create_user(TEST_USERNAME_2, TEST_PASSWORD_2, False, Language.ENGLISH)
+        create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH, 2026)
+        create_user(TEST_USERNAME_2, TEST_PASSWORD_2, False, Language.ENGLISH, 2026)
 
 
 class TestPlannedTours(SeleniumTestBaseClass):

@@ -461,3 +461,22 @@ class NotificationService(Observable):
                 message_details=None,
                 item_id=tour.id,
             )
+
+    def on_workout_overview_opened(self, user_id: int) -> None:
+        user = User.query.filter(User.id == user_id).first()
+        if user is None:
+            return
+
+        if user.annualAchievementsReminderYear < datetime.now().year:
+            self.__add_notification(
+                user_id=user_id,
+                notification_type=NotificationType.ANNUAL_ACHIEVEMENTS_REMINDER,
+                message=gettext("Don't forget to check your annual statistics for {year}.").format(
+                    year=datetime.now().year
+                ),
+                message_details=None,
+                item_id=None,
+            )
+
+            user.annualAchievementsReminderYear = datetime.now().year
+            db.session.commit()

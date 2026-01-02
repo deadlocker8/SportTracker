@@ -46,6 +46,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     isTileHuntingAccessActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     tileHuntingShareCode: Mapped[str] = mapped_column(String, nullable=True)
     isTileHuntingShowPlannedTilesActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    annualAchievementsReminderYear: Mapped[int] = mapped_column(Integer, nullable=False)
 
     def __repr__(self):
         return (
@@ -58,6 +59,8 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
             f'isTileHuntingAccessActivated: {self.isTileHuntingAccessActivated}, '
             f'tileHuntingShareCode: {self.tileHuntingShareCode}, '
             f'isTileHuntingShowPlannedTilesActivated: {self.isTileHuntingShowPlannedTilesActivated}, '
+            f'annualAchievementsReminderYear: {self.annualAchievementsReminderYear}, '
+            ')'
         )
 
     def get_ntfy_settings(self) -> NtfySettings | None:
@@ -93,7 +96,7 @@ class DistanceWorkoutInfoItem(db.Model):  # type: ignore[name-defined]
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
-def create_user(username: str, password: str, isAdmin: bool, language: Language) -> User:
+def create_user(username: str, password: str, isAdmin: bool, language: Language, currentYear: int) -> User:
     user = User(
         username=username,
         password=Bcrypt().generate_password_hash(password).decode('utf-8'),
@@ -103,6 +106,7 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language)
         isTileHuntingAccessActivated=False,
         tileHuntingShareCode=None,
         isTileHuntingShowPlannedTilesActivated=True,
+        annualAchievementsReminderYear=currentYear,
     )
     db.session.add(user)
     db.session.commit()

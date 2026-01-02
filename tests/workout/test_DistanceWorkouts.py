@@ -24,7 +24,7 @@ from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD, ROOT_DIRECTORY
 @pytest.fixture(autouse=True)
 def prepare_test_data(app):
     with app.app_context():
-        user = create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH)
+        user = create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH, 2026)
 
         plannedTour = PlannedTour(
             id=1,

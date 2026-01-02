@@ -286,7 +286,13 @@ class SportTracker(FlaskBaseApp):
                 f' CAUTION: password is only shown once. Save it now!'
             )
 
-            create_user(username='admin', password=password, isAdmin=True, language=Language.ENGLISH)
+            create_user(
+                username='admin',
+                password=password,
+                isAdmin=True,
+                language=Language.ENGLISH,
+                currentYear=datetime.now().year,
+            )
 
     @staticmethod
     def __generate_password() -> str:
@@ -296,7 +302,7 @@ class SportTracker(FlaskBaseApp):
     def _register_blueprints(self, app):
         app.register_blueprint(AuthenticationBlueprint.construct_blueprint())
         app.register_blueprint(GeneralBlueprint.construct_blueprint())
-        app.register_blueprint(WorkoutBlueprint.construct_blueprint())
+        app.register_blueprint(WorkoutBlueprint.construct_blueprint(app.config['NOTIFICATION_SERVICE']))
         app.register_blueprint(
             DistanceWorkoutBlueprint.construct_blueprint(
                 app.config['GPX_SERVICE'],

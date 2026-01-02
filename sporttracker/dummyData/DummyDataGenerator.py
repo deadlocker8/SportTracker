@@ -131,13 +131,14 @@ class DummyDataGenerator:
 
             self.__generate_demo_long_distance_tour(user)
 
-    @staticmethod
-    def __generate_demo_user(name: str, password: str) -> User:
+    def __generate_demo_user(self, name: str, password: str) -> User:
         user = User.query.filter_by(username=name).first()
 
         if user is None:
             LOGGER.debug('Creating demo user')
-            user = create_user(username=name, password=password, isAdmin=False, language=Language.ENGLISH)
+            user = create_user(
+                username=name, password=password, isAdmin=False, language=Language.ENGLISH, currentYear=self._now.year
+            )
 
         return user
 

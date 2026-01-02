@@ -12,7 +12,7 @@ from sporttracker.user.UserEntity import create_user, Language
 @pytest.fixture(autouse=True)
 def prepare_test_data(app):
     with app.app_context():
-        create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH)
+        create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH, 2026)
 
 
 class TestMonthGoals(SeleniumTestBaseClass):
