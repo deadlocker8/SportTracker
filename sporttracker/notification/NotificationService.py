@@ -472,7 +472,7 @@ class NotificationService(Observable):
                 user_id=user_id,
                 notification_type=NotificationType.ANNUAL_ACHIEVEMENTS_REMINDER,
                 message=gettext("Don't forget to check your annual statistics for {year}.").format(
-                    year=datetime.now().year
+                    year=datetime.now().year - 1
                 ),
                 message_details=None,
                 item_id=None,

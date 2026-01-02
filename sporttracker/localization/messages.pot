@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2025 ORGANIZATION
+# Copyright (C) 2026 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-26 21:21+0100\n"
+"POT-Creation-Date: 2026-01-02 11:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,7 +115,7 @@ msgstr ""
 
 #: ../achievement/AnnualAchievementBlueprint.py:302
 #: ../templates/chart/chartAverageSpeed.jinja2:2
-#: ../templates/chart/chartChooser.jinja2:42 ../user/UserEntity.py:80
+#: ../templates/chart/chartChooser.jinja2:42 ../user/UserEntity.py:83
 msgid "Average Speed"
 msgstr ""
 
@@ -289,60 +289,68 @@ msgstr ""
 msgid "{owner} has deleted the long-distance tour \"{tour_name}\""
 msgstr ""
 
-#: ../notification/NotificationType.py:75
+#: ../notification/NotificationService.py:474
+msgid "Don't forget to check your annual statistics for {year}."
+msgstr ""
+
+#: ../notification/NotificationType.py:107
 msgid "Maintenance limit exceeded"
 msgstr ""
 
-#: ../notification/NotificationType.py:77
+#: ../notification/NotificationType.py:109
 msgid "New shared planned tour"
 msgstr ""
 
-#: ../notification/NotificationType.py:79
+#: ../notification/NotificationType.py:111
 msgid "Updated shared planned tour"
 msgstr ""
 
-#: ../notification/NotificationType.py:81
+#: ../notification/NotificationType.py:113
 msgid "Deleted shared planned tour"
 msgstr ""
 
-#: ../notification/NotificationType.py:83
+#: ../notification/NotificationType.py:115
 msgid "Access to shared planned tour revoked"
 msgstr ""
 
-#: ../notification/NotificationType.py:85
+#: ../notification/NotificationType.py:117
 msgid "New shared long-distance tour"
 msgstr ""
 
-#: ../notification/NotificationType.py:87
+#: ../notification/NotificationType.py:119
 msgid "Updated shared long-distance tour"
 msgstr ""
 
-#: ../notification/NotificationType.py:89
+#: ../notification/NotificationType.py:121
 msgid "Deleted shared long-distance tour"
 msgstr ""
 
-#: ../notification/NotificationType.py:91
+#: ../notification/NotificationType.py:123
 msgid "Access to shared long-distance tour revoked"
 msgstr ""
 
-#: ../notification/NotificationType.py:93
+#: ../notification/NotificationType.py:125
 msgid "New longest workout"
 msgstr ""
 
-#: ../notification/NotificationType.py:95
+#: ../notification/NotificationType.py:127
 msgid "Distance month goal completed"
 msgstr ""
 
-#: ../notification/NotificationType.py:97
+#: ../notification/NotificationType.py:129
 msgid "Count month goal completed"
 msgstr ""
 
-#: ../notification/NotificationType.py:99
+#: ../notification/NotificationType.py:131
 msgid "Duration month goal completed"
 msgstr ""
 
-#: ../notification/NotificationType.py:101
+#: ../notification/NotificationType.py:133
 msgid "New best month"
+msgstr ""
+
+#: ../notification/NotificationType.py:135
+msgid "Annual achievements reminder"
 msgstr ""
 
 #: ../notification/provider/NtfyService.py:62
@@ -972,19 +980,19 @@ msgstr ""
 #: ../templates/map/mapSingleWorkout.jinja2:46
 #: ../templates/map/mapSingleWorkout.jinja2:93
 #: ../templates/plannedTour/plannedToursMacros.jinja2:180
-#: ../user/UserEntity.py:76
+#: ../user/UserEntity.py:79
 msgid "Distance"
 msgstr ""
 
 #: ../templates/map/mapLongDistanceTour.jinja2:119
 #: ../templates/map/mapSingleWorkout.jinja2:49
 #: ../templates/map/mapSingleWorkout.jinja2:97
-#: ../templates/workout/workoutMacros.jinja2:401 ../user/UserEntity.py:78
+#: ../templates/workout/workoutMacros.jinja2:401 ../user/UserEntity.py:81
 msgid "Duration"
 msgstr ""
 
 #: ../templates/map/mapLongDistanceTour.jinja2:123
-#: ../templates/map/mapSingleWorkout.jinja2:125 ../user/UserEntity.py:84
+#: ../templates/map/mapSingleWorkout.jinja2:125 ../user/UserEntity.py:87
 msgid "Elevation Sum"
 msgstr ""
 
@@ -1807,7 +1815,7 @@ msgstr ""
 msgid "Seconds"
 msgstr ""
 
-#: ../templates/workout/workoutMacros.jinja2:427 ../user/UserEntity.py:82
+#: ../templates/workout/workoutMacros.jinja2:427 ../user/UserEntity.py:85
 msgid "Average Heart Rate"
 msgstr ""
 
