@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import enum
 from collections.abc import Callable
+from datetime import datetime
 
 from flask import url_for
 from flask_babel import gettext
@@ -71,6 +72,7 @@ class NotificationType(enum.Enum):
     MONTH_GOAL_COUNT = 'MONTH_GOAL_COUNT', 'flag', False, False, 'bg-success', 'text-light', 11
     MONTH_GOAL_DURATION = 'MONTH_GOAL_DURATION', 'flag', False, False, 'bg-success', 'text-light', 12
     BEST_MONTH = 'BEST_MONTH', 'calendar_month', False, False, 'bg-info', 'text-dark', 13
+    ANNUAL_ACHIEVEMENTS_REMINDER = 'ANNUAL_ACHIEVEMENTS_REMINDER', 'info', True, False, 'bg-primary', 'text-light', 14
 
     icon: str
     is_outlined_icon: bool
@@ -129,6 +131,8 @@ class NotificationType(enum.Enum):
             return gettext('Duration month goal completed')
         elif self == self.BEST_MONTH:
             return gettext('New best month')
+        elif self == self.ANNUAL_ACHIEVEMENTS_REMINDER:
+            return gettext('Annual achievements reminder')
 
         raise ValueError(f'Could not get localized name for unsupported NotificationType: {self}')
 
@@ -167,6 +171,10 @@ class NotificationType(enum.Enum):
             )
         elif self == self.BEST_MONTH:
             return url_for('achievements.showAchievements', _external=external)
+        elif self == self.ANNUAL_ACHIEVEMENTS_REMINDER:
+            return url_for(
+                'annualAchievements.showAnnualAchievementsByYear', year=datetime.now().year, _external=external
+            )
 
         raise ValueError(f'Could not get action url for unsupported NotificationType: {self}')
 
