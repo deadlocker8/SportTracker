@@ -173,7 +173,7 @@ class NotificationType(enum.Enum):
             return url_for('achievements.showAchievements', _external=external)
         elif self == self.ANNUAL_ACHIEVEMENTS_REMINDER:
             return url_for(
-                'annualAchievements.showAnnualAchievementsByYear', year=datetime.now().year, _external=external
+                'annualAchievements.showAnnualAchievementsByYear', year=datetime.now().year - 1, _external=external
             )
 
         raise ValueError(f'Could not get action url for unsupported NotificationType: {self}')
