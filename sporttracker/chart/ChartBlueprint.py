@@ -22,6 +22,7 @@ from sporttracker.user.CustomWorkoutFieldEntity import (
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.tileHunting.VisitedTileService import VisitedTileService
+from sporttracker.workout.WorkoutService import WorkoutService
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.user.ParticipantEntity import Participant
 from sporttracker.workout.WorkoutEntity import (
@@ -415,7 +416,7 @@ def construct_blueprint(
         return render_template(
             'chart/chartCalendar.jinja2',
             calendarData=calendarData,
-            availableYears=DistanceWorkoutService.get_available_years(current_user.id),
+            availableYears=WorkoutService.get_available_years(current_user.id),
             selectedYear=year,
             quickFilterState=quickFilterState,
         )
@@ -574,7 +575,7 @@ def construct_blueprint(
             visitedTileService = VisitedTileService(
                 newVisitedTileCache,
                 maxSquareCache,
-                QuickFilterState().reset(DistanceWorkoutService.get_available_years(current_user.id)),
+                QuickFilterState().reset(WorkoutService.get_available_years(current_user.id)),
                 TileHuntingFilterState().reset(),
                 distanceWorkoutService,
             )
@@ -832,7 +833,7 @@ def construct_blueprint(
             'chart/chartAccumulatedDistancePerMonth.jinja2',
             chartDataAccumulatedDistancePerMonth=chartDataAccumulatedDistancePerMonth,
             currentMonthDate=datetime.today(),
-            availableYears=DistanceWorkoutService.get_available_years(current_user.id) or [datetime.now().year],
+            availableYears=WorkoutService.get_available_years(current_user.id) or [datetime.now().year],
             monthNames=list(get_month_names(width='wide', locale=flask_babel.get_locale()).values()),
             selectedMonthDate=format_datetime(selectedMonthDate, format='MMMM yyyy'),
         )

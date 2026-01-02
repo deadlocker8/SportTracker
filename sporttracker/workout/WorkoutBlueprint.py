@@ -19,6 +19,7 @@ from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
 from sporttracker.user.ParticipantEntity import get_participants
+from sporttracker.workout.WorkoutService import WorkoutService
 from sporttracker.workout.heartRate.HeartRateService import HeartRateService
 from sporttracker.workout.WorkoutEntity import (
     get_workout_names_by_type,
@@ -27,7 +28,6 @@ from sporttracker.workout.WorkoutEntity import (
 )
 from sporttracker.workout.WorkoutModel import MonthModel, DistanceWorkoutModel, FitnessWorkoutModel
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -69,7 +69,7 @@ def construct_blueprint(notification_service: NotificationService):
             quickFilterState=quickFilterState,
             year=year,
             month=month,
-            availableYears=DistanceWorkoutService.get_available_years(current_user.id) or [datetime.now().year],
+            availableYears=WorkoutService.get_available_years(current_user.id) or [datetime.now().year],
             monthNames=list(get_month_names(width='wide', locale=flask_babel.get_locale()).values()),
         )
 

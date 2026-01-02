@@ -39,6 +39,7 @@ from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_grouped
 from sporttracker.user.ParticipantEntity import get_participants
 from sporttracker.user.UserEntity import User
 from sporttracker.workout.WorkoutEntity import Workout
+from sporttracker.workout.WorkoutService import WorkoutService
 from sporttracker.workout.heartRate.HeartRateEntity import HeartRateEntity
 from sporttracker.workout.heartRate.HeartRateService import HeartRateService
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -451,7 +452,7 @@ def construct_blueprint(
     @login_required
     def listMaintenances():
         maintenancesWithEvents = get_maintenances_with_events(
-            QuickFilterState().reset(DistanceWorkoutService.get_available_years(current_user.id)),
+            QuickFilterState().reset(WorkoutService.get_available_years(current_user.id)),
             MaintenanceFilterState(),
             current_user.id,
         )

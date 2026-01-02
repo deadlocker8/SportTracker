@@ -215,8 +215,8 @@
     </div>
 {%- endmacro %}
 
-{% macro mapYearFilter(availableYears, quickFilterState, redirectUrl) -%}
-    {% set allSelected = availableYears|check_all_items_included(quickFilterState.years) %}
+{% macro mapYearFilter(quickFilterState, redirectUrl) -%}
+    {% set allSelected = quickFilterState.is_all_years_active() %}
 
     <div class="dropdown position-static">
         <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
@@ -228,21 +228,21 @@
                 <input type="hidden" name="redirectUrl" value="{{ url_for(redirectUrl) }}"/>
 
                 <div id="dropdown-years-container" class="overflow-y-auto">
-                    {% for availableYear in availableYears %}
+                    {% for year, isActive in quickFilterState.get_years().items() %}
                         <div class="form-check text-nowrap mb-2">
                             <input class="form-check-input" type="checkbox"
                                    id="availableYear-{{ loop.index }}"
                                    name="activeYears"
-                                   value="{{ availableYear }}"
-                                   {% if availableYear in quickFilterState.years %}checked{% endif %}>
+                                   value="{{ year }}"
+                                   {% if isActive %}checked{% endif %}>
                             <label class="form-check-label" for="availableYear-{{ loop.index }}">
-                                {{ availableYear }}
+                                {{ year }}
                             </label>
                         </div>
                     {% endfor %}
                 </div>
 
-                {% if availableYears | length != 0 %}
+                {% if quickFilterState.get_years() | length != 0 %}
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-sm btn-success my-2">{{ gettext('Apply') }}</button>
                     </div>

@@ -12,8 +12,12 @@ class TestQuickFilterState:
                 WorkoutType.HIKING: False,
                 WorkoutType.FITNESS: False,
             },
-            [],
+            [2025, 2026],
         )
+        quickFilterState.years = {
+            2025: False,
+            2026: True,
+        }
 
         assert quickFilterState.get_workout_types() == {
             WorkoutType.BIKING: False,
@@ -22,7 +26,7 @@ class TestQuickFilterState:
             WorkoutType.FITNESS: False,
         }
 
-        quickFilterState.reset([2024, 2025])
+        quickFilterState.reset([2025, 2026])
         assert quickFilterState.get_workout_types() == {
             WorkoutType.BIKING: True,
             WorkoutType.RUNNING: True,
@@ -30,17 +34,34 @@ class TestQuickFilterState:
             WorkoutType.FITNESS: True,
         }
 
-    def test_update_missing_values(self) -> None:
+        assert quickFilterState.years == {
+            2025: True,
+            2026: True,
+        }
+
+    def test_update_missing_values_workout_types(self) -> None:
         quickFilterState = QuickFilterState()
         quickFilterState.workout_types = {}
         assert len(quickFilterState.workout_types) == 0
 
-        quickFilterState.update_missing_values()
+        quickFilterState.update_missing_values([])
         assert quickFilterState.get_workout_types() == {
             WorkoutType.BIKING: True,
             WorkoutType.RUNNING: True,
             WorkoutType.HIKING: True,
             WorkoutType.FITNESS: True,
+        }
+
+    def test_update_missing_values_years(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {2024: False}
+
+        quickFilterState.update_missing_values([2024, 2025, 2026])
+        assert quickFilterState.years == {
+            2024: False,
+            2025: True,
+            2026: True,
         }
 
     def test_toggle_workout_type(self) -> None:
@@ -56,17 +77,23 @@ class TestQuickFilterState:
             WorkoutType.FITNESS: True,
         }
 
-    def test_disable_all_workout_types(self) -> None:
+    def test_enable_all_workout_types(self) -> None:
         quickFilterState = QuickFilterState()
         quickFilterState.reset([])
+        quickFilterState.workout_types = {
+            WorkoutType.BIKING: True,
+            WorkoutType.RUNNING: True,
+            WorkoutType.HIKING: True,
+            WorkoutType.FITNESS: True,
+        }
 
-        quickFilterState.disable_all_workout_types()
+        quickFilterState.enable_all_workout_types()
 
         assert quickFilterState.get_workout_types() == {
-            WorkoutType.BIKING: False,
-            WorkoutType.RUNNING: False,
-            WorkoutType.HIKING: False,
-            WorkoutType.FITNESS: False,
+            WorkoutType.BIKING: True,
+            WorkoutType.RUNNING: True,
+            WorkoutType.HIKING: True,
+            WorkoutType.FITNESS: True,
         }
 
     def test_get_active_workout_types(self) -> None:

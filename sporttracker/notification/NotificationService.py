@@ -25,6 +25,7 @@ from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 from sporttracker.user.UserEntity import User
 from sporttracker.workout.WorkoutEntity import Workout
+from sporttracker.workout.WorkoutService import WorkoutService
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
@@ -105,8 +106,8 @@ class NotificationService(Observable):
         self.__check_best_month_distance(user_id, workout, previousBestMonthDistance)
 
     def __check_maintenance_reminder_limits(self, user_id: int, workout_type: WorkoutType) -> None:
-        quickFilterState = QuickFilterState().reset(DistanceWorkoutService.get_available_years(user_id))
-        quickFilterState.update({t: t == workout_type for t in WorkoutType}, quickFilterState.years)
+        quickFilterState = QuickFilterState().reset(WorkoutService.get_available_years(user_id))
+        quickFilterState.update({t: t == workout_type for t in WorkoutType}, quickFilterState.get_active_years())
         maintenances = get_maintenances_with_events(quickFilterState, MaintenanceFilterState(), user_id)
         for maintenance in maintenances:
             if not maintenance.isLimitActive:

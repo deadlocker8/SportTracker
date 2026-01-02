@@ -311,24 +311,6 @@ class DistanceWorkoutService:
         return result
 
     @staticmethod
-    def get_available_years(userId) -> list[int]:
-        year = extract('year', DistanceWorkout.start_time)
-
-        rows = (
-            DistanceWorkout.query.with_entities(year.label('year'))
-            .filter(DistanceWorkout.user_id == userId)
-            .group_by(year)
-            .order_by(year)
-            .first()
-        )
-
-        if rows is None:
-            return [datetime.now().year]
-
-        firstYear = int(rows[0])
-        return list(range(firstYear, datetime.now().year + 1))
-
-    @staticmethod
     def get_distance_between_dates(
         userId: int,
         startDateTime: datetime | DateTime,

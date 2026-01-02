@@ -34,7 +34,7 @@ def construct_blueprint():
         redirectUrl = request.form['redirectUrl']
 
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
-        quickFilterState.years = activeYears
+        quickFilterState.update(quickFilterState.get_workout_types(), activeYears)
         db.session.commit()
 
         return redirect(redirectUrl)
