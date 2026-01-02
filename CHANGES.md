@@ -3,6 +3,7 @@
 - fix: year selectors now show all years in including the current year even if there are no workouts yet (#278)
 - fix: automatically add new years to years filter and set them as initially selected (#279)
 - fix: the year filter on tile hunting maps now works as expected (#279)
+- chore: update dependencies (#267)
 
 # 1.45.0 - (14.12.25)
 - BREAKING CHANGE: you must update your settings.json (new option "timeout" in section "gpxPreviewImages", see settings-example.json)
