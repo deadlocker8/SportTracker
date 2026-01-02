@@ -979,3 +979,32 @@ class TestNotificationService:
 
             notifications = notificationService.get_notifications_paginated(0).items
             assert len(notifications) == 0
+
+    def test_on_workout_overview_opened_should_add_notification_for_new_year(self, app):
+        with app.test_request_context():
+            user_1 = self.__get_user_by_id(2)
+            login_user(user_1, remember=False)
+
+            notificationService = NotificationService()
+            notificationService.on_workout_overview_opened(user_1.id)
+
+            notifications = notificationService.get_notifications_paginated(0).items
+            assert len(notifications) == 1
+            assert notifications[0].type == NotificationType.ANNUAL_ACHIEVEMENTS_REMINDER
+            assert notifications[0].user_id == user_1.id
+            assert notifications[0].item_id is None
+            assert notifications[0].message == "Don't forget to check your annual statistics for 2025."
+            assert notifications[0].message_details is None
+
+    def test_on_workout_overview_opened_should_not_add_notification_for_same_year(self, app):
+        with app.test_request_context():
+            user_1 = self.__get_user_by_id(2)
+            user_1.annualAchievementsReminderYear = 2026
+            db.session.commit()
+            login_user(user_1, remember=False)
+
+            notificationService = NotificationService()
+            notificationService.on_workout_overview_opened(user_1.id)
+
+            notifications = notificationService.get_notifications_paginated(0).items
+            assert len(notifications) == 0
