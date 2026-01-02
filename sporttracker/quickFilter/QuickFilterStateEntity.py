@@ -79,7 +79,7 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
                 isUpdated = True
 
         for year in available_years:
-            if str(year) not in self.years:
+            if year not in self.get_years():
                 self.years[year] = True
                 isUpdated = True
 
