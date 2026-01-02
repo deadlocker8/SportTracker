@@ -41,7 +41,7 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
         return {int(year): isActive for year, isActive in self.years.items()}
 
     def get_active_years(self) -> list[int]:
-        return [int(year) for year, isActive in self.get_years().items() if isActive]
+        return sorted([int(year) for year, isActive in self.get_years().items() if isActive])
 
     def is_all_years_active(self) -> bool:
         return all(self.years.values())
