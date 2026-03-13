@@ -1,3 +1,6 @@
+# 1.47.0 - (XX.XX.XX)
+- chore: update to python 3.14 (#268)
+
 # 1.46.0 - (02.01.26)
 - add: new notification to remind about annual statistics as soon as year is over (#277)
 - fix: year selectors now show all years in including the current year even if there are no workouts yet (#278)
