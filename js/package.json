@@ -22,7 +22,7 @@
     "bootstrap": "^5.3.8",
     "bootstrap5-autocomplete": "^1.1.42",
     "buffer": "^6.0.3",
-    "jquery": "^3.7.1",
+    "jquery": "^4.0.0",
     "leaflet": "^1.9.4",
     "leaflet-easybutton": "^2.4.0",
     "leaflet-ui": "^0.6.0",
