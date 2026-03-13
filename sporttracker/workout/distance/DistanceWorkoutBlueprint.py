@@ -22,7 +22,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 class DistanceWorkoutImportFromFitModel(BaseWorkoutFormModel):
-    distance: float | None
+    distance: float | None = None
     elevation_sum: int | None = None
     gpx_file_name: str | None = None
     has_fit_file: bool = False
