@@ -1,4 +1,5 @@
 # 1.47.0 - (XX.XX.XX)
+- chore: update dependencies (#280)
 - chore: update to python 3.14 (#268)
 
 # 1.46.0 - (02.01.26)
