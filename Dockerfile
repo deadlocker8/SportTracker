@@ -28,7 +28,7 @@ RUN npm ci && npm run build
 FROM python:3.14-alpine
 
 RUN apk update && apk upgrade && \
-    apk add postgresql-libs && \
+    apk add postgresql-libs libstdc++ && \
     rm -rf /var/cache/apk
 
 COPY sporttracker/ /opt/SportTracker/sporttracker
