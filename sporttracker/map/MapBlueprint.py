@@ -1,5 +1,6 @@
 import io
 import logging
+import time
 from datetime import datetime
 from typing import Any
 
@@ -18,6 +19,7 @@ from flask import (
 from flask_login import login_required, current_user
 from sqlalchemy import func, extract
 
+from sporttracker.helpers import DateFormats
 from sporttracker.longDistanceTour.LongDistanceTourBlueprint import LongDistanceTourModel
 from sporttracker.plannedTour.PlannedTourBlueprint import PlannedTourModel
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
@@ -61,7 +63,7 @@ def createGpxInfo(
             file_format=GpxService.GPX_FILE_EXTENSION,
         ),
         'workoutUrl': workoutUrl,
-        'workoutName': f'{workoutStartTime.strftime("%Y-%m-%d")} - {__escape_name(workoutName)}',
+        'workoutName': f'{workoutStartTime.strftime(DateFormats.DATE_FORMAT_DATE)} - {__escape_name(workoutName)}',
     }
 
 
@@ -350,6 +352,8 @@ def construct_blueprint(
         return __renderTile(user_id, zoom, x, y, quickFilterState)
 
     def __renderTile(user_id: int, zoom: int, x: int, y: int, quickFilterState: QuickFilterState) -> Response:
+        start = time.time()
+
         tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
         visitedTileService = __create_visited_tile_service(quickFilterState, tileHuntingFilterState)
         tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
@@ -374,6 +378,7 @@ def construct_blueprint(
 
         with io.BytesIO() as output:
             image.save(output, format='PNG')
+            LOGGER.debug(f'Render Tile x: {x}, y: {y}, z: {zoom} took {time.time() - start:.2f}s')
             return Response(output.getvalue(), mimetype='image/png')
 
     @maps.route('/map/renderHeatmap/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')

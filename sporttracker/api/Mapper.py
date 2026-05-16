@@ -11,6 +11,7 @@ from sporttracker.api.Models import (
     MaintenanceApiModel,
     CustomFieldApiModel,
 )
+from sporttracker.helpers import DateFormats
 from sporttracker.maintenance.MaintenanceEventsCollector import MaintenanceWithEventsModel
 from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutField
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
@@ -84,8 +85,8 @@ MAPPER_DISTANCE_WORKOUT = Mapper(
     {
         'id': lambda source: source.id,
         'workout_type': lambda source: source.type.name,
-        'date': lambda source: source.start_time.strftime('%Y-%m-%d'),
-        'start_time': lambda source: source.start_time.strftime('%H:%M'),
+        'date': lambda source: source.start_time.strftime(DateFormats.DATE_FORMAT_DATE),
+        'start_time': lambda source: source.start_time.strftime(DateFormats.DATE_FORMAT_TIME),
         'name': lambda source: source.name,
         'duration': lambda source: source.duration,
         'average_heart_rate': lambda source: source.average_heart_rate,
@@ -104,8 +105,8 @@ MAPPER_FITNESS_WORKOUT = Mapper(
     {
         'id': lambda source: source.id,
         'workout_type': lambda source: source.type.name,
-        'date': lambda source: source.start_time.strftime('%Y-%m-%d'),
-        'start_time': lambda source: source.start_time.strftime('%H:%M'),
+        'date': lambda source: source.start_time.strftime(DateFormats.DATE_FORMAT_DATE),
+        'start_time': lambda source: source.start_time.strftime(DateFormats.DATE_FORMAT_TIME),
         'name': lambda source: source.name,
         'duration': lambda source: source.duration,
         'average_heart_rate': lambda source: source.average_heart_rate,

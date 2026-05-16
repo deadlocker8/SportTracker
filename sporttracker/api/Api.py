@@ -30,6 +30,7 @@ from sporttracker.api.Mapper import (
 )
 from sporttracker.db import db
 from sporttracker.gpx.GpxService import GpxService
+from sporttracker.helpers import DateFormats
 from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
 from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
@@ -414,7 +415,7 @@ def construct_blueprint(
 
         values = []
         for entry in form.data:
-            timestamp = datetime.strptime(entry.timestamp, '%Y-%m-%d %H:%M:%S')
+            timestamp = datetime.strptime(entry.timestamp, DateFormats.DATE_FORMAT_DATE_TIME_FULL)
             values.append(int(entry.bpm))
             db.session.add(HeartRateEntity(workout_id=workout_id, timestamp=timestamp, bpm=int(entry.bpm)))
         db.session.commit()

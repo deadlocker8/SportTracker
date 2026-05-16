@@ -5,6 +5,7 @@ from flask_login import current_user
 from sqlalchemy import Integer, DateTime, extract
 from sqlalchemy.orm import mapped_column, Mapped
 
+from sporttracker.helpers import DateFormats
 from sporttracker.helpers.DateTimeAccess import DateTimeAccess
 from sporttracker.maintenance.MaintenanceEntity import Maintenance
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -28,10 +29,10 @@ class MaintenanceEventInstance(db.Model):  # type: ignore[name-defined]
     maintenance_id = db.Column(db.Integer, db.ForeignKey('maintenance.id'), nullable=False)
 
     def get_date(self) -> str:
-        return self.event_date.strftime('%Y-%m-%d')  # type: ignore[attr-defined]
+        return self.event_date.strftime(DateFormats.DATE_FORMAT_DATE)  # type: ignore[attr-defined]
 
     def get_time(self) -> str:
-        return self.event_date.strftime('%H:%M')  # type: ignore[attr-defined]
+        return self.event_date.strftime(DateFormats.DATE_FORMAT_TIME)  # type: ignore[attr-defined]
 
     def __repr__(self):
         return (

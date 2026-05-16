@@ -6,6 +6,7 @@ from datetime import datetime, UTC
 
 import fitdecode  # type: ignore[import-untyped]
 
+from sporttracker.helpers import DateFormats
 from sporttracker.workout.WorkoutType import WorkoutType
 
 
@@ -23,7 +24,7 @@ class FitSession:
         return json.dumps(
             {
                 'file_name': self.file_name,
-                'start_time': self.start_time.strftime('%Y-%m-%d %H:%M:%S.%f'),
+                'start_time': self.start_time.strftime(DateFormats.DATE_FORMAT_DATE_TIME_PRECISION),
                 'workout_type': self.workout_type.name,
                 'duration': self.duration,
                 'distance': self.distance,
@@ -37,7 +38,7 @@ class FitSession:
         json_data = json.loads(json_string)
         return FitSession(
             file_name=json_data['file_name'],
-            start_time=datetime.strptime(json_data['start_time'], '%Y-%m-%d %H:%M:%S.%f'),
+            start_time=datetime.strptime(json_data['start_time'], DateFormats.DATE_FORMAT_DATE_TIME_PRECISION),
             duration=json_data['duration'],
             workout_type=WorkoutType(json_data['workout_type']),  # type: ignore[call-arg]
             distance=json_data['distance'],

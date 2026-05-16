@@ -5,6 +5,7 @@ from flask_login import login_required, current_user
 from flask_pydantic import validate
 
 from sporttracker import Constants
+from sporttracker.helpers import DateFormats
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
 from sporttracker.workout.fitness.FitnessWorkoutCategory import (
     FitnessWorkoutCategoryType,
@@ -59,8 +60,8 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
         workoutModel = FitnessWorkoutFormModel(
             name=workout.name,  # type: ignore[arg-type]
             type=workout.type,
-            date=workout.start_time.strftime('%Y-%m-%d'),  # type: ignore[attr-defined]
-            time=workout.start_time.strftime('%H:%M'),  # type: ignore[attr-defined]
+            date=workout.start_time.strftime(DateFormats.DATE_FORMAT_DATE),  # type: ignore[attr-defined]
+            time=workout.start_time.strftime(DateFormats.DATE_FORMAT_DATE_TIME),  # type: ignore[attr-defined]
             duration_hours=workout.duration // 3600,
             duration_minutes=workout.duration % 3600 // 60,
             duration_seconds=workout.duration % 3600 % 60,

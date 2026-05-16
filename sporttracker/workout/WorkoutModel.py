@@ -4,6 +4,7 @@ from datetime import datetime
 from pydantic import BaseModel, field_validator
 
 from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
+from sporttracker.helpers import DateFormats
 from sporttracker.helpers.DateTimeAccess import DateTimeAccess
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     MaintenanceEvent,
@@ -108,7 +109,7 @@ class BaseWorkoutFormModel(BaseModel):
     average_heart_rate: int | None = None
 
     def calculate_start_time(self) -> datetime:
-        return datetime.strptime(f'{self.date} {self.time}', '%Y-%m-%d %H:%M')
+        return datetime.strptime(f'{self.date} {self.time}', DateFormats.DATE_FORMAT_DATE_TIME)
 
     def calculate_duration(self) -> int:
         return 3600 * self.duration_hours + 60 * self.duration_minutes + self.duration_seconds

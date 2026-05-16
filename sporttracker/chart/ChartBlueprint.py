@@ -4,7 +4,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from datetime import date, time, datetime
 from typing import Any, Literal
-from sporttracker.helpers import Helpers
+from sporttracker.helpers import Helpers, DateFormats
 
 import flask_babel
 from babel.dates import get_day_names, get_month_names
@@ -771,7 +771,7 @@ def construct_blueprint(
                 dates.append(workout.start_time.isoformat())
                 distanceData.append(totalDistance)
                 texts.append(
-                    f'{workout.start_time.strftime("%d.%m.%y")} = {Helpers.format_decimal(totalDistance)} km (+{Helpers.format_decimal(workoutDistance)} km)'
+                    f'{workout.start_time.strftime(DateFormats.DATE_FORMAT_DATE_INVERSED)} = {Helpers.format_decimal(totalDistance)} km (+{Helpers.format_decimal(workoutDistance)} km)'
                 )
 
         chartDataAccumulatedDistance = {'dates': dates, 'values': distanceData, 'texts': texts}

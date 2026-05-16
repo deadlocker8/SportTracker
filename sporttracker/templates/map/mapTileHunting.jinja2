@@ -102,7 +102,11 @@
                     y: {{ chartDataNewTilesPerWorkout['values'] }},
                     type: 'bar',
                     marker: {
-                        color: {{ chartDataNewTilesPerWorkout['colors'] }}
+                        color: {{ chartDataNewTilesPerWorkout['colors'] }},
+                        line: {
+                            color: 'rgba(0, 0, 0, 0.7)',
+                            width: 2
+                        }
                     },
                     customdata: {{ chartDataNewTilesPerWorkout['names'] }},
                     hovertemplate: '+%{y} "%{customdata.name}"<br>({{ gettext("Click bar to open in new tab") }})<extra></extra>'

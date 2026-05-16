@@ -2,6 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
+from sporttracker.helpers import DateFormats
+
 
 class MonthGoalDistanceApiFormModel(BaseModel):
     workout_type: str
@@ -41,7 +43,7 @@ class DistanceWorkoutApiFormModel(BaseModel):
     custom_fields: dict[str, str | int | float] | None = None
 
     def calculate_start_time(self) -> datetime:
-        return datetime.strptime(f'{self.date} {self.start_time}', '%Y-%m-%d %H:%M')
+        return datetime.strptime(f'{self.date} {self.start_time}', DateFormats.DATE_FORMAT_DATE_TIME)
 
 
 class FitnessWorkoutApiFormModel(BaseModel):
@@ -57,7 +59,7 @@ class FitnessWorkoutApiFormModel(BaseModel):
     custom_fields: dict[str, str | int | float] | None = None
 
     def calculate_start_time(self) -> datetime:
-        return datetime.strptime(f'{self.date} {self.start_time}', '%Y-%m-%d %H:%M')
+        return datetime.strptime(f'{self.date} {self.start_time}', DateFormats.DATE_FORMAT_DATE_TIME)
 
 
 class HeartRateDataModel(BaseModel):

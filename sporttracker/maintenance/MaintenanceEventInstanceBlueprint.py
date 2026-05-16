@@ -8,6 +8,7 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 
 from sporttracker import Constants
+from sporttracker.helpers import DateFormats
 from sporttracker.maintenance.MaintenanceEntity import get_maintenance_by_id
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     get_maintenance_event_by_id,
@@ -42,7 +43,7 @@ class MaintenanceEventInstanceFormModel(BaseModel):
     time: str
 
     def calculate_event_date(self) -> datetime:
-        return datetime.strptime(f'{self.date} {self.time}', '%Y-%m-%d %H:%M')
+        return datetime.strptime(f'{self.date} {self.time}', DateFormats.DATE_FORMAT_DATE_TIME)
 
 
 def construct_blueprint():
@@ -64,7 +65,7 @@ def construct_blueprint():
         return render_template(
             'maintenanceEvent/maintenanceEventForm.jinja2',
             maintenance=maintenance,
-            today=datetime.now().strftime('%Y-%m-%d'),
+            today=datetime.now().strftime(DateFormats.DATE_FORMAT_DATE),
         )
 
     @maintenanceEventInstances.route('/post/<int:maintenance_id>', methods=['POST'])
@@ -111,7 +112,7 @@ def construct_blueprint():
             maintenanceEvent=eventModel,
             event_id=event_id,
             maintenance=maintenance,
-            today=datetime.now().strftime('%Y-%m-%d'),
+            today=datetime.now().strftime(DateFormats.DATE_FORMAT_DATE),
         )
 
     @maintenanceEventInstances.route('/edit/<int:event_id>', methods=['POST'])

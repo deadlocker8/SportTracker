@@ -10,6 +10,7 @@ from flask_pydantic import validate
 from sporttracker import Constants
 from sporttracker.fit.FitSessionParser import FitSessionParser, FitSession
 from sporttracker.gpx.GpxService import GpxService
+from sporttracker.helpers import DateFormats
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
 from sporttracker.user.ParticipantEntity import get_participants
 from sporttracker.workout.WorkoutEntity import get_workout_names_by_type
@@ -71,8 +72,8 @@ def construct_blueprint(
         workoutModel = DistanceWorkoutFormModel(
             name=workout.name,  # type: ignore[arg-type]
             type=workout.type,
-            date=workout.start_time.strftime('%Y-%m-%d'),  # type: ignore[attr-defined]
-            time=workout.start_time.strftime('%H:%M'),  # type: ignore[attr-defined]
+            date=workout.start_time.strftime(DateFormats.DATE_FORMAT_DATE),  # type: ignore[attr-defined]
+            time=workout.start_time.strftime(DateFormats.DATE_FORMAT_TIME),  # type: ignore[attr-defined]
             distance=workout.distance / 1000,
             duration_hours=workout.duration // 3600,
             duration_minutes=workout.duration % 3600 // 60,
@@ -186,8 +187,8 @@ def construct_blueprint(
         workoutFromFitImportModel = DistanceWorkoutImportFromFitModel(
             name='',
             type=fitSession.workout_type.name,
-            date=fitSession.start_time.strftime('%Y-%m-%d'),  # type: ignore[attr-defined]
-            time=fitSession.start_time.strftime('%H:%M'),  # type: ignore[attr-defined]
+            date=fitSession.start_time.strftime(DateFormats.DATE_FORMAT_DATE),  # type: ignore[attr-defined]
+            time=fitSession.start_time.strftime(DateFormats.DATE_FORMAT_DATE_TIME),  # type: ignore[attr-defined]
             distance=None if fitSession.distance is None else fitSession.distance / 1000,
             duration_hours=fitSession.duration // 3600,
             duration_minutes=fitSession.duration % 3600 // 60,

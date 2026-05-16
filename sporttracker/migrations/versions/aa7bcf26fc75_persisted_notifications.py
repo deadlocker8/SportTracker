@@ -12,6 +12,8 @@ import sqlalchemy as sa
 from alembic import op
 from sqlalchemy import Inspector
 
+from sporttracker.helpers import DateFormats
+
 # revision identifiers, used by Alembic.
 revision = 'aa7bcf26fc75'
 down_revision = '885a4670527a'
@@ -81,7 +83,7 @@ def downgrade():
             sa.Column('long_distance_tours_last_viewed_date', sa.DateTime(), nullable=True),
         )
         op.execute(
-            f'UPDATE "user" SET "long_distance_tours_last_viewed_date" = \'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\' WHERE "user"."long_distance_tours_last_viewed_date" IS NULL;'
+            f'UPDATE "user" SET "long_distance_tours_last_viewed_date" = \'{datetime.now().strftime(DateFormats.DATE_FORMAT_DATE_TIME_FULL)}\' WHERE "user"."long_distance_tours_last_viewed_date" IS NULL;'
         )
 
     if 'planned_tours_last_viewed_date' not in columnNames:

@@ -13,6 +13,8 @@ from alembic import op
 from sqlalchemy import Inspector
 from sqlalchemy.dialects import postgresql
 
+from sporttracker.helpers import DateFormats
+
 # revision identifiers, used by Alembic.
 revision = '42608807ae69'
 down_revision = 'ad3012342146'
@@ -31,7 +33,7 @@ def upgrade():
             sa.Column('long_distance_tours_last_viewed_date', sa.DateTime(), nullable=True),
         )
         op.execute(
-            f'UPDATE "user" SET "long_distance_tours_last_viewed_date" = \'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\' WHERE "user"."long_distance_tours_last_viewed_date" IS NULL;'
+            f'UPDATE "user" SET "long_distance_tours_last_viewed_date" = \'{datetime.now().strftime(DateFormats.DATE_FORMAT_DATE_TIME_FULL)}\' WHERE "user"."long_distance_tours_last_viewed_date" IS NULL;'
         )
 
     tableNames = inspector.get_table_names()
