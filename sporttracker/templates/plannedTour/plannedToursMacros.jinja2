@@ -94,32 +94,31 @@
 {% macro plannedTourFilterStatus(isDoneActive, isTodoActive) -%}
     {% set allSelected = isDoneActive and isTodoActive %}
 
-    <div class="dropdown position-static">
-        <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-            <span class="material-symbols-outlined fs-5">filter_alt</span>
-            <span class="ms-2">{{ gettext('Status') }}</span>
-        </button>
-        <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
-            <div class="form-check text-nowrap mb-2">
-                <input class="form-check-input" type="checkbox"
-                       id="plannedTourFilterStatusDone"
-                       name="plannedTourFilterStatusDone"
-                       {% if isDoneActive %}checked{% endif %}>
-                <label class="form-check-label d-flex align-items-center" for="plannedTourFilterStatusDone">
-                    <span class="material-symbols-outlined fs-5 me-1">check</span>
-                    <span>{{ gettext('completed') }}</span>
-                </label>
-            </div>
-            <div class="form-check text-nowrap">
-                <input class="form-check-input" type="checkbox"
-                       id="plannedTourFilterStatusTodo"
-                       name="plannedTourFilterStatusTodo"
-                       {% if isTodoActive %}checked{% endif %}>
-                <label class="form-check-label d-flex align-items-center" for="plannedTourFilterStatusTodo">
-                    <span class="material-symbols-outlined fs-5 me-1">close</span>
-                    <span>{{ gettext('not completed') }}</span>
-                </label>
-            </div>
+    <div class="d-flex align-items-center justify-content-center">
+        <span class="material-symbols-outlined fs-5">filter_alt</span>
+        <span class="ms-2">{{ gettext('Status') }}</span>
+    </div>
+
+    <div class="d-flex flex-column align-items-start justify-content-center px-1">
+        <div class="form-check text-nowrap">
+            <input class="form-check-input" type="checkbox"
+                   id="plannedTourFilterStatusDone"
+                   name="plannedTourFilterStatusDone"
+                   {% if isDoneActive %}checked{% endif %}>
+            <label class="form-check-label d-flex align-items-center" for="plannedTourFilterStatusDone">
+                <span class="material-symbols-outlined fs-5 me-1">check</span>
+                <span>{{ gettext('completed') }}</span>
+            </label>
+        </div>
+        <div class="form-check text-nowrap">
+            <input class="form-check-input" type="checkbox"
+                   id="plannedTourFilterStatusTodo"
+                   name="plannedTourFilterStatusTodo"
+                   {% if isTodoActive %}checked{% endif %}>
+            <label class="form-check-label d-flex align-items-center" for="plannedTourFilterStatusTodo">
+                <span class="material-symbols-outlined fs-5 me-1">close</span>
+                <span>{{ gettext('not completed') }}</span>
+            </label>
         </div>
     </div>
 {%- endmacro %}
@@ -127,46 +126,40 @@
 {% macro plannedTourFilterEnum(availableTypes, selectedTypes, buttonText, identifier) -%}
     {% set allSelected = availableTypes | length == selectedTypes | length %}
 
-    <div class="dropdown position-static">
-        <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-            <span class="material-symbols-outlined fs-5">filter_alt</span>
-            <span class="ms-2">{{ buttonText }}</span>
-        </button>
-        <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
-            {% for availableType in availableTypes %}
-                <div class="form-check text-nowrap {% if not loop.last %}mb-2{% endif %}">
-                    <input class="form-check-input" type="checkbox"
-                           id="{{ identifier }}-{{ loop.index }}"
-                           name="{{ identifier }}-{{ loop.index }}"
-                           value="{{ availableType.name }}"
-                           {% if availableType in selectedTypes %}checked{% endif %}>
-                    <label class="form-check-label d-flex align-items-center" for="{{ identifier }}-{{ loop.index }}">
-                        <span class="material-symbols-outlined fs-5 me-1">{{ availableType.icon }}</span>
-                        <span>{{ availableType.get_localized_name() }}</span>
-                    </label>
-                </div>
-            {% endfor %}
-        </div>
+    <div class="d-flex align-items-center justify-content-center">
+        <span class="material-symbols-outlined fs-5">filter_alt</span>
+        <span class="ms-2">{{ buttonText }}</span>
+    </div>
+
+    <div class="d-flex flex-column align-items-start justify-content-center px-1">
+        {% for availableType in availableTypes %}
+            <div class="form-check text-nowrap {% if not loop.last %}mb-2{% endif %}">
+                <input class="form-check-input" type="checkbox"
+                       id="{{ identifier }}-{{ loop.index }}"
+                       name="{{ identifier }}-{{ loop.index }}"
+                       value="{{ availableType.name }}"
+                       {% if availableType in selectedTypes %}checked{% endif %}>
+                <label class="form-check-label d-flex align-items-center" for="{{ identifier }}-{{ loop.index }}">
+                    <span class="material-symbols-outlined fs-5 me-1">{{ availableType.icon }}</span>
+                    <span>{{ availableType.get_localized_name() }}</span>
+                </label>
+            </div>
+        {% endfor %}
     </div>
 {%- endmacro %}
 
 {% macro plannedTourFilterName(nameFilter) -%}
-    <div class="dropdown position-static">
-        <button class="btn btn-sm {% if nameFilter is none or nameFilter | length == 0 %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-            <span class="material-symbols-outlined fs-5">filter_alt</span>
-            <span class="ms-2">{{ gettext('Name') }}</span>
-        </button>
-        <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
-            <div class="text-nowrap mb-2">
-                <label class="form-label" for="plannedTourFilterName">
-                    <span>{{ gettext('Name must include:') }}</span>
-                </label>
+    <div class="d-flex align-items-center justify-content-center">
+        <span class="material-symbols-outlined fs-5">filter_alt</span>
+        <span class="ms-2">{{ gettext('Name') }}</span>
+    </div>
 
-                <input class="form-control" type="text"
-                       id="plannedTourFilterName"
-                       name="plannedTourFilterName"
-                       value="{% if nameFilter is not none %}{{ nameFilter }}{% endif %}">
-            </div>
+    <div class="d-flex flex-column align-items-start justify-content-center px-1">
+        <div class="text-nowrap mb-2">
+            <input class="form-control" type="text"
+                   id="plannedTourFilterName"
+                   name="plannedTourFilterName"
+                   value="{% if nameFilter is not none %}{{ nameFilter }}{% endif %}">
         </div>
     </div>
 {%- endmacro %}
@@ -174,35 +167,28 @@
 {% macro plannedTourFilterDistance(minDistance, maxDistance) -%}
     {% set bothEmpty = minDistance is none and maxDistance is none %}
 
-    <div class="dropdown position-static">
-        <button class="btn btn-sm {% if bothEmpty %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-            <span class="material-symbols-outlined fs-5">filter_alt</span>
-            <span class="ms-2">{{ gettext('Distance') }}</span>
-        </button>
-        <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
-            <div class="text-nowrap mb-2">
-                <label class="form-label" for="plannedTourFilterDistanceMin">
-                    <span>{{ gettext('Minimum distance (in km):') }}</span>
-                </label>
+    <div class="d-flex align-items-center justify-content-center">
+        <span class="material-symbols-outlined fs-5">filter_alt</span>
+        <span class="ms-2">{{ gettext('Distance (in km)') }}</span>
+    </div>
 
-                <input class="form-control"
-                       type="number" min="0"
-                       id="plannedTourFilterDistanceMin"
-                       name="plannedTourFilterDistanceMin"
-                       value="{% if minDistance is not none %}{{ minDistance // 1000 }}{% endif %}">
-            </div>
+    <div class="d-flex flex-column flex-md-row align-items-center justify-content-center px-1">
+        <div class="text-nowrap">
+            <input class="form-control"
+                   type="number" min="0"
+                   id="plannedTourFilterDistanceMin"
+                   name="plannedTourFilterDistanceMin"
+                   value="{% if minDistance is not none %}{{ minDistance // 1000 }}{% endif %}">
+        </div>
 
-            <div class="text-nowrap mb-2">
-                <label class="form-label" for="plannedTourFilterDistanceMax">
-                    <span>{{ gettext('Maximum distance (in km):') }}</span>
-                </label>
+        <span class="my-2 my-md-0 mx-2">{{ gettext('to') }}</span>
 
-                <input class="form-control"
-                       type="number" min="1"
-                       id="plannedTourFilterDistanceMax"
-                       name="plannedTourFilterDistanceMax"
-                       value="{% if maxDistance is not none %}{{ maxDistance // 1000 }}{% endif %}">
-            </div>
+        <div class="text-nowrap">
+            <input class="form-control"
+                   type="number" min="1"
+                   id="plannedTourFilterDistanceMax"
+                   name="plannedTourFilterDistanceMax"
+                   value="{% if maxDistance is not none %}{{ maxDistance // 1000 }}{% endif %}">
         </div>
     </div>
 {%- endmacro %}
@@ -210,57 +196,66 @@
 {% macro plannedTourFilterLongDistanceTours(isLongDistanceToursIncludeSelected, isLongDistanceToursExcludeSelected) -%}
     {% set allSelected = isLongDistanceToursIncludeSelected and isLongDistanceToursExcludeSelected %}
 
-    <div class="dropdown position-static">
-        <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-            <span class="material-symbols-outlined fs-5">filter_alt</span>
-            <span class="ms-2">{{ gettext('Long-distance Tours') }}</span>
-        </button>
-        <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
-            <div class="form-check text-nowrap mb-2">
-                <input class="form-check-input" type="checkbox"
-                       id="plannedTourFilterLongDistanceToursInclude"
-                       name="plannedTourFilterLongDistanceToursInclude"
-                       {% if isLongDistanceToursIncludeSelected %}checked{% endif %}>
-                <label class="form-check-label d-flex align-items-center" for="plannedTourFilterLongDistanceToursInclude">
-                    <span>{{ gettext('Part of long-distance tour') }}</span>
-                </label>
-            </div>
-            <div class="form-check text-nowrap">
-                <input class="form-check-input" type="checkbox"
-                       id="plannedTourFilterLongDistanceToursExclude"
-                       name="plannedTourFilterLongDistanceToursExclude"
-                       {% if isLongDistanceToursExcludeSelected %}checked{% endif %}>
-                <label class="form-check-label d-flex align-items-center" for="plannedTourFilterLongDistanceToursExclude">
-                    <span>{{ gettext('Not part of long-distance tour') }}</span>
-                </label>
-            </div>
+    <div class="d-flex align-items-center justify-content-center">
+        <span class="material-symbols-outlined fs-5">filter_alt</span>
+        <span class="ms-2">{{ gettext('Long-distance Tours') }}</span>
+    </div>
+
+    <div class="d-flex flex-column align-items-start justify-content-center px-1">
+        <div class="form-check text-nowrap mb-2">
+            <input class="form-check-input" type="checkbox"
+                   id="plannedTourFilterLongDistanceToursInclude"
+                   name="plannedTourFilterLongDistanceToursInclude"
+                   {% if isLongDistanceToursIncludeSelected %}checked{% endif %}>
+            <label class="form-check-label d-flex align-items-center" for="plannedTourFilterLongDistanceToursInclude">
+                <span>{{ gettext('Part of long-distance tour') }}</span>
+            </label>
+        </div>
+        <div class="form-check text-nowrap">
+            <input class="form-check-input" type="checkbox"
+                   id="plannedTourFilterLongDistanceToursExclude"
+                   name="plannedTourFilterLongDistanceToursExclude"
+                   {% if isLongDistanceToursExcludeSelected %}checked{% endif %}>
+            <label class="form-check-label d-flex align-items-center" for="plannedTourFilterLongDistanceToursExclude">
+                <span>{{ gettext('Not part of long-distance tour') }}</span>
+            </label>
         </div>
     </div>
 {%- endmacro %}
 
-{% macro plannedTourFilter(plannedTourFilterState, redirectUrl, classes="mt-2 pt-2")%}
+{% macro plannedTourFilter(plannedTourFilterState, redirectUrl, classes="mt-2")%}
     <form class="{{ classes }}" method="POST" action="{{ url_for('plannedTours.applyFilter') }}"
           onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);">
         <input type="hidden" name="redirectUrl" value="{{ redirectUrl }}">
+        <div class="my-3 d-flex flex-column align-items-start justify-content-start gap-3 overflow-x-auto">
+            <div class="d-flex flex-column flex-lg-row align-items-center mx-auto gap-2">
+                <a href="{{ url_for('plannedTours.resetFilter', redirectUrl=redirectUrl) }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap ">{{ gettext('Reset') }}</a>
 
-        <div class="my-3 d-flex align-items-center justify-content-start justify-content-xxl-center gap-3 overflow-x-auto">
+                {{ macros.buttonSubmitAutomaticallyDisabled(text=gettext('Apply'), disabledText=gettext('Applying...'), icon=none, classes='btn-sm btn-primary text-nowrap', id='buttonApplyFilter') }}
+            </div>
+
+            <hr class="w-100 my-0"/>
+
             {{ plannedTourFilterStatus(plannedTourFilterState.is_done_selected, plannedTourFilterState.is_todo_selected) }}
+            <hr class="w-100 my-0"/>
 
             {{ plannedTourFilterName(plannedTourFilterState.name_filter) }}
+            <hr class="w-100 my-0"/>
 
             {{ plannedTourFilterDistance(plannedTourFilterState.minimum_distance, plannedTourFilterState.maximum_distance) }}
+            <hr class="w-100 my-0"/>
 
             {{ plannedTourFilterEnum(travelTypes, plannedTourFilterState.get_selected_arrival_methods(), gettext('Arrival Method'), 'plannedTourFilterArrivalMethod') }}
+            <hr class="w-100 my-0"/>
 
             {{ plannedTourFilterEnum(travelTypes, plannedTourFilterState.get_selected_departure_methods(), gettext('Departure Method'), 'plannedTourFilterDepartureMethod') }}
+            <hr class="w-100 my-0"/>
 
             {{ plannedTourFilterEnum(travelDirections, plannedTourFilterState.get_selected_directions(), gettext('Direction'), 'plannedTourFilterDirection') }}
+            <hr class="w-100 my-0"/>
 
             {{ plannedTourFilterLongDistanceTours(plannedTourFilterState.is_long_distance_tours_include_selected, plannedTourFilterState.is_long_distance_tours_exclude_selected) }}
-
-            <a href="{{ url_for('plannedTours.resetFilter', redirectUrl=redirectUrl) }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap ">{{ gettext('Reset Filter') }}</a>
-
-            {{ macros.buttonSubmitAutomaticallyDisabled(text=gettext('Apply Filter'), disabledText=gettext('Applying Filter...'), icon=none, classes='btn-sm btn-primary text-nowrap', id='buttonApplyFilter') }}
+            <hr class="w-100 my-0"/>
         </div>
     </form>
 {%- endmacro %}

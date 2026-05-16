@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-02 11:20+0100\n"
+"POT-Creation-Date: 2026-05-17 00:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,8 +125,8 @@ msgid "Unknown user"
 msgstr ""
 
 #: ../authentication/AuthenticationBlueprint.py:36
-#: ../user/SettingsBlueprint.py:132 ../user/UserBlueprint.py:78
-#: ../user/UserBlueprint.py:132
+#: ../user/SettingsBlueprint.py:132 ../user/UserBlueprint.py:80
+#: ../user/UserBlueprint.py:140
 msgid "Password must not be empty"
 msgstr ""
 
@@ -134,39 +134,39 @@ msgstr ""
 msgid "Incorrect password"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:143
+#: ../chart/ChartBlueprint.py:144
 msgid "Unknown"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:152
+#: ../chart/ChartBlueprint.py:153
 msgid "Distance per custom field"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:180
+#: ../chart/ChartBlueprint.py:181
 msgid "You"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:197
+#: ../chart/ChartBlueprint.py:198
 msgid "Distance per participant for workout type "
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:280 ../templates/chart/chartChooser.jinja2:63
+#: ../chart/ChartBlueprint.py:281 ../templates/chart/chartChooser.jinja2:63
 msgid "Duration per Workout"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:357 ../templates/chart/chartChooser.jinja2:70
+#: ../chart/ChartBlueprint.py:358 ../templates/chart/chartChooser.jinja2:70
 msgid "Speed per Workout"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:618
+#: ../chart/ChartBlueprint.py:619
 msgid "Tiles"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:708 ../templates/chart/chartChooser.jinja2:98
+#: ../chart/ChartBlueprint.py:709 ../templates/chart/chartChooser.jinja2:98
 msgid "Heatmap Weekdays"
 msgstr ""
 
-#: ../chart/ChartBlueprint.py:743 ../templates/chart/chartChooser.jinja2:105
+#: ../chart/ChartBlueprint.py:744 ../templates/chart/chartChooser.jinja2:105
 msgid "Heatmap Months"
 msgstr ""
 
@@ -174,19 +174,19 @@ msgstr ""
 msgid "Maintenance does not exist anymore"
 msgstr ""
 
-#: ../map/MapBlueprint.py:176 ../map/MapBlueprint.py:228
+#: ../map/MapBlueprint.py:178 ../map/MapBlueprint.py:230
 msgid "Unknown shared link"
 msgstr ""
 
-#: ../map/MapBlueprint.py:194
+#: ../map/MapBlueprint.py:196
 msgid "Unknown planned tour"
 msgstr ""
 
-#: ../map/MapBlueprint.py:571
+#: ../map/MapBlueprint.py:569
 msgid "Unknown long-distance tour"
 msgstr ""
 
-#: ../map/MapBlueprint.py:589
+#: ../map/MapBlueprint.py:587
 #: ../templates/longDistanceTour/longDistanceTourForm.jinja2:155
 #: ../templates/map/mapLongDistanceTour.jinja2:105
 #: ../templates/map/mapLongDistanceTour.jinja2:189
@@ -213,83 +213,83 @@ msgstr ""
 msgid "{timedelta} ago"
 msgstr ""
 
-#: ../notification/NotificationService.py:122
+#: ../notification/NotificationService.py:123
 msgid "Maintenance \"{name}\" exceeds configured limit"
 msgstr ""
 
-#: ../notification/NotificationService.py:123
+#: ../notification/NotificationService.py:124
 msgid "Limit: {limit} km, Exceeded by: {limitExceededDistance} km"
 msgstr ""
 
-#: ../notification/NotificationService.py:144
+#: ../notification/NotificationService.py:145
 msgid ""
 "You completed a new distance record with {distance} km in one "
 "{workoutType} workout"
 msgstr ""
 
-#: ../notification/NotificationService.py:174
+#: ../notification/NotificationService.py:175
 msgid "{month} is now your best {workoutType} month with {distance} km"
 msgstr ""
 
-#: ../notification/NotificationService.py:212
+#: ../notification/NotificationService.py:213
 msgid "distance month goal"
 msgstr ""
 
-#: ../notification/NotificationService.py:223
+#: ../notification/NotificationService.py:224
 msgid "count month goal"
 msgstr ""
 
-#: ../notification/NotificationService.py:234
+#: ../notification/NotificationService.py:235
 msgid "duration month goal"
 msgstr ""
 
-#: ../notification/NotificationService.py:254
+#: ../notification/NotificationService.py:255
 msgid "You completed your {workoutType} {goalName} \"{goalPerfect}\" for {date}"
 msgstr ""
 
-#: ../notification/NotificationService.py:288
+#: ../notification/NotificationService.py:289
 msgid "You completed a new duration record with {duration} h in one {workoutType}"
 msgstr ""
 
-#: ../notification/NotificationService.py:317
+#: ../notification/NotificationService.py:318
 msgid "{month} is now your best {workoutType} month with {duration} h"
 msgstr ""
 
-#: ../notification/NotificationService.py:334
-#: ../notification/NotificationService.py:344
+#: ../notification/NotificationService.py:335
+#: ../notification/NotificationService.py:345
 msgid "{owner} has shared the planned tour \"{tour_name}\" with you"
 msgstr ""
 
-#: ../notification/NotificationService.py:346
+#: ../notification/NotificationService.py:347
 msgid "{owner} has updated the planned tour \"{tour_name}\""
 msgstr ""
 
-#: ../notification/NotificationService.py:348
+#: ../notification/NotificationService.py:349
 msgid "{owner} has revoked your access to the planned tour \"{tour_name}\""
 msgstr ""
 
-#: ../notification/NotificationService.py:354
+#: ../notification/NotificationService.py:355
 msgid "{owner} has deleted the planned tour \"{tour_name}\""
 msgstr ""
 
-#: ../notification/NotificationService.py:362
-#: ../notification/NotificationService.py:372
+#: ../notification/NotificationService.py:363
+#: ../notification/NotificationService.py:373
 msgid "{owner} has shared the long-distance tour \"{tour_name}\" with you"
 msgstr ""
 
-#: ../notification/NotificationService.py:374
+#: ../notification/NotificationService.py:375
 msgid "{owner} has updated the long-distance tour \"{tour_name}\""
 msgstr ""
 
-#: ../notification/NotificationService.py:376
+#: ../notification/NotificationService.py:377
 msgid "{owner} has revoked your access to the long-distance tour \"{tour_name}\""
 msgstr ""
 
-#: ../notification/NotificationService.py:382
+#: ../notification/NotificationService.py:383
 msgid "{owner} has deleted the long-distance tour \"{tour_name}\""
 msgstr ""
 
-#: ../notification/NotificationService.py:474
+#: ../notification/NotificationService.py:475
 msgid "Don't forget to check your annual statistics for {year}."
 msgstr ""
 
@@ -412,7 +412,7 @@ msgid "Users"
 msgstr ""
 
 #: ../templates/macros.jinja2:68 ../templates/map/mapMultipleWorkouts.jinja2:6
-#: ../templates/plannedTour/plannedTours.jinja2:99
+#: ../templates/plannedTour/plannedTours.jinja2:103
 #: ../templates/workout/workouts.jinja2:5
 #: ../templates/workout/workouts.jinja2:25
 msgid "Workouts"
@@ -481,7 +481,7 @@ msgstr ""
 #: ../templates/longDistanceTour/longDistanceTours.jinja2:6
 #: ../templates/longDistanceTour/longDistanceTours.jinja2:18
 #: ../templates/macros.jinja2:148
-#: ../templates/plannedTour/plannedToursMacros.jinja2:216
+#: ../templates/plannedTour/plannedToursMacros.jinja2:201
 msgid "Long-distance Tours"
 msgstr ""
 
@@ -817,7 +817,7 @@ msgstr ""
 
 #: ../templates/longDistanceTour/longDistanceTourForm.jinja2:133
 #: ../templates/plannedTour/plannedTourForm.jinja2:64
-#: ../templates/plannedTour/plannedToursMacros.jinja2:157
+#: ../templates/plannedTour/plannedToursMacros.jinja2:154
 #: ../templates/settings/customFieldsForm.jinja2:53
 #: ../templates/settings/participantsForm.jinja2:51
 #: ../templates/settings/settings.jinja2:134
@@ -833,7 +833,7 @@ msgid "Stages"
 msgstr ""
 
 #: ../templates/longDistanceTour/longDistanceTours.jinja2:73
-#: ../templates/plannedTour/plannedTours.jinja2:91
+#: ../templates/plannedTour/plannedTours.jinja2:95
 msgid "shared"
 msgstr ""
 
@@ -841,7 +841,7 @@ msgstr ""
 #: ../templates/map/mapLongDistanceTour.jinja2:173
 #: ../templates/map/mapPlannedTour.jinja2:62
 #: ../templates/map/mapPlannedTour.jinja2:146
-#: ../templates/plannedTour/plannedTours.jinja2:103
+#: ../templates/plannedTour/plannedTours.jinja2:107
 msgid "last edited"
 msgstr ""
 
@@ -917,17 +917,14 @@ msgid "Value:"
 msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:35
-#: ../templates/plannedTour/plannedToursMacros.jinja2:261
 msgid "Reset Filter"
 msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:37
-#: ../templates/plannedTour/plannedToursMacros.jinja2:263
 msgid "Apply Filter"
 msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:37
-#: ../templates/plannedTour/plannedToursMacros.jinja2:263
 msgid "Applying Filter..."
 msgstr ""
 
@@ -978,9 +975,7 @@ msgstr ""
 #: ../templates/map/mapPlannedTour.jinja2:41
 #: ../templates/map/mapPlannedTour.jinja2:88
 #: ../templates/map/mapSingleWorkout.jinja2:46
-#: ../templates/map/mapSingleWorkout.jinja2:93
-#: ../templates/plannedTour/plannedToursMacros.jinja2:180
-#: ../user/UserEntity.py:79
+#: ../templates/map/mapSingleWorkout.jinja2:93 ../user/UserEntity.py:79
 msgid "Distance"
 msgstr ""
 
@@ -1163,6 +1158,7 @@ msgid "Years"
 msgstr ""
 
 #: ../templates/map/mapMacros.jinja2:247
+#: ../templates/plannedTour/plannedToursMacros.jinja2:234
 msgid "Apply"
 msgstr ""
 
@@ -1187,20 +1183,20 @@ msgstr ""
 
 #: ../templates/map/mapPlannedTour.jinja2:48
 #: ../templates/map/mapPlannedTour.jinja2:96
-#: ../templates/plannedTour/plannedTours.jinja2:73
+#: ../templates/plannedTour/plannedTours.jinja2:77
 msgid "Arrival"
 msgstr ""
 
 #: ../templates/map/mapPlannedTour.jinja2:51
 #: ../templates/map/mapPlannedTour.jinja2:100
-#: ../templates/plannedTour/plannedTours.jinja2:77
+#: ../templates/plannedTour/plannedTours.jinja2:81
 msgid "Departure"
 msgstr ""
 
 #: ../templates/map/mapPlannedTour.jinja2:54
 #: ../templates/map/mapPlannedTour.jinja2:104
 #: ../templates/plannedTour/plannedTourForm.jinja2:89
-#: ../templates/plannedTour/plannedToursMacros.jinja2:257
+#: ../templates/plannedTour/plannedToursMacros.jinja2:254
 msgid "Direction"
 msgstr ""
 
@@ -1261,11 +1257,11 @@ msgstr ""
 msgid "Zoom in to view visited tiles."
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:108
+#: ../templates/map/mapTileHunting.jinja2:112
 msgid "Click bar to open in new tab"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:121
+#: ../templates/map/mapTileHunting.jinja2:125
 msgid "Number of new tiles"
 msgstr ""
 
@@ -1507,6 +1503,10 @@ msgstr ""
 msgid "View all on map"
 msgstr ""
 
+#: ../templates/plannedTour/plannedTours.jinja2:37
+msgid "Filter"
+msgstr ""
+
 #: ../templates/plannedTour/plannedToursMacros.jinja2:6
 msgid "Share this tour with"
 msgstr ""
@@ -1524,7 +1524,7 @@ msgstr ""
 msgid "No other users available"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:100
+#: ../templates/plannedTour/plannedToursMacros.jinja2:99
 msgid "Status"
 msgstr ""
 
@@ -1536,31 +1536,36 @@ msgstr ""
 msgid "not completed"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:162
-msgid "Name must include:"
+#: ../templates/plannedTour/plannedToursMacros.jinja2:172
+#: ../templates/workout/workoutMacros.jinja2:390
+msgid "Distance (in km)"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:185
-msgid "Minimum distance (in km):"
+#: ../templates/plannedTour/plannedToursMacros.jinja2:184
+msgid "to"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:197
-msgid "Maximum distance (in km):"
-msgstr ""
-
-#: ../templates/plannedTour/plannedToursMacros.jinja2:225
+#: ../templates/plannedTour/plannedToursMacros.jinja2:211
 msgid "Part of long-distance tour"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:234
+#: ../templates/plannedTour/plannedToursMacros.jinja2:220
 msgid "Not part of long-distance tour"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:253
+#: ../templates/plannedTour/plannedToursMacros.jinja2:232
+msgid "Reset"
+msgstr ""
+
+#: ../templates/plannedTour/plannedToursMacros.jinja2:234
+msgid "Applying..."
+msgstr ""
+
+#: ../templates/plannedTour/plannedToursMacros.jinja2:248
 msgid "Arrival Method"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:255
+#: ../templates/plannedTour/plannedToursMacros.jinja2:251
 msgid "Departure Method"
 msgstr ""
 
@@ -1807,10 +1812,6 @@ msgstr ""
 msgid "Start Time"
 msgstr ""
 
-#: ../templates/workout/workoutMacros.jinja2:390
-msgid "Distance (in km)"
-msgstr ""
-
 #: ../templates/workout/workoutMacros.jinja2:420
 msgid "Seconds"
 msgstr ""
@@ -1912,8 +1913,8 @@ msgstr ""
 msgid "Float"
 msgstr ""
 
-#: ../user/SettingsBlueprint.py:145 ../user/UserBlueprint.py:83
-#: ../user/UserBlueprint.py:140
+#: ../user/SettingsBlueprint.py:145 ../user/UserBlueprint.py:85
+#: ../user/UserBlueprint.py:148
 msgid "Password must be at least {0} characters long"
 msgstr ""
 
@@ -1947,7 +1948,7 @@ msgstr ""
 msgid "The specified participant name \"{0}\" already exists."
 msgstr ""
 
-#: ../user/UserBlueprint.py:74 ../user/UserBlueprint.py:124
+#: ../user/UserBlueprint.py:76 ../user/UserBlueprint.py:132
 msgid "Username \"{0}\" already exists"
 msgstr ""
 
@@ -1967,19 +1968,19 @@ msgstr ""
 msgid "Fitness Workout"
 msgstr ""
 
-#: ../workout/distance/DistanceWorkoutBlueprint.py:144
+#: ../workout/distance/DistanceWorkoutBlueprint.py:145
 msgid "Error importing data from FIT file"
 msgstr ""
 
-#: ../workout/distance/DistanceWorkoutBlueprint.py:148
+#: ../workout/distance/DistanceWorkoutBlueprint.py:149
 msgid "No file provided"
 msgstr ""
 
-#: ../workout/distance/DistanceWorkoutBlueprint.py:152
+#: ../workout/distance/DistanceWorkoutBlueprint.py:153
 msgid "Invalid file extension. Allowed extension: *.fit"
 msgstr ""
 
-#: ../workout/distance/DistanceWorkoutBlueprint.py:172
+#: ../workout/distance/DistanceWorkoutBlueprint.py:173
 msgid "FIT file does not contain session data"
 msgstr ""
 

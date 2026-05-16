@@ -296,6 +296,14 @@ select[disabled] {
     font-size: 0.75rem;
 }
 
+
+@media (min-width: 1400px) {
+    .planned-tours-container.container-xxl {
+        max-width: 82%;
+    }
+}
+
+
 .debug {
     outline: 1px solid red !important;
 }
