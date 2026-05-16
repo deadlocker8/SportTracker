@@ -1,3 +1,6 @@
+# 1.48.0 - (XX.XX.XX)
+- fix: gpx files are no longer accidentally deleted when using ctrl + enter to submit a workout form (#283)
+
 # 1.47.0 - (13.03.26)
 - chore: update dependencies (#280)
 - chore: update to python 3.14 (#268)

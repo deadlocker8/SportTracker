@@ -503,7 +503,7 @@
                         </button>
 
                         {% call macros.deleteModal(gettext('Delete GPX and FIT Track?'), gettext('Do you really want to delete this associated GPX and FIT file?'), 'gpx') %}
-                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='btn btn-danger', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl=deleteUrl, id='buttonGpxTrackDelete', dismissModal=true) }}
+                            {{ macros.buttonSubmitAutomaticallyDisabled(type="button", classes='btn btn-danger', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl=deleteUrl, id='buttonGpxTrackDelete', dismissModal=true) }}
                         {% endcall %}
                     </div>
                     {% endif %}
