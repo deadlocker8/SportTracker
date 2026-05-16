@@ -61,7 +61,11 @@ def construct_blueprint():
         if maintenance is None:
             abort(404)
 
-        return render_template('maintenanceEvent/maintenanceEventForm.jinja2', maintenance=maintenance)
+        return render_template(
+            'maintenanceEvent/maintenanceEventForm.jinja2',
+            maintenance=maintenance,
+            today=datetime.now().strftime('%Y-%m-%d'),
+        )
 
     @maintenanceEventInstances.route('/post/<int:maintenance_id>', methods=['POST'])
     @login_required
@@ -107,6 +111,7 @@ def construct_blueprint():
             maintenanceEvent=eventModel,
             event_id=event_id,
             maintenance=maintenance,
+            today=datetime.now().strftime('%Y-%m-%d'),
         )
 
     @maintenanceEventInstances.route('/edit/<int:event_id>', methods=['POST'])

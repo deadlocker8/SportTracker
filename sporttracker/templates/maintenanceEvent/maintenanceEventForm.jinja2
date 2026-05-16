@@ -60,7 +60,7 @@
                                         <div class="d-flex align-items-center">
                                             <span class="material-symbols-outlined filled me-3">event</span>
                                             <input type="date" class="form-control" id="maintenance-event-date" name="date"
-                                                   required="required" {% if maintenanceEvent %}value="{{ maintenanceEvent.date }}"{% endif %}>
+                                                   required="required" value="{% if maintenanceEvent %}{{ maintenanceEvent.date }}{% else %}{{ today }}{% endif %}">
                                         </div>
                                     </div>
                                     <div class="col col-12 col-md-6 mt-3 mt-md-0">

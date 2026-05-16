@@ -1,4 +1,5 @@
 # 1.48.0 - (XX.XX.XX)
+- add: maintenance event form: prefill date input with current date (#284) 
 - fix: gpx files are no longer accidentally deleted when using ctrl + enter to submit a workout form (#283)
 
 # 1.47.0 - (13.03.26)
