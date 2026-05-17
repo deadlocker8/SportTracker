@@ -124,6 +124,39 @@ class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
 
         return isUpdated
 
+    def is_any_filter_active(self) -> bool:
+        if not self.is_done_selected:
+            return True
+
+        if not self.is_todo_selected:
+            return True
+
+        if not all(self.arrival_methods.values()):
+            return True
+
+        if not all(self.departure_methods.values()):
+            return True
+
+        if not all(self.directions.values()):
+            return True
+
+        if self.minimum_distance is not None:
+            return True
+
+        if self.maximum_distance is not None:
+            return True
+
+        if not self.is_long_distance_tours_include_selected:
+            return True
+
+        if not self.is_long_distance_tours_exclude_selected:
+            return True
+
+        if self.name_filter is not None:
+            return True
+
+        return False
+
 
 def get_planned_tour_filter_state_by_user(user_id: int) -> PlannedTourFilterState:
     plannedTourFilterState = PlannedTourFilterState.query.filter(PlannedTourFilterState.user_id == user_id).first()

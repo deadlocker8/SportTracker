@@ -228,7 +228,7 @@
           onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);">
         <input type="hidden" name="redirectUrl" value="{{ redirectUrl }}">
         <div class="my-3 d-flex flex-column align-items-start justify-content-start gap-3 overflow-x-auto">
-            <div class="d-flex flex-column flex-lg-row align-items-center mx-auto gap-2">
+            <div class="d-flex align-items-center mx-auto gap-2 mb-2">
                 <a href="{{ url_for('plannedTours.resetFilter', redirectUrl=redirectUrl) }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap ">{{ gettext('Reset') }}</a>
 
                 {{ macros.buttonSubmitAutomaticallyDisabled(text=gettext('Apply'), disabledText=gettext('Applying...'), icon=none, classes='btn-sm btn-primary text-nowrap', id='buttonApplyFilter') }}

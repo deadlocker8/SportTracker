@@ -28,6 +28,20 @@
 
         <div class="row mx-0 mt-3">
             <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center">
+                {% if mapMode == 'plannedTours' %}
+                    {% set isAnyFilterActive=plannedTourFilterState.is_any_filter_active() %}
+                {% endif %}
+                {% if mapMode == 'workouts' %}
+                    {% set isAnyFilterActive=quickFilterState.is_all_years_active() %}
+                {% endif %}
+
+                <div class="d-none d-lg-block">
+                    <button class="btn btn-sm {% if isAnyFilterActive %}btn-light{% else %}btn-outline-light{% endif %} d-inline-flex align-items-center me-5" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas">
+                        <span class="material-symbols-outlined fs-5">filter_alt</span>
+                        <span class="ms-2">{{ gettext('Filter') }}</span>
+                    </button>
+                </div>
+
                 <div class="d-none d-lg-block">
                     {{ toggleWorkoutsAndPlannedTours('me-5') }}
                 </div>
@@ -44,30 +58,36 @@
                         {{ toggleWorkoutsAndPlannedTours('mb-3') }}
                         {{ macros.workout_type_quick_filter(url_for(redirectUrl), true) }}
                         {% if mapMode == 'plannedTours' and current_user.isTileHuntingActivated %}
-                            {{ mapMacros.tileHuntingMapSettings(tileHuntingFilterState,url_for('maps.showAllPlannedToursOnMap'), enableTilesOption=true, enableGridOption=true, enableNewTilesOption=false, enableMaxSquareOption=true, enablePlannedTileOption=true, forceButtonText=true, classes="mt-3") }}
+                            <div class="d-flex align-items-center justify-content-center mt-3 gap-3">
+                                <button class="btn btn-sm {% if isAnyFilterActive %}btn-outline-light{% else %}btn-light{% endif %} d-inline-flex align-items-center" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas">
+                                    <span class="material-symbols-outlined fs-5">filter_alt</span>
+                                    <span class="ms-2">{{ gettext('Filter') }}</span>
+                                </button>
+                                {{ mapMacros.tileHuntingMapSettings(tileHuntingFilterState,url_for('maps.showAllPlannedToursOnMap'), enableTilesOption=true, enableGridOption=true, enableNewTilesOption=false, enableMaxSquareOption=true, enablePlannedTileOption=true, forceButtonText=true, classes="") }}
+                            </div>
                         {% endif %}
                     </div>
                 </div>
-
-                {% if mapMode == 'workouts' %}
-                    <div class="ms-5">
-                        {{ mapMacros.mapYearFilter(quickFilterState, redirectUrl) }}
-                    </div>
-                {% endif %}
             </div>
         </div>
 
-        <div class="d-none d-lg-block">
-            <div class="row m-0">
-                <div class="col col-3 col-xxl-2 text-center ps-5">
-                    {% if mapMode == 'plannedTours' and current_user.isTileHuntingActivated %}
-                        <h4>{{ gettext('Filter') }}</h4>
-                        {{ plannedTourMacros.plannedTourFilter(plannedTourFilterState, redirectUrl=url_for('maps.showAllPlannedToursOnMap'), classes="mt-3") }}
-                    {% endif %}
-                </div>
-                <div class="col col-9 col-xxl-10">
-                    <div id="map" class="leaflet-map  text-dark mt-3"></div>
-                </div>
+        <div id="map" class="leaflet-map text-dark mt-3"></div>
+
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas" data-bs-theme="dark">
+            <div class="offcanvas-header pb-2">
+                <h5 class="offcanvas-title mx-auto d-flex flex-row align-items-center justify-content-center">
+                    <span class="material-symbols-outlined fs-5">filter_alt</span>
+                    <span>{{ gettext('Filter') }}</span>
+                </h5>
+                <button type="button" class="btn-close ms-0" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body pt-0">
+                {% if mapMode == 'plannedTours' %}
+                    {{ plannedTourMacros.plannedTourFilter(plannedTourFilterState, redirectUrl=url_for('maps.showAllPlannedToursOnMap'), classes="") }}
+                {% endif %}
+                {% if mapMode == 'workouts' %}
+                    {{ mapMacros.mapYearFilter(quickFilterState, redirectUrl) }}
+                {% endif %}
             </div>
         </div>
 
