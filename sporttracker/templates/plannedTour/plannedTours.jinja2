@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="d-flex flex-column flex-md-row align-items-center justify-content-center mt-3 gap-3 mb-2">
-                    <button class="btn btn-sm {% if plannedTourFilterState.is_any_filter_active() %}btn-light{% else %}btn-outline-light{% endif %} d-inline-flex align-items-center" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas">
+                    <button id="buttonFilter" class="btn btn-sm {% if plannedTourFilterState.is_any_filter_active() %}btn-light{% else %}btn-outline-light{% endif %} d-inline-flex align-items-center" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas">
                         <span class="material-symbols-outlined fs-5">filter_alt</span>
                         <span class="ms-2">{{ gettext('Filter') }}</span>
                     </button>

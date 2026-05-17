@@ -144,14 +144,13 @@ class TestPlannedTours(SeleniumTestBaseClass):
             expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Planned Tours')
         )
 
-        buttonFilterArrivalMethod = selenium.find_elements(By.CSS_SELECTOR, '.dropdown.position-static')[3]
-        buttonFilterArrivalMethod.click()
+        selenium.find_element(By.ID, 'buttonFilter').click()
 
-        WebDriverWait(buttonFilterArrivalMethod, 5).until(
+        WebDriverWait(selenium, 5).until(
             expected_conditions.visibility_of_element_located((By.ID, 'plannedTourFilterArrivalMethod-2'))
         )
 
-        buttonFilterArrivalMethod.find_element(By.ID, 'plannedTourFilterArrivalMethod-2').click()
+        selenium.find_element(By.ID, 'plannedTourFilterArrivalMethod-2').click()
         selenium.find_element(By.ID, 'buttonApplyFilter').click()
 
         WebDriverWait(selenium, 5).until(
