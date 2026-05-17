@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-05-17 00:49+0200\n"
+"POT-Creation-Date: 2026-05-17 12:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -481,7 +481,7 @@ msgstr ""
 #: ../templates/longDistanceTour/longDistanceTours.jinja2:6
 #: ../templates/longDistanceTour/longDistanceTours.jinja2:18
 #: ../templates/macros.jinja2:148
-#: ../templates/plannedTour/plannedToursMacros.jinja2:201
+#: ../templates/plannedTour/plannedToursMacros.jinja2:195
 msgid "Long-distance Tours"
 msgstr ""
 
@@ -817,7 +817,7 @@ msgstr ""
 
 #: ../templates/longDistanceTour/longDistanceTourForm.jinja2:133
 #: ../templates/plannedTour/plannedTourForm.jinja2:64
-#: ../templates/plannedTour/plannedToursMacros.jinja2:154
+#: ../templates/plannedTour/plannedToursMacros.jinja2:150
 #: ../templates/settings/customFieldsForm.jinja2:53
 #: ../templates/settings/participantsForm.jinja2:51
 #: ../templates/settings/settings.jinja2:134
@@ -846,13 +846,13 @@ msgid "last edited"
 msgstr ""
 
 #: ../templates/maintenance/maintenance.jinja2:52
-#: ../templates/maintenance/maintenances.jinja2:69
+#: ../templates/maintenance/maintenances.jinja2:63
 #, python-format
 msgid "Show all (+%(remaining)d)"
 msgstr ""
 
 #: ../templates/maintenance/maintenance.jinja2:65
-#: ../templates/maintenance/maintenances.jinja2:82
+#: ../templates/maintenance/maintenances.jinja2:76
 msgid "days"
 msgstr ""
 
@@ -904,28 +904,44 @@ msgstr ""
 msgid "over limit"
 msgstr ""
 
-#: ../templates/maintenance/maintenanceMacros.jinja2:33
-msgid "Custom Workout Field"
-msgstr ""
-
-#: ../templates/maintenance/maintenanceMacros.jinja2:39
-msgid "Custom Workout Field:"
-msgstr ""
-
-#: ../templates/maintenance/maintenanceMacros.jinja2:55
+#: ../templates/maintenance/maintenanceMacros.jinja2:45
 msgid "Value:"
 msgstr ""
 
-#: ../templates/maintenance/maintenances.jinja2:35
-msgid "Reset Filter"
+#: ../templates/maintenance/maintenances.jinja2:32
+#: ../templates/maintenance/maintenances.jinja2:112
+#: ../templates/map/mapMultipleWorkouts.jinja2:41
+#: ../templates/map/mapMultipleWorkouts.jinja2:63
+#: ../templates/map/mapMultipleWorkouts.jinja2:80
+#: ../templates/map/mapTileHunting.jinja2:27
+#: ../templates/map/mapTileHunting.jinja2:91
+#: ../templates/map/mapTileHuntingHeatmap.jinja2:27
+#: ../templates/map/mapTileHuntingHeatmap.jinja2:67
+#: ../templates/plannedTour/plannedTours.jinja2:32
+#: ../templates/plannedTour/plannedTours.jinja2:139
+msgid "Filter"
 msgstr ""
 
-#: ../templates/maintenance/maintenances.jinja2:37
-msgid "Apply Filter"
+#: ../templates/maintenance/maintenances.jinja2:121
+#: ../templates/map/mapMacros.jinja2:224
+#: ../templates/plannedTour/plannedToursMacros.jinja2:226
+msgid "Reset"
 msgstr ""
 
-#: ../templates/maintenance/maintenances.jinja2:37
-msgid "Applying Filter..."
+#: ../templates/maintenance/maintenances.jinja2:123
+#: ../templates/map/mapMacros.jinja2:226
+#: ../templates/plannedTour/plannedToursMacros.jinja2:228
+msgid "Apply"
+msgstr ""
+
+#: ../templates/maintenance/maintenances.jinja2:123
+#: ../templates/map/mapMacros.jinja2:226
+#: ../templates/plannedTour/plannedToursMacros.jinja2:228
+msgid "Applying..."
+msgstr ""
+
+#: ../templates/maintenance/maintenances.jinja2:130
+msgid "Custom Workout Field"
 msgstr ""
 
 #: ../templates/maintenanceEvent/maintenanceEventForm.jinja2:11
@@ -1136,7 +1152,7 @@ msgid "Show visited tiles"
 msgstr ""
 
 #: ../templates/map/mapMacros.jinja2:163
-#: ../templates/map/mapTileHuntingHeatmap.jinja2:43
+#: ../templates/map/mapTileHuntingHeatmap.jinja2:48
 msgid "Show grid"
 msgstr ""
 
@@ -1153,13 +1169,8 @@ msgstr ""
 msgid "Show planned tiles"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:224
+#: ../templates/map/mapMacros.jinja2:233
 msgid "Years"
-msgstr ""
-
-#: ../templates/map/mapMacros.jinja2:247
-#: ../templates/plannedTour/plannedToursMacros.jinja2:234
-msgid "Apply"
 msgstr ""
 
 #: ../templates/map/mapNotFound.jinja2:18
@@ -1196,7 +1207,7 @@ msgstr ""
 #: ../templates/map/mapPlannedTour.jinja2:54
 #: ../templates/map/mapPlannedTour.jinja2:104
 #: ../templates/plannedTour/plannedTourForm.jinja2:89
-#: ../templates/plannedTour/plannedToursMacros.jinja2:254
+#: ../templates/plannedTour/plannedToursMacros.jinja2:248
 msgid "Direction"
 msgstr ""
 
@@ -1228,22 +1239,22 @@ msgstr ""
 msgid "Avg. Heart Rate"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:43
+#: ../templates/map/mapTileHunting.jinja2:44
 msgid "Tiles visited"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:48
+#: ../templates/map/mapTileHunting.jinja2:49
 msgid ""
 "Tiles are shown in their corresponding workout type color. If different "
 "workout types had visited a tile, it will be shown in <span class=&quot"
 ";text-danger fw-bold&quot;>red</span>."
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:54
+#: ../templates/map/mapTileHunting.jinja2:55
 msgid "Max square:"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:59
+#: ../templates/map/mapTileHunting.jinja2:60
 msgid ""
 "The size of the maximum square area that is completely covered by your "
 "visited tiles. If the checkbox &quot;Show max square&quot; is selected "
@@ -1252,24 +1263,24 @@ msgid ""
 "color: {maxSquareColor};&quot;></span>"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:69
-#: ../templates/map/mapTileHuntingHeatmap.jinja2:51
+#: ../templates/map/mapTileHunting.jinja2:70
+#: ../templates/map/mapTileHuntingHeatmap.jinja2:52
 msgid "Zoom in to view visited tiles."
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:112
+#: ../templates/map/mapTileHunting.jinja2:125
 msgid "Click bar to open in new tab"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:125
+#: ../templates/map/mapTileHunting.jinja2:138
 msgid "Number of new tiles"
 msgstr ""
 
-#: ../templates/map/mapTileHuntingHeatmap.jinja2:26
+#: ../templates/map/mapTileHuntingHeatmap.jinja2:31
 msgid "Number of visits"
 msgstr ""
 
-#: ../templates/map/mapTileHuntingHeatmap.jinja2:66
+#: ../templates/map/mapTileHuntingHeatmap.jinja2:80
 msgid "Visits"
 msgstr ""
 
@@ -1499,12 +1510,8 @@ msgstr ""
 msgid "A GPX or FIT file is linked to this planned tour"
 msgstr ""
 
-#: ../templates/plannedTour/plannedTours.jinja2:31
+#: ../templates/plannedTour/plannedTours.jinja2:35
 msgid "View all on map"
-msgstr ""
-
-#: ../templates/plannedTour/plannedTours.jinja2:37
-msgid "Filter"
 msgstr ""
 
 #: ../templates/plannedTour/plannedToursMacros.jinja2:6
@@ -1524,48 +1531,40 @@ msgstr ""
 msgid "No other users available"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:99
+#: ../templates/plannedTour/plannedToursMacros.jinja2:97
 msgid "Status"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:110
+#: ../templates/plannedTour/plannedToursMacros.jinja2:108
 msgid "completed"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:120
+#: ../templates/plannedTour/plannedToursMacros.jinja2:118
 msgid "not completed"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:172
+#: ../templates/plannedTour/plannedToursMacros.jinja2:168
 #: ../templates/workout/workoutMacros.jinja2:390
 msgid "Distance (in km)"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:184
+#: ../templates/plannedTour/plannedToursMacros.jinja2:180
 msgid "to"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:211
+#: ../templates/plannedTour/plannedToursMacros.jinja2:205
 msgid "Part of long-distance tour"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:220
+#: ../templates/plannedTour/plannedToursMacros.jinja2:214
 msgid "Not part of long-distance tour"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:232
-msgid "Reset"
-msgstr ""
-
-#: ../templates/plannedTour/plannedToursMacros.jinja2:234
-msgid "Applying..."
-msgstr ""
-
-#: ../templates/plannedTour/plannedToursMacros.jinja2:248
+#: ../templates/plannedTour/plannedToursMacros.jinja2:242
 msgid "Arrival Method"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:251
+#: ../templates/plannedTour/plannedToursMacros.jinja2:245
 msgid "Departure Method"
 msgstr ""
 
