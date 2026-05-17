@@ -188,7 +188,7 @@ def construct_blueprint(
             name='',
             type=fitSession.workout_type.name,
             date=fitSession.start_time.strftime(DateFormats.DATE_FORMAT_DATE),  # type: ignore[attr-defined]
-            time=fitSession.start_time.strftime(DateFormats.DATE_FORMAT_DATE_TIME),  # type: ignore[attr-defined]
+            time=fitSession.start_time.strftime(DateFormats.DATE_FORMAT_TIME),  # type: ignore[attr-defined]
             distance=None if fitSession.distance is None else fitSession.distance / 1000,
             duration_hours=fitSession.duration // 3600,
             duration_minutes=fitSession.duration % 3600 // 60,
