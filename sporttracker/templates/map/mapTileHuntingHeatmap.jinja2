@@ -22,6 +22,11 @@
 
         <div class="row mt-3 g-0">
             <div class="col mb-3 d-flex flex-column flex-lg-row align-items-center justify-content-center">
+                <button class="btn btn-sm {% if not quickFilterState.is_all_years_active() %}btn-light{% else %}btn-outline-light{% endif %} d-inline-flex align-items-center me-lg-5 mb-3 mb-lg-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas">
+                    <span class="material-symbols-outlined fs-5">filter_alt</span>
+                    <span class="ms-2">{{ gettext('Filter') }}</span>
+                </button>
+
                 <div class="d-flex flex-column flex-lg-row align-items-center justify-content-center">
                     <h5 class="text-center mb-2 mb-lg-0 me-3">{{ gettext('Number of visits') }}:</h5>
                     <div class="d-flex flex-row align-items-center justify-content-center mb-3 mb-lg-0">
@@ -43,10 +48,6 @@
                     <label class="form-check-label" for="tileHuntingEnableGrid">{{ gettext('Show grid') }}</label>
                 </div>
 
-                <div class="mt-3 mt-md-0 ms-0 ms-md-5 mb-0">
-                    {{ mapMacros.mapYearFilter(quickFilterState, redirectUrl) }}
-                </div>
-
                 <h5 class="mt-3 mt-md-0 ms-0 ms-md-5 mb-0" id="warning-zoom">
                     <span class="badge text-bg-warning text-wrap">{{ gettext('Zoom in to view visited tiles.') }}</span>
                 </h5>
@@ -56,6 +57,19 @@
         <div class="row gx-0 gy-0">
             <div class="col col-12">
                 <div id="map" class="leaflet-map text-dark map-taller"></div>
+            </div>
+        </div>
+
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas" data-bs-theme="dark">
+            <div class="offcanvas-header pb-2">
+                <h5 class="offcanvas-title mx-auto d-flex flex-row align-items-center justify-content-center">
+                    <span class="material-symbols-outlined fs-5">filter_alt</span>
+                    <span>{{ gettext('Filter') }}</span>
+                </h5>
+                <button type="button" class="btn-close ms-0" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body pt-0">
+                {{ mapMacros.mapYearFilter(quickFilterState, url_for(redirectUrl)) }}
             </div>
         </div>
 

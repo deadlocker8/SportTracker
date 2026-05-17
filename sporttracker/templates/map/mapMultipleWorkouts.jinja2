@@ -32,7 +32,7 @@
                     {% set isAnyFilterActive=plannedTourFilterState.is_any_filter_active() %}
                 {% endif %}
                 {% if mapMode == 'workouts' %}
-                    {% set isAnyFilterActive=quickFilterState.is_all_years_active() %}
+                    {% set isAnyFilterActive=not quickFilterState.is_all_years_active() %}
                 {% endif %}
 
                 <div class="d-none d-lg-block">
@@ -57,15 +57,15 @@
                     <div class="d-flex flex-column align-items-center justify-content-center ms-3">
                         {{ toggleWorkoutsAndPlannedTours('mb-3') }}
                         {{ macros.workout_type_quick_filter(url_for(redirectUrl), true) }}
-                        {% if mapMode == 'plannedTours' and current_user.isTileHuntingActivated %}
-                            <div class="d-flex align-items-center justify-content-center mt-3 gap-3">
-                                <button class="btn btn-sm {% if isAnyFilterActive %}btn-outline-light{% else %}btn-light{% endif %} d-inline-flex align-items-center" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas">
-                                    <span class="material-symbols-outlined fs-5">filter_alt</span>
-                                    <span class="ms-2">{{ gettext('Filter') }}</span>
-                                </button>
-                                {{ mapMacros.tileHuntingMapSettings(tileHuntingFilterState,url_for('maps.showAllPlannedToursOnMap'), enableTilesOption=true, enableGridOption=true, enableNewTilesOption=false, enableMaxSquareOption=true, enablePlannedTileOption=true, forceButtonText=true, classes="") }}
-                            </div>
-                        {% endif %}
+                        <div class="d-flex align-items-center justify-content-center mt-3 gap-3">
+                            <button class="btn btn-sm {% if isAnyFilterActive %}btn-outline-light{% else %}btn-light{% endif %} d-inline-flex align-items-center" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas">
+                                <span class="material-symbols-outlined fs-5">filter_alt</span>
+                                <span class="ms-2">{{ gettext('Filter') }}</span>
+                            </button>
+                            {% if mapMode == 'plannedTours' and current_user.isTileHuntingActivated %}
+                                    {{ mapMacros.tileHuntingMapSettings(tileHuntingFilterState,url_for('maps.showAllPlannedToursOnMap'), enableTilesOption=true, enableGridOption=true, enableNewTilesOption=false, enableMaxSquareOption=true, enablePlannedTileOption=true, forceButtonText=true, classes="") }}
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                     {{ plannedTourMacros.plannedTourFilter(plannedTourFilterState, redirectUrl=url_for('maps.showAllPlannedToursOnMap'), classes="") }}
                 {% endif %}
                 {% if mapMode == 'workouts' %}
-                    {{ mapMacros.mapYearFilter(quickFilterState, redirectUrl) }}
+                    {{ mapMacros.mapYearFilter(quickFilterState, url_for(redirectUrl)) }}
                 {% endif %}
             </div>
         </div>

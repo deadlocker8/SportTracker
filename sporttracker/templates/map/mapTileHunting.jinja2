@@ -21,7 +21,12 @@
         {{ mapMacros.mapLocale() }}
 
         <div class="row my-3 g-0">
-            <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center">
+            <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center gap-3 gap-xl-5">
+                <button class="btn btn-sm {% if not quickFilterState.is_all_years_active() %}btn-light{% else %}btn-outline-light{% endif %} d-inline-flex align-items-center " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas">
+                    <span class="material-symbols-outlined fs-5">filter_alt</span>
+                    <span class="ms-2">{{ gettext('Filter') }}</span>
+                </button>
+
                 <div class="d-none d-lg-block">
                     {{ macros.workout_type_quick_filter(url_for(redirectUrl), true) }}
                 </div>
@@ -29,10 +34,6 @@
                     <div class="d-flex flex-column align-items-center justify-content-center ms-3">
                         {{ macros.workout_type_quick_filter(url_for(redirectUrl), true) }}
                     </div>
-                </div>
-
-                <div class="ms-5">
-                    {{ mapMacros.mapYearFilter(quickFilterState, redirectUrl) }}
                 </div>
             </div>
         </div>
@@ -83,6 +84,18 @@
             </div>
         </div>
 
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas" data-bs-theme="dark">
+            <div class="offcanvas-header pb-2">
+                <h5 class="offcanvas-title mx-auto d-flex flex-row align-items-center justify-content-center">
+                    <span class="material-symbols-outlined fs-5">filter_alt</span>
+                    <span>{{ gettext('Filter') }}</span>
+                </h5>
+                <button type="button" class="btn-close ms-0" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body pt-0">
+                {{ mapMacros.mapYearFilter(quickFilterState, url_for(redirectUrl)) }}
+            </div>
+        </div>
 
         <script>
             tileRenderUrl = '{{ tileRenderUrl }}';

@@ -216,38 +216,37 @@
 {%- endmacro %}
 
 {% macro mapYearFilter(quickFilterState, redirectUrl) -%}
-    {% set allSelected = quickFilterState.is_all_years_active() %}
+    <form role="form" action="{{ url_for('quickFilter.toggleYears') }}" method="post">
+        <input type="hidden" name="redirectUrl" value="{{ redirectUrl }}"/>
 
-    <div class="dropdown position-static">
-        <button class="btn btn-sm {% if allSelected %}btn-outline-light{% else %}btn-light{% endif %} dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-            <span class="material-symbols-outlined fs-5">filter_alt</span>
-            <span class="ms-2">{{ gettext('Years') }}</span>
-        </button>
-        <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
-            <form role="form" action="{{ url_for('quickFilter.toggleYears') }}" method="post">
-                <input type="hidden" name="redirectUrl" value="{{ url_for(redirectUrl) }}"/>
+        <div class="my-3 d-flex flex-column align-items-start justify-content-start gap-3 overflow-x-auto">
+            <div class="d-flex align-items-center mx-auto gap-2 mb-2">
+                <a href="{{ url_for('quickFilter.resetYears', redirectUrl=redirectUrl) }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap ">{{ gettext('Reset') }}</a>
 
-                <div id="dropdown-years-container" class="overflow-y-auto">
-                    {% for year, isActive in quickFilterState.get_years().items() %}
-                        <div class="form-check text-nowrap mb-2">
-                            <input class="form-check-input" type="checkbox"
-                                   id="availableYear-{{ loop.index }}"
-                                   name="activeYears"
-                                   value="{{ year }}"
-                                   {% if isActive %}checked{% endif %}>
-                            <label class="form-check-label" for="availableYear-{{ loop.index }}">
-                                {{ year }}
-                            </label>
-                        </div>
-                    {% endfor %}
-                </div>
+                {{ macros.buttonSubmitAutomaticallyDisabled(text=gettext('Apply'), disabledText=gettext('Applying...'), icon=none, classes='btn-sm btn-primary text-nowrap', id='buttonApplyFilter') }}
+            </div>
 
-                {% if quickFilterState.get_years() | length != 0 %}
-                    <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-sm btn-success my-2">{{ gettext('Apply') }}</button>
+            <hr class="w-100 my-0"/>
+
+            <div class="d-flex align-items-center justify-content-center">
+                <span class="material-symbols-outlined fs-5">filter_alt</span>
+                <span class="ms-2">{{ gettext('Years') }}</span>
+            </div>
+
+            <div class="d-flex flex-column align-items-start justify-content-center px-1">
+                {% for year, isActive in quickFilterState.get_years().items() %}
+                    <div class="form-check text-nowrap mb-2">
+                        <input class="form-check-input" type="checkbox"
+                               id="availableYear-{{ loop.index }}"
+                               name="activeYears"
+                               value="{{ year }}"
+                               {% if isActive %}checked{% endif %}>
+                        <label class="form-check-label" for="availableYear-{{ loop.index }}">
+                            {{ year }}
+                        </label>
                     </div>
-                {% endif %}
-            </form>
+                {% endfor %}
+            </div>
         </div>
-    </div>
+    </form>
 {%- endmacro %}

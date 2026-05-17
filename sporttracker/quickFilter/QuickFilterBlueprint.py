@@ -39,4 +39,15 @@ def construct_blueprint():
 
         return redirect(redirectUrl)
 
+    @quickFilter.route('/resetYears')
+    @login_required
+    def resetYears():
+        redirectUrl = request.args['redirectUrl']
+
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
+        quickFilterState.update(quickFilterState.get_workout_types(), list(quickFilterState.get_years().keys()))
+        db.session.commit()
+
+        return redirect(redirectUrl)
+
     return quickFilter

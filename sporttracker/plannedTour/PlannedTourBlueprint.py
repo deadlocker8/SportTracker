@@ -223,7 +223,7 @@ def construct_blueprint(
 
         return redirect(request.form.get('redirectUrl', url_for('plannedTours.listPlannedTours')))
 
-    @plannedTours.route('/resetFilter>')
+    @plannedTours.route('/resetFilter')
     @login_required
     def resetFilter():
         plannedTourFilterState = get_planned_tour_filter_state_by_user(current_user.id)
