@@ -26,7 +26,7 @@
         {% import 'map/mapMacros.jinja2' as mapMacros with context %}
         {{ mapMacros.mapLocale() }}
 
-        <div class="row mt-3">
+        <div class="row mx-0 mt-3">
             <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center">
                 <div class="d-none d-lg-block">
                     {{ toggleWorkoutsAndPlannedTours('me-5') }}
@@ -55,15 +55,21 @@
                     </div>
                 {% endif %}
             </div>
-
-            {% if mapMode == 'plannedTours' and current_user.isTileHuntingActivated %}
-                <div class="col col-12 px-4 mt-3">
-                    {{ plannedTourMacros.plannedTourFilter(plannedTourFilterState, redirectUrl=url_for('maps.showAllPlannedToursOnMap'), classes="mt-3") }}
-                </div>
-            {% endif %}
         </div>
 
-        <div id="map" class="leaflet-map w-100 text-dark mt-3"></div>
+        <div class="d-none d-lg-block">
+            <div class="row m-0">
+                <div class="col col-3 col-xxl-2 text-center ps-5">
+                    {% if mapMode == 'plannedTours' and current_user.isTileHuntingActivated %}
+                        <h4>{{ gettext('Filter') }}</h4>
+                        {{ plannedTourMacros.plannedTourFilter(plannedTourFilterState, redirectUrl=url_for('maps.showAllPlannedToursOnMap'), classes="mt-3") }}
+                    {% endif %}
+                </div>
+                <div class="col col-9 col-xxl-10">
+                    <div id="map" class="leaflet-map  text-dark mt-3"></div>
+                </div>
+            </div>
+        </div>
 
         <script>
             gpxInfo = {{ gpxInfo }};
