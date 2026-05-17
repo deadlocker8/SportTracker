@@ -28,42 +28,31 @@
 {%- endmacro %}
 
 {% macro maintenanceFilterCustomWorkoutField(maintenanceFilterState) -%}
-    <button class="btn btn-sm {% if maintenanceFilterState.is_active() %}btn-light{% else %}btn-outline-light{% endif %} dropdown-toggle d-inline-flex align-items-center {% if not hasCustomWorkoutFields %}disabled{% endif %}" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-        <span class="material-symbols-outlined fs-5">filter_alt</span>
-        <span class="ms-2">{{ gettext('Custom Workout Field') }}</span>
-    </button>
+    <div class="text-nowrap mb-2 w-100">
+        <select class="form-select w-100" id="customWorkoutFieldId" name="customWorkoutFieldId">
+            <option class="maintenance-event-custom-field-select-placeholder"></option>
 
-    <div class="dropdown-menu px-3 py-2" data-bs-theme="dark">
-        <div class="text-nowrap mb-2">
-            <label class="form-label" for="customWorkoutFieldId">
-                <span>{{ gettext('Custom Workout Field:') }}</span>
-            </label>
+            {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
+                {% for field in customFields %}
+                    <option value="{{ field.custom_field.id }}" data-workout-type="{{ workoutType.name }}">{{ workoutType.get_localized_name() }}: {{ field.custom_field.name | e }}</option>
+                {% endfor %}
+            {% endfor %}
+        </select>
+    </div>
 
-            <select class="form-select" id="customWorkoutFieldId" name="customWorkoutFieldId">
-                <option class="maintenance-event-custom-field-select-placeholder"></option>
+    <div class="text-nowrap mb-2 w-100">
+        <label class="form-label" for="customWorkoutFieldValue">
+            <span>{{ gettext('Value:') }}</span>
+        </label>
 
-                {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
-                    {% for field in customFields %}
-                        <option value="{{ field.custom_field.id }}" data-workout-type="{{ workoutType.name }}">{{ workoutType.get_localized_name() }}: {{ field.custom_field.name | e }}</option>
+        <select class="form-select w-100" id="customWorkoutFieldValue" name="customWorkoutFieldValue">
+            {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
+                {% for field in customFields %}
+                    {% for value in field.values %}
+                        <option value="{{ value | e }}" data-workout-type="{{ workoutType.name }}" data-field-id="{{ field.custom_field.id }}">{{ value | e }}</option>
                     {% endfor %}
                 {% endfor %}
-            </select>
-        </div>
-
-        <div class="text-nowrap mb-2">
-            <label class="form-label" for="customWorkoutFieldValue">
-                <span>{{ gettext('Value:') }}</span>
-            </label>
-
-            <select class="form-select" id="customWorkoutFieldValue" name="customWorkoutFieldValue">
-                {% for workoutType, customFields in customFieldsByWorkoutType.items() %}
-                    {% for field in customFields %}
-                        {% for value in field.values %}
-                            <option value="{{ value | e }}" data-workout-type="{{ workoutType.name }}" data-field-id="{{ field.custom_field.id }}">{{ value | e }}</option>
-                        {% endfor %}
-                    {% endfor %}
-                {% endfor %}
-            </select>
-        </div>
+            {% endfor %}
+        </select>
     </div>
 {%- endmacro %}
