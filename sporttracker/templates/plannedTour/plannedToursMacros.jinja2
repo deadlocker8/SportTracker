@@ -92,8 +92,6 @@
 {%- endmacro %}
 
 {% macro plannedTourFilterStatus(isDoneActive, isTodoActive) -%}
-    {% set allSelected = isDoneActive and isTodoActive %}
-
     <div class="d-flex align-items-center justify-content-center">
         <span class="material-symbols-outlined fs-5">filter_alt</span>
         <span class="ms-2">{{ gettext('Status') }}</span>
@@ -124,8 +122,6 @@
 {%- endmacro %}
 
 {% macro plannedTourFilterEnum(availableTypes, selectedTypes, buttonText, identifier) -%}
-    {% set allSelected = availableTypes | length == selectedTypes | length %}
-
     <div class="d-flex align-items-center justify-content-center">
         <span class="material-symbols-outlined fs-5">filter_alt</span>
         <span class="ms-2">{{ buttonText }}</span>
@@ -194,8 +190,6 @@
 {%- endmacro %}
 
 {% macro plannedTourFilterLongDistanceTours(isLongDistanceToursIncludeSelected, isLongDistanceToursExcludeSelected) -%}
-    {% set allSelected = isLongDistanceToursIncludeSelected and isLongDistanceToursExcludeSelected %}
-
     <div class="d-flex align-items-center justify-content-center">
         <span class="material-symbols-outlined fs-5">filter_alt</span>
         <span class="ms-2">{{ gettext('Long-distance Tours') }}</span>
