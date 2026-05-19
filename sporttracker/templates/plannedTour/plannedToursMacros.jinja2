@@ -61,7 +61,7 @@
 {%- endmacro %}
 
 {% macro linkedWorkoutsMacro(idSuffix, plannedTour) -%}
-    <div class="modal fade" tabindex="-1" id="linked-workouts-modal-{{ idSuffix }}" data-bs-theme="dark">>
+    <div class="modal fade" tabindex="-1" id="linked-workouts-modal-{{ idSuffix }}" data-bs-theme="dark">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header d-flex align-items-center justify-content-start">
@@ -161,8 +161,6 @@
 {%- endmacro %}
 
 {% macro plannedTourFilterDistance(minDistance, maxDistance) -%}
-    {% set bothEmpty = minDistance is none and maxDistance is none %}
-
     <div class="d-flex align-items-center justify-content-center">
         <span class="material-symbols-outlined fs-5">filter_alt</span>
         <span class="ms-2">{{ gettext('Distance (in km)') }}</span>

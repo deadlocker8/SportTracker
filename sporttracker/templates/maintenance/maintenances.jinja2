@@ -106,14 +106,14 @@
             </section>
 
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas" data-bs-theme="dark">
-                <div class="offcanvas-header pb-2">
+                <div class="offcanvas-header pb-2 bg-dark text-white">
                     <h5 class="offcanvas-title mx-auto d-flex flex-row align-items-center justify-content-center">
                         <span class="material-symbols-outlined fs-5">filter_alt</span>
                         <span>{{ gettext('Filter') }}</span>
                     </h5>
-                    <button type="button" class="btn-close ms-0" data-bs-dismiss="offcanvas"></button>
+                    <button type="button" class="btn-close ms-0" data-bs-dismiss="offcanvas" data-bs-theme="dark"></button>
                 </div>
-                <div class="offcanvas-body pt-0">
+                <div class="offcanvas-body pt-0 bg-dark text-white">
                     <form role="form" action="{{ url_for('maintenances.applyFilter') }}" method="post"
                           onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);">
                         <div class="my-3 d-flex flex-column align-items-start justify-content-start gap-3 overflow-x-auto">
