@@ -41,6 +41,7 @@ ruff = "0.15.13"
 pre-commit = "4.6.0"
 mypy = "2.1.0"
 pytest = "9.0.3"
+pytest-selenium = "4.1.0"
 selenium = "4.43.0"
 
 types-python-dateutil = "*"
