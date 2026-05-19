@@ -1877,14 +1877,14 @@ files = [
 
 [[package]]
 name = "selenium"
-version = "4.41.0"
+version = "4.43.0"
 description = "Official Python bindings for Selenium WebDriver"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "selenium-4.41.0-py3-none-any.whl", hash = "sha256:b8ccde8d2e7642221ca64af184a92c19eee6accf2e27f20f30472f5efae18eb1"},
-    {file = "selenium-4.41.0.tar.gz", hash = "sha256:003e971f805231ad63e671783a2b91a299355d10cefb9de964c36ff3819115aa"},
+    {file = "selenium-4.43.0-py3-none-any.whl", hash = "sha256:4f97639055dcfa9eadf8ccf549ba7b0e49c655d4e2bde19b9a44e916b754e769"},
+    {file = "selenium-4.43.0.tar.gz", hash = "sha256:bada5c08a989f812728a4b5bea884d8e91894e939a441cc3a025201ce718581e"},
 ]
 
 [package.dependencies]
@@ -2427,4 +2427,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.14"
-content-hash = "f24b709c2f7876347bb3e4c6d9d1396546ac9dce669b7d70061f8a0f8b50ec91"
+content-hash = "4075f11a580e3d3229b5a3daba13d87dea376e4fa14b8bfaf3be62dc314ff384"
