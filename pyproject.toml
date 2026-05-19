@@ -39,7 +39,7 @@ cffi = '2.0.0'
 bandit = "1.9.4"
 ruff = "0.15.13"
 pre-commit = "4.6.0"
-mypy = "1.19.1"
+mypy = "2.1.0"
 pytest = "9.0.3"
 selenium = "4.43.0"
 
