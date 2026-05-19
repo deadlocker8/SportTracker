@@ -40,7 +40,7 @@ bandit = "1.9.4"
 ruff = "0.15.6"
 pre-commit = "4.6.0"
 mypy = "1.19.1"
-pytest = "9.0.2"
+pytest = "9.0.3"
 pytest-selenium = "4.1.0"
 selenium = "4.43.0"
 
