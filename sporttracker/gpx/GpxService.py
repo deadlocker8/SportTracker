@@ -11,6 +11,7 @@ from typing import Any
 from zipfile import ZipFile, ZIP_DEFLATED
 
 import gpxpy
+from TheCodeLabs_BaseUtils.Color import Color
 from gpxpy.gpx import GPX, GPXTrack, GPXTrackPoint
 from sqlalchemy import delete
 from werkzeug.datastructures.file_storage import FileStorage
@@ -471,7 +472,7 @@ class GpxParser:
         """
         Returns [west, south, east, north] bounding box for a tile at given zoom.
         """
-        n = 1 << zoom
+        n = math.pow(2, zoom)
         lon_west = x / n * 360.0 - 180.0
         lon_east = (x + 1) / n * 360.0 - 180.0
         lat_north = math.degrees(math.atan(math.sinh(math.pi * (1 - 2 * y / n))))
@@ -493,3 +494,35 @@ class GpxParser:
 
         # Match '&' that is not followed by a valid HTML entity like &amp;, &lt;, etc.
         return re.sub(r'&(?!#?\w+;)', '%26', url)
+
+    @staticmethod
+    def create_geojson_feature(
+        x: int, y: int, base_zoom: int, fill_color: Color, border_color: Color | None
+    ) -> dict[str, Any]:
+        border_weight = 0 if border_color is None else 1
+
+        bbox_tile = GpxParser.tile_to_lat_lng_bounds(x, y, base_zoom)
+
+        return {
+            'type': 'Feature',
+            'properties': {
+                'fillColor': fill_color.to_rgb(),
+                'fillOpacity': fill_color.opacity,
+                'color': None if border_color is None else border_color.to_rgb(),
+                'weight': border_weight,
+                'x': x,
+                'y': y,
+            },
+            'geometry': {
+                'type': 'Polygon',
+                'coordinates': [
+                    [
+                        [bbox_tile[0], bbox_tile[1]],
+                        [bbox_tile[2], bbox_tile[1]],
+                        [bbox_tile[2], bbox_tile[3]],
+                        [bbox_tile[0], bbox_tile[3]],
+                        [bbox_tile[0], bbox_tile[1]],
+                    ]
+                ],
+            },
+        }

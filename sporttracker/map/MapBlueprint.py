@@ -291,7 +291,7 @@ def construct_blueprint(
             features = []
             for (x, y), count in visit_counts_by_position.items():
                 color = TileRenderService.calculate_heatmap_color(count)
-                features.append(make_feature(x, y, base_zoom, color, border_color))
+                features.append(GpxParser.create_geojson_feature(x, y, base_zoom, color, border_color))
         else:
             tile_color_by_position = visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles(
                 bounding_box.x_min, bounding_box.x_max, bounding_box.y_min, bounding_box.y_max, current_user.id
@@ -312,7 +312,7 @@ def construct_blueprint(
                 if (x, y) in max_square_positions:
                     color = max_square_color
 
-                features.append(make_feature(x, y, base_zoom, color, border_color))
+                features.append(GpxParser.create_geojson_feature(x, y, base_zoom, color, border_color))
 
             for pt in planned_tiles:
                 key = (pt.x, pt.y)
@@ -322,38 +322,9 @@ def construct_blueprint(
                 if key in max_square_positions:
                     continue
 
-                features.append(make_feature(pt.x, pt.y, base_zoom, COLOR_PLANNED, border_color))
+                features.append(GpxParser.create_geojson_feature(pt.x, pt.y, base_zoom, COLOR_PLANNED, border_color))
 
         return jsonify({'type': 'FeatureCollection', 'features': features})
-
-    def make_feature(x: int, y: int, base_zoom: int, fill_color: Color, border_color: Color | None) -> dict[str, Any]:
-        border_weight = 0 if border_color is None else 1
-
-        bbox_tile = GpxParser.tile_to_lat_lng_bounds(x, y, base_zoom)
-
-        return {
-            'type': 'Feature',
-            'properties': {
-                'fillColor': fill_color.to_rgb(),
-                'fillOpacity': fill_color.opacity,
-                'color': None if border_color is None else border_color.to_rgb(),
-                'weight': border_weight,
-                'x': x,
-                'y': y,
-            },
-            'geometry': {
-                'type': 'Polygon',
-                'coordinates': [
-                    [
-                        [bbox_tile[0], bbox_tile[1]],
-                        [bbox_tile[2], bbox_tile[1]],
-                        [bbox_tile[2], bbox_tile[3]],
-                        [bbox_tile[0], bbox_tile[3]],
-                        [bbox_tile[0], bbox_tile[1]],
-                    ]
-                ],
-            },
-        }
 
     @maps.route('/map/tileOverlay/<string:share_code>/<int:zoom>/<int:x>/<int:y>.png', methods=['GET'])
     def renderAllTileHuntingTilesViaShareCode(share_code: str, zoom: int, x: int, y: int):
