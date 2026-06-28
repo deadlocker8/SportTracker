@@ -77,7 +77,7 @@ class LongDistanceTourModel:
             if len(planned_tour.linkedWorkouts) == 0:
                 continue
 
-            completedDistance += planned_tour.gpxMetadata.length
+            completedDistance += planned_tour.linkedWorkouts[0].distance
 
         return completedDistance
 

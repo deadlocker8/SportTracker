@@ -1,5 +1,6 @@
 # 1.49.0 - (XX.XX.XX)
 - fix: improved long-distance tours responsiveness on small devices (#286)
+- fix: long-distance tours: show actual driven distance instead of summed up planned distances
 
 # 1.48.0 - (19.05.26)
 - add: maintenance event form: prefill date input with current date (#284)
