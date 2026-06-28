@@ -47,13 +47,18 @@ function initMap()
             }
             return style;
         }
-    }).addTo(map);
+    });
 
     let loadedTiles = new Set();
     let loadTimer = null;
 
     function loadTiles()
     {
+        if(map.getZoom() < mapMinZoomLevel)
+        {
+            return;
+        }
+
         const bounds = map.getBounds();
         const bbox = bounds.getWest() + ',' + bounds.getSouth() + ',' + bounds.getEast() + ',' + bounds.getNorth();
 
@@ -104,6 +109,22 @@ function initMap()
     {
         const currentZoom = map.getZoom();
         document.getElementById('warning-zoom').classList.toggle('d-none', currentZoom >= mapMinZoomLevel);
+
+        if(currentZoom >= mapMinZoomLevel)
+        {
+            if(!map.hasLayer(tileLayer))
+            {
+                tileLayer.addTo(map);
+            }
+            debouncedLoadTiles();
+        }
+        else
+        {
+            if(map.hasLayer(tileLayer))
+            {
+                map.removeLayer(tileLayer);
+            }
+        }
     });
 
     loadTiles();
