@@ -468,7 +468,9 @@ class GpxParser:
 
     @staticmethod
     def tile_to_lat_lng_bounds(x: int, y: int, zoom: int) -> list[float]:
-        """Returns [west, south, east, north] bounding box for a tile at given zoom."""
+        """
+        Returns [west, south, east, north] bounding box for a tile at given zoom.
+        """
         n = 1 << zoom
         lon_west = x / n * 360.0 - 180.0
         lon_east = (x + 1) / n * 360.0 - 180.0

@@ -6,6 +6,7 @@ from sqlalchemy import extract, text, func, or_
 from sqlalchemy.orm import aliased
 
 from sporttracker.gpx.GpxService import VisitedTile
+from sporttracker.tileHunting.Colors import COLOR_MULTIPLE_MATCHES, Color, COLOR_NOT_NEW
 from sporttracker.tileHunting.GpxPlannedTileEntity import GpxPlannedTile
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
@@ -34,8 +35,6 @@ class TileCountPosition:
 
 
 class VisitedTileService:
-    COLOR_NOT_NEW = '#00000055'
-
     def __init__(
         self,
         newVisitedTileCache: NewVisitedTileCache,
@@ -69,7 +68,7 @@ class VisitedTileService:
 
     def determine_tile_colors_of_workouts_that_visit_tiles(
         self, min_x: int, max_x: int, min_y: int, max_y: int, user_id: int
-    ) -> list[TileColorPosition]:
+    ) -> dict[tuple[int, int], Color]:
         if self._workoutId is None:
             return self.__determine_tile_colors_of_all_workouts_that_visit_tiles(min_x, max_x, min_y, max_y, user_id)
 
@@ -84,7 +83,7 @@ class VisitedTileService:
 
     def __determine_tile_colors_of_all_workouts_that_visit_tiles(
         self, min_x: int, max_x: int, min_y: int, max_y: int, user_id: int
-    ) -> list[TileColorPosition]:
+    ) -> dict[tuple[int, int], Color]:
         distanceWorkoutAlias = aliased(DistanceWorkout)
         gpxVisitedTileAlias = aliased(GpxVisitedTile)
 
@@ -103,7 +102,16 @@ class VisitedTileService:
             .all()
         )
 
-        return [TileColorPosition(r[0].tile_color, r[1], r[2]) for r in rows]
+        result: dict[tuple[int, int], Color] = {}
+        for r in rows:
+            key = (r[1], r[2])
+            color = r[0].tile_color
+            if key not in result:
+                result[key] = Color.from_hex(color)
+            elif result[key] != color:
+                result[key] = COLOR_MULTIPLE_MATCHES
+
+        return result
 
     def determine_planned_tiles(
         self, min_x: int, max_x: int, min_y: int, max_y: int, user_id: int
@@ -169,7 +177,7 @@ class VisitedTileService:
         max_y: int,
         workoutId: int,
         onlyHighlightNewTiles: bool,
-    ) -> list[TileColorPosition]:
+    ) -> dict[tuple[int, int], Color]:
         distanceWorkoutAlias = aliased(DistanceWorkout)
         gpxVisitedTileAlias = aliased(GpxVisitedTile)
 
@@ -192,16 +200,17 @@ class VisitedTileService:
         if workout is not None:
             newVisitedTiles = VisitedTileService.__get_new_visited_tiles_by_workout(workout)
 
-        result = []
+        result: dict[tuple[int, int], Color] = {}
         for row in rows:
+            key = (row[1], row[2])
             if onlyHighlightNewTiles:
-                tileColor = VisitedTileService.COLOR_NOT_NEW
-                if (row[1], row[2]) in newVisitedTiles:
-                    tileColor = row[0].tile_color
+                tileColor = COLOR_NOT_NEW
+                if key in newVisitedTiles:
+                    tileColor = Color.from_hex(row[0].tile_color)
             else:
-                tileColor = row[0].tile_color
+                tileColor = Color.from_hex(row[0].tile_color)
 
-            result.append(TileColorPosition(tileColor, row[1], row[2]))
+            result[key] = tileColor
 
         return result
 

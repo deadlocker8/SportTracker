@@ -1,7 +1,6 @@
 import io
 import logging
 import time
-from collections import defaultdict
 from datetime import datetime
 from typing import Any
 
@@ -20,41 +19,38 @@ from flask import (
 from flask_login import login_required, current_user
 from sqlalchemy import func, extract
 
+from sporttracker import Constants
+from sporttracker.db import db
+from sporttracker.gpx.GpxService import GpxService, GpxParser
 from sporttracker.helpers import DateFormats
 from sporttracker.longDistanceTour.LongDistanceTourBlueprint import LongDistanceTourModel
+from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 from sporttracker.plannedTour.PlannedTourBlueprint import PlannedTourModel
+from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user
+from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
+from sporttracker.tileHunting.BoundingBox import BoundingBox
+from sporttracker.tileHunting.Colors import (
+    COLOR_PLANNED,
+    COLOR_BORDER,
+    Color,
+)
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
-from sporttracker.tileHunting.TileRenderService import TileRenderService, TileRenderColorMode
-from sporttracker.tileHunting.VisitedTileService import VisitedTileService
-from sporttracker import Constants
-from sporttracker.gpx.GpxService import GpxService, GpxParser
-from sporttracker.workout.WorkoutModel import DistanceWorkoutModel
-from sporttracker.workout.WorkoutService import WorkoutService
-from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
-from sporttracker.user.UserEntity import get_user_by_tile_hunting_shared_code
-from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
-from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user
-from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
 from sporttracker.tileHunting.TileHuntingFilterStateEntity import (
     get_tile_hunting_filter_state_by_user,
     TileHuntingFilterState,
 )
+from sporttracker.tileHunting.TileRenderService import TileRenderService, TileRenderColorMode
+from sporttracker.tileHunting.VisitedTileService import VisitedTileService
+from sporttracker.user.UserEntity import get_user_by_tile_hunting_shared_code
+from sporttracker.workout.WorkoutModel import DistanceWorkoutModel
+from sporttracker.workout.WorkoutService import WorkoutService
+from sporttracker.workout.WorkoutType import WorkoutType
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
-from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
-from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
-
-
-def _parse_hex_rgba(hex_color: str) -> tuple[str, float]:
-    """Convert '#RRGGBBAA' to ('#RRGGBB', opacity) or '#RRGGBB' to ('#RRGGBB', 1.0)."""
-    hex_color = hex_color.lstrip('#')
-    if len(hex_color) == 8:
-        r, g, b, a = hex_color[:2], hex_color[2:4], hex_color[4:6], hex_color[6:8]
-        return f'#{r}{g}{b}', round(int(a, 16) / 255.0, 4)
-    return f'#{hex_color}', 1.0
 
 
 def createGpxInfo(
@@ -424,120 +420,85 @@ def construct_blueprint(
             image.save(output, format='PNG')
             return Response(output.getvalue(), mimetype='image/png')
 
-    @maps.route('/map/api/tiles')
+    @maps.route('/map/api/tiles', methods=['GET'])
     @login_required
     def apiTileHunting():
         bbox = request.args.get('bbox')
         if not bbox:
             return jsonify({'type': 'FeatureCollection', 'features': []})
 
-        try:
-            parts = bbox.split(',')
-            min_lng, min_lat, max_lng, max_lat = [float(p) for p in parts]
-        except (ValueError, IndexError):
-            return jsonify({'type': 'FeatureCollection', 'features': []})
-
         base_zoom = tileHuntingSettings['baseZoomLevel']
 
-        tile_nw = GpxParser.convert_coordinate_to_tile_position(max_lat, min_lng, base_zoom)
-        tile_se = GpxParser.convert_coordinate_to_tile_position(min_lat, max_lng, base_zoom)
-
-        x_min = min(tile_nw.x, tile_se.x)
-        x_max = max(tile_nw.x, tile_se.x)
-        y_min = min(tile_nw.y, tile_se.y)
-        y_max = max(tile_nw.y, tile_se.y)
+        bounding_box = __calculate_bounding_box(bbox, base_zoom)
+        if bounding_box is None:
+            return jsonify({'type': 'FeatureCollection', 'features': []})
 
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
         tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
         visitedTileService = __create_visited_tile_service(quickFilterState, tileHuntingFilterState)
 
-        tileColorPositions = visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles(
-            x_min, x_max, y_min, y_max, current_user.id
+        tile_color_by_position = visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles(
+            bounding_box.x_min, bounding_box.x_max, bounding_box.y_min, bounding_box.y_max, current_user.id
         )
 
-        tile_colors: dict[tuple[int, int], list[str]] = defaultdict(list)
-        for tc in tileColorPositions:
-            tile_colors[(tc.x, tc.y)].append(tc.tile_color)
+        planned_tiles = visitedTileService.determine_planned_tiles(
+            bounding_box.x_min, bounding_box.x_max, bounding_box.y_min, bounding_box.y_max, current_user.id
+        )
 
-        plannedTilePositions = visitedTileService.determine_planned_tiles(x_min, x_max, y_min, y_max, current_user.id)
-        planned_set = set((p.x, p.y) for p in plannedTilePositions)
-
-        max_square_set: set[tuple[int, int]] = set()
+        max_square_positions: set[tuple[int, int]] = set()
         if tileHuntingFilterState.is_show_max_square_active:
-            max_square_set = set(visitedTileService.get_max_square_tile_positions())
+            max_square_positions = set(visitedTileService.get_max_square_tile_positions())
 
-        border_hex = '#000000' if tileHuntingFilterState.is_show_grid_active else None
+        border_color = COLOR_BORDER if tileHuntingFilterState.is_show_grid_active else None
+        max_square_color = Color.from_hex(tileHuntingSettings['maxSquareColor'])
 
-        features: list[dict[str, Any]] = []
+        features = []
+        for (x, y), color in tile_color_by_position.items():
+            if (x, y) in max_square_positions:
+                color = max_square_color
 
-        for (tx, ty), colors in tile_colors.items():
-            if (tx, ty) in max_square_set:
-                fill_color_hex = tileHuntingSettings['maxSquareColor']
-                fill_color, fill_opacity = _parse_hex_rgba(fill_color_hex)
-            elif len(colors) == 1:
-                fill_color, fill_opacity = _parse_hex_rgba(colors[0])
-            else:
-                fill_color = '#FF0000'
-                fill_opacity = 0.376
+            features.append(make_feature(x, y, base_zoom, color, border_color))
 
-            bbox_tile = GpxParser.tile_to_lat_lng_bounds(tx, ty, base_zoom)
+        for pt in planned_tiles:
+            key = (pt.x, pt.y)
 
-            features.append(
-                {
-                    'type': 'Feature',
-                    'properties': {
-                        'fillColor': fill_color,
-                        'fillOpacity': fill_opacity,
-                        'color': border_hex,
-                        'weight': 1 if border_hex else 0,
-                        'x': tx,
-                        'y': ty,
-                    },
-                    'geometry': {
-                        'type': 'Polygon',
-                        'coordinates': [
-                            [
-                                [bbox_tile[0], bbox_tile[1]],
-                                [bbox_tile[2], bbox_tile[1]],
-                                [bbox_tile[2], bbox_tile[3]],
-                                [bbox_tile[0], bbox_tile[3]],
-                                [bbox_tile[0], bbox_tile[1]],
-                            ]
-                        ],
-                    },
-                }
-            )
+            if key in tile_color_by_position:
+                continue
+            if key in max_square_positions:
+                continue
 
-        for pp in plannedTilePositions:
-            if (pp.x, pp.y) not in tile_colors and (pp.x, pp.y) not in max_square_set:
-                bbox_tile = GpxParser.tile_to_lat_lng_bounds(pp.x, pp.y, base_zoom)
-                features.append(
-                    {
-                        'type': 'Feature',
-                        'properties': {
-                            'fillColor': '#000000',
-                            'fillOpacity': 0.33,
-                            'color': border_hex,
-                            'weight': 1 if border_hex else 0,
-                            'x': pp.x,
-                            'y': pp.y,
-                        },
-                        'geometry': {
-                            'type': 'Polygon',
-                            'coordinates': [
-                                [
-                                    [bbox_tile[0], bbox_tile[1]],
-                                    [bbox_tile[2], bbox_tile[1]],
-                                    [bbox_tile[2], bbox_tile[3]],
-                                    [bbox_tile[0], bbox_tile[3]],
-                                    [bbox_tile[0], bbox_tile[1]],
-                                ]
-                            ],
-                        },
-                    }
-                )
+            features.append(make_feature(pt.x, pt.y, base_zoom, COLOR_PLANNED, border_color))
 
         return jsonify({'type': 'FeatureCollection', 'features': features})
+
+    def make_feature(x: int, y: int, base_zoom: int, fill_color: Color, border_color: Color | None) -> dict[str, Any]:
+        border_weight = 0 if border_color is None else 1
+
+        bbox_tile = GpxParser.tile_to_lat_lng_bounds(x, y, base_zoom)
+
+        return {
+            'type': 'Feature',
+            'properties': {
+                'fillColor': fill_color.to_rgb(),
+                'fillOpacity': fill_color.opacity,
+                'color': None if border_color is None else border_color.to_rgb(),
+                'weight': border_weight,
+                'x': x,
+                'y': y,
+            },
+            'geometry': {
+                'type': 'Polygon',
+                'coordinates': [
+                    [
+                        [bbox_tile[0], bbox_tile[1]],
+                        [bbox_tile[2], bbox_tile[1]],
+                        [bbox_tile[2], bbox_tile[3]],
+                        [bbox_tile[0], bbox_tile[3]],
+                        [bbox_tile[0], bbox_tile[1]],
+                    ]
+                ],
+            },
+        }
 
     @maps.route('/map/tileOverlay/<string:share_code>/<int:zoom>/<int:x>/<int:y>.png')
     def renderAllTileHuntingTilesViaShareCode(share_code: str, zoom: int, x: int, y: int):
@@ -789,6 +750,23 @@ def construct_blueprint(
             quickFilterState,
             tileHuntingFilterState,
             distanceWorkoutService,
+        )
+
+    def __calculate_bounding_box(bbox: str, base_zoom: int) -> BoundingBox | None:
+        try:
+            parts = bbox.split(',')
+            min_lng, min_lat, max_lng, max_lat = [float(p) for p in parts]
+        except (ValueError, IndexError):
+            return None
+
+        tile_nw = GpxParser.convert_coordinate_to_tile_position(max_lat, min_lng, base_zoom)
+        tile_se = GpxParser.convert_coordinate_to_tile_position(min_lat, max_lng, base_zoom)
+
+        return BoundingBox(
+            x_min=min(tile_nw.x, tile_se.x),
+            x_max=max(tile_nw.x, tile_se.x),
+            y_min=min(tile_nw.y, tile_se.y),
+            y_max=max(tile_nw.y, tile_se.y),
         )
 
     return maps
