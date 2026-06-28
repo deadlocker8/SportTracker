@@ -1,3 +1,6 @@
+# 1.49.0 - (XX.XX.XX)
+- fix: improved long-distance tours responsiveness on small devices (#286)
+
 # 1.48.0 - (19.05.26)
 - add: maintenance event form: prefill date input with current date (#284)
 - add: filters are now moved to a sidebar that can be toggled via a filter button (#238)

@@ -275,6 +275,13 @@ select[disabled] {
     scroll-margin-top: 75px;
 }
 
+@media (max-width: 576px) {
+    #long-distance-stages .stage .stage-info-item-icon,
+    #long-distance-stages .stage .stage-info-item-text {
+        font-size: 1rem !important;
+    }
+}
+
 .stage:hover {
     cursor: pointer;
 }
