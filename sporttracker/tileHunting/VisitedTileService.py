@@ -148,7 +148,7 @@ class VisitedTileService:
 
     def determine_number_of_visits(
         self, min_x: int, max_x: int, min_y: int, max_y: int, user_id: int
-    ) -> list[TileCountPosition]:
+    ) -> dict[tuple[int, int], int]:
         distanceWorkoutAlias = aliased(DistanceWorkout)
         gpxVisitedTileAlias = aliased(GpxVisitedTile)
 
@@ -167,7 +167,7 @@ class VisitedTileService:
             .all()
         )
 
-        return [TileCountPosition(r[0], r[1], r[2]) for r in rows]
+        return {(int(r[1]), int(r[2])): int(r[0]) for r in rows}
 
     def __determine_tile_colors_of_single_workout(
         self,

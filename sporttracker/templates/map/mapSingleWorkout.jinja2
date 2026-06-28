@@ -159,7 +159,8 @@
 
         <script>
             gpxUrl = '{{ gpxUrl }}';
-            tileRenderUrl = '{{ tileRenderUrl }}';
+            tileApiUrl = '{{ url_for("maps.apiTileHunting") }}?workout_id={{ workout.id }}';
+            mapMinZoomLevel = {{ mapMinZoomLevel }};
         </script>
 
         {% import 'map/mapMacros.jinja2' as mapMacros with context %}

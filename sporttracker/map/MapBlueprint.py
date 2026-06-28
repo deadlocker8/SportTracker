@@ -427,6 +427,9 @@ def construct_blueprint(
         if not bbox:
             return jsonify({'type': 'FeatureCollection', 'features': []})
 
+        mode = request.args.get('mode', 'workoutTypes')
+        workout_id = request.args.get('workout_id', None, type=int)
+
         base_zoom = tileHuntingSettings['baseZoomLevel']
 
         bounding_box = __calculate_bounding_box(bbox, base_zoom)
@@ -434,40 +437,54 @@ def construct_blueprint(
             return jsonify({'type': 'FeatureCollection', 'features': []})
 
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
+        if mode == 'heatmap':
+            quickFilterState.enable_all_workout_types()
+
         tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
-        visitedTileService = __create_visited_tile_service(quickFilterState, tileHuntingFilterState)
-
-        tile_color_by_position = visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles(
-            bounding_box.x_min, bounding_box.x_max, bounding_box.y_min, bounding_box.y_max, current_user.id
-        )
-
-        planned_tiles = visitedTileService.determine_planned_tiles(
-            bounding_box.x_min, bounding_box.x_max, bounding_box.y_min, bounding_box.y_max, current_user.id
-        )
-
-        max_square_positions: set[tuple[int, int]] = set()
-        if tileHuntingFilterState.is_show_max_square_active:
-            max_square_positions = set(visitedTileService.get_max_square_tile_positions())
+        visitedTileService = __create_visited_tile_service(quickFilterState, tileHuntingFilterState, workoutId=workout_id)
 
         border_color = COLOR_BORDER if tileHuntingFilterState.is_show_grid_active else None
-        max_square_color = Color.from_hex(tileHuntingSettings['maxSquareColor'])
 
-        features = []
-        for (x, y), color in tile_color_by_position.items():
-            if (x, y) in max_square_positions:
-                color = max_square_color
+        if mode == 'heatmap':
+            visit_counts_by_position = visitedTileService.determine_number_of_visits(
+                bounding_box.x_min, bounding_box.x_max, bounding_box.y_min, bounding_box.y_max, current_user.id
+            )
 
-            features.append(make_feature(x, y, base_zoom, color, border_color))
+            features = []
+            for (x, y), count in visit_counts_by_position.items():
+                color = TileRenderService.calculate_heatmap_color(count)
+                features.append(make_feature(x, y, base_zoom, color, border_color))
+        else:
+            tile_color_by_position = visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles(
+                bounding_box.x_min, bounding_box.x_max, bounding_box.y_min, bounding_box.y_max, current_user.id
+            )
 
-        for pt in planned_tiles:
-            key = (pt.x, pt.y)
+            planned_tiles = visitedTileService.determine_planned_tiles(
+                bounding_box.x_min, bounding_box.x_max, bounding_box.y_min, bounding_box.y_max, current_user.id
+            )
 
-            if key in tile_color_by_position:
-                continue
-            if key in max_square_positions:
-                continue
+            max_square_positions: set[tuple[int, int]] = set()
+            if tileHuntingFilterState.is_show_max_square_active:
+                max_square_positions = set(visitedTileService.get_max_square_tile_positions())
 
-            features.append(make_feature(pt.x, pt.y, base_zoom, COLOR_PLANNED, border_color))
+            max_square_color = Color.from_hex(tileHuntingSettings['maxSquareColor'])
+
+            features = []
+            for (x, y), color in tile_color_by_position.items():
+                if (x, y) in max_square_positions:
+                    color = max_square_color
+
+                features.append(make_feature(x, y, base_zoom, color, border_color))
+
+            for pt in planned_tiles:
+                key = (pt.x, pt.y)
+
+                if key in tile_color_by_position:
+                    continue
+                if key in max_square_positions:
+                    continue
+
+                features.append(make_feature(pt.x, pt.y, base_zoom, COLOR_PLANNED, border_color))
 
         return jsonify({'type': 'FeatureCollection', 'features': features})
 
@@ -636,12 +653,12 @@ def construct_blueprint(
 
         tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
         visitedTileService = __create_visited_tile_service(quickFilterState, tileHuntingFilterState)
-        rows = visitedTileService.determine_number_of_visits(
+        visit_counts_by_position = visitedTileService.determine_number_of_visits(
             visitedTile.x, visitedTile.x, visitedTile.y, visitedTile.y, user_id
         )
         numberOfVisits = 0
-        if rows:
-            numberOfVisits = rows[0].count
+        if visit_counts_by_position:
+            numberOfVisits = visit_counts_by_position[(visitedTile.x, visitedTile.y)]
 
         return jsonify({'numberOfVisits': numberOfVisits})
 
@@ -742,7 +759,8 @@ def construct_blueprint(
         return redirect(redirectUrl)
 
     def __create_visited_tile_service(
-        quickFilterState: QuickFilterState, tileHuntingFilterState: TileHuntingFilterState
+        quickFilterState: QuickFilterState, tileHuntingFilterState: TileHuntingFilterState,
+        workoutId: int | None = None,
     ) -> VisitedTileService:
         return VisitedTileService(
             newVisitedTileCache,
@@ -750,6 +768,7 @@ def construct_blueprint(
             quickFilterState,
             tileHuntingFilterState,
             distanceWorkoutService,
+            workoutId=workoutId,
         )
 
     def __calculate_bounding_box(bbox: str, base_zoom: int) -> BoundingBox | None:

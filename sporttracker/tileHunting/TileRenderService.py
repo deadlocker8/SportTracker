@@ -3,8 +3,10 @@ import math
 from enum import Enum
 
 from PIL import Image, ImageColor
+from TheCodeLabs_BaseUtils.Color import Color
 
 from sporttracker import Constants
+from sporttracker.tileHunting.Colors import COLOR_TRANSPARENT
 from sporttracker.tileHunting.VisitedTileService import VisitedTileService, TileColorPosition, TileCountPosition
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -104,42 +106,32 @@ class TileRenderService:
         return TileRenderService.COLOR_MULTIPLE_MATCHES
 
     @staticmethod
-    def calculate_heatmap_color(
-        x: int, y: int, tileCountPositions: list[TileCountPosition]
-    ) -> tuple[int, int, int, int]:
+    def calculate_heatmap_color(count: int) -> Color:
         """
-        Calculates the color of a tile with the position (x, y) based on the number of times the tile was visited.
-        Expects x, y to be in self._baseZoomLevel coordinates.
+        Calculates the color of a tile based on the number of times the tile was visited.
         """
-        matchingCounts = [t for t in tileCountPositions if t.x == x and t.y == y]
-
-        if not matchingCounts:
-            return TileRenderService.COLOR_TRANSPARENT
-
-        count = matchingCounts[0].count
-
         if count >= 100:
-            return 89, 0, 8, 192
+            return Color(89, 0, 8, 0.75)
 
         if count >= 50:
-            return 138, 39, 6, 192
+            return Color(138, 39, 6, 0.75)
 
         if count >= 25:
-            return 189, 101, 51, 192
+            return Color(189, 101, 51,0.75)
 
         if count >= 10:
-            return 210, 150, 116, 192
+            return Color(210, 150, 116,0.75)
 
         if count >= 5:
-            return 3, 62, 125, 192
+            return Color(3, 62, 125,0.75)
 
         if count > 1:
-            return 30, 111, 156, 192
+            return Color(30, 111, 156,0.75)
 
         if count == 1:
-            return 113, 167, 195, 192
+            return Color(113, 167, 195,0.75)
 
-        return TileRenderService.COLOR_TRANSPARENT
+        return COLOR_TRANSPARENT
 
     @staticmethod
     def calculate_border_color(

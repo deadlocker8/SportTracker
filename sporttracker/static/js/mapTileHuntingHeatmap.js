@@ -13,16 +13,7 @@ function initMap()
 {
     let map = initMapBase();
 
-    L.tileLayer(tileRenderUrl + '/{z}/{x}/{y}.png', {
-        minZoom: mapMinZoomLevel,
-        maxZoom: 16
-    }).addTo(map);
-
-    map.on('zoomend', function(e)
-    {
-        const currentZoom = map.getZoom();
-        document.getElementById('warning-zoom').classList.toggle('d-none', currentZoom >= mapMinZoomLevel);
-    });
+    initTileHuntingVectorLayer(map, tileApiUrl);
 
     map.on('click', function(e)
     {

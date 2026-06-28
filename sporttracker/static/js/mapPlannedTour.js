@@ -24,10 +24,7 @@ function initMap()
     const checkBoxEnableTileHunting = document.getElementById('tileHuntingEnableTiles');
     if(checkBoxEnableTileHunting !== null && checkBoxEnableTileHunting.checked)
     {
-        L.tileLayer(tileRenderUrl + '/{z}/{x}/{y}.png', {
-            minZoom: 9,
-            maxZoom: 16
-        }).addTo(map);
+        initTileHuntingVectorLayer(map, tileApiUrl);
     }
 
     map.on('plugins_loaded', function(e)
