@@ -74,7 +74,7 @@
         </div>
 
         <script>
-            tileApiUrl = '{{ url_for("maps.apiTileHunting") }}?mode=heatmap';
+            tileApiUrl = '{{ url_for("maps.tileOverlay") }}?mode=heatmap';
             mapMinZoomLevel = {{ mapMinZoomLevel }};
             numberOfVisitsUrl = '{{ numberOfVisitsUrl }}';
             numberOfVisitsText = '{{ gettext('Visits') }}'

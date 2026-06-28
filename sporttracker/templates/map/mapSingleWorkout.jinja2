@@ -159,7 +159,7 @@
 
         <script>
             gpxUrl = '{{ gpxUrl }}';
-            tileApiUrl = '{{ url_for("maps.apiTileHunting") }}?workout_id={{ workout.id }}';
+            tileApiUrl = '{{ url_for("maps.tileOverlay") }}?workout_id={{ workout.id }}';
             mapMinZoomLevel = {{ mapMinZoomLevel }};
         </script>
 

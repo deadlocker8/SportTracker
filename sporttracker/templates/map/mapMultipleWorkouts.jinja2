@@ -95,7 +95,7 @@
             gpxInfo = {{ gpxInfo }};
             mapMode = '{{ mapMode }}';
             isTileHuntingOverlayEnabled = {% if mapMode == 'plannedTours' %}true{% else %}false{% endif %};
-            tileApiUrl = '{{ url_for("maps.apiTileHunting") }}';
+            tileApiUrl = '{{ url_for("maps.tileOverlay") }}';
             mapMinZoomLevel = {{ mapMinZoomLevel }};
         </script>
 
