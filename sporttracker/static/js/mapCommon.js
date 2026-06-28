@@ -87,59 +87,15 @@ function initTileHuntingVectorLayer(map, apiUrl)
     let loadedTiles = new Set();
     let loadTimer = null;
 
-    function loadTiles()
+    function doLoad()
     {
-        if(map.getZoom() < mapMinZoomLevel)
-        {
-            return;
-        }
-
-        const bounds = map.getBounds();
-        const bbox = bounds.getWest() + ',' + bounds.getSouth() + ',' + bounds.getEast() + ',' + bounds.getNorth();
-        const separator = apiUrl.indexOf('?') >= 0 ? '&' : '?';
-
-        fetch(apiUrl + separator + 'bbox=' + encodeURIComponent(bbox))
-            .then(function(response)
-            {
-                if(!response.ok)
-                {
-                    throw new Error('Tile fetch failed');
-                }
-                return response.json();
-            })
-            .then(function(data)
-            {
-                let newFeatures = [];
-                for(let i = 0; i < data.features.length; i++)
-                {
-                    let key = data.features[i].properties.x + ',' + data.features[i].properties.y;
-                    if(!loadedTiles.has(key))
-                    {
-                        newFeatures.push(data.features[i]);
-                        loadedTiles.add(key);
-                    }
-                }
-                if(newFeatures.length > 0)
-                {
-                    tileLayer.addData({type: 'FeatureCollection', features: newFeatures});
-                }
-            })
-            .catch(function(err)
-            {
-                console.error('Failed to load tiles:', err);
-            });
+        __loadTileHuntingTiles(map, apiUrl, tileLayer, loadedTiles);
     }
 
-    function debouncedLoadTiles()
+    map.on('moveend', function()
     {
-        if(loadTimer)
-        {
-            clearTimeout(loadTimer);
-        }
-        loadTimer = setTimeout(loadTiles, 200);
-    }
-
-    map.on('moveend', debouncedLoadTiles);
+        loadTimer = __debouncedLoadTiles(loadTimer, doLoad);
+    });
 
     map.on('zoomend', function(e)
     {
@@ -156,7 +112,7 @@ function initTileHuntingVectorLayer(map, apiUrl)
             {
                 tileLayer.addTo(map);
             }
-            debouncedLoadTiles();
+            loadTimer = __debouncedLoadTiles(loadTimer, doLoad);
         }
         else
         {
@@ -167,7 +123,56 @@ function initTileHuntingVectorLayer(map, apiUrl)
         }
     });
 
-    loadTiles();
+    doLoad();
 
     return tileLayer;
+}
+
+function __loadTileHuntingTiles(map, apiUrl, tileLayer, loadedTiles)
+{
+    if(map.getZoom() < mapMinZoomLevel)
+    {
+        return;
+    }
+
+    const bounds = map.getBounds();
+    const bbox = bounds.getWest() + ',' + bounds.getSouth() + ',' + bounds.getEast() + ',' + bounds.getNorth();
+    const separator = apiUrl.indexOf('?') >= 0 ? '&' : '?';
+
+    fetch(apiUrl + separator + 'bbox=' + encodeURIComponent(bbox)).then(function(response)
+    {
+        if(!response.ok)
+        {
+            throw new Error('Tile fetch failed');
+        }
+        return response.json();
+    }).then(function(data)
+    {
+        let newFeatures = [];
+        for(const element of data.features)
+        {
+            let key = element.properties.x + ',' + element.properties.y;
+            if(!loadedTiles.has(key))
+            {
+                newFeatures.push(element);
+                loadedTiles.add(key);
+            }
+        }
+        if(newFeatures.length > 0)
+        {
+            tileLayer.addData({type: 'FeatureCollection', features: newFeatures});
+        }
+    }).catch(function(err)
+    {
+        console.error('Failed to load tiles:', err);
+    });
+}
+
+function __debouncedLoadTiles(loadTimer, loadFn)
+{
+    if(loadTimer)
+    {
+        clearTimeout(loadTimer);
+    }
+    return setTimeout(loadFn, 200);
 }
