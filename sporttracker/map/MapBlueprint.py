@@ -1,6 +1,5 @@
 import io
 import logging
-import time
 from datetime import datetime
 from typing import Any
 
@@ -13,8 +12,8 @@ from flask import (
     url_for,
     redirect,
     request,
-    Response,
     jsonify,
+    Response,
 )
 from flask_login import login_required, current_user
 from sqlalchemy import func, extract
@@ -41,7 +40,7 @@ from sporttracker.tileHunting.TileHuntingFilterStateEntity import (
     get_tile_hunting_filter_state_by_user,
     TileHuntingFilterState,
 )
-from sporttracker.tileHunting.TileRenderService import TileRenderService, TileRenderColorMode
+from sporttracker.tileHunting.TileRenderService import TileRenderService
 from sporttracker.tileHunting.VisitedTileService import VisitedTileService
 from sporttracker.user.UserEntity import get_user_by_tile_hunting_shared_code
 from sporttracker.workout.WorkoutModel import DistanceWorkoutModel
@@ -140,17 +139,6 @@ def construct_blueprint(
         if workout is None:
             abort(404)
 
-        tileRenderUrl = url_for(
-            'maps.renderTile',
-            workout_id=workout_id,
-            user_id=current_user.id,
-            zoom=0,
-            x=0,
-            y=0,
-            _external=True,
-        )
-        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
-
         tileHuntingNumberOfNewVisitedTiles = 0
 
         quickFilterState = QuickFilterState().reset(WorkoutService.get_available_years(current_user.id))
@@ -171,7 +159,7 @@ def construct_blueprint(
                 file_format=GpxService.GPX_FILE_EXTENSION,
             ),
             editUrl=url_for('distanceWorkouts.edit', workout_id=workout_id),
-            tileRenderUrl=tileRenderUrl,
+            tileRenderUrl=url_for('maps.tileOverlay'),
             tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             tileHuntingNumberOfNewVisitedTiles=tileHuntingNumberOfNewVisitedTiles,
         )
@@ -201,17 +189,6 @@ def construct_blueprint(
         if plannedTour is None:
             return render_template('map/mapNotFound.jinja2', errorText=flask_babel.gettext('Unknown planned tour'))
 
-        tileRenderUrl = url_for(
-            'maps.renderAllTiles',
-            user_id=current_user.id,
-            zoom=0,
-            x=0,
-            y=0,
-            _external=True,
-        )
-
-        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
-
         return render_template(
             'map/mapPlannedTour.jinja2',
             plannedTour=PlannedTourModel.create_from_tour(plannedTour, True),
@@ -221,11 +198,11 @@ def construct_blueprint(
                 file_format=GpxService.GPX_FILE_EXTENSION,
             ),
             editUrl=url_for('plannedTours.edit', tour_id=tour_id),
-            tileRenderUrl=tileRenderUrl,
+            tileRenderUrl=url_for('maps.tileOverlay'),
             tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             tileHuntingNumberOfNewVisitedTiles=plannedTourService.get_number_of_new_visited_tiles(plannedTour),
             maxSquareColor=tileHuntingSettings['maxSquareColor'],
-            plannedTileColor=TileRenderService.COLOR_PLANNED,
+            plannedTileColor=COLOR_PLANNED.to_hex(),
         )
 
     @maps.route('/map/plannedTour/shared/<string:shareCode>')
@@ -248,17 +225,6 @@ def construct_blueprint(
     @maps.route('/map/plannedTours')
     @login_required
     def showAllPlannedToursOnMap():
-        tileRenderUrl = url_for(
-            'maps.renderAllTilesWithFilter',
-            user_id=current_user.id,
-            zoom=0,
-            x=0,
-            y=0,
-            _external=True,
-        )
-
-        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
-
         gpxInfo = []
 
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
@@ -284,145 +250,15 @@ def construct_blueprint(
             mapMode='plannedTours',
             redirectUrl='maps.showAllPlannedToursOnMap',
             tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
-            tileRenderUrl=tileRenderUrl,
+            tileRenderUrl=url_for('maps.tileOverlay'),
             plannedTourFilterState=plannedTourFilterState,
             maxSquareColor=tileHuntingSettings['maxSquareColor'],
-            plannedTileColor=TileRenderService.COLOR_PLANNED,
+            plannedTileColor=COLOR_PLANNED.to_hex(),
         )
 
-    @maps.route('/map/<int:workout_id>/renderTile/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')
-    def renderTile(workout_id: int, user_id: int, zoom: int, x: int, y: int):
-        if not current_user.is_authenticated:
-            abort(401)
-
-        if current_user.id != user_id:
-            abort(403)
-
-        workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
-
-        if workout is None:
-            abort(404)
-
-        quickFilterState = get_quick_filter_state_by_user(current_user.id)
-        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
-
-        visitedTileService = VisitedTileService(
-            newVisitedTileCache,
-            maxSquareCache,
-            quickFilterState,
-            tileHuntingFilterState,
-            distanceWorkoutService,
-            workoutId=workout.id,
-        )
-
-        tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
-
-        borderColor = None
-        if tileHuntingFilterState.is_show_grid_active:
-            borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
-
-        image = tileRenderService.render_image(
-            x,
-            y,
-            zoom,
-            user_id,
-            TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES,
-            borderColor,  # type: ignore[arg-type]
-            None,
-        )
-
-        with io.BytesIO() as output:
-            image.save(output, format='PNG')
-            return Response(output.getvalue(), mimetype='image/png')
-
-    @maps.route('/map/renderAllTiles/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')
-    def renderAllTiles(user_id: int, zoom: int, x: int, y: int):
-        if not current_user.is_authenticated:
-            abort(401)
-
-        if current_user.id != user_id:
-            abort(403)
-
-        return __renderTile(user_id, zoom, x, y, QuickFilterState().reset(WorkoutService.get_available_years(user_id)))
-
-    @maps.route('/map/renderAllTilesWithFilter/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')
-    def renderAllTilesWithFilter(user_id: int, zoom: int, x: int, y: int):
-        if not current_user.is_authenticated:
-            abort(401)
-
-        if current_user.id != user_id:
-            abort(403)
-
-        quickFilterState = get_quick_filter_state_by_user(current_user.id)
-
-        return __renderTile(user_id, zoom, x, y, quickFilterState)
-
-    def __renderTile(user_id: int, zoom: int, x: int, y: int, quickFilterState: QuickFilterState) -> Response:
-        start = time.time()
-
-        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
-        visitedTileService = __create_visited_tile_service(quickFilterState, tileHuntingFilterState)
-        tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
-
-        borderColor = None
-        if tileHuntingFilterState.is_show_grid_active:
-            borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
-
-        maxSquareColor = None
-        if tileHuntingFilterState.is_show_max_square_active:
-            maxSquareColor = ImageColor.getcolor(tileHuntingSettings['maxSquareColor'], 'RGBA')
-
-        image = tileRenderService.render_image(
-            x,
-            y,
-            zoom,
-            user_id,
-            TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES,
-            borderColor,  # type: ignore[arg-type]
-            maxSquareColor,  # type: ignore[arg-type]
-        )
-
-        with io.BytesIO() as output:
-            image.save(output, format='PNG')
-            LOGGER.debug(f'Render Tile x: {x}, y: {y}, z: {zoom} took {time.time() - start:.2f}s')
-            return Response(output.getvalue(), mimetype='image/png')
-
-    @maps.route('/map/renderHeatmap/<int:user_id>/<int:zoom>/<int:x>/<int:y>.png')
-    def renderHeatmap(user_id: int, zoom: int, x: int, y: int):
-        if not current_user.is_authenticated:
-            abort(401)
-
-        if current_user.id != user_id:
-            abort(403)
-
-        quickFilterState = get_quick_filter_state_by_user(user_id)
-        quickFilterState.enable_all_workout_types()
-
-        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
-        visitedTileService = __create_visited_tile_service(quickFilterState, tileHuntingFilterState)
-        tileRenderService = TileRenderService(tileHuntingSettings['baseZoomLevel'], 256, visitedTileService)
-
-        borderColor = None
-        if tileHuntingFilterState.is_show_grid_active:
-            borderColor = ImageColor.getcolor(tileHuntingSettings['borderColor'], 'RGBA')
-
-        image = tileRenderService.render_image(
-            x,
-            y,
-            zoom,
-            user_id,
-            TileRenderColorMode.NUMBER_OF_VISITS,
-            borderColor,  # type: ignore[arg-type]
-            None,
-        )
-
-        with io.BytesIO() as output:
-            image.save(output, format='PNG')
-            return Response(output.getvalue(), mimetype='image/png')
-
-    @maps.route('/map/api/tiles', methods=['GET'])
+    @maps.route('/map/tileOverlay', methods=['GET'])
     @login_required
-    def apiTileHunting():
+    def tileOverlay():
         bbox = request.args.get('bbox')
         if not bbox:
             return jsonify({'type': 'FeatureCollection', 'features': []})
@@ -441,7 +277,9 @@ def construct_blueprint(
             quickFilterState.enable_all_workout_types()
 
         tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
-        visitedTileService = __create_visited_tile_service(quickFilterState, tileHuntingFilterState, workoutId=workout_id)
+        visitedTileService = __create_visited_tile_service(
+            quickFilterState, tileHuntingFilterState, workoutId=workout_id
+        )
 
         border_color = COLOR_BORDER if tileHuntingFilterState.is_show_grid_active else None
 
@@ -517,7 +355,7 @@ def construct_blueprint(
             },
         }
 
-    @maps.route('/map/tileOverlay/<string:share_code>/<int:zoom>/<int:x>/<int:y>.png')
+    @maps.route('/map/tileOverlay/<string:share_code>/<int:zoom>/<int:x>/<int:y>.png', methods=['GET'])
     def renderAllTileHuntingTilesViaShareCode(share_code: str, zoom: int, x: int, y: int):
         user = get_user_by_tile_hunting_shared_code(share_code)
         if user is None:
@@ -538,9 +376,7 @@ def construct_blueprint(
             y,
             zoom,
             user.id,
-            TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES,
             borderColor,  # type: ignore[arg-type]
-            None,
         )
 
         with io.BytesIO() as output:
@@ -550,17 +386,6 @@ def construct_blueprint(
     @maps.route('/map/tileHunting')
     @login_required
     def showTileHuntingMap():
-        tileRenderUrl = url_for(
-            'maps.renderAllTilesWithFilter',
-            user_id=current_user.id,
-            zoom=0,
-            x=0,
-            y=0,
-            _external=True,
-        )
-
-        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
-
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
 
         tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
@@ -594,7 +419,7 @@ def construct_blueprint(
             'map/mapTileHunting.jinja2',
             quickFilterState=quickFilterState,
             redirectUrl='maps.showTileHuntingMap',
-            tileRenderUrl=tileRenderUrl,
+            tileRenderUrl=url_for('maps.tileOverlay'),
             totalNumberOfTiles=totalNumberOfTiles,
             maxSquareSize=visitedTileService.get_max_square_size(),
             chartDataNewTilesPerWorkout=chartDataNewTilesPerWorkout,
@@ -606,14 +431,10 @@ def construct_blueprint(
     @login_required
     def showTileHuntingHeatMap():
         tileRenderUrl = url_for(
-            'maps.renderHeatmap',
-            user_id=current_user.id,
-            zoom=0,
-            x=0,
-            y=0,
+            'maps.tileOverlay',
+            mode='heatmap',
             _external=True,
         )
-        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
 
         numberOfVisitsUrl = url_for(
             'maps.getNumberOfVisitsByCoordinate',
@@ -672,18 +493,7 @@ def construct_blueprint(
                 'map/mapNotFound.jinja2', errorText=flask_babel.gettext('Unknown long-distance tour')
             )
 
-        tileRenderUrl = url_for(
-            'maps.renderAllTiles',
-            user_id=current_user.id,
-            zoom=0,
-            x=0,
-            y=0,
-            _external=True,
-        )
-
         longDistanceTourModel = LongDistanceTourModel.create_from_tour(longDistanceTour)
-
-        tileRenderUrl = tileRenderUrl.split('/0/0/0')[0]
 
         gpxInfo = []
         for order, tour in enumerate(longDistanceTourModel.linkedPlannedTours):
@@ -697,7 +507,7 @@ def construct_blueprint(
             longDistanceTour=longDistanceTourModel,
             gpxInfo=gpxInfo,
             editUrl=url_for('longDistanceTours.edit', tour_id=tour_id),
-            tileRenderUrl=tileRenderUrl,
+            tileRenderUrl=url_for('maps.tileOverlay'),
             tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             isGpxPreviewImagesEnabled=gpxPreviewImageSettings['enabled'],
             maxSquareColor=tileHuntingSettings['maxSquareColor'],
@@ -759,7 +569,8 @@ def construct_blueprint(
         return redirect(redirectUrl)
 
     def __create_visited_tile_service(
-        quickFilterState: QuickFilterState, tileHuntingFilterState: TileHuntingFilterState,
+        quickFilterState: QuickFilterState,
+        tileHuntingFilterState: TileHuntingFilterState,
         workoutId: int | None = None,
     ) -> VisitedTileService:
         return VisitedTileService(

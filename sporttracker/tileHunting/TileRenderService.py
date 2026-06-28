@@ -1,27 +1,17 @@
 import logging
 import math
-from enum import Enum
 
-from PIL import Image, ImageColor
+from PIL import Image
 from TheCodeLabs_BaseUtils.Color import Color
 
 from sporttracker import Constants
-from sporttracker.tileHunting.Colors import COLOR_TRANSPARENT
-from sporttracker.tileHunting.VisitedTileService import VisitedTileService, TileColorPosition, TileCountPosition
+from sporttracker.tileHunting.Colors import COLOR_TRANSPARENT, COLOR_PLANNED
+from sporttracker.tileHunting.VisitedTileService import VisitedTileService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-class TileRenderColorMode(Enum):
-    NUMBER_OF_WORKOUT_TYPES = 1
-    NUMBER_OF_VISITS = 2
-
-
 class TileRenderService:
-    COLOR_TRANSPARENT = (0, 0, 0, 0)
-    COLOR_PLANNED = (0, 0, 0, 85)
-    COLOR_MULTIPLE_MATCHES = (255, 0, 0, 96)
-
     def __init__(self, baseZoomLevel: int, tileSize: int, visitedTileService: VisitedTileService):
         self._baseZoomLevel = baseZoomLevel
         self._tileSize = tileSize
@@ -80,30 +70,20 @@ class TileRenderService:
         return [(x // 2, y // 2)]
 
     @staticmethod
-    def calculate_color(
-        x: int, y: int, tileColorPositions: list[TileColorPosition], isVisitPlanned: bool
-    ) -> tuple[int, int, int, int]:
+    def calculate_color(tileColor: Color | None, isVisitPlanned: bool) -> Color:
         """
-        Calculates the color of a tile with the position (x, y).
-        Expects x, y to be in self._baseZoomLevel coordinates.
+        Calculates the color of a tile.
 
         If a tile was not yet visited by the user, COLOR_TRANSPARENT is returned.
         If a tile was not yet visited by the user but is part of a planned tour, COLOR_PLANNED is returned.
-        If a tile was visited by exactly one gpx track, the color of the corresponding track type is returned.
-        If a tile was visited by multiple gpx tracks, COLOR_MULTIPLE_MATCHES is returned.
         """
-        colorsOfMatchingWorkouts = [t.tile_color for t in tileColorPositions if t.x == x and t.y == y]
-
-        if len(colorsOfMatchingWorkouts) == 0:
+        if tileColor is None:
             if isVisitPlanned:
-                return TileRenderService.COLOR_PLANNED
+                return COLOR_PLANNED
 
-            return TileRenderService.COLOR_TRANSPARENT
+            return COLOR_TRANSPARENT
 
-        if len(colorsOfMatchingWorkouts) == 1:
-            return ImageColor.getcolor(colorsOfMatchingWorkouts[0], 'RGBA')  # type: ignore[return-value]
-
-        return TileRenderService.COLOR_MULTIPLE_MATCHES
+        return tileColor
 
     @staticmethod
     def calculate_heatmap_color(count: int) -> Color:
@@ -117,19 +97,19 @@ class TileRenderService:
             return Color(138, 39, 6, 0.75)
 
         if count >= 25:
-            return Color(189, 101, 51,0.75)
+            return Color(189, 101, 51, 0.75)
 
         if count >= 10:
-            return Color(210, 150, 116,0.75)
+            return Color(210, 150, 116, 0.75)
 
         if count >= 5:
-            return Color(3, 62, 125,0.75)
+            return Color(3, 62, 125, 0.75)
 
         if count > 1:
-            return Color(30, 111, 156,0.75)
+            return Color(30, 111, 156, 0.75)
 
         if count == 1:
-            return Color(113, 167, 195,0.75)
+            return Color(113, 167, 195, 0.75)
 
         return COLOR_TRANSPARENT
 
@@ -161,9 +141,7 @@ class TileRenderService:
         y: int,
         zoom: int,
         user_id: int,
-        tileRenderColorMode: TileRenderColorMode,
         borderColor: tuple[int, int, int, int] | None,
-        maxSquareColor: tuple[int, int, int, int] | None,
     ) -> Image.Image:
         """
         Renders a tile image for a tile with the position (x,y) and the specified zoom level.
@@ -184,32 +162,20 @@ class TileRenderService:
 
         max_x, max_y, min_x, min_y = self.__calculate_min_and_max(positions)
 
-        tileColorPositions = []
-        tileCountPositions = []
-        plannedTilePositions = []
-        if tileRenderColorMode == TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES:
-            tileColorPositions = self._visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles(
-                min_x,  # type: ignore[arg-type]
-                max_x,  # type: ignore[arg-type]
-                min_y,  # type: ignore[arg-type]
-                max_y,  # type: ignore[arg-type]
-                user_id,
-            )
-            plannedTilePositions = self._visitedTileService.determine_planned_tiles(
-                min_x,  # type: ignore[arg-type]
-                max_x,  # type: ignore[arg-type]
-                min_y,  # type: ignore[arg-type]
-                max_y,  # type: ignore[arg-type]
-                user_id,
-            )
-        else:
-            tileCountPositions = self._visitedTileService.determine_number_of_visits(
-                min_x,  # type: ignore[arg-type]
-                max_x,  # type: ignore[arg-type]
-                min_y,  # type: ignore[arg-type]
-                max_y,  # type: ignore[arg-type]
-                user_id,
-            )
+        tileColorByPosition = self._visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles(
+            min_x,  # type: ignore[arg-type]
+            max_x,  # type: ignore[arg-type]
+            min_y,  # type: ignore[arg-type]
+            max_y,  # type: ignore[arg-type]
+            user_id,
+        )
+        plannedTilePositions = self._visitedTileService.determine_planned_tiles(
+            min_x,  # type: ignore[arg-type]
+            max_x,  # type: ignore[arg-type]
+            min_y,  # type: ignore[arg-type]
+            max_y,  # type: ignore[arg-type]
+            user_id,
+        )
 
         for row in range(0, numberOfElementsPerAxis):
             for col in range(0, numberOfElementsPerAxis):
@@ -222,17 +188,9 @@ class TileRenderService:
                     isTouchingUpperEdgeOfBaseZoomTile = True
                     isTouchingLeftEdgeOfBaseZoomTile = True
 
-                if tileRenderColorMode == TileRenderColorMode.NUMBER_OF_WORKOUT_TYPES:
-                    isVisitPlanned = any([t for t in plannedTilePositions if t.x == position[0] and t.y == position[1]])
-                    colorToUse = TileRenderService.calculate_color(
-                        position[0], position[1], tileColorPositions, isVisitPlanned
-                    )
-                else:
-                    colorToUse = TileRenderService.calculate_heatmap_color(position[0], position[1], tileCountPositions)
-
-                if maxSquareColor is not None:
-                    if position in self._visitedTileService.get_max_square_tile_positions():
-                        colorToUse = maxSquareColor
+                isVisitPlanned = any([t for t in plannedTilePositions if t.x == position[0] and t.y == position[1]])
+                color = self.calculate_color(tileColorByPosition.get((position[0], position[1])), isVisitPlanned)
+                colorToUse = (color.red, color.green, color.blue, int(color.opacity * 255))
 
                 for pixelX in range(boxSize):
                     for pixelY in range(boxSize):
