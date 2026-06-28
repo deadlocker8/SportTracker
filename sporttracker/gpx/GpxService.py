@@ -466,6 +466,16 @@ class GpxParser:
         y = int((1.0 - math.asinh(math.tan(lat_rad)) / math.pi) / 2.0 * n)
         return VisitedTile(x, y)
 
+    @staticmethod
+    def tile_to_lat_lng_bounds(x: int, y: int, zoom: int) -> list[float]:
+        """Returns [west, south, east, north] bounding box for a tile at given zoom."""
+        n = 1 << zoom
+        lon_west = x / n * 360.0 - 180.0
+        lon_east = (x + 1) / n * 360.0 - 180.0
+        lat_north = math.degrees(math.atan(math.sinh(math.pi * (1 - 2 * y / n))))
+        lat_south = math.degrees(math.atan(math.sinh(math.pi * (1 - 2 * (y + 1) / n))))
+        return [lon_west, lat_south, lon_east, lat_north]
+
     def get_meta_info(self) -> GpxMetaInfo:
         return GpxMetaInfo(
             self.__get_length(),

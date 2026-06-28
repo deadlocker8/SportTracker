@@ -1,6 +1,7 @@
 import io
 import logging
 import time
+from collections import defaultdict
 from datetime import datetime
 from typing import Any
 
@@ -45,6 +46,15 @@ from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTo
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
+
+
+def _parse_hex_rgba(hex_color: str) -> tuple[str, float]:
+    """Convert '#RRGGBBAA' to ('#RRGGBB', opacity) or '#RRGGBB' to ('#RRGGBB', 1.0)."""
+    hex_color = hex_color.lstrip('#')
+    if len(hex_color) == 8:
+        r, g, b, a = hex_color[:2], hex_color[2:4], hex_color[4:6], hex_color[6:8]
+        return f'#{r}{g}{b}', round(int(a, 16) / 255.0, 4)
+    return f'#{hex_color}', 1.0
 
 
 def createGpxInfo(
@@ -413,6 +423,121 @@ def construct_blueprint(
         with io.BytesIO() as output:
             image.save(output, format='PNG')
             return Response(output.getvalue(), mimetype='image/png')
+
+    @maps.route('/map/api/tiles')
+    @login_required
+    def apiTileHunting():
+        bbox = request.args.get('bbox')
+        if not bbox:
+            return jsonify({'type': 'FeatureCollection', 'features': []})
+
+        try:
+            parts = bbox.split(',')
+            min_lng, min_lat, max_lng, max_lat = [float(p) for p in parts]
+        except (ValueError, IndexError):
+            return jsonify({'type': 'FeatureCollection', 'features': []})
+
+        base_zoom = tileHuntingSettings['baseZoomLevel']
+
+        tile_nw = GpxParser.convert_coordinate_to_tile_position(max_lat, min_lng, base_zoom)
+        tile_se = GpxParser.convert_coordinate_to_tile_position(min_lat, max_lng, base_zoom)
+
+        x_min = min(tile_nw.x, tile_se.x)
+        x_max = max(tile_nw.x, tile_se.x)
+        y_min = min(tile_nw.y, tile_se.y)
+        y_max = max(tile_nw.y, tile_se.y)
+
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
+        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
+        visitedTileService = __create_visited_tile_service(quickFilterState, tileHuntingFilterState)
+
+        tileColorPositions = visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles(
+            x_min, x_max, y_min, y_max, current_user.id
+        )
+
+        tile_colors: dict[tuple[int, int], list[str]] = defaultdict(list)
+        for tc in tileColorPositions:
+            tile_colors[(tc.x, tc.y)].append(tc.tile_color)
+
+        plannedTilePositions = visitedTileService.determine_planned_tiles(x_min, x_max, y_min, y_max, current_user.id)
+        planned_set = set((p.x, p.y) for p in plannedTilePositions)
+
+        max_square_set: set[tuple[int, int]] = set()
+        if tileHuntingFilterState.is_show_max_square_active:
+            max_square_set = set(visitedTileService.get_max_square_tile_positions())
+
+        border_hex = '#000000' if tileHuntingFilterState.is_show_grid_active else None
+
+        features: list[dict[str, Any]] = []
+
+        for (tx, ty), colors in tile_colors.items():
+            if (tx, ty) in max_square_set:
+                fill_color_hex = tileHuntingSettings['maxSquareColor']
+                fill_color, fill_opacity = _parse_hex_rgba(fill_color_hex)
+            elif len(colors) == 1:
+                fill_color, fill_opacity = _parse_hex_rgba(colors[0])
+            else:
+                fill_color = '#FF0000'
+                fill_opacity = 0.376
+
+            bbox_tile = GpxParser.tile_to_lat_lng_bounds(tx, ty, base_zoom)
+
+            features.append(
+                {
+                    'type': 'Feature',
+                    'properties': {
+                        'fillColor': fill_color,
+                        'fillOpacity': fill_opacity,
+                        'color': border_hex,
+                        'weight': 1 if border_hex else 0,
+                        'x': tx,
+                        'y': ty,
+                    },
+                    'geometry': {
+                        'type': 'Polygon',
+                        'coordinates': [
+                            [
+                                [bbox_tile[0], bbox_tile[1]],
+                                [bbox_tile[2], bbox_tile[1]],
+                                [bbox_tile[2], bbox_tile[3]],
+                                [bbox_tile[0], bbox_tile[3]],
+                                [bbox_tile[0], bbox_tile[1]],
+                            ]
+                        ],
+                    },
+                }
+            )
+
+        for pp in plannedTilePositions:
+            if (pp.x, pp.y) not in tile_colors and (pp.x, pp.y) not in max_square_set:
+                bbox_tile = GpxParser.tile_to_lat_lng_bounds(pp.x, pp.y, base_zoom)
+                features.append(
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'fillColor': '#000000',
+                            'fillOpacity': 0.33,
+                            'color': border_hex,
+                            'weight': 1 if border_hex else 0,
+                            'x': pp.x,
+                            'y': pp.y,
+                        },
+                        'geometry': {
+                            'type': 'Polygon',
+                            'coordinates': [
+                                [
+                                    [bbox_tile[0], bbox_tile[1]],
+                                    [bbox_tile[2], bbox_tile[1]],
+                                    [bbox_tile[2], bbox_tile[3]],
+                                    [bbox_tile[0], bbox_tile[3]],
+                                    [bbox_tile[0], bbox_tile[1]],
+                                ]
+                            ],
+                        },
+                    }
+                )
+
+        return jsonify({'type': 'FeatureCollection', 'features': features})
 
     @maps.route('/map/tileOverlay/<string:share_code>/<int:zoom>/<int:x>/<int:y>.png')
     def renderAllTileHuntingTilesViaShareCode(share_code: str, zoom: int, x: int, y: int):

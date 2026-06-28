@@ -33,14 +33,78 @@ function initMap()
 {
     let map = initMapBase();
 
-    L.tileLayer(tileRenderUrl + '/{z}/{x}/{y}.png', {
-        minZoom: mapMinZoomLevel,
-        maxZoom: 16
+    let tileLayer = L.geoJSON(null, {
+        style: function(feature)
+        {
+            let style = {
+                fillColor: feature.properties.fillColor,
+                fillOpacity: feature.properties.fillOpacity,
+                weight: feature.properties.weight || 0,
+            };
+            if(feature.properties.color)
+            {
+                style.color = feature.properties.color;
+            }
+            return style;
+        }
     }).addTo(map);
+
+    let loadedTiles = new Set();
+    let loadTimer = null;
+
+    function loadTiles()
+    {
+        const bounds = map.getBounds();
+        const bbox = bounds.getWest() + ',' + bounds.getSouth() + ',' + bounds.getEast() + ',' + bounds.getNorth();
+
+        fetch(tileApiUrl + '?bbox=' + encodeURIComponent(bbox))
+            .then(function(response)
+            {
+                if(!response.ok)
+                {
+                    throw new Error('Tile fetch failed');
+                }
+                return response.json();
+            })
+            .then(function(data)
+            {
+                let newFeatures = [];
+                for(let i = 0; i < data.features.length; i++)
+                {
+                    let key = data.features[i].properties.x + ',' + data.features[i].properties.y;
+                    if(!loadedTiles.has(key))
+                    {
+                        newFeatures.push(data.features[i]);
+                        loadedTiles.add(key);
+                    }
+                }
+                if(newFeatures.length > 0)
+                {
+                    tileLayer.addData({type: 'FeatureCollection', features: newFeatures});
+                }
+            })
+            .catch(function(err)
+            {
+                console.error('Failed to load tiles:', err);
+            });
+    }
+
+    function debouncedLoadTiles()
+    {
+        if(loadTimer)
+        {
+            clearTimeout(loadTimer);
+        }
+        loadTimer = setTimeout(loadTiles, 200);
+    }
+
+    map.on('moveend', debouncedLoadTiles);
 
     map.on('zoomend', function(e)
     {
         const currentZoom = map.getZoom();
         document.getElementById('warning-zoom').classList.toggle('d-none', currentZoom >= mapMinZoomLevel);
     });
+
+    loadTiles();
 }
