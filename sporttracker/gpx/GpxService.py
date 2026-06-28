@@ -16,16 +16,16 @@ from sqlalchemy import delete
 from werkzeug.datastructures.file_storage import FileStorage
 
 from sporttracker import Constants
+from sporttracker.db import db
 from sporttracker.fit.FitToGpxConverter import FitToGpxConverter
+from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
 from sporttracker.gpx.GpxPreviewImageService import GpxPreviewImageService
+from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
+from sporttracker.tileHunting.GpxPlannedTileEntity import GpxPlannedTile
+from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
-from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
-from sporttracker.tileHunting.GpxPlannedTileEntity import GpxPlannedTile
-from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
-from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
-from sporttracker.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -60,6 +60,7 @@ class GpxService:
     ZIP_FILE_EXTENSION = 'gpx.zip'
     GPX_FILE_EXTENSION = 'gpx'
     FIT_FILE_EXTENSION = 'fit'
+    GPX_VISITED_TILE_BATCH_SIZE = 50
 
     def __init__(
         self,
@@ -255,10 +256,14 @@ class GpxService:
     def add_visited_tiles_for_workout(self, workout: DistanceWorkout, baseZoomLevel: int, userId: int):
         visitedTiles = self.get_visited_tiles(workout.get_gpx_metadata().gpx_file_name, baseZoomLevel)  # type: ignore[union-attr]
 
-        for tile in visitedTiles:
+        for index, tile in enumerate(visitedTiles):
             gpxVisitedTile = GpxVisitedTile(workout_id=workout.id, x=tile.x, y=tile.y)
             db.session.add(gpxVisitedTile)
-            db.session.commit()
+
+            if index % self.GPX_VISITED_TILE_BATCH_SIZE == 0:
+                db.session.commit()
+
+        db.session.commit()
 
         self._newVisitedTileCache.invalidate_cache_entry_by_user(userId)
         self._maxSquareCache.invalidate_cache_entry_by_user(userId)
