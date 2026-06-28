@@ -1,4 +1,5 @@
 # 1.49.0 - (XX.XX.XX)
+- add: significantly improved rendering speed of visited tiles in all maps by switching to vector-based geojson layer instead of tile-based image rendering. The externally shared tile hunting map (for use in OpenStreetMap based maps, e.g. https://bikerouter.de/) will still use tile-based images as this is the only supported type for those maps. 
 - fix: improved long-distance tours responsiveness on small devices (#286)
 - fix: long-distance tours: show actual driven distance instead of summed up planned distances
 
