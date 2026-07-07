@@ -24,7 +24,7 @@ function initMap()
     const checkBoxEnableTileHunting = document.getElementById('tileHuntingEnableTiles');
     if(checkBoxEnableTileHunting !== null && checkBoxEnableTileHunting.checked)
     {
-        initTileHuntingVectorLayer(map, tileApiUrl);
+        initTileHuntingVectorLayer(map, tileApiUrl, isGridActive);
     }
 
     map.on('plugins_loaded', function(e)

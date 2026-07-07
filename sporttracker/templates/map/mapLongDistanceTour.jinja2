@@ -189,6 +189,7 @@
             mapMode = 'longDistanceTour';
             isTileHuntingOverlayEnabled = true;
             localeStage = '{{ gettext('Stage') }}';
+            isGridActive = {% if tileHuntingFilterState.is_show_grid_active %}true{% else %}false{% endif %};
         </script>
 
         {% import 'map/mapMacros.jinja2' as mapMacros with context %}

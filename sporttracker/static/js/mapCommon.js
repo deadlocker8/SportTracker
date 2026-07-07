@@ -148,7 +148,7 @@ function createGridLayer()
     return new tileGridLayer();
 }
 
-function initTileHuntingVectorLayer(map, apiUrl)
+function initTileHuntingVectorLayer(map, apiUrl, isGridActive)
 {
     let tileLayer = L.geoJSON(null, {
         style: function(feature)
@@ -207,7 +207,10 @@ function initTileHuntingVectorLayer(map, apiUrl)
 
     doLoad();
 
-    map.addLayer(createGridLayer());
+    if(isGridActive)
+    {
+        map.addLayer(createGridLayer());
+    }
 }
 
 function __loadTileHuntingTiles(map, apiUrl, tileLayer, loadedTiles)

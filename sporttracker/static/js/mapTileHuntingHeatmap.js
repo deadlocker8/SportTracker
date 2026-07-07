@@ -13,7 +13,7 @@ function initMap()
 {
     let map = initMapBase();
 
-    initTileHuntingVectorLayer(map, tileApiUrl);
+    initTileHuntingVectorLayer(map, tileApiUrl, isGridActive);
 
     map.on('click', function(e)
     {

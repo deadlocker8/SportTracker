@@ -32,5 +32,5 @@ document.addEventListener('DOMContentLoaded', function()
 function initMap()
 {
     let map = initMapBase();
-    initTileHuntingVectorLayer(map, tileApiUrl);
+    initTileHuntingVectorLayer(map, tileApiUrl, isGridActive);
 }

@@ -47,7 +47,7 @@ function initMap(itemSortFunction, onRouteSelectedCallback, showResetButton, spe
         const checkBoxEnableTileHunting = document.getElementById('tileHuntingEnableTiles');
         if(checkBoxEnableTileHunting !== null && checkBoxEnableTileHunting.checked)
         {
-            initTileHuntingVectorLayer(map, tileApiUrl);
+            initTileHuntingVectorLayer(map, tileApiUrl, isGridActive);
         }
     }
 
