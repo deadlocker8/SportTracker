@@ -101,6 +101,7 @@
             tileRenderUrl = '{{ tileRenderUrl }}';
             tileApiUrl = '{{ url_for("maps.tileOverlay") }}';
             mapMinZoomLevel = {{ mapMinZoomLevel }};
+            baseZoomLevel = {{ baseZoomLevel }};
         </script>
 
         {% import 'map/mapMacros.jinja2' as mapMacros with context %}

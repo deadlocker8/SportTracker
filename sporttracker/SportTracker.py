@@ -189,6 +189,7 @@ class SportTracker(FlaskBaseApp):
                 'isStage': self._isStage,
                 'notificationTypes': NotificationType.get_sorted(),
                 'mapMinZoomLevel': self._settings['tileHunting']['mapMinZoomLevel'],
+                'baseZoomLevel': self._settings['tileHunting']['baseZoomLevel'],
             }
 
         def format_decimal(value: int | float, decimals: int = 1) -> str:

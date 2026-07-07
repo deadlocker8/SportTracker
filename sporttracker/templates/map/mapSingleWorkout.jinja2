@@ -161,6 +161,7 @@
             gpxUrl = '{{ gpxUrl }}';
             tileApiUrl = '{{ url_for("maps.tileOverlay") }}?workout_id={{ workout.id }}';
             mapMinZoomLevel = {{ mapMinZoomLevel }};
+            baseZoomLevel = {{ baseZoomLevel }};
         </script>
 
         {% import 'map/mapMacros.jinja2' as mapMacros with context %}

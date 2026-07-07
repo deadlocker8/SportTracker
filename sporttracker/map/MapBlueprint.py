@@ -31,7 +31,6 @@ from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_sta
 from sporttracker.tileHunting.BoundingBox import BoundingBox
 from sporttracker.tileHunting.Colors import (
     COLOR_PLANNED,
-    COLOR_BORDER,
     Color,
 )
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
@@ -281,8 +280,6 @@ def construct_blueprint(
             quickFilterState, tileHuntingFilterState, workoutId=workout_id
         )
 
-        border_color = COLOR_BORDER if tileHuntingFilterState.is_show_grid_active else None
-
         if mode == 'heatmap':
             visit_counts_by_position = visitedTileService.determine_number_of_visits(
                 bounding_box.x_min, bounding_box.x_max, bounding_box.y_min, bounding_box.y_max, current_user.id
@@ -291,7 +288,7 @@ def construct_blueprint(
             features = []
             for (x, y), count in visit_counts_by_position.items():
                 color = TileRenderService.calculate_heatmap_color(count)
-                features.append(GpxParser.create_geojson_feature(x, y, base_zoom, color, border_color))
+                features.append(GpxParser.create_geojson_feature(x, y, base_zoom, color))
         else:
             tile_color_by_position = visitedTileService.determine_tile_colors_of_workouts_that_visit_tiles(
                 bounding_box.x_min, bounding_box.x_max, bounding_box.y_min, bounding_box.y_max, current_user.id
@@ -312,7 +309,7 @@ def construct_blueprint(
                 if (x, y) in max_square_positions:
                     color = max_square_color
 
-                features.append(GpxParser.create_geojson_feature(x, y, base_zoom, color, border_color))
+                features.append(GpxParser.create_geojson_feature(x, y, base_zoom, color))
 
             for pt in planned_tiles:
                 key = (pt.x, pt.y)
@@ -322,7 +319,7 @@ def construct_blueprint(
                 if key in max_square_positions:
                     continue
 
-                features.append(GpxParser.create_geojson_feature(pt.x, pt.y, base_zoom, COLOR_PLANNED, border_color))
+                features.append(GpxParser.create_geojson_feature(pt.x, pt.y, base_zoom, COLOR_PLANNED))
 
         return jsonify({'type': 'FeatureCollection', 'features': features})
 

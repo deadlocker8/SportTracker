@@ -66,6 +66,88 @@ function initMapBase()
     return map;
 }
 
+function createGridLayer()
+{
+    const tileGridLayer = L.Layer.extend({
+        onAdd(map)
+        {
+            this._map = map;
+
+            this._canvas = L.DomUtil.create("canvas", "tile-grid-canvas");
+            this._ctx = this._canvas.getContext("2d");
+
+            map.getPanes().tooltipPane.appendChild(this._canvas);
+
+            map.on("move zoom resize", this._draw, this);
+
+            this._resize();
+            this._draw();
+        },
+
+        onRemove(map)
+        {
+            map.off("move zoom resize", this._draw, this);
+            this._canvas.remove();
+        },
+
+        _resize()
+        {
+            const size = this._map.getSize();
+
+            this._canvas.width = size.x;
+            this._canvas.height = size.y;
+
+            L.DomUtil.setPosition(
+                this._canvas,
+                this._map.containerPointToLayerPoint([0, 0])
+            );
+        },
+
+        _draw()
+        {
+            const map = this._map;
+            const ctx = this._ctx;
+
+            this._resize();
+
+            if(map.getZoom() < mapMinZoomLevel)
+            {
+                ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
+                return;
+            }
+
+            ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
+
+            const bounds = map.getBounds();
+
+            const nw = map.project(bounds.getNorthWest(), baseZoomLevel).divideBy(256).floor();
+            const se = map.project(bounds.getSouthEast(), baseZoomLevel).divideBy(256).floor();
+
+            ctx.beginPath();
+            ctx.strokeStyle = "#000000C8";
+            ctx.lineWidth = 1;
+
+            for(let x = nw.x; x <= se.x; x++)
+            {
+                for(let y = nw.y; y <= se.y; y++)
+                {
+                    const topLeft = map.unproject(L.point(x * 256, y * 256), baseZoomLevel);
+                    const bottomRight = map.unproject(L.point((x + 1) * 256, (y + 1) * 256), baseZoomLevel);
+
+                    const p1 = map.latLngToContainerPoint(topLeft);
+                    const p2 = map.latLngToContainerPoint(bottomRight);
+
+                    ctx.rect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y);
+                }
+            }
+
+            ctx.stroke();
+        }
+    });
+
+    return new tileGridLayer();
+}
+
 function initTileHuntingVectorLayer(map, apiUrl)
 {
     let tileLayer = L.geoJSON(null, {
@@ -125,7 +207,7 @@ function initTileHuntingVectorLayer(map, apiUrl)
 
     doLoad();
 
-    return tileLayer;
+    map.addLayer(createGridLayer());
 }
 
 function __loadTileHuntingTiles(map, apiUrl, tileLayer, loadedTiles)

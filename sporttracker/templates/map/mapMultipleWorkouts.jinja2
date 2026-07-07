@@ -97,6 +97,7 @@
             isTileHuntingOverlayEnabled = {% if mapMode == 'plannedTours' %}true{% else %}false{% endif %};
             tileApiUrl = '{{ url_for("maps.tileOverlay") }}';
             mapMinZoomLevel = {{ mapMinZoomLevel }};
+            baseZoomLevel = {{ baseZoomLevel }};
         </script>
 
         {% import 'map/mapMacros.jinja2' as mapMacros with context %}

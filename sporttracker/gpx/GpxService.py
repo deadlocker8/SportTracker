@@ -496,11 +496,7 @@ class GpxParser:
         return re.sub(r'&(?!#?\w+;)', '%26', url)
 
     @staticmethod
-    def create_geojson_feature(
-        x: int, y: int, base_zoom: int, fill_color: Color, border_color: Color | None
-    ) -> dict[str, Any]:
-        border_weight = 0 if border_color is None else 1
-
+    def create_geojson_feature(x: int, y: int, base_zoom: int, fill_color: Color) -> dict[str, Any]:
         bbox_tile = GpxParser.tile_to_lat_lng_bounds(x, y, base_zoom)
 
         return {
@@ -508,8 +504,6 @@ class GpxParser:
             'properties': {
                 'fillColor': fill_color.to_rgb(),
                 'fillOpacity': fill_color.opacity,
-                'color': None if border_color is None else border_color.to_rgb(),
-                'weight': border_weight,
                 'x': x,
                 'y': y,
             },
