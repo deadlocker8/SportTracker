@@ -1,7 +1,7 @@
-# 2.0.0 - (XX.XX.XX)
+# 2.0.0 - (12.07.26)
 - BREAKING CHANGE: SportTracker is no longer compatible with "georender". https://github.com/deadlocker8/GpxToImageRenderer is used insteaf. See README.md section "Enable GPX preview Images" for detailed information. 
 - BREAKING CHANGE: You must update your settings.json (section "gpxPreviewImages" has completly changed see settings-example.json)
-- add: significantly improved rendering speed of visited tiles in all maps by switching to vector-based geojson layer instead of tile-based image rendering. The externally shared tile hunting map (for use in OpenStreetMap based maps, e.g. https://bikerouter.de/) will still use tile-based images as this is the only supported type for those maps. 
+- add: significantly improved rendering speed of visited tiles in all maps by switching to vector-based geojson layer instead of tile-based image rendering. The externally shared tile hunting map (for use in OpenStreetMap based maps, e.g. https://bikerouter.de/) will still use tile-based images as this is the only supported type for those maps. (#256) 
 - fix: improved long-distance tours responsiveness on small devices (#286)
 - fix: long-distance tours: show actual driven distance instead of summed up planned distances
 - fix: add login button to navbar for unauthenticated users
