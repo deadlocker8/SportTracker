@@ -205,6 +205,18 @@
 
                         {{ navbar_user() }}
                     {% endif %}
+                {% else %}
+                    {% if request.endpoint != 'authentication.login' %}
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center active" href="{{ url_for('authentication.login') }}">
+                                    <span class="navbar-icon">
+                                        <span class="material-symbols-outlined filled fs-5">login</span>
+                                    </span>&nbsp;{{ gettext('Login') }}
+                                </a>
+                            </li>
+                        </ul>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
