@@ -3,6 +3,7 @@
 - fix: improved long-distance tours responsiveness on small devices (#286)
 - fix: long-distance tours: show actual driven distance instead of summed up planned distances
 - fix: add login button to navbar for unauthenticated users
+- chore: update dependencies (#285)
 
 # 1.48.0 - (19.05.26)
 - add: maintenance event form: prefill date input with current date (#284)
