@@ -390,7 +390,7 @@
         <label for="workout-distance" class="form-label input-field-margin">{{ gettext('Distance (in km)') }}</label>
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined me-3">route</span>
-            <input type="number" step="0.01" min="0" class="form-control" id="workout-distance"
+            <input type="number" step="0.01" min="0.01" class="form-control" id="workout-distance"
                    name="distance" required="required"
                    value="{% if workout %}{{ workout.distance | round(2) }}{% elif workoutFromFitImport %}{{ workoutFromFitImport.distance | round(2) }}{% endif %}">
         </div>
