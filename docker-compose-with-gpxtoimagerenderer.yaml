@@ -39,7 +39,6 @@ services:
     restart: unless-stopped
     networks:
       - netPostgres
-    command: -w 800 -h 450 -t osm
 
 networks:
   netPostgres:
