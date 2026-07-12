@@ -7,11 +7,9 @@ if TYPE_CHECKING:
 
 import logging
 import os
-import tempfile
-
-import requests
 
 from sporttracker import Constants
+from sporttracker.gpx.PreviewImageRenderer import render_preview_image
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -54,7 +52,7 @@ class LongDistanceTourGpxPreviewImageService:
                 try:
                     os.remove(self.get_preview_image_path())
                 except Exception as err:
-                    LOGGER.error(err)
+                    LOGGER.exception(err)
 
     def __determine_gpx_file_names(self, linkedPlannedTours) -> list[str]:
         gpxFileNames = []
@@ -73,30 +71,8 @@ class LongDistanceTourGpxPreviewImageService:
 
     def __render_image(self, gpxFileNames, gpxPreviewImageSettings):
         try:
-            with tempfile.TemporaryDirectory() as tempDirectory:
-                tempGpxFilePath = os.path.join(tempDirectory, f'{self._uniqueName}.gpx')
-                with open(tempGpxFilePath, 'wb') as tempGpxFile:
-                    tempGpxFile.write(self._gpxService.join_multiple_gpx(gpxFileNames))
-
-                with open(tempGpxFilePath, 'rb') as fd:
-                    files = {'file': fd}
-                    data = {
-                        'width': gpxPreviewImageSettings['width'],
-                        'height': gpxPreviewImageSettings['height'],
-                        'line_width': gpxPreviewImageSettings['lineWidth'],
-                        'line_color': gpxPreviewImageSettings['lineColor'],
-                        'basemap': gpxPreviewImageSettings['basemap'],
-                        'dpi': gpxPreviewImageSettings['dpi'],
-                        'padding': gpxPreviewImageSettings['padding'],
-                        'format': gpxPreviewImageSettings['format'],
-                        'quality': gpxPreviewImageSettings['quality'],
-                    }
-                    timeout = gpxPreviewImageSettings['timeout']
-                    response = requests.post(gpxPreviewImageSettings['url'], files=files, data=data, timeout=timeout)
-                    response.raise_for_status()
-
-                    with open(self.get_preview_image_path(), 'wb') as f:
-                        f.write(response.content)
-        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError) as err:
-            LOGGER.error(err)
+            gpx_content = self._gpxService.join_multiple_gpx(gpxFileNames)
+            render_preview_image(gpx_content, self.get_preview_image_path(), gpxPreviewImageSettings)
+        except Exception as err:
+            LOGGER.exception(err)
             raise ImageGenerationException()
