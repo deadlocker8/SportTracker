@@ -14,7 +14,7 @@ RUN /root/.local/bin/poetry install --without dev
 RUN ln -s $($HOME/.local/share/pypoetry/venv/bin/poetry env info -p) /opt/SportTracker/myvenv
 
 
-FROM node:25-slim AS npm
+FROM node:26-slim AS npm
 
 RUN apt-get update && apt-get upgrade -y && \
     rm -rf /var/lib/apt/lists/*
