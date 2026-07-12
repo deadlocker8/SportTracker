@@ -150,7 +150,11 @@ function createGridLayer()
 
 function initTileHuntingVectorLayer(map, apiUrl, isGridActive)
 {
+    let tilePane = map.createPane('tileHuntingPane');
+    tilePane.style.zIndex = '350';
+
     let tileLayer = L.geoJSON(null, {
+        pane: 'tileHuntingPane',
         style: function(feature)
         {
             let style = {
