@@ -10,5 +10,5 @@
     - run `npm install` 
     - run `npm run build`
 - [ ] update Google Material Symbols
-- [ ] update georender
+- [ ] update GpxToImageRenderer
 - [ ] update changelog

@@ -18,7 +18,7 @@ services:
       LANGUAGE: en_US.UTF-8
     depends_on:
       - postgres
-      - georender
+      - gpxtoimagerenderer
 
   postgres:
     image: postgres:18-alpine
@@ -32,8 +32,8 @@ services:
     volumes:
       - <PATH_ON_HOST>/postgres:/var/lib/postgresql/data
 
-  georender:
-    build: https://github.com/deadlocker8/georender.git
+  gpxtoimagerenderer:
+    build: https://github.com/deadlocker8/gpxtoimagerenderer.git
     ports:
       - "127.0.0.1:3000:3000"
     restart: unless-stopped

@@ -138,20 +138,30 @@ An external service can be used instead.
 
 In order to activate gpx preview images, follow these steps:
 
-**1. Set up a georender instance https://github.com/deadlocker8/georender (forked from https://github.com/loskoderos/georender)**
-- a) Build docker image: `docker build -t georender .`
-- b) Run docker image with specific settings: `docker run -p 3000:3000 georender -w 800 -h 450 -t osm`
-- Or if using docker compose see `docker-compose-with-georender.yaml` and adjust according to the documentation in the section `How to run SportTracker via docker compose` .
+**1. Set up a GpxToImageRenderer instance https://github.com/deadlocker8/GpxToImageRenderer**
+- a) Build docker image: `docker build -t gpxtoimagerenderer .`
+- b) Run docker image with specific settings: `docker run -p 3000:3000 gpxtoimagerenderer`
+- Or if using docker compose see `docker-compose-with-gpxtoimagerenderer.yaml` and adjust according to the documentation in the section `How to run SportTracker via docker compose` .
 
 **2. Enable gpx preview images in your SporTracker settings.json
 Update the section `gpxPreviewImages` in your settings.json to contain the following values**
 ```json
 "gpxPreviewImages": {
-    "enabled": true,
-    "geoRenderUrl": "http://localhost:3000"
+"enabled": false,
+"url": "http://localhost:3000",
+"timeout": 30,
+"width": 800,
+"height": 450,
+"dpi": 100,
+"lineWidth": 3,
+"lineColor": "#1267FF",
+"padding": 0.1,
+"basemap": "osm",
+"format": "jpeg",
+"quality": 85
 }
 ```
-Where http://localhost:3000 is the address and port number of your georender instance started in step 1.
+Where http://localhost:3000 is the address and port number of your GpxToImageRenderer instance started in step 1.
 
 
 ### Notifications

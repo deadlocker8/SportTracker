@@ -37,9 +37,20 @@ class GpxPreviewImageService:
                     tempGpxFile.write(self._gpxService.get_gpx_content(self._gpxFileName))
 
                 with open(tempGpxFilePath, 'rb') as fd:
-                    files = {'gpx': fd}
+                    files = {'file': fd}
+                    data = {
+                        'width': gpxPreviewImageSettings['width'],
+                        'height': gpxPreviewImageSettings['height'],
+                        'line_width': gpxPreviewImageSettings['lineWidth'],
+                        'line_color': gpxPreviewImageSettings['lineColor'],
+                        'basemap': gpxPreviewImageSettings['basemap'],
+                        'dpi': gpxPreviewImageSettings['dpi'],
+                        'padding': gpxPreviewImageSettings['padding'],
+                        'format': gpxPreviewImageSettings['format'],
+                        'quality': gpxPreviewImageSettings['quality'],
+                    }
                     timeout = gpxPreviewImageSettings['timeout']
-                    response = requests.post(gpxPreviewImageSettings['geoRenderUrl'], files=files, timeout=timeout)
+                    response = requests.post(gpxPreviewImageSettings['url'], files=files, data=data, timeout=timeout)
                     response.raise_for_status()
 
                     with open(self.get_preview_image_path(), 'wb') as f:

@@ -18,8 +18,17 @@
     },
     "gpxPreviewImages": {
         "enabled": false,
-        "geoRenderUrl": "http://localhost:3000",
-        "timeout": 30
+        "url": "http://localhost:3000",
+        "timeout": 30,
+        "width": 800,
+        "height": 450,
+        "dpi": 100,
+        "lineWidth": 3,
+        "lineColor": "#1267FF",
+        "padding": 0.1,
+        "basemap": "osm",
+        "format": "jpeg",
+        "quality": 85
     },
     "tileHunting": {
         "baseZoomLevel": 14,

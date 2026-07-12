@@ -6,7 +6,19 @@ class SettingsChecker:
         'server': ['listen', 'port', 'secret', 'useSSL', 'keyfile', 'certfile'],
         'logging': ['enableRotatingLogFile', 'fileName', 'maxBytes', 'numberOfBackups'],
         'database': ['uri'],
-        'gpxPreviewImages': ['enabled', 'geoRenderUrl', 'timeout'],
+        'gpxPreviewImages': [
+            'enabled',
+            'url',
+            'timeout',
+            'width',
+            'height',
+            'lineWidth',
+            'lineColor',
+            'padding',
+            'basemap',
+            'format',
+            'quality',
+        ],
         'tileHunting': ['baseZoomLevel', 'borderColor', 'maxSquareColor', 'mapMinZoomLevel'],
     }
 
