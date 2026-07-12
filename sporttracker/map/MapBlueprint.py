@@ -299,7 +299,7 @@ def construct_blueprint(
             )
 
             max_square_positions: set[tuple[int, int]] = set()
-            if tileHuntingFilterState.is_show_max_square_active:
+            if workout_id is None and tileHuntingFilterState.is_show_max_square_active:
                 max_square_positions = set(visitedTileService.get_max_square_tile_positions())
 
             max_square_color = Color.from_hex(tileHuntingSettings['maxSquareColor'])
