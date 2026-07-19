@@ -1,4 +1,4 @@
-# 2.0.1 - (XX.XX.XX)
+# 2.0.1 - (19.07.26)
 - fix: map not loading (#289)
 - fix: clean stale years from year filter (#291)
 - fix: date inputs no longer allow to use years before 200 to avoid saving workouts with wrong dates due to typos (#291)
