@@ -68,8 +68,7 @@ class NewVisitedTileCache:
             yearOperator2 = 'AND EXTRACT(year FROM w."start_time") in :active_years'
 
         # B608 will be disabled because user input is escaped by params, actual f-string is used to build query dynamically
-        rows = db.session.execute(
-            text(f"""SELECT t."id",
+        stmt = text(f"""SELECT t."id",
                w."type",
                w."name",
                w."start_time",
@@ -79,14 +78,14 @@ class NewVisitedTileCache:
                   AND NOT EXISTS (SELECT
                                   FROM distance_workout AS prev
                                            join gpx_visited_tile AS visitied ON prev."id" = visitied."workout_id"
-                                  JOIN workout w_inner ON prev."id" = w_inner."id"
-                                  WHERE w_inner."start_time" < w."start_time"
-                                    AND w_inner."user_id" = w."user_id"
-                                    AND gpx_visited_tile."x" = visitied."x"
-                                    AND gpx_visited_tile."y" = visitied."y"
-                                    {workoutTypeOperator}
-                                    {yearOperator}
-                                    )) AS newTiles
+                                   JOIN workout w_inner ON prev."id" = w_inner."id"
+                                   WHERE w_inner."start_time" < w."start_time"
+                                     AND w_inner."user_id" = w."user_id"
+                                     AND gpx_visited_tile."x" = visitied."x"
+                                     AND gpx_visited_tile."y" = visitied."y"
+                                     {workoutTypeOperator}
+                                     {yearOperator}
+                                     )) AS newTiles
         FROM distance_workout AS t
         JOIN workout w ON t."id" = w."id"
         WHERE t."gpx_metadata_id" IS NOT NULL
@@ -94,8 +93,14 @@ class NewVisitedTileCache:
         {workoutTypeOperator2}
         {yearOperator2}
         ORDER BY w."start_time\"""")  # nosec B608
-            .bindparams(bindparam('active_workout_types', expanding=True))
-            .bindparams(bindparam('active_years', expanding=True)),
+
+        if workoutTypeOperator:
+            stmt = stmt.bindparams(bindparam('active_workout_types', expanding=True))
+        if yearOperator:
+            stmt = stmt.bindparams(bindparam('active_years', expanding=True))
+
+        rows = db.session.execute(
+            stmt,
             params={
                 'user_id': userId,
                 'active_workout_types': activeWorkoutTypes,
