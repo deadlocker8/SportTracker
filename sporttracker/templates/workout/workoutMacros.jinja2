@@ -369,7 +369,7 @@
                 <label for="workout-date" class="form-label input-field-margin">{{ gettext('Date') }}</label>
                 <div class="d-flex align-items-center">
                     <span class="material-symbols-outlined filled me-3">event</span>
-                    <input type="date" class="form-control" id="workout-date" name="date"
+                    <input type="date" class="form-control" id="workout-date" name="date" min="2000-01-01"
                            required="required" value="{% if workout %}{{ workout.date }}{% elif workoutFromFitImport %}{{ workoutFromFitImport.date }}{% endif %}">
                 </div>
             </div>

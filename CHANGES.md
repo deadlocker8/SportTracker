@@ -1,6 +1,7 @@
 # 2.0.1 - (XX.XX.XX)
 - fix: map not loading (#289)
 - fix: clean stale years from year filter (#291)
+- fix: date inputs no longer allow to use years before 200 to avoid saving workouts with wrong dates due to typos (#291)
 
 # 2.0.0 - (12.07.26)
 - BREAKING CHANGE: SportTracker is no longer compatible with "georender". https://github.com/deadlocker8/GpxToImageRenderer is used insteaf. See README.md section "Enable GPX preview Images" for detailed information. 

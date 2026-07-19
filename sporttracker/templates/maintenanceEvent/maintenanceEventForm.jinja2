@@ -59,7 +59,7 @@
                                         <label for="maintenance-event-date" class="form-label input-field-margin">{{ gettext('Date') }}</label>
                                         <div class="d-flex align-items-center">
                                             <span class="material-symbols-outlined filled me-3">event</span>
-                                            <input type="date" class="form-control" id="maintenance-event-date" name="date"
+                                            <input type="date" class="form-control" id="maintenance-event-date" name="date" min="2000-01-01"
                                                    required="required" value="{% if maintenanceEvent %}{{ maintenanceEvent.date }}{% else %}{{ today }}{% endif %}">
                                         </div>
                                     </div>
