@@ -56,7 +56,7 @@ class TestQuickFilterState:
     def test_update_missing_values_years(self) -> None:
         quickFilterState = QuickFilterState()
         quickFilterState.workout_types = {}
-        quickFilterState.years = {2024: False}
+        quickFilterState.years = {2023: True, 2024: False}
 
         isUpdated = quickFilterState.update_missing_values([2024, 2025, 2026])
         assert isUpdated is True
@@ -65,6 +65,15 @@ class TestQuickFilterState:
             2025: True,
             2026: True,
         }
+
+    def test_update_missing_values_removes_stale_years(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {2020: True, 2021: True, 2022: True}
+
+        isUpdated = quickFilterState.update_missing_values([2021])
+        assert isUpdated is True
+        assert quickFilterState.years == {2021: True}
 
     def test_update_missing_values_returns_false_when_nothing_missing(self) -> None:
         quickFilterState = QuickFilterState()

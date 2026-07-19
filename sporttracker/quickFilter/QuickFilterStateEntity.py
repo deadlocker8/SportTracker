@@ -78,9 +78,17 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
                 self.workout_types[workoutType.name] = True
                 isUpdated = True
 
+        if self.years is None:
+            self.years = {}
+
         for year in available_years:
             if year not in self.get_years():
                 self.years[year] = True
+                isUpdated = True
+
+        for year in list(self.years.keys()):
+            if year not in available_years:
+                del self.years[year]
                 isUpdated = True
 
         return isUpdated

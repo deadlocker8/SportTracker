@@ -2,13 +2,8 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime
-from typing import TYPE_CHECKING
 
 from sqlalchemy import extract
-
-
-if TYPE_CHECKING:
-    pass
 
 from sporttracker import Constants
 
