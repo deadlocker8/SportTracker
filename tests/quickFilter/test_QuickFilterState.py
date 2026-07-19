@@ -41,12 +41,13 @@ class TestQuickFilterState:
 
     def test_update_missing_values_workout_types(self) -> None:
         quickFilterState = QuickFilterState()
-        quickFilterState.workout_types = {}
-        assert len(quickFilterState.workout_types) == 0
+        quickFilterState.workout_types = {WorkoutType.BIKING.name: False}
+        assert len(quickFilterState.workout_types) == 1
 
-        quickFilterState.update_missing_values([])
+        isUpdated = quickFilterState.update_missing_values([])
+        assert isUpdated is True
         assert quickFilterState.get_workout_types() == {
-            WorkoutType.BIKING: True,
+            WorkoutType.BIKING: False,
             WorkoutType.RUNNING: True,
             WorkoutType.HIKING: True,
             WorkoutType.FITNESS: True,
@@ -57,12 +58,48 @@ class TestQuickFilterState:
         quickFilterState.workout_types = {}
         quickFilterState.years = {2024: False}
 
-        quickFilterState.update_missing_values([2024, 2025, 2026])
+        isUpdated = quickFilterState.update_missing_values([2024, 2025, 2026])
+        assert isUpdated is True
         assert quickFilterState.years == {
             2024: False,
             2025: True,
             2026: True,
         }
+
+    def test_update_missing_values_returns_false_when_nothing_missing(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {
+            WorkoutType.BIKING.name: True,
+            WorkoutType.RUNNING.name: False,
+            WorkoutType.HIKING.name: True,
+            WorkoutType.FITNESS.name: False,
+        }
+        quickFilterState.years = {2025: True, 2026: False}
+
+        isUpdated = quickFilterState.update_missing_values([2025, 2026])
+        assert isUpdated is False
+        assert quickFilterState.get_workout_types() == {
+            WorkoutType.BIKING: True,
+            WorkoutType.RUNNING: False,
+            WorkoutType.HIKING: True,
+            WorkoutType.FITNESS: False,
+        }
+        assert quickFilterState.years == {2025: True, 2026: False}
+
+    def test_update_missing_values_with_empty_available_years(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {}
+
+        isUpdated = quickFilterState.update_missing_values([])
+        assert isUpdated is True
+        assert quickFilterState.get_workout_types() == {
+            WorkoutType.BIKING: True,
+            WorkoutType.RUNNING: True,
+            WorkoutType.HIKING: True,
+            WorkoutType.FITNESS: True,
+        }
+        assert quickFilterState.years == {}
 
     def test_toggle_workout_type(self) -> None:
         quickFilterState = QuickFilterState()
@@ -123,3 +160,56 @@ class TestQuickFilterState:
         )
 
         assert quickFilterState.get_active_distance_workout_types() == [WorkoutType.RUNNING]
+
+    def test_update_sets_workout_types(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.update(
+            {
+                WorkoutType.BIKING: True,
+                WorkoutType.RUNNING: False,
+                WorkoutType.HIKING: True,
+                WorkoutType.FITNESS: False,
+            },
+            [],
+        )
+
+        assert quickFilterState.workout_types == {
+            'BIKING': True,
+            'RUNNING': False,
+            'HIKING': True,
+            'FITNESS': False,
+        }
+
+    def test_update_initializes_years_when_none(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.years = None
+
+        quickFilterState.update({}, [2024, 2025, 2026])
+
+        assert quickFilterState.years == {
+            2024: True,
+            2025: True,
+            2026: True,
+        }
+
+    def test_update_updates_existing_years(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.years = {2024: True, 2025: True, 2026: True}
+
+        quickFilterState.update({}, [2025, 2026])
+
+        assert quickFilterState.years == {
+            2024: False,
+            2025: True,
+            2026: True,
+        }
+
+    def test_update_does_not_add_missing_years(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.years = {2025: True}
+
+        quickFilterState.update({}, [2024, 2025, 2026])
+
+        assert quickFilterState.years == {
+            2025: True,
+        }
