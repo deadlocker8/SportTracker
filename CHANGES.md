@@ -1,4 +1,4 @@
-# 2.0.2 - (XX.XX.XX)
+# 2.0.2 - (24.07.26)
 - fix: year filter and tile hunting map (#292)
 
 # 2.0.1 - (19.07.26)
