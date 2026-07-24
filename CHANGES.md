@@ -1,3 +1,6 @@
+# 2.0.2 - (XX.XX.XX)
+- fix: year filter and tile hunting map (#292)
+
 # 2.0.1 - (19.07.26)
 - fix: map not loading (#289)
 - fix: clean stale years from year filter (#291)

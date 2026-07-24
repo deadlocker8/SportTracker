@@ -54,7 +54,7 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
         self.workout_types = {enumValue.name: isActive for enumValue, isActive in workout_types.items()}
 
         if self.years is None:
-            self.years = {year: True for year in active_years}
+            self.years = {str(year): True for year in active_years}
 
         for year in self.years:
             self.years[year] = int(year) in active_years
@@ -82,12 +82,12 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
             self.years = {}
 
         for year in available_years:
-            if year not in self.get_years():
-                self.years[year] = True
+            if str(year) not in self.years:
+                self.years[str(year)] = True
                 isUpdated = True
 
         for year in list(self.years.keys()):
-            if year not in available_years:
+            if int(year) not in available_years:
                 del self.years[year]
                 isUpdated = True
 
