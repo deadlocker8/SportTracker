@@ -23,7 +23,7 @@ class BodyWeightEntryModel:
 
 
 class WeightDifferenceType(enum.Enum):
-    LESS = 'LESS', 'trending_down', 'text-success'
+    LESS = 'LESS', 'trending_down', 'text-green'
     EQUAL = 'EQUAL', 'trending_flat', 'text-orange'
     MORE = 'MORE', 'trending_up', 'text-danger'
 
