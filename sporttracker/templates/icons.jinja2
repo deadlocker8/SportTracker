@@ -171,12 +171,19 @@
                         {{ materialize_icon('show only new', 'more_time') }}
                         {{ materialize_icon('show max square', 'arrows_output') }}
                     {% endcall %}
+
+                    {% call group('body weight form') %}
+                        {{ materialize_icon('date', 'event', true) }}
+                        {{ materialize_icon('time', 'schedule') }}
+                        {{ fontawesome_icon('body weight', 'fa-weight-scale') }}
+                    {% endcall %}
                 </div>
 
                 <div class="d-flex flex-column justify-content-between">
                     {% call group('maintenance form') %}
                         {{ fontawesome_icon('maintenance', 'fa-wrench') }}
                         {{ materialize_icon('workout type', 'stars', true) }}
+                        {{ materialize_icon('date', 'event', true) }}
                         {{ materialize_icon('time', 'schedule') }}
                         {{ materialize_icon('description', 'article', true) }}
                         {{ materialize_icon('reminder', 'notifications', true) }}
@@ -292,6 +299,7 @@
                         {{ materialize_icon('settings', 'settings', true) }}
                         {{ materialize_icon('users', 'groups', true) }}
                         {{ materialize_icon('custom fields', 'drive_file_rename_outline', true) }}
+                        {{ fontawesome_icon('body weight', 'fa-weight-scale') }}
                     {% endcall %}
                 </div>
             </section>
