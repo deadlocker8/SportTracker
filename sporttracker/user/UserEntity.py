@@ -109,6 +109,7 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language,
         tileHuntingShareCode=None,
         isTileHuntingShowPlannedTilesActivated=True,
         annualAchievementsReminderYear=currentYear,
+        height=None,
     )
     db.session.add(user)
     db.session.commit()
