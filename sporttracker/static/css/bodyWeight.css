@@ -1,3 +1,7 @@
+#chartContainerBodyWeight {
+    height: 35vmin;
+}
+
 .bmi-bar {
     height: 2.5rem;
 }
