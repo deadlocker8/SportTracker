@@ -54,6 +54,18 @@ class EditSelfTileHuntingFormModel(BaseModel):
     isTileHuntingShowPlannedTilesActivated: bool | None = None
 
 
+class EditSelfBodyHeightFormModel(BaseModel):
+    height: str | None = None  # cm
+
+    @field_validator('height', mode='before')
+    def emptyToNone(cls, value: str, info) -> str | None:
+        if isinstance(value, str):
+            value = value.strip()
+        if value == '':
+            return None
+        return value
+
+
 class EditDistanceWorkoutInfoItemsModel(BaseModel):
     model_config = ConfigDict(
         extra='allow',
@@ -201,6 +213,22 @@ def construct_blueprint():
             f'"tileHuntingShareCode": {user.tileHuntingShareCode}, '
             f'"isTileHuntingShowPlannedTilesActivated": {bool(user.isTileHuntingShowPlannedTilesActivated)}'
         )
+        db.session.commit()
+
+        return redirect(url_for('settings.settingsShow'))
+
+    @settings.route('/editSelfBodyHeight', methods=['POST'])
+    @login_required
+    @validate()
+    def editSelfBodyHeight(form: EditSelfBodyHeightFormModel):
+        user = User.query.filter(User.id == current_user.id).first()
+
+        if user is None:
+            abort(404)
+
+        user.height = int(form.height) if form.height else None
+
+        LOGGER.debug(f'Updated body height settings for user: {user.username} to "height": {user.height}')
         db.session.commit()
 
         return redirect(url_for('settings.settingsShow'))
