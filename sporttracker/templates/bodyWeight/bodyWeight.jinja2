@@ -64,9 +64,9 @@
             {% else %}
                 <div class="d-flex align-items-center justify-content-center">
                     <span class="material-symbols-outlined fs-4 me-2">info</span>
-                    <span>{{ gettext('Set your body height in the settings to calculate your BMI') }}</span>
-                    <a href="{{ url_for('settings.settingsShow') }}" class="link-light text-decoration-none ms-2">
-                        {{ gettext('Settings') }}
+                    <span>{{ gettext('Set your body height in the settings to calculate your BMI.') }}</span>
+                    <a href="{{ url_for('settings.settingsShow') }}#headline-body-weight" class="link-light ms-2">
+                        {{ gettext('Open Settings') }}
                     </a>
                 </div>
             {% endif %}
