@@ -165,6 +165,15 @@
                                             </span>&nbsp;{{ gettext('Maintenance') }}
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item d-flex align-items-center {% if activeLink == 'bodyWeight' %}active {% endif %}"
+                                           href="{{ url_for('bodyWeight.listBodyWeight') }}">
+                                            <span class="navbar-icon">
+                                                <i class="fa-solid fa-weight-scale"></i>
+                                            </span>&nbsp;{{ gettext('Body Weight') }}
+                                        </a>
+                                    </li>
+
                                     {% if current_user.isTileHuntingActivated %}
                                         <li>
                                             <a class="dropdown-item d-flex align-items-center {% if activeLink == 'tileHunting' %}active {% endif %}"

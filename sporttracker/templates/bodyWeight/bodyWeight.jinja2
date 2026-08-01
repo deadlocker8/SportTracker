@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+
+{% macro bodyWeightStatisticCard(title, color, value) -%}
+    <div class="col col-6 col-md-3 mb-3">
+        <div class="card bg-body-secondary border-0 h-100" data-bs-theme="dark">
+            <div class="card-body">
+                <div class="card-title">{{ title }}</div>
+                <h5 class="card-title {{ color }} fw-bold">
+                    {% if value is none %}
+                        - kg
+                    {% else %}
+                        {{ (value / 1000) | format_decimal }} kg
+                    {% endif %}
+                </h5>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Body Weight') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('bodyWeight') }}
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        {% call macros.headline(gettext('Body Weight'), url_for('bodyWeight.add')) %}
+                            <i class="fa-solid fa-weight-scale fs-1"></i>
+                        {% endcall %}
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    {{ bodyWeightStatisticCard(gettext('Latest'), 'text-warning', latestWeight) }}
+                    {{ bodyWeightStatisticCard(gettext('Average'), 'text-info', averageWeight) }}
+                    {{ bodyWeightStatisticCard(gettext('Min'), 'text-success', minWeight) }}
+                    {{ bodyWeightStatisticCard(gettext('Max'), 'text-danger', maxWeight) }}
+                </div>
+
+                {% if not entries %}
+                    <div class="row mt-3">
+                        <div class="col col-12 mx-auto d-flex align-items-center justify-content-center">
+                            <span class="material-symbols-outlined fs-4 me-2">info</span>
+                            <span>{{ gettext('No body weight entries yet') }}</span>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if entries %}
+                    <div class="row">
+                        <div class="col col-12 mx-auto">
+                            <div id="chartContainerBodyWeight"></div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if entries %}
+                    <div class="row mt-3">
+                        <div class="col col-xxl-8 col-lg-10 col-sm-12 mx-auto">
+                            <table class="table table-dark table-striped text-start align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>{{ gettext('Date') }}</th>
+                                        <th>{{ gettext('Weight') }}</th>
+                                        <th>{{ gettext('Change') }}</th>
+                                        <th class="text-center">{{ gettext('Action') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for entry in entries %}
+                                        <tr>
+                                            <td>{{ entry.entry_datetime | format_date }}</td>
+                                            <td>{{ (entry.weight / 1000) | format_decimal }} kg</td>
+                                            <td>
+                                                {% if entry.difference is not none %}
+                                                    <span class="d-flex align-items-center {{ entry.difference_type.color }}">
+                                                        <span class="material-symbols-outlined fs-6 me-1">{{ entry.difference_type.icon }}</span>{{ entry.difference_formatted }}
+                                                    </span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-center">
+                                                <a href="{{ url_for('bodyWeight.edit', entry_id=entry.id) }}"
+                                                   class="link-light text-decoration-none">
+                                                    <span class="p-1 fs-5 material-symbols-outlined filled">edit</span>
+                                                </a>
+                                                <a href="" class="link-light text-decoration-none"
+                                                   data-bs-toggle="modal" data-bs-target="#delete-modal-{{ entry.id }}">
+                                                    <span class="p-1 fs-5 material-symbols-outlined filled">delete</span>
+                                                </a>
+
+                                                {% call macros.deleteModal(gettext('Delete Body Weight Entry?'), gettext('Do you really want to delete this body weight entry?'), entry.id) %}
+                                                    {{ macros.buttonSubmitAutomaticallyDisabled(classes='btn btn-danger button-delete-modal-action', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl=url_for('bodyWeight.delete', entry_id=entry.id)) }}
+                                                {% endcall %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+        <script>
+            {% if chartDataBodyWeight['dates'] %}
+                const data = [{
+                    x: {{ chartDataBodyWeight['dates'] }},
+                    y: {{ chartDataBodyWeight['values'] }},
+                    type: 'scatter',
+                    mode: 'lines+markers',
+                    line: {
+                        color: '#0d6efd',
+                        width: 3,
+                    },
+                    marker: {
+                        color: '#0d6efd',
+                        size: 10,
+                    },
+                    text: {{ chartDataBodyWeight['values'] }}
+                }];
+
+                const plotlyLayout = {
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    xaxis: {
+                        type: 'date',
+                        color: '#FFFFFF',
+                        automargin: true,
+                        showgrid: false,
+                    },
+                    yaxis: {
+                        title: {
+                            text: '{{ gettext('Weight in kg') }}'
+                        },
+                        color: '#FFFFFF'
+                    },
+                    showlegend: false
+                };
+
+                const plotlyConfig = {
+                    responsive: true,
+                    displayModeBar: false
+                };
+
+                Plotly.newPlot('chartContainerBodyWeight', data, plotlyLayout, plotlyConfig);
+            {% endif %}
+        </script>
+    </body>
+</html>

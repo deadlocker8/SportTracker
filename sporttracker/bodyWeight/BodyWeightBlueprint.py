@@ -31,7 +31,25 @@ def construct_blueprint():
     @bodyWeight.route('/', methods=['GET'])
     @login_required
     def listBodyWeight():
-        return render_template('bodyWeight/bodyWeight.jinja2')
+        entries = BodyWeightService.get_entries_with_difference(current_user.id)
+        averageWeight, minWeight, maxWeight = BodyWeightService.get_average_and_min_and_max(current_user.id)
+        latestWeight = entries[0].weight if entries else None
+
+        chartDates = []
+        chartValues = []
+        for entry in reversed(entries):
+            chartDates.append(entry.entry_datetime.isoformat())
+            chartValues.append(round(entry.weight / 1000, 2))
+
+        return render_template(
+            'bodyWeight/bodyWeight.jinja2',
+            entries=entries,
+            latestWeight=latestWeight,
+            averageWeight=averageWeight,
+            minWeight=minWeight,
+            maxWeight=maxWeight,
+            chartDataBodyWeight={'dates': chartDates, 'values': chartValues},
+        )
 
     @bodyWeight.route('/add', methods=['GET'])
     @login_required
