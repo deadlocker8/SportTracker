@@ -47,6 +47,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     tileHuntingShareCode: Mapped[str] = mapped_column(String, nullable=True)
     isTileHuntingShowPlannedTilesActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     annualAchievementsReminderYear: Mapped[int] = mapped_column(Integer, nullable=False)
+    height: Mapped[int] = mapped_column(Integer, nullable=True)  # cm
 
     def __repr__(self):
         return (
@@ -60,6 +61,7 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
             f'tileHuntingShareCode: {self.tileHuntingShareCode}, '
             f'isTileHuntingShowPlannedTilesActivated: {self.isTileHuntingShowPlannedTilesActivated}, '
             f'annualAchievementsReminderYear: {self.annualAchievementsReminderYear}, '
+            f'height: {self.height}, '
             ')'
         )
 

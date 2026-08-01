@@ -44,8 +44,16 @@ def upgrade():
             sa.PrimaryKeyConstraint('id'),
         )
 
+    columnNames = __get_column_names('user')
+    if 'height' not in columnNames:
+        op.add_column('user', sa.Column('height', sa.Integer(), nullable=True))
+
 
 def downgrade():
+    columnNames = __get_column_names('user')
+    if 'height' in columnNames:
+        op.drop_column('user', 'height')
+
     tableNames = __get_table_names()
     if 'body_weight' in tableNames:
         op.drop_table('body_weight')
