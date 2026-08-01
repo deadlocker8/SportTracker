@@ -16,6 +16,7 @@ from sporttracker.api.FormModels import (
     DistanceWorkoutApiFormModel,
     FitnessWorkoutApiFormModel,
     HeartRateDataListModel,
+    BodyWeightDataListModel,
 )
 from sporttracker.api.Mapper import (
     MAPPER_MONTH_GOAL_DISTANCE,
@@ -28,6 +29,7 @@ from sporttracker.api.Mapper import (
     MAPPER_MAINTENANCE,
     MAPPER_CUSTOM_FIELD,
 )
+from sporttracker.bodyWeight.BodyWeightService import BodyWeightService
 from sporttracker.db import db
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.helpers import DateFormats
@@ -41,8 +43,6 @@ from sporttracker.user.ParticipantEntity import get_participants
 from sporttracker.user.UserEntity import User
 from sporttracker.workout.WorkoutEntity import Workout
 from sporttracker.workout.WorkoutService import WorkoutService
-from sporttracker.workout.heartRate.HeartRateEntity import HeartRateEntity
-from sporttracker.workout.heartRate.HeartRateService import HeartRateService
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
@@ -52,6 +52,8 @@ from sporttracker.workout.fitness.FitnessWorkoutCategory import (
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.fitness.FitnessWorkoutService import FitnessWorkoutService
 from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
+from sporttracker.workout.heartRate.HeartRateEntity import HeartRateEntity
+from sporttracker.workout.heartRate.HeartRateService import HeartRateService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -458,5 +460,22 @@ def construct_blueprint(
             current_user.id,
         )
         return jsonify([MAPPER_MAINTENANCE.map(m) for m in maintenancesWithEvents])
+
+    @api.route('/bodyWeight', methods=['POST'])
+    @login_required
+    def addBodyWeight():
+        try:
+            form = BodyWeightDataListModel.model_validate_json(request.data)
+        except ValidationError as e:
+            return jsonify({'error': str(e)}), 400
+
+        for entry in form.data:
+            timestamp = datetime.strptime(entry.timestamp, DateFormats.DATE_FORMAT_DATE_TIME_FULL)
+            BodyWeightService.add_body_weight_entry(
+                entry_datetime=timestamp, weight=int(entry.weight), user_id=current_user.id
+            )
+
+        LOGGER.debug(f'Added {len(form.data)} body weight entries')
+        return '', 200
 
     return api

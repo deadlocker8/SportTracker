@@ -329,6 +329,20 @@ paths:
                 items:
                   $ref: '#/components/schemas/Maintenance'
 
+  /api/v2/bodyWeight:
+    post:
+      summary: Adds body weight data entries.
+      tags:
+        - bodyWeight
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BodyWeightDataListModel'
+      responses:
+        200:
+          description: "Okay"
+
 components:
   schemas:
     DistanceWorkoutFormModel:
@@ -803,9 +817,34 @@ components:
           example: 123
           description: Beats per minute
 
+    BodyWeightDataListModel:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BodyWeightDataModel'
+
+    BodyWeightDataModel:
+      type: object
+      required:
+        - timestamp
+        - bpm
+      properties:
+        timestamp:
+          type: string
+          example: 2023-11-19 12:45:22
+          description: Date time in the format YYYY-MM-DD HH:mm:SS
+        weight:
+          type: integer
+          example: 80500
+          description: Weight in grams
+
     Version:
       type: object
       properties:
         version:
           type: string
-          example: 2.0.0
+          example: 2.1.0

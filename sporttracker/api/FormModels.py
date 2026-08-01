@@ -69,3 +69,12 @@ class HeartRateDataModel(BaseModel):
 
 class HeartRateDataListModel(BaseModel):
     data: list[HeartRateDataModel]
+
+
+class BodyWeightDataModel(BaseModel):
+    timestamp: str
+    weight: int  # grams
+
+
+class BodyWeightDataListModel(BaseModel):
+    data: list[BodyWeightDataModel]
