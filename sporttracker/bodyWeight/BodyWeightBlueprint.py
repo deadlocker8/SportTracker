@@ -7,7 +7,7 @@ from flask_pydantic import validate
 from pydantic import BaseModel
 
 from sporttracker import Constants
-from sporttracker.bodyWeight.BodyWeightService import BodyWeightService
+from sporttracker.bodyWeight.BodyWeightService import BmiCategory, BodyWeightService
 from sporttracker.helpers import DateFormats
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -34,6 +34,8 @@ def construct_blueprint():
         entries = BodyWeightService.get_entries_with_difference(current_user.id)
         averageWeight, minWeight, maxWeight = BodyWeightService.get_average_and_min_and_max(current_user.id)
         latestWeight = entries[0].weight if entries else None
+        latestBmi = BodyWeightService.calculate_bmi(latestWeight, current_user.height)
+        bmiCategory = BmiCategory.get_bmi_category(latestBmi) if latestBmi is not None else None
 
         chartDates = []
         chartValues = []
@@ -49,6 +51,10 @@ def construct_blueprint():
             minWeight=minWeight,
             maxWeight=maxWeight,
             chartDataBodyWeight={'dates': chartDates, 'values': chartValues},
+            latestBmi=latestBmi,
+            bmiCategory=bmiCategory,
+            bmiCategories=list(BmiCategory),
+            bmiScaleMax=BodyWeightService.BMI_SCALE_MAX,
         )
 
     @bodyWeight.route('/add', methods=['GET'])

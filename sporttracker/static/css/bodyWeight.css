@@ -1,0 +1,40 @@
+.bmi-bar {
+    height: 2.5rem;
+}
+
+.bmi-marker {
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.bmi-marker-caret {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-top: -0.5rem;
+}
+
+.bmi-marker-line {
+    width: 5px;
+    height: 1.5rem;
+    background-color: #ffffff;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.bmi-legend {
+    columns: 2;
+    column-gap: 2rem;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bmi-legend-color {
+    display: inline-block;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 0.25rem;
+}

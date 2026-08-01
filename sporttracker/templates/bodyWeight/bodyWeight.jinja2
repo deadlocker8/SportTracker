@@ -18,12 +18,69 @@
     </div>
 {%- endmacro %}
 
+{% macro bmi(title, color, value) -%}
+    <div class="row mt-3">
+        <div class="col col-xxl-8 col-lg-10 col-sm-12 mx-auto">
+            {% if latestBmi is not none %}
+                {% set bmiMarkerPosition = (latestBmi / bmiScaleMax * 100) | round(2) %}
+                {% if bmiMarkerPosition < 1 %}
+                    {% set bmiMarkerPosition = 1 %}
+                {% elif bmiMarkerPosition > 99 %}
+                    {% set bmiMarkerPosition = 99 %}
+                {% endif %}
+                <div class="d-flex align-items-center justify-content-center mb-2">
+                    <span class="material-symbols-outlined fs-4 me-2">monitor_weight</span>
+                    <span class="fw-bold">{{ gettext('BMI') }}</span>
+                    <span class="mx-2 text-primary fw-bold">{{ latestBmi | format_decimal }}</span>
+                    <span class="text-light">{{ bmiCategory.get_localized_name() }}</span>
+                </div>
+
+                <div class="bmi-bar position-relative">
+                    <div class="progress bmi-progress" style="height: 1.5rem;">
+                        {% for segment in bmiCategories %}
+                            {% set segmentMax = segment.max_bmi if segment.max_bmi is not none else bmiScaleMax %}
+                            {% set segmentWidth = ((segmentMax - segment.min_bmi) / bmiScaleMax * 100) | round(2) %}
+                            <div class="progress-bar" role="progressbar"
+                                 style="width: {{ segmentWidth }}%; background-color: {{ segment.color }};"
+                                 title="{{ segment.get_localized_name() }}"></div>
+                        {% endfor %}
+                    </div>
+                    <div class="bmi-marker position-absolute" style="left: {{ bmiMarkerPosition }}%;">
+                        <div class="bmi-marker-line"></div>
+                        <span class="material-symbols-outlined bmi-marker-caret fs-1">arrow_drop_up</span>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <div class="bmi-legend">
+                        {% for segment in bmiCategories %}
+                            <span class="d-flex align-items-center mb-1">
+                                                    <span class="bmi-legend-color" style="background-color: {{ segment.color }};"></span>
+                                                    <span class="ms-1 font-extra-small text-start">{{ segment.get_localized_name() }}</span>
+                                                </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="d-flex align-items-center justify-content-center">
+                    <span class="material-symbols-outlined fs-4 me-2">info</span>
+                    <span>{{ gettext('Set your body height in the settings to calculate your BMI') }}</span>
+                    <a href="{{ url_for('settings.settingsShow') }}" class="link-light text-decoration-none ms-2">
+                        {{ gettext('Settings') }}
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{%- endmacro %}
+
 <html>
     <head>
         <meta charset="UTF-8">
         <title>SportTracker - {{ gettext('Body Weight') }}</title>
         {% import 'macros.jinja2' as macros with context %}
         {{ macros.header() }}
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/bodyWeight.css") }}"/>
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('bodyWeight') }}
@@ -54,6 +111,8 @@
                 {% endif %}
 
                 {% if entries %}
+                    {{ bmi() }}
+
                     <div class="row">
                         <div class="col col-12 mx-auto">
                             <div id="chartContainerBodyWeight"></div>
