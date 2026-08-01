@@ -38,6 +38,7 @@ from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutFieldType
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.workout import WorkoutBlueprint
+from sporttracker.bodyWeight import BodyWeightBlueprint
 from sporttracker.workout.distance import DistanceWorkoutBlueprint
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.fitness import FitnessWorkoutBlueprint
@@ -316,6 +317,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(MonthGoalsDistanceBlueprint.construct_blueprint())
         app.register_blueprint(MonthGoalsCountBlueprint.construct_blueprint())
         app.register_blueprint(MonthGoalsDurationBlueprint.construct_blueprint())
+        app.register_blueprint(BodyWeightBlueprint.construct_blueprint())
         app.register_blueprint(
             ChartBlueprint.construct_blueprint(
                 app.config['NEW_VISITED_TILE_CACHE'],

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% set isEdit = false %}
+        {% if entry and entry.date %}
+            {% set isEdit = true %}
+        {% endif %}
+
+        <meta charset="UTF-8">
+        <title>SportTracker - {% if isEdit %}{{ gettext('Edit Body Weight Entry') }}{% else %}
+            {{ gettext('New Body Weight Entry') }}{% endif %}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('bodyWeight') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        {% if isEdit %}
+                            {% call macros.headline(gettext('Edit Body Weight Entry')) %}
+                                <i class="fa-solid fa-weight-scale fs-1"></i>
+                            {% endcall %}
+                            <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto button-automatically-disabled" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                                <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
+                            </button>
+
+                            {% call macros.deleteModal(gettext('Delete Body Weight Entry?'), gettext('Do you really want to delete this body weight entry?')) %}
+                                {{ macros.buttonSubmitAutomaticallyDisabled(classes='btn btn-danger button-delete-modal-action', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl=url_for('bodyWeight.delete', entry_id=entry_id)) }}
+                            {% endcall %}
+                        {% else %}
+                            {% call macros.headline(gettext('New Body Weight Entry')) %}
+                                <i class="fa-solid fa-weight-scale fs-1"></i>
+                            {% endcall %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row mt-5 text-start">
+                    <div class="col col-11 col-md-9 mx-auto">
+                        <form role="form" action="{% if isEdit %}{{ url_for('bodyWeight.editPost', entry_id=entry_id) }}{% else %}{{ url_for('bodyWeight.addPost') }}{% endif %}"
+                              onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
+                              method="post">
+
+                            <div class="row">
+                                <div class="col col-12 col-md-6">
+                                    <label for="body-weight-date" class="form-label input-field-margin">{{ gettext('Date') }}</label>
+                                    <div class="d-flex align-items-center">
+                                        <span class="material-symbols-outlined filled me-3">event</span>
+                                        <input type="date" class="form-control" id="body-weight-date" name="date" min="2000-01-01"
+                                               required="required" value="{% if isEdit %}{{ entry.date }}{% else %}{{ today }}{% endif %}">
+                                    </div>
+                                </div>
+                                <div class="col col-12 col-md-6 mt-3 mt-md-0">
+                                    <label for="body-weight-time" class="form-label input-field-margin">{{ gettext('Time') }}</label>
+                                    <div class="d-flex align-items-center">
+                                        <span class="material-symbols-outlined me-3">schedule</span>
+                                        <input type="time" class="form-control" id="body-weight-time" name="time"
+                                               required="required" value="{% if isEdit %}{{ entry.time }}{% endif %}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 mb-4">
+                                <label for="body-weight" class="form-label input-field-margin">{{ gettext('Weight in kg') }}</label>
+                                <div class="d-flex align-items-center">
+                                    <i class="fa-solid fa-weight-scale fs-5 me-3"></i>
+                                    <input type="number" class="form-control" id="body-weight" name="weight" step="0.1" min="0"
+                                           required="required"
+                                           value="{% if isEdit %}{{ entry.weight }}{% endif %}">
+                                </div>
+                            </div>
+
+                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-5 input-field-margin') }}
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>
