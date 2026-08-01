@@ -8,6 +8,7 @@ from dateutil.relativedelta import relativedelta
 from faker import Faker
 
 from sporttracker import Constants
+from sporttracker.bodyWeight.BodyWeightEntity import BodyWeight
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutField, CustomWorkoutFieldType
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
@@ -131,6 +132,8 @@ class DummyDataGenerator:
 
             self.__generate_demo_long_distance_tour(user)
 
+            self.__generate_demo_body_weight(user)
+
     def __generate_demo_user(self, name: str, password: str) -> User:
         user = User.query.filter_by(username=name).first()
 
@@ -139,6 +142,8 @@ class DummyDataGenerator:
             user = create_user(
                 username=name, password=password, isAdmin=False, language=Language.ENGLISH, currentYear=self._now.year
             )
+            user.height = 180
+            db.session.commit()
 
         return user
 
@@ -498,6 +503,27 @@ class DummyDataGenerator:
             )
             db.session.add(association)
             db.session.commit()
+
+    def __generate_demo_body_weight(self, user) -> None:
+        LOGGER.debug('Generate dummy body weight entries...')
+
+        fake = Faker()
+
+        lastDayCurrentMonth = datetime.now().date() + relativedelta(day=31)
+        currentWeight = 86 * 1000
+
+        for _ in range(self.NUMBER_OF_MONTHS):
+            firstDay = date(year=lastDayCurrentMonth.year, month=lastDayCurrentMonth.month, day=1)
+
+            for _ in range(10):
+                fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
+                currentWeight = currentWeight + random.randint(-600, 300)
+
+                db.session.add(BodyWeight(datetime=fakeTime, weight=currentWeight, user_id=user.id))
+
+            lastDayCurrentMonth = lastDayCurrentMonth - relativedelta(months=1)
+
+        db.session.commit()
 
     @staticmethod
     def __generate_dummy_heart_rate_data(workout: Workout) -> None:
