@@ -22,7 +22,8 @@ class BodyWeightFormModel(BaseModel):
         return datetime.strptime(f'{self.date} {self.time}', DateFormats.DATE_FORMAT_DATE_TIME)
 
     def calculate_weight_in_grams(self) -> int:
-        return int(round(self.weight * 1000))
+        # convert kg to grams and cut to 100g steps (one decimal place); round() corrects float representation errors
+        return round(self.weight * 1000) // 100 * 100
 
 
 def construct_blueprint():
@@ -41,7 +42,7 @@ def construct_blueprint():
         chartValues = []
         for entry in reversed(entries):
             chartDates.append(entry.entry_datetime.isoformat())
-            chartValues.append(round(entry.weight / 1000, 2))
+            chartValues.append(round(entry.weight / 1000, 1))
 
         return render_template(
             'bodyWeight/bodyWeight.jinja2',
@@ -88,7 +89,7 @@ def construct_blueprint():
         form = BodyWeightFormModel(
             date=entry.get_date(),
             time=entry.get_time(),
-            weight=round(entry.weight / 1000, 2),
+            weight=round(entry.weight / 1000, 1),
         )
         return render_template('bodyWeight/bodyWeightForm.jinja2', entry=form, entry_id=entry_id)
 

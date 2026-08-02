@@ -517,7 +517,7 @@ class DummyDataGenerator:
 
             for _ in range(10):
                 fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
-                currentWeight = currentWeight + random.randint(-600, 300)
+                currentWeight = currentWeight + random.randint(-6, 3) * 100
 
                 db.session.add(BodyWeight(datetime=fakeTime, weight=currentWeight, user_id=user.id))
 
