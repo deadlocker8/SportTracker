@@ -88,6 +88,7 @@ class SportTracker(FlaskBaseApp):
         generateDummyData: bool,
         prepareDatabase: bool,
         settingsPath: str = '../settings.json',
+        dataFolderPath: str | None = None,
     ):
         os.chdir(rootDir)
         super().__init__(appName, rootDir, logger, settingsPath=settingsPath, serveFavicon=True)
@@ -96,6 +97,7 @@ class SportTracker(FlaskBaseApp):
         self._isStage = isStage
         self._generateDummyData = generateDummyData
         self._prepareDatabase = prepareDatabase
+        self._dataFolderPath = dataFolderPath
 
         SettingsChecker(self._settings).check()
 
@@ -119,7 +121,10 @@ class SportTracker(FlaskBaseApp):
         migrate.init_app(app, db)
 
         rootDirectory = os.path.dirname(currentDirectory)
-        app.config['DATA_FOLDER'] = os.path.join(rootDirectory, 'data')
+        if self._dataFolderPath is None:
+            app.config['DATA_FOLDER'] = os.path.join(rootDirectory, 'data')
+        else:
+            app.config['DATA_FOLDER'] = self._dataFolderPath
         app.config['TEMP_FOLDER'] = os.path.join(tempfile.gettempdir(), 'sporttracker_temp')
 
         app.config['NEW_VISITED_TILE_CACHE'] = NewVisitedTileCache()
@@ -373,7 +378,7 @@ class SportTracker(FlaskBaseApp):
             db.create_all()
 
 
-def create_test_app():
+def create_test_app(dataFolderPath: str | None = None):
     server = SportTracker(
         Constants.APP_NAME,
         os.path.dirname(__file__),
@@ -383,6 +388,7 @@ def create_test_app():
         False,
         True,
         settingsPath='../settings-test.json',
+        dataFolderPath=dataFolderPath,
     )
     return server.init_app()
 
