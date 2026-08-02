@@ -147,18 +147,18 @@ In order to activate gpx preview images, follow these steps:
 Update the section `gpxPreviewImages` in your settings.json to contain the following values**
 ```json
 "gpxPreviewImages": {
-"enabled": false,
-"url": "http://localhost:3000",
-"timeout": 30,
-"width": 800,
-"height": 450,
-"dpi": 100,
-"lineWidth": 3,
-"lineColor": "#1267FF",
-"padding": 0.1,
-"basemap": "osm",
-"format": "jpeg",
-"quality": 85
+    "enabled": false,
+    "url": "http://localhost:3000",
+    "timeout": 30,
+    "width": 800,
+    "height": 450,
+    "dpi": 100,
+    "lineWidth": 3,
+    "lineColor": "#1267FF",
+    "padding": 0.1,
+    "basemap": "osm",
+    "format": "jpeg",
+    "quality": 85
 }
 ```
 Where http://localhost:3000 is the address and port number of your GpxToImageRenderer instance started in step 1.
@@ -194,6 +194,14 @@ Supported notification providers:
 
 For each notification provider you can choose, which notifications should be sent:
 ![](screenshots/notifications_settings.jpg)
+
+
+### Body Weight
+Track your body weight over time.
+You can add, edit and delete weight entries and each entry shows the change compared to the previous entry.
+The overview page shows statistics (latest, average, min and max weight), a chart of your weight over time and your body mass index (BMI).
+
+![](screenshots/body_weight.png)
 
 ### Available languages
 - German
