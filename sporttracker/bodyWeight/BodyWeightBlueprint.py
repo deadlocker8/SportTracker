@@ -18,7 +18,7 @@ class BodyWeightFormModel(BaseModel):
     time: str
     weight: float  # kg
 
-    def calculate_date(self) -> datetime:
+    def calculate_datetime(self) -> datetime:
         return datetime.strptime(f'{self.date} {self.time}', DateFormats.DATE_FORMAT_DATE_TIME)
 
     def calculate_weight_in_grams(self) -> int:
@@ -70,7 +70,7 @@ def construct_blueprint():
     @validate()
     def addPost(form: BodyWeightFormModel):
         BodyWeightService.add_body_weight_entry(
-            entry_datetime=form.calculate_date(),
+            entry_datetime=form.calculate_datetime(),
             weight=form.calculate_weight_in_grams(),
             user_id=current_user.id,
         )
@@ -100,7 +100,7 @@ def construct_blueprint():
         if entry is None:
             abort(404)
 
-        BodyWeightService.update_body_weight_entry(entry, form.calculate_date(), form.calculate_weight_in_grams())
+        BodyWeightService.update_body_weight_entry(entry, form.calculate_datetime(), form.calculate_weight_in_grams())
 
         LOGGER.debug(f'Updated body weight entry: {entry}')
         return redirect(url_for('bodyWeight.listBodyWeight'))

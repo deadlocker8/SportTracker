@@ -195,8 +195,8 @@ class BodyWeightService:
         db.session.commit()
 
     @staticmethod
-    def update_body_weight_entry(entry: BodyWeight, date: datetime, weight: int) -> None:
-        entry.date = date
+    def update_body_weight_entry(entry: BodyWeight, entry_datetime: datetime, weight: int) -> None:
+        entry.datetime = entry_datetime  # type: ignore[assignment]
         entry.weight = weight
         db.session.commit()
 
