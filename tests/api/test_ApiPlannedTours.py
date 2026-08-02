@@ -1,7 +1,5 @@
 from datetime import datetime
 
-import pytest
-
 from sporttracker.db import db
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
@@ -17,13 +15,6 @@ class TestPlannedTours:
         assert response.status_code == 200
         assert response.get_json() == []
 
-    @pytest.mark.xfail(
-        reason=(
-            'Known bug: MAPPER_PLANNED_TOUR expects a PlannedTourModel but the endpoint passes PlannedTour '
-            'entities (Mapper.py), which raises a ValueError (HTTP 500) when at least one planned tour exists'
-        ),
-        strict=True,
-    )
     def test_list_with_entries(self, client, app, user):
         with app.app_context():
             plannedTour = PlannedTour(

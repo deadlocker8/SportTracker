@@ -18,7 +18,7 @@ from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
 from sporttracker.user.ParticipantEntity import Participant
-from sporttracker.plannedTour.PlannedTourService import PlannedTourModel
+from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 
 
 class Mapper:
@@ -127,7 +127,7 @@ MAPPER_PARTICIPANT = Mapper(
 )
 
 MAPPER_PLANNED_TOUR = Mapper(
-    PlannedTourModel,
+    PlannedTour,
     PlannedTourApiModel,
     {
         'id': lambda source: source.id,
