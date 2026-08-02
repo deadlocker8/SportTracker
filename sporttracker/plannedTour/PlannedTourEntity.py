@@ -57,7 +57,7 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
         if self.gpx_metadata_id is None:
             return None
         else:
-            return GpxMetadata.query.get(self.gpx_metadata_id)
+            return db.session.get(GpxMetadata, self.gpx_metadata_id)
 
     def get_owner_name(self) -> str:
         user = get_user_by_id(self.user_id)

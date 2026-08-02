@@ -46,7 +46,7 @@ class NotificationService(Observable):
     @staticmethod
     def get_notifications_paginated(page_number: int) -> Pagination:
         return db.paginate(
-            Notification.query.filter(Notification.user_id == current_user.id).order_by(Notification.id.desc()),
+            db.select(Notification).filter(Notification.user_id == current_user.id).order_by(Notification.id.desc()),
             per_page=10,
             page=page_number,
             error_out=False,

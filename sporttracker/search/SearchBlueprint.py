@@ -45,7 +45,8 @@ def construct_blueprint():
             pageNumberValue = 1
 
         pagination = db.paginate(
-            Workout.query.join(User)
+            db.select(Workout)
+            .join(User, Workout.user_id == User.id)
             .filter(User.username == current_user.username)
             .filter(Workout.name.icontains(searchText))
             .filter(Workout.type.in_(quickFilterState.get_active_workout_types()))

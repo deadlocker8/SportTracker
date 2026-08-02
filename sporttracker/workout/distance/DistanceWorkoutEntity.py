@@ -48,7 +48,7 @@ class DistanceWorkout(Workout):  # type: ignore[name-defined]
         if self.gpx_metadata_id is None:
             return None
         else:
-            return GpxMetadata.query.get(self.gpx_metadata_id)
+            return db.session.get(GpxMetadata, self.gpx_metadata_id)
 
     def get_download_name(self) -> str:
         escapedName = ''.join([c if c.isalnum() else '_' for c in str(self.name)])
