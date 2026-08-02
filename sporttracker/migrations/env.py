@@ -15,19 +15,12 @@ logger = logging.getLogger('alembic.env')
 
 
 def get_engine():
-    try:
-        # this works with Flask-SQLAlchemy<3 and Alchemical
-        return current_app.extensions['migrate'].db.get_engine()
-    except (TypeError, AttributeError):
-        # this works with Flask-SQLAlchemy>=3
-        return current_app.extensions['migrate'].db.engine
+    # this works with Flask-SQLAlchemy>=3
+    return current_app.extensions['migrate'].db.engine
 
 
 def get_engine_url():
-    try:
-        return get_engine().url.render_as_string(hide_password=False).replace('%', '%%')
-    except AttributeError:
-        return str(get_engine().url).replace('%', '%%')
+    return get_engine().url.render_as_string(hide_password=False).replace('%', '%%')
 
 
 # add your model's MetaData object here
@@ -78,7 +71,7 @@ def run_migrations_online():
 
     # this callback is used to prevent an auto-migration from being generated
     # when there are no changes to the schema
-    # reference: http://alembic.zzzcomputing.com/en/latest/cookbook.html
+    # reference: https://alembic.sqlalchemy.org/en/latest/cookbook.html
     def process_revision_directives(context, revision, directives):
         if getattr(config.cmd_opts, 'autogenerate', False):
             script = directives[0]
