@@ -1,3 +1,6 @@
+# 2.1.0 - (XX.XX.XX)
+- add: body weight tracking (#293)
+
 # 2.0.2 - (24.07.26)
 - fix: year filter and tile hunting map (#292)
 
