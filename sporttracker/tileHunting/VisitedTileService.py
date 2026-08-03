@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from datetime import timedelta
 
 from flask_login import current_user
-from sqlalchemy import text, func, or_, and_
+from sqlalchemy import text, func, or_, and_, false
 from sqlalchemy.orm import aliased
 
 from sporttracker.gpx.GpxService import VisitedTile
@@ -290,8 +290,11 @@ class VisitedTileService:
 
     def __apply_date_range_filter(self, query, startTimeColumn):
         dateRanges = self._quickFilterState.get_effective_date_ranges()
-        if not dateRanges:
+        if dateRanges is None:
             return query
+
+        if not dateRanges:
+            return query.filter(false())
 
         return query.filter(
             or_(

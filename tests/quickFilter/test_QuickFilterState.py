@@ -230,7 +230,14 @@ class TestQuickFilterState:
         quickFilterState.workout_types = {}
         quickFilterState.years = {}
 
-        assert quickFilterState.get_effective_date_ranges() == []
+        assert quickFilterState.get_effective_date_ranges() is None
+
+    def test_get_effective_date_ranges_none_when_all_years_active(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {'2025': True, '2026': True}
+
+        assert quickFilterState.get_effective_date_ranges() is None
 
     def test_get_effective_date_ranges_empty_without_active_years(self) -> None:
         quickFilterState = QuickFilterState()

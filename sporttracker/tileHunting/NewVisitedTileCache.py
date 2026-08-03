@@ -26,16 +26,21 @@ class NewVisitedTileCache:
         self._newVisitedTilesPerUser: dict[str, list[NewTilesPerDistanceWorkout]] = {}
 
     @staticmethod
-    def __calculate_cache_key(userId: int, workoutTypes: list[WorkoutType], dateRanges: list[tuple[date, date]]) -> str:
+    def __calculate_cache_key(
+        userId: int, workoutTypes: list[WorkoutType], dateRanges: list[tuple[date, date]] | None
+    ) -> str:
         activeTypes = '_'.join(sorted([t.name for t in workoutTypes]))
-        activeDateRanges = '_'.join([f'{dateFrom}_{dateTo}' for dateFrom, dateTo in dateRanges])
+        if dateRanges is None:
+            activeDateRanges = 'NONE'
+        else:
+            activeDateRanges = '_'.join([f'{dateFrom}_{dateTo}' for dateFrom, dateTo in dateRanges])
         return f'{userId}_{activeTypes}_{activeDateRanges}'
 
     def get_number_of_new_visited_tiles_per_workout_by_user(
         self,
         userId: int,
         workoutTypes: list[WorkoutType],
-        dateRanges: list[tuple[date, date]],
+        dateRanges: list[tuple[date, date]] | None,
     ) -> list[NewTilesPerDistanceWorkout]:
         cacheKey = self.__calculate_cache_key(userId, workoutTypes, dateRanges)
 
@@ -57,7 +62,7 @@ class NewVisitedTileCache:
     def __determine_number_of_new_tiles_per_workout(
         userId: int,
         workoutTypes: list[WorkoutType],
-        dateRanges: list[tuple[date, date]],
+        dateRanges: list[tuple[date, date]] | None,
     ) -> list[NewTilesPerDistanceWorkout]:
         activeWorkoutTypes = [x.name for x in workoutTypes]
 
@@ -128,10 +133,13 @@ class NewVisitedTileCache:
 
     @staticmethod
     def _build_date_range_operators(
-        dateRanges: list[tuple[date, date]],
+        dateRanges: list[tuple[date, date]] | None,
     ) -> tuple[str, str, dict[str, date]]:
-        if not dateRanges:
+        if dateRanges is None:
             return '', '', {}
+
+        if not dateRanges:
+            return 'AND (1 = 0)', 'AND (1 = 0)', {}
 
         dateRangeOperator, dateRangeParameters = NewVisitedTileCache._build_date_range_operator(
             'w_inner."start_time"', dateRanges

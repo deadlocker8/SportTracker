@@ -76,10 +76,13 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
         self.date_from = None  # type: ignore[assignment]
         self.date_to = None  # type: ignore[assignment]
 
-    def get_effective_date_ranges(self) -> list[tuple[date, date]]:
+    def get_effective_date_ranges(self) -> list[tuple[date, date]] | None:
         dateRange = self.get_date_range()
         if dateRange is not None:
             return [dateRange]
+
+        if self.is_all_years_active():
+            return None
 
         activeYears = self.get_active_years()
         if not activeYears:

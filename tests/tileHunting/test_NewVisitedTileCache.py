@@ -4,9 +4,13 @@ from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 
 
 class TestNewVisitedTileCache:
-    def test_build_date_range_operators_no_date_ranges(self):
-        result = NewVisitedTileCache._build_date_range_operators([])
+    def test_build_date_range_operators_no_filter(self):
+        result = NewVisitedTileCache._build_date_range_operators(None)
         assert result == ('', '', {})
+
+    def test_build_date_range_operators_empty_filter(self):
+        result = NewVisitedTileCache._build_date_range_operators([])
+        assert result == ('AND (1 = 0)', 'AND (1 = 0)', {})
 
     def test_build_date_range_operators_single_date_range(self):
         result = NewVisitedTileCache._build_date_range_operators([(date(2025, 6, 1), date(2025, 6, 30))])

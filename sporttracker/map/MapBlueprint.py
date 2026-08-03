@@ -16,7 +16,7 @@ from flask import (
     Response,
 )
 from flask_login import login_required, current_user
-from sqlalchemy import func, and_, or_
+from sqlalchemy import func, and_, or_, false
 
 from sporttracker import Constants
 from sporttracker.db import db
@@ -117,18 +117,21 @@ def construct_blueprint(
         )
 
         dateRanges = quickFilterState.get_effective_date_ranges()
-        if dateRanges:
-            query = query.filter(
-                or_(
-                    *(
-                        and_(
-                            DistanceWorkout.start_time >= dateFrom,
-                            DistanceWorkout.start_time < dateTo + timedelta(days=1),
+        if dateRanges is not None:
+            if dateRanges:
+                query = query.filter(
+                    or_(
+                        *(
+                            and_(
+                                DistanceWorkout.start_time >= dateFrom,
+                                DistanceWorkout.start_time < dateTo + timedelta(days=1),
+                            )
+                            for dateFrom, dateTo in dateRanges
                         )
-                        for dateFrom, dateTo in dateRanges
                     )
                 )
-            )
+            else:
+                query = query.filter(false())
 
         workouts = query.all()
 

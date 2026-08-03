@@ -1,7 +1,7 @@
 import logging
 from datetime import date, timedelta
 
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, or_, false
 
 from sporttracker import Constants
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
@@ -17,17 +17,20 @@ class MaxSquareCache:
 
     @staticmethod
     def __calculate_cache_key(
-        user_id: int, workout_types: list[WorkoutType], date_ranges: list[tuple[date, date]]
+        user_id: int, workout_types: list[WorkoutType], date_ranges: list[tuple[date, date]] | None
     ) -> str:
         active_types = '_'.join(sorted([t.name for t in workout_types]))
-        active_date_ranges = '_'.join([f'{date_from}_{date_to}' for date_from, date_to in date_ranges])
+        if date_ranges is None:
+            active_date_ranges = 'NONE'
+        else:
+            active_date_ranges = '_'.join([f'{date_from}_{date_to}' for date_from, date_to in date_ranges])
         return f'{user_id}_{active_types}_{active_date_ranges}'
 
     def get_max_square_tile_positions(
         self,
         userId: int,
         workoutTypes: list[WorkoutType],
-        dateRanges: list[tuple[date, date]],
+        dateRanges: list[tuple[date, date]] | None,
     ) -> list[tuple[int, int]]:
         cacheKey = self.__calculate_cache_key(userId, workoutTypes, dateRanges)
 
@@ -49,7 +52,7 @@ class MaxSquareCache:
     def __determine_max_square_tile_positions(
         user_id: int,
         workout_types: list[WorkoutType],
-        date_ranges: list[tuple[date, date]],
+        date_ranges: list[tuple[date, date]] | None,
     ) -> list[tuple[int, int]]:
         query = (
             DistanceWorkout.query.select_from(DistanceWorkout)
@@ -61,18 +64,21 @@ class MaxSquareCache:
             .order_by(GpxVisitedTile.x, GpxVisitedTile.y)
         )
 
-        if date_ranges:
-            query = query.filter(
-                or_(
-                    *(
-                        and_(
-                            DistanceWorkout.start_time >= date_from,
-                            DistanceWorkout.start_time < date_to + timedelta(days=1),
+        if date_ranges is not None:
+            if date_ranges:
+                query = query.filter(
+                    or_(
+                        *(
+                            and_(
+                                DistanceWorkout.start_time >= date_from,
+                                DistanceWorkout.start_time < date_to + timedelta(days=1),
+                            )
+                            for date_from, date_to in date_ranges
                         )
-                        for date_from, date_to in date_ranges
                     )
                 )
-            )
+            else:
+                query = query.filter(false())
 
         all_visited_tiles = query.all()
 
