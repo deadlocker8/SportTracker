@@ -1,6 +1,7 @@
 import logging
+from datetime import date, timedelta
 
-from sqlalchemy import extract
+from sqlalchemy import and_, or_
 
 from sporttracker import Constants
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
@@ -15,20 +16,25 @@ class MaxSquareCache:
         self._max_square_tile_positions: dict[str, list[tuple[int, int]]] = {}
 
     @staticmethod
-    def __calculate_cache_key(user_id: int, workout_types: list[WorkoutType], years: list[int]) -> str:
+    def __calculate_cache_key(
+        user_id: int, workout_types: list[WorkoutType], date_ranges: list[tuple[date, date]]
+    ) -> str:
         active_types = '_'.join(sorted([t.name for t in workout_types]))
-        active_years = '_'.join(sorted([str(y) for y in years]))
-        return f'{user_id}_{active_types}_{active_years}'
+        active_date_ranges = '_'.join([f'{date_from}_{date_to}' for date_from, date_to in date_ranges])
+        return f'{user_id}_{active_types}_{active_date_ranges}'
 
     def get_max_square_tile_positions(
-        self, userId: int, workoutTypes: list[WorkoutType], years: list[int]
+        self,
+        userId: int,
+        workoutTypes: list[WorkoutType],
+        dateRanges: list[tuple[date, date]],
     ) -> list[tuple[int, int]]:
-        cacheKey = self.__calculate_cache_key(userId, workoutTypes, years)
+        cacheKey = self.__calculate_cache_key(userId, workoutTypes, dateRanges)
 
         if cacheKey not in self._max_square_tile_positions:
             LOGGER.debug(f'Creating entry in MaxSquareCache with key {cacheKey}')
             self._max_square_tile_positions[cacheKey] = self.__determine_max_square_tile_positions(
-                userId, workoutTypes, years
+                userId, workoutTypes, dateRanges
             )
 
         return self._max_square_tile_positions[cacheKey]
@@ -41,19 +47,34 @@ class MaxSquareCache:
 
     @staticmethod
     def __determine_max_square_tile_positions(
-        user_id: int, workout_types: list[WorkoutType], years: list[int]
+        user_id: int,
+        workout_types: list[WorkoutType],
+        date_ranges: list[tuple[date, date]],
     ) -> list[tuple[int, int]]:
-        all_visited_tiles = (
+        query = (
             DistanceWorkout.query.select_from(DistanceWorkout)
             .join(GpxVisitedTile, GpxVisitedTile.workout_id == DistanceWorkout.id)
             .with_entities(GpxVisitedTile.x, GpxVisitedTile.y)
             .filter(DistanceWorkout.user_id == user_id)
             .filter(DistanceWorkout.type.in_(workout_types))
-            .filter(extract('year', DistanceWorkout.start_time).in_(years))
             .distinct()
             .order_by(GpxVisitedTile.x, GpxVisitedTile.y)
-            .all()
         )
+
+        if date_ranges:
+            query = query.filter(
+                or_(
+                    *(
+                        and_(
+                            DistanceWorkout.start_time >= date_from,
+                            DistanceWorkout.start_time < date_to + timedelta(days=1),
+                        )
+                        for date_from, date_to in date_ranges
+                    )
+                )
+            )
+
+        all_visited_tiles = query.all()
 
         return MaxSquareCache._calculate_max_square([(row[0], row[1]) for row in all_visited_tiles])
 

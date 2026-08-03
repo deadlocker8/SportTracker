@@ -1,6 +1,6 @@
 import io
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any
 
 import flask_babel
@@ -16,7 +16,7 @@ from flask import (
     Response,
 )
 from flask_login import login_required, current_user
-from sqlalchemy import func, extract
+from sqlalchemy import func, and_, or_
 
 from sporttracker import Constants
 from sporttracker.db import db
@@ -102,7 +102,7 @@ def construct_blueprint(
         gpxInfo = []
 
         funcStartTime = func.max(DistanceWorkout.start_time)
-        workouts = (
+        query = (
             DistanceWorkout.query.with_entities(
                 func.max(DistanceWorkout.id),
                 DistanceWorkout.name,
@@ -112,11 +112,25 @@ def construct_blueprint(
             .filter(DistanceWorkout.user_id == current_user.id)
             .filter(DistanceWorkout.gpx_metadata_id.isnot(None))
             .filter(DistanceWorkout.type.in_(quickFilterState.get_active_distance_workout_types()))
-            .filter(extract('year', DistanceWorkout.start_time).in_(quickFilterState.get_active_years()))
             .group_by(DistanceWorkout.name)
             .order_by(funcStartTime.desc())
-            .all()
         )
+
+        dateRanges = quickFilterState.get_effective_date_ranges()
+        if dateRanges:
+            query = query.filter(
+                or_(
+                    *(
+                        and_(
+                            DistanceWorkout.start_time >= dateFrom,
+                            DistanceWorkout.start_time < dateTo + timedelta(days=1),
+                        )
+                        for dateFrom, dateTo in dateRanges
+                    )
+                )
+            )
+
+        workouts = query.all()
 
         for workout in workouts:
             workoutId, workoutName, workoutStartTime, workoutType = workout

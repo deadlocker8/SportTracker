@@ -1,8 +1,9 @@
 import math
 from dataclasses import dataclass
+from datetime import timedelta
 
 from flask_login import current_user
-from sqlalchemy import extract, text, func, or_
+from sqlalchemy import text, func, or_, and_
 from sqlalchemy.orm import aliased
 
 from sporttracker.gpx.GpxService import VisitedTile
@@ -57,7 +58,7 @@ class VisitedTileService:
         newVisitedTilesPerWorkout = self._newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
             current_user.id,
             self._quickFilterState.get_active_distance_workout_types(),
-            self._quickFilterState.get_active_years(),
+            self._quickFilterState.get_effective_date_ranges(),
         )
 
         totalNumberOfTiles = 0
@@ -87,20 +88,20 @@ class VisitedTileService:
         distanceWorkoutAlias = aliased(DistanceWorkout)
         gpxVisitedTileAlias = aliased(GpxVisitedTile)
 
-        rows = (
+        query = (
             distanceWorkoutAlias.query.select_from(distanceWorkoutAlias)
             .join(gpxVisitedTileAlias, gpxVisitedTileAlias.workout_id == distanceWorkoutAlias.id)
             .with_entities(distanceWorkoutAlias.type, gpxVisitedTileAlias.x, gpxVisitedTileAlias.y)
             .filter(distanceWorkoutAlias.user_id == user_id)
             .filter(distanceWorkoutAlias.type.in_(self._quickFilterState.get_active_distance_workout_types()))
-            .filter(extract('year', distanceWorkoutAlias.start_time).in_(self._quickFilterState.get_active_years()))
             .filter(gpxVisitedTileAlias.x >= min_x)
             .filter(gpxVisitedTileAlias.x <= max_x)
             .filter(gpxVisitedTileAlias.y >= min_y)
             .filter(gpxVisitedTileAlias.y <= max_y)
-            .group_by(gpxVisitedTileAlias.x, gpxVisitedTileAlias.y, distanceWorkoutAlias.type)
-            .all()
         )
+        query = self.__apply_date_range_filter(query, distanceWorkoutAlias.start_time)
+
+        rows = query.group_by(gpxVisitedTileAlias.x, gpxVisitedTileAlias.y, distanceWorkoutAlias.type).all()
 
         result: dict[tuple[int, int], Color] = {}
         for r in rows:
@@ -152,20 +153,20 @@ class VisitedTileService:
         distanceWorkoutAlias = aliased(DistanceWorkout)
         gpxVisitedTileAlias = aliased(GpxVisitedTile)
 
-        rows = (
+        query = (
             distanceWorkoutAlias.query.select_from(distanceWorkoutAlias)
             .join(gpxVisitedTileAlias, gpxVisitedTileAlias.workout_id == distanceWorkoutAlias.id)
             .with_entities(func.count(), gpxVisitedTileAlias.x, gpxVisitedTileAlias.y)
             .filter(distanceWorkoutAlias.user_id == user_id)
             .filter(distanceWorkoutAlias.type.in_(self._quickFilterState.get_active_distance_workout_types()))
-            .filter(extract('year', distanceWorkoutAlias.start_time).in_(self._quickFilterState.get_active_years()))
             .filter(gpxVisitedTileAlias.x >= min_x)
             .filter(gpxVisitedTileAlias.x <= max_x)
             .filter(gpxVisitedTileAlias.y >= min_y)
             .filter(gpxVisitedTileAlias.y <= max_y)
-            .group_by(gpxVisitedTileAlias.x, gpxVisitedTileAlias.y)
-            .all()
         )
+        query = self.__apply_date_range_filter(query, distanceWorkoutAlias.start_time)
+
+        rows = query.group_by(gpxVisitedTileAlias.x, gpxVisitedTileAlias.y).all()
 
         return {(int(r[1]), int(r[2])): int(r[0]) for r in rows}
 
@@ -218,7 +219,7 @@ class VisitedTileService:
         return self._newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
             current_user.id,
             self._quickFilterState.get_active_distance_workout_types(),
-            self._quickFilterState.get_active_years(),
+            self._quickFilterState.get_effective_date_ranges(),
         )
 
     @staticmethod
@@ -248,7 +249,7 @@ class VisitedTileService:
         return self._maxSquareCache.get_max_square_tile_positions(
             current_user.id,
             self._quickFilterState.get_active_distance_workout_types(),
-            self._quickFilterState.get_active_years(),
+            self._quickFilterState.get_effective_date_ranges(),
         )
 
     def get_max_square_size(self) -> int:
@@ -264,7 +265,7 @@ class VisitedTileService:
         numberOfVisitedTilesPerWorkout = self._newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
             current_user.id,
             workout_types,
-            self._quickFilterState.get_active_years(),
+            self._quickFilterState.get_effective_date_ranges(),
         )
 
         result = {}
@@ -286,3 +287,20 @@ class VisitedTileService:
             result[workoutType] = numberOfNewTilesPerYear
 
         return result
+
+    def __apply_date_range_filter(self, query, startTimeColumn):
+        dateRanges = self._quickFilterState.get_effective_date_ranges()
+        if not dateRanges:
+            return query
+
+        return query.filter(
+            or_(
+                *(
+                    and_(
+                        startTimeColumn >= dateFrom,
+                        startTimeColumn < dateTo + timedelta(days=1),
+                    )
+                    for dateFrom, dateTo in dateRanges
+                )
+            )
+        )
