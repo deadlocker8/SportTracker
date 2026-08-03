@@ -1,6 +1,10 @@
 from __future__ import annotations
-from sqlalchemy import JSON
+
+from datetime import date
+
+from sqlalchemy import JSON, Date
 from sqlalchemy.ext.mutable import MutableDict
+from sqlalchemy.orm import mapped_column, Mapped
 
 from sporttracker.workout.WorkoutService import WorkoutService
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -12,9 +16,18 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, primary_key=True)
     workout_types = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
     years = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
+    date_from: Mapped[Date] = mapped_column(Date, nullable=True)
+    date_to: Mapped[Date] = mapped_column(Date, nullable=True)
 
     def __repr__(self):
-        return f'QuickFilterState(user_id: {self.user_id}, workout_types: {self.workout_types}, years: {self.years})'
+        return (
+            f'QuickFilterState('
+            f'user_id: {self.user_id}, '
+            f'workout_types: {self.workout_types}, '
+            f'years: {self.years}, '
+            f'date_from: {self.date_from}, '
+            f'date_to: {self.date_to})'
+        )
 
     def get_workout_types(self) -> dict[WorkoutType, bool]:
         workoutTypes = {}
@@ -45,6 +58,50 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
 
     def is_all_years_active(self) -> bool:
         return all(self.years.values())
+
+    def get_date_range(self) -> tuple[date, date] | None:
+        if self.date_from is None or self.date_to is None:
+            return None
+
+        return self.date_from, self.date_to  # type: ignore[return-value]
+
+    def is_date_filter_active(self) -> bool:
+        return self.get_date_range() is not None
+
+    def set_date_filter(self, date_from: date, date_to: date) -> None:
+        self.date_from = date_from  # type: ignore[assignment]
+        self.date_to = date_to  # type: ignore[assignment]
+
+    def clear_date_filter(self) -> None:
+        self.date_from = None  # type: ignore[assignment]
+        self.date_to = None  # type: ignore[assignment]
+
+    def get_effective_date_ranges(self) -> list[tuple[date, date]]:
+        dateRange = self.get_date_range()
+        if dateRange is not None:
+            return [dateRange]
+
+        activeYears = self.get_active_years()
+        if not activeYears:
+            return []
+
+        ranges = []
+        rangeStartYear = rangeEndYear = activeYears[0]
+        for year in activeYears[1:]:
+            if year == rangeEndYear + 1:
+                rangeEndYear = year
+            else:
+                ranges.append((date(rangeStartYear, 1, 1), date(rangeEndYear, 12, 31)))
+                rangeStartYear = rangeEndYear = year
+
+        ranges.append((date(rangeStartYear, 1, 1), date(rangeEndYear, 12, 31)))
+        return ranges
+
+    def is_any_filter_active(self) -> bool:
+        if self.is_date_filter_active():
+            return True
+
+        return not self.is_all_years_active()
 
     def update(
         self,
