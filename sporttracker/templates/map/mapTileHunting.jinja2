@@ -22,7 +22,7 @@
 
         <div class="row my-3 g-0">
             <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center gap-3 gap-xl-5">
-                <button class="btn btn-sm {% if not quickFilterState.is_all_years_active() %}btn-light{% else %}btn-outline-light{% endif %} d-inline-flex align-items-center " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas">
+                <button class="btn btn-sm {% if quickFilterState.is_any_filter_active() %}btn-light{% else %}btn-outline-light{% endif %} d-inline-flex align-items-center " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas">
                     <span class="material-symbols-outlined fs-5">filter_alt</span>
                     <span class="ms-2">{{ gettext('Filter') }}</span>
                 </button>
@@ -111,6 +111,7 @@
         {{ macros.scripts() }}
         <script defer src="{{ url_for('static', filename='js/mapCommon.js') }}" type="text/javascript"></script>
         <script defer src="{{ url_for('static', filename='js/mapTileHunting.js') }}" type="text/javascript"></script>
+        <script defer src="{{ url_for('static', filename='js/quickFilter.js') }}" type="text/javascript"></script>
         <script>
             const data = [
                 {

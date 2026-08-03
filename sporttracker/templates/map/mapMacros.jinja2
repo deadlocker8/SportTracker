@@ -216,36 +216,65 @@
 {%- endmacro %}
 
 {% macro mapYearFilter(quickFilterState, redirectUrl) -%}
-    <form role="form" action="{{ url_for('quickFilter.toggleYears') }}" method="post">
+    {% set isDateFilterActive = quickFilterState.is_date_filter_active() %}
+
+    <form role="form" action="{{ url_for('quickFilter.updateFilter') }}" method="post">
         <input type="hidden" name="redirectUrl" value="{{ redirectUrl }}"/>
 
         <div class="my-3 d-flex flex-column align-items-start justify-content-start gap-3 overflow-x-auto">
             <div class="d-flex align-items-center mx-auto gap-2 mb-2">
-                <a href="{{ url_for('quickFilter.resetYears', redirectUrl=redirectUrl) }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap ">{{ gettext('Reset') }}</a>
+                <a href="{{ url_for('quickFilter.resetFilter', redirectUrl=redirectUrl) }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap ">{{ gettext('Reset') }}</a>
 
                 {{ macros.buttonSubmitAutomaticallyDisabled(text=gettext('Apply'), disabledText=gettext('Applying...'), icon=none, classes='btn-sm btn-primary text-nowrap', id='buttonApplyFilter') }}
             </div>
 
             <hr class="w-100 my-0"/>
 
-            <div class="d-flex align-items-center justify-content-center">
-                <span class="material-symbols-outlined fs-5">filter_alt</span>
-                <span class="ms-2">{{ gettext('Years') }}</span>
+            <div class="btn-group w-100" role="group" aria-label="{{ gettext('Filter mode') }}">
+                <input type="radio" class="btn-check" name="quickFilterMode" id="quickFilterModeYears" value="years" autocomplete="off" {% if not isDateFilterActive %}checked{% endif %}>
+                <label class="btn btn-outline-light btn-sm" for="quickFilterModeYears">{{ gettext('Years') }}</label>
+                <input type="radio" class="btn-check" name="quickFilterMode" id="quickFilterModeDateRange" value="dateRange" autocomplete="off" {% if isDateFilterActive %}checked{% endif %}>
+                <label class="btn btn-outline-light btn-sm" for="quickFilterModeDateRange">{{ gettext('Date range') }}</label>
             </div>
 
-            <div class="d-flex flex-column align-items-start justify-content-center px-1">
-                {% for year, isActive in quickFilterState.get_years().items() %}
-                    <div class="form-check text-nowrap mb-2">
-                        <input class="form-check-input" type="checkbox"
-                               id="availableYear-{{ loop.index }}"
-                               name="activeYears"
-                               value="{{ year }}"
-                               {% if isActive %}checked{% endif %}>
-                        <label class="form-check-label" for="availableYear-{{ loop.index }}">
-                            {{ year }}
-                        </label>
+            <div id="quickFilterYearsSection" class="d-flex flex-column align-items-start justify-content-start gap-3 {% if isDateFilterActive %}d-none{% endif %}">
+                <div class="d-flex align-items-center justify-content-center">
+                    <span class="material-symbols-outlined fs-5">filter_alt</span>
+                    <span class="ms-2">{{ gettext('Years') }}</span>
+                </div>
+
+                <div class="d-flex flex-column align-items-start justify-content-center px-1">
+                    {% for year, isActive in quickFilterState.get_years().items() %}
+                        <div class="form-check text-nowrap mb-2">
+                            <input class="form-check-input" type="checkbox"
+                                   id="availableYear-{{ loop.index }}"
+                                   name="activeYears"
+                                   value="{{ year }}"
+                                   {% if isActive %}checked{% endif %}>
+                            <label class="form-check-label" for="availableYear-{{ loop.index }}">
+                                {{ year }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div id="quickFilterDateRangeSection" class="d-flex flex-column align-items-start justify-content-start gap-3 {% if not isDateFilterActive %}{% else %}d-none{% endif %}">
+                <div class="d-flex align-items-center justify-content-center">
+                    <span class="material-symbols-outlined filled fs-5">date_range</span>
+                    <span class="ms-2">{{ gettext('Date range') }}</span>
+                </div>
+
+                <div class="d-flex flex-row align-items-start justify-content-center gap-3 px-1">
+                    <div class="form-group">
+                        <label class="form-label" for="quickFilterDateFrom">{{ gettext('Start date') }}</label>
+                        <input type="date" class="form-control" id="quickFilterDateFrom" name="dateFrom" value="{{ quickFilterState.date_from }}">
                     </div>
-                {% endfor %}
+                    <div class="form-group">
+                        <label class="form-label" for="quickFilterDateTo">{{ gettext('End date') }}</label>
+                        <input type="date" class="form-control" id="quickFilterDateTo" name="dateTo" value="{{ quickFilterState.date_to }}">
+                    </div>
+                </div>
             </div>
         </div>
     </form>

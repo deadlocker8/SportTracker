@@ -1,3 +1,5 @@
+from datetime import date
+
 from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 
@@ -222,3 +224,110 @@ class TestQuickFilterState:
         assert quickFilterState.years == {
             '2025': True,
         }
+
+    def test_get_effective_date_ranges_empty_without_any_filter(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {}
+
+        assert quickFilterState.get_effective_date_ranges() == []
+
+    def test_get_effective_date_ranges_empty_without_active_years(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {'2020': False, '2021': False, '2022': False}
+
+        assert quickFilterState.get_effective_date_ranges() == []
+
+    def test_get_effective_date_ranges_single_year(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {'2025': True, '2026': False}
+
+        assert quickFilterState.get_effective_date_ranges() == [(date(2025, 1, 1), date(2025, 12, 31))]
+
+    def test_get_effective_date_ranges_continuous_years(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {'2024': True, '2025': True, '2026': False}
+
+        assert quickFilterState.get_effective_date_ranges() == [(date(2024, 1, 1), date(2025, 12, 31))]
+
+    def test_get_effective_date_ranges_non_continuous_years(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {'2020': True, '2021': False, '2022': True}
+
+        assert quickFilterState.get_effective_date_ranges() == [
+            (date(2020, 1, 1), date(2020, 12, 31)),
+            (date(2022, 1, 1), date(2022, 12, 31)),
+        ]
+
+    def test_get_effective_date_ranges_prefers_date_range_over_years(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {'2020': True, '2021': False, '2022': True}
+        quickFilterState.set_date_filter(date(2022, 5, 1), date(2022, 6, 15))
+
+        assert quickFilterState.get_effective_date_ranges() == [(date(2022, 5, 1), date(2022, 6, 15))]
+
+    def test_is_date_filter_active(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {'2025': True}
+
+        assert quickFilterState.is_date_filter_active() is False
+
+        quickFilterState.set_date_filter(date(2025, 1, 1), date(2025, 12, 31))
+        assert quickFilterState.is_date_filter_active() is True
+
+        quickFilterState.clear_date_filter()
+        assert quickFilterState.is_date_filter_active() is False
+
+    def test_set_date_filter(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {'2025': True}
+
+        quickFilterState.set_date_filter(date(2025, 6, 1), date(2025, 8, 31))
+
+        assert quickFilterState.get_date_range() == (date(2025, 6, 1), date(2025, 8, 31))
+
+    def test_get_date_range_is_none_when_not_set(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {'2025': True}
+
+        assert quickFilterState.get_date_range() is None
+
+    def test_clear_date_filter(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {'2025': True}
+        quickFilterState.set_date_filter(date(2025, 1, 1), date(2025, 12, 31))
+
+        quickFilterState.clear_date_filter()
+
+        assert quickFilterState.get_date_range() is None
+
+    def test_is_any_filter_active_with_date_range(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {'2025': True, '2026': True}
+        quickFilterState.set_date_filter(date(2026, 1, 1), date(2026, 1, 31))
+
+        assert quickFilterState.is_any_filter_active() is True
+
+    def test_is_any_filter_active_with_inactive_years(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {'2025': True, '2026': False}
+
+        assert quickFilterState.is_any_filter_active() is True
+
+    def test_is_any_filter_active_when_no_filter(self) -> None:
+        quickFilterState = QuickFilterState()
+        quickFilterState.workout_types = {}
+        quickFilterState.years = {'2025': True, '2026': True}
+
+        assert quickFilterState.is_any_filter_active() is False
