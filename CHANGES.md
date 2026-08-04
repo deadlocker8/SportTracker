@@ -1,5 +1,6 @@
 # 2.1.0 - (XX.XX.XX)
 - add: body weight tracking (#293)
+- add: in addition to filter by years it is now possible to filter maps (tile hunting, tile hunting heatmap, all workouts, all planned tours) by a specific date range (#290)
 
 # 2.0.2 - (24.07.26)
 - fix: year filter and tile hunting map (#292)
