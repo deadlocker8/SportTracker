@@ -35,6 +35,7 @@ from sporttracker import Constants
 from sporttracker.dummyData.DummyDataGenerator import DummyDataGenerator
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutFieldType
+from sporttracker.tileHunting.CacheWarmer import warm_caches
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.workout import WorkoutBlueprint
@@ -281,6 +282,9 @@ class SportTracker(FlaskBaseApp):
                         app.config['GPX_SERVICE'], app.config['NOTIFICATION_SERVICE']
                     )
                     dummyDataGenerator.generate()
+
+                if self._settings['tileHunting']['warmCachesOnStartup']:
+                    warm_caches(app.config['NEW_VISITED_TILE_CACHE'], app.config['MAX_SQUARE_CACHE'])
 
         return app
 
