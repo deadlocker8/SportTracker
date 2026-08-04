@@ -1,22 +1,22 @@
 import logging
 
-from flask import Blueprint, render_template, abort, redirect, url_for, request
-from flask_login import login_required, current_user
+from flask import Blueprint, abort, redirect, render_template, request, url_for
+from flask_login import current_user, login_required
 from flask_pydantic import validate
 
 from sporttracker import Constants
 from sporttracker.helpers import DateFormats
+from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
+from sporttracker.user.ParticipantEntity import get_participants
 from sporttracker.workout.fitness.FitnessWorkoutCategory import (
     FitnessWorkoutCategoryType,
 )
-from sporttracker.user.ParticipantEntity import get_participants
-from sporttracker.workout.WorkoutEntity import get_workout_names_by_type
 from sporttracker.workout.fitness.FitnessWorkoutService import (
     FitnessWorkoutFormModel,
     FitnessWorkoutService,
 )
-from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+from sporttracker.workout.WorkoutEntity import get_workout_names_by_type
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

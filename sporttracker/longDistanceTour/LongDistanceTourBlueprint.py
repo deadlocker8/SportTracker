@@ -3,18 +3,18 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
-from flask import Blueprint, render_template, request, redirect, url_for, abort
-from flask_login import login_required, current_user
+from flask import Blueprint, abort, redirect, render_template, request, url_for
+from flask_login import current_user, login_required
 from flask_pydantic import validate
 
-from sporttracker.plannedTour.PlannedTourBlueprint import __get_user_models
 from sporttracker import Constants
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
-from sporttracker.user.UserEntity import get_user_by_id, get_all_users_except_self_and_admin
-from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
 from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourFormModel, LongDistanceTourService
-from sporttracker.plannedTour.PlannedTourService import PlannedTourService, PlannedTourModel
+from sporttracker.plannedTour.PlannedTourBlueprint import __get_user_models
+from sporttracker.plannedTour.PlannedTourService import PlannedTourModel, PlannedTourService
+from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
+from sporttracker.user.UserEntity import get_all_users_except_self_and_admin, get_user_by_id
+from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

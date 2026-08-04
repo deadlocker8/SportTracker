@@ -209,7 +209,7 @@ def __update_type_column(tableName: str):
     inspector = Inspector.from_engine(op.get_bind().engine)
     columns = inspector.get_columns(tableName)
 
-    column = [c for c in columns if c['name'] == 'type'][0]
+    column = next(c for c in columns if c['name'] == 'type')
 
     if column['type'].name == 'tracktype':  # type: ignore[attr-defined]
         connection = op.get_bind()

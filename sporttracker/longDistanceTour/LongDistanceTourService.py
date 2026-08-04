@@ -3,8 +3,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from sporttracker.plannedTour.PlannedTourService import PlannedTourService
     from sporttracker.notification.NotificationService import NotificationService
+    from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 
 import logging
 from datetime import datetime
@@ -19,17 +19,16 @@ from pydantic import BaseModel
 from sqlalchemy.sql import or_
 
 from sporttracker import Constants
+from sporttracker.db import db
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.gpx.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
 from sporttracker.longDistanceTour.LongDistanceTourEntity import (
-    LongDistanceTourPlannedTourAssociation,
     LongDistanceTour,
+    LongDistanceTourPlannedTourAssociation,
 )
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
-from sporttracker.user.UserEntity import get_users_by_ids, User
+from sporttracker.user.UserEntity import User, get_users_by_ids
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
-
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

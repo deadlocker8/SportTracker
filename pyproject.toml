@@ -37,7 +37,7 @@ cffi = '2.0.0'
 
 [tool.poetry.group.dev.dependencies]
 bandit = "1.9.4"
-ruff = "0.15.20"
+ruff = "0.16.0"
 pre-commit = "4.6.1"
 mypy = "2.1.0"
 pytest = "9.1.1"
@@ -55,6 +55,18 @@ build-backend = "poetry.core.masonry.api"
 line-length = 120
 
 [tool.ruff.lint]
+ignore = [
+    'N999',    # invalid-module-name
+    'DTZ001',  # call-datetime-without-tzinfo
+    'DTZ002',  # call-datetime-today
+    'DTZ005',  # call-datetime-now-without-tzinfo
+    'DTZ007',  # call-datetime-strptime-without-zone
+    'DTZ011',  # call-date-fromtimestamp
+    'SIM102',  # collapsible-if
+    'SIM117',  # multiple-with-statements
+    'TRY401',  # verbose-log-message
+    'BLE001'   # blind-except
+]
 
 [tool.ruff.format]
 quote-style = "single"

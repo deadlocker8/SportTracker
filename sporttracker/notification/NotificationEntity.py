@@ -1,11 +1,11 @@
 from datetime import datetime
 
 import flask_babel
-from sqlalchemy import Integer, String, DateTime
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy import DateTime, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
 
-from sporttracker.notification.NotificationType import NotificationType
 from sporttracker.db import db
+from sporttracker.notification.NotificationType import NotificationType
 
 
 class Notification(db.Model):  # type: ignore[name-defined]

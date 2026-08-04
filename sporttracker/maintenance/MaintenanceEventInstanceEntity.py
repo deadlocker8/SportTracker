@@ -2,14 +2,14 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from flask_login import current_user
-from sqlalchemy import Integer, DateTime, extract
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy import DateTime, Integer, extract
+from sqlalchemy.orm import Mapped, mapped_column
 
+from sporttracker.db import db
 from sporttracker.helpers import DateFormats
 from sporttracker.helpers.DateTimeAccess import DateTimeAccess
 from sporttracker.maintenance.MaintenanceEntity import Maintenance
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
 
 
 @dataclass

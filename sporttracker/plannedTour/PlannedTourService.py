@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from sporttracker.notification.NotificationService import NotificationService
@@ -14,26 +14,25 @@ import natsort
 from flask_login import current_user
 from natsort import natsorted
 from pydantic import BaseModel
-from sqlalchemy import tuple_, asc, func
+from sqlalchemy import asc, func, tuple_
 from sqlalchemy.sql import or_
 from werkzeug.datastructures import FileStorage
 
 from sporttracker import Constants
-from sporttracker.gpx.GpxService import GpxService
-from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
-from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.db import db
 from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
-from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
+from sporttracker.gpx.GpxService import GpxService
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTourPlannedTourAssociation
+from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
+from sporttracker.plannedTour.PlannedTourFilterStateEntity import PlannedTourFilterState
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
-from sporttracker.user.UserEntity import get_users_by_ids, get_user_by_id
-from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
-from sporttracker.plannedTour.PlannedTourFilterStateEntity import PlannedTourFilterState
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
-
+from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
+from sporttracker.user.UserEntity import get_user_by_id, get_users_by_ids
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -96,7 +95,7 @@ class PlannedTourModel:
     def create_from_tour(
         plannedTour: PlannedTour,
         includeLinkedWorkouts: bool,
-    ) -> 'PlannedTourModel':
+    ) -> PlannedTourModel:
         gpxMetadata = plannedTour.get_gpx_metadata()
 
         linkedWorkouts = []

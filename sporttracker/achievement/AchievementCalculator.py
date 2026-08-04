@@ -1,21 +1,21 @@
 from datetime import date
 from statistics import mean
 
-from sqlalchemy import asc, func, extract
+from sqlalchemy import asc, extract, func
 
 from sporttracker.achievement.AchievementEntity import (
-    LongestWorkoutDistanceAchievementHistoryItem,
-    LongestWorkoutDurationAchievementHistoryItem,
     BestMonthDistanceAchievementHistoryItem,
     BestMonthDurationAchievementHistoryItem,
+    LongestWorkoutDistanceAchievementHistoryItem,
+    LongestWorkoutDurationAchievementHistoryItem,
 )
+from sporttracker.db import db
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
-from sporttracker.workout.WorkoutEntity import Workout
-from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.workout.fitness.FitnessWorkoutService import FitnessWorkoutService
+from sporttracker.workout.WorkoutEntity import Workout
+from sporttracker.workout.WorkoutType import WorkoutType
 
 
 class AchievementCalculator:
@@ -119,8 +119,7 @@ class AchievementCalculator:
 
             if summaries and len(summaries) == len(completedGoals):
                 currentStreak += 1
-                if currentStreak > highestStreak:
-                    highestStreak = currentStreak
+                highestStreak = max(highestStreak, currentStreak)
             elif summaries:
                 if not isEndReached:
                     currentStreak = 0

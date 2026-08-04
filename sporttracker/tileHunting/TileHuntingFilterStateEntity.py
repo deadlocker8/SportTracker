@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from sqlalchemy import Boolean
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import Mapped, mapped_column
 
 from sporttracker.db import db
 

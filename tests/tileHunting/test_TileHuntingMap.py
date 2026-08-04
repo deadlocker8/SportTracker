@@ -10,11 +10,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 from sporttracker.db import db
 from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
 from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
-from sporttracker.user.UserEntity import create_user, Language
-from sporttracker.workout.WorkoutType import WorkoutType
+from sporttracker.user.UserEntity import Language, create_user
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.workout.WorkoutType import WorkoutType
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
-from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
+from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME
 
 
 @pytest.fixture(autouse=True)

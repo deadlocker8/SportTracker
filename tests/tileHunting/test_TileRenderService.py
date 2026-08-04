@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from PIL import ImageChops, Image
+from PIL import Image, ImageChops
 from TheCodeLabs_BaseUtils.Color import Color
 
 from sporttracker.tileHunting.TileRenderService import TileRenderService

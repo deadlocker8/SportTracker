@@ -1,13 +1,13 @@
 import logging
 from typing import Any
 
-from TheCodeLabs_BaseUtils.NtfyHelper import NtfyHelper
 from flask_babel import gettext
+from TheCodeLabs_BaseUtils.NtfyHelper import NtfyHelper
 
 from sporttracker import Constants
+from sporttracker.notification.NotificationSettingsEntity import get_notification_settings_by_user_by_provider_type
 from sporttracker.notification.Observable import Listener
 from sporttracker.notification.provider.NotificationProviderType import NotificationProviderType
-from sporttracker.notification.NotificationSettingsEntity import get_notification_settings_by_user_by_provider_type
 from sporttracker.user.UserEntity import User
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -59,9 +59,7 @@ class NtfyService(Listener):
                 tags=['bell'],
                 headers={
                     'Title': title.encode('utf-8'),
-                    'Actions': f'action=view, label={gettext("Show in SportTracker")}, url={notification.type.get_action_url(notification.item_id, external=True)}, clear=true'.encode(
-                        'utf-8'
-                    ),
+                    'Actions': f'action=view, label={gettext("Show in SportTracker")}, url={notification.type.get_action_url(notification.item_id, external=True)}, clear=true'.encode(),
                 },
             )
         except Exception as e:

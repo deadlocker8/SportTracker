@@ -4,11 +4,11 @@ from datetime import date
 
 from sqlalchemy import JSON, Date
 from sqlalchemy.ext.mutable import MutableDict
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import Mapped, mapped_column
 
+from sporttracker.db import db
 from sporttracker.workout.WorkoutService import WorkoutService
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
 
 
 class QuickFilterState(db.Model):  # type: ignore[name-defined]

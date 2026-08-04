@@ -3,8 +3,8 @@ from operator import attrgetter
 import natsort
 from flask_login import current_user
 from natsort import natsorted
-from sqlalchemy import Integer, String, Column, ForeignKey, Table
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy import Column, ForeignKey, Integer, String, Table
+from sqlalchemy.orm import Mapped, mapped_column
 
 from sporttracker.db import db
 

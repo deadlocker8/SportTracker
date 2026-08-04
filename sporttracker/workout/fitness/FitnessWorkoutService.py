@@ -4,7 +4,7 @@ import logging
 from typing import TYPE_CHECKING
 
 from pydantic import ConfigDict
-from sqlalchemy import func, extract
+from sqlalchemy import extract, func
 
 from sporttracker.workout import WorkoutEntity
 from sporttracker.workout.heartRate.HeartRateService import HeartRateService
@@ -16,9 +16,6 @@ from sporttracker.api.FormModels import FitnessWorkoutApiFormModel
 from sporttracker.db import db
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.user.ParticipantEntity import get_participants_by_ids
-from sporttracker.workout.WorkoutEntity import Workout, MonthDurationSum, get_duration_per_month_by_type
-from sporttracker.workout.WorkoutModel import BaseWorkoutFormModel
-from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.fitness.FitnessWorkoutCategory import (
     FitnessWorkoutCategoryType,
@@ -26,6 +23,9 @@ from sporttracker.workout.fitness.FitnessWorkoutCategory import (
 )
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
+from sporttracker.workout.WorkoutEntity import MonthDurationSum, Workout, get_duration_per_month_by_type
+from sporttracker.workout.WorkoutModel import BaseWorkoutFormModel
+from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

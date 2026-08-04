@@ -2,39 +2,39 @@ import calendar
 import logging
 from collections import defaultdict
 from dataclasses import dataclass
-from datetime import date, time, datetime
+from datetime import date, datetime, time
 from typing import Any, Literal
-from sporttracker.helpers import Helpers, DateFormats
 
 import flask_babel
 from babel.dates import get_day_names, get_month_names
-from flask import Blueprint, render_template, redirect, url_for
-from flask_babel import gettext, format_datetime
-from flask_login import login_required, current_user
-from sqlalchemy import extract, func, String, asc, desc, cast, Time
+from flask import Blueprint, redirect, render_template, url_for
+from flask_babel import format_datetime, gettext
+from flask_login import current_user, login_required
+from sqlalchemy import String, Time, asc, cast, desc, extract, func
 
-from sporttracker.helpers.Helpers import format_duration
 from sporttracker import Constants
+from sporttracker.db import db
+from sporttracker.helpers import DateFormats, Helpers
+from sporttracker.helpers.Helpers import format_duration
+from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState, get_quick_filter_state_by_user
+from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
+from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.tileHunting.TileHuntingFilterStateEntity import TileHuntingFilterState
+from sporttracker.tileHunting.VisitedTileService import VisitedTileService
 from sporttracker.user.CustomWorkoutFieldEntity import (
     get_custom_field_by_id,
     get_custom_fields_grouped_by_distance_workout_types_with_values,
 )
-from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
-from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
-from sporttracker.tileHunting.VisitedTileService import VisitedTileService
-from sporttracker.workout.WorkoutService import WorkoutService
-from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.user.ParticipantEntity import Participant
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.workout.WorkoutEntity import (
     Workout,
     get_duration_per_month_by_type,
     get_workouts_by_year_and_month_and_workout_types,
 )
+from sporttracker.workout.WorkoutService import WorkoutService
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
-from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
-from sporttracker.tileHunting.TileHuntingFilterStateEntity import TileHuntingFilterState
-from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

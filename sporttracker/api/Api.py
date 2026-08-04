@@ -3,31 +3,31 @@ from datetime import datetime
 from statistics import mean
 from typing import Any
 
-from flask import Blueprint, jsonify, render_template, redirect, url_for, request, abort
+from flask import Blueprint, abort, jsonify, redirect, render_template, request, url_for
 from flask_bcrypt import Bcrypt
-from flask_login import login_required, current_user, login_user
+from flask_login import current_user, login_required, login_user
 from pydantic import ValidationError
 
 from sporttracker import Constants
 from sporttracker.api.FormModels import (
-    MonthGoalDistanceApiFormModel,
-    MonthGoalCountApiFormModel,
-    MonthGoalDurationApiFormModel,
+    BodyWeightDataListModel,
     DistanceWorkoutApiFormModel,
     FitnessWorkoutApiFormModel,
     HeartRateDataListModel,
-    BodyWeightDataListModel,
+    MonthGoalCountApiFormModel,
+    MonthGoalDistanceApiFormModel,
+    MonthGoalDurationApiFormModel,
 )
 from sporttracker.api.Mapper import (
-    MAPPER_MONTH_GOAL_DISTANCE,
-    MAPPER_MONTH_GOAL_COUNT,
-    MAPPER_MONTH_GOAL_DURATION,
+    MAPPER_CUSTOM_FIELD,
     MAPPER_DISTANCE_WORKOUT,
     MAPPER_FITNESS_WORKOUT,
+    MAPPER_MAINTENANCE,
+    MAPPER_MONTH_GOAL_COUNT,
+    MAPPER_MONTH_GOAL_DISTANCE,
+    MAPPER_MONTH_GOAL_DURATION,
     MAPPER_PARTICIPANT,
     MAPPER_PLANNED_TOUR,
-    MAPPER_MAINTENANCE,
-    MAPPER_CUSTOM_FIELD,
 )
 from sporttracker.bodyWeight.BodyWeightService import BodyWeightService
 from sporttracker.db import db
@@ -35,15 +35,12 @@ from sporttracker.gpx.GpxService import GpxService
 from sporttracker.helpers import DateFormats
 from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
-from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
+from sporttracker.monthGoal.MonthGoalEntity import MonthGoalCount, MonthGoalDistance, MonthGoalDuration
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_grouped_by_distance_workout_types_with_values
 from sporttracker.user.ParticipantEntity import get_participants
 from sporttracker.user.UserEntity import User
-from sporttracker.workout.WorkoutEntity import Workout
-from sporttracker.workout.WorkoutService import WorkoutService
-from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.workout.fitness.FitnessWorkoutCategory import (
@@ -54,6 +51,9 @@ from sporttracker.workout.fitness.FitnessWorkoutService import FitnessWorkoutSer
 from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.workout.heartRate.HeartRateEntity import HeartRateEntity
 from sporttracker.workout.heartRate.HeartRateService import HeartRateService
+from sporttracker.workout.WorkoutEntity import Workout
+from sporttracker.workout.WorkoutService import WorkoutService
+from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

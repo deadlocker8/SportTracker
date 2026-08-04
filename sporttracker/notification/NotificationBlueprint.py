@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, render_template, abort, redirect, url_for, request
+from flask import Blueprint, abort, redirect, render_template, request, url_for
 from flask_login import login_required
 
 from sporttracker import Constants
@@ -23,8 +23,7 @@ def construct_blueprint(notification_service: NotificationService):
         except (TypeError, ValueError):
             page_number_value = 1
 
-        if page_number_value < 1:
-            page_number_value = 1
+        page_number_value = max(page_number_value, 1)
 
         return render_template(
             'notification/notifications.jinja2',

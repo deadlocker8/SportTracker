@@ -6,22 +6,22 @@ from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.user.ParticipantEntity import Participant
-from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.heartRate.HeartRateEntity import HeartRateEntity
+from sporttracker.workout.WorkoutType import WorkoutType
 
 GPX_CONTENT = (
-    '<?xml version="1.0" encoding="UTF-8"?>\n'
-    '<gpx version="1.1" creator="test" xmlns="http://www.topografix.com/GPX/1/1">\n'
-    '  <trk>\n'
-    '    <name>Test Track</name>\n'
-    '    <trkseg>\n'
-    '      <trkpt lat="51.3390" lon="12.3710"><ele>100</ele></trkpt>\n'
-    '      <trkpt lat="51.3395" lon="12.3720"><ele>110</ele></trkpt>\n'
-    '    </trkseg>\n'
-    '  </trk>\n'
-    '</gpx>\n'
-).encode('utf-8')
+    b'<?xml version="1.0" encoding="UTF-8"?>\n'
+    b'<gpx version="1.1" creator="test" xmlns="http://www.topografix.com/GPX/1/1">\n'
+    b'  <trk>\n'
+    b'    <name>Test Track</name>\n'
+    b'    <trkseg>\n'
+    b'      <trkpt lat="51.3390" lon="12.3710"><ele>100</ele></trkpt>\n'
+    b'      <trkpt lat="51.3395" lon="12.3720"><ele>110</ele></trkpt>\n'
+    b'    </trkseg>\n'
+    b'  </trk>\n'
+    b'</gpx>\n'
+)
 
 
 class TestDistanceWorkout:

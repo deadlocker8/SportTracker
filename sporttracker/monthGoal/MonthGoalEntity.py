@@ -1,16 +1,16 @@
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import date
 from typing import ClassVar
 
 from flask_babel import format_datetime
 from sqlalchemy import Integer
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import Mapped, mapped_column
 
+from sporttracker.db import db
 from sporttracker.helpers.Helpers import format_duration
 from sporttracker.workout.WorkoutEntity import get_workouts_by_year_and_month_by_type
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
 
 
 @dataclass

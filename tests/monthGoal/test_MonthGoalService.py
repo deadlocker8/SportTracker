@@ -4,12 +4,12 @@ import pytest
 from flask_login import FlaskLoginClient, login_user
 
 from sporttracker.db import db
-from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
+from sporttracker.monthGoal.MonthGoalEntity import MonthGoalCount, MonthGoalDistance, MonthGoalDuration
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
-from sporttracker.user.UserEntity import create_user, Language, User
-from sporttracker.workout.WorkoutType import WorkoutType
+from sporttracker.user.UserEntity import Language, User, create_user
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
-from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
+from sporttracker.workout.WorkoutType import WorkoutType
+from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME
 
 
 @pytest.fixture(autouse=True)

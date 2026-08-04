@@ -8,9 +8,9 @@ Create Date: 2024-12-14 18:55:28.549884
 
 import logging
 
-from alembic import op
 import sqlalchemy as sa
-from sqlalchemy import text, Inspector
+from alembic import op
+from sqlalchemy import Inspector, text
 from sqlalchemy.dialects import postgresql
 
 from sporttracker import Constants
@@ -76,7 +76,7 @@ def upgrade():
 
         for row in rows:
             LOGGER.debug(f'  Migrate maintenance event: {row}')
-            eventId, typeName, eventDate, description, userId = row
+            _, typeName, eventDate, description, userId = row
             existingMaintenance = __get_maintenance(connection, typeName, description, userId)
 
             if existingMaintenance is None:

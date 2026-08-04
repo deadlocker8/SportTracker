@@ -1,15 +1,16 @@
 from dataclasses import dataclass
+from typing import ClassVar
 
-from sqlalchemy import Integer, String, ForeignKey
-from sqlalchemy.orm import mapped_column, Mapped, relationship
+from sqlalchemy import ForeignKey, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from sporttracker.db import db
 from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
 from sporttracker.plannedTour.PlannedTourEntity import (
     PlannedTour,
     distance_workout_planned_tour_association,
 )
 from sporttracker.workout.WorkoutEntity import Workout
-from sporttracker.db import db
 
 
 class DistanceWorkout(Workout):  # type: ignore[name-defined]
@@ -21,7 +22,7 @@ class DistanceWorkout(Workout):  # type: ignore[name-defined]
     gpx_metadata_id = db.Column(db.Integer, db.ForeignKey('gpx_metadata.id'), nullable=True)
     planned_tour: Mapped[PlannedTour] = relationship(secondary=distance_workout_planned_tour_association)
 
-    __mapper_args__ = {
+    __mapper_args__: ClassVar[dict[str, str]] = {
         'polymorphic_identity': 'distance_workout',
     }
 

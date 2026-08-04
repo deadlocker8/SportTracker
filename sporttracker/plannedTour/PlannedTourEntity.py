@@ -1,13 +1,13 @@
-from sqlalchemy import Integer, DateTime, String, Table, Column, ForeignKey
-from sqlalchemy.orm import mapped_column, Mapped, relationship
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Table
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from sporttracker.helpers.DateTimeAccess import DateTimeAccess
+from sporttracker.db import db
 from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
+from sporttracker.helpers.DateTimeAccess import DateTimeAccess
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.user.UserEntity import User, get_user_by_id
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
 
 planned_tour_user_association = Table(
     'planned_tour_user_association',

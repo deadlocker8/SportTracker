@@ -43,7 +43,7 @@ class WeightDifferenceType(enum.Enum):
         return member
 
     @staticmethod
-    def get_by_difference(difference: float | int | None) -> WeightDifferenceType:
+    def get_by_difference(difference: float | None) -> WeightDifferenceType:
         if difference is None:
             return WeightDifferenceType.EQUAL
 

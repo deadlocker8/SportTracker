@@ -2,40 +2,41 @@ import logging
 import os
 import random
 import uuid
-from datetime import datetime, timedelta, date
+from datetime import date, datetime, timedelta
+from typing import ClassVar
 
 from dateutil.relativedelta import relativedelta
 from faker import Faker
 
 from sporttracker import Constants
 from sporttracker.bodyWeight.BodyWeightEntity import BodyWeight
-from sporttracker.gpx.GpxService import GpxService
-from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutField, CustomWorkoutFieldType
-from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.db import db
 from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
+from sporttracker.gpx.GpxService import GpxService
 from sporttracker.longDistanceTour.LongDistanceTourEntity import (
     LongDistanceTour,
     LongDistanceTourPlannedTourAssociation,
 )
 from sporttracker.maintenance.MaintenanceEntity import Maintenance
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import MaintenanceEventInstance
-from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
-from sporttracker.user.ParticipantEntity import Participant
-from sporttracker.workout.WorkoutEntity import Workout
-from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.user.UserEntity import User, create_user, Language
-from sporttracker.workout.fitness.FitnessWorkoutCategory import (
-    update_workout_categories_by_workout_id,
-    FitnessWorkoutCategoryType,
-)
-from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
-from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
-from sporttracker.db import db
+from sporttracker.monthGoal.MonthGoalEntity import MonthGoalCount, MonthGoalDistance, MonthGoalDuration
 from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
+from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutField, CustomWorkoutFieldType
+from sporttracker.user.ParticipantEntity import Participant
+from sporttracker.user.UserEntity import Language, User, create_user
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.workout.fitness.FitnessWorkoutCategory import (
+    FitnessWorkoutCategoryType,
+    update_workout_categories_by_workout_id,
+)
+from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
+from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
 from sporttracker.workout.heartRate.HeartRateEntity import HeartRateEntity
+from sporttracker.workout.WorkoutEntity import Workout
+from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -49,10 +50,10 @@ class DummyDataGenerator:
     AVERAGE_SPEED_IN_KMH_BIKING = 22
     AVERAGE_SPEED_IN_KMH_RUNNING = 10
     AVERAGE_SPEED_IN_KMH_HIKING = 4
-    WORKOUT_NAMES = ['Short trip', 'Afterwork I', 'Afterwork II', 'Berlin + Potsdam', 'Megatour']
-    FITNESS_NAMES = ['Core Workout', 'HIIT', 'Leg Day', 'Biceps']
-    GPX_FILE_NAMES = ['gpxTrack_1.gpx', 'gpxTrack_2.gpx']
-    MAINTENANCE_EVENT_NAMES = ['chain oiled', 'new pedals', 'new front tire']
+    WORKOUT_NAMES: ClassVar[list[str]] = ['Short trip', 'Afterwork I', 'Afterwork II', 'Berlin + Potsdam', 'Megatour']
+    FITNESS_NAMES: ClassVar[list[str]] = ['Core Workout', 'HIIT', 'Leg Day', 'Biceps']
+    GPX_FILE_NAMES: ClassVar[list[str]] = ['gpxTrack_1.gpx', 'gpxTrack_2.gpx']
+    MAINTENANCE_EVENT_NAMES: ClassVar[list[str]] = ['chain oiled', 'new pedals', 'new front tire']
 
     def __init__(self, gpxService: GpxService, notificationService: NotificationService):
         self._now = datetime.now().date()

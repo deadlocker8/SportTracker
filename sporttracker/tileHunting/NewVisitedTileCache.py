@@ -4,11 +4,11 @@ from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from typing import Any
 
-from sqlalchemy import text, bindparam
+from sqlalchemy import bindparam, text
 
 from sporttracker import Constants
-from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
+from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

@@ -1,16 +1,16 @@
 import logging
 
-from flask import Blueprint, abort, Response, send_file, send_from_directory
-from flask_login import login_required, current_user
+from flask import Blueprint, Response, abort, send_file, send_from_directory
+from flask_login import current_user, login_required
 
 from sporttracker import Constants
 from sporttracker.gpx.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.gpx.LongDistanceTourGpxPreviewImageService import LongDistanceTourGpxPreviewImageService
-from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
-from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

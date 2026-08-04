@@ -27,8 +27,8 @@ def warm_caches(newVisitedTileCache: NewVisitedTileCache, maxSquareCache: MaxSqu
 
         quickFilterState = get_quick_filter_state_by_user(user.id)
         activeWorkoutTypes = tuple(t.name for t in quickFilterState.get_active_distance_workout_types())
-        dateRanges = quickFilterState.get_effective_date_ranges()
-        combinations.add((activeWorkoutTypes, tuple(dateRanges) if dateRanges is not None else None))
+        effectiveDateRanges = quickFilterState.get_effective_date_ranges()
+        combinations.add((activeWorkoutTypes, tuple(effectiveDateRanges) if effectiveDateRanges is not None else None))
 
         for workoutTypeNames, dateRanges in combinations:
             workoutTypes = [WorkoutType(name) for name in workoutTypeNames]  # type: ignore[call-arg]

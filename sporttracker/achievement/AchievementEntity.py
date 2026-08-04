@@ -2,12 +2,12 @@ from __future__ import annotations
 
 import enum
 from abc import ABC, abstractmethod
+from collections.abc import Sequence
 from dataclasses import dataclass
-from datetime import datetime, date
-from typing import Sequence
+from datetime import date, datetime
 
 from flask import url_for
-from flask_babel import gettext, format_datetime
+from flask_babel import format_datetime, gettext
 
 from sporttracker.helpers import Helpers
 from sporttracker.workout.WorkoutType import WorkoutType

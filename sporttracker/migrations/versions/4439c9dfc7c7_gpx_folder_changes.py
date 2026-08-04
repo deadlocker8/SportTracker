@@ -9,7 +9,7 @@ Create Date: 2024-09-18 22:19:08.894849
 import logging
 import os
 import shutil
-from zipfile import ZipFile, ZIP_DEFLATED
+from zipfile import ZIP_DEFLATED, ZipFile
 
 from alembic import op
 from sqlalchemy import text

@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime
 
-from flask_babel import gettext, format_datetime
+from flask_babel import format_datetime, gettext
 from flask_login import current_user
 from flask_sqlalchemy.pagination import Pagination
 
@@ -12,10 +12,10 @@ from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTou
 from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
 from sporttracker.monthGoal.MonthGoalEntity import (
-    MonthGoalSummary,
-    MonthGoalDistanceSummary,
     MonthGoalCountSummary,
+    MonthGoalDistanceSummary,
     MonthGoalDurationSummary,
+    MonthGoalSummary,
 )
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.notification.NotificationEntity import Notification
@@ -24,13 +24,13 @@ from sporttracker.notification.Observable import Observable
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 from sporttracker.user.UserEntity import User
-from sporttracker.workout.WorkoutEntity import Workout
-from sporttracker.workout.WorkoutService import WorkoutService
-from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.fitness.FitnessWorkoutService import FitnessWorkoutService
+from sporttracker.workout.WorkoutEntity import Workout
+from sporttracker.workout.WorkoutService import WorkoutService
+from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -238,7 +238,7 @@ class NotificationService(Observable):
                     notification_type=NotificationType.MONTH_GOAL_DURATION,
                 )
             else:
-                raise ValueError(f'Unsupported month goal summary type "{goal}"')
+                raise TypeError(f'Unsupported month goal summary type "{goal}"')
 
     def __on_month_goal_reached(
         self,

@@ -9,69 +9,69 @@ from typing import Any
 
 import click
 import flask_babel
-from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
-from TheCodeLabs_FlaskUtils import FlaskBaseApp
 from alembic.runtime.migration import MigrationContext
-from flask import Flask, request, abort, redirect, url_for
+from flask import Flask, abort, redirect, request, url_for
 from flask_babel import Babel
 from flask_login import LoginManager, current_user
-from flask_migrate import upgrade, stamp
+from flask_migrate import stamp, upgrade
+from TheCodeLabs_BaseUtils.DefaultLogger import DefaultLogger
+from TheCodeLabs_FlaskUtils import FlaskBaseApp
 
+from sporttracker import Constants
+from sporttracker.achievement import AchievementBlueprint, AnnualAchievementBlueprint
 from sporttracker.api import Api
 from sporttracker.api.Api import API_BLUEPRINT_NAME
-from sporttracker.general import GeneralBlueprint
-from sporttracker.search import SearchBlueprint
-from sporttracker.map import MapBlueprint
-from sporttracker.chart import ChartBlueprint
-from sporttracker.gpx import GpxBlueprint
-from sporttracker.user import UserBlueprint, SettingsBlueprint
 from sporttracker.authentication import AuthenticationBlueprint
-from sporttracker.achievement import AchievementBlueprint, AnnualAchievementBlueprint
-from sporttracker.notification import NotificationBlueprint
-from sporttracker.quickFilter import QuickFilterBlueprint
+from sporttracker.bodyWeight import BodyWeightBlueprint
+from sporttracker.chart import ChartBlueprint
+from sporttracker.db import db, migrate
+from sporttracker.dummyData.DummyDataGenerator import DummyDataGenerator
+from sporttracker.general import GeneralBlueprint
+from sporttracker.gpx import GpxBlueprint
+from sporttracker.gpx.GpxService import GpxService
 from sporttracker.helpers import Helpers
 from sporttracker.helpers.SettingsChecker import SettingsChecker
-from sporttracker import Constants
-from sporttracker.dummyData.DummyDataGenerator import DummyDataGenerator
-from sporttracker.gpx.GpxService import GpxService
-from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutFieldType
+from sporttracker.longDistanceTour import LongDistanceTourBlueprint
+from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
+from sporttracker.maintenance import MaintenanceBlueprint, MaintenanceEventInstanceBlueprint
+from sporttracker.map import MapBlueprint
+from sporttracker.monthGoal import (
+    MonthGoalBlueprint,
+    MonthGoalsCountBlueprint,
+    MonthGoalsDistanceBlueprint,
+    MonthGoalsDurationBlueprint,
+)
+from sporttracker.notification import NotificationBlueprint
+from sporttracker.notification.NotificationService import NotificationService
+from sporttracker.notification.NotificationType import NotificationType
+from sporttracker.notification.provider.NtfyService import NtfyService
+from sporttracker.plannedTour import PlannedTourBlueprint
+from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+from sporttracker.plannedTour.TravelDirection import TravelDirection
+from sporttracker.plannedTour.TravelType import TravelType
+from sporttracker.quickFilter import QuickFilterBlueprint
+from sporttracker.search import SearchBlueprint
 from sporttracker.tileHunting.CacheWarmer import warm_caches
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
-from sporttracker.workout import WorkoutBlueprint
-from sporttracker.bodyWeight import BodyWeightBlueprint
-from sporttracker.workout.distance import DistanceWorkoutBlueprint
-from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
-from sporttracker.workout.fitness import FitnessWorkoutBlueprint
-from sporttracker.workout.fitness.FitnessWorkoutCategory import FitnessWorkoutCategoryType
-from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
-from sporttracker.notification.NotificationType import NotificationType
-from sporttracker.longDistanceTour import LongDistanceTourBlueprint
-from sporttracker.plannedTour import PlannedTourBlueprint
-from sporttracker.plannedTour.TravelDirection import TravelDirection
-from sporttracker.plannedTour.TravelType import TravelType
+from sporttracker.user import SettingsBlueprint, UserBlueprint
+from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutFieldType
 from sporttracker.user.UserEntity import (
-    User,
-    Language,
-    create_user,
     DistanceWorkoutInfoItem,
     DistanceWorkoutInfoItemType,
+    Language,
+    User,
+    create_user,
 )
-from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db, migrate
+from sporttracker.workout import WorkoutBlueprint
+from sporttracker.workout.distance import DistanceWorkoutBlueprint
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.workout.fitness import FitnessWorkoutBlueprint
+from sporttracker.workout.fitness.FitnessWorkoutCategory import FitnessWorkoutCategoryType
 from sporttracker.workout.fitness.FitnessWorkoutService import FitnessWorkoutService
-from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
-from sporttracker.notification.NotificationService import NotificationService
-from sporttracker.notification.provider.NtfyService import NtfyService
-from sporttracker.plannedTour.PlannedTourService import PlannedTourService
-from sporttracker.maintenance import MaintenanceBlueprint, MaintenanceEventInstanceBlueprint
-from sporttracker.monthGoal import (
-    MonthGoalBlueprint,
-    MonthGoalsDistanceBlueprint,
-    MonthGoalsCountBlueprint,
-    MonthGoalsDurationBlueprint,
-)
+from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
+from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = DefaultLogger().create_logger_if_not_exists(Constants.APP_NAME)
 LOGGER.propagate = False
@@ -199,7 +199,7 @@ class SportTracker(FlaskBaseApp):
                 'baseZoomLevel': self._settings['tileHunting']['baseZoomLevel'],
             }
 
-        def format_decimal(value: int | float, decimals: int = 1) -> str:
+        def format_decimal(value: float, decimals: int = 1) -> str:
             return Helpers.format_decimal(value, decimals)
 
         def format_date(value: datetime) -> str:

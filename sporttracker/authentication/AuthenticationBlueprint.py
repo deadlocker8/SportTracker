@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, redirect, render_template, request, url_for
 from flask_babel import gettext
 from flask_bcrypt import Bcrypt
-from flask_login import login_user, logout_user, login_required, current_user
+from flask_login import current_user, login_required, login_user, logout_user
 
 from sporttracker.helpers.Helpers import is_allowed_redirect_url
 from sporttracker.user.UserEntity import User

@@ -1,13 +1,15 @@
-from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import mapped_column, Mapped
+from typing import ClassVar
 
-from sporttracker.workout.WorkoutEntity import Workout
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
+
+from sporttracker.db import db
 from sporttracker.workout.fitness.FitnessWorkoutCategory import (
     FitnessWorkoutCategory,
     FitnessWorkoutCategoryType,
 )
-from sporttracker.db import db
+from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
+from sporttracker.workout.WorkoutEntity import Workout
 
 
 class FitnessWorkout(Workout):  # type: ignore[name-defined]
@@ -15,7 +17,7 @@ class FitnessWorkout(Workout):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(ForeignKey('workout.id'), primary_key=True)
     fitness_workout_type = db.Column(db.Enum(FitnessWorkoutType), nullable=False)
 
-    __mapper_args__ = {
+    __mapper_args__: ClassVar[dict[str, str]] = {
         'polymorphic_identity': 'fitness_workout',
     }
 

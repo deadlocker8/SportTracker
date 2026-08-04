@@ -5,7 +5,7 @@ from PIL import Image
 from TheCodeLabs_BaseUtils.Color import Color
 
 from sporttracker import Constants
-from sporttracker.tileHunting.Colors import COLOR_TRANSPARENT, COLOR_PLANNED
+from sporttracker.tileHunting.Colors import COLOR_PLANNED, COLOR_TRANSPARENT
 from sporttracker.tileHunting.VisitedTileService import VisitedTileService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -46,7 +46,7 @@ class TileRenderService:
             positions = list(newPositions)
             zoom = counterModifierFunction(zoom)
 
-        return sorted(list(newPositions), key=lambda p: (p[0], p[1]))
+        return sorted(newPositions, key=lambda p: (p[0], p[1]))
 
     @staticmethod
     def transform_position_zoom_in(x: int, y: int) -> list[tuple[int, int]]:
@@ -177,8 +177,8 @@ class TileRenderService:
             user_id,
         )
 
-        for row in range(0, numberOfElementsPerAxis):
-            for col in range(0, numberOfElementsPerAxis):
+        for row in range(numberOfElementsPerAxis):
+            for col in range(numberOfElementsPerAxis):
                 elementIndex = row * numberOfElementsPerAxis + col
                 position = positions[elementIndex]
                 if zoomDifference > 0:
@@ -188,7 +188,7 @@ class TileRenderService:
                     isTouchingUpperEdgeOfBaseZoomTile = True
                     isTouchingLeftEdgeOfBaseZoomTile = True
 
-                isVisitPlanned = any([t for t in plannedTilePositions if t.x == position[0] and t.y == position[1]])
+                isVisitPlanned = any(t for t in plannedTilePositions if t.x == position[0] and t.y == position[1])
                 color = self.calculate_color(tileColorByPosition.get((position[0], position[1])), isVisitPlanned)
                 colorToUse = (color.red, color.green, color.blue, int(color.opacity * 255))
 

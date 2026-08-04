@@ -9,16 +9,16 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
-from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutField, CustomWorkoutFieldType
-from sporttracker.user.ParticipantEntity import Participant
+from sporttracker.db import db
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
-from sporttracker.user.UserEntity import create_user, Language, User
+from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutField, CustomWorkoutFieldType
+from sporttracker.user.ParticipantEntity import Participant
+from sporttracker.user.UserEntity import Language, User, create_user
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
-from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD, ROOT_DIRECTORY
+from tests.TestConstants import ROOT_DIRECTORY, TEST_PASSWORD, TEST_USERNAME
 
 
 @pytest.fixture(autouse=True)

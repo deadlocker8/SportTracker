@@ -1,7 +1,7 @@
 from datetime import date
 
-from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
+from sporttracker.workout.WorkoutType import WorkoutType
 
 
 class TestQuickFilterState:

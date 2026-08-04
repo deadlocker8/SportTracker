@@ -1,10 +1,10 @@
 from flask_login import current_user
-from sqlalchemy import Integer, String, Boolean
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy import Boolean, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
 
+from sporttracker.db import db
 from sporttracker.helpers.DateTimeAccess import DateTimeAccess
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
 
 
 class Maintenance(db.Model, DateTimeAccess):  # type: ignore[name-defined]

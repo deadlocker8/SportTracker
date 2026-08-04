@@ -1,23 +1,23 @@
 import logging
 import os
 import uuid
-from flask_babel import gettext
 
-from flask import Blueprint, render_template, abort, redirect, url_for, request, session
-from flask_login import login_required, current_user
+from flask import Blueprint, abort, redirect, render_template, request, session, url_for
+from flask_babel import gettext
+from flask_login import current_user, login_required
 from flask_pydantic import validate
 
 from sporttracker import Constants
-from sporttracker.fit.FitSessionParser import FitSessionParser, FitSession
+from sporttracker.fit.FitSessionParser import FitSession, FitSessionParser
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.helpers import DateFormats
+from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
 from sporttracker.user.ParticipantEntity import get_participants
-from sporttracker.workout.WorkoutEntity import get_workout_names_by_type
-from sporttracker.workout.WorkoutModel import BaseWorkoutFormModel
 from sporttracker.workout.distance.DistanceWorkoutModel import DistanceWorkoutFormModel
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
-from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+from sporttracker.workout.WorkoutEntity import get_workout_names_by_type
+from sporttracker.workout.WorkoutModel import BaseWorkoutFormModel
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -166,7 +166,7 @@ def construct_blueprint(
         except Exception as e:
             LOGGER.error(f'Error parsing session from FIT file: "{fitFilePath}": {e}')
             os.remove(fitFilePath)
-            return f'{baseErrorMessage}: {str(e)}', 400
+            return f'{baseErrorMessage}: {e!s}', 400
 
         if fitSession is None:
             os.remove(fitFilePath)

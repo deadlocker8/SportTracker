@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from tests.TestConstants import TEST_PORT, TEST_USERNAME, TEST_PASSWORD
+from tests.TestConstants import TEST_PASSWORD, TEST_PORT, TEST_USERNAME
 
 
 class SeleniumTestBaseClass(ABC):

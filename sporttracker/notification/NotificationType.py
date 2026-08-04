@@ -141,21 +141,13 @@ class NotificationType(enum.Enum):
 
         if self == self.MAINTENANCE_REMINDER:
             return url_for('maintenances.showSingleMaintenance', maintenance_id=item_id, _external=external)
-        elif self == self.NEW_SHARED_PLANNED_TOUR:
+        elif self == self.NEW_SHARED_PLANNED_TOUR or self == self.EDITED_SHARED_PLANNED_TOUR:
             return url_for('maps.showPlannedTour', tour_id=item_id, _external=external)
-        elif self == self.EDITED_SHARED_PLANNED_TOUR:
-            return url_for('maps.showPlannedTour', tour_id=item_id, _external=external)
-        elif self == self.DELETED_SHARED_PLANNED_TOUR:
+        elif self == self.DELETED_SHARED_PLANNED_TOUR or self == self.REVOKED_SHARED_PLANNED_TOUR:
             return None
-        elif self == self.REVOKED_SHARED_PLANNED_TOUR:
-            return None
-        elif self == self.NEW_SHARED_LONG_DISTANCE_TOUR:
+        elif self == self.NEW_SHARED_LONG_DISTANCE_TOUR or self == self.EDITED_SHARED_LONG_DISTANCE_TOUR:
             return url_for('maps.showLongDistanceTour', tour_id=item_id, _external=external)
-        elif self == self.EDITED_SHARED_LONG_DISTANCE_TOUR:
-            return url_for('maps.showLongDistanceTour', tour_id=item_id, _external=external)
-        elif self == self.DELETED_SHARED_LONG_DISTANCE_TOUR:
-            return None
-        elif self == self.REVOKED_SHARED_LONG_DISTANCE_TOUR:
+        elif self == self.DELETED_SHARED_LONG_DISTANCE_TOUR or self == self.REVOKED_SHARED_LONG_DISTANCE_TOUR:
             return None
         elif self == self.LONGEST_WORKOUT:
             return url_for('achievements.showAchievements', _external=external)

@@ -2,13 +2,13 @@ import logging
 from datetime import datetime
 
 from flask import Blueprint, redirect, request
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
 
 from sporttracker import Constants
-from sporttracker.helpers.DateFormats import DATE_FORMAT_DATE
-from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.db import db
+from sporttracker.helpers.DateFormats import DATE_FORMAT_DATE
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
+from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

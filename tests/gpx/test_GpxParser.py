@@ -1,6 +1,6 @@
 import pytest
 
-from sporttracker.gpx.GpxService import VisitedTile, GpxParser
+from sporttracker.gpx.GpxService import GpxParser, VisitedTile
 
 
 class TestGpxParser:

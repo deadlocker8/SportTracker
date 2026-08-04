@@ -1,5 +1,5 @@
-from sqlalchemy import Integer, DateTime
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy import DateTime, Integer
+from sqlalchemy.orm import Mapped, mapped_column
 
 from sporttracker.db import db
 from sporttracker.helpers import DateFormats

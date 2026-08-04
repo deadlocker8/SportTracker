@@ -8,12 +8,12 @@ import shutil
 import uuid
 from dataclasses import dataclass
 from typing import Any
-from zipfile import ZipFile, ZIP_DEFLATED
+from zipfile import ZIP_DEFLATED, ZipFile
 
 import gpxpy
-from TheCodeLabs_BaseUtils.Color import Color
 from gpxpy.gpx import GPX, GPXTrack, GPXTrackPoint
 from sqlalchemy import delete
+from TheCodeLabs_BaseUtils.Color import Color
 from werkzeug.datastructures.file_storage import FileStorage
 
 from sporttracker import Constants
@@ -188,7 +188,7 @@ class GpxService:
             os.remove(gpxFilePath)
             LOGGER.debug(f'Converted uploaded fit file "{file.filename}" to gpx')
         except Exception as e:
-            LOGGER.error(f'Error while converting {fitFilePath} to gpx', e)
+            LOGGER.exception(f'Error while converting {fitFilePath} to gpx', e)
 
     @staticmethod
     def is_allowed_file(filename: str, allowedFileExtensions: list[str]) -> bool:
@@ -372,7 +372,7 @@ class GpxParser:
             f'First elevation is at index {indexFirstElevation} with value {firstElevation:.2f}. '
             f'Elevation will be copied for {distanceBetweenFirstPointAndFirstElevation:.2f}m.'
         )
-        for index in range(0, indexFirstElevation):
+        for index in range(indexFirstElevation):
             points[index].elevation = firstElevation
 
     @staticmethod

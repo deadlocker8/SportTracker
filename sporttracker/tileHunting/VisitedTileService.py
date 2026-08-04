@@ -3,22 +3,22 @@ from dataclasses import dataclass
 from datetime import timedelta
 
 from flask_login import current_user
-from sqlalchemy import text, func, or_, and_, false
+from sqlalchemy import and_, false, func, or_, text
 from sqlalchemy.orm import aliased
 
+from sporttracker.db import db
 from sporttracker.gpx.GpxService import VisitedTile
-from sporttracker.tileHunting.Colors import COLOR_MULTIPLE_MATCHES, Color, COLOR_NOT_NEW
-from sporttracker.tileHunting.GpxPlannedTileEntity import GpxPlannedTile
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
-from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
-from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache, NewTilesPerDistanceWorkout
-from sporttracker.workout.WorkoutType import WorkoutType
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
+from sporttracker.tileHunting.Colors import COLOR_MULTIPLE_MATCHES, COLOR_NOT_NEW, Color
+from sporttracker.tileHunting.GpxPlannedTileEntity import GpxPlannedTile
+from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
+from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
+from sporttracker.tileHunting.NewVisitedTileCache import NewTilesPerDistanceWorkout, NewVisitedTileCache
 from sporttracker.tileHunting.TileHuntingFilterStateEntity import TileHuntingFilterState
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
-from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
-from sporttracker.db import db
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
+from sporttracker.workout.WorkoutType import WorkoutType
 
 
 @dataclass

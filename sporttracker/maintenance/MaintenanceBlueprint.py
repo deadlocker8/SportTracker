@@ -1,23 +1,23 @@
 import logging
 from dataclasses import dataclass
 
-from flask import Blueprint, render_template, redirect, url_for, abort, request
+from flask import Blueprint, abort, redirect, render_template, request, url_for
 from flask_babel import gettext
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
 from flask_pydantic import validate
 from pydantic import BaseModel, field_validator
 
 from sporttracker import Constants
-from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events, create_maintenance_model
-from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_grouped_by_distance_workout_types_with_values
+from sporttracker.db import db
 from sporttracker.maintenance.MaintenanceEntity import Maintenance, get_maintenance_by_id
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     get_maintenance_events_by_maintenance_id,
 )
-from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
+from sporttracker.maintenance.MaintenanceEventsCollector import create_maintenance_model, get_maintenances_with_events
 from sporttracker.maintenance.MaintenanceFilterStateEntity import get_maintenance_filter_state_by_user
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
+from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_grouped_by_distance_workout_types_with_values
+from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -67,7 +67,7 @@ def construct_blueprint():
             quickFilterState.get_active_distance_workout_types()
         )
 
-        hasCustomWorkoutFields = any([len(fields) > 0 for fields in customFieldsByWorkoutType.values()])
+        hasCustomWorkoutFields = any(len(fields) > 0 for fields in customFieldsByWorkoutType.values())
 
         return render_template(
             'maintenance/maintenances.jinja2',

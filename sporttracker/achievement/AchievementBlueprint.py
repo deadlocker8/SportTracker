@@ -3,17 +3,17 @@ from datetime import datetime
 
 from flask import Blueprint, render_template
 from flask_babel import gettext
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
 
-from sporttracker.helpers import Helpers
 from sporttracker import Constants
 from sporttracker.achievement.AchievementCalculator import AchievementCalculator
 from sporttracker.achievement.AchievementEntity import (
     Achievement,
+    BestMonthDistanceAchievementHistoryItem,
     LongestWorkoutDistanceAchievementHistoryItem,
     LongestWorkoutDurationAchievementHistoryItem,
-    BestMonthDistanceAchievementHistoryItem,
 )
+from sporttracker.helpers import Helpers
 from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

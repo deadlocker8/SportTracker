@@ -3,14 +3,14 @@ import enum
 from flask_babel import gettext
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin, current_user
-from sqlalchemy import Integer, String, Boolean
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy import Boolean, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
 
-from sporttracker.notification.provider.NotificationProviderType import NotificationProviderType
-from sporttracker.notification.NotificationSettingsEntity import NotificationSettings
-from sporttracker.notification.provider.NtfySettingsEntity import NtfySettings
 from sporttracker.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
+from sporttracker.notification.NotificationSettingsEntity import NotificationSettings
+from sporttracker.notification.provider.NotificationProviderType import NotificationProviderType
+from sporttracker.notification.provider.NtfySettingsEntity import NtfySettings
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import PlannedTourFilterState
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 from sporttracker.tileHunting.TileHuntingFilterStateEntity import TileHuntingFilterState

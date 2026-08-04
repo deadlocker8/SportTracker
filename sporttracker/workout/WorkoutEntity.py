@@ -1,15 +1,16 @@
 from dataclasses import dataclass
 from datetime import datetime
+from typing import ClassVar
 
 from flask_login import current_user
-from sqlalchemy import Integer, String, DateTime, extract, func, asc
+from sqlalchemy import DateTime, Integer, String, asc, extract, func
 from sqlalchemy.dialects.postgresql import JSON
-from sqlalchemy.orm import mapped_column, Mapped, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from sporttracker.user.ParticipantEntity import Participant, workout_participant_association
-from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.user.UserEntity import User
 from sporttracker.db import db
+from sporttracker.user.ParticipantEntity import Participant, workout_participant_association
+from sporttracker.user.UserEntity import User
+from sporttracker.workout.WorkoutType import WorkoutType
 
 
 class Workout(db.Model):  # type: ignore[name-defined]
@@ -25,7 +26,7 @@ class Workout(db.Model):  # type: ignore[name-defined]
     participants: Mapped[list[Participant]] = relationship(secondary=workout_participant_association)
     custom_fields = db.Column(JSON)
 
-    __mapper_args__ = {
+    __mapper_args__: ClassVar[dict[str, str]] = {
         'polymorphic_identity': 'workout',
         'polymorphic_on': 'class_type',
     }

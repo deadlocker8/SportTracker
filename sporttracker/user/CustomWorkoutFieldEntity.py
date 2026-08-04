@@ -6,12 +6,12 @@ import natsort
 from flask_babel import gettext
 from flask_login import current_user
 from natsort import natsorted
-from sqlalchemy import Integer, String, Boolean
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy import Boolean, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
 
+from sporttracker.db import db
 from sporttracker.workout.WorkoutEntity import Workout
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
 
 
 class CustomWorkoutFieldType(enum.Enum):

@@ -7,18 +7,18 @@ from sporttracker.db import db
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
 from sporttracker.maintenance.MaintenanceEntity import Maintenance
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import MaintenanceEventInstance
-from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
+from sporttracker.monthGoal.MonthGoalEntity import MonthGoalCount, MonthGoalDistance, MonthGoalDuration
 from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.notification.NotificationType import NotificationType
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
-from sporttracker.user.UserEntity import create_user, Language, User
-from sporttracker.workout.WorkoutType import WorkoutType
+from sporttracker.user.UserEntity import Language, User, create_user
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.fitness.FitnessWorkoutType import FitnessWorkoutType
-from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
+from sporttracker.workout.WorkoutType import WorkoutType
+from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME
 
 
 @pytest.fixture(autouse=True)

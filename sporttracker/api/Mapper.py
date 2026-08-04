@@ -1,28 +1,28 @@
-from typing import Callable, Type
+from collections.abc import Callable
 
 from sporttracker.api.Models import (
-    MonthGoalDistanceApiModel,
-    MonthGoalCountApiModel,
-    MonthGoalDurationApiModel,
+    CustomFieldApiModel,
     DistanceWorkoutApiModel,
     FitnessWorkoutApiModel,
+    MaintenanceApiModel,
+    MonthGoalCountApiModel,
+    MonthGoalDistanceApiModel,
+    MonthGoalDurationApiModel,
     ParticipantApiModel,
     PlannedTourApiModel,
-    MaintenanceApiModel,
-    CustomFieldApiModel,
 )
 from sporttracker.helpers import DateFormats
 from sporttracker.maintenance.MaintenanceEventsCollector import MaintenanceWithEventsModel
+from sporttracker.monthGoal.MonthGoalEntity import MonthGoalCount, MonthGoalDistance, MonthGoalDuration
+from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutField
+from sporttracker.user.ParticipantEntity import Participant
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
-from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
-from sporttracker.user.ParticipantEntity import Participant
-from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 
 
 class Mapper:
-    def __init__(self, source_type: Type, target_type: Type, mappings: dict[str, Callable]) -> None:
+    def __init__(self, source_type: type, target_type: type, mappings: dict[str, Callable]) -> None:
         self._source_type = source_type
         self._target_type = target_type
         self._mappings = mappings

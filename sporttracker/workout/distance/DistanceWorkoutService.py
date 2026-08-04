@@ -4,32 +4,30 @@ import logging
 import os
 from datetime import datetime
 from io import BytesIO
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from sqlalchemy import extract, func, DateTime, String
+from sqlalchemy import DateTime, String, extract, func
 
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.workout import WorkoutEntity
-from sporttracker.workout.WorkoutEntity import Workout
 from sporttracker.workout.heartRate.HeartRateService import HeartRateService
+from sporttracker.workout.WorkoutEntity import Workout
 
 if TYPE_CHECKING:
     from sporttracker.notification.NotificationService import NotificationService
 
-from sporttracker.workout.distance.DistanceWorkoutModel import DistanceWorkoutFormModel
-
 from werkzeug.datastructures import FileStorage
 
-from sporttracker.api.FormModels import DistanceWorkoutApiFormModel
 from sporttracker import Constants
-from sporttracker.gpx.GpxService import GpxService
-from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout, MonthDistanceSum
-from sporttracker.user.ParticipantEntity import get_participants_by_ids
-from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
-from sporttracker.workout.WorkoutType import WorkoutType
+from sporttracker.api.FormModels import DistanceWorkoutApiFormModel
 from sporttracker.db import db
-
+from sporttracker.gpx.GpxService import GpxService
+from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
+from sporttracker.user.ParticipantEntity import get_participants_by_ids
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout, MonthDistanceSum
+from sporttracker.workout.distance.DistanceWorkoutModel import DistanceWorkoutFormModel
+from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

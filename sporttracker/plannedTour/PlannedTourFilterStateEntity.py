@@ -1,10 +1,10 @@
-from sqlalchemy import String, Boolean, Integer, JSON
+from sqlalchemy import JSON, Boolean, Integer, String
 from sqlalchemy.ext.mutable import MutableDict
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import Mapped, mapped_column
 
+from sporttracker.db import db
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
-from sporttracker.db import db
 
 
 class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
@@ -152,10 +152,7 @@ class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
         if not self.is_long_distance_tours_exclude_selected:
             return True
 
-        if self.name_filter is not None:
-            return True
-
-        return False
+        return self.name_filter is not None
 
 
 def get_planned_tour_filter_state_by_user(user_id: int) -> PlannedTourFilterState:

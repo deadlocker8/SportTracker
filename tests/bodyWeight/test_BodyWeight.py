@@ -8,9 +8,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from sporttracker.bodyWeight.BodyWeightEntity import BodyWeight
 from sporttracker.db import db
-from sporttracker.user.UserEntity import create_user, Language, User
+from sporttracker.user.UserEntity import Language, User, create_user
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
-from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
+from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME
 
 
 @pytest.fixture(autouse=True)

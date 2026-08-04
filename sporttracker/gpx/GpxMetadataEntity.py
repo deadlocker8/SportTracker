@@ -1,5 +1,5 @@
-from sqlalchemy import Integer, Float, String
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy import Float, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
 
 from sporttracker.db import db
 

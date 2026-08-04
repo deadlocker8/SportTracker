@@ -1,8 +1,8 @@
-from typing import Any
+from typing import Any, ClassVar
 
 
 class SettingsChecker:
-    EXPECTED_SETTNGS = {
+    EXPECTED_SETTNGS: ClassVar[dict[str, Any]] = {
         'server': ['listen', 'port', 'secret', 'useSSL', 'keyfile', 'certfile'],
         'logging': ['enableRotatingLogFile', 'fileName', 'maxBytes', 'numberOfBackups'],
         'database': ['uri'],

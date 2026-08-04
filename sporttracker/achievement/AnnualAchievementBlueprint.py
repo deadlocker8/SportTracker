@@ -2,18 +2,18 @@ import logging
 from datetime import datetime
 from statistics import mean
 
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, redirect, render_template, url_for
 from flask_babel import gettext
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
 
-from sporttracker.helpers import Helpers
 from sporttracker import Constants
 from sporttracker.achievement.AchievementCalculator import AchievementCalculator
 from sporttracker.achievement.AchievementEntity import (
+    AllYearData,
     AnnualAchievement,
     AnnualAchievementDifferenceType,
-    AllYearData,
 )
+from sporttracker.helpers import Helpers
 from sporttracker.helpers.Helpers import format_percentage
 from sporttracker.workout.WorkoutService import WorkoutService
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -356,15 +356,15 @@ def construct_blueprint():
 
 
 def __format_distance(distance: float) -> str:
-    return '{distance} km'.format(distance=Helpers.format_decimal(distance, decimals=2))
+    return f'{Helpers.format_decimal(distance, decimals=2)} km'
 
 
-def __format_duration(duration: int | float) -> str:
-    return '{duration} h'.format(duration=Helpers.format_duration(int(duration)))
+def __format_duration(duration: float) -> str:
+    return f'{Helpers.format_duration(int(duration))} h'
 
 
 def __format_speed(speed: float) -> str:
-    return '{speed} km/h'.format(speed=Helpers.format_decimal(speed, decimals=2))
+    return f'{Helpers.format_decimal(speed, decimals=2)} km/h'
 
 
 def __format_count(count: float) -> str:

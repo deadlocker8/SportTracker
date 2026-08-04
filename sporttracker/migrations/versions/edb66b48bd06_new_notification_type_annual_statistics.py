@@ -8,8 +8,8 @@ Create Date: 2026-01-02 10:50:47.567823
 
 from datetime import datetime
 
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 from sqlalchemy import Inspector, text
 
 # revision identifiers, used by Alembic.

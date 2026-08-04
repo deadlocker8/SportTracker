@@ -1,41 +1,41 @@
 import logging
 import uuid
 
-from TheCodeLabs_BaseUtils.NtfyHelper import NtfyHelper
-from flask import Blueprint, render_template, redirect, url_for, abort, flash, jsonify
+from flask import Blueprint, abort, flash, jsonify, redirect, render_template, url_for
 from flask_babel import gettext
 from flask_bcrypt import Bcrypt
-from flask_login import login_required, current_user, fresh_login_required
+from flask_login import current_user, fresh_login_required, login_required
 from flask_pydantic import validate
-from pydantic import BaseModel, field_validator, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_validator
+from TheCodeLabs_BaseUtils.NtfyHelper import NtfyHelper
 
 from sporttracker import Constants
 from sporttracker.Constants import MIN_PASSWORD_LENGTH
-from sporttracker.user.CustomWorkoutFieldEntity import (
-    CustomWorkoutField,
-    CustomWorkoutFieldType,
-    RESERVED_FIELD_NAMES,
-    get_custom_fields_grouped_by_distance_workout_types_with_values,
-)
+from sporttracker.db import db
 from sporttracker.maintenance.MaintenanceEntity import Maintenance
-from sporttracker.notification.provider.NotificationProviderType import NotificationProviderType
+from sporttracker.maintenance.MaintenanceFilterStateEntity import get_maintenance_filter_state_by_user
 from sporttracker.notification.NotificationSettingsEntity import (
     NotificationSettings,
-    get_notification_settings_by_user_by_provider_type,
     get_notification_settings_by_id,
+    get_notification_settings_by_user_by_provider_type,
 )
 from sporttracker.notification.NotificationType import NotificationType
+from sporttracker.notification.provider.NotificationProviderType import NotificationProviderType
 from sporttracker.notification.provider.NtfySettingsEntity import NtfySettings
+from sporttracker.user.CustomWorkoutFieldEntity import (
+    RESERVED_FIELD_NAMES,
+    CustomWorkoutField,
+    CustomWorkoutFieldType,
+    get_custom_fields_grouped_by_distance_workout_types_with_values,
+)
 from sporttracker.user.ParticipantEntity import Participant, get_participants
 from sporttracker.user.UserEntity import (
-    User,
-    Language,
     DistanceWorkoutInfoItem,
     DistanceWorkoutInfoItemType,
+    Language,
+    User,
 )
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
-from sporttracker.maintenance.MaintenanceFilterStateEntity import get_maintenance_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

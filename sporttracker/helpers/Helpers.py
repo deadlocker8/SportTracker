@@ -13,7 +13,7 @@ def format_duration(value: int | None) -> str:
     return f'{hours}:{str(minutes).zfill(2)}'
 
 
-def format_decimal(value: int | float | None, decimals: int = 1) -> str:
+def format_decimal(value: float | None, decimals: int = 1) -> str:
     format_string = f'#,##0.{"#" * (decimals - 1)}0'
     return flask_babel.format_decimal(value, format=format_string)
 
@@ -40,5 +40,5 @@ def format_percentage(previous_value: float, current_value: float) -> str:
     if previous_value == 0:
         return '∞ %'
 
-    percentage = abs((current_value - previous_value)) / previous_value * 100
+    percentage = abs(current_value - previous_value) / previous_value * 100
     return f'{int(percentage)} %'

@@ -1,16 +1,16 @@
 import logging
 
-from flask import Blueprint, render_template, redirect, url_for, abort
+from flask import Blueprint, abort, redirect, render_template, url_for
 from flask_babel import gettext
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
 from flask_pydantic import validate
 from pydantic import BaseModel
 
 from sporttracker import Constants
+from sporttracker.db import db
 from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDuration
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

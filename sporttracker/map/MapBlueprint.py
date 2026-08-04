@@ -4,30 +4,30 @@ from datetime import datetime, timedelta
 from typing import Any
 
 import flask_babel
-from PIL import ImageColor
 from flask import (
     Blueprint,
-    render_template,
-    abort,
-    url_for,
-    redirect,
-    request,
-    jsonify,
     Response,
+    abort,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    url_for,
 )
-from flask_login import login_required, current_user
-from sqlalchemy import func, and_, or_, false
+from flask_login import current_user, login_required
+from PIL import ImageColor
+from sqlalchemy import and_, false, func, or_
 
 from sporttracker import Constants
 from sporttracker.db import db
-from sporttracker.gpx.GpxService import GpxService, GpxParser
+from sporttracker.gpx.GpxService import GpxParser, GpxService
 from sporttracker.helpers import DateFormats
 from sporttracker.longDistanceTour.LongDistanceTourBlueprint import LongDistanceTourModel
 from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 from sporttracker.plannedTour.PlannedTourBlueprint import PlannedTourModel
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
-from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
+from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState, get_quick_filter_state_by_user
 from sporttracker.tileHunting.BoundingBox import BoundingBox
 from sporttracker.tileHunting.Colors import (
     COLOR_PLANNED,
@@ -36,17 +36,17 @@ from sporttracker.tileHunting.Colors import (
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.tileHunting.TileHuntingFilterStateEntity import (
-    get_tile_hunting_filter_state_by_user,
     TileHuntingFilterState,
+    get_tile_hunting_filter_state_by_user,
 )
 from sporttracker.tileHunting.TileRenderService import TileRenderService
 from sporttracker.tileHunting.VisitedTileService import VisitedTileService
 from sporttracker.user.UserEntity import get_user_by_tile_hunting_shared_code
+from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.workout.WorkoutModel import DistanceWorkoutModel
 from sporttracker.workout.WorkoutService import WorkoutService
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
-from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

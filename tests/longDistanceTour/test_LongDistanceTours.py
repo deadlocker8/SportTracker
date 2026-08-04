@@ -6,11 +6,11 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
-from sporttracker.user.UserEntity import create_user, Language
+from sporttracker.user.UserEntity import Language, create_user
 from sporttracker.workout.WorkoutType import WorkoutType
-from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
-from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
 from tests.plannedTour.test_PlannedTours import TestPlannedTours
+from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
+from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME
 
 TEST_USERNAME_2 = 'test_user_2'
 TEST_PASSWORD_2 = 'abcdef'

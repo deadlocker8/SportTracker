@@ -2,34 +2,34 @@ import logging
 import uuid
 from typing import Any
 
-from flask import Blueprint, render_template, redirect, url_for, abort, request
-from flask_login import login_required, current_user
+from flask import Blueprint, abort, redirect, render_template, request, url_for
+from flask_login import current_user, login_required
 from flask_pydantic import validate
 
 from sporttracker import Constants
+from sporttracker.db import db
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.longDistanceTour.LongDistanceTourEntity import (
     LongDistanceTourPlannedTourAssociation,
 )
+from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
+from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user
+from sporttracker.plannedTour.PlannedTourService import (
+    PlannedTourEditFormModel,
+    PlannedTourFormModel,
+    PlannedTourModel,
+    PlannedTourService,
+    SharedUserModel,
+)
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
+from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
 from sporttracker.user.UserEntity import (
     User,
     get_all_users_except_self_and_admin,
     get_user_by_id,
 )
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.db import db
-from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user
-from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
-from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
-from sporttracker.plannedTour.PlannedTourService import (
-    PlannedTourFormModel,
-    PlannedTourEditFormModel,
-    PlannedTourService,
-    PlannedTourModel,
-    SharedUserModel,
-)
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

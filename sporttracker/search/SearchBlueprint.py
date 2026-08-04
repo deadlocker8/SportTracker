@@ -3,15 +3,15 @@ from itertools import groupby
 
 from flask import Blueprint, render_template, request
 from flask_babel import format_datetime
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
 
 from sporttracker import Constants
+from sporttracker.db import db
+from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
+from sporttracker.user.UserEntity import User
 from sporttracker.workout.WorkoutEntity import Workout
 from sporttracker.workout.WorkoutModel import DistanceWorkoutModel, FitnessWorkoutModel
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.user.UserEntity import User
-from sporttracker.db import db
-from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -41,8 +41,7 @@ def construct_blueprint():
         except (TypeError, ValueError):
             pageNumberValue = 1
 
-        if pageNumberValue < 1:
-            pageNumberValue = 1
+        pageNumberValue = max(pageNumberValue, 1)
 
         pagination = db.paginate(
             db.select(Workout)

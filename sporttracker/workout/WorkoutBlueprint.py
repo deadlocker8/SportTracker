@@ -1,13 +1,13 @@
 import logging
-from datetime import datetime, date
+from datetime import date, datetime
 from statistics import mean
 
 import flask_babel
 from babel.dates import get_month_names
 from dateutil.relativedelta import relativedelta
-from flask import Blueprint, render_template, redirect, url_for, abort, jsonify
+from flask import Blueprint, abort, jsonify, redirect, render_template, url_for
 from flask_babel import format_datetime
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
 
 from sporttracker import Constants
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
@@ -16,17 +16,17 @@ from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.notification.NotificationService import NotificationService
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
-from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user, QuickFilterState
+from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState, get_quick_filter_state_by_user
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
 from sporttracker.user.ParticipantEntity import get_participants
-from sporttracker.workout.WorkoutService import WorkoutService
 from sporttracker.workout.heartRate.HeartRateService import HeartRateService
 from sporttracker.workout.WorkoutEntity import (
+    Workout,
     get_workout_names_by_type,
     get_workouts_by_year_and_month_by_type,
-    Workout,
 )
-from sporttracker.workout.WorkoutModel import MonthModel, DistanceWorkoutModel, FitnessWorkoutModel
+from sporttracker.workout.WorkoutModel import DistanceWorkoutModel, FitnessWorkoutModel, MonthModel
+from sporttracker.workout.WorkoutService import WorkoutService
 from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)

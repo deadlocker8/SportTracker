@@ -1,4 +1,4 @@
-from sporttracker.helpers.ChangelogParser import ChangelogParser, Release, ChangelogEntry, ChangelogEntryType
+from sporttracker.helpers.ChangelogParser import ChangelogEntry, ChangelogEntryType, ChangelogParser, Release
 
 
 class TestChangelogParser:

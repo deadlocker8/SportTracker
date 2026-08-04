@@ -2,9 +2,8 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 
+from flask import Blueprint, abort, redirect, render_template, url_for
 from flask_babel import gettext
-
-from flask import Blueprint, render_template, redirect, url_for, abort
 from flask_bcrypt import Bcrypt
 from flask_login import fresh_login_required
 from flask_pydantic import validate
@@ -14,16 +13,16 @@ from sqlalchemy import asc, func
 from sporttracker import Constants
 from sporttracker.authentication.AdminWrapper import admin_role_required
 from sporttracker.Constants import MIN_PASSWORD_LENGTH
-from sporttracker.user.UserEntity import (
-    User,
-    Language,
-    create_user,
-)
 from sporttracker.db import db
 from sporttracker.maintenance.MaintenanceFilterStateEntity import get_maintenance_filter_state_by_user
 from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
 from sporttracker.tileHunting.TileHuntingFilterStateEntity import get_tile_hunting_filter_state_by_user
+from sporttracker.user.UserEntity import (
+    Language,
+    User,
+    create_user,
+)
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

@@ -1,8 +1,8 @@
 import pytest
 
 from sporttracker.SportTracker import create_test_app
-from sporttracker.user.UserEntity import User, create_user, Language
-from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
+from sporttracker.user.UserEntity import Language, User, create_user
+from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME
 
 
 @pytest.fixture

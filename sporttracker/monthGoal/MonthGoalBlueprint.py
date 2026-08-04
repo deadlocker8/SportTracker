@@ -2,12 +2,12 @@ import logging
 from itertools import groupby
 
 from flask import Blueprint, render_template
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
 
 from sporttracker import Constants
-from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance, MonthGoalCount, MonthGoalDuration
-from sporttracker.user.UserEntity import User
+from sporttracker.monthGoal.MonthGoalEntity import MonthGoalCount, MonthGoalDistance, MonthGoalDuration
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
+from sporttracker.user.UserEntity import User
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

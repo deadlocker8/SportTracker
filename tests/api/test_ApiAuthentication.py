@@ -1,5 +1,5 @@
 from sporttracker.api.Api import API_VERSION
-from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
+from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME
 
 
 class TestLogin:

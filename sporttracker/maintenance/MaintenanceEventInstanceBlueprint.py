@@ -2,19 +2,19 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 
-from flask import Blueprint, render_template, redirect, url_for, abort
+from flask import Blueprint, abort, redirect, render_template, url_for
 from flask_login import login_required
 from flask_pydantic import validate
 from pydantic import BaseModel
 
 from sporttracker import Constants
+from sporttracker.db import db
 from sporttracker.helpers import DateFormats
 from sporttracker.maintenance.MaintenanceEntity import get_maintenance_by_id
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
-    get_maintenance_event_by_id,
     MaintenanceEventInstance,
+    get_maintenance_event_by_id,
 )
-from sporttracker.db import db
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 

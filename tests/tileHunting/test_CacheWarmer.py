@@ -6,9 +6,9 @@ from sporttracker.db import db
 from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
 from sporttracker.tileHunting.CacheWarmer import warm_caches
 from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
-from sporttracker.user.UserEntity import create_user, Language, User
-from sporttracker.workout.WorkoutType import WorkoutType
+from sporttracker.user.UserEntity import Language, User, create_user
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
+from sporttracker.workout.WorkoutType import WorkoutType
 from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME
 
 

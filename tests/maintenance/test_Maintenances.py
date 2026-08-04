@@ -7,10 +7,10 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
+from sporttracker.user.UserEntity import Language, create_user
 from sporttracker.workout.WorkoutType import WorkoutType
-from sporttracker.user.UserEntity import create_user, Language
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
-from tests.TestConstants import TEST_USERNAME, TEST_PASSWORD
+from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME
 
 
 @pytest.fixture(autouse=True)

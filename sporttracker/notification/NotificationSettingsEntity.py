@@ -1,11 +1,11 @@
 from flask_login import current_user
-from sqlalchemy import Integer, JSON
+from sqlalchemy import JSON, Integer
 from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import Mapped, mapped_column
 
-from sporttracker.notification.provider.NotificationProviderType import NotificationProviderType
-from sporttracker.notification.NotificationType import NotificationType
 from sporttracker.db import db
+from sporttracker.notification.NotificationType import NotificationType
+from sporttracker.notification.provider.NotificationProviderType import NotificationProviderType
 
 
 class NotificationSettings(db.Model):  # type: ignore[name-defined]
