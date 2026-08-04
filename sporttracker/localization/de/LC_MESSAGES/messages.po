@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-02 00:37+0200\n"
-"PO-Revision-Date: 2026-08-02 00:38+0200\n"
+"POT-Creation-Date: 2026-08-04 21:20+0200\n"
+"PO-Revision-Date: 2026-08-04 21:20+0200\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -219,19 +219,19 @@ msgstr "Heatmap Monate"
 msgid "Maintenance does not exist anymore"
 msgstr "Wartung existiert nicht mehr"
 
-#: ../map/MapBlueprint.py:171 ../map/MapBlueprint.py:212
+#: ../map/MapBlueprint.py:188 ../map/MapBlueprint.py:229
 msgid "Unknown shared link"
 msgstr "Unbekannter geteilter Link"
 
-#: ../map/MapBlueprint.py:189
+#: ../map/MapBlueprint.py:206
 msgid "Unknown planned tour"
 msgstr "Unbekannte geplante Tour"
 
-#: ../map/MapBlueprint.py:461
+#: ../map/MapBlueprint.py:478
 msgid "Unknown long-distance tour"
 msgstr "Unbekannte Etappentour"
 
-#: ../map/MapBlueprint.py:468
+#: ../map/MapBlueprint.py:485
 #: ../templates/longDistanceTour/longDistanceTourForm.jinja2:155
 #: ../templates/map/mapLongDistanceTour.jinja2:105
 #: ../templates/map/mapLongDistanceTour.jinja2:191
@@ -1064,19 +1064,19 @@ msgid "Filter"
 msgstr "Filter"
 
 #: ../templates/maintenance/maintenances.jinja2:121
-#: ../templates/map/mapMacros.jinja2:224
+#: ../templates/map/mapMacros.jinja2:226
 #: ../templates/plannedTour/plannedToursMacros.jinja2:224
 msgid "Reset"
 msgstr "Zurücksetzen"
 
 #: ../templates/maintenance/maintenances.jinja2:123
-#: ../templates/map/mapMacros.jinja2:226
+#: ../templates/map/mapMacros.jinja2:228
 #: ../templates/plannedTour/plannedToursMacros.jinja2:226
 msgid "Apply"
 msgstr "Übernehmen"
 
 #: ../templates/maintenance/maintenances.jinja2:123
-#: ../templates/map/mapMacros.jinja2:226
+#: ../templates/map/mapMacros.jinja2:228
 #: ../templates/plannedTour/plannedToursMacros.jinja2:226
 msgid "Applying..."
 msgstr "Übernehmen..."
@@ -1296,9 +1296,21 @@ msgstr "Maximales Quadrat anzeigen"
 msgid "Show planned tiles"
 msgstr "Geplante Kacheln anzeigen"
 
-#: ../templates/map/mapMacros.jinja2:233
+#: ../templates/map/mapMacros.jinja2:235 ../templates/map/mapMacros.jinja2:243
 msgid "Years"
 msgstr "Jahre"
+
+#: ../templates/map/mapMacros.jinja2:237 ../templates/map/mapMacros.jinja2:265
+msgid "Date range"
+msgstr "Datumsbereich"
+
+#: ../templates/map/mapMacros.jinja2:270
+msgid "Start date"
+msgstr "Startdatum"
+
+#: ../templates/map/mapMacros.jinja2:274
+msgid "End date"
+msgstr "Enddatum"
 
 #: ../templates/map/mapNotFound.jinja2:18
 msgid "Home"
@@ -1403,11 +1415,11 @@ msgstr ""
 msgid "Zoom in to view visited tiles."
 msgstr "Hineinzoomen, um besuchte Kacheln anzuzeigen."
 
-#: ../templates/map/mapTileHunting.jinja2:128
+#: ../templates/map/mapTileHunting.jinja2:129
 msgid "Click bar to open in new tab"
 msgstr "Balken anklicken, um in neuem Tab zu öffnen"
 
-#: ../templates/map/mapTileHunting.jinja2:141
+#: ../templates/map/mapTileHunting.jinja2:142
 msgid "Number of new tiles"
 msgstr "Anzahl neuer Kacheln"
 
@@ -2333,3 +2345,6 @@ msgstr "Wiederh."
 
 #~ msgid "Applying Filter..."
 #~ msgstr "Filter anwenden..."
+
+#~ msgid "Filter mode"
+#~ msgstr "Filter"

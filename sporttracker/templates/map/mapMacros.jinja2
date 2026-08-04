@@ -230,7 +230,7 @@
 
             <hr class="w-100 my-0"/>
 
-            <div class="btn-group w-100" role="group" aria-label="{{ gettext('Filter mode') }}">
+            <div class="btn-group w-100" role="group">
                 <input type="radio" class="btn-check" name="quickFilterMode" id="quickFilterModeYears" value="years" autocomplete="off" {% if not isDateFilterActive %}checked{% endif %}>
                 <label class="btn btn-outline-light btn-sm" for="quickFilterModeYears">{{ gettext('Years') }}</label>
                 <input type="radio" class="btn-check" name="quickFilterMode" id="quickFilterModeDateRange" value="dateRange" autocomplete="off" {% if isDateFilterActive %}checked{% endif %}>

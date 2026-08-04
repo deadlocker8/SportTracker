@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-02 00:37+0200\n"
+"POT-Creation-Date: 2026-08-04 21:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,19 +206,19 @@ msgstr ""
 msgid "Maintenance does not exist anymore"
 msgstr ""
 
-#: ../map/MapBlueprint.py:171 ../map/MapBlueprint.py:212
+#: ../map/MapBlueprint.py:188 ../map/MapBlueprint.py:229
 msgid "Unknown shared link"
 msgstr ""
 
-#: ../map/MapBlueprint.py:189
+#: ../map/MapBlueprint.py:206
 msgid "Unknown planned tour"
 msgstr ""
 
-#: ../map/MapBlueprint.py:461
+#: ../map/MapBlueprint.py:478
 msgid "Unknown long-distance tour"
 msgstr ""
 
-#: ../map/MapBlueprint.py:468
+#: ../map/MapBlueprint.py:485
 #: ../templates/longDistanceTour/longDistanceTourForm.jinja2:155
 #: ../templates/map/mapLongDistanceTour.jinja2:105
 #: ../templates/map/mapLongDistanceTour.jinja2:191
@@ -1046,19 +1046,19 @@ msgid "Filter"
 msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:121
-#: ../templates/map/mapMacros.jinja2:224
+#: ../templates/map/mapMacros.jinja2:226
 #: ../templates/plannedTour/plannedToursMacros.jinja2:224
 msgid "Reset"
 msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:123
-#: ../templates/map/mapMacros.jinja2:226
+#: ../templates/map/mapMacros.jinja2:228
 #: ../templates/plannedTour/plannedToursMacros.jinja2:226
 msgid "Apply"
 msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:123
-#: ../templates/map/mapMacros.jinja2:226
+#: ../templates/map/mapMacros.jinja2:228
 #: ../templates/plannedTour/plannedToursMacros.jinja2:226
 msgid "Applying..."
 msgstr ""
@@ -1280,8 +1280,20 @@ msgstr ""
 msgid "Show planned tiles"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:233
+#: ../templates/map/mapMacros.jinja2:235 ../templates/map/mapMacros.jinja2:243
 msgid "Years"
+msgstr ""
+
+#: ../templates/map/mapMacros.jinja2:237 ../templates/map/mapMacros.jinja2:265
+msgid "Date range"
+msgstr ""
+
+#: ../templates/map/mapMacros.jinja2:270
+msgid "Start date"
+msgstr ""
+
+#: ../templates/map/mapMacros.jinja2:274
+msgid "End date"
 msgstr ""
 
 #: ../templates/map/mapNotFound.jinja2:18
@@ -1379,11 +1391,11 @@ msgstr ""
 msgid "Zoom in to view visited tiles."
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:128
+#: ../templates/map/mapTileHunting.jinja2:129
 msgid "Click bar to open in new tab"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:141
+#: ../templates/map/mapTileHunting.jinja2:142
 msgid "Number of new tiles"
 msgstr ""
 
