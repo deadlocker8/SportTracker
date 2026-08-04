@@ -1,4 +1,5 @@
 import logging
+import time
 from datetime import date, timedelta
 
 from sqlalchemy import and_, or_, false
@@ -35,10 +36,12 @@ class MaxSquareCache:
         cacheKey = self.__calculate_cache_key(userId, workoutTypes, dateRanges)
 
         if cacheKey not in self._max_square_tile_positions:
-            LOGGER.debug(f'Creating entry in MaxSquareCache with key {cacheKey}')
+            LOGGER.debug(f'Creating entry in MaxSquareCache with key {cacheKey}...')
+            start = time.time()
             self._max_square_tile_positions[cacheKey] = self.__determine_max_square_tile_positions(
                 userId, workoutTypes, dateRanges
             )
+            LOGGER.debug(f'MaxSquareCache key {cacheKey} took {(time.time() - start):.2f}s')
 
         return self._max_square_tile_positions[cacheKey]
 

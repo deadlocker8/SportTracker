@@ -1,4 +1,5 @@
 import logging
+import time
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from typing import Any
@@ -46,9 +47,11 @@ class NewVisitedTileCache:
 
         if cacheKey not in self._newVisitedTilesPerUser:
             LOGGER.debug(f'Creating entry in NewVisitedTileCache with key {cacheKey}')
+            start = time.time()
             self._newVisitedTilesPerUser[cacheKey] = self.__determine_number_of_new_tiles_per_workout(
                 userId, workoutTypes, dateRanges
             )
+            LOGGER.debug(f'NewVisitedTileCache key {cacheKey} took {(time.time() - start):.2f}s')
 
         return self._newVisitedTilesPerUser[cacheKey]
 
