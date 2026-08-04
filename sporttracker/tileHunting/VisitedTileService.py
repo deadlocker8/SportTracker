@@ -228,7 +228,7 @@ class VisitedTileService:
             text("""SELECT *
             FROM gpx_visited_tile
             WHERE gpx_visited_tile."workout_id" = :workout_id
-              AND NOT EXISTS (SELECT
+              AND NOT EXISTS (SELECT 1
                               FROM distance_workout AS prev
                                        join gpx_visited_tile AS visitied ON prev."id" = visitied."workout_id"
                                        JOIN workout w_inner ON prev."id" = w_inner."id"

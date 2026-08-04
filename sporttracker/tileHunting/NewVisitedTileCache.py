@@ -87,7 +87,7 @@ class NewVisitedTileCache:
                (SELECT count(*)
                 FROM gpx_visited_tile
                 WHERE gpx_visited_tile."workout_id" = t."id"
-                  AND NOT EXISTS (SELECT
+                  AND NOT EXISTS (SELECT 1
                                   FROM distance_workout AS prev
                                            join gpx_visited_tile AS visitied ON prev."id" = visitied."workout_id"
                                    JOIN workout w_inner ON prev."id" = w_inner."id"
@@ -117,9 +117,22 @@ class NewVisitedTileCache:
         rows = db.session.execute(stmt, params=params).fetchall()
 
         return [
-            NewTilesPerDistanceWorkout(row[0], WorkoutType(row[1]), row[2], row[3], row[4])  # type: ignore[call-arg]
+            NewTilesPerDistanceWorkout(
+                row[0],
+                WorkoutType(row[1]),  # type: ignore[call-arg]
+                row[2],
+                NewVisitedTileCache.__parse_start_time(row[3]),
+                row[4],
+            )
             for row in rows
         ]
+
+    @staticmethod
+    def __parse_start_time(value) -> datetime:
+        if isinstance(value, datetime):
+            return value
+
+        return datetime.fromisoformat(value)
 
     @staticmethod
     def _build_date_range_operator(columnName: str, dateRanges: list[tuple[date, date]]) -> tuple[str, dict[str, date]]:
