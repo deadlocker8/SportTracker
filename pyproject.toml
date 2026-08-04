@@ -31,10 +31,6 @@ pillow = "12.3.0"
 fitdecode = "0.11.0"
 natsort = "8.4.0"
 
-# explicitly pin versions of the following dependencies to ensure python 3.14 compatibility
-pydantic = "2.13.4"
-cffi = '2.1.0'
-
 [tool.poetry.group.dev.dependencies]
 bandit = "1.9.4"
 ruff = "0.16.0"
