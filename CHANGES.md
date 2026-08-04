@@ -3,6 +3,7 @@
 - add: body weight tracking (#293)
 - add: in addition to filter by years it is now possible to filter maps (tile hunting, tile hunting heatmap, all workouts, all planned tours) by a specific date range (#290)
 - add: warm caches on startup (configurable via "tileHunting.warmCachesOnStartup" in settings.json, see settings-example.json) (#297)
+- chore: update dependencies (#287)
 
 # 2.0.2 - (24.07.26)
 - fix: year filter and tile hunting map (#292)
