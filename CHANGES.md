@@ -1,4 +1,4 @@
-# 2.1.0 - (XX.XX.XX)
+# 2.1.0 - (04.08.26)
 - BREAKING CHANGE: you must update your settings.json (new option "warmCachesOnStartup" in section "tileHunting", see settings-example.json)
 - add: body weight tracking (#293)
 - add: in addition to filter by years it is now possible to filter maps (tile hunting, tile hunting heatmap, all workouts, all planned tours) by a specific date range (#290)
