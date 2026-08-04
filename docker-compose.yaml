@@ -29,7 +29,7 @@ services:
     networks:
       - netPostgres
     volumes:
-      - <PATH_ON_HOST>/postgres:/var/lib/postgresql/data
+      - <PATH_ON_HOST>/postgres:/var/lib/postgresql
 
 networks:
   netPostgres:
