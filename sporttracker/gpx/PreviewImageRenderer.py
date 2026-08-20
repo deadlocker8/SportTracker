@@ -30,6 +30,7 @@ def render_preview_image(
                 'padding': gpx_preview_image_settings['padding'],
                 'format': gpx_preview_image_settings['format'],
                 'quality': gpx_preview_image_settings['quality'],
+                'user_agent': gpx_preview_image_settings['userAgent'],
             }
             timeout = gpx_preview_image_settings['timeout']
             response = requests.post(gpx_preview_image_settings['url'], files=files, data=data, timeout=timeout)

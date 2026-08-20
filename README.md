@@ -158,10 +158,12 @@ Update the section `gpxPreviewImages` in your settings.json to contain the follo
     "padding": 0.1,
     "basemap": "osm",
     "format": "jpeg",
-    "quality": 85
+    "quality": 85,
+    "userAgent": "MyUserAgent"
 }
 ```
 Where http://localhost:3000 is the address and port number of your GpxToImageRenderer instance started in step 1.
+Where `MyUserAgent` is an arbitrary string identifying your GpxToImageRenderer instance. This is necessary to comply with the OpenStreetMap tile server usage policy.
 
 
 ### Notifications

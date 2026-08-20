@@ -1,3 +1,7 @@
+# 2.1.1 - (20.08.26)
+- BREAKING CHANGE: you must update your settings.json (new option "userAgent" in section "gpxPreviewImages", see settings-example.json)
+- fix: new option to set missing user agent when using GpxToImageRenderer for gpx preview images (#298)
+
 # 2.1.0 - (04.08.26)
 - BREAKING CHANGE: you must update your settings.json (new option "warmCachesOnStartup" in section "tileHunting", see settings-example.json)
 - add: body weight tracking (#293)

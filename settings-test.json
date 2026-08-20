@@ -28,7 +28,8 @@
         "padding": 0.1,
         "basemap": "osm",
         "format": "jpeg",
-        "quality": 85
+        "quality": 85,
+        "userAgent": "SportTrackerTest"
     },
     "tileHunting": {
         "baseZoomLevel": 14,

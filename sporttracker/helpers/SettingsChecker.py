@@ -18,6 +18,7 @@ class SettingsChecker:
             'basemap',
             'format',
             'quality',
+            'userAgent',
         ],
         'tileHunting': ['baseZoomLevel', 'borderColor', 'maxSquareColor', 'mapMinZoomLevel', 'warmCachesOnStartup'],
     }
