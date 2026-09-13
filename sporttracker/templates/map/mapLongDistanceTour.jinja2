@@ -182,7 +182,7 @@
         </div>
 
         <script>
-            gpxInfo = {{ gpxInfo }};
+            gpxInfo = {{ gpxInfo | tojson }};
             tileApiUrl = '{{ url_for("maps.tileOverlay") }}';
             mapMinZoomLevel = {{ mapMinZoomLevel }};
             baseZoomLevel = {{ baseZoomLevel }};

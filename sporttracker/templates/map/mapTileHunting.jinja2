@@ -125,7 +125,7 @@
                             width: 2
                         }
                     },
-                    customdata: {{ chartDataNewTilesPerWorkout['names'] }},
+                    customdata: {{ chartDataNewTilesPerWorkout['names'] | tojson }},
                     hovertemplate: '+%{y} "%{customdata.name}"<br>({{ gettext("Click bar to open in new tab") }})<extra></extra>'
                 },
             ];

@@ -2,7 +2,7 @@
 {% call chartMacros.chart(chartTitle) %}
      const data = [
         {
-            labels: {{ chartDistancePerParticipantData['keys'] }},
+            labels: {{ chartDistancePerParticipantData['keys'] | tojson }},
             values: {{ chartDistancePerParticipantData['values'] }},
             type: 'pie',
             text: {{ chartDistancePerParticipantData['values'] }}
