@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>SportTracker</title>
+        <meta name="description" content="Self-hosted server for recording and analyzing your workout data. All data stays on your own server.">
+        <style>
+            :root {
+                --bg: #ffffff;
+                --bg-alt: #f6f8fa;
+                --text: #1f2328;
+                --text-muted: #59636e;
+                --accent: #1267FF;
+                --accent-soft: #e8f0ff;
+                --border: #d8dee4;
+                --card: #ffffff;
+                --shadow: 0 1px 3px rgba(0, 0, 0, .08), 0 8px 24px rgba(0, 0, 0, .06);
+            }
+
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg: #0d1117;
+                    --bg-alt: #161b22;
+                    --text: #e6edf3;
+                    --text-muted: #8b949e;
+                    --accent: #4d94ff;
+                    --accent-soft: rgba(77, 148, 255, .15);
+                    --border: #30363d;
+                    --card: #161b22;
+                    --shadow: 0 1px 3px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .3);
+                }
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                background: var(--bg);
+                color: var(--text);
+                line-height: 1.6;
+            }
+
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .wrap {
+                max-width: 960px;
+                margin: 0 auto;
+                padding: 0 24px;
+            }
+
+            header.hero {
+                background: linear-gradient(180deg, var(--accent-soft), transparent);
+                border-bottom: 1px solid var(--border);
+                padding: 72px 0 56px;
+                text-align: center;
+            }
+
+            .hero img {
+                width: 120px;
+                height: 120px;
+            }
+
+            .hero h1 {
+                font-size: 2.6rem;
+                margin: 20px 0 8px;
+            }
+
+            .hero p.tagline {
+                color: var(--text-muted);
+                font-size: 1.15rem;
+                margin: 0 0 28px;
+            }
+
+            .btn {
+                display: inline-block;
+                background: var(--accent);
+                color: #fff;
+                padding: 10px 22px;
+                border-radius: 8px;
+                font-weight: 600;
+                margin: 4px;
+            }
+
+            .btn:hover {
+                text-decoration: none;
+                filter: brightness(.95);
+            }
+
+            section {
+                padding: 56px 0;
+                border-bottom: 1px solid var(--border);
+            }
+
+            section.alt {
+                background: var(--bg-alt);
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 0 0 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 0 0 6px;
+            }
+
+            .intro {
+                color: var(--text-muted);
+                margin-bottom: 36px;
+            }
+
+            .feature {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 28px;
+                align-items: center;
+                margin-bottom: 44px;
+            }
+
+            .feature:last-child {
+                margin-bottom: 0;
+            }
+
+            .feature.reverse .media {
+                order: -1;
+            }
+
+            .feature p {
+                color: var(--text-muted);
+                margin: 0;
+            }
+
+            .feature .media img {
+                width: 100%;
+                border-radius: 10px;
+                border: 1px solid var(--border);
+                box-shadow: var(--shadow);
+                cursor: zoom-in;
+            }
+
+            ul.checks {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            ul.checks li {
+                padding: 6px 0 6px 26px;
+                position: relative;
+            }
+
+            ul.checks li::before {
+                content: "✓";
+                position: absolute;
+                left: 0;
+                color: var(--accent);
+                font-weight: 700;
+            }
+
+            code {
+                background: var(--accent-soft);
+                padding: 1px 6px;
+                border-radius: 5px;
+                font-size: .9em;
+                font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            }
+
+            .start-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+
+            .start-card {
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 24px 28px;
+                box-shadow: var(--shadow);
+            }
+
+            .start-card h3 {
+                margin-bottom: 12px;
+            }
+
+            .start-card ol {
+                margin: 0;
+                padding-left: 20px;
+            }
+
+            .start-card li {
+                margin-bottom: 10px;
+            }
+
+            .start-card li:last-child {
+                margin-bottom: 0;
+            }
+
+            .note {
+                color: var(--text-muted);
+                margin-top: 18px;
+            }
+
+            .mt {
+                margin-top: 14px;
+            }
+
+            footer {
+                padding: 32px 0 48px;
+                color: var(--text-muted);
+                font-size: .92rem;
+                text-align: center;
+            }
+
+            #lightbox {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, .92);
+                z-index: 100;
+                align-items: center;
+                justify-content: center;
+                cursor: zoom-out;
+            }
+
+            #lightbox.open {
+                display: flex;
+            }
+
+            #lightbox img {
+                max-width: 92vw;
+                max-height: 88vh;
+                border-radius: 6px;
+                box-shadow: 0 0 40px rgba(0, 0, 0, .6);
+            }
+
+            #lightbox .close {
+                position: absolute;
+                top: 16px;
+                right: 20px;
+                background: none;
+                border: none;
+                color: #fff;
+                font-size: 2rem;
+                cursor: pointer;
+            }
+
+            @media (max-width: 720px) {
+                .feature {
+                    grid-template-columns: 1fr;
+                }
+
+                .feature.reverse .media {
+                    order: 0;
+                }
+
+                .hero h1 {
+                    font-size: 2rem;
+                }
+
+                .start-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+
+        <header class="hero">
+            <div class="wrap">
+                <img src="logo.png" alt="SportTracker logo">
+                <h1>SportTracker</h1>
+                <p class="tagline">Self-hosted server for recording and analyzing your workout data. All data stays on your own server.</p>
+                <p>
+                    <a class="btn" href="https://github.com/deadlocker8/SportTracker">View on GitHub</a>
+                    <a class="btn" href="https://github.com/deadlocker8/SportTracker/releases">Releases</a>
+                </p>
+            </div>
+        </header>
+
+        <section>
+            <div class="wrap">
+                <h2>Track everything about your workouts</h2>
+                <p class="intro">Log your workouts and analyze your training data on a server you fully control.</p>
+
+                <div class="feature">
+                    <div>
+                        <h3>Multi-user support</h3>
+                        <p>SportTracker supports multiple users. Each user registers with their own account, so everyone's workout data stays completely separate.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/tracks.png" alt="Workout tracks list"></div>
+                </div>
+
+                <div class="feature reverse">
+                    <div>
+                        <h3>Record your workout data</h3>
+                        <p>
+                            Log your completed workouts and capture detailed information for every session. Supported workout types:
+                        </p>
+                        <ul class="checks">
+                            <li>Distance-based: Biking, Running, Hiking</li>
+                            <li>Duration-based: Fitness Workouts</li>
+                            <li>Custom fields for each type of workout</li>
+                        </ul>
+                        <p class="mt">Workouts can also be shared via public links.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/edit_track.png" alt="Editing a track"></div>
+                </div>
+
+                <div class="feature">
+                    <div>
+                        <h3>Month goals</h3>
+                        <p>Set monthly goals for distance, duration or number of workouts and track your progress toward each goal on a live progress bar.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/goals.png" alt="Month goals with progress bars"></div>
+                </div>
+
+                <div class="feature reverse">
+                    <div>
+                        <h3>Heart rate data</h3>
+                        <p>Add heart rate data to any workout via the SportTracker API and view it as a chart.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/heart_rate_chart.png" alt="Heart rate chart"></div>
+                </div>
+
+                <div class="feature">
+                    <div>
+                        <h3>GPX tracks on a map</h3>
+                        <p>Attach a GPX recording to any distance-based workout and view your tracks on a map. Either all tracks in a single overview or one track at a time with additional details, like the track line colored by speed.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/map_single.jpg" alt="Single GPX track on a map"></div>
+                </div>
+
+                <div class="feature reverse">
+                    <div>
+                        <h3>FIT tracks</h3>
+                        <p>SportTracker also supports Garmin .fit files in addition to GPX. On upload, a GPX file is generated automatically and both files are stored in the <code>data</code> folder. A .fit file can also be used to prefill the workout form with values like duration and distance.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/tracks.png" alt="Workout tracks list"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="alt">
+            <div class="wrap">
+                <h2>Tile hunting</h2>
+                <p class="intro">Tile hunting divides the world map into roughly same-sized tiles and lets you track which ones you have already visited. It can be enabled optionally per user: a great way to discover new areas or stay motivated to explore new routes.</p>
+
+                <div class="feature reverse">
+                    <div>
+                        <h3>Tile hunting map</h3>
+                        <p>The map shows all tiles you have visited, with the largest square area completely covered by your tiles highlighted. By default a tile matches an OpenStreetMap tile at zoom level 14, configurable in the settings file. The map can also be shared via a code to add a custom overlay in tools like
+                            <a href="https://bikerouter.de">bikerouter.de</a>.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/tile_hunting_map.jpg" alt="Tile hunting map"></div>
+                </div>
+
+                <div class="feature">
+                    <div>
+                        <h3>Tile hunting heatmap</h3>
+                        <p>Each tile is colored according to the number of workouts visiting it. Click on a tile to get the exact number of visits.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/tile_hunting_heatmap.jpg" alt="Tile hunting heatmap"></div>
+                </div>
+
+                <div class="feature reverse">
+                    <div>
+                        <h3>Map for a single workout</h3>
+                        <p>See the tile hunting map for a single workout as well.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/tile_hunting_single.jpg" alt="Tile hunting map for a single workout"></div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="wrap">
+                <h2>Statistics &amp; charts</h2>
+                <p class="intro">Tracked data is visualized in interactive charts, e.g. distance per month, average speed or duration per workout.</p>
+
+                <div class="feature">
+                    <div>
+                        <h3>Charts</h3>
+                        <p>Examples of the available charts.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/chart_calendar.png" alt="Calendar chart"></div>
+                </div>
+
+                <div class="feature reverse">
+                    <div>
+                        <h3>Annual statistics</h3>
+                        <p>Each year is summarized for every workout type, giving you a quick overview of your progress over time.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/annual_statistics_1.png" alt="Annual statistics"></div>
+                </div>
+
+                <div class="feature">
+                    <div>
+                        <h3>Achievements</h3>
+                        <p>The achievement page shows aggregated information about all your workouts.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/achievements.png" alt="Achievements page"></div>
+                </div>
+
+                <div class="feature reverse">
+                    <div>
+                        <h3>Body weight</h3>
+                        <p>Track your body weight over time. Statistics, a weight-over-time chart and your body mass index (BMI) are shown on the overview page.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/body_weight.png" alt="Body weight tracking"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="alt">
+            <div class="wrap">
+                <h2>Planning</h2>
+
+                <div class="feature">
+                    <div>
+                        <h3>Planned tours</h3>
+                        <p>Plan and save routes for distance-based workout types and view them on a map. Share planned tours with other users or create public links, and link the corresponding workout once you have actually completed a tour.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/planned_tours.jpg" alt="Planned tours"></div>
+                </div>
+
+                <div class="feature reverse">
+                    <div>
+                        <h3>Long-distance tours</h3>
+                        <p>Combine multiple planned tours into a long-distance tour and treat them as stages. Track your progress on how many stages you have already completed and use the overview map to prepare for upcoming stages.</p>
+                    </div>
+                    <div class="media"><img src="screenshots/long_distance_tour.jpg" alt="Long-distance tour with stages"></div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="wrap">
+                <h2>Maintenance</h2>
+
+                <div class="feature">
+                    <div>
+                        <h3>Maintenance events</h3>
+                        <p>Record maintenance events for each workout type and set reminders. SportTracker can send notifications via a
+                            <a href="https://github.com/binwiederhier/ntfy">ntfy</a> server once a reminder is triggered.
+                        </p>
+                    </div>
+                    <div class="media"><img src="screenshots/maintenance.png" alt="Maintenance events"></div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="wrap">
+                <h2>Notifications</h2>
+                <p class="intro">SportTracker creates notifications on certain events, e.g. surpassed workout records, reached month goals and shared tours. All notifications are shown in the notification center and can also be sent via a notification provider.</p>
+
+                <div class="feature">
+                    <div>
+                        <ul class="checks">
+                            <li>Maintenance reminder limit exceeded</li>
+                            <li>Planned and long-distance tour sharing events</li>
+                            <li>New records for distance or duration</li>
+                            <li>Month goals reached, best month totals</li>
+                            <li>ntfy as notification provider</li>
+                        </ul>
+                    </div>
+                    <div class="media"><img src="screenshots/notifications.jpg" alt="Notification center"></div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="wrap">
+                <h2>Getting started</h2>
+                <p class="intro">Pick the way you want to run your own SportTracker instance. For the full step-by-step guide, see the
+                    <a href="https://github.com/deadlocker8/SportTracker/blob/master/README.md">README</a>.</p>
+
+                <div class="start-grid">
+                    <div class="start-card">
+                        <h3>Docker</h3>
+                        <ol>
+                            <li>Copy the provided <code>docker-compose.yaml</code> to your server.</li>
+                            <li>Set your database credentials and the host path for your data.</li>
+                            <li>Place a <code>settings.json</code> (based on <code>settings-example.json</code>) in that path.</li>
+                            <li>Start everything with <code>docker compose up --build</code>.</li>
+                            <li>Log in as <code>admin</code> with the generated password from the console output.</li>
+                        </ol>
+                    </div>
+
+                    <div class="start-card">
+                        <h3>Run it locally</h3>
+                        <ol>
+                            <li>Install dependencies: <code>poetry install --no-root --without dev</code>.</li>
+                            <li>Build the frontend: run <code>npm install</code> and <code>npm run build</code> inside the <code>js</code> folder.</li>
+                            <li>Copy <code>settings-example.json</code> to <code>settings.json</code> and adjust it to your setup.</li>
+                            <li>Start the server with Python from your Poetry virtual environment, pointing at <code>src/SportTracker.py</code>.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="alt">
+            <div class="wrap">
+                <h2>API</h2>
+                <p class="intro">SportTracker exposes a REST API for the most common use cases, e.g. adding workouts or heart rate data.</p>
+                <p>Once your instance is running, interactive API documentation (Swagger UI) is available at <code>/api/v2/docs</code>.</p>
+            </div>
+        </section>
+
+        <footer>
+            <div class="wrap">
+                SportTracker is free software licensed under the
+                <a href="https://github.com/deadlocker8/SportTracker/blob/master/LICENSE.md">GNU General Public License v3.0</a>,
+                available in German and English.
+                Icons and images from Google Material Icons, Font Awesome and Freepik.
+            </div>
+        </footer>
+
+        <div id="lightbox">
+            <button class="close" aria-label="Close">×</button>
+            <img src="" alt="">
+        </div>
+
+        <script>
+            (function()
+            {
+                const lightbox = document.getElementById("lightbox");
+                const lightboxImg = lightbox.querySelector("img");
+
+                function open(img)
+                {
+                    lightboxImg.src = img.src;
+                    lightboxImg.alt = img.alt;
+                    lightbox.classList.add("open");
+                    document.body.style.overflow = "hidden";
+                }
+
+                function close()
+                {
+                    lightbox.classList.remove("open");
+                    lightboxImg.src = "";
+                    document.body.style.overflow = "";
+                }
+
+                document.querySelectorAll(".feature .media img").forEach(function(img)
+                {
+                    img.addEventListener("click", function()
+                    {
+                        open(img);
+                    });
+                });
+                lightbox.querySelector(".close").addEventListener("click", close);
+                lightbox.addEventListener("click", function(e)
+                {
+                    if(e.target === lightbox)
+                    {
+                        close();
+                    }
+                });
+                document.addEventListener("keydown", function(e)
+                {
+                    if(e.key === "Escape")
+                    {
+                        close();
+                    }
+                });
+            })();
+        </script>
+
+    </body>
+</html>

@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "SportTracker"
 version = "2.1.1"
-description = "Self-hosted sport data tracking server."
+description = "SportTracker is a self-hosted server for recording and analyzing your workout data."
 license = "GPL-3.0-or-later"
 authors = ["deadlocker8"]
 
