@@ -187,8 +187,8 @@ class GpxService:
 
             os.remove(gpxFilePath)
             LOGGER.debug(f'Converted uploaded fit file "{file.filename}" to gpx')
-        except Exception as e:
-            LOGGER.exception(f'Error while converting {fitFilePath} to gpx', e)
+        except Exception:
+            LOGGER.exception(f'Error while converting {fitFilePath} to gpx')
 
     @staticmethod
     def is_allowed_file(filename: str, allowedFileExtensions: list[str]) -> bool:
