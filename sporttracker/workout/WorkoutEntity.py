@@ -69,7 +69,9 @@ def get_workouts_by_year_and_month_and_workout_types(
     )
 
 
-def get_duration_per_month_by_type(workoutType: WorkoutType, minYear: int, maxYear: int) -> list[MonthDurationSum]:
+def get_duration_per_month_by_type(
+    workoutType: WorkoutType, minYear: int, maxYear: int, user_id: int
+) -> list[MonthDurationSum]:
     year = extract('year', Workout.start_time)
     month = extract('month', Workout.start_time)
 
@@ -80,7 +82,7 @@ def get_duration_per_month_by_type(workoutType: WorkoutType, minYear: int, maxYe
             month.label('month'),
         )
         .filter(Workout.type == workoutType)
-        .filter(Workout.user_id == current_user.id)
+        .filter(Workout.user_id == user_id)
         .group_by(year, month)
         .order_by(year, month)
         .all()

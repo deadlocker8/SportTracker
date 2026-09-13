@@ -226,7 +226,7 @@ class FitnessWorkoutService:
         if minDate is None or maxDate is None:
             return []
 
-        monthDurationSums = get_duration_per_month_by_type(workoutType, minDate.year, maxDate.year)
+        monthDurationSums = get_duration_per_month_by_type(workoutType, minDate.year, maxDate.year, user_id)
         monthDurationSums = [month for month in monthDurationSums if month.durationSum > 0.0]
 
         if not monthDurationSums:

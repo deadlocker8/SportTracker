@@ -522,7 +522,7 @@ def construct_blueprint(
         )
 
     def __get_duration_per_month_by_type(workoutType: WorkoutType, minYear: int, maxYear: int) -> dict[str, Any]:
-        monthDurationSums = get_duration_per_month_by_type(workoutType, minYear, maxYear)
+        monthDurationSums = get_duration_per_month_by_type(workoutType, minYear, maxYear, current_user.id)
         monthNames = []
         values = []
         texts = []
