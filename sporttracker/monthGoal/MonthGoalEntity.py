@@ -169,7 +169,7 @@ class MonthGoalCount(MonthGoal):
 
     def __repr__(self):
         return (
-            f'MonthGoalDistance('
+            f'MonthGoalCount('
             f'id: {self.id}, '
             f'type: {self.type}, '
             f'year: {self.year}, '

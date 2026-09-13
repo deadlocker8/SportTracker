@@ -39,8 +39,6 @@ class DistanceWorkout(Workout):  # type: ignore[name-defined]
             f'average_heart_rate: {self.average_heart_rate}, '
             f'distance: {self.distance}, '
             f'elevation_sum: {self.elevation_sum}, '
-            f'custom_fields: {self.custom_fields}, '
-            f'user_id: {self.user_id}, '
             f'share_code: {self.share_code},'
             f'gpx_metadata_id: {self.gpx_metadata_id})'
         )

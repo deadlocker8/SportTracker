@@ -16,7 +16,7 @@ class NotificationSettings(db.Model):  # type: ignore[name-defined]
     notification_types = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
 
     def __repr__(self):
-        return f'NotificationSettings(type: {self.type.name}, user_id: {self.user_id})'
+        return f'NotificationSettings(id: {self.id}, provider_type: {self.provider_type}, user_id: {self.user_id})'
 
     def get_notification_types(self) -> dict[NotificationType, bool]:
         notificationTypes = {}

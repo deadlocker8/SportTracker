@@ -18,7 +18,7 @@ class Notification(db.Model):  # type: ignore[name-defined]
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
-        return f'Participant(id: {self.id}, name: {self.name}, user_id: {self.user_id})'
+        return f'Notification(id: {self.id}, type: {self.type}, item_id: {self.item_id}, user_id: {self.user_id})'
 
     def get_localized_time_delta(self) -> str:
         timedelta = flask_babel.format_timedelta(datetime.now() - self.date_time, 'short')  # type: ignore[operator]

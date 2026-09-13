@@ -19,5 +19,5 @@ class NtfySettings(db.Model):  # type: ignore[name-defined]
             f'username: {self.username}, '
             f'server_url: {self.server_url}, '
             f'topic: {self.topic}, '
-            f'user_id: {self.user_id},)'
+            f'user_id: {self.user_id})'
         )
