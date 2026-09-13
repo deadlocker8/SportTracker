@@ -140,7 +140,7 @@ RESERVED_FIELD_NAMES = [
     'duration_minutes',
     'duration_seconds',
     'average_heart_rate',
-    'elevation_Sum',
+    'elevation_sum',
     'gpx_file_name',
     'participants',
     'share_code',
@@ -148,4 +148,7 @@ RESERVED_FIELD_NAMES = [
     'fitness_workout_categories',
     'planned_tour_id',
     'is_import_from_fit_file',
+    'gpxTrack',
+    'fit_file_name',
+    'fitFile',
 ]
