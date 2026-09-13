@@ -5,7 +5,7 @@
   "private": true,
   "devDependencies": {
     "autoprefixer": "^10.5.5",
-    "css-loader": "^7.1.4",
+    "css-loader": "^7.1.5",
     "file-loader": "^6.2.0",
     "mini-css-extract-plugin": "^2.10.2",
     "postcss-loader": "^8.2.1",
