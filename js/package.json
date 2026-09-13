@@ -12,7 +12,7 @@
     "sass": "^1.102.0",
     "sass-loader": "^17.0.1",
     "style-loader": "^4.0.0",
-    "webpack": "^5.109.2",
+    "webpack": "^5.110.3",
     "webpack-cli": "^7.2.3"
   },
   "dependencies": {
