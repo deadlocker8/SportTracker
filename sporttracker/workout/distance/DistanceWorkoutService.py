@@ -345,7 +345,7 @@ class DistanceWorkoutService:
 
     @staticmethod
     def get_best_distance_months_by_type(user_id: int, workoutType: WorkoutType) -> list[MonthDistanceSum]:
-        maxDate, minDate = WorkoutEntity.get_min_and_max_date(user_id, workoutType)
+        minDate, maxDate = WorkoutEntity.get_min_and_max_date(user_id, workoutType)
 
         if minDate is None or maxDate is None:
             return []

@@ -127,12 +127,16 @@ def get_workouts_by_year_and_month_by_type(year: int, month: int, workoutTypes: 
 
 
 def get_min_and_max_date(user_id: int, workoutType: WorkoutType) -> tuple[datetime | None, datetime | None]:
-    result = db.session.query(
-        func.min(Workout.start_time),
-        func.max(Workout.start_time).filter(Workout.type == workoutType).filter(Workout.user_id == user_id),
-    ).first()
+    result = (
+        db.session.query(
+            func.min(Workout.start_time),
+            func.max(Workout.start_time),
+        )
+        .filter(Workout.type == workoutType)
+        .filter(Workout.user_id == user_id)
+        .first()
+    )
     if result is None:
         return None, None
 
-    minDate, maxDate = result
-    return maxDate, minDate
+    return result[0], result[1]
