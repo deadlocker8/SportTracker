@@ -1,3 +1,6 @@
+# 2.1.2 - (XX.XX.XX)
+- fix: deletion of user now correctly deletes all associated data
+
 # 2.1.1 - (20.08.26)
 - BREAKING CHANGE: you must update your settings.json (new option "userAgent" in section "gpxPreviewImages", see settings-example.json)
 - fix: new option to set missing user agent when using GpxToImageRenderer for gpx preview images (#298)
