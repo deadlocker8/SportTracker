@@ -15,11 +15,11 @@ from sporttracker.workout.WorkoutEntity import Workout
 
 class DistanceWorkout(Workout):  # type: ignore[name-defined]
     __tablename__ = 'distance_workout'
-    id: Mapped[int] = mapped_column(ForeignKey('workout.id'), primary_key=True)
+    id: Mapped[int] = mapped_column(ForeignKey('workout.id', ondelete='CASCADE'), primary_key=True)
     distance: Mapped[int] = mapped_column(Integer, nullable=False)
     elevation_sum: Mapped[int] = mapped_column(Integer, nullable=True)
     share_code: Mapped[str] = mapped_column(String, nullable=True)
-    gpx_metadata_id = db.Column(db.Integer, db.ForeignKey('gpx_metadata.id'), nullable=True)
+    gpx_metadata_id = db.Column(db.Integer, db.ForeignKey('gpx_metadata.id', ondelete='SET NULL'), nullable=True)
     planned_tour: Mapped[PlannedTour] = relationship(secondary=distance_workout_planned_tour_association)
 
     __mapper_args__: ClassVar[dict[str, str]] = {

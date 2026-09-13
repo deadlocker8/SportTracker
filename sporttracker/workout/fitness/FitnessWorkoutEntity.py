@@ -14,7 +14,7 @@ from sporttracker.workout.WorkoutEntity import Workout
 
 class FitnessWorkout(Workout):  # type: ignore[name-defined]
     __tablename__ = 'fitness_workout'
-    id: Mapped[int] = mapped_column(ForeignKey('workout.id'), primary_key=True)
+    id: Mapped[int] = mapped_column(ForeignKey('workout.id', ondelete='CASCADE'), primary_key=True)
     fitness_workout_type = db.Column(db.Enum(FitnessWorkoutType), nullable=False)
 
     __mapper_args__: ClassVar[dict[str, str]] = {

@@ -11,7 +11,7 @@ from sporttracker.notification.provider.NotificationProviderType import Notifica
 class NotificationSettings(db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     provider_type = db.Column(db.Enum(NotificationProviderType), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     is_active = db.Column(db.Boolean(), nullable=False)
     notification_types = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
 

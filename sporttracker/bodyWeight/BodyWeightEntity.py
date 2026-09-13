@@ -8,7 +8,7 @@ from sporttracker.helpers import DateFormats
 class BodyWeight(db.Model):  # type: ignore[name-defined]
     __tablename__ = 'body_weight'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     datetime: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     weight: Mapped[int] = mapped_column(Integer, nullable=False)  # grams
 

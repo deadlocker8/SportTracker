@@ -81,7 +81,7 @@ class MonthGoal(db.Model):  # type: ignore[name-defined]
     type = db.Column(db.Enum(WorkoutType))
     year: Mapped[int] = mapped_column(Integer, nullable=False)
     month: Mapped[int] = mapped_column(Integer, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
 
     @abstractmethod
     def get_summary(self) -> MonthGoalSummary:

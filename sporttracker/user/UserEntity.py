@@ -37,10 +37,10 @@ class User(UserMixin, db.Model):  # type: ignore[name-defined]
     password: Mapped[str] = mapped_column(String, nullable=False)
     isAdmin: Mapped[bool] = mapped_column(Boolean, nullable=False)
     language = db.Column(db.Enum(Language))
-    workouts = db.relationship('Workout', backref='user', lazy=True, cascade='delete')
-    customFields = db.relationship('CustomWorkoutField', backref='user', lazy=True, cascade='delete')
+    workouts = db.relationship('Workout', backref='user', lazy=True, passive_deletes=True)
+    customFields = db.relationship('CustomWorkoutField', backref='user', lazy=True, passive_deletes=True)
     distance_workout_info_items = db.relationship(
-        'DistanceWorkoutInfoItem', backref='user', lazy=True, cascade='delete'
+        'DistanceWorkoutInfoItem', backref='user', lazy=True, passive_deletes=True
     )
     isTileHuntingActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
     isTileHuntingAccessActivated: Mapped[bool] = mapped_column(Boolean, nullable=False)
@@ -95,7 +95,7 @@ class DistanceWorkoutInfoItem(db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     type = db.Column(db.Enum(DistanceWorkoutInfoItemType))
     is_activated: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
 
 
 def create_user(username: str, password: str, isAdmin: bool, language: Language, currentYear: int) -> User:

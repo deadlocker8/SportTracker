@@ -9,7 +9,7 @@ from sporttracker.plannedTour.TravelType import TravelType
 
 class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
     __tablename__ = 'filter_state_planned_tour'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False, primary_key=True)
     is_done_selected: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
     is_todo_selected: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
     arrival_methods = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]

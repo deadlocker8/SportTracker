@@ -12,7 +12,7 @@ from sporttracker.db import db
 class Participant(db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[String] = mapped_column(String, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):
         return f'Participant(id: {self.id}, name: {self.name}, user_id: {self.user_id})'
@@ -21,8 +21,8 @@ class Participant(db.Model):  # type: ignore[name-defined]
 workout_participant_association = Table(
     'workout_participant_association',
     db.Model.metadata,
-    Column('workout_id', ForeignKey('workout.id')),
-    Column('participant_id', ForeignKey('participant.id')),
+    Column('workout_id', ForeignKey('workout.id', ondelete='CASCADE')),
+    Column('participant_id', ForeignKey('participant.id', ondelete='CASCADE')),
 )
 
 

@@ -6,8 +6,10 @@ from sporttracker.db import db
 
 class MaintenanceFilterState(db.Model):  # type: ignore[name-defined]
     __tablename__ = 'filter_state_maintenance'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, primary_key=True)
-    custom_workout_field_id = db.Column(db.Integer, db.ForeignKey('custom_workout_field.id'), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False, primary_key=True)
+    custom_workout_field_id = db.Column(
+        db.Integer, db.ForeignKey('custom_workout_field.id', ondelete='SET NULL'), nullable=True
+    )
     custom_workout_field_value: Mapped[String] = mapped_column(String, nullable=True)
 
     def __repr__(self):

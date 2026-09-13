@@ -14,10 +14,6 @@ from sporttracker import Constants
 from sporttracker.authentication.AdminWrapper import admin_role_required
 from sporttracker.Constants import MIN_PASSWORD_LENGTH
 from sporttracker.db import db
-from sporttracker.maintenance.MaintenanceFilterStateEntity import get_maintenance_filter_state_by_user
-from sporttracker.plannedTour.PlannedTourFilterStateEntity import get_planned_tour_filter_state_by_user
-from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
-from sporttracker.tileHunting.TileHuntingFilterStateEntity import get_tile_hunting_filter_state_by_user
 from sporttracker.user.UserEntity import (
     Language,
     User,
@@ -166,22 +162,6 @@ def construct_blueprint():
 
         if user.isAdmin:
             abort(400)
-
-        maintenanceFilterState = get_maintenance_filter_state_by_user(user.id)
-        db.session.delete(maintenanceFilterState)
-        db.session.commit()
-
-        plannedTourFilterState = get_planned_tour_filter_state_by_user(user.id)
-        db.session.delete(plannedTourFilterState)
-        db.session.commit()
-
-        quickFilterState = get_quick_filter_state_by_user(user.id)
-        db.session.delete(quickFilterState)
-        db.session.commit()
-
-        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(user.id)
-        db.session.delete(tileHuntingFilterState)
-        db.session.commit()
 
         LOGGER.debug(f'Deleted user: {user.username}')
         db.session.delete(user)

@@ -12,8 +12,8 @@ from sporttracker.workout.WorkoutType import WorkoutType
 planned_tour_user_association = Table(
     'planned_tour_user_association',
     db.Model.metadata,
-    Column('planned_tour_id', ForeignKey('planned_tour.id')),
-    Column('user_id', ForeignKey('user.id')),
+    Column('planned_tour_id', ForeignKey('planned_tour.id', ondelete='CASCADE')),
+    Column('user_id', ForeignKey('user.id', ondelete='CASCADE')),
 )
 
 
@@ -24,13 +24,13 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     creation_date: Mapped[DateTime] = mapped_column(DateTime)
     last_edit_date: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     last_edit_user_id: Mapped[int] = mapped_column(Integer, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     shared_users: Mapped[list[User]] = relationship(secondary=planned_tour_user_association)
     arrival_method = db.Column(db.Enum(TravelType))
     departure_method = db.Column(db.Enum(TravelType))
     direction = db.Column(db.Enum(TravelDirection))
     share_code: Mapped[str] = mapped_column(String, nullable=True)
-    gpx_metadata_id = db.Column(db.Integer, db.ForeignKey('gpx_metadata.id'), nullable=True)
+    gpx_metadata_id = db.Column(db.Integer, db.ForeignKey('gpx_metadata.id', ondelete='SET NULL'), nullable=True)
 
     def __repr__(self):
         return (
@@ -67,6 +67,6 @@ class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
 distance_workout_planned_tour_association = Table(
     'distance_workout_planned_tour_association',
     db.Model.metadata,
-    Column('distance_workout_id', ForeignKey('distance_workout.id')),
-    Column('planned_tour_id', ForeignKey('planned_tour.id')),
+    Column('distance_workout_id', ForeignKey('distance_workout.id', ondelete='CASCADE')),
+    Column('planned_tour_id', ForeignKey('planned_tour.id', ondelete='CASCADE')),
 )

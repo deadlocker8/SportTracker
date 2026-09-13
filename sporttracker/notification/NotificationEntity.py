@@ -15,7 +15,7 @@ class Notification(db.Model):  # type: ignore[name-defined]
     message_details: Mapped[String] = mapped_column(String, nullable=True)
     type = db.Column(db.Enum(NotificationType))
     item_id = db.Column(db.Integer, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):
         return f'Notification(id: {self.id}, type: {self.type}, item_id: {self.item_id}, user_id: {self.user_id})'

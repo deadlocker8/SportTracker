@@ -13,7 +13,7 @@ from sporttracker.workout.WorkoutType import WorkoutType
 
 class QuickFilterState(db.Model):  # type: ignore[name-defined]
     __tablename__ = 'filter_state_quick'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False, primary_key=True)
     workout_types = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
     years = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
     date_from: Mapped[Date] = mapped_column(Date, nullable=True)

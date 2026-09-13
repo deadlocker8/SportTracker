@@ -8,7 +8,7 @@ from sporttracker.db import db
 
 class TileHuntingFilterState(db.Model):  # type: ignore[name-defined]
     __tablename__ = 'filter_state_tile_hunting'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False, primary_key=True)
     is_show_tiles_active: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
     is_show_grid_active: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
     is_only_highlight_new_tiles_active: Mapped[Boolean] = mapped_column(Boolean, nullable=False)

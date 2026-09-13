@@ -10,7 +10,7 @@ class NtfySettings(db.Model):  # type: ignore[name-defined]
     password: Mapped[str] = mapped_column(String, nullable=False)
     server_url: Mapped[str] = mapped_column(String, nullable=False)
     topic: Mapped[str] = mapped_column(String, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):
         return (

@@ -21,7 +21,7 @@ class Workout(db.Model):  # type: ignore[name-defined]
     name: Mapped[String] = mapped_column(String, nullable=False)
     start_time: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     duration: Mapped[int] = mapped_column(Integer, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     average_heart_rate: Mapped[int] = mapped_column(Integer, nullable=True)
     participants: Mapped[list[Participant]] = relationship(secondary=workout_participant_association)
     custom_fields = db.Column(JSON)

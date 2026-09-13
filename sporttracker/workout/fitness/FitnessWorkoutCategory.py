@@ -1,7 +1,7 @@
 import enum
 
 from flask_babel import gettext
-from sqlalchemy import Integer
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 from sporttracker.db import db
@@ -55,7 +55,9 @@ class FitnessWorkoutCategoryType(enum.Enum):
 
 
 class FitnessWorkoutCategory(db.Model):  # type: ignore[name-defined]
-    workout_id: Mapped[int] = mapped_column(Integer, nullable=False, primary_key=True)
+    workout_id: Mapped[int] = mapped_column(
+        ForeignKey('workout.id', ondelete='CASCADE'), nullable=False, primary_key=True
+    )
     fitness_workout_category_type = db.Column(db.Enum(FitnessWorkoutCategoryType), nullable=False, primary_key=True)
 
 

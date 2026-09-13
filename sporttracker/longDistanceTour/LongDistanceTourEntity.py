@@ -9,14 +9,16 @@ from sporttracker.workout.WorkoutType import WorkoutType
 long_distance_tour_user_association = Table(
     'long_distance_tour_user_association',
     db.Model.metadata,
-    Column('long_distance_tour_id', ForeignKey('long_distance_tour.id')),
-    Column('user_id', ForeignKey('user.id')),
+    Column('long_distance_tour_id', ForeignKey('long_distance_tour.id', ondelete='CASCADE')),
+    Column('user_id', ForeignKey('user.id', ondelete='CASCADE')),
 )
 
 
 class LongDistanceTourPlannedTourAssociation(db.Model):  # type: ignore[name-defined]
-    long_distance_tour_id: Mapped[int] = mapped_column(ForeignKey('long_distance_tour.id'), primary_key=True)
-    planned_tour_id: Mapped[int] = mapped_column(ForeignKey('planned_tour.id'), primary_key=True)
+    long_distance_tour_id: Mapped[int] = mapped_column(
+        ForeignKey('long_distance_tour.id', ondelete='CASCADE'), primary_key=True
+    )
+    planned_tour_id: Mapped[int] = mapped_column(ForeignKey('planned_tour.id', ondelete='CASCADE'), primary_key=True)
     order: Mapped[int]
 
 
@@ -27,7 +29,7 @@ class LongDistanceTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     creation_date: Mapped[DateTime] = mapped_column(DateTime)
     last_edit_date: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     last_edit_user_id: Mapped[int] = mapped_column(Integer, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     shared_users: Mapped[list[User]] = relationship(secondary=long_distance_tour_user_association)
     linked_planned_tours: Mapped[list['LongDistanceTourPlannedTourAssociation']] = relationship(
         cascade='all,delete-orphan'
