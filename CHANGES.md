@@ -1,4 +1,4 @@
-# 2.1.2 - (XX.XX.XX)
+# 2.1.2 - (13.09.26)
 - fix: deletion of user now correctly deletes all associated data
 - fix: split JavaScript library bundle into separate bundles to only load libraries when they are needed
 - chore: update dependencies (#299)
