@@ -1,66 +1,60 @@
 # SportTracker
 
-Self-hosted workout data tracking server.
+SportTracker is a self-hosted server for recording and analyzing your workout data. All data stays on your own server, fully under your control.
 
 <img src="sporttracker/static/images/SportTracker.png" alt="drawing" width="150" height="150"/>
 
 ## Key Features
 
 ### Multi-user support
-Multiple users can track their workout data using different accounts.
+SportTracker supports multiple users. Each user registers with their own account, so everyone's workout data stays completely separate.
 
 ### Record your workout data
-Record the data of your workout sessions after you have finished them.
+Log your completed workouts and capture detailed information for every session.
 
 Supported workout types:
 
-Distance-based:
-- Biking
-- Running
-- Hiking
+- Distance-based: Biking, Running, Hiking
+- Duration-based: Fitness Workouts
 
-Duration-based:
-- Fitness Workouts
+Every workout comes with a rich set of standard input fields and if those are not enough, you can define custom fields per workout type. 
 
-You can fill in a lot of information for each workout session. If the pre-defined inputs are not enough, it is possible to set custom fields for each type of workout.
-
-You can share your workouts via public links.
+Workouts can also be shared via public links.
 
 ![](screenshots/tracks.png)
 
 ### Month goals
-Set custom month goals (either distance, duration or number of workouts).
-The current status of each month goal is visualized via progress bars.
+Set monthly goals for distance, duration or number of workouts and track your progress toward each goal on a live progress bar.
 
 ![](screenshots/goals.png)
 
 ### Heart rate data
-The SportTracker API allows you to add heart rate data for any workout.
+Add heart rate data to any workout via the SportTracker API and view it as a chart.
 ![](screenshots/heart_rate_chart.png)
 
 ### GPX tracks / Map
-A GPX recording can be attached to every distance-based workout. The GPX recordings can be viewed on a map.
+Attach a GPX recording to any distance-based workout and view your tracks on a map. Either all tracks in a single overview or one track at a time with additional details.
 
-View all gpx tracks on a map:
+View all GPX tracks on a map:
 ![](screenshots/map_all.jpg)
 
-View a single gpx track on a map, with additional information (e.g. track line is colored according to speed):
+View a single GPX track with additional details (e.g. the track line colored by speed):
 ![](screenshots/map_single.jpg)
 
 ### FIT tracks
-SportTracker also supports .fit files in addition to gpx. Those files will be stored in the `data` folder as well.  
-During upload of a .fit file for a workout or planned tour, a gpx file is automatically generated from the .fit file.
+SportTracker also supports Garmin `.fit` files in addition to GPX. When you upload a `.fit` file for a workout or a planned tour, a GPX file is automatically generated and both files are stored in the `data` folder.
 
-__NOTE__: The converted gpx file will only contain basic data like latitude, longitude, timestamps and altitude information. 
+__NOTE__: The generated GPX file only contains basic data like latitude, longitude, timestamps and altitude information.
 
-#### Use FIT file to prefill workout form
-SportTracker also allows to use .fit files to automatically prefill the workout form with data from the .fit file (e.g. duration, distance, etc.)
+#### Use FIT files to prefill the workout form
+You can also use a `.fit` file to automatically prefill the workout form, e.g. duration, distance, and other values are taken directly from the file.
 
 ### Tile Hunting
-Each user can optionally enable tile hunting.   
-If enabled an additional map is provided that shows all already visited tiles. A tile is considered visited if one or more gpx tracks cross it. By default, the size of a tile is equivalent to the size of an OpenStreetMap tile at zoom level 14 (This can be configured in the SportTracker settings file).
-Tile hunting can be useful to discover new areas in your surrounding or gain some motivation to explore new routes.
-The tile hunting map will also show the maximum square area that is completely covered by your visited tiles.
+Tile hunting divides the world map into roughly same-sized tiles and allows you to track which of those tiles you already visited.
+Each user can enable it optionally.
+If enabled, an additional map shows all tiles you have already visited. A tile is considered visited as soon as at least one GPX track crosses it. By default, a tile matches an OpenStreetMap tile at zoom level 14 (configurable in the SportTracker settings file).
+
+Tile hunting is a great way to discover new areas or to stay motivated to explore new routes. The map also highlights the largest square area that is completely covered by your visited tiles.
 
 Overall tile hunting map:
 ![](screenshots/tile_hunting_map.jpg)
@@ -78,19 +72,17 @@ This can be useful to add a custom overlay to OpenStreetMap based maps, e.g. htt
 __NOTE__: In your user settings, you can choose whether tiles that are visited by your already planned tours should be displayed (in grey) in the overlay.
 
 ### Tile Hunting heatmap
-In addition to the normal tile hunting map a heatmap is available.  
-Each tile will be colored according to the number of workouts that visited each tile.  
-You can click on the map to get the exact number of visits per tile.
+In addition to the normal tile hunting map a heatmap is available. Each tile is colored according to the number of workouts visiting it, and you can click on a tile to get the exact number of visits.
 
 Tile hunting heatmap:
 ![](screenshots/tile_hunting_heatmap.jpg)
 
 ### Charts
-Tracked data is visualized in charts, e.g.:
+Tracked data is visualized in charts, for example:
 - Distance per month
 - Average speed
 - Duration per workout
-- etc.
+- and more
 
 Example charts:
 ![](screenshots/chart_calendar.png)
@@ -98,7 +90,7 @@ Example charts:
 ![](screenshots/chart_distance_per_month.png)
 
 ### Annual Statistics
-Every year is summarized for each workout type.
+Each year is summarized for every workout type, giving you a quick overview of your progress over time.
 
 ![](screenshots/annual_statistics_1.png)
 ![](screenshots/annual_statistics_2.png)
@@ -117,7 +109,7 @@ SportTracker can be configured to send notifications via a ntfy server once a ma
 ![](screenshots/maintenance.png)
 
 ### Planned Tours
-Save your planned tours for each workout type (distance-based types) and view them on a map. Once you actually took a planned tour you can link the corresponding workout to the tour.
+Plan and save routes for distance-based workout types and view them on a map. Once you have actually completed a planned tour, you can link the corresponding workout to it.
 
 ![](screenshots/planned_tours.jpg)
 
@@ -126,25 +118,25 @@ Share planned tours with other SportTracker users or create public links.
 
 
 ### Long-distance Tours (tours with multiple stages)
-Add multiple planned tours as stages to a long-distance tour.  
-See your progress on how many stages you already completed and prepare your workouts with an overview map.
+Combine multiple planned tours into a long-distance tour and treat them as stages.  
+Track your progress on how many stages you have already completed and use the overview map to prepare for upcoming stages.
 
 ![](screenshots/long_distance_tour.jpg)
 
 #### Enable GPX preview Images
 
 SportTracker can show a preview image for each planned tour and long-distance tour. The images are not generated by SportTracker.  
-An external service can be used instead.
+An external service (GpxToImageRenderer) can be used instead.
 
-In order to activate gpx preview images, follow these steps:
+To activate GPX preview images, follow these steps:
 
-**1. Set up a GpxToImageRenderer instance https://github.com/deadlocker8/GpxToImageRenderer**
-- a) Build docker image: `docker build -t gpxtoimagerenderer .`
-- b) Run docker image with specific settings: `docker run -p 3000:3000 gpxtoimagerenderer`
-- Or if using docker compose see `docker-compose-with-gpxtoimagerenderer.yaml` and adjust according to the documentation in the section `How to run SportTracker via docker compose` .
+**1. Set up a GpxToImageRenderer instance** (https://github.com/deadlocker8/GpxToImageRenderer)
+- a) Build the docker image: `docker build -t gpxtoimagerenderer .`
+- b) Run the docker image: `docker run -p 3000:3000 gpxtoimagerenderer`
+- Or, if you use docker compose, see `docker-compose-with-gpxtoimagerenderer.yaml` and adjust it according to the section `How to run SportTracker via docker compose`.
 
-**2. Enable gpx preview images in your SportTracker settings.json
-Update the section `gpxPreviewImages` in your settings.json to contain the following values**
+**2. Enable GPX preview images in your SportTracker settings.json**
+Update the section `gpxPreviewImages` in your `settings.json` to contain the following values:
 ```json
 "gpxPreviewImages": {
     "enabled": false,
@@ -162,8 +154,8 @@ Update the section `gpxPreviewImages` in your settings.json to contain the follo
     "userAgent": "MyUserAgent"
 }
 ```
-Where http://localhost:3000 is the address and port number of your GpxToImageRenderer instance started in step 1.
-Where `MyUserAgent` is an arbitrary string identifying your GpxToImageRenderer instance. This is necessary to comply with the OpenStreetMap tile server usage policy.
+`http://localhost:3000` is the address and port of your GpxToImageRenderer instance from step 1.
+`MyUserAgent` is an arbitrary string identifying your GpxToImageRenderer instance — necessary to comply with the OpenStreetMap tile server usage policy.
 
 
 ### Notifications
@@ -174,27 +166,27 @@ SportTracker creates several notifications on certain events:
   - a planned tour is shared with you
   - a shared planned tour has been updated
   - your access to a shared planned tour has been revoked
-  - a shared planned has been deleted
+  - a shared planned tour has been deleted
 - long-distance tours:
   - a long-distance tour is shared with you
   - a shared long-distance tour has been updated
   - your access to a shared long-distance tour has been revoked
   - a shared long-distance tour has been deleted
-- the distance of a workout is longer than any other distance workout with the same type that was performed before
-- the duration of a fitness workout is longer than any other fitness workout that was performed before
+- a workout sets a new distance record for its workout type
+- a fitness workout sets a new duration record
 - a month goal is reached
 - the total distance of a month is greater than any previous month
 - the total duration of a month is greater than any previous month
 
-All those notifications will be shown in the notification center (reachable via the notification counter in the navbar).
+All notifications are shown in the notification center (reachable via the notification counter in the navbar).
 SportTracker can also be configured to send these notifications via a notification provider.
 
 Supported notification providers:
-- `ntfy` (More information about ntfy and how to set up your own ntfy server: https://github.com/binwiederhier/ntfy)
+- `ntfy` (more information about ntfy and how to set up your own ntfy server: https://github.com/binwiederhier/ntfy)
 
 ![](screenshots/notifications.jpg)
 
-For each notification provider you can choose, which notifications should be sent:
+For each notification provider, you can choose which notifications should be sent:
 ![](screenshots/notifications_settings.jpg)
 
 
@@ -211,8 +203,8 @@ The overview page shows statistics (latest, average, min and max weight), a char
 
 
 ## API
-SportTracker offers a basic REST-API for the most common use-cases.  
-The corresponding swagger-ui is available at `/api/v2/docs`
+SportTracker exposes a REST API for the most common use cases.  
+Interactive API documentation (Swagger UI) is available at `/api/v2/docs`.
 
 
 ## How to run SportTracker locally
