@@ -24,7 +24,7 @@
                     </div>
 
                     {% if chartTitle %}
-                        <h5 class="mt-3">{{ chartTitle }}</h5>
+                        <h5 class="mt-3">{{ chartTitle | e }}</h5>
                     {% endif %}
                     <div id="chartContainer"></div>
                 </section>
