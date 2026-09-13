@@ -165,7 +165,7 @@
         {% import 'map/mapMacros.jinja2' as mapMacros with context %}
         {{ mapMacros.mapLocale() }}
 
-        {{ macros.scripts() }}
+        {{ macros.scripts(leaflet=true) }}
         <script defer src="{{ url_for('static', filename='js/mapCommon.js') }}" type="text/javascript"></script>
         <script defer src="{{ url_for('static', filename='js/mapPlannedTour.js') }}" type="text/javascript"></script>
     </body>

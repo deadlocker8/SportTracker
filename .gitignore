@@ -10,6 +10,10 @@ tests/screenshots/
 **/static/js/libs/*.svg
 **/static/js/libs/*.png
 **/static/js/libs/*.gif
-**/static/js/libs/*libs.js
 **/static/js/libs/*.txt
 **/static/js/libs/main.css
+**/static/js/libs/*.js
+**/static/js/libs/bundles.json
+**/static/js/libs/libs*
+!**/static/js/libs/fontawesome.min.js
+!**/static/js/libs/fontawesome.solid.min.js

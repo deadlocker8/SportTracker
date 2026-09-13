@@ -108,7 +108,7 @@
         {% import 'map/mapMacros.jinja2' as mapMacros with context %}
         {{ mapMacros.mapLocale() }}
 
-        {{ macros.scripts() }}
+        {{ macros.scripts(plotly=true, leaflet=true) }}
         <script defer src="{{ url_for('static', filename='js/mapCommon.js') }}" type="text/javascript"></script>
         <script defer src="{{ url_for('static', filename='js/mapTileHunting.js') }}" type="text/javascript"></script>
         <script defer src="{{ url_for('static', filename='js/quickFilter.js') }}" type="text/javascript"></script>

@@ -7,17 +7,30 @@ const miniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
     mode: 'production',
-    entry: './src/js/libs.js',
+    entry: {
+        libs: './src/js/libs.js',
+        plotly: './src/js/plotly.js',
+        leaflet: './src/js/leaflet.js',
+    },
     output: {
-        filename: 'libs.js',
+        filename: '[name].js',
+        chunkFilename: '[id].js',
         path: path.resolve(__dirname, '../sporttracker/static/js/libs'),
+        clean: {
+            keep: /(^fontawesome|^swaggerui)/,
+        },
+    },
+    optimization: {
+        splitChunks: false,
     },
     plugins: [
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
         }),
-        new miniCssExtractPlugin()
+        new miniCssExtractPlugin({
+            filename: '[name].css',
+        }),
     ],
     resolve: {
         fallback: {

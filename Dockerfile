@@ -36,8 +36,10 @@ RUN apt-get update && apt-get install -y \
 COPY sporttracker/ /opt/SportTracker/sporttracker
 COPY CHANGES.md /opt/SportTracker/CHANGES.md
 COPY --from=poetry /opt/SportTracker/myvenv /opt/SportTracker/myvenv
-COPY --from=npm /opt/SportTracker/sporttracker/static/js/libs/main.css /opt/SportTracker/sporttracker/static/js/libs/main.css
 COPY --from=npm /opt/SportTracker/sporttracker/static/js/libs/libs.js /opt/SportTracker/sporttracker/static/js/libs/libs.js
+COPY --from=npm /opt/SportTracker/sporttracker/static/js/libs/libs.css /opt/SportTracker/sporttracker/static/js/libs/libs.css
+COPY --from=npm /opt/SportTracker/sporttracker/static/js/libs/plotly.js /opt/SportTracker/sporttracker/static/js/libs/plotly.js
+COPY --from=npm /opt/SportTracker/sporttracker/static/js/libs/leaflet.js /opt/SportTracker/sporttracker/static/js/libs/leaflet.js
 
 RUN adduser sporttracker && chown -R sporttracker:sporttracker /opt/SportTracker
 USER sporttracker

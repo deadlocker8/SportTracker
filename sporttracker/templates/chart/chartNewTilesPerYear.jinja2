@@ -27,7 +27,7 @@
             </section>
         </div>
 
-        {{ macros.scripts() }}
+        {{ macros.scripts(plotly=true) }}
         <script>
             const data = [
                 {% for entry in chartDataTotalNumberNewTilesPerYear %}

@@ -1,7 +1,7 @@
 {% macro header() -%}
     <meta charset="UTF-8"/>
 
-    <link href="{{ url_for('static', filename="js/libs/main.css") }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='js/libs/libs.css', v=versionName) }}" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename="css/sportTracker.css") }}"/>
 
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='touch_icon.png') }}">
@@ -9,11 +9,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 {%- endmacro %}
 
-{% macro scripts() -%}
-    <script src="{{ url_for('static', filename='js/libs/libs.js') }}" type="text/javascript"></script>
-    <script src="{{ url_for('static', filename='js/libs/fontawesome.solid.min.js') }}" type="text/javascript"></script>
-    <script src="{{ url_for('static', filename='js/libs/fontawesome.min.js') }}" type="text/javascript"></script>
-    <script defer src="{{ url_for('static', filename='js/sportTracker.js') }}" type="text/javascript"></script>
+{% macro scripts(plotly=false, leaflet=false) -%}
+    <script src="{{ url_for('static', filename='js/libs/libs.js', v=versionName) }}" type="text/javascript"></script>
+    {% if plotly %}
+        <script src="{{ url_for('static', filename='js/libs/plotly.js', v=versionName) }}" type="text/javascript"></script>
+    {% endif %}
+    {% if leaflet %}
+        <script src="{{ url_for('static', filename='js/libs/leaflet.js', v=versionName) }}" type="text/javascript"></script>
+    {% endif %}
+    <script src="{{ url_for('static', filename='js/libs/fontawesome.solid.min.js', v=versionName) }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/libs/fontawesome.min.js', v=versionName) }}" type="text/javascript"></script>
+    <script defer src="{{ url_for('static', filename='js/sportTracker.js', v=versionName) }}" type="text/javascript"></script>
 {%- endmacro %}
 
 
