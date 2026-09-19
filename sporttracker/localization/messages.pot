@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-04 21:20+0200\n"
+"POT-Creation-Date: 2026-09-27 21:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,8 +125,8 @@ msgid "Unknown user"
 msgstr ""
 
 #: ../authentication/AuthenticationBlueprint.py:36
-#: ../user/SettingsBlueprint.py:144 ../user/UserBlueprint.py:80
-#: ../user/UserBlueprint.py:140
+#: ../user/SettingsBlueprint.py:144 ../user/UserBlueprint.py:75
+#: ../user/UserBlueprint.py:135
 msgid "Password must not be empty"
 msgstr ""
 
@@ -413,7 +413,7 @@ msgstr ""
 msgid "Train"
 msgstr ""
 
-#: ../templates/about.jinja2:6 ../templates/macros.jinja2:200
+#: ../templates/about.jinja2:6 ../templates/macros.jinja2:206
 msgid "About"
 msgstr ""
 
@@ -438,23 +438,23 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: ../templates/macros.jinja2:55 ../templates/user/users.jinja2:6
+#: ../templates/macros.jinja2:61 ../templates/user/users.jinja2:6
 #: ../templates/user/users.jinja2:17
 msgid "Users"
 msgstr ""
 
-#: ../templates/macros.jinja2:68 ../templates/map/mapMultipleWorkouts.jinja2:6
+#: ../templates/macros.jinja2:74 ../templates/map/mapMultipleWorkouts.jinja2:6
 #: ../templates/plannedTour/plannedTours.jinja2:103
 #: ../templates/workout/workouts.jinja2:5
 #: ../templates/workout/workouts.jinja2:25
 msgid "Workouts"
 msgstr ""
 
-#: ../templates/macros.jinja2:76 ../templates/monthGoal/monthGoals.jinja2:6
+#: ../templates/macros.jinja2:82 ../templates/monthGoal/monthGoals.jinja2:6
 msgid "Goals"
 msgstr ""
 
-#: ../templates/macros.jinja2:83
+#: ../templates/macros.jinja2:89
 msgid "Analytics"
 msgstr ""
 
@@ -475,36 +475,36 @@ msgstr ""
 #: ../templates/chart/chartNewTilesPerYear.jinja2:16
 #: ../templates/chart/chartSpeedPerWorkoutChooser.jinja2:6
 #: ../templates/chart/chartSpeedPerWorkoutChooser.jinja2:18
-#: ../templates/macros.jinja2:91
+#: ../templates/macros.jinja2:97
 msgid "Charts"
 msgstr ""
 
 #: ../templates/achievement/achievements.jinja2:64
-#: ../templates/macros.jinja2:99
+#: ../templates/macros.jinja2:105
 msgid "Achievements"
 msgstr ""
 
 #: ../templates/chart/chartCalendar.jinja2:5
-#: ../templates/chart/chartCalendar.jinja2:16 ../templates/macros.jinja2:107
+#: ../templates/chart/chartCalendar.jinja2:16 ../templates/macros.jinja2:113
 msgid "Calendar"
 msgstr ""
 
 #: ../templates/achievement/annualAchievements.jinja2:137
-#: ../templates/macros.jinja2:115
+#: ../templates/macros.jinja2:121
 msgid "Annual Statistics"
 msgstr ""
 
-#: ../templates/macros.jinja2:125
+#: ../templates/macros.jinja2:131
 #: ../templates/map/mapMultipleWorkouts.jinja2:17
 #: ../templates/map/mapNotFound.jinja2:6
 msgid "Map"
 msgstr ""
 
-#: ../templates/macros.jinja2:132
+#: ../templates/macros.jinja2:138
 msgid "Tours"
 msgstr ""
 
-#: ../templates/macros.jinja2:140 ../templates/map/mapMultipleWorkouts.jinja2:9
+#: ../templates/macros.jinja2:146 ../templates/map/mapMultipleWorkouts.jinja2:9
 #: ../templates/plannedTour/plannedTours.jinja2:6
 #: ../templates/plannedTour/plannedTours.jinja2:19
 msgid "Planned Tours"
@@ -512,16 +512,16 @@ msgstr ""
 
 #: ../templates/longDistanceTour/longDistanceTours.jinja2:6
 #: ../templates/longDistanceTour/longDistanceTours.jinja2:18
-#: ../templates/macros.jinja2:148
+#: ../templates/macros.jinja2:154
 #: ../templates/plannedTour/plannedToursMacros.jinja2:193
 msgid "Long-distance Tours"
 msgstr ""
 
-#: ../templates/macros.jinja2:157
+#: ../templates/macros.jinja2:163
 msgid "More"
 msgstr ""
 
-#: ../templates/macros.jinja2:165 ../templates/maintenance/maintenance.jinja2:6
+#: ../templates/macros.jinja2:171 ../templates/maintenance/maintenance.jinja2:6
 #: ../templates/maintenance/maintenance.jinja2:20
 #: ../templates/maintenance/maintenances.jinja2:6
 #: ../templates/maintenance/maintenances.jinja2:20
@@ -529,30 +529,30 @@ msgid "Maintenance"
 msgstr ""
 
 #: ../templates/bodyWeight/bodyWeight.jinja2:80
-#: ../templates/bodyWeight/bodyWeight.jinja2:91 ../templates/macros.jinja2:173
+#: ../templates/bodyWeight/bodyWeight.jinja2:91 ../templates/macros.jinja2:179
 msgid "Body Weight"
 msgstr ""
 
-#: ../templates/macros.jinja2:183 ../templates/map/mapMacros.jinja2:134
+#: ../templates/macros.jinja2:189 ../templates/map/mapMacros.jinja2:134
 #: ../templates/map/mapTileHunting.jinja2:6
 #: ../templates/settings/settings.jinja2:50
 msgid "Tile Hunting"
 msgstr ""
 
-#: ../templates/macros.jinja2:191
+#: ../templates/macros.jinja2:197
 #: ../templates/map/mapTileHuntingHeatmap.jinja2:6
 msgid "Tile Hunting Heatmap"
 msgstr ""
 
-#: ../templates/macros.jinja2:209
+#: ../templates/macros.jinja2:215
 msgid "Search"
 msgstr ""
 
-#: ../templates/macros.jinja2:224
+#: ../templates/macros.jinja2:230
 msgid "Login"
 msgstr ""
 
-#: ../templates/macros.jinja2:252
+#: ../templates/macros.jinja2:258
 #: ../templates/maintenance/maintenanceForm.jinja2:126
 #: ../templates/settings/settings.jinja2:390
 #: ../templates/settings/settings.jinja2:425
@@ -561,22 +561,22 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: ../templates/macros.jinja2:261
+#: ../templates/macros.jinja2:267
 msgid "Logout"
 msgstr ""
 
-#: ../templates/macros.jinja2:318 ../templates/settings/settings.jinja2:351
+#: ../templates/macros.jinja2:324 ../templates/settings/settings.jinja2:351
 #: ../templates/workout/workoutChooser.jinja2:86
 #: ../templates/workout/workoutMacros.jinja2:734
 #: ../templates/workout/workoutMacros.jinja2:756
 msgid "Cancel"
 msgstr ""
 
-#: ../templates/macros.jinja2:340
+#: ../templates/macros.jinja2:346
 msgid "Save"
 msgstr ""
 
-#: ../templates/macros.jinja2:340
+#: ../templates/macros.jinja2:346
 msgid "Saving..."
 msgstr ""
 
@@ -1583,6 +1583,10 @@ msgstr ""
 msgid "Month Goals"
 msgstr ""
 
+#: ../templates/notification/notifications.jinja2:34
+msgid "Open"
+msgstr ""
+
 #: ../templates/notification/notifications.jinja2:78
 #: ../templates/notification/notifications.jinja2:89
 #: ../templates/settings/settings.jinja2:363
@@ -1614,7 +1618,7 @@ msgstr ""
 #: ../templates/plannedTour/plannedTourForm.jinja2:30
 msgid ""
 "Do you really want to delete this planned tour?<br><br>Caution: This will"
-" also unlink this planned tour from all assoicated long-distance tours."
+" also unlink this planned tour from all associated long-distance tours."
 msgstr ""
 
 #: ../templates/plannedTour/plannedTourForm.jinja2:77
@@ -2038,8 +2042,8 @@ msgstr ""
 msgid "Float"
 msgstr ""
 
-#: ../user/SettingsBlueprint.py:157 ../user/UserBlueprint.py:85
-#: ../user/UserBlueprint.py:148
+#: ../user/SettingsBlueprint.py:157 ../user/UserBlueprint.py:80
+#: ../user/UserBlueprint.py:143
 msgid "Password must be at least {0} characters long"
 msgstr ""
 
@@ -2073,7 +2077,7 @@ msgstr ""
 msgid "The specified participant name \"{0}\" already exists."
 msgstr ""
 
-#: ../user/UserBlueprint.py:76 ../user/UserBlueprint.py:132
+#: ../user/UserBlueprint.py:71 ../user/UserBlueprint.py:127
 msgid "Username \"{0}\" already exists"
 msgstr ""
 
