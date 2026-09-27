@@ -218,6 +218,9 @@ def construct_blueprint(
             maximumDistance,
             request.form.get('plannedTourFilterLongDistanceToursInclude', 'off').strip().lower() == 'on',
             request.form.get('plannedTourFilterLongDistanceToursExclude', 'off').strip().lower() == 'on',
+            request.form.get('plannedTourFilterSharedOwnInclude', 'off').strip().lower() == 'on',
+            request.form.get('plannedTourFilterSharedWithOthersInclude', 'off').strip().lower() == 'on',
+            request.form.get('plannedTourFilterSharedByOthersInclude', 'off').strip().lower() == 'on',
         )
         db.session.commit()
 

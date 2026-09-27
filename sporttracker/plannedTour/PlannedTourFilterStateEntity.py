@@ -20,6 +20,9 @@ class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
     maximum_distance: Mapped[Integer] = mapped_column(Integer, nullable=True)
     is_long_distance_tours_include_selected: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
     is_long_distance_tours_exclude_selected: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
+    is_own_tours_active: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
+    is_shared_with_others_active: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
+    is_shared_by_others_active: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
 
     def __repr__(self):
         return (
@@ -34,7 +37,10 @@ class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
             f'minimum_distance: {self.minimum_distance}, '
             f'maximum_distance: {self.maximum_distance}, '
             f'is_long_distance_tours_include_selected: {self.is_long_distance_tours_include_selected}, '
-            f'is_long_distance_tours_exclude_selected: {self.is_long_distance_tours_exclude_selected})'
+            f'is_long_distance_tours_exclude_selected: {self.is_long_distance_tours_exclude_selected}, '
+            f'is_own_tours_active: {self.is_own_tours_active}, '
+            f'is_shared_with_others_active: {self.is_shared_with_others_active}, '
+            f'is_shared_by_others_active: {self.is_shared_by_others_active})'
         )
 
     def get_selected_arrival_methods(self) -> list[TravelType]:
@@ -80,6 +86,9 @@ class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
         maximum_distance: int | None = None,
         is_long_distance_tours_include_selected: bool = True,
         is_long_distance_tours_exclude_selected: bool = True,
+        is_own_tours_active: bool = True,
+        is_shared_with_others_active: bool = True,
+        is_shared_by_others_active: bool = True,
     ):
         self.is_done_selected = is_done_selected  # type: ignore[assignment]
         self.is_todo_selected = is_todo_selected  # type: ignore[assignment]
@@ -91,6 +100,9 @@ class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
         self.maximum_distance = maximum_distance  # type: ignore[assignment]
         self.is_long_distance_tours_include_selected = is_long_distance_tours_include_selected  # type: ignore[assignment]
         self.is_long_distance_tours_exclude_selected = is_long_distance_tours_exclude_selected  # type: ignore[assignment]
+        self.is_own_tours_active = is_own_tours_active  # type: ignore[assignment]
+        self.is_shared_with_others_active = is_shared_with_others_active  # type: ignore[assignment]
+        self.is_shared_by_others_active = is_shared_by_others_active  # type: ignore[assignment]
 
     def reset(self) -> None:
         self.update(
@@ -102,6 +114,9 @@ class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
             None,
             None,
             None,
+            True,
+            True,
+            True,
             True,
             True,
         )
@@ -150,6 +165,15 @@ class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
             return True
 
         if not self.is_long_distance_tours_exclude_selected:
+            return True
+
+        if not self.is_own_tours_active:
+            return True
+
+        if not self.is_shared_with_others_active:
+            return True
+
+        if not self.is_shared_by_others_active:
             return True
 
         return self.name_filter is not None

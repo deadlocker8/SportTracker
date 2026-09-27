@@ -17,6 +17,9 @@ class TestPlannedTourFilterState:
             32,
             False,
             False,
+            False,
+            False,
+            False,
         )
 
         plannedTourFilterState.reset()
@@ -31,6 +34,9 @@ class TestPlannedTourFilterState:
         assert plannedTourFilterState.maximum_distance is None
         assert plannedTourFilterState.is_long_distance_tours_include_selected is True
         assert plannedTourFilterState.is_long_distance_tours_exclude_selected is True
+        assert plannedTourFilterState.is_own_tours_active is True
+        assert plannedTourFilterState.is_shared_with_others_active is True
+        assert plannedTourFilterState.is_shared_by_others_active is True
 
     def test_get_selected_arrival_methods(self) -> None:
         plannedTourFilterState = PlannedTourFilterState()

@@ -14,8 +14,8 @@ import natsort
 from flask_login import current_user
 from natsort import natsorted
 from pydantic import BaseModel
-from sqlalchemy import asc, func, tuple_
-from sqlalchemy.sql import or_
+from sqlalchemy import ColumnElement, asc, func, tuple_
+from sqlalchemy.sql import and_, or_
 from werkzeug.datastructures import FileStorage
 
 from sporttracker import Constants
@@ -387,13 +387,12 @@ class PlannedTourService:
     def get_planned_tours_filtered(
         workoutTypes: list[WorkoutType], plannedTourFilterState: PlannedTourFilterState
     ) -> list[PlannedTour]:
+        shareStatusFilters = PlannedTourService.__get_share_status_filter_predicates(plannedTourFilterState)
+        if not shareStatusFilters:
+            return []
+
         plannedToursQuery = (
-            PlannedTour.query.filter(
-                or_(
-                    PlannedTour.user_id == current_user.id,
-                    PlannedTour.shared_users.any(id=current_user.id),
-                )
-            )
+            PlannedTour.query.filter(or_(*shareStatusFilters))
             .filter(PlannedTour.type.in_(workoutTypes))
             .filter(PlannedTour.arrival_method.in_(plannedTourFilterState.get_selected_arrival_methods()))
             .filter(PlannedTour.departure_method.in_(plannedTourFilterState.get_selected_departure_methods()))
@@ -425,6 +424,25 @@ class PlannedTourService:
         )
 
         return natsorted(plannedTours, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
+
+    @staticmethod
+    def __get_share_status_filter_predicates(
+        plannedTourFilterState: PlannedTourFilterState,
+    ) -> list[ColumnElement[bool]]:
+        shareStatusFilters: list[ColumnElement[bool]] = []
+
+        if plannedTourFilterState.is_own_tours_active:
+            shareStatusFilters.append(and_(PlannedTour.user_id == current_user.id, ~PlannedTour.shared_users.any()))
+
+        if plannedTourFilterState.is_shared_with_others_active:
+            shareStatusFilters.append(and_(PlannedTour.user_id == current_user.id, PlannedTour.shared_users.any()))
+
+        if plannedTourFilterState.is_shared_by_others_active:
+            shareStatusFilters.append(
+                and_(PlannedTour.user_id != current_user.id, PlannedTour.shared_users.any(id=current_user.id))
+            )
+
+        return shareStatusFilters
 
     @staticmethod
     def __filter_by_distance(

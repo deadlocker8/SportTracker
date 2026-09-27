@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-27 21:02+0200\n"
+"POT-Creation-Date: 2026-09-27 21:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1047,19 +1047,19 @@ msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:121
 #: ../templates/map/mapMacros.jinja2:226
-#: ../templates/plannedTour/plannedToursMacros.jinja2:224
+#: ../templates/plannedTour/plannedToursMacros.jinja2:261
 msgid "Reset"
 msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:123
 #: ../templates/map/mapMacros.jinja2:228
-#: ../templates/plannedTour/plannedToursMacros.jinja2:226
+#: ../templates/plannedTour/plannedToursMacros.jinja2:263
 msgid "Apply"
 msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:123
 #: ../templates/map/mapMacros.jinja2:228
-#: ../templates/plannedTour/plannedToursMacros.jinja2:226
+#: ../templates/plannedTour/plannedToursMacros.jinja2:263
 msgid "Applying..."
 msgstr ""
 
@@ -1330,7 +1330,7 @@ msgstr ""
 #: ../templates/map/mapPlannedTour.jinja2:54
 #: ../templates/map/mapPlannedTour.jinja2:104
 #: ../templates/plannedTour/plannedTourForm.jinja2:89
-#: ../templates/plannedTour/plannedToursMacros.jinja2:246
+#: ../templates/plannedTour/plannedToursMacros.jinja2:283
 msgid "Direction"
 msgstr ""
 
@@ -1687,11 +1687,27 @@ msgstr ""
 msgid "Not part of long-distance tour"
 msgstr ""
 
+#: ../templates/plannedTour/plannedToursMacros.jinja2:221
+msgid "Shared Tours"
+msgstr ""
+
+#: ../templates/plannedTour/plannedToursMacros.jinja2:231
+msgid "private tours"
+msgstr ""
+
 #: ../templates/plannedTour/plannedToursMacros.jinja2:240
+msgid "tours shared with other users"
+msgstr ""
+
+#: ../templates/plannedTour/plannedToursMacros.jinja2:249
+msgid "tours shared by other users"
+msgstr ""
+
+#: ../templates/plannedTour/plannedToursMacros.jinja2:277
 msgid "Arrival Method"
 msgstr ""
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:243
+#: ../templates/plannedTour/plannedToursMacros.jinja2:280
 msgid "Departure Method"
 msgstr ""
 
