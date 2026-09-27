@@ -1,3 +1,6 @@
+# 2.2.0 - (XX.XX.XX)
+- add: planned tours can now also be filtered by the fact if they are private, shared with other users or shared by other users (#301) 
+
 # 2.1.2 - (13.09.26)
 - fix: deletion of user now correctly deletes all associated data
 - fix: split JavaScript library bundle into separate bundles to only load libraries when they are needed
