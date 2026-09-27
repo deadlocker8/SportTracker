@@ -221,13 +221,13 @@
     <form role="form" action="{{ url_for('quickFilter.updateFilter') }}" method="post">
         <input type="hidden" name="redirectUrl" value="{{ redirectUrl }}"/>
 
+        <div class="position-sticky top-0 z-1 bg-dark d-flex align-items-center justify-content-center gap-2 py-3">
+            <a href="{{ url_for('quickFilter.resetFilter', redirectUrl=redirectUrl) }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap ">{{ gettext('Reset') }}</a>
+
+            {{ macros.buttonSubmitAutomaticallyDisabled(text=gettext('Apply'), disabledText=gettext('Applying...'), icon=none, classes='btn-sm btn-primary text-nowrap', id='buttonApplyFilter') }}
+        </div>
+
         <div class="my-3 d-flex flex-column align-items-start justify-content-start gap-3 overflow-x-auto">
-            <div class="d-flex align-items-center mx-auto gap-2 mb-2">
-                <a href="{{ url_for('quickFilter.resetFilter', redirectUrl=redirectUrl) }}" id="buttonResetFilter" class="btn btn-sm btn-outline-danger text-nowrap ">{{ gettext('Reset') }}</a>
-
-                {{ macros.buttonSubmitAutomaticallyDisabled(text=gettext('Apply'), disabledText=gettext('Applying...'), icon=none, classes='btn-sm btn-primary text-nowrap', id='buttonApplyFilter') }}
-            </div>
-
             <hr class="w-100 my-0"/>
 
             <div class="btn-group w-100" role="group">
