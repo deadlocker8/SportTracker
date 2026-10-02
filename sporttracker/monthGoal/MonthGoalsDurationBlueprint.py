@@ -81,7 +81,7 @@ def construct_blueprint():
         db.session.add(monthGoal)
         db.session.commit()
 
-        return redirect(url_for('monthGoals.listMonthGoals'))
+        return redirect(url_for('monthGoals.listMonthGoals', year=monthGoal.year))
 
     @monthGoalsDuration.route('/addMultiple')
     @login_required
@@ -125,7 +125,7 @@ def construct_blueprint():
         db.session.add_all(monthGoals)
         db.session.commit()
 
-        return redirect(url_for('monthGoals.listMonthGoals'))
+        return redirect(url_for('monthGoals.listMonthGoals', year=form.start_year))
 
     @monthGoalsDuration.route('/edit/<int:goal_id>')
     @login_required
@@ -166,7 +166,7 @@ def construct_blueprint():
         LOGGER.debug(f'Updated month goal of type "duration": {monthGoal}')
         db.session.commit()
 
-        return redirect(url_for('monthGoals.listMonthGoals'))
+        return redirect(url_for('monthGoals.listMonthGoals', year=monthGoal.year))
 
     @monthGoalsDuration.route('/delete/<int:goal_id>')
     @login_required
@@ -176,10 +176,12 @@ def construct_blueprint():
         if monthGoal is None:
             abort(404)
 
+        year = monthGoal.year
+
         LOGGER.debug(f'Deleted month goal of type "duration": {monthGoal}')
         db.session.delete(monthGoal)
         db.session.commit()
 
-        return redirect(url_for('monthGoals.listMonthGoals'))
+        return redirect(url_for('monthGoals.listMonthGoals', year=year))
 
     return monthGoalsDuration

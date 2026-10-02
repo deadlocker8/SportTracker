@@ -171,3 +171,100 @@ class TestMonthGoalService:
             )
             assert len(completedGoals) == 1
             assert completedGoals[0].id == goalCount.id
+
+    def test_get_available_years_no_goals(self, app):
+        with app.test_request_context():
+            user_1 = self.__get_user_by_id(2)
+            currentYear = datetime.now().year
+
+            assert MonthGoalService.get_available_years(user_1.id) == [currentYear]  # type:ignore[union-attr]
+
+    def test_get_available_years(self, app):
+        with app.test_request_context():
+            user_1 = self.__get_user_by_id(2)
+            user_2 = self.__get_user_by_id(3)
+            currentYear = datetime.now().year
+
+            db.session.add(
+                MonthGoalDistance(
+                    type=WorkoutType.BIKING,
+                    year=currentYear - 2,
+                    month=8,
+                    user_id=user_1.id,  # type:ignore[union-attr]
+                    distance_minimum=50 * 1000,
+                    distance_perfect=100 * 1000,
+                )
+            )
+            db.session.add(
+                MonthGoalCount(
+                    type=WorkoutType.BIKING,
+                    year=currentYear,
+                    month=8,
+                    user_id=user_1.id,  # type:ignore[union-attr]
+                    count_minimum=1,
+                    count_perfect=1,
+                )
+            )
+            db.session.add(
+                MonthGoalDuration(
+                    type=WorkoutType.BIKING,
+                    year=currentYear - 1,
+                    month=9,
+                    user_id=user_2.id,  # type:ignore[union-attr]
+                    duration_minimum=3000,
+                    duration_perfect=10000,
+                )
+            )
+            db.session.commit()
+
+            # years of all goal types are considered and gaps up to the current year are filled
+            assert MonthGoalService.get_available_years(user_1.id) == [  # type:ignore[union-attr]
+                currentYear - 2,
+                currentYear - 1,
+                currentYear,
+            ]
+            # goals of other users are ignored
+            assert MonthGoalService.get_available_years(user_2.id) == [  # type:ignore[union-attr]
+                currentYear - 1,
+                currentYear,
+            ]
+
+    def test_get_available_years_with_goals_in_the_future(self, app):
+        with app.test_request_context():
+            user_1 = self.__get_user_by_id(2)
+            currentYear = datetime.now().year
+
+            db.session.add(
+                MonthGoalDistance(
+                    type=WorkoutType.BIKING,
+                    year=currentYear + 2,
+                    month=8,
+                    user_id=user_1.id,  # type:ignore[union-attr]
+                    distance_minimum=50 * 1000,
+                    distance_perfect=100 * 1000,
+                )
+            )
+            db.session.commit()
+
+            # a goal far in the future is the only available year
+            assert MonthGoalService.get_available_years(user_1.id) == [currentYear + 2]  # type:ignore[union-attr]
+
+            db.session.add(
+                MonthGoalCount(
+                    type=WorkoutType.BIKING,
+                    year=currentYear - 1,
+                    month=8,
+                    user_id=user_1.id,  # type:ignore[union-attr]
+                    count_minimum=1,
+                    count_perfect=1,
+                )
+            )
+            db.session.commit()
+
+            # goal years before and after the current year are both kept
+            assert MonthGoalService.get_available_years(user_1.id) == [  # type:ignore[union-attr]
+                currentYear - 1,
+                currentYear,
+                currentYear + 1,
+                currentYear + 2,
+            ]

@@ -22,23 +22,32 @@
                     </div>
                 </div>
 
-                {{ macros.workout_type_quick_filter(url_for('monthGoals.listMonthGoals'), false) }}
+                {{ macros.workout_type_quick_filter(url_for('monthGoals.listMonthGoals', year=selectedYear), false) }}
 
-                {% for year, goals in goalsByYear.items() %}
-                    <h3 class="mt-4">{{ year }}</h3>
-                    {% for goal in goals %}
-                        {% set goalSummary = goal.get_summary() %}
-                        {% if goalSummary.type_name == 'DISTANCE' %}
-                            {{ monthGoalsMacros.render_month_goal_distance_summary_card_large(goalSummary) }}
-                            {{ monthGoalsMacros.render_month_goal_distance_summary_card_small(goalSummary) }}
-                        {% elif goalSummary.type_name == 'COUNT' %}
-                            {{ monthGoalsMacros.render_month_goal_count_summary_card_large(goalSummary) }}
-                            {{ monthGoalsMacros.render_month_goal_count_summary_card_small(goalSummary) }}
-                        {% elif goalSummary.type_name == 'DURATION' %}
-                            {{ monthGoalsMacros.render_month_goal_duration_summary_card_large(goalSummary) }}
-                            {{ monthGoalsMacros.render_month_goal_duration_summary_card_small(goalSummary) }}
-                        {% endif %}
-                    {% endfor %}
+                <div class="row mb-3 mt-4">
+                    <div class="col col-12 mx-auto">
+                        <div class="d-flex justify-content-center overflow-x-auto">
+                            {% for year in availableYears %}
+                                <a href="{{ url_for('monthGoals.listMonthGoals', year=year) }}" class="btn btn-primary btn-sm me-1 {% if year==selectedYear %}btn-secondary{% endif %}">
+                                    <span class=" text-light">{{ year }}</span>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                {% for goal in goals %}
+                    {% set goalSummary = goal.get_summary() %}
+                    {% if goalSummary.type_name == 'DISTANCE' %}
+                        {{ monthGoalsMacros.render_month_goal_distance_summary_card_large(goalSummary) }}
+                        {{ monthGoalsMacros.render_month_goal_distance_summary_card_small(goalSummary) }}
+                    {% elif goalSummary.type_name == 'COUNT' %}
+                        {{ monthGoalsMacros.render_month_goal_count_summary_card_large(goalSummary) }}
+                        {{ monthGoalsMacros.render_month_goal_count_summary_card_small(goalSummary) }}
+                    {% elif goalSummary.type_name == 'DURATION' %}
+                        {{ monthGoalsMacros.render_month_goal_duration_summary_card_large(goalSummary) }}
+                        {{ monthGoalsMacros.render_month_goal_duration_summary_card_small(goalSummary) }}
+                    {% endif %}
                 {% endfor %}
             </section>
         </div>

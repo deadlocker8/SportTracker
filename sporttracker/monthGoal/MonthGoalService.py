@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sporttracker.monthGoal.MonthGoalEntity import (
     MonthGoalCount,
     MonthGoalDistance,
@@ -91,3 +93,23 @@ class MonthGoalService:
             if g.type_name == month_goal_summary.type_name  # type: ignore[attr-defined]
         ]
         return month_goal_summary.id in previousCompletedIdsWithSameType
+
+    @staticmethod
+    def get_available_years(user_id: int) -> list[int]:
+        years = set()
+        for goal in [MonthGoalDistance, MonthGoalCount, MonthGoalDuration]:
+            years.update(MonthGoalService.__get_years(goal, user_id))
+
+        currentYear = datetime.now().year
+
+        if not years:
+            return [currentYear]
+
+        # gaps are filled up to the current year, goal years in the future are kept
+        return list(range(min(years), max(max(years), currentYear) + 1))
+
+    @staticmethod
+    def __get_years(goal, user_id: int) -> list[int]:
+        rows = goal.query.with_entities(goal.year).join(User).filter(User.id == user_id).distinct().all()
+
+        return [int(row[0]) for row in rows]

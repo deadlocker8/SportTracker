@@ -1,10 +1,15 @@
+from datetime import datetime
+
 import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from sporttracker.user.UserEntity import Language, create_user
+from sporttracker.db import db
+from sporttracker.monthGoal.MonthGoalEntity import MonthGoalDistance
+from sporttracker.user.UserEntity import Language, User, create_user
+from sporttracker.workout.WorkoutType import WorkoutType
 from tests.SeleniumTestBaseClass import SeleniumTestBaseClass
 from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME
 
@@ -16,10 +21,73 @@ def prepare_test_data(app):
 
 
 class TestMonthGoals(SeleniumTestBaseClass):
+    @staticmethod
+    def __create_distance_goals(app, years: list[int]):
+        with app.app_context():
+            user = User.query.filter(User.username == TEST_USERNAME).first()
+
+            if user is None:
+                raise ValueError('Could not find test user')
+
+            for year in years:
+                db.session.add(
+                    MonthGoalDistance(
+                        type=WorkoutType.BIKING,
+                        year=year,
+                        month=1,
+                        distance_minimum=100 * 1000,
+                        distance_perfect=200 * 1000,
+                        user_id=user.id,
+                    )
+                )
+
+            db.session.commit()
+
+    @staticmethod
+    def __get_selected_year(selenium: WebDriver) -> str:
+        selectedYears = selenium.find_elements(By.CSS_SELECTOR, 'section a.btn-secondary')
+        assert len(selectedYears) == 1
+        return selectedYears[0].text.strip()
+
+    @staticmethod
+    def __click_year(selenium: WebDriver, year: int):
+        for yearLink in selenium.find_elements(By.CSS_SELECTOR, 'section a.btn'):
+            if yearLink.text.strip() == str(year):
+                yearLink.click()
+                return
+
+        raise ValueError(f'Could not find year button for {year}')
+
     def test_month_goals_no_goals(self, server, selenium: WebDriver):
         self.login(selenium)
         selenium.get(self.build_url('/goals'))
         assert 'Month Goals' in selenium.find_element(By.CLASS_NAME, 'headline-text').text
+
+    def test_month_goals_without_year_shows_current_year(self, server, selenium: WebDriver, app):
+        currentYear = datetime.now().year
+        self.__create_distance_goals(app, [currentYear - 1])
+        self.login(selenium)
+        selenium.get(self.build_url('/goals'))
+
+        # the year selection is not persisted, so opening the page always starts with the current year
+        assert selenium.current_url.endswith('/goals/')
+        assert self.__get_selected_year(selenium) == str(currentYear)
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 0
+
+    def test_month_goals_year_selector_shows_only_goals_of_selected_year(self, server, selenium: WebDriver, app):
+        currentYear = datetime.now().year
+        self.__create_distance_goals(app, [currentYear - 1, currentYear])
+        self.login(selenium)
+        selenium.get(self.build_url(f'/goals/{currentYear}'))
+
+        assert self.__get_selected_year(selenium) == str(currentYear)
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 1
+
+        self.__click_year(selenium, currentYear - 1)
+
+        assert selenium.current_url.endswith(f'/goals/{currentYear - 1}')
+        assert self.__get_selected_year(selenium) == str(currentYear - 1)
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 1
 
 
 class TestMonthGoalsDistance(SeleniumTestBaseClass):
@@ -81,7 +149,8 @@ class TestMonthGoalsDistance(SeleniumTestBaseClass):
             expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Month Goals')
         )
 
-        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 4
+        assert selenium.current_url.endswith('/goals/2023')
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 2
 
     def test_add_multiple_distance_goals_all_empty(self, server, selenium: WebDriver):
         self.__open_form(selenium, 1, 'Multiple New Distance Month Goals')
@@ -148,7 +217,8 @@ class TestMonthGoalsCount(SeleniumTestBaseClass):
             expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Month Goals')
         )
 
-        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 4
+        assert selenium.current_url.endswith('/goals/2023')
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 2
 
     def test_add_multiple_count_goals_all_empty(self, server, selenium: WebDriver):
         self.__open_form(selenium, 3, 'Multiple New Count Month Goals')
@@ -229,7 +299,8 @@ class TestMonthGoalsDuration(SeleniumTestBaseClass):
             expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Month Goals')
         )
 
-        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 4
+        assert selenium.current_url.endswith('/goals/2023')
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 2
 
     def test_add_multiple_duration_goals_all_empty(self, server, selenium: WebDriver):
         self.__open_form(selenium, 5, 'Multiple New Duration Month Goals')
