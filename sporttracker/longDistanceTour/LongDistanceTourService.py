@@ -15,7 +15,7 @@ import natsort
 from flask import request
 from flask_login import current_user
 from natsort import natsorted
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from sqlalchemy.sql import or_
 
 from sporttracker import Constants
@@ -38,6 +38,13 @@ class LongDistanceTourFormModel(BaseModel):
     type: str
     sharedUsers: list[str] | str | None = None
     linkedPlannedTours: list[str] | str | None = None
+
+    @field_validator('name', mode='before')
+    @classmethod
+    def name_strip(cls, v: Any) -> Any:
+        if isinstance(v, str):
+            return v.strip()
+        return v
 
 
 class LongDistanceTourService:

@@ -1,5 +1,6 @@
 import logging
 from dataclasses import dataclass
+from typing import Any
 
 from flask import Blueprint, abort, redirect, render_template, request, url_for
 from flask_babel import gettext
@@ -40,6 +41,13 @@ class MaintenanceFormModel(BaseModel):
     reminder_limit: int | None = None
     custom_field_id: int | None = None
     custom_field_value: str | None = None
+
+    @field_validator('description', mode='before')
+    @classmethod
+    def description_strip(cls, v: Any) -> Any:
+        if isinstance(v, str):
+            return v.strip()
+        return v
 
     @field_validator(*['custom_field_id'], mode='before')
     def custom_field_id_check(cls, value: str, info) -> str | None:

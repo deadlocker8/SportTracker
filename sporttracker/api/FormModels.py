@@ -1,6 +1,7 @@
 from datetime import datetime
+from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from sporttracker.helpers import DateFormats
 
@@ -42,6 +43,13 @@ class DistanceWorkoutApiFormModel(BaseModel):
     planned_tour_id: int | None = None
     custom_fields: dict[str, str | int | float] | None = None
 
+    @field_validator('name', mode='before')
+    @classmethod
+    def name_strip(cls, v: Any) -> Any:
+        if isinstance(v, str):
+            return v.strip()
+        return v
+
     def calculate_start_time(self) -> datetime:
         return datetime.strptime(f'{self.date} {self.start_time}', DateFormats.DATE_FORMAT_DATE_TIME)
 
@@ -57,6 +65,13 @@ class FitnessWorkoutApiFormModel(BaseModel):
     fitness_workout_categories: list[str] | None = None
     average_heart_rate: int | None = None
     custom_fields: dict[str, str | int | float] | None = None
+
+    @field_validator('name', mode='before')
+    @classmethod
+    def name_strip(cls, v: Any) -> Any:
+        if isinstance(v, str):
+            return v.strip()
+        return v
 
     def calculate_start_time(self) -> datetime:
         return datetime.strptime(f'{self.date} {self.start_time}', DateFormats.DATE_FORMAT_DATE_TIME)

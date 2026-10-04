@@ -13,7 +13,7 @@ from operator import attrgetter
 import natsort
 from flask_login import current_user
 from natsort import natsorted
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from sqlalchemy import ColumnElement, asc, func, tuple_
 from sqlalchemy.sql import and_, or_
 from werkzeug.datastructures import FileStorage
@@ -129,6 +129,13 @@ class PlannedTourFormModel(BaseModel):
     sharedUsers: list[str] | str | None = None
     share_code: str | None = None
 
+    @field_validator('name', mode='before')
+    @classmethod
+    def name_strip(cls, v: Any) -> Any:
+        if isinstance(v, str):
+            return v.strip()
+        return v
+
 
 class PlannedTourEditFormModel(BaseModel):
     name: str
@@ -142,6 +149,13 @@ class PlannedTourEditFormModel(BaseModel):
     share_code: str | None = None
     gpxFileName: str | None = None
     hasFitFile: bool = False
+
+    @field_validator('name', mode='before')
+    @classmethod
+    def name_strip(cls, v: Any) -> Any:
+        if isinstance(v, str):
+            return v.strip()
+        return v
 
 
 class PlannedTourService:

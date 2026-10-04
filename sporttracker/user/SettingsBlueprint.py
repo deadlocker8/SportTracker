@@ -1,5 +1,6 @@
 import logging
 import uuid
+from typing import Any
 
 from flask import Blueprint, abort, flash, jsonify, redirect, render_template, url_for
 from flask_babel import gettext
@@ -100,6 +101,13 @@ class CustomWorkoutFieldFormModel(BaseModel):
 
 class ParticipantFormModel(BaseModel):
     name: str
+
+    @field_validator('name', mode='before')
+    @classmethod
+    def name_strip(cls, v: Any) -> Any:
+        if isinstance(v, str):
+            return v.strip()
+        return v
 
 
 class EditNtfySettingsModel(BaseModel):
