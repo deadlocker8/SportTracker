@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-27 21:36+0200\n"
-"PO-Revision-Date: 2026-09-27 21:36+0200\n"
+"POT-Creation-Date: 2026-10-10 00:02+0200\n"
+"PO-Revision-Date: 2026-10-10 00:01+0200\n"
 "Last-Translator: \n"
-"Language-Team: de <LL@li.org>\n"
 "Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Generated-By: Babel 2.16.0\n"
-"X-Generator: Poedit 3.9\n"
 
 #: ../achievement/AchievementBlueprint.py:52
 #: ../achievement/AchievementBlueprint.py:137
@@ -28,12 +27,12 @@ msgstr "Monatsziele in Folge"
 #: ../achievement/AchievementBlueprint.py:138
 msgid ""
 "You have achieved all your monthly goals for <span class=\"fw-"
-"bold\">{currentStreak}</span> months in a row!<br>(Best: <span class=\"fw-"
-"bold\">{maxStreak}</span>)"
+"bold\">{currentStreak}</span> months in a row!<br>(Best: <span class"
+"=\"fw-bold\">{maxStreak}</span>)"
 msgstr ""
-"Du hast alle deine monatlichen Ziele für <span class=\"fw-bold\">{currentStreak}"
-"</span> Monate in Folge erreicht!<br>(Beste: <span class=\"fw-bold\">{maxStreak}"
-"</span>)"
+"Du hast alle deine monatlichen Ziele für <span class=\"fw-"
+"bold\">{currentStreak}</span> Monate in Folge erreicht!<br>(Beste: <span "
+"class=\"fw-bold\">{maxStreak}</span>)"
 
 #: ../achievement/AchievementBlueprint.py:74
 #: ../achievement/AnnualAchievementBlueprint.py:261
@@ -42,11 +41,12 @@ msgstr "Längstes Workout"
 
 #: ../achievement/AchievementBlueprint.py:75
 msgid ""
-"You completed <span class=\"fw-bold\">{longestWorkoutDistance}</span> in one "
-"trip on <span class=\"fw-bold\">{longestWorkoutDate}</span>!"
+"You completed <span class=\"fw-bold\">{longestWorkoutDistance}</span> in "
+"one trip on <span class=\"fw-bold\">{longestWorkoutDate}</span>!"
 msgstr ""
-"Du hast am <span class=\"fw-bold\">{longestWorkoutDate}</span> in einem Workout "
-"<span class=\"fw-bold\">{longestWorkoutDistance}</span> zurückgelegt!"
+"Du hast am <span class=\"fw-bold\">{longestWorkoutDate}</span> in einem "
+"Workout <span class=\"fw-bold\">{longestWorkoutDistance}</span> "
+"zurückgelegt!"
 
 #: ../achievement/AchievementBlueprint.py:93
 #: ../achievement/AnnualAchievementBlueprint.py:130
@@ -55,7 +55,8 @@ msgstr "Gesamtstrecke"
 
 #: ../achievement/AchievementBlueprint.py:94
 msgid ""
-"You completed a total of <span class=\"fw-bold\">{totalDistance} km</span>!"
+"You completed a total of <span class=\"fw-bold\">{totalDistance} "
+"km</span>!"
 msgstr ""
 "Du hast insgesamt <span class=\"fw-bold\">{totalDistance} km</span> "
 "zurückgelegt!"
@@ -67,11 +68,11 @@ msgstr "Bester Monat"
 
 #: ../achievement/AchievementBlueprint.py:115
 msgid ""
-"<span class=\"fw-bold\">{bestMonthName}</span> was your best month with <span "
-"class=\"fw-bold\">{bestMonthDistance}</span>!"
+"<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
+"<span class=\"fw-bold\">{bestMonthDistance}</span>!"
 msgstr ""
-"<span class=\"fw-bold\">{bestMonthName}</span> war dein bester Monat mit <span "
-"class=\"fw-bold\">{bestMonthDistance}</span>!"
+"<span class=\"fw-bold\">{bestMonthName}</span> war dein bester Monat mit "
+"<span class=\"fw-bold\">{bestMonthDistance}</span>!"
 
 #: ../achievement/AchievementBlueprint.py:159
 #: ../achievement/AnnualAchievementBlueprint.py:345
@@ -80,8 +81,8 @@ msgstr "Längste Dauer"
 
 #: ../achievement/AchievementBlueprint.py:160
 msgid ""
-"You completed <span class=\"fw-bold\">{longestDuration}</span> in one workout "
-"on <span class=\"fw-bold\">{longestDurationDate}</span>!"
+"You completed <span class=\"fw-bold\">{longestDuration}</span> in one "
+"workout on <span class=\"fw-bold\">{longestDurationDate}</span>!"
 msgstr ""
 "Du hast am <span class=\"fw-bold\">{longestDurationDate}</span> in einem "
 "Workout <span class=\"fw-bold\">{longestDuration}</span> trainiert!"
@@ -94,21 +95,24 @@ msgstr "Gesamtdauer"
 #: ../achievement/AchievementBlueprint.py:179
 msgid "You completed a total of <span class=\"fw-bold\">{totalDuration} h</span>!"
 msgstr ""
-"Du hast insgesamt <span class=\"fw-bold\">{totalDuration} h</span> trainiert!"
+"Du hast insgesamt <span class=\"fw-bold\">{totalDuration} h</span> "
+"trainiert!"
 
 #: ../achievement/AchievementBlueprint.py:196
 msgid ""
-"<span class=\"fw-bold\">{bestMonthName}</span> was your best month with <span "
-"class=\"fw-bold\">{bestMonthDuration}</span>!"
+"<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
+"<span class=\"fw-bold\">{bestMonthDuration}</span>!"
 msgstr ""
-"<span class=\"fw-bold\">{bestMonthName}</span> war dein bester Monat mit <span "
-"class=\"fw-bold\">{bestMonthDuration}</span>!"
+"<span class=\"fw-bold\">{bestMonthName}</span> war dein bester Monat mit "
+"<span class=\"fw-bold\">{bestMonthDuration}</span>!"
 
-#: ../achievement/AchievementEntity.py:45 ../achievement/AchievementEntity.py:95
+#: ../achievement/AchievementEntity.py:45
+#: ../achievement/AchievementEntity.py:95
 msgid "No month"
 msgstr "Kein Monat"
 
-#: ../achievement/AchievementEntity.py:66 ../achievement/AchievementEntity.py:117
+#: ../achievement/AchievementEntity.py:66
+#: ../achievement/AchievementEntity.py:117
 msgid "no date"
 msgstr "kein Datum"
 
@@ -138,7 +142,7 @@ msgid "Unknown user"
 msgstr "Unbekannter Nutzer"
 
 #: ../authentication/AuthenticationBlueprint.py:36
-#: ../user/SettingsBlueprint.py:144 ../user/UserBlueprint.py:75
+#: ../user/SettingsBlueprint.py:152 ../user/UserBlueprint.py:75
 #: ../user/UserBlueprint.py:135
 msgid "Password must not be empty"
 msgstr "Passwort darf nicht leer sein"
@@ -215,7 +219,7 @@ msgstr "Heatmap Wochentage"
 msgid "Heatmap Months"
 msgstr "Heatmap Monate"
 
-#: ../maintenance/MaintenanceBlueprint.py:87
+#: ../maintenance/MaintenanceBlueprint.py:95
 msgid "Maintenance does not exist anymore"
 msgstr "Wartung existiert nicht mehr"
 
@@ -268,11 +272,11 @@ msgstr "Limit: {limit} km, Überschritten um: {limitExceededDistance} km"
 
 #: ../notification/NotificationService.py:145
 msgid ""
-"You completed a new distance record with {distance} km in one {workoutType} "
-"workout"
+"You completed a new distance record with {distance} km in one "
+"{workoutType} workout"
 msgstr ""
-"Du hast einen neuen Distanzrekord mit {distance} km in einem {workoutType} "
-"Workout aufgestellt"
+"Du hast einen neuen Distanzrekord mit {distance} km in einem "
+"{workoutType} Workout aufgestellt"
 
 #: ../notification/NotificationService.py:175
 msgid "{month} is now your best {workoutType} month with {distance} km"
@@ -299,8 +303,8 @@ msgstr ""
 #: ../notification/NotificationService.py:289
 msgid "You completed a new duration record with {duration} h in one {workoutType}"
 msgstr ""
-"Du hast einen neuen Zeitrekord mit {duration} Stunden in einem {workoutType} "
-"aufgestellt."
+"Du hast einen neuen Zeitrekord mit {duration} Stunden in einem "
+"{workoutType} aufgestellt."
 
 #: ../notification/NotificationService.py:318
 msgid "{month} is now your best {workoutType} month with {duration} h"
@@ -318,7 +322,8 @@ msgstr "{owner} hat die geplante Tour \"{tour_name}\" bearbeitet"
 #: ../notification/NotificationService.py:349
 msgid "{owner} has revoked your access to the planned tour \"{tour_name}\""
 msgstr ""
-"{owner} hat deinen Zugriff auf die geplante Tour \"{tour_name}\" zurückgezogen"
+"{owner} hat deinen Zugriff auf die geplante Tour \"{tour_name}\" "
+"zurückgezogen"
 
 #: ../notification/NotificationService.py:355
 msgid "{owner} has deleted the planned tour \"{tour_name}\""
@@ -336,7 +341,8 @@ msgstr "{owner} hat die Etappentour \"{tour_name}\" bearbeitet"
 #: ../notification/NotificationService.py:377
 msgid "{owner} has revoked your access to the long-distance tour \"{tour_name}\""
 msgstr ""
-"{owner} hat deinen Zugriff auf die Etappentour \"{tour_name}\" zurückgezogen"
+"{owner} hat deinen Zugriff auf die Etappentour \"{tour_name}\" "
+"zurückgezogen"
 
 #: ../notification/NotificationService.py:383
 msgid "{owner} has deleted the long-distance tour \"{tour_name}\""
@@ -447,14 +453,15 @@ msgid "Icons"
 msgstr "Icons"
 
 #: ../templates/login.jinja2:19 ../templates/settings/settings.jinja2:326
-#: ../templates/user/userForm.jinja2:51 ../user/SettingsBlueprint.py:489
-#: ../user/SettingsBlueprint.py:535
+#: ../templates/user/userForm.jinja2:51 ../user/SettingsBlueprint.py:497
+#: ../user/SettingsBlueprint.py:543
 msgid "Username"
 msgstr "Benutzer"
 
 #: ../templates/login.jinja2:23 ../templates/settings/settings.jinja2:15
-#: ../templates/settings/settings.jinja2:334 ../templates/user/userForm.jinja2:60
-#: ../user/SettingsBlueprint.py:490 ../user/SettingsBlueprint.py:536
+#: ../templates/settings/settings.jinja2:334
+#: ../templates/user/userForm.jinja2:60 ../user/SettingsBlueprint.py:498
+#: ../user/SettingsBlueprint.py:544
 msgid "Password"
 msgstr "Passwort"
 
@@ -465,7 +472,8 @@ msgstr "Benutzer"
 
 #: ../templates/macros.jinja2:74 ../templates/map/mapMultipleWorkouts.jinja2:6
 #: ../templates/plannedTour/plannedTours.jinja2:103
-#: ../templates/workout/workouts.jinja2:5 ../templates/workout/workouts.jinja2:25
+#: ../templates/workout/workouts.jinja2:5
+#: ../templates/workout/workouts.jinja2:25
 msgid "Workouts"
 msgstr "Workouts"
 
@@ -498,7 +506,8 @@ msgstr "Auswertung"
 msgid "Charts"
 msgstr "Diagramme"
 
-#: ../templates/achievement/achievements.jinja2:64 ../templates/macros.jinja2:105
+#: ../templates/achievement/achievements.jinja2:64
+#: ../templates/macros.jinja2:105
 msgid "Achievements"
 msgstr "Errungenschaften"
 
@@ -512,7 +521,8 @@ msgstr "Kalender"
 msgid "Annual Statistics"
 msgstr "Jahresstatistik"
 
-#: ../templates/macros.jinja2:131 ../templates/map/mapMultipleWorkouts.jinja2:17
+#: ../templates/macros.jinja2:131
+#: ../templates/map/mapMultipleWorkouts.jinja2:17
 #: ../templates/map/mapNotFound.jinja2:6
 msgid "Map"
 msgstr "Karte"
@@ -556,7 +566,8 @@ msgstr "Körpergewicht"
 msgid "Tile Hunting"
 msgstr "Tile Hunting"
 
-#: ../templates/macros.jinja2:197 ../templates/map/mapTileHuntingHeatmap.jinja2:6
+#: ../templates/macros.jinja2:197
+#: ../templates/map/mapTileHuntingHeatmap.jinja2:6
 msgid "Tile Hunting Heatmap"
 msgstr "Tile Hunting Heatmap"
 
@@ -596,7 +607,8 @@ msgstr "Speichern"
 msgid "Saving..."
 msgstr "Speichere..."
 
-#: ../templates/notification/notifications.jinja2:44 ../templates/search.jinja2:4
+#: ../templates/notification/notifications.jinja2:44
+#: ../templates/search.jinja2:4
 msgid "of"
 msgstr "von"
 
@@ -652,7 +664,8 @@ msgstr "BMI"
 #: ../templates/bodyWeight/bodyWeight.jinja2:67
 msgid "Set your body height in the settings to calculate your BMI."
 msgstr ""
-"Um BMI Werte anzuzeigen muss die Körpergröße in den Einstellungen gesetzt sein."
+"Um BMI Werte anzuzeigen muss die Körpergröße in den Einstellungen gesetzt"
+" sein."
 
 #: ../templates/bodyWeight/bodyWeight.jinja2:69
 msgid "Open Settings"
@@ -717,8 +730,8 @@ msgstr "Willst du diesen Gewichtseintrag wirklich löschen?"
 #: ../templates/plannedTour/plannedTourForm.jinja2:26
 #: ../templates/plannedTour/plannedTourForm.jinja2:31
 #: ../templates/settings/settings.jinja2:158
-#: ../templates/settings/settings.jinja2:203 ../templates/user/userForm.jinja2:23
-#: ../templates/user/userForm.jinja2:27
+#: ../templates/settings/settings.jinja2:203
+#: ../templates/user/userForm.jinja2:23 ../templates/user/userForm.jinja2:27
 #: ../templates/workout/workoutBikingForm.jinja2:26
 #: ../templates/workout/workoutBikingForm.jinja2:30
 #: ../templates/workout/workoutFitnessForm.jinja2:27
@@ -743,7 +756,8 @@ msgstr "Löschen"
 #: ../templates/monthGoal/monthGoalDurationForm.jinja2:27
 #: ../templates/plannedTour/plannedTourForm.jinja2:31
 #: ../templates/settings/settings.jinja2:158
-#: ../templates/settings/settings.jinja2:203 ../templates/user/userForm.jinja2:27
+#: ../templates/settings/settings.jinja2:203
+#: ../templates/user/userForm.jinja2:27
 #: ../templates/workout/workoutBikingForm.jinja2:30
 #: ../templates/workout/workoutFitnessForm.jinja2:31
 #: ../templates/workout/workoutHikingForm.jinja2:30
@@ -884,10 +898,11 @@ msgstr "Anzahl der insgesamt neu besuchten Kacheln pro Jahr"
 
 #: ../templates/chart/chartNewTilesPerYear.jinja2:25
 msgid ""
-"Number of new visited tiles analyzed separately for each workout type per year"
+"Number of new visited tiles analyzed separately for each workout type per"
+" year"
 msgstr ""
-"Anzahl der neu besuchten Kacheln gesondert betrachtet für jeden Workouttyp pro "
-"Jahr"
+"Anzahl der neu besuchten Kacheln gesondert betrachtet für jeden "
+"Workouttyp pro Jahr"
 
 #: ../templates/chart/chartNewTilesPerYear.jinja2:56
 #: ../templates/chart/chartNewTilesPerYear.jinja2:107
@@ -1011,11 +1026,11 @@ msgstr "Wartung löschen?"
 
 #: ../templates/maintenance/maintenanceForm.jinja2:31
 msgid ""
-"Do you really want to delete this maintenance and all associated maintenance "
-"events?"
+"Do you really want to delete this maintenance and all associated "
+"maintenance events?"
 msgstr ""
-"Willst du diese Wartung und alle damit verbundenen Wartungsereignisse wirklich "
-"löschen?"
+"Willst du diese Wartung und alle damit verbundenen Wartungsereignisse "
+"wirklich löschen?"
 
 #: ../templates/maintenance/maintenanceForm.jinja2:62
 msgid "Description"
@@ -1063,21 +1078,21 @@ msgstr "Wert:"
 msgid "Filter"
 msgstr "Filter"
 
-#: ../templates/maintenance/maintenances.jinja2:121
-#: ../templates/map/mapMacros.jinja2:226
-#: ../templates/plannedTour/plannedToursMacros.jinja2:261
+#: ../templates/maintenance/maintenances.jinja2:120
+#: ../templates/map/mapMacros.jinja2:225
+#: ../templates/plannedTour/plannedToursMacros.jinja2:260
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: ../templates/maintenance/maintenances.jinja2:123
-#: ../templates/map/mapMacros.jinja2:228
-#: ../templates/plannedTour/plannedToursMacros.jinja2:263
+#: ../templates/maintenance/maintenances.jinja2:122
+#: ../templates/map/mapMacros.jinja2:227
+#: ../templates/plannedTour/plannedToursMacros.jinja2:262
 msgid "Apply"
 msgstr "Übernehmen"
 
-#: ../templates/maintenance/maintenances.jinja2:123
-#: ../templates/map/mapMacros.jinja2:228
-#: ../templates/plannedTour/plannedToursMacros.jinja2:263
+#: ../templates/maintenance/maintenances.jinja2:122
+#: ../templates/map/mapMacros.jinja2:227
+#: ../templates/plannedTour/plannedToursMacros.jinja2:262
 msgid "Applying..."
 msgstr "Übernehmen..."
 
@@ -1162,7 +1177,8 @@ msgstr "Höhe"
 msgid "Slope"
 msgstr "Steigung"
 
-#: ../templates/map/mapMacros.jinja2:7 ../templates/map/mapSingleWorkout.jinja2:52
+#: ../templates/map/mapMacros.jinja2:7
+#: ../templates/map/mapSingleWorkout.jinja2:52
 msgid "Speed"
 msgstr "Geschwindigkeit"
 
@@ -1292,7 +1308,8 @@ msgstr "Nur neue Kacheln hervorheben"
 msgid "Show max square"
 msgstr "Maximales Quadrat anzeigen"
 
-#: ../templates/map/mapMacros.jinja2:208 ../templates/settings/settings.jinja2:98
+#: ../templates/map/mapMacros.jinja2:208
+#: ../templates/settings/settings.jinja2:98
 msgid "Show planned tiles"
 msgstr "Geplante Kacheln anzeigen"
 
@@ -1384,13 +1401,13 @@ msgstr "Besuchte Kacheln"
 
 #: ../templates/map/mapTileHunting.jinja2:49
 msgid ""
-"Tiles are shown in their corresponding workout type color. If different workout "
-"types had visited a tile, it will be shown in <span class=&quot;text-danger fw-"
-"bold&quot;>red</span>."
+"Tiles are shown in their corresponding workout type color. If different "
+"workout types had visited a tile, it will be shown in <span class=&quot"
+";text-danger fw-bold&quot;>red</span>."
 msgstr ""
-"Die Kacheln werden in der Farbe ihres jeweiligen Workouttyps angezeigt. Wenn "
-"eine Kachel von verschiedenen Workouttypen besucht wurde, wird sie <span "
-"class=&quot;text-danger fw-bold&quot;>rot</span> dargestellt."
+"Die Kacheln werden in der Farbe ihres jeweiligen Workouttyps angezeigt. "
+"Wenn eine Kachel von verschiedenen Workouttypen besucht wurde, wird sie "
+"<span class=&quot;text-danger fw-bold&quot;>rot</span> dargestellt."
 
 #: ../templates/map/mapTileHunting.jinja2:55
 msgid "Max square:"
@@ -1398,17 +1415,18 @@ msgstr "Maximales Quadrat:"
 
 #: ../templates/map/mapTileHunting.jinja2:60
 msgid ""
-"The size of the maximum square area that is completely covered by your visited "
-"tiles. If the checkbox &quot;Show max square&quot; is selected all tiles inside "
-"your max square will use this color: <span class=&quot;d-inline-block&quot; "
-"style=&quot;width: 10px; height: 10px; background-color: "
-"{maxSquareColor};&quot;></span>"
+"The size of the maximum square area that is completely covered by your "
+"visited tiles. If the checkbox &quot;Show max square&quot; is selected "
+"all tiles inside your max square will use this color: <span class=&quot;d"
+"-inline-block&quot; style=&quot;width: 10px; height: 10px; background-"
+"color: {maxSquareColor};&quot;></span>"
 msgstr ""
-"Die Größe der maximalen quadratischen Fläche, die vollständig von den besuchten "
-"Kacheln abgedeckt ist. Wenn die Checkbox &quot;Maximales Quadrat anzeigen&quot; "
-"aktiviert ist, verwenden alle Kacheln innerhalb des maximalen Quadrats diese "
-"Farbe: <span class=&quot;d-inline-block&quot; style=&quot;width: 10px; height: "
-"10px; background-color: {maxSquareColor};&quot;></span>"
+"Die Größe der maximalen quadratischen Fläche, die vollständig von den "
+"besuchten Kacheln abgedeckt ist. Wenn die Checkbox &quot;Maximales "
+"Quadrat anzeigen&quot; aktiviert ist, verwenden alle Kacheln innerhalb "
+"des maximalen Quadrats diese Farbe: <span class=&quot;d-inline-"
+"block&quot; style=&quot;width: 10px; height: 10px; background-color: "
+"{maxSquareColor};&quot;></span>"
 
 #: ../templates/map/mapTileHunting.jinja2:70
 #: ../templates/map/mapTileHuntingHeatmap.jinja2:52
@@ -1607,6 +1625,10 @@ msgstr "Mehrere neue Zeitziele"
 msgid "Month Goals"
 msgstr "Monatsziele"
 
+#: ../templates/monthGoal/monthGoals.jinja2:57
+msgid "No month goals for this year"
+msgstr "Keine Monatsziele für dieses Jahr"
+
 #: ../templates/notification/notifications.jinja2:34
 msgid "Open"
 msgstr "Öffnen"
@@ -1641,11 +1663,12 @@ msgstr "Geplante Tour löschen?"
 
 #: ../templates/plannedTour/plannedTourForm.jinja2:30
 msgid ""
-"Do you really want to delete this planned tour?<br><br>Caution: This will also "
-"unlink this planned tour from all associated long-distance tours."
+"Do you really want to delete this planned tour?<br><br>Caution: This will"
+" also unlink this planned tour from all associated long-distance tours."
 msgstr ""
-"Willst du diese geplante Tour wirklich löschen?<br><br>Achtung: Dadurch wird "
-"diese geplante Tour auch von allen zugeordneten Etappentouren entfernt."
+"Willst du diese geplante Tour wirklich löschen?<br><br>Achtung: Dadurch "
+"wird diese geplante Tour auch von allen zugeordneten Etappentouren "
+"entfernt."
 
 #: ../templates/plannedTour/plannedTourForm.jinja2:77
 msgid "Arrival method"
@@ -1771,11 +1794,11 @@ msgstr "Aktivieren der Tile Hunting Karte und zugehöriger Statistiken"
 
 #: ../templates/settings/settings.jinja2:79
 msgid ""
-"Allow access to your tile hunting map without login (Generated link will be "
-"shown after saving)"
+"Allow access to your tile hunting map without login (Generated link will "
+"be shown after saving)"
 msgstr ""
-"Aktivieren des Zugangs zur Tile Hunting Karte ohne Anmeldung (der generierte "
-"Link wird nach dem Speichern angezeigt)"
+"Aktivieren des Zugangs zur Tile Hunting Karte ohne Anmeldung (der "
+"generierte Link wird nach dem Speichern angezeigt)"
 
 #: ../templates/settings/settings.jinja2:84
 #: ../templates/workout/workoutMacros.jinja2:627
@@ -1784,12 +1807,12 @@ msgstr "Kopiert"
 
 #: ../templates/settings/settings.jinja2:91
 msgid ""
-"This link can be used to add an overlay to OpenStreetMap based maps, e.g. "
-"https://bikerouter.de/ to plan your next tile hunting route."
+"This link can be used to add an overlay to OpenStreetMap based maps, e.g."
+" https://bikerouter.de/ to plan your next tile hunting route."
 msgstr ""
-"Dieser Link kann verwendet werden, um ein Overlay zu OpenStreetMap-basierten "
-"Karten hinzuzufügen, z.B. https://bikerouter.de/, um die nächste Tile Hunting "
-"Route zu planen."
+"Dieser Link kann verwendet werden, um ein Overlay zu OpenStreetMap-"
+"basierten Karten hinzuzufügen, z.B. https://bikerouter.de/, um die "
+"nächste Tile Hunting Route zu planen."
 
 #: ../templates/settings/settings.jinja2:113
 msgid "Custom Workout Fields"
@@ -1806,13 +1829,13 @@ msgstr "Benutzerdefiniertes Feld löschen?"
 #: ../templates/settings/settings.jinja2:157
 #, python-format
 msgid ""
-"Do you really want to delete the custom field \"%(name)s\"?<br><br>The custom "
-"field will also be removed from all maintenances that use this field as a "
-"filter."
+"Do you really want to delete the custom field \"%(name)s\"?<br><br>The "
+"custom field will also be removed from all maintenances that use this "
+"field as a filter."
 msgstr ""
-"Willst du das benutzerdefinierte Feld \"%(name)s\" wirklich löschen?<br><br>Das "
-"benutzerdefinierte Feld wird auch aus allen Wartungen, die dieses Feld als "
-"Filter verwenden, entfernt."
+"Willst du das benutzerdefinierte Feld \"%(name)s\" wirklich "
+"löschen?<br><br>Das benutzerdefinierte Feld wird auch aus allen "
+"Wartungen, die dieses Feld als Filter verwenden, entfernt."
 
 #: ../templates/settings/settings.jinja2:175
 #: ../templates/workout/workoutMacros.jinja2:525
@@ -1839,7 +1862,8 @@ msgstr "Größe in cm"
 #: ../templates/settings/settings.jinja2:242
 msgid "Select Information to show for each distance-based workout"
 msgstr ""
-"Informationen auswählen, die für jedes distanzbasierte Workout angezeigt werden"
+"Informationen auswählen, die für jedes distanzbasierte Workout angezeigt "
+"werden"
 
 #: ../templates/settings/settings.jinja2:269
 msgid "Notification Provider Settings"
@@ -1848,20 +1872,20 @@ msgstr "Einstellungen für Benachrichtigungsanbieter"
 #: ../templates/settings/settings.jinja2:281
 msgid "More information about ntfy and how to setup your own ntfy server:"
 msgstr ""
-"Weitere Informationen über ntfy und wie ein eigener ntfy-Server eingerichtet "
-"wird:"
+"Weitere Informationen über ntfy und wie ein eigener ntfy-Server "
+"eingerichtet wird:"
 
 #: ../templates/settings/settings.jinja2:294
 msgid "Activate notifications via ntfy"
 msgstr "Benachrichtigungen über ntfy aktivieren"
 
-#: ../templates/settings/settings.jinja2:310 ../user/SettingsBlueprint.py:487
-#: ../user/SettingsBlueprint.py:533
+#: ../templates/settings/settings.jinja2:310 ../user/SettingsBlueprint.py:495
+#: ../user/SettingsBlueprint.py:541
 msgid "Ntfy Server URL"
 msgstr "Ntfy Server URL"
 
-#: ../templates/settings/settings.jinja2:318 ../user/SettingsBlueprint.py:488
-#: ../user/SettingsBlueprint.py:534
+#: ../templates/settings/settings.jinja2:318 ../user/SettingsBlueprint.py:496
+#: ../user/SettingsBlueprint.py:542
 msgid "Ntfy Topic Name"
 msgstr "Ntfy Topicname"
 
@@ -2078,7 +2102,8 @@ msgstr "Lauf Workout bearbeiten"
 #: ../templates/workout/workouts.jinja2:53
 msgid "Toggle months via arrow keys or press \"0\" for current month"
 msgstr ""
-"Monate mit Pfeiltasten umschalten oder \"0\" für den aktuellen Monat drücken"
+"Monate mit Pfeiltasten umschalten oder \"0\" für den aktuellen Monat "
+"drücken"
 
 #: ../templates/workout/workouts.jinja2:60
 msgid "Toggle months by swiping left or right"
@@ -2096,40 +2121,41 @@ msgstr "Ganzzahl"
 msgid "Float"
 msgstr "Kommazahl"
 
-#: ../user/SettingsBlueprint.py:157 ../user/UserBlueprint.py:80
+#: ../user/SettingsBlueprint.py:165 ../user/UserBlueprint.py:80
 #: ../user/UserBlueprint.py:143
 msgid "Password must be at least {0} characters long"
 msgstr "Das Passwort muss mindestens {0} Zeichen lang sein"
 
-#: ../user/SettingsBlueprint.py:498 ../user/SettingsBlueprint.py:542
+#: ../user/SettingsBlueprint.py:506 ../user/SettingsBlueprint.py:550
 msgid "Ntfy Settings: {0} must not be empty"
 msgstr "Ntfy-Einstellungen: {0} darf nicht leer sein"
 
-#: ../user/SettingsBlueprint.py:550
+#: ../user/SettingsBlueprint.py:558
 msgid "SportTracker: Test notification"
 msgstr "SportTracker: Testbenachrichtigung"
 
-#: ../user/SettingsBlueprint.py:555
+#: ../user/SettingsBlueprint.py:563
 msgid "Test notification successfully sent"
 msgstr "Testbenachrichtigung erfolgreich gesendet"
 
-#: ../user/SettingsBlueprint.py:557
+#: ../user/SettingsBlueprint.py:565
 msgid "Error sending test notification {0}"
 msgstr "Fehler beim Senden der Testbenachrichtigung {0}"
 
-#: ../user/SettingsBlueprint.py:592
+#: ../user/SettingsBlueprint.py:600
 msgid ""
-"The specified field name \"{0}\" conflicts with a reserved field name and "
-"therefore can't be used as custom field name."
+"The specified field name \"{0}\" conflicts with a reserved field name and"
+" therefore can't be used as custom field name."
 msgstr ""
-"Der angegebene Name \"{0}\" kollidiert mit einem reservierten Namen und kann "
-"daher nicht als Name für ein benutzerdefiniertes Feld verwendet werden."
+"Der angegebene Name \"{0}\" kollidiert mit einem reservierten Namen und "
+"kann daher nicht als Name für ein benutzerdefiniertes Feld verwendet "
+"werden."
 
-#: ../user/SettingsBlueprint.py:606
+#: ../user/SettingsBlueprint.py:614
 msgid "The specified field name \"{0}\" already exists."
 msgstr "Der angegebene Name \"{0}\" existiert bereits."
 
-#: ../user/SettingsBlueprint.py:615
+#: ../user/SettingsBlueprint.py:623
 msgid "The specified participant name \"{0}\" already exists."
 msgstr "Ein Teilnehmer mit dem Namen \"{0}\" existiert bereits."
 
@@ -2208,12 +2234,13 @@ msgstr "Wiederh."
 
 #~ msgid "You ran <span class=\"fw-bold\">{longestTrack} km</span> in one trip!"
 #~ msgstr ""
-#~ "Du hast <span class=\"fw-bold\">{longestTrack} km</span> in einem Lauf "
-#~ "zurückgelegt!"
+#~ "Du hast <span class=\"fw-bold\">{longestTrack}"
+#~ " km</span> in einem Lauf zurückgelegt!"
 
 #~ msgid "You ran a total of <span class=\"fw-bold\">{totalDistance} km</span>!"
 #~ msgstr ""
-#~ "Du bist insgesamt <span class=\"fw-bold\">{totalDistance} km</span> gelaufen!"
+#~ "Du bist insgesamt <span class=\"fw-"
+#~ "bold\">{totalDistance} km</span> gelaufen!"
 
 #~ msgid "Bike"
 #~ msgstr "Fahrrad"
@@ -2232,7 +2259,8 @@ msgstr "Wiederh."
 
 #~ msgid "Do you really want to delete the GPX file associated with this track?"
 #~ msgstr ""
-#~ "Willst du die GPX-Datei, die mit diesem Track verknüpft ist, wirklich "
+#~ "Willst du die GPX-Datei, die mit"
+#~ " diesem Track verknüpft ist, wirklich "
 #~ "löschen?"
 
 #~ msgid "by Car"
@@ -2371,3 +2399,4 @@ msgstr "Wiederh."
 
 #~ msgid "my planned tours"
 #~ msgstr "meine geplanten Touren"
+

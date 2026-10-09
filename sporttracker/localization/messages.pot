@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-27 21:36+0200\n"
+"POT-Creation-Date: 2026-10-10 00:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,7 +125,7 @@ msgid "Unknown user"
 msgstr ""
 
 #: ../authentication/AuthenticationBlueprint.py:36
-#: ../user/SettingsBlueprint.py:144 ../user/UserBlueprint.py:75
+#: ../user/SettingsBlueprint.py:152 ../user/UserBlueprint.py:75
 #: ../user/UserBlueprint.py:135
 msgid "Password must not be empty"
 msgstr ""
@@ -202,7 +202,7 @@ msgstr ""
 msgid "Heatmap Months"
 msgstr ""
 
-#: ../maintenance/MaintenanceBlueprint.py:87
+#: ../maintenance/MaintenanceBlueprint.py:95
 msgid "Maintenance does not exist anymore"
 msgstr ""
 
@@ -426,15 +426,15 @@ msgid "Icons"
 msgstr ""
 
 #: ../templates/login.jinja2:19 ../templates/settings/settings.jinja2:326
-#: ../templates/user/userForm.jinja2:51 ../user/SettingsBlueprint.py:489
-#: ../user/SettingsBlueprint.py:535
+#: ../templates/user/userForm.jinja2:51 ../user/SettingsBlueprint.py:497
+#: ../user/SettingsBlueprint.py:543
 msgid "Username"
 msgstr ""
 
 #: ../templates/login.jinja2:23 ../templates/settings/settings.jinja2:15
 #: ../templates/settings/settings.jinja2:334
-#: ../templates/user/userForm.jinja2:60 ../user/SettingsBlueprint.py:490
-#: ../user/SettingsBlueprint.py:536
+#: ../templates/user/userForm.jinja2:60 ../user/SettingsBlueprint.py:498
+#: ../user/SettingsBlueprint.py:544
 msgid "Password"
 msgstr ""
 
@@ -1045,21 +1045,21 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: ../templates/maintenance/maintenances.jinja2:121
-#: ../templates/map/mapMacros.jinja2:226
-#: ../templates/plannedTour/plannedToursMacros.jinja2:261
+#: ../templates/maintenance/maintenances.jinja2:120
+#: ../templates/map/mapMacros.jinja2:225
+#: ../templates/plannedTour/plannedToursMacros.jinja2:260
 msgid "Reset"
 msgstr ""
 
-#: ../templates/maintenance/maintenances.jinja2:123
-#: ../templates/map/mapMacros.jinja2:228
-#: ../templates/plannedTour/plannedToursMacros.jinja2:263
+#: ../templates/maintenance/maintenances.jinja2:122
+#: ../templates/map/mapMacros.jinja2:227
+#: ../templates/plannedTour/plannedToursMacros.jinja2:262
 msgid "Apply"
 msgstr ""
 
-#: ../templates/maintenance/maintenances.jinja2:123
-#: ../templates/map/mapMacros.jinja2:228
-#: ../templates/plannedTour/plannedToursMacros.jinja2:263
+#: ../templates/maintenance/maintenances.jinja2:122
+#: ../templates/map/mapMacros.jinja2:227
+#: ../templates/plannedTour/plannedToursMacros.jinja2:262
 msgid "Applying..."
 msgstr ""
 
@@ -1583,6 +1583,10 @@ msgstr ""
 msgid "Month Goals"
 msgstr ""
 
+#: ../templates/monthGoal/monthGoals.jinja2:57
+msgid "No month goals for this year"
+msgstr ""
+
 #: ../templates/notification/notifications.jinja2:34
 msgid "Open"
 msgstr ""
@@ -1818,13 +1822,13 @@ msgstr ""
 msgid "Activate notifications via ntfy"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:310 ../user/SettingsBlueprint.py:487
-#: ../user/SettingsBlueprint.py:533
+#: ../templates/settings/settings.jinja2:310 ../user/SettingsBlueprint.py:495
+#: ../user/SettingsBlueprint.py:541
 msgid "Ntfy Server URL"
 msgstr ""
 
-#: ../templates/settings/settings.jinja2:318 ../user/SettingsBlueprint.py:488
-#: ../user/SettingsBlueprint.py:534
+#: ../templates/settings/settings.jinja2:318 ../user/SettingsBlueprint.py:496
+#: ../user/SettingsBlueprint.py:542
 msgid "Ntfy Topic Name"
 msgstr ""
 
@@ -2058,38 +2062,38 @@ msgstr ""
 msgid "Float"
 msgstr ""
 
-#: ../user/SettingsBlueprint.py:157 ../user/UserBlueprint.py:80
+#: ../user/SettingsBlueprint.py:165 ../user/UserBlueprint.py:80
 #: ../user/UserBlueprint.py:143
 msgid "Password must be at least {0} characters long"
 msgstr ""
 
-#: ../user/SettingsBlueprint.py:498 ../user/SettingsBlueprint.py:542
+#: ../user/SettingsBlueprint.py:506 ../user/SettingsBlueprint.py:550
 msgid "Ntfy Settings: {0} must not be empty"
 msgstr ""
 
-#: ../user/SettingsBlueprint.py:550
+#: ../user/SettingsBlueprint.py:558
 msgid "SportTracker: Test notification"
 msgstr ""
 
-#: ../user/SettingsBlueprint.py:555
+#: ../user/SettingsBlueprint.py:563
 msgid "Test notification successfully sent"
 msgstr ""
 
-#: ../user/SettingsBlueprint.py:557
+#: ../user/SettingsBlueprint.py:565
 msgid "Error sending test notification {0}"
 msgstr ""
 
-#: ../user/SettingsBlueprint.py:592
+#: ../user/SettingsBlueprint.py:600
 msgid ""
 "The specified field name \"{0}\" conflicts with a reserved field name and"
 " therefore can't be used as custom field name."
 msgstr ""
 
-#: ../user/SettingsBlueprint.py:606
+#: ../user/SettingsBlueprint.py:614
 msgid "The specified field name \"{0}\" already exists."
 msgstr ""
 
-#: ../user/SettingsBlueprint.py:615
+#: ../user/SettingsBlueprint.py:623
 msgid "The specified participant name \"{0}\" already exists."
 msgstr ""
 

@@ -89,6 +89,16 @@ class TestMonthGoals(SeleniumTestBaseClass):
         assert self.__get_selected_year(selenium) == str(currentYear - 1)
         assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 1
 
+    def test_month_goals_without_goals_for_selected_year_shows_placeholder(self, server, selenium: WebDriver, app):
+        currentYear = datetime.now().year
+        self.__create_distance_goals(app, [currentYear - 1])
+        self.login(selenium)
+        selenium.get(self.build_url(f'/goals/{currentYear}'))
+
+        assert self.__get_selected_year(selenium) == str(currentYear)
+        assert len(selenium.find_elements(By.CSS_SELECTOR, 'section .d-lg-block .progress')) == 0
+        assert 'No month goals for this year' in selenium.find_element(By.CSS_SELECTOR, 'section').text
+
 
 class TestMonthGoalsDistance(SeleniumTestBaseClass):
     def __open_form(self, selenium, index, expectedTitle):
