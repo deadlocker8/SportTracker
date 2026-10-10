@@ -1,7 +1,9 @@
 # 2.2.0 - (XX.XX.XX)
+- BREAKING CHANGE: you must update your settings.json (new option "maxClusterColor" in section "tileHunting", see settings-example.json)
 - add: planned tours can now also be filtered by the fact if they are private, shared with other users or shared by other users (#301)
 - add: the month goal page now has a year selector for filtering the month goals (#305)
 - add: new admin server statistics page (#311)
+- add: show the size and corresponding tiles of the maximum cluster of your visited tiles (#308)
 - fix: whitespaces at the start and end of name fields are now automatically removed (e.g. workout name, planned tour name, maintenance description, ...) (#306)
 
 # 2.1.2 - (13.09.26)
