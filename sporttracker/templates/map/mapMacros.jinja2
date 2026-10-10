@@ -223,7 +223,7 @@
                            {% if enableTilesOption and not tileHuntingFilterState.is_show_tiles_active %}disabled{% endif %}
                            data-url="{{ url_for('maps.toggleTileHuntingMaxCluster', redirectUrl=redirectUrl) }}">
                     <label class="form-check-label d-flex align-items-center justify-content-center" for="tileHuntingEnableMaxCluster">
-                        <span class="material-symbols-outlined fs-5">bubble_chart</span>&nbsp;
+                        <span class="material-symbols-outlined filled fs-5">linked_services</span>&nbsp;
                         <span class="d-flex justify-content-between w-100">
                             <span>{{ gettext('Show max cluster') }}</span>
                             {{ tile_hunting_legend_item(maxClusterColor) }}
