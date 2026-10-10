@@ -218,6 +218,7 @@ def construct_blueprint(
             tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             tileHuntingNumberOfNewVisitedTiles=plannedTourService.get_number_of_new_visited_tiles(plannedTour),
             maxSquareColor=tileHuntingSettings['maxSquareColor'],
+            maxClusterColor=tileHuntingSettings['maxClusterColor'],
             plannedTileColor=COLOR_PLANNED.to_hex(),
         )
 
@@ -269,6 +270,7 @@ def construct_blueprint(
             tileRenderUrl=url_for('maps.tileOverlay'),
             plannedTourFilterState=plannedTourFilterState,
             maxSquareColor=tileHuntingSettings['maxSquareColor'],
+            maxClusterColor=tileHuntingSettings['maxClusterColor'],
             plannedTileColor=COLOR_PLANNED.to_hex(),
         )
 
@@ -319,12 +321,19 @@ def construct_blueprint(
             if workout_id is None and tileHuntingFilterState.is_show_max_square_active:
                 max_square_positions = set(visitedTileService.get_max_square_tile_positions())
 
+            max_cluster_positions: set[tuple[int, int]] = set()
+            if workout_id is None and tileHuntingFilterState.is_show_max_cluster_active:
+                max_cluster_positions = set(visitedTileService.get_max_cluster_tile_positions())
+
             max_square_color = Color.from_hex(tileHuntingSettings['maxSquareColor'])
+            max_cluster_color = Color.from_hex(tileHuntingSettings['maxClusterColor'])
 
             features = []
             for (x, y), color in tile_color_by_position.items():
                 if (x, y) in max_square_positions:
                     color = max_square_color
+                elif (x, y) in max_cluster_positions:
+                    color = max_cluster_color
 
                 features.append(GpxParser.create_geojson_feature(x, y, base_zoom, color))
 
@@ -334,6 +343,8 @@ def construct_blueprint(
                 if key in tile_color_by_position:
                     continue
                 if key in max_square_positions:
+                    continue
+                if key in max_cluster_positions:
                     continue
 
                 features.append(GpxParser.create_geojson_feature(pt.x, pt.y, base_zoom, COLOR_PLANNED))
@@ -348,6 +359,7 @@ def construct_blueprint(
 
         tileHuntingFilterState = TileHuntingFilterState().reset()
         tileHuntingFilterState.is_show_max_square_active = False  # type: ignore[assignment]
+        tileHuntingFilterState.is_show_max_cluster_active = False  # type: ignore[assignment]
         tileHuntingFilterState.is_show_planned_tiles_active = user.isTileHuntingShowPlannedTilesActivated  # type: ignore[assignment]
 
         visitedTileService = __create_visited_tile_service(
@@ -411,6 +423,7 @@ def construct_blueprint(
             chartDataNewTilesPerWorkout=chartDataNewTilesPerWorkout,
             tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             maxSquareColor=tileHuntingSettings['maxSquareColor'],
+            maxClusterColor=tileHuntingSettings['maxClusterColor'],
         )
 
     @maps.route('/map/tileHuntingHeatmap')
@@ -497,6 +510,7 @@ def construct_blueprint(
             tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             isGpxPreviewImagesEnabled=gpxPreviewImageSettings['enabled'],
             maxSquareColor=tileHuntingSettings['maxSquareColor'],
+            maxClusterColor=tileHuntingSettings['maxClusterColor'],
         )
 
     @maps.route('/toggleTileHuntingViewTiles')
@@ -539,6 +553,17 @@ def construct_blueprint(
         tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
         currentValue = tileHuntingFilterState.is_show_max_square_active
         tileHuntingFilterState.is_show_max_square_active = not currentValue  # type: ignore[assignment]
+        db.session.commit()
+
+        return redirect(redirectUrl)
+
+    @maps.route('/toggleTileHuntingMaxCluster')
+    @login_required
+    def toggleTileHuntingMaxCluster():
+        redirectUrl = request.args['redirectUrl']
+        tileHuntingFilterState = get_tile_hunting_filter_state_by_user(current_user.id)
+        currentValue = tileHuntingFilterState.is_show_max_cluster_active
+        tileHuntingFilterState.is_show_max_cluster_active = not currentValue  # type: ignore[assignment]
         db.session.commit()
 
         return redirect(redirectUrl)

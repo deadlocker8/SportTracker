@@ -127,7 +127,7 @@
     <span class="d-inline-block ms-2 border border-1 border-white " style="width: 20px; height: 20px; background-color: {{ color }}"></span>
 {%- endmacro %}
 
-{% macro tileHuntingMapSettings(tileHuntingFilterState, redirectUrl, enableTilesOption=true, enableGridOption=true, enableNewTilesOption=true, enableMaxSquareOption=false, enablePlannedTileOption=false, forceButtonText=false, classes="ms-3") -%}
+{% macro tileHuntingMapSettings(tileHuntingFilterState, redirectUrl, enableTilesOption=true, enableGridOption=true, enableNewTilesOption=true, enableMaxSquareOption=false, enableMaxClusterOption=false, enablePlannedTileOption=false, forceButtonText=false, classes="ms-3") -%}
     <div class="dropdown {{ classes }}">
         <button class="btn btn-sm btn-primary dropdown-toggle d-inline-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="material-symbols-outlined fs-5">explore</span>
@@ -190,6 +190,23 @@
                         <span class="d-flex justify-content-between w-100">
                             <span>{{ gettext('Show max square') }}</span>
                             {{ tile_hunting_legend_item(maxSquareColor) }}
+                        </span>
+                    </label>
+                </div>
+            {% endif %}
+
+            {% if enableMaxClusterOption %}
+                <div class="form-check text-nowrap mt-2">
+                    <input class="form-check-input tileHuntingCheckbox" type="checkbox"
+                           id="tileHuntingEnableMaxCluster"
+                           {% if tileHuntingFilterState.is_show_max_cluster_active %}checked{% endif %}
+                           {% if enableTilesOption and not tileHuntingFilterState.is_show_tiles_active %}disabled{% endif %}
+                           data-url="{{ url_for('maps.toggleTileHuntingMaxCluster', redirectUrl=redirectUrl) }}">
+                    <label class="form-check-label d-flex align-items-center justify-content-center" for="tileHuntingEnableMaxCluster">
+                        <span class="material-symbols-outlined fs-5">bubble_chart</span>&nbsp;
+                        <span class="d-flex justify-content-between w-100">
+                            <span>{{ gettext('Show max cluster') }}</span>
+                            {{ tile_hunting_legend_item(maxClusterColor) }}
                         </span>
                     </label>
                 </div>

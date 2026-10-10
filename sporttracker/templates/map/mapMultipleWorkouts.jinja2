@@ -50,7 +50,7 @@
                 </div>
                 {% if mapMode == 'plannedTours' and current_user.isTileHuntingActivated %}
                     <div class="d-none d-lg-block">
-                        {{ mapMacros.tileHuntingMapSettings(tileHuntingFilterState,url_for('maps.showAllPlannedToursOnMap'), enableTilesOption=true, enableGridOption=true, enableNewTilesOption=false, enableMaxSquareOption=true, enablePlannedTileOption=true, forceButtonText=true, classes="ms-5") }}
+                        {{ mapMacros.tileHuntingMapSettings(tileHuntingFilterState,url_for('maps.showAllPlannedToursOnMap'), enableTilesOption=true, enableGridOption=true, enableNewTilesOption=false, enableMaxSquareOption=true, enableMaxClusterOption=true, enablePlannedTileOption=true, forceButtonText=true, classes="ms-5") }}
                     </div>
                 {% endif %}
                 <div class="d-lg-none">
@@ -63,7 +63,7 @@
                                 <span class="ms-2">{{ gettext('Filter') }}</span>
                             </button>
                             {% if mapMode == 'plannedTours' and current_user.isTileHuntingActivated %}
-                                    {{ mapMacros.tileHuntingMapSettings(tileHuntingFilterState,url_for('maps.showAllPlannedToursOnMap'), enableTilesOption=true, enableGridOption=true, enableNewTilesOption=false, enableMaxSquareOption=true, enablePlannedTileOption=true, forceButtonText=true, classes="") }}
+                                    {{ mapMacros.tileHuntingMapSettings(tileHuntingFilterState,url_for('maps.showAllPlannedToursOnMap'), enableTilesOption=true, enableGridOption=true, enableNewTilesOption=false, enableMaxSquareOption=true, enableMaxClusterOption=true, enablePlannedTileOption=true, forceButtonText=true, classes="") }}
                             {% endif %}
                         </div>
                     </div>
