@@ -51,6 +51,7 @@ from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
 from sporttracker.quickFilter import QuickFilterBlueprint
 from sporttracker.search import SearchBlueprint
+from sporttracker.serverStatistics import ServerStatisticsBlueprint
 from sporttracker.tileHunting.CacheWarmer import warm_caches
 from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
@@ -208,6 +209,9 @@ class SportTracker(FlaskBaseApp):
         def format_duration(value: int | None) -> str:
             return Helpers.format_duration(value)
 
+        def format_file_size(value: int | None) -> str:
+            return Helpers.format_file_size(value)
+
         def format_pace(distanceWorkout: DistanceWorkout) -> str:
             speed = int(distanceWorkout.duration / (distanceWorkout.distance / 1000))
 
@@ -233,6 +237,7 @@ class SportTracker(FlaskBaseApp):
         app.add_template_filter(format_decimal)
         app.add_template_filter(format_date)
         app.add_template_filter(format_duration)
+        app.add_template_filter(format_file_size)
         app.add_template_filter(format_pace)
         app.add_template_filter(check_all_items_included)
 
@@ -335,6 +340,7 @@ class SportTracker(FlaskBaseApp):
             )
         )
         app.register_blueprint(UserBlueprint.construct_blueprint())
+        app.register_blueprint(ServerStatisticsBlueprint.construct_blueprint(app.config['DATA_FOLDER']))
         app.register_blueprint(SettingsBlueprint.construct_blueprint())
         app.register_blueprint(
             Api.construct_blueprint(

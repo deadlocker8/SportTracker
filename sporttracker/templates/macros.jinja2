@@ -61,6 +61,12 @@
                                         class="material-symbols-outlined filled fs-5">groups</span></span>&nbsp;{{ gettext('Users') }}
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center {% if activeLink == 'serverStatistics' %}active {% endif %}"
+                                   href="{{ url_for('serverStatistics.listServerStatistics') }}"><span class="navbar-icon"><span
+                                        class="material-symbols-outlined filled fs-5">leaderboard</span></span>&nbsp;{{ gettext('Server Statistics') }}
+                                </a>
+                            </li>
                         </ul>
 
                         {{ navbar_user(false) }}

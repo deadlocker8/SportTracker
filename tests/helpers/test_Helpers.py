@@ -1,4 +1,4 @@
-from sporttracker.helpers.Helpers import format_percentage
+from sporttracker.helpers.Helpers import format_file_size, format_percentage
 
 
 class TestHelpers:
@@ -19,3 +19,20 @@ class TestHelpers:
 
     def test_format_percentage_no_vales(self):
         assert format_percentage(0, 0) == '0 %'
+
+    def test_format_file_size_none(self):
+        assert format_file_size(None) == '-'
+
+    def test_format_file_size_bytes(self):
+        assert format_file_size(0) == '0 B'
+        assert format_file_size(1023) == '1023 B'
+
+    def test_format_file_size_kilobytes(self):
+        assert format_file_size(1024) == '1.0 KB'
+        assert format_file_size(1536) == '1.5 KB'
+
+    def test_format_file_size_megabytes(self):
+        assert format_file_size(1024 * 1024) == '1.0 MB'
+
+    def test_format_file_size_gigabytes(self):
+        assert format_file_size(1024 * 1024 * 1024) == '1.0 GB'

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+{% import 'workout/workoutMacros.jinja2' as workoutMacros with context %}
+
+{% macro statisticCard(title, icon, value, filled=false, image=None) -%}
+    <div class="card bg-body-secondary border-0 h-50" data-bs-theme="dark">
+        <div class="card-body d-flex flex-column justify-content-center">
+            <div class="card-title d-flex align-items-center justify-content-center">
+                {% if image is not none %}
+                    <img class="navbar-icon-svg me-1" src="{{ url_for('static', filename=image) }}"/>
+                {% else %}
+                    <span class="material-symbols-outlined {% if filled %}filled {% endif %}me-1">{{ icon }}</span>
+                {% endif %}
+                {{ title }}
+            </div>
+            <h5 class="card-title fw-bold fs-4">{{ value }}</h5>
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro statisticWorkoutsCard(title, totalCount, workoutTypeStatistics) -%}
+    <div class="card bg-body-secondary border-0 h-100" data-bs-theme="dark">
+        <div class="card-body">
+            <div class="card-title d-flex align-items-center justify-content-center">
+                <img class="navbar-icon-svg me-1" src="{{ url_for('static', filename="images/icon_workouts.svg") }}"/>
+                {{ title }}
+            </div>
+            <h5 class="card-title fw-bold mb-3 fs-4">{{ totalCount }}</h5>
+            <div class="d-flex flex-column gap-2">
+                {% for workoutType, count in workoutTypeStatistics.items() %}
+                    <div class="d-flex align-items-center justify-content-between">
+                        <span class="d-flex align-items-center">
+                            {{ workoutMacros.workout_type_icon_small(workoutType, fontSize='fs-5') }}
+                            <span class="ms-3">{{ workoutType.get_localized_name() }}</span>
+                        </span>
+                        <span class="fw-bold">{{ count }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Server Statistics') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('serverStatistics') }}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        {% call macros.headline(gettext('Server Statistics')) %}
+                            <span class="material-symbols-outlined filled fs-1">leaderboard</span>
+                        {% endcall %}
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col col-6 col-xl-4 mb-3 d-flex flex-column gap-3">
+                        {{ statisticCard(gettext('Users'), 'groups', globalStatistics.numberOfUsers, false) }}
+                        {{ statisticCard(gettext('Preview Images'), 'photo', globalStatistics.numberOfPreviewImages, false) }}
+                    </div>
+                    <div class="col col-6 col-xl-4 mb-3">
+                        {{ statisticWorkoutsCard(gettext('Workouts'), globalStatistics.numberOfWorkouts, globalStatistics.numberOfWorkoutsByType) }}
+                    </div>
+                    <div class="col col-6 col-xl-4 mb-3 d-flex flex-column gap-3">
+                        {{ statisticCard(gettext('GPX/FIT Tracks'), 'location_on', globalStatistics.numberOfGpxTracks, false) }}
+                        {{ statisticCard(gettext('GPX/FIT File Size'), 'hard_drive', globalStatistics.totalGpxFileSize | format_file_size, false) }}
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col col-12 mx-auto">
+                        <h3>{{ gettext('Statistics per User') }}</h3>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col col-12 mx-auto">
+                        <div class="table-responsive">
+                            <table class="table table-dark table-striped text-start align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>{{ gettext('User') }}</th>
+                                        <th>{{ gettext('Workouts') }}</th>
+                                        <th>{{ gettext('GPX/FIT Tracks') }}</th>
+                                        <th>{{ gettext('GPX/FIT File Size') }}</th>
+                                        <th>{{ gettext('Preview Images') }}</th>
+                                        <th>{{ gettext('First Workout') }}</th>
+                                        <th>{{ gettext('Last Workout') }}</th>
+                                        <th>{{ gettext('Planned Tours (completed/total)') }}</th>
+                                        <th>{{ gettext('Visited Tiles') }}</th>
+                                        <th>{{ gettext('Body Weight Entries') }}</th>
+                                        <th>{{ gettext('Month Goals') }}</th>
+                                        <th>{{ gettext('Maintenances') }} ({{ gettext('Events') }})</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for userStatistic in userStatistics %}
+                                        <tr>
+                                            <td>{{ userStatistic.username | e }}</td>
+                                            <td>{{ userStatistic.numberOfWorkouts }}</td>
+                                            <td>{{ userStatistic.numberOfGpxTracks }}</td>
+                                            <td>{{ userStatistic.totalGpxFileSize | format_file_size }}</td>
+                                            <td>{{ userStatistic.numberOfPreviewImages }}</td>
+                                            <td>
+                                                {% if userStatistic.firstWorkoutDate is not none %}
+                                                    {{ userStatistic.firstWorkoutDate | format_date }}
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if userStatistic.lastWorkoutDate is not none %}
+                                                    {{ userStatistic.lastWorkoutDate | format_date }}
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ userStatistic.numberOfCompletedPlannedTours }} / {{ userStatistic.numberOfPlannedTours }}</td>
+                                            <td>{{ userStatistic.numberOfVisitedTiles }}</td>
+                                            <td>{{ userStatistic.numberOfBodyWeightEntries }}</td>
+                                            <td>{{ userStatistic.numberOfMonthGoals }}</td>
+                                            <td>{{ userStatistic.numberOfMaintenances }} ({{ userStatistic.numberOfMaintenanceEvents }})</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>

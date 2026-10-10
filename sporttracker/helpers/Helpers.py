@@ -33,6 +33,21 @@ def is_allowed_redirect_url(url: str | None, allowedHost: str) -> bool:
     return urlParts.netloc == allowedHost
 
 
+def format_file_size(value: int | None) -> str:
+    if value is None:
+        return '-'
+
+    size = float(value)
+    for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
+        if size < 1024 or unit == 'TB':
+            if unit == 'B':
+                return f'{int(size)} {unit}'
+            return f'{size:.1f} {unit}'
+        size /= 1024
+
+    return f'{size:.1f} TB'
+
+
 def format_percentage(previous_value: float, current_value: float) -> str:
     if previous_value == 0 and current_value == 0:
         return '0 %'
