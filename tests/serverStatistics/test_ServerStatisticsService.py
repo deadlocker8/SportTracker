@@ -1,11 +1,12 @@
 import os
-from datetime import datetime
+from datetime import date, datetime
 
 import pytest
 
 from sporttracker.db import db
 from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
+from sporttracker.metrics.LoadStatisticsCollector import LoadStatisticsCollector
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
@@ -131,7 +132,7 @@ def __write_file(filePath: str, size: int) -> None:
 class TestServerStatisticsService:
     def test_get_global_statistics(self, app, prepare_test_data):
         with app.app_context():
-            statistics = ServerStatisticsService(prepare_test_data).get_global_statistics()
+            statistics = ServerStatisticsService(prepare_test_data, LoadStatisticsCollector()).get_global_statistics()
 
             assert statistics.numberOfUsers == User.query.count()
             assert statistics.numberOfWorkouts == 3
@@ -141,7 +142,7 @@ class TestServerStatisticsService:
 
     def test_get_user_statistics(self, app, prepare_test_data):
         with app.app_context():
-            userStatistics = ServerStatisticsService(prepare_test_data).get_user_statistics()
+            userStatistics = ServerStatisticsService(prepare_test_data, LoadStatisticsCollector()).get_user_statistics()
 
             statisticsByUsername = {s.username: s for s in userStatistics}
 
@@ -158,3 +159,23 @@ class TestServerStatisticsService:
             assert bob.numberOfGpxTracks == 1
             assert bob.totalGpxFileSize == 140
             assert bob.numberOfPreviewImages == 0
+
+    def test_get_cache_calculation_statistics(self, app, prepare_test_data):
+        with app.app_context():
+            alice = User.query.filter(User.username == 'alice').first()
+
+            collector = LoadStatisticsCollector()
+            collector.record_cache_calculation(
+                'NewVisitedTileCache',
+                alice.id,
+                [WorkoutType.RUNNING],
+                [(date(2024, 1, 1), date(2024, 1, 31))],
+                1.234,
+            )
+
+            statistics = ServerStatisticsService(prepare_test_data, collector).get_cache_calculation_statistics()
+
+            assert len(statistics) == 1
+            assert statistics[0].cacheName == 'NewVisitedTileCache'
+            assert statistics[0].username == 'alice'
+            assert statistics[0].durationSeconds == 1.234

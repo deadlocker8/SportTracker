@@ -135,6 +135,46 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row mt-5">
+                    <div class="col col-12 mx-auto">
+                        <h3>{{ gettext('Cache Calculation Times') }}</h3>
+                    </div>
+                </div>
+
+                {% for cacheName, entries in cacheCalculationStatistics | groupby('cacheName') %}
+                    <div class="row mt-3">
+                        <div class="col col-12 mx-auto">
+                            <h4>{{ cacheName }}</h4>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col col-12 mx-auto">
+                            <div class="table-responsive">
+                                <table class="table table-dark table-striped text-start align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ gettext('User') }}</th>
+                                            <th>{{ gettext('Workout Types') }}</th>
+                                            <th>{{ gettext('Date Ranges') }}</th>
+                                            <th>{{ gettext('Calculation Time') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for cacheCalculationTime in entries %}
+                                            <tr>
+                                                <td>{{ cacheCalculationTime.username | e }}</td>
+                                                <td>{{ cacheCalculationTime.workoutTypes }}</td>
+                                                <td>{{ cacheCalculationTime.dateRanges }}</td>
+                                                <td>{{ cacheCalculationTime.durationSeconds | format_decimal(2) }} s</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </section>
         </div>
 

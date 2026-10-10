@@ -13,6 +13,7 @@ from sporttracker.gpx.GpxService import GpxService
 from sporttracker.longDistanceTour.LongDistanceTourEntity import LongDistanceTour
 from sporttracker.maintenance.MaintenanceEntity import Maintenance
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import MaintenanceEventInstance
+from sporttracker.metrics.LoadStatisticsCollector import LoadStatisticsCollector
 from sporttracker.monthGoal.MonthGoalEntity import MonthGoalCount, MonthGoalDistance, MonthGoalDuration
 from sporttracker.plannedTour.PlannedTourEntity import (
     PlannedTour,
@@ -53,9 +54,19 @@ class UserStatistics:
     numberOfMaintenanceEvents: int
 
 
+@dataclass
+class CacheCalculationStatistics:
+    cacheName: str
+    username: str
+    workoutTypes: str
+    dateRanges: str
+    durationSeconds: float
+
+
 class ServerStatisticsService:
-    def __init__(self, dataPath: str) -> None:
+    def __init__(self, dataPath: str, loadStatisticsCollector: LoadStatisticsCollector) -> None:
         self._dataPath = dataPath
+        self._loadStatisticsCollector = loadStatisticsCollector
 
     def get_global_statistics(self) -> GlobalStatistics:
         gpxMetadataList = GpxMetadata.query.all()
@@ -75,6 +86,30 @@ class ServerStatisticsService:
         users = User.query.order_by(asc(func.lower(User.username))).all()
 
         return [self.__get_statistics_for_user(user) for user in users]
+
+    def get_cache_calculation_statistics(self) -> list[CacheCalculationStatistics]:
+        usernamesById = {user.id: user.username for user in User.query.all()}
+
+        statistics: list[CacheCalculationStatistics] = []
+        for calculationTime in self._loadStatisticsCollector.get_cache_calculation_times():
+            workoutTypes = ', '.join([x.get_localized_name() for x in calculationTime.workoutTypes])
+            if calculationTime.dateRanges is None:
+                dateRanges = '-'
+            else:
+                dateRanges = ', '.join([f'{dateFrom} - {dateTo}' for dateFrom, dateTo in calculationTime.dateRanges])
+
+            statistics.append(
+                CacheCalculationStatistics(
+                    cacheName=calculationTime.cacheName,
+                    username=usernamesById.get(calculationTime.userId, str(calculationTime.userId)),
+                    workoutTypes=workoutTypes,
+                    dateRanges=dateRanges,
+                    durationSeconds=calculationTime.durationSeconds,
+                )
+            )
+
+        statistics.sort(key=lambda x: (x.cacheName, -x.durationSeconds))
+        return statistics
 
     def __get_statistics_for_user(self, user: User) -> UserStatistics:
         distanceWorkouts = (

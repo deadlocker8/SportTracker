@@ -5,6 +5,7 @@ from datetime import date, timedelta
 from sqlalchemy import and_, false, or_
 
 from sporttracker import Constants
+from sporttracker.metrics.LoadStatisticsCollector import LoadStatisticsCollector
 from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -13,7 +14,8 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
 class MaxSquareCache:
-    def __init__(self) -> None:
+    def __init__(self, loadStatisticsCollector: LoadStatisticsCollector) -> None:
+        self._loadStatisticsCollector = loadStatisticsCollector
         self._max_square_tile_positions: dict[str, list[tuple[int, int]]] = {}
 
     @staticmethod
@@ -41,7 +43,11 @@ class MaxSquareCache:
             self._max_square_tile_positions[cacheKey] = self.__determine_max_square_tile_positions(
                 userId, workoutTypes, dateRanges
             )
-            LOGGER.debug(f'MaxSquareCache key {cacheKey} took {(time.time() - start):.2f}s')
+            duration = time.time() - start
+            LOGGER.debug(f'MaxSquareCache key {cacheKey} took {duration:.2f}s')
+            self._loadStatisticsCollector.record_cache_calculation(
+                type(self).__name__, userId, workoutTypes, dateRanges, duration
+            )
 
         return self._max_square_tile_positions[cacheKey]
 
@@ -50,6 +56,8 @@ class MaxSquareCache:
             if key.startswith(f'{userId}_'):
                 LOGGER.debug(f'Invalidating MaxSquareCache with key with id {key}')
                 del self._max_square_tile_positions[key]
+
+        self._loadStatisticsCollector.invalidate_cache_entry_by_user(type(self).__name__, userId)
 
     @staticmethod
     def __determine_max_square_tile_positions(

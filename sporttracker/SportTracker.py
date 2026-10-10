@@ -35,6 +35,7 @@ from sporttracker.longDistanceTour import LongDistanceTourBlueprint
 from sporttracker.longDistanceTour.LongDistanceTourService import LongDistanceTourService
 from sporttracker.maintenance import MaintenanceBlueprint, MaintenanceEventInstanceBlueprint
 from sporttracker.map import MapBlueprint
+from sporttracker.metrics.LoadStatisticsCollector import LoadStatisticsCollector
 from sporttracker.monthGoal import (
     MonthGoalBlueprint,
     MonthGoalsCountBlueprint,
@@ -129,8 +130,9 @@ class SportTracker(FlaskBaseApp):
             app.config['DATA_FOLDER'] = self._dataFolderPath
         app.config['TEMP_FOLDER'] = os.path.join(tempfile.gettempdir(), 'sporttracker_temp')
 
-        app.config['NEW_VISITED_TILE_CACHE'] = NewVisitedTileCache()
-        app.config['MAX_SQUARE_CACHE'] = MaxSquareCache()
+        app.config['LOAD_STATISTICS_COLLECTOR'] = LoadStatisticsCollector()
+        app.config['NEW_VISITED_TILE_CACHE'] = NewVisitedTileCache(app.config['LOAD_STATISTICS_COLLECTOR'])
+        app.config['MAX_SQUARE_CACHE'] = MaxSquareCache(app.config['LOAD_STATISTICS_COLLECTOR'])
         app.config['GPX_SERVICE'] = GpxService(
             app.config['DATA_FOLDER'],
             app.config['NEW_VISITED_TILE_CACHE'],
@@ -340,7 +342,11 @@ class SportTracker(FlaskBaseApp):
             )
         )
         app.register_blueprint(UserBlueprint.construct_blueprint())
-        app.register_blueprint(ServerStatisticsBlueprint.construct_blueprint(app.config['DATA_FOLDER']))
+        app.register_blueprint(
+            ServerStatisticsBlueprint.construct_blueprint(
+                app.config['DATA_FOLDER'], app.config['LOAD_STATISTICS_COLLECTOR']
+            )
+        )
         app.register_blueprint(SettingsBlueprint.construct_blueprint())
         app.register_blueprint(
             Api.construct_blueprint(

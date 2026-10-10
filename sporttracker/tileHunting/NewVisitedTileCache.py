@@ -8,6 +8,7 @@ from sqlalchemy import bindparam, text
 
 from sporttracker import Constants
 from sporttracker.db import db
+from sporttracker.metrics.LoadStatisticsCollector import LoadStatisticsCollector
 from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -23,7 +24,8 @@ class NewTilesPerDistanceWorkout:
 
 
 class NewVisitedTileCache:
-    def __init__(self) -> None:
+    def __init__(self, loadStatisticsCollector: LoadStatisticsCollector) -> None:
+        self._loadStatisticsCollector = loadStatisticsCollector
         self._newVisitedTilesPerUser: dict[str, list[NewTilesPerDistanceWorkout]] = {}
 
     @staticmethod
@@ -51,7 +53,11 @@ class NewVisitedTileCache:
             self._newVisitedTilesPerUser[cacheKey] = self.__determine_number_of_new_tiles_per_workout(
                 userId, workoutTypes, dateRanges
             )
-            LOGGER.debug(f'NewVisitedTileCache key {cacheKey} took {(time.time() - start):.2f}s')
+            duration = time.time() - start
+            LOGGER.debug(f'NewVisitedTileCache key {cacheKey} took {duration:.2f}s')
+            self._loadStatisticsCollector.record_cache_calculation(
+                type(self).__name__, userId, workoutTypes, dateRanges, duration
+            )
 
         return self._newVisitedTilesPerUser[cacheKey]
 
@@ -60,6 +66,8 @@ class NewVisitedTileCache:
             if key.startswith(f'{userId}_'):
                 LOGGER.debug(f'Invalidating NewVisitedTileCache with key with id {key}')
                 del self._newVisitedTilesPerUser[key]
+
+        self._loadStatisticsCollector.invalidate_cache_entry_by_user(type(self).__name__, userId)
 
     @staticmethod
     def __determine_number_of_new_tiles_per_workout(
