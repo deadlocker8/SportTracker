@@ -57,10 +57,10 @@ class TestCacheWarmer:
             user = User.query.filter(User.username == TEST_USERNAME).first()
             assert user is not None
 
-            warm_caches(app.config['NEW_VISITED_TILE_CACHE'], app.config['MAX_SQUARE_CACHE'])
+            warm_caches(app.config['NEW_VISITED_TILE_CACHE'], app.config['VISITED_TILE_CACHE'])
 
             newVisitedTileCache = app.config['NEW_VISITED_TILE_CACHE']
-            maxSquareCache = app.config['MAX_SQUARE_CACHE']
+            visitedTileCache = app.config['VISITED_TILE_CACHE']
 
             newVisitedTilesPerWorkout = newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
                 user.id, WorkoutType.get_distance_workout_types(), None
@@ -68,7 +68,12 @@ class TestCacheWarmer:
             assert len(newVisitedTilesPerWorkout) == 1
             assert newVisitedTilesPerWorkout[0].numberOfNewTiles == 1
 
-            maxSquareTilePositions = maxSquareCache.get_max_square_tile_positions(
+            maxSquareTilePositions = visitedTileCache.get_max_square_tile_positions(
                 user.id, WorkoutType.get_distance_workout_types(), None
             )
             assert maxSquareTilePositions == [(35198, 21494)]
+
+            maxClusterTilePositions = visitedTileCache.get_max_cluster_tile_positions(
+                user.id, WorkoutType.get_distance_workout_types(), None
+            )
+            assert maxClusterTilePositions == [(35198, 21494)]

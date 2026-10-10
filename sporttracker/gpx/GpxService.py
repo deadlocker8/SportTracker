@@ -24,8 +24,8 @@ from sporttracker.gpx.GpxPreviewImageService import GpxPreviewImageService
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.tileHunting.GpxPlannedTileEntity import GpxPlannedTile
 from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
-from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.tileHunting.VisitedTileCache import VisitedTileCache
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -67,11 +67,11 @@ class GpxService:
         self,
         dataPath: str,
         newVisitedTileCache: NewVisitedTileCache,
-        maxSquareCache: MaxSquareCache,
+        visitedTileCache: VisitedTileCache,
     ) -> None:
         self._dataPath = dataPath
         self._newVisitedTileCache = newVisitedTileCache
-        self._maxSquareCache = maxSquareCache
+        self._visitedTileCache = visitedTileCache
 
     def get_folder_path(self, gpxFileName: str) -> str:
         return os.path.join(self._dataPath, gpxFileName)
@@ -240,7 +240,7 @@ class GpxService:
                 db.session.commit()
 
                 self._newVisitedTileCache.invalidate_cache_entry_by_user(userId)
-                self._maxSquareCache.invalidate_cache_entry_by_user(userId)
+                self._visitedTileCache.invalidate_cache_entry_by_user(userId)
             else:
                 db.session.execute(delete(GpxPlannedTile).where(GpxPlannedTile.planned_tour_id == item.id))
                 LOGGER.debug(f'Deleted gpx planned tiles for planned tour with id {item.id}')
@@ -267,7 +267,7 @@ class GpxService:
         db.session.commit()
 
         self._newVisitedTileCache.invalidate_cache_entry_by_user(userId)
-        self._maxSquareCache.invalidate_cache_entry_by_user(userId)
+        self._visitedTileCache.invalidate_cache_entry_by_user(userId)
 
     def add_planned_tiles_for_planned_tour(self, plannedTour: PlannedTour, baseZoomLevel: int, userId: int):
         visitedTiles = self.get_visited_tiles(plannedTour.get_gpx_metadata().gpx_file_name, baseZoomLevel)  # type: ignore[union-attr]

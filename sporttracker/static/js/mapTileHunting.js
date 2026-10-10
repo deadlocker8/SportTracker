@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function()
     const buttonHelpMaxSquare = document.getElementById('button-help-max-square');
     new bootstrap.Tooltip(buttonHelpMaxSquare, {sanitize: false});
 
+    const buttonHelpMaxCluster = document.getElementById('button-help-max-cluster');
+    new bootstrap.Tooltip(buttonHelpMaxCluster, {sanitize: false});
+
     const checkboxGrid = document.getElementById('tileHuntingEnableGrid');
     checkboxGrid.addEventListener('change', function()
     {

@@ -33,13 +33,13 @@ from sporttracker.tileHunting.Colors import (
     COLOR_PLANNED,
     Color,
 )
-from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.tileHunting.TileHuntingFilterStateEntity import (
     TileHuntingFilterState,
     get_tile_hunting_filter_state_by_user,
 )
 from sporttracker.tileHunting.TileRenderService import TileRenderService
+from sporttracker.tileHunting.VisitedTileCache import VisitedTileCache
 from sporttracker.tileHunting.VisitedTileService import VisitedTileService
 from sporttracker.user.UserEntity import get_user_by_tile_hunting_shared_code
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
@@ -87,7 +87,7 @@ def createGpxInfoPlannedTour(tourId: int, tourName: str, workoutUrlEndpoint: str
 def construct_blueprint(
     tileHuntingSettings: dict[str, Any],
     newVisitedTileCache: NewVisitedTileCache,
-    maxSquareCache: MaxSquareCache,
+    visitedTileCache: VisitedTileCache,
     distanceWorkoutService: DistanceWorkoutService,
     gpxPreviewImageSettings: dict[str, Any],
     plannedTourService: PlannedTourService,
@@ -407,6 +407,7 @@ def construct_blueprint(
             tileRenderUrl=url_for('maps.tileOverlay'),
             totalNumberOfTiles=totalNumberOfTiles,
             maxSquareSize=visitedTileService.get_max_square_size(),
+            maxClusterSize=visitedTileService.get_max_cluster_size(),
             chartDataNewTilesPerWorkout=chartDataNewTilesPerWorkout,
             tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
             maxSquareColor=tileHuntingSettings['maxSquareColor'],
@@ -560,7 +561,7 @@ def construct_blueprint(
     ) -> VisitedTileService:
         return VisitedTileService(
             newVisitedTileCache,
-            maxSquareCache,
+            visitedTileCache,
             quickFilterState,
             tileHuntingFilterState,
             distanceWorkoutService,

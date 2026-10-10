@@ -4,15 +4,15 @@ from datetime import date
 
 from sporttracker import Constants
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
-from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.tileHunting.VisitedTileCache import VisitedTileCache
 from sporttracker.user.UserEntity import User
 from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def warm_caches(newVisitedTileCache: NewVisitedTileCache, maxSquareCache: MaxSquareCache) -> None:
+def warm_caches(newVisitedTileCache: NewVisitedTileCache, visitedTileCache: VisitedTileCache) -> None:
     users = User.query.order_by(User.id).all()
     if not users:
         return
@@ -36,7 +36,10 @@ def warm_caches(newVisitedTileCache: NewVisitedTileCache, maxSquareCache: MaxSqu
             newVisitedTileCache.get_number_of_new_visited_tiles_per_workout_by_user(
                 user.id, workoutTypes, list(dateRanges) if dateRanges is not None else None
             )
-            maxSquareCache.get_max_square_tile_positions(
+            visitedTileCache.get_max_square_tile_positions(
+                user.id, workoutTypes, list(dateRanges) if dateRanges is not None else None
+            )
+            visitedTileCache.get_max_cluster_tile_positions(
                 user.id, workoutTypes, list(dateRanges) if dateRanges is not None else None
             )
             LOGGER.debug(f'Warmed caches for user with ID {user.id} took {(time.time() - userStart):.2f}s')

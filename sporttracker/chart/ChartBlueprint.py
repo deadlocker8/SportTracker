@@ -17,9 +17,9 @@ from sporttracker.db import db
 from sporttracker.helpers import DateFormats, Helpers
 from sporttracker.helpers.Helpers import format_duration
 from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState, get_quick_filter_state_by_user
-from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
 from sporttracker.tileHunting.TileHuntingFilterStateEntity import TileHuntingFilterState
+from sporttracker.tileHunting.VisitedTileCache import VisitedTileCache
 from sporttracker.tileHunting.VisitedTileService import VisitedTileService
 from sporttracker.user.CustomWorkoutFieldEntity import (
     get_custom_field_by_id,
@@ -52,7 +52,7 @@ NO_START_TIME_PLACEHOLDER = time(hour=12, minute=0, second=0, microsecond=0)
 
 def construct_blueprint(
     newVisitedTileCache: NewVisitedTileCache,
-    maxSquareCache: MaxSquareCache,
+    visitedTileCache: VisitedTileCache,
     distanceWorkoutService: DistanceWorkoutService,
 ):
     charts = Blueprint('charts', __name__, static_folder='static', url_prefix='/charts')
@@ -574,7 +574,7 @@ def construct_blueprint(
         if minYear is not None and maxYear is not None:
             visitedTileService = VisitedTileService(
                 newVisitedTileCache,
-                maxSquareCache,
+                visitedTileCache,
                 QuickFilterState().reset(WorkoutService.get_available_years(current_user.id)),
                 TileHuntingFilterState().reset(),
                 distanceWorkoutService,

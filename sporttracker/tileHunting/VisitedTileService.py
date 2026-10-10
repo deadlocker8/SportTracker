@@ -13,9 +13,9 @@ from sporttracker.quickFilter.QuickFilterStateEntity import QuickFilterState
 from sporttracker.tileHunting.Colors import COLOR_MULTIPLE_MATCHES, COLOR_NOT_NEW, Color
 from sporttracker.tileHunting.GpxPlannedTileEntity import GpxPlannedTile
 from sporttracker.tileHunting.GpxVisitedTileEntity import GpxVisitedTile
-from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewTilesPerDistanceWorkout, NewVisitedTileCache
 from sporttracker.tileHunting.TileHuntingFilterStateEntity import TileHuntingFilterState
+from sporttracker.tileHunting.VisitedTileCache import VisitedTileCache
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
 from sporttracker.workout.distance.DistanceWorkoutService import DistanceWorkoutService
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -39,14 +39,14 @@ class VisitedTileService:
     def __init__(
         self,
         newVisitedTileCache: NewVisitedTileCache,
-        maxSquareCache: MaxSquareCache,
+        visitedTileCache: VisitedTileCache,
         quickFilterState: QuickFilterState,
         tileHuntingFilterState: TileHuntingFilterState,
         distanceWorkoutService: DistanceWorkoutService,
         workoutId: int | None = None,
     ) -> None:
         self._newVisitedTileCache = newVisitedTileCache
-        self._maxSquareCache = maxSquareCache
+        self._visitedTileCache = visitedTileCache
         self._quickFilterState = quickFilterState
         self._tileHuntingFilterState = tileHuntingFilterState
         self._distanceWorkoutService = distanceWorkoutService
@@ -246,7 +246,7 @@ class VisitedTileService:
         return [(row[1], row[2]) for row in rows]
 
     def get_max_square_tile_positions(self) -> list[tuple[int, int]]:
-        return self._maxSquareCache.get_max_square_tile_positions(
+        return self._visitedTileCache.get_max_square_tile_positions(
             current_user.id,
             self._quickFilterState.get_active_distance_workout_types(),
             self._quickFilterState.get_effective_date_ranges(),
@@ -258,6 +258,16 @@ class VisitedTileService:
             return 0
 
         return int(math.sqrt(len(maxSquareTilePositions)))
+
+    def get_max_cluster_tile_positions(self) -> list[tuple[int, int]]:
+        return self._visitedTileCache.get_max_cluster_tile_positions(
+            current_user.id,
+            self._quickFilterState.get_active_distance_workout_types(),
+            self._quickFilterState.get_effective_date_ranges(),
+        )
+
+    def get_max_cluster_size(self) -> int:
+        return len(self.get_max_cluster_tile_positions())
 
     def get_number_of_new_tiles_per_workout_type_per_year(
         self, min_year: int, max_year: int, workout_types: list[WorkoutType]

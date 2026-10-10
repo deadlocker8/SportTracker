@@ -54,8 +54,8 @@ from sporttracker.quickFilter import QuickFilterBlueprint
 from sporttracker.search import SearchBlueprint
 from sporttracker.serverStatistics import ServerStatisticsBlueprint
 from sporttracker.tileHunting.CacheWarmer import warm_caches
-from sporttracker.tileHunting.MaxSquareCache import MaxSquareCache
 from sporttracker.tileHunting.NewVisitedTileCache import NewVisitedTileCache
+from sporttracker.tileHunting.VisitedTileCache import VisitedTileCache
 from sporttracker.user import SettingsBlueprint, UserBlueprint
 from sporttracker.user.CustomWorkoutFieldEntity import CustomWorkoutFieldType
 from sporttracker.user.UserEntity import (
@@ -132,11 +132,11 @@ class SportTracker(FlaskBaseApp):
 
         app.config['LOAD_STATISTICS_COLLECTOR'] = LoadStatisticsCollector()
         app.config['NEW_VISITED_TILE_CACHE'] = NewVisitedTileCache(app.config['LOAD_STATISTICS_COLLECTOR'])
-        app.config['MAX_SQUARE_CACHE'] = MaxSquareCache(app.config['LOAD_STATISTICS_COLLECTOR'])
+        app.config['VISITED_TILE_CACHE'] = VisitedTileCache(app.config['LOAD_STATISTICS_COLLECTOR'])
         app.config['GPX_SERVICE'] = GpxService(
             app.config['DATA_FOLDER'],
             app.config['NEW_VISITED_TILE_CACHE'],
-            app.config['MAX_SQUARE_CACHE'],
+            app.config['VISITED_TILE_CACHE'],
         )
         notificationService = NotificationService()
         app.config['NOTIFICATION_SERVICE'] = notificationService
@@ -291,7 +291,7 @@ class SportTracker(FlaskBaseApp):
                     dummyDataGenerator.generate()
 
                 if self._settings['tileHunting']['warmCachesOnStartup']:
-                    warm_caches(app.config['NEW_VISITED_TILE_CACHE'], app.config['MAX_SQUARE_CACHE'])
+                    warm_caches(app.config['NEW_VISITED_TILE_CACHE'], app.config['VISITED_TILE_CACHE'])
 
         return app
 
@@ -337,7 +337,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(
             ChartBlueprint.construct_blueprint(
                 app.config['NEW_VISITED_TILE_CACHE'],
-                app.config['MAX_SQUARE_CACHE'],
+                app.config['VISITED_TILE_CACHE'],
                 app.config['DISTANCE_WORKOUT_SERVICE'],
             )
         )
@@ -367,7 +367,7 @@ class SportTracker(FlaskBaseApp):
             MapBlueprint.construct_blueprint(
                 self._settings['tileHunting'],
                 app.config['NEW_VISITED_TILE_CACHE'],
-                app.config['MAX_SQUARE_CACHE'],
+                app.config['VISITED_TILE_CACHE'],
                 app.config['DISTANCE_WORKOUT_SERVICE'],
                 self._settings['gpxPreviewImages'],
                 app.config['PLANNED_TOUR_SERVICE'],
