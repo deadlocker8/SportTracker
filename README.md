@@ -54,7 +54,7 @@ Tile hunting divides the world map into roughly same-sized tiles and allows you 
 Each user can enable it optionally.
 If enabled, an additional map shows all tiles you have already visited. A tile is considered visited as soon as at least one GPX track crosses it. By default, a tile matches an OpenStreetMap tile at zoom level 14 (configurable in the SportTracker settings file).
 
-Tile hunting is a great way to discover new areas or to stay motivated to explore new routes. The map also highlights the largest square area that is completely covered by your visited tiles.
+Tile hunting is a great way to discover new areas or to stay motivated to explore new routes. The map also highlights the largest square area that is completely covered by your visited tiles and the largest connected are (cluster).
 
 Overall tile hunting map:
 ![](docs/screenshots/tile_hunting_map.jpg)
