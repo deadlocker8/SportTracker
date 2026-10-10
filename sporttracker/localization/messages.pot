@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-10 13:04+0200\n"
+"POT-Creation-Date: 2026-10-10 21:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,7 +206,7 @@ msgstr ""
 msgid "Maintenance does not exist anymore"
 msgstr ""
 
-#: ../map/MapBlueprint.py:188 ../map/MapBlueprint.py:229
+#: ../map/MapBlueprint.py:188 ../map/MapBlueprint.py:230
 msgid "Unknown shared link"
 msgstr ""
 
@@ -214,11 +214,11 @@ msgstr ""
 msgid "Unknown planned tour"
 msgstr ""
 
-#: ../map/MapBlueprint.py:478
+#: ../map/MapBlueprint.py:492
 msgid "Unknown long-distance tour"
 msgstr ""
 
-#: ../map/MapBlueprint.py:485
+#: ../map/MapBlueprint.py:499
 #: ../templates/longDistanceTour/longDistanceTourForm.jinja2:155
 #: ../templates/map/mapLongDistanceTour.jinja2:105
 #: ../templates/map/mapLongDistanceTour.jinja2:191
@@ -439,21 +439,21 @@ msgid "Password"
 msgstr ""
 
 #: ../templates/macros.jinja2:61
-#: ../templates/serverStatistics/serverStatistics.jinja2:66
+#: ../templates/serverStatistics/serverStatistics.jinja2:62
 #: ../templates/user/users.jinja2:6 ../templates/user/users.jinja2:17
 msgid "Users"
 msgstr ""
 
 #: ../templates/macros.jinja2:67
-#: ../templates/serverStatistics/serverStatistics.jinja2:47
-#: ../templates/serverStatistics/serverStatistics.jinja2:58
+#: ../templates/serverStatistics/serverStatistics.jinja2:43
+#: ../templates/serverStatistics/serverStatistics.jinja2:54
 msgid "Server Statistics"
 msgstr ""
 
 #: ../templates/macros.jinja2:80 ../templates/map/mapMultipleWorkouts.jinja2:6
 #: ../templates/plannedTour/plannedTours.jinja2:103
-#: ../templates/serverStatistics/serverStatistics.jinja2:70
-#: ../templates/serverStatistics/serverStatistics.jinja2:91
+#: ../templates/serverStatistics/serverStatistics.jinja2:66
+#: ../templates/serverStatistics/serverStatistics.jinja2:87
 #: ../templates/workout/workouts.jinja2:5
 #: ../templates/workout/workouts.jinja2:25
 msgid "Workouts"
@@ -1046,7 +1046,7 @@ msgstr ""
 #: ../templates/map/mapMultipleWorkouts.jinja2:63
 #: ../templates/map/mapMultipleWorkouts.jinja2:80
 #: ../templates/map/mapTileHunting.jinja2:27
-#: ../templates/map/mapTileHunting.jinja2:91
+#: ../templates/map/mapTileHunting.jinja2:102
 #: ../templates/map/mapTileHuntingHeatmap.jinja2:27
 #: ../templates/map/mapTileHuntingHeatmap.jinja2:67
 #: ../templates/plannedTour/plannedTours.jinja2:32
@@ -1055,19 +1055,19 @@ msgid "Filter"
 msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:120
-#: ../templates/map/mapMacros.jinja2:225
+#: ../templates/map/mapMacros.jinja2:242
 #: ../templates/plannedTour/plannedToursMacros.jinja2:260
 msgid "Reset"
 msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:122
-#: ../templates/map/mapMacros.jinja2:227
+#: ../templates/map/mapMacros.jinja2:244
 #: ../templates/plannedTour/plannedToursMacros.jinja2:262
 msgid "Apply"
 msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:122
-#: ../templates/map/mapMacros.jinja2:227
+#: ../templates/map/mapMacros.jinja2:244
 #: ../templates/plannedTour/plannedToursMacros.jinja2:262
 msgid "Applying..."
 msgstr ""
@@ -1285,23 +1285,27 @@ msgid "Show max square"
 msgstr ""
 
 #: ../templates/map/mapMacros.jinja2:208
+msgid "Show max cluster"
+msgstr ""
+
+#: ../templates/map/mapMacros.jinja2:225
 #: ../templates/settings/settings.jinja2:98
 msgid "Show planned tiles"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:235 ../templates/map/mapMacros.jinja2:243
+#: ../templates/map/mapMacros.jinja2:252 ../templates/map/mapMacros.jinja2:260
 msgid "Years"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:237 ../templates/map/mapMacros.jinja2:265
+#: ../templates/map/mapMacros.jinja2:254 ../templates/map/mapMacros.jinja2:282
 msgid "Date range"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:270
+#: ../templates/map/mapMacros.jinja2:287
 msgid "Start date"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:274
+#: ../templates/map/mapMacros.jinja2:291
 msgid "End date"
 msgstr ""
 
@@ -1395,16 +1399,30 @@ msgid ""
 "color: {maxSquareColor};&quot;></span>"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:70
+#: ../templates/map/mapTileHunting.jinja2:66
+msgid "Max cluster:"
+msgstr ""
+
+#: ../templates/map/mapTileHunting.jinja2:71
+msgid ""
+"The size of the largest connected area of visited tiles. Two tiles are "
+"considered connected if they share a common edge. If the checkbox "
+"&quot;Show max cluster&quot; is selected all tiles inside your max "
+"cluster will use this color: <span class=&quot;d-inline-block&quot; "
+"style=&quot;width: 10px; height: 10px; background-color: "
+"{maxClusterColor};&quot;></span>"
+msgstr ""
+
+#: ../templates/map/mapTileHunting.jinja2:81
 #: ../templates/map/mapTileHuntingHeatmap.jinja2:52
 msgid "Zoom in to view visited tiles."
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:129
+#: ../templates/map/mapTileHunting.jinja2:140
 msgid "Click bar to open in new tab"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:142
+#: ../templates/map/mapTileHunting.jinja2:153
 msgid "Number of new tiles"
 msgstr ""
 
@@ -1589,7 +1607,7 @@ msgid "Multiple New Duration Month Goals"
 msgstr ""
 
 #: ../templates/monthGoal/monthGoals.jinja2:19
-#: ../templates/serverStatistics/serverStatistics.jinja2:100
+#: ../templates/serverStatistics/serverStatistics.jinja2:96
 msgid "Month Goals"
 msgstr ""
 
@@ -1725,71 +1743,71 @@ msgstr ""
 msgid "Departure Method"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:67
-#: ../templates/serverStatistics/serverStatistics.jinja2:94
+#: ../templates/serverStatistics/serverStatistics.jinja2:63
+#: ../templates/serverStatistics/serverStatistics.jinja2:90
 msgid "Preview Images"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:73
-#: ../templates/serverStatistics/serverStatistics.jinja2:92
+#: ../templates/serverStatistics/serverStatistics.jinja2:69
+#: ../templates/serverStatistics/serverStatistics.jinja2:88
 msgid "GPX/FIT Tracks"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:74
-#: ../templates/serverStatistics/serverStatistics.jinja2:93
+#: ../templates/serverStatistics/serverStatistics.jinja2:70
+#: ../templates/serverStatistics/serverStatistics.jinja2:89
 msgid "GPX/FIT File Size"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:80
+#: ../templates/serverStatistics/serverStatistics.jinja2:76
 msgid "Statistics per User"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:90
-#: ../templates/serverStatistics/serverStatistics.jinja2:157
+#: ../templates/serverStatistics/serverStatistics.jinja2:86
+#: ../templates/serverStatistics/serverStatistics.jinja2:153
 msgid "User"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:95
+#: ../templates/serverStatistics/serverStatistics.jinja2:91
 msgid "First Workout"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:96
+#: ../templates/serverStatistics/serverStatistics.jinja2:92
 msgid "Last Workout"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:97
+#: ../templates/serverStatistics/serverStatistics.jinja2:93
 msgid "Planned Tours (completed/total)"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:98
+#: ../templates/serverStatistics/serverStatistics.jinja2:94
 msgid "Visited Tiles"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:99
+#: ../templates/serverStatistics/serverStatistics.jinja2:95
 msgid "Body Weight Entries"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:101
+#: ../templates/serverStatistics/serverStatistics.jinja2:97
 msgid "Maintenances"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:101
+#: ../templates/serverStatistics/serverStatistics.jinja2:97
 msgid "Events"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:141
+#: ../templates/serverStatistics/serverStatistics.jinja2:137
 msgid "Cache Calculation Times"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:158
+#: ../templates/serverStatistics/serverStatistics.jinja2:154
 msgid "Workout Types"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:159
+#: ../templates/serverStatistics/serverStatistics.jinja2:155
 msgid "Date Ranges"
 msgstr ""
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:160
+#: ../templates/serverStatistics/serverStatistics.jinja2:156
 msgid "Calculation Time"
 msgstr ""
 

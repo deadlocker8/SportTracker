@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-10 13:04+0200\n"
-"PO-Revision-Date: 2026-10-10 13:05+0200\n"
+"POT-Creation-Date: 2026-10-10 21:06+0200\n"
+"PO-Revision-Date: 2026-10-10 21:07+0200\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -219,7 +219,7 @@ msgstr "Heatmap Monate"
 msgid "Maintenance does not exist anymore"
 msgstr "Wartung existiert nicht mehr"
 
-#: ../map/MapBlueprint.py:188 ../map/MapBlueprint.py:229
+#: ../map/MapBlueprint.py:188 ../map/MapBlueprint.py:230
 msgid "Unknown shared link"
 msgstr "Unbekannter geteilter Link"
 
@@ -227,11 +227,11 @@ msgstr "Unbekannter geteilter Link"
 msgid "Unknown planned tour"
 msgstr "Unbekannte geplante Tour"
 
-#: ../map/MapBlueprint.py:478
+#: ../map/MapBlueprint.py:492
 msgid "Unknown long-distance tour"
 msgstr "Unbekannte Etappentour"
 
-#: ../map/MapBlueprint.py:485
+#: ../map/MapBlueprint.py:499
 #: ../templates/longDistanceTour/longDistanceTourForm.jinja2:155
 #: ../templates/map/mapLongDistanceTour.jinja2:105
 #: ../templates/map/mapLongDistanceTour.jinja2:191
@@ -459,21 +459,21 @@ msgid "Password"
 msgstr "Passwort"
 
 #: ../templates/macros.jinja2:61
-#: ../templates/serverStatistics/serverStatistics.jinja2:66
+#: ../templates/serverStatistics/serverStatistics.jinja2:62
 #: ../templates/user/users.jinja2:6 ../templates/user/users.jinja2:17
 msgid "Users"
 msgstr "Benutzer"
 
 #: ../templates/macros.jinja2:67
-#: ../templates/serverStatistics/serverStatistics.jinja2:47
-#: ../templates/serverStatistics/serverStatistics.jinja2:58
+#: ../templates/serverStatistics/serverStatistics.jinja2:43
+#: ../templates/serverStatistics/serverStatistics.jinja2:54
 msgid "Server Statistics"
 msgstr "Server Statistiken"
 
 #: ../templates/macros.jinja2:80 ../templates/map/mapMultipleWorkouts.jinja2:6
 #: ../templates/plannedTour/plannedTours.jinja2:103
-#: ../templates/serverStatistics/serverStatistics.jinja2:70
-#: ../templates/serverStatistics/serverStatistics.jinja2:91
+#: ../templates/serverStatistics/serverStatistics.jinja2:66
+#: ../templates/serverStatistics/serverStatistics.jinja2:87
 #: ../templates/workout/workouts.jinja2:5 ../templates/workout/workouts.jinja2:25
 msgid "Workouts"
 msgstr "Workouts"
@@ -1064,7 +1064,7 @@ msgstr "Wert:"
 #: ../templates/map/mapMultipleWorkouts.jinja2:63
 #: ../templates/map/mapMultipleWorkouts.jinja2:80
 #: ../templates/map/mapTileHunting.jinja2:27
-#: ../templates/map/mapTileHunting.jinja2:91
+#: ../templates/map/mapTileHunting.jinja2:102
 #: ../templates/map/mapTileHuntingHeatmap.jinja2:27
 #: ../templates/map/mapTileHuntingHeatmap.jinja2:67
 #: ../templates/plannedTour/plannedTours.jinja2:32
@@ -1073,19 +1073,19 @@ msgid "Filter"
 msgstr "Filter"
 
 #: ../templates/maintenance/maintenances.jinja2:120
-#: ../templates/map/mapMacros.jinja2:225
+#: ../templates/map/mapMacros.jinja2:242
 #: ../templates/plannedTour/plannedToursMacros.jinja2:260
 msgid "Reset"
 msgstr "Zurücksetzen"
 
 #: ../templates/maintenance/maintenances.jinja2:122
-#: ../templates/map/mapMacros.jinja2:227
+#: ../templates/map/mapMacros.jinja2:244
 #: ../templates/plannedTour/plannedToursMacros.jinja2:262
 msgid "Apply"
 msgstr "Übernehmen"
 
 #: ../templates/maintenance/maintenances.jinja2:122
-#: ../templates/map/mapMacros.jinja2:227
+#: ../templates/map/mapMacros.jinja2:244
 #: ../templates/plannedTour/plannedToursMacros.jinja2:262
 msgid "Applying..."
 msgstr "Übernehmen..."
@@ -1301,23 +1301,27 @@ msgstr "Nur neue Kacheln hervorheben"
 msgid "Show max square"
 msgstr "Maximales Quadrat anzeigen"
 
-#: ../templates/map/mapMacros.jinja2:208 ../templates/settings/settings.jinja2:98
+#: ../templates/map/mapMacros.jinja2:208
+msgid "Show max cluster"
+msgstr "Maximales Cluster anzeigen"
+
+#: ../templates/map/mapMacros.jinja2:225 ../templates/settings/settings.jinja2:98
 msgid "Show planned tiles"
 msgstr "Geplante Kacheln anzeigen"
 
-#: ../templates/map/mapMacros.jinja2:235 ../templates/map/mapMacros.jinja2:243
+#: ../templates/map/mapMacros.jinja2:252 ../templates/map/mapMacros.jinja2:260
 msgid "Years"
 msgstr "Jahre"
 
-#: ../templates/map/mapMacros.jinja2:237 ../templates/map/mapMacros.jinja2:265
+#: ../templates/map/mapMacros.jinja2:254 ../templates/map/mapMacros.jinja2:282
 msgid "Date range"
 msgstr "Datumsbereich"
 
-#: ../templates/map/mapMacros.jinja2:270
+#: ../templates/map/mapMacros.jinja2:287
 msgid "Start date"
 msgstr "Startdatum"
 
-#: ../templates/map/mapMacros.jinja2:274
+#: ../templates/map/mapMacros.jinja2:291
 msgid "End date"
 msgstr "Enddatum"
 
@@ -1419,16 +1423,35 @@ msgstr ""
 "Farbe: <span class=&quot;d-inline-block&quot; style=&quot;width: 10px; height: "
 "10px; background-color: {maxSquareColor};&quot;></span>"
 
-#: ../templates/map/mapTileHunting.jinja2:70
+#: ../templates/map/mapTileHunting.jinja2:66
+msgid "Max cluster:"
+msgstr "Maximales Cluster:"
+
+#: ../templates/map/mapTileHunting.jinja2:71
+msgid ""
+"The size of the largest connected area of visited tiles. Two tiles are "
+"considered connected if they share a common edge. If the checkbox &quot;Show "
+"max cluster&quot; is selected all tiles inside your max cluster will use this "
+"color: <span class=&quot;d-inline-block&quot; style=&quot;width: 10px; height: "
+"10px; background-color: {maxClusterColor};&quot;></span>"
+msgstr ""
+"Die Größe des größten zusammenhängenden Bereichs aus besuchten Kacheln. Zwei "
+"Kacheln gelten als zusammenhängend, wenn sie eine gemeinsame Kante haben. Wenn "
+"die Checkbox &quot;Maximales Cluster anzeigen&quot; aktiviert ist, verwenden "
+"alle Kacheln innerhalb des maximalen Clusters diese Farbe: <span class=&quot;d-"
+"inline-block&quot; style=&quot;width: 10px; height: 10px; background-color: "
+"{maxClusterColor};&quot;></span>"
+
+#: ../templates/map/mapTileHunting.jinja2:81
 #: ../templates/map/mapTileHuntingHeatmap.jinja2:52
 msgid "Zoom in to view visited tiles."
 msgstr "Hineinzoomen, um besuchte Kacheln anzuzeigen."
 
-#: ../templates/map/mapTileHunting.jinja2:129
+#: ../templates/map/mapTileHunting.jinja2:140
 msgid "Click bar to open in new tab"
 msgstr "Balken anklicken, um in neuem Tab zu öffnen"
 
-#: ../templates/map/mapTileHunting.jinja2:142
+#: ../templates/map/mapTileHunting.jinja2:153
 msgid "Number of new tiles"
 msgstr "Anzahl neuer Kacheln"
 
@@ -1613,7 +1636,7 @@ msgid "Multiple New Duration Month Goals"
 msgstr "Mehrere neue Zeitziele"
 
 #: ../templates/monthGoal/monthGoals.jinja2:19
-#: ../templates/serverStatistics/serverStatistics.jinja2:100
+#: ../templates/serverStatistics/serverStatistics.jinja2:96
 msgid "Month Goals"
 msgstr "Monatsziele"
 
@@ -1751,71 +1774,71 @@ msgstr "Anreiseart"
 msgid "Departure Method"
 msgstr "Abreiseart"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:67
-#: ../templates/serverStatistics/serverStatistics.jinja2:94
+#: ../templates/serverStatistics/serverStatistics.jinja2:63
+#: ../templates/serverStatistics/serverStatistics.jinja2:90
 msgid "Preview Images"
 msgstr "Vorschaubilder"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:73
-#: ../templates/serverStatistics/serverStatistics.jinja2:92
+#: ../templates/serverStatistics/serverStatistics.jinja2:69
+#: ../templates/serverStatistics/serverStatistics.jinja2:88
 msgid "GPX/FIT Tracks"
 msgstr "GPX/FIT Tracks"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:74
-#: ../templates/serverStatistics/serverStatistics.jinja2:93
+#: ../templates/serverStatistics/serverStatistics.jinja2:70
+#: ../templates/serverStatistics/serverStatistics.jinja2:89
 msgid "GPX/FIT File Size"
 msgstr "GPX/FIT Speicherplatz"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:80
+#: ../templates/serverStatistics/serverStatistics.jinja2:76
 msgid "Statistics per User"
 msgstr "Statistiken pro Nutzer"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:90
-#: ../templates/serverStatistics/serverStatistics.jinja2:157
+#: ../templates/serverStatistics/serverStatistics.jinja2:86
+#: ../templates/serverStatistics/serverStatistics.jinja2:153
 msgid "User"
 msgstr "Nutzer"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:95
+#: ../templates/serverStatistics/serverStatistics.jinja2:91
 msgid "First Workout"
 msgstr "Erstes Workout"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:96
+#: ../templates/serverStatistics/serverStatistics.jinja2:92
 msgid "Last Workout"
 msgstr "Letztes Workout"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:97
+#: ../templates/serverStatistics/serverStatistics.jinja2:93
 msgid "Planned Tours (completed/total)"
 msgstr "Geplante Touren (abgeschlossen/gesamt)"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:98
+#: ../templates/serverStatistics/serverStatistics.jinja2:94
 msgid "Visited Tiles"
 msgstr "Besuchte Kacheln"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:99
+#: ../templates/serverStatistics/serverStatistics.jinja2:95
 msgid "Body Weight Entries"
 msgstr "Körpergewichte"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:101
+#: ../templates/serverStatistics/serverStatistics.jinja2:97
 msgid "Maintenances"
 msgstr "Wartungen"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:101
+#: ../templates/serverStatistics/serverStatistics.jinja2:97
 msgid "Events"
 msgstr "Wartungsereignisse"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:141
+#: ../templates/serverStatistics/serverStatistics.jinja2:137
 msgid "Cache Calculation Times"
 msgstr "Cache Berechnungszeiten"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:158
+#: ../templates/serverStatistics/serverStatistics.jinja2:154
 msgid "Workout Types"
 msgstr "Workouttypen"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:159
+#: ../templates/serverStatistics/serverStatistics.jinja2:155
 msgid "Date Ranges"
 msgstr "Datumsbereiche"
 
-#: ../templates/serverStatistics/serverStatistics.jinja2:160
+#: ../templates/serverStatistics/serverStatistics.jinja2:156
 msgid "Calculation Time"
 msgstr "Berechnungszeit"
 
@@ -2453,3 +2476,10 @@ msgstr "Wiederh."
 
 #~ msgid "my planned tours"
 #~ msgstr "meine geplanten Touren"
+
+#~ msgid ""
+#~ "The size of the largest connected area of visited tiles. Two tiles are "
+#~ "considered connected if they share a common edge."
+#~ msgstr ""
+#~ "Die Größe des größten zusammenhängenden Bereichs aus besuchten Kacheln. Zwei "
+#~ "Kacheln gelten als zusammenhängend, wenn sie eine gemeinsame Kante haben."

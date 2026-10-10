@@ -68,7 +68,7 @@
                          data-bs-toggle="tooltip"
                          data-bs-placement="right"
                          data-bs-html="true"
-                         data-bs-title="{{ gettext('The size of the largest connected area of visited tiles. Two tiles are considered connected if they share a common edge.') }}">
+                         data-bs-title="{{ gettext('The size of the largest connected area of visited tiles. Two tiles are considered connected if they share a common edge. If the checkbox &quot;Show max cluster&quot; is selected all tiles inside your max cluster will use this color: <span class=&quot;d-inline-block&quot; style=&quot;width: 10px; height: 10px; background-color: {maxClusterColor};&quot;></span>').format(maxClusterColor=maxClusterColor) }}">
                         <span class="rounded-circle bg-primary p-1 fs-5 material-symbols-outlined">question_mark</span>
                     </div>
                 </div>
