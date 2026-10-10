@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-10 21:06+0200\n"
+"POT-Creation-Date: 2026-10-10 22:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -664,7 +664,7 @@ msgstr ""
 #: ../templates/maintenanceEvent/maintenanceEventForm.jinja2:59
 #: ../templates/map/mapLongDistanceTour.jinja2:115
 #: ../templates/map/mapSingleWorkout.jinja2:43
-#: ../templates/map/mapSingleWorkout.jinja2:89
+#: ../templates/map/mapSingleWorkout.jinja2:117
 #: ../templates/workout/workoutMacros.jinja2:369
 msgid "Date"
 msgstr ""
@@ -971,8 +971,8 @@ msgstr ""
 
 #: ../templates/longDistanceTour/longDistanceTours.jinja2:77
 #: ../templates/map/mapLongDistanceTour.jinja2:173
-#: ../templates/map/mapPlannedTour.jinja2:62
-#: ../templates/map/mapPlannedTour.jinja2:146
+#: ../templates/map/mapPlannedTour.jinja2:90
+#: ../templates/map/mapPlannedTour.jinja2:174
 #: ../templates/plannedTour/plannedTours.jinja2:107
 msgid "last edited"
 msgstr ""
@@ -1046,7 +1046,7 @@ msgstr ""
 #: ../templates/map/mapMultipleWorkouts.jinja2:63
 #: ../templates/map/mapMultipleWorkouts.jinja2:80
 #: ../templates/map/mapTileHunting.jinja2:27
-#: ../templates/map/mapTileHunting.jinja2:102
+#: ../templates/map/mapTileHunting.jinja2:119
 #: ../templates/map/mapTileHuntingHeatmap.jinja2:27
 #: ../templates/map/mapTileHuntingHeatmap.jinja2:67
 #: ../templates/plannedTour/plannedTours.jinja2:32
@@ -1109,31 +1109,33 @@ msgstr ""
 #: ../templates/map/mapLongDistanceTour.jinja2:111
 #: ../templates/map/mapLongDistanceTour.jinja2:133
 #: ../templates/map/mapPlannedTour.jinja2:41
-#: ../templates/map/mapPlannedTour.jinja2:88
+#: ../templates/map/mapPlannedTour.jinja2:116
 #: ../templates/map/mapSingleWorkout.jinja2:46
-#: ../templates/map/mapSingleWorkout.jinja2:93 ../user/UserEntity.py:81
+#: ../templates/map/mapSingleWorkout.jinja2:121 ../user/UserEntity.py:81
 msgid "Distance"
 msgstr ""
 
 #: ../templates/map/mapLongDistanceTour.jinja2:119
 #: ../templates/map/mapSingleWorkout.jinja2:49
-#: ../templates/map/mapSingleWorkout.jinja2:97
+#: ../templates/map/mapSingleWorkout.jinja2:125
 #: ../templates/workout/workoutMacros.jinja2:401 ../user/UserEntity.py:83
 msgid "Duration"
 msgstr ""
 
 #: ../templates/map/mapLongDistanceTour.jinja2:123
-#: ../templates/map/mapSingleWorkout.jinja2:125 ../user/UserEntity.py:89
+#: ../templates/map/mapSingleWorkout.jinja2:153 ../user/UserEntity.py:89
 msgid "Elevation Sum"
 msgstr ""
 
 #: ../templates/map/mapLongDistanceTour.jinja2:141
-#: ../templates/map/mapPlannedTour.jinja2:124
+#: ../templates/map/mapPlannedTour.jinja2:71
+#: ../templates/map/mapPlannedTour.jinja2:152
 msgid "Uphill"
 msgstr ""
 
 #: ../templates/map/mapLongDistanceTour.jinja2:148
-#: ../templates/map/mapPlannedTour.jinja2:131
+#: ../templates/map/mapPlannedTour.jinja2:78
+#: ../templates/map/mapPlannedTour.jinja2:159
 msgid "Downhill"
 msgstr ""
 
@@ -1319,7 +1321,7 @@ msgstr ""
 
 #: ../templates/map/mapPlannedTour.jinja2:10
 #: ../templates/map/mapPlannedTour.jinja2:37
-#: ../templates/map/mapPlannedTour.jinja2:85
+#: ../templates/map/mapPlannedTour.jinja2:113
 msgid "Planned Tour"
 msgstr ""
 
@@ -1329,31 +1331,35 @@ msgid "new tiles"
 msgstr ""
 
 #: ../templates/map/mapPlannedTour.jinja2:48
-#: ../templates/map/mapPlannedTour.jinja2:96
+#: ../templates/map/mapPlannedTour.jinja2:124
 #: ../templates/plannedTour/plannedTours.jinja2:77
 msgid "Arrival"
 msgstr ""
 
 #: ../templates/map/mapPlannedTour.jinja2:51
-#: ../templates/map/mapPlannedTour.jinja2:100
+#: ../templates/map/mapPlannedTour.jinja2:128
 #: ../templates/plannedTour/plannedTours.jinja2:81
 msgid "Departure"
 msgstr ""
 
 #: ../templates/map/mapPlannedTour.jinja2:54
-#: ../templates/map/mapPlannedTour.jinja2:104
+#: ../templates/map/mapPlannedTour.jinja2:132
 #: ../templates/plannedTour/plannedTourForm.jinja2:89
 #: ../templates/plannedTour/plannedToursMacros.jinja2:283
 msgid "Direction"
 msgstr ""
 
-#: ../templates/map/mapPlannedTour.jinja2:108
-#: ../templates/map/mapSingleWorkout.jinja2:133
+#: ../templates/map/mapPlannedTour.jinja2:57
+#: ../templates/map/mapPlannedTour.jinja2:136
+#: ../templates/map/mapSingleWorkout.jinja2:81
+#: ../templates/map/mapSingleWorkout.jinja2:161
 msgid "Min Height"
 msgstr ""
 
-#: ../templates/map/mapPlannedTour.jinja2:116
-#: ../templates/map/mapSingleWorkout.jinja2:141
+#: ../templates/map/mapPlannedTour.jinja2:64
+#: ../templates/map/mapPlannedTour.jinja2:144
+#: ../templates/map/mapSingleWorkout.jinja2:88
+#: ../templates/map/mapSingleWorkout.jinja2:169
 msgid "Max Height"
 msgstr ""
 
@@ -1363,34 +1369,42 @@ msgstr ""
 
 #: ../templates/map/mapSingleWorkout.jinja2:10
 #: ../templates/map/mapSingleWorkout.jinja2:39
-#: ../templates/map/mapSingleWorkout.jinja2:86
+#: ../templates/map/mapSingleWorkout.jinja2:114
 msgid "Workout"
 msgstr ""
 
-#: ../templates/map/mapSingleWorkout.jinja2:101
+#: ../templates/map/mapSingleWorkout.jinja2:67
+msgid "Heart Rate"
+msgstr ""
+
+#: ../templates/map/mapSingleWorkout.jinja2:74
+msgid "Elevation Gain"
+msgstr ""
+
+#: ../templates/map/mapSingleWorkout.jinja2:129
 msgid "Avg. Speed"
 msgstr ""
 
-#: ../templates/map/mapSingleWorkout.jinja2:117
+#: ../templates/map/mapSingleWorkout.jinja2:145
 msgid "Avg. Heart Rate"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:44
+#: ../templates/map/mapTileHunting.jinja2:46
 msgid "Tiles visited"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:49
+#: ../templates/map/mapTileHunting.jinja2:51
 msgid ""
 "Tiles are shown in their corresponding workout type color. If different "
 "workout types had visited a tile, it will be shown in <span class=&quot"
 ";text-danger fw-bold&quot;>red</span>."
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:55
+#: ../templates/map/mapTileHunting.jinja2:64
 msgid "Max square:"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:60
+#: ../templates/map/mapTileHunting.jinja2:69
 msgid ""
 "The size of the maximum square area that is completely covered by your "
 "visited tiles. If the checkbox &quot;Show max square&quot; is selected "
@@ -1399,11 +1413,11 @@ msgid ""
 "color: {maxSquareColor};&quot;></span>"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:66
+#: ../templates/map/mapTileHunting.jinja2:82
 msgid "Max cluster:"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:71
+#: ../templates/map/mapTileHunting.jinja2:87
 msgid ""
 "The size of the largest connected area of visited tiles. Two tiles are "
 "considered connected if they share a common edge. If the checkbox "
@@ -1413,16 +1427,16 @@ msgid ""
 "{maxClusterColor};&quot;></span>"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:81
+#: ../templates/map/mapTileHunting.jinja2:98
 #: ../templates/map/mapTileHuntingHeatmap.jinja2:52
 msgid "Zoom in to view visited tiles."
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:140
+#: ../templates/map/mapTileHunting.jinja2:157
 msgid "Click bar to open in new tab"
 msgstr ""
 
-#: ../templates/map/mapTileHunting.jinja2:153
+#: ../templates/map/mapTileHunting.jinja2:170
 msgid "Number of new tiles"
 msgstr ""
 

@@ -39,7 +39,7 @@
             {{ mapMacros.gpxDownloadButton(gettext('Workout'), gpxUrl, 'icon_workouts', true, editUrl=editUrl) }}
 
             <div class="card-body ps-4 pt-4 pb-0">
-                <div class="row row-cols-4 gy-3 pb-3 overflow-x-auto">
+                <div class="row row-cols-4 gy-3 pb-3 overflow-x-auto flex-nowrap">
                     {% call mapMacros.meta_info_item_small('event', workout.type.text_color, gettext('Date')) %}
                         {{ workout.start_time | format_date }}
                     {% endcall %}
@@ -62,6 +62,34 @@
                             {% else %}
                                 {{ workout | format_pace }} min
                             {% endif %}
+                        {% endif %}
+                    {% endcall %}
+                    {% call mapMacros.meta_info_item_small('favorite_border', workout.type.text_color, gettext('Heart Rate'), 'material-symbols-outlined') %}
+                        {% if workout.average_heart_rate is not none %}
+                            {{ workout.average_heart_rate }} bpm
+                        {% else %}
+                            -
+                        {% endif %}
+                    {% endcall %}
+                    {% call mapMacros.meta_info_item_small('expand', workout.type.text_color, gettext('Elevation Gain')) %}
+                        {% if workout.elevation_sum is not none %}
+                            {{ workout.elevation_sum }} m
+                        {% else %}
+                            -
+                        {% endif %}
+                    {% endcall %}
+                    {% call mapMacros.meta_info_item_small('vertical_align_bottom', workout.type.text_color, gettext('Min Height')) %}
+                        {% if workout.gpx_metadata is not none %}
+                            {{ (workout.gpx_metadata.elevation_minimum) }} m
+                        {% else %}
+                            -
+                        {% endif %}
+                    {% endcall %}
+                    {% call mapMacros.meta_info_item_small('vertical_align_top', workout.type.text_color, gettext('Max Height')) %}
+                        {% if workout.gpx_metadata is not none %}
+                            {{ (workout.gpx_metadata.elevation_maximum) }} m
+                        {% else %}
+                            -
                         {% endif %}
                     {% endcall %}
                 </div>
