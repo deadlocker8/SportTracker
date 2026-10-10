@@ -20,7 +20,14 @@ class SettingsChecker:
             'quality',
             'userAgent',
         ],
-        'tileHunting': ['baseZoomLevel', 'borderColor', 'maxSquareColor', 'mapMinZoomLevel', 'warmCachesOnStartup'],
+        'tileHunting': [
+            'baseZoomLevel',
+            'borderColor',
+            'maxSquareColor',
+            'maxClusterColor',
+            'mapMinZoomLevel',
+            'warmCachesOnStartup',
+        ],
     }
 
     def __init__(self, settings: dict[str, Any]) -> None:

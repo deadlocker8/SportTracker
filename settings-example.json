@@ -35,6 +35,7 @@
         "baseZoomLevel": 14,
         "borderColor": "#000000C8",
         "maxSquareColor": "#033E7DBF",
+        "maxClusterColor": "#BD6533BF",
         "mapMinZoomLevel": 9,
         "warmCachesOnStartup": true
     }
