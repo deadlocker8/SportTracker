@@ -46,6 +46,10 @@ body {
     height: 85vh !important;
 }
 
+.map-tile-hunting {
+    height: 66vh !important;
+}
+
 #map .leaflet-control-layers-inline .leaflet-control-layers-base span {
     padding: 0.2rem;
 }

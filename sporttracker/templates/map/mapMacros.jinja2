@@ -35,12 +35,23 @@
     </script>
 {%- endmacro %}
 
-{% macro meta_info_item(icon, iconColor, title, iconClass='material-symbols-outlined filled') -%}
+{% macro meta_info_item(icon, iconColor, title, iconClass='material-symbols-outlined filled', helpClass='', helpText='') -%}
     <div class="d-flex flex-column align-items-start mb-4">
         <div class="d-flex align-items-start">
             <div class="{{ iconClass }} {{ iconColor }} fs-3 me-2">{{ icon }}</div>
             <div>
-                <div class="fs-5 text-body-secondary">{{ title }}</div>
+                <div class="fs-5 text-body-secondary d-flex align-items-center">
+                    {{ title }}
+                    {% if helpClass and helpText %}
+                        <div class="link-light text-decoration-none d-inline-flex align-items-center ms-2 {{ helpClass }}"
+                             data-bs-toggle="tooltip"
+                             data-bs-placement="right"
+                             data-bs-html="true"
+                             data-bs-title="{{ helpText }}">
+                            <span class="rounded-circle bg-primary p-1 fs-6 material-symbols-outlined">question_mark</span>
+                        </div>
+                    {% endif %}
+                </div>
                 <div class="fs-4 text-body-emphasis">
                     {{ caller() }}
                 </div>
@@ -49,13 +60,22 @@
     </div>
 {%- endmacro %}
 
-{% macro meta_info_item_small(icon, iconColor, subText, iconClass='material-symbols-outlined filled') -%}
+{% macro meta_info_item_small(icon, iconColor, subText, iconClass='material-symbols-outlined filled', helpClass='', helpText='') -%}
     <div class="col d-flex flex-column align-items-center justify-content-between">
         <div class="{{ iconClass }} {{ iconColor }} fs-3 mb-2">{{ icon }}</div>
         <div class="fs-5 text-center text-body-emphasis">
             {{ caller() }}
         </div>
-        <div class="fs-6 text-body-secondary text-center text-truncate">{{ gettext(subText) }}</div>
+        <div class="fs-6 text-body-secondary text-center text-truncate d-flex align-items-center">{{ gettext(subText) }}</div>
+        {% if helpClass and helpText %}
+            <div class="link-light text-decoration-none d-inline-flex align-items-center mt-2 {{ helpClass }}"
+                 data-bs-toggle="tooltip"
+                 data-bs-placement="right"
+                 data-bs-html="true"
+                 data-bs-title="{{ helpText }}">
+                <span class="rounded-circle bg-primary p-1 fs-6 material-symbols-outlined">question_mark</span>
+            </div>
+        {% endif %}
     </div>
 {%- endmacro %}
 

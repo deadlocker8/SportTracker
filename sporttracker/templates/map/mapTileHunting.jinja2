@@ -21,7 +21,7 @@
         {{ mapMacros.mapLocale() }}
 
         <div class="row my-3 g-0">
-            <div class="col col-12 mx-auto d-flex flex-row align-items-center justify-content-center gap-3 gap-xl-5">
+            <div class="col col-12 mx-auto d-flex flex-wrap align-items-center justify-content-center gap-3 gap-xl-5">
                 <button class="btn btn-sm {% if quickFilterState.is_any_filter_active() %}btn-light{% else %}btn-outline-light{% endif %} d-inline-flex align-items-center " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas">
                     <span class="material-symbols-outlined fs-5">filter_alt</span>
                     <span class="ms-2">{{ gettext('Filter') }}</span>
@@ -31,78 +31,57 @@
                     {{ macros.workout_type_quick_filter(url_for(redirectUrl), true) }}
                 </div>
                 <div class="d-lg-none">
-                    <div class="d-flex flex-column align-items-center justify-content-center ms-3">
+                    <div class="d-flex flex-column align-items-center justify-content-center">
                         {{ macros.workout_type_quick_filter(url_for(redirectUrl), true) }}
                     </div>
                 </div>
+
+                <div class="d-flex flex-wrap align-items-center justify-content-center gap-2 gap-md-3">
+                    {{ mapMacros.tileHuntingMapSettings(tileHuntingFilterState,url_for('maps.showTileHuntingMap'), enableTilesOption=false, enableGridOption=true, enableNewTilesOption=false, enableMaxSquareOption=true, enableMaxClusterOption=true, enablePlannedTileOption=true, forceButtonText=true, classes="") }}
+                    <h5 class="mb-0" id="warning-zoom">
+                        <span class="badge text-bg-warning text-wrap">{{ gettext('Zoom in to view visited tiles.') }}</span>
+                    </h5>
+                </div>
             </div>
         </div>
 
-        <div class="row g-3 justify-content-center w-100 mx-0 mb-0">
-            <div class="col col-4 col-md-3 mb-0 mb-md-3">
-                <div class="card bg-body-secondary border-0 h-100" data-bs-theme="dark">
-                    <div class="card-body text-center d-flex flex-column align-items-center justify-content-between">
-                        <div class="card-title d-flex align-items-center justify-content-center">
-                            {{ gettext('Tiles visited') }}
-                            <div id="button-help" class="link-light text-decoration-none d-inline-flex align-items-center ms-2"
-                                 data-bs-toggle="tooltip"
-                                 data-bs-placement="right"
-                                 data-bs-html="true"
-                                 data-bs-title="{{ gettext('Tiles are shown in their corresponding workout type color. If different workout types had visited a tile, it will be shown in <span class=&quot;text-danger fw-bold&quot;>red</span>.') }}">
-                                <span class="rounded-circle bg-primary p-1 fs-6 material-symbols-outlined">question_mark</span>
-                            </div>
-                        </div>
-                        <h5 class="card-title fw-bold">{{ totalNumberOfTiles }}</h5>
-                    </div>
+        <!-- small displays -->
+        <div class="card bg-body-secondary mx-3 mb-3 d-xl-none" data-bs-theme="dark">
+            <div class="card-body ps-4 pt-4 pb-0">
+                <div class="row row-cols-3 gy-3 pb-3 overflow-x-auto flex-nowrap">
+                    {% call mapMacros.meta_info_item_small('explore', 'text-white', gettext('Tiles visited'), helpClass='button-help-tiles', helpText=gettext('Tiles are shown in their corresponding workout type color. If different workout types had visited a tile, it will be shown in <span class=&quot;text-danger fw-bold&quot;>red</span>.')) %}
+                        {{ totalNumberOfTiles }}
+                    {% endcall %}
+                    {% call mapMacros.meta_info_item_small('arrows_output', 'text-white', gettext('Max square'), helpClass='button-help-max-square', helpText=gettext('The size of the maximum square area that is completely covered by your visited tiles. If the checkbox &quot;Show max square&quot; is selected all tiles inside your max square will use this color: <span class=&quot;d-inline-block&quot; style=&quot;width: 10px; height: 10px; background-color: {maxSquareColor};&quot;></span>').format(maxSquareColor=maxSquareColor)) %}
+                        {{ maxSquareSize }}x{{ maxSquareSize }}
+                    {% endcall %}
+                    {% call mapMacros.meta_info_item_small('linked_services', 'text-white', gettext('Max cluster'), helpClass='button-help-max-cluster', helpText=gettext('The size of the largest connected area of visited tiles. Two tiles are considered connected if they share a common edge. If the checkbox &quot;Show max cluster&quot; is selected all tiles inside your max cluster will use this color: <span class=&quot;d-inline-block&quot; style=&quot;width: 10px; height: 10px; background-color: {maxClusterColor};&quot;></span>').format(maxClusterColor=maxClusterColor)) %}
+                        {{ maxClusterSize }}
+                    {% endcall %}
                 </div>
-            </div>
-
-            <div class="col col-4 col-md-3 mb-0 mb-md-3">
-                <div class="card bg-body-secondary border-0 h-100" data-bs-theme="dark">
-                    <div class="card-body text-center d-flex flex-column align-items-center justify-content-between">
-                        <div class="card-title d-flex align-items-center justify-content-center">
-                            {{ gettext('Max square:') }}
-                            <div id="button-help-max-square" class="link-light text-decoration-none d-inline-flex align-items-center ms-2"
-                                 data-bs-toggle="tooltip"
-                                 data-bs-placement="right"
-                                 data-bs-html="true"
-                                 data-bs-title="{{ gettext('The size of the maximum square area that is completely covered by your visited tiles. If the checkbox &quot;Show max square&quot; is selected all tiles inside your max square will use this color: <span class=&quot;d-inline-block&quot; style=&quot;width: 10px; height: 10px; background-color: {maxSquareColor};&quot;></span>').format(maxSquareColor=maxSquareColor) }}">
-                                <span class="rounded-circle bg-primary p-1 fs-6 material-symbols-outlined">question_mark</span>
-                            </div>
-                        </div>
-                        <h5 class="card-title fw-bold">{{ maxSquareSize }}x{{ maxSquareSize }}</h5>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col col-4 col-md-3 mb-0 mb-md-3">
-                <div class="card bg-body-secondary border-0 h-100" data-bs-theme="dark">
-                    <div class="card-body text-center d-flex flex-column align-items-center justify-content-between">
-                        <div class="card-title d-flex align-items-center justify-content-center">
-                            {{ gettext('Max cluster:') }}
-                            <div id="button-help-max-cluster" class="link-light text-decoration-none d-inline-flex align-items-center ms-2"
-                                 data-bs-toggle="tooltip"
-                                 data-bs-placement="right"
-                                 data-bs-html="true"
-                                 data-bs-title="{{ gettext('The size of the largest connected area of visited tiles. Two tiles are considered connected if they share a common edge. If the checkbox &quot;Show max cluster&quot; is selected all tiles inside your max cluster will use this color: <span class=&quot;d-inline-block&quot; style=&quot;width: 10px; height: 10px; background-color: {maxClusterColor};&quot;></span>').format(maxClusterColor=maxClusterColor) }}">
-                                <span class="rounded-circle bg-primary p-1 fs-6 material-symbols-outlined">question_mark</span>
-                            </div>
-                        </div>
-                        <h5 class="card-title fw-bold">{{ maxClusterSize }}</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-10 col-md-3 mb-3 d-flex flex-row flex-md-column align-items-center justify-content-center">
-                {{ mapMacros.tileHuntingMapSettings(tileHuntingFilterState,url_for('maps.showTileHuntingMap'), enableTilesOption=false, enableGridOption=true, enableNewTilesOption=false, enableMaxSquareOption=true, enableMaxClusterOption=true, enablePlannedTileOption=true, forceButtonText=true, classes="") }}
-                <h5 class="mb-0 mt-0 mt-md-3 ms-3 ms-md-0" id="warning-zoom">
-                    <span class="badge text-bg-warning text-wrap">{{ gettext('Zoom in to view visited tiles.') }}</span>
-                </h5>
             </div>
         </div>
 
-        <div class="row gx-0 gy-0">
-            <div class="col col-12">
-                <div id="map" class="leaflet-map text-dark"></div>
+        <div class="row mx-3 mx-xl-5">
+            <div class="col col-12 col-xl-9 col-xxl-10 p-0">
+                <div id="map" class="map-tile-hunting leaflet-map text-dark"></div>
+            </div>
+
+            <!-- large displays -->
+            <div class="col col-3 col-xxl-2 p-0 ps-4 d-none d-xl-block">
+                <div class="card bg-body-secondary h-100" data-bs-theme="dark">
+                    <div class="card-body ps-4 pt-4">
+                        {% call mapMacros.meta_info_item('explore', 'text-white', gettext('Tiles visited'), helpClass='button-help-tiles', helpText=gettext('Tiles are shown in their corresponding workout type color. If different workout types had visited a tile, it will be shown in <span class=&quot;text-danger fw-bold&quot;>red</span>.')) %}
+                            {{ totalNumberOfTiles }}
+                        {% endcall %}
+                        {% call mapMacros.meta_info_item('arrows_output', 'text-white', gettext('Max square'), helpClass='button-help-max-square', helpText=gettext('The size of the maximum square area that is completely covered by your visited tiles. If the checkbox &quot;Show max square&quot; is selected all tiles inside your max square will use this color: <span class=&quot;d-inline-block&quot; style=&quot;width: 10px; height: 10px; background-color: {maxSquareColor};&quot;></span>').format(maxSquareColor=maxSquareColor)) %}
+                            {{ maxSquareSize }}x{{ maxSquareSize }}
+                        {% endcall %}
+                        {% call mapMacros.meta_info_item('linked_services', 'text-white', gettext('Max cluster'), helpClass='button-help-max-cluster', helpText=gettext('The size of the largest connected area of visited tiles. Two tiles are considered connected if they share a common edge. If the checkbox &quot;Show max cluster&quot; is selected all tiles inside your max cluster will use this color: <span class=&quot;d-inline-block&quot; style=&quot;width: 10px; height: 10px; background-color: {maxClusterColor};&quot;></span>').format(maxClusterColor=maxClusterColor)) %}
+                            {{ maxClusterSize }}
+                        {% endcall %}
+                    </div>
+                </div>
             </div>
         </div>
 

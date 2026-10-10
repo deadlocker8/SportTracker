@@ -1,24 +1,8 @@
 document.addEventListener('DOMContentLoaded', function()
 {
-    const buttonHelp = document.getElementById('button-help');
-    new bootstrap.Tooltip(buttonHelp, {});
-
-    const buttonHelpMaxSquare = document.getElementById('button-help-max-square');
-    new bootstrap.Tooltip(buttonHelpMaxSquare, {sanitize: false});
-
-    const buttonHelpMaxCluster = document.getElementById('button-help-max-cluster');
-    new bootstrap.Tooltip(buttonHelpMaxCluster, {sanitize: false});
-
-    const checkboxGrid = document.getElementById('tileHuntingEnableGrid');
-    checkboxGrid.addEventListener('change', function()
-    {
-        window.location.href = checkboxGrid.dataset.url;
-    });
-    const checkboxMaxSquare = document.getElementById('tileHuntingEnableMaxSquare');
-    checkboxMaxSquare.addEventListener('change', function()
-    {
-        window.location.href = checkboxMaxSquare.dataset.url;
-    });
+    initTooltips('.button-help-tiles', {});
+    initTooltips('.button-help-max-square', {sanitize: false});
+    initTooltips('.button-help-max-cluster', {sanitize: false});
 
     const tileHuntingCheckboxes = document.getElementsByClassName('tileHuntingCheckbox');
     for(let i = 0; i < tileHuntingCheckboxes.length; i++)
@@ -31,6 +15,14 @@ document.addEventListener('DOMContentLoaded', function()
 
     initMap();
 });
+
+function initTooltips(selector, options)
+{
+    document.querySelectorAll(selector).forEach(function(element)
+    {
+        new bootstrap.Tooltip(element, options);
+    });
+}
 
 function initMap()
 {
