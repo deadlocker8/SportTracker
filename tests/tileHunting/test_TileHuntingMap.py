@@ -82,7 +82,9 @@ class TestTileHuntingMap(SeleniumTestBaseClass):
     @staticmethod
     def __wait_for_tile_count(selenium: WebDriver, expectedCount: int) -> None:
         WebDriverWait(selenium, 10).until(
-            expected_conditions.text_to_be_present_in_element((By.TAG_NAME, 'h3'), f'{expectedCount} Tiles visited')
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, 'meta-info-item-value'), f'{expectedCount}'
+            )
         )
 
     def __reset_filter(self, selenium: WebDriver) -> None:
