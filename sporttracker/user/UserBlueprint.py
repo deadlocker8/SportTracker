@@ -44,7 +44,7 @@ class UserModel:
 def construct_blueprint(user_service: UserService):
     users = Blueprint('users', __name__, static_folder='static', url_prefix='/users')
 
-    @users.route('/')
+    @users.route('/', methods=['GET'])
     @admin_role_required
     @fresh_login_required
     def listUsers():
@@ -52,7 +52,7 @@ def construct_blueprint(user_service: UserService):
 
         return render_template('user/users.jinja2', users=allUsers)
 
-    @users.route('/add')
+    @users.route('/add', methods=['GET'])
     @admin_role_required
     @fresh_login_required
     def add():
@@ -92,7 +92,7 @@ def construct_blueprint(user_service: UserService):
 
         return redirect(url_for('users.listUsers'))
 
-    @users.route('/edit/<int:user_id>')
+    @users.route('/edit/<int:user_id>', methods=['GET'])
     @admin_role_required
     @fresh_login_required
     def edit(user_id: int):
@@ -152,7 +152,7 @@ def construct_blueprint(user_service: UserService):
 
         return redirect(url_for('users.listUsers'))
 
-    @users.route('/delete/<int:user_id>')
+    @users.route('/delete/<int:user_id>', methods=['GET'])
     @admin_role_required
     @fresh_login_required
     def delete(user_id: int):

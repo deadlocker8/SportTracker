@@ -19,7 +19,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 def construct_blueprint():
     search = Blueprint('search', __name__, static_folder='static', url_prefix='/search')
 
-    @search.route('/search')
+    @search.route('/search', methods=['GET'])
     @login_required
     def performSearch():
         searchText = request.args.get('searchText')

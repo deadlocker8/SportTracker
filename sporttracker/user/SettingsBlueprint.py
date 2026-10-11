@@ -121,7 +121,7 @@ class EditNtfySettingsModel(BaseModel):
 def construct_blueprint():
     settings = Blueprint('settings', __name__, static_folder='static', url_prefix='/settings')
 
-    @settings.route('/settings')
+    @settings.route('/settings', methods=['GET'])
     @login_required
     def settingsShow():
         return render_template(
@@ -273,7 +273,7 @@ def construct_blueprint():
 
         return redirect(url_for('settings.settingsShow'))
 
-    @settings.route('/customFields/add/<string:workout_type>')
+    @settings.route('/customFields/add/<string:workout_type>', methods=['GET'])
     @login_required
     def customFieldsAdd(workout_type: str):
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
@@ -299,7 +299,7 @@ def construct_blueprint():
 
         return redirect(url_for('settings.settingsShow'))
 
-    @settings.route('/customFields/edit/<int:field_id>')
+    @settings.route('/customFields/edit/<int:field_id>', methods=['GET'])
     @login_required
     def customFieldsEdit(field_id: int):
         field: CustomWorkoutField | None = (
@@ -349,7 +349,7 @@ def construct_blueprint():
 
         return redirect(url_for('settings.settingsShow'))
 
-    @settings.route('/customFields/delete/<int:field_id>')
+    @settings.route('/customFields/delete/<int:field_id>', methods=['GET'])
     @login_required
     def customFieldsDelete(field_id: int):
         field: CustomWorkoutField | None = (
@@ -386,7 +386,7 @@ def construct_blueprint():
 
         return redirect(url_for('settings.settingsShow'))
 
-    @settings.route('/participants/add')
+    @settings.route('/participants/add', methods=['GET'])
     @login_required
     def participantsAdd():
         return render_template('settings/participantsForm.jinja2')
@@ -405,7 +405,7 @@ def construct_blueprint():
 
         return redirect(url_for('settings.settingsShow'))
 
-    @settings.route('/participants/edit/<int:participant_id>')
+    @settings.route('/participants/edit/<int:participant_id>', methods=['GET'])
     @login_required
     def participantsEdit(participant_id: int):
         participant: Participant | None = (
@@ -451,7 +451,7 @@ def construct_blueprint():
 
         return redirect(url_for('settings.settingsShow'))
 
-    @settings.route('/participants/delete/<int:participant_id>')
+    @settings.route('/participants/delete/<int:participant_id>', methods=['GET'])
     @login_required
     def participantsDelete(participant_id: int):
         participant: Participant | None = (

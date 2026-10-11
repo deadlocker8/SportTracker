@@ -41,7 +41,7 @@ def construct_blueprint(
 ) -> Blueprint:
     plannedTours = Blueprint('plannedTours', __name__, static_folder='static', url_prefix='/plannedTours')
 
-    @plannedTours.route('/')
+    @plannedTours.route('/', methods=['GET'])
     @login_required
     def listPlannedTours():
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
@@ -66,7 +66,7 @@ def construct_blueprint(
             ),
         )
 
-    @plannedTours.route('/add')
+    @plannedTours.route('/add', methods=['GET'])
     @login_required
     def add():
         return render_template(
@@ -89,8 +89,7 @@ def construct_blueprint(
 
         return redirect(url_for('maps.showPlannedTour', tour_id=planned_tour.id))
 
-    @plannedTours.route('/edit/<int:tour_id>')
-    @login_required
+    @plannedTours.route('/edit/<int:tour_id>', methods=['GET'])
     def edit(tour_id: int):
         plannedTour = plannedTourService.get_planned_tour_by_id(tour_id)
 
@@ -158,7 +157,7 @@ def construct_blueprint(
         except ValueError:
             abort(404)
 
-    @plannedTours.route('/delete/<int:tour_id>')
+    @plannedTours.route('/delete/<int:tour_id>', methods=['GET'])
     @login_required
     def delete(tour_id: int):
         try:
@@ -167,7 +166,7 @@ def construct_blueprint(
         except ValueError:
             abort(404)
 
-    @plannedTours.route('/createShareCode')
+    @plannedTours.route('/createShareCode', methods=['GET'])
     @login_required
     def createShareCode():
         shareCode = uuid.uuid4().hex
@@ -226,7 +225,7 @@ def construct_blueprint(
 
         return redirect(request.form.get('redirectUrl', url_for('plannedTours.listPlannedTours')))
 
-    @plannedTours.route('/resetFilter')
+    @plannedTours.route('/resetFilter', methods=['GET'])
     @login_required
     def resetFilter():
         plannedTourFilterState = get_planned_tour_filter_state_by_user(current_user.id)
