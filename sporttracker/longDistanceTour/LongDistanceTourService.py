@@ -107,6 +107,8 @@ class LongDistanceTourService:
 
         linkedPlannedTours = longDistanceTour.linked_planned_tours
 
+        self.delete_preview_image(longDistanceTour)
+
         LOGGER.debug(f'Deleted long-distance tour: {longDistanceTour}')
         db.session.delete(longDistanceTour)
         db.session.commit()
@@ -121,6 +123,12 @@ class LongDistanceTourService:
                     LOGGER.error(e)
 
         self._notification_service.on_long_distance_tour_deleted(longDistanceTour)
+
+    def delete_preview_image(self, longDistanceTour: LongDistanceTour) -> None:
+        gpxPreviewImageService = LongDistanceTourGpxPreviewImageService(
+            longDistanceTour, self._gpx_service, self._planned_tour_service
+        )
+        gpxPreviewImageService.delete_preview_image()
 
     def edit_long_distance_tour(
         self,

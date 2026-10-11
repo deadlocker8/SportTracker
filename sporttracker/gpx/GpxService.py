@@ -252,7 +252,7 @@ class GpxService:
                     f'Deleted all files for gpx "{gpxMetadata.gpx_file_name}" for {item.__class__.__name__} id {item.id}'
                 )
             except OSError as e:
-                LOGGER.error(e)
+                LOGGER.exception(e)
 
     def add_visited_tiles_for_workout(self, workout: DistanceWorkout, baseZoomLevel: int, userId: int):
         visitedTiles = self.get_visited_tiles(workout.get_gpx_metadata().gpx_file_name, baseZoomLevel)  # type: ignore[union-attr]

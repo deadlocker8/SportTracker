@@ -7,6 +7,7 @@ if TYPE_CHECKING:
 
 import logging
 import os
+import shutil
 
 from sporttracker import Constants
 from sporttracker.gpx.PreviewImageRenderer import render_preview_image
@@ -33,6 +34,19 @@ class LongDistanceTourGpxPreviewImageService:
 
     def is_image_existing(self) -> bool:
         return os.path.exists(self.get_preview_image_path())
+
+    def delete_preview_image(self) -> None:
+        folderPath = self._gpxService.get_folder_path(self._uniqueName)
+        if not os.path.exists(folderPath):
+            return
+
+        try:
+            shutil.rmtree(folderPath)
+            LOGGER.debug(
+                f'Deleted preview image folder "{folderPath}" for long-distance tour {self._longDistanceTour.id}'
+            )
+        except OSError as e:
+            LOGGER.exception(e)
 
     def generate_image(self, gpxPreviewImageSettings: dict[str, Any]) -> None:
         try:
