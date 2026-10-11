@@ -19,6 +19,7 @@ from sporttracker.user.UserEntity import (
     User,
     create_user,
 )
+from sporttracker.user.UserService import UserService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
@@ -40,7 +41,7 @@ class UserModel:
     isAdmin: bool
 
 
-def construct_blueprint():
+def construct_blueprint(user_service: UserService):
     users = Blueprint('users', __name__, static_folder='static', url_prefix='/users')
 
     @users.route('/')
@@ -163,9 +164,7 @@ def construct_blueprint():
         if user.isAdmin:
             abort(400)
 
-        LOGGER.debug(f'Deleted user: {user.username}')
-        db.session.delete(user)
-        db.session.commit()
+        user_service.delete_user(user)
 
         return redirect(url_for('users.listUsers'))
 

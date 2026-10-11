@@ -6,6 +6,7 @@
 - add: show the size and corresponding tiles of the maximum cluster of your visited tiles (#308)
 - add: allow to view elevation stats on mobile devices on workout/planned tour map (#307)
 - fix: whitespaces at the start and end of name fields are now automatically removed (e.g. workout name, planned tour name, maintenance description, ...) (#306)
+- fix: deleting a long-distance tour or a user now also deletes the corresponding gpx preview images (#312)
 
 # 2.1.2 - (13.09.26)
 - fix: deletion of user now correctly deletes all associated data

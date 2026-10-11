@@ -65,6 +65,7 @@ from sporttracker.user.UserEntity import (
     User,
     create_user,
 )
+from sporttracker.user.UserService import UserService
 from sporttracker.workout import WorkoutBlueprint
 from sporttracker.workout.distance import DistanceWorkoutBlueprint
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
@@ -164,6 +165,8 @@ class SportTracker(FlaskBaseApp):
             app.config['PLANNED_TOUR_SERVICE'],
             notificationService,
         )
+
+        app.config['USER_SERVICE'] = UserService(app.config['GPX_SERVICE'], app.config['LONG_DISTANCE_TOUR_SERVICE'])
 
         if self._prepareDatabase:
             self.__prepare_database(app)
@@ -341,7 +344,7 @@ class SportTracker(FlaskBaseApp):
                 app.config['DISTANCE_WORKOUT_SERVICE'],
             )
         )
-        app.register_blueprint(UserBlueprint.construct_blueprint())
+        app.register_blueprint(UserBlueprint.construct_blueprint(app.config['USER_SERVICE']))
         app.register_blueprint(
             ServerStatisticsBlueprint.construct_blueprint(
                 app.config['DATA_FOLDER'], app.config['LOAD_STATISTICS_COLLECTOR']
