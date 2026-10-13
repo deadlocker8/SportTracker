@@ -1,4 +1,4 @@
-# 2.2.0 - (XX.XX.XX)
+# 2.2.0 - (13.10.26)
 - BREAKING CHANGE: you must update your settings.json (new option "maxClusterColor" in section "tileHunting", see settings-example.json)
 - add: planned tours can now also be filtered by the fact if they are private, shared with other users or shared by other users (#301)
 - add: the month goal page now has a year selector for filtering the month goals (#305)
