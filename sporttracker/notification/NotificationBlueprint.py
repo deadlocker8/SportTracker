@@ -13,7 +13,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 def construct_blueprint(notification_service: NotificationService):
     notifications = Blueprint('notifications', __name__, static_folder='static', url_prefix='/notifications')
 
-    @notifications.route('/')
+    @notifications.route('/', methods=['GET'])
     @login_required
     def listNotifications():
         page_number = request.args.get('pageNumber')
@@ -30,7 +30,7 @@ def construct_blueprint(notification_service: NotificationService):
             pagination=notification_service.get_notifications_paginated(page_number_value),
         )
 
-    @notifications.route('/delete/<int:notification_id>')
+    @notifications.route('/delete/<int:notification_id>', methods=['GET'])
     @login_required
     def delete(notification_id: int):
         notification = notification_service.get_notification_by_id(notification_id)
@@ -44,7 +44,7 @@ def construct_blueprint(notification_service: NotificationService):
 
         return redirect(url_for('notifications.listNotifications'))
 
-    @notifications.route('/deleteAll')
+    @notifications.route('/deleteAll', methods=['GET'])
     @login_required
     def delete_all():
         notification_service.delete_all_notifications()

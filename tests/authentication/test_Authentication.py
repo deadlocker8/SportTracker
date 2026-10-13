@@ -11,7 +11,7 @@ def prepare_test_data(app):
         create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH, 2026)
 
 
-@pytest.fixture()
+@pytest.fixture
 def client(app):
     return app.test_client()
 

@@ -120,7 +120,7 @@ class LongDistanceTourService:
                         linkedPlannedTour.planned_tour_id, current_user.id
                     )
                 except ValueError as e:
-                    LOGGER.error(e)
+                    LOGGER.exception(e)
 
         self._notification_service.on_long_distance_tour_deleted(longDistanceTour)
 

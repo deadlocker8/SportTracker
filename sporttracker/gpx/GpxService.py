@@ -269,7 +269,7 @@ class GpxService:
         self._newVisitedTileCache.invalidate_cache_entry_by_user(userId)
         self._visitedTileCache.invalidate_cache_entry_by_user(userId)
 
-    def add_planned_tiles_for_planned_tour(self, plannedTour: PlannedTour, baseZoomLevel: int, userId: int):
+    def add_planned_tiles_for_planned_tour(self, plannedTour: PlannedTour, baseZoomLevel: int):
         visitedTiles = self.get_visited_tiles(plannedTour.get_gpx_metadata().gpx_file_name, baseZoomLevel)  # type: ignore[union-attr]
 
         for tile in visitedTiles:

@@ -10,7 +10,7 @@ from sporttracker.user.UserEntity import User
 def construct_blueprint():
     authentication = Blueprint('authentication', __name__)
 
-    @authentication.route('/login')
+    @authentication.route('/login', methods=['GET'])
     def login():
         if current_user.is_authenticated:
             return redirect(url_for('general.index'))
@@ -48,7 +48,7 @@ def construct_blueprint():
 
         return redirect(url_for('general.index'))
 
-    @authentication.route('/logout')
+    @authentication.route('/logout', methods=['GET'])
     @login_required
     def logout():
         logout_user()

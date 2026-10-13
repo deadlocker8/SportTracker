@@ -94,7 +94,7 @@ def construct_blueprint(
 ) -> Blueprint:
     maps = Blueprint('maps', __name__, static_folder='static')
 
-    @maps.route('/map')
+    @maps.route('/map', methods=['GET'])
     @login_required
     def showAllWorkoutsOnMap():
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
@@ -147,7 +147,7 @@ def construct_blueprint(
             redirectUrl='maps.showAllWorkoutsOnMap',
         )
 
-    @maps.route('/map/<int:workout_id>')
+    @maps.route('/map/<int:workout_id>', methods=['GET'])
     @login_required
     def showSingleWorkout(workout_id: int):
         workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
@@ -180,7 +180,7 @@ def construct_blueprint(
             tileHuntingNumberOfNewVisitedTiles=tileHuntingNumberOfNewVisitedTiles,
         )
 
-    @maps.route('/map/shared/<string:shareCode>')
+    @maps.route('/map/shared/<string:shareCode>', methods=['GET'])
     def showSharedSingleWorkout(shareCode: str):
         workout = distanceWorkoutService.get_distance_workout_by_share_code(shareCode)
 
@@ -197,7 +197,7 @@ def construct_blueprint(
             ),
         )
 
-    @maps.route('/map/plannedTour/<int:tour_id>')
+    @maps.route('/map/plannedTour/<int:tour_id>', methods=['GET'])
     @login_required
     def showPlannedTour(tour_id: int):
         plannedTour = plannedTourService.get_planned_tour_by_id(tour_id)
@@ -222,7 +222,7 @@ def construct_blueprint(
             plannedTileColor=COLOR_PLANNED.to_hex(),
         )
 
-    @maps.route('/map/plannedTour/shared/<string:shareCode>')
+    @maps.route('/map/plannedTour/shared/<string:shareCode>', methods=['GET'])
     def showSharedPlannedTour(shareCode: str):
         plannedTour = PlannedTourService.get_planned_tour_by_share_code(shareCode)
 
@@ -239,7 +239,7 @@ def construct_blueprint(
             ),
         )
 
-    @maps.route('/map/plannedTours')
+    @maps.route('/map/plannedTours', methods=['GET'])
     @login_required
     def showAllPlannedToursOnMap():
         gpxInfo = []
@@ -380,7 +380,7 @@ def construct_blueprint(
             image.save(output, format='PNG')
             return Response(output.getvalue(), mimetype='image/png')
 
-    @maps.route('/map/tileHunting')
+    @maps.route('/map/tileHunting', methods=['GET'])
     @login_required
     def showTileHuntingMap():
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
@@ -426,7 +426,7 @@ def construct_blueprint(
             maxClusterColor=tileHuntingSettings['maxClusterColor'],
         )
 
-    @maps.route('/map/tileHuntingHeatmap')
+    @maps.route('/map/tileHuntingHeatmap', methods=['GET'])
     @login_required
     def showTileHuntingHeatMap():
         tileRenderUrl = url_for(
@@ -455,7 +455,7 @@ def construct_blueprint(
             tileHuntingFilterState=get_tile_hunting_filter_state_by_user(current_user.id),
         )
 
-    @maps.route('/map/getNumberOfVisitsByCoordinate/<int:user_id>/<float:latitude>/<float:longitude>')
+    @maps.route('/map/getNumberOfVisitsByCoordinate/<int:user_id>/<float:latitude>/<float:longitude>', methods=['GET'])
     @login_required
     def getNumberOfVisitsByCoordinate(user_id: int, latitude: float, longitude: float):
         if not current_user.is_authenticated:
@@ -482,7 +482,7 @@ def construct_blueprint(
 
         return jsonify({'numberOfVisits': numberOfVisits})
 
-    @maps.route('/map/longDistanceTour/<int:tour_id>')
+    @maps.route('/map/longDistanceTour/<int:tour_id>', methods=['GET'])
     @login_required
     def showLongDistanceTour(tour_id: int):
         longDistanceTour = LongDistanceTourService.get_long_distance_tour_by_id(tour_id)
@@ -513,7 +513,7 @@ def construct_blueprint(
             maxClusterColor=tileHuntingSettings['maxClusterColor'],
         )
 
-    @maps.route('/toggleTileHuntingViewTiles')
+    @maps.route('/toggleTileHuntingViewTiles', methods=['GET'])
     @login_required
     def toggleTileHuntingViewTiles():
         redirectUrl = request.args['redirectUrl']
@@ -524,7 +524,7 @@ def construct_blueprint(
 
         return redirect(redirectUrl)
 
-    @maps.route('/toggleTileHuntingViewGrid')
+    @maps.route('/toggleTileHuntingViewGrid', methods=['GET'])
     @login_required
     def toggleTileHuntingViewGrid():
         redirectUrl = request.args['redirectUrl']
@@ -535,7 +535,7 @@ def construct_blueprint(
 
         return redirect(redirectUrl)
 
-    @maps.route('/toggleTileHuntingOnlyHighlightNewTiles')
+    @maps.route('/toggleTileHuntingOnlyHighlightNewTiles', methods=['GET'])
     @login_required
     def toggleTileHuntingOnlyHighlightNewTiles():
         redirectUrl = request.args['redirectUrl']
@@ -546,7 +546,7 @@ def construct_blueprint(
 
         return redirect(redirectUrl)
 
-    @maps.route('/toggleTileHuntingMaxSquare')
+    @maps.route('/toggleTileHuntingMaxSquare', methods=['GET'])
     @login_required
     def toggleTileHuntingMaxSquare():
         redirectUrl = request.args['redirectUrl']
@@ -557,7 +557,7 @@ def construct_blueprint(
 
         return redirect(redirectUrl)
 
-    @maps.route('/toggleTileHuntingMaxCluster')
+    @maps.route('/toggleTileHuntingMaxCluster', methods=['GET'])
     @login_required
     def toggleTileHuntingMaxCluster():
         redirectUrl = request.args['redirectUrl']
@@ -568,7 +568,7 @@ def construct_blueprint(
 
         return redirect(redirectUrl)
 
-    @maps.route('/toggleTileHuntingShowPlannedTiles')
+    @maps.route('/toggleTileHuntingShowPlannedTiles', methods=['GET'])
     @login_required
     def toggleTileHuntingShowPlannedTiles():
         redirectUrl = request.args['redirectUrl']

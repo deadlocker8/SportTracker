@@ -56,7 +56,7 @@ def construct_blueprint(
             )
         )
 
-    @distanceWorkouts.route('/edit/<int:workout_id>')
+    @distanceWorkouts.route('/edit/<int:workout_id>', methods=['GET'])
     @login_required
     def edit(workout_id: int):
         workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
@@ -121,7 +121,7 @@ def construct_blueprint(
         except ValueError:
             abort(404)
 
-    @distanceWorkouts.route('/delete/<int:workout_id>')
+    @distanceWorkouts.route('/delete/<int:workout_id>', methods=['GET'])
     @login_required
     def delete(workout_id: int):
         try:
@@ -130,7 +130,7 @@ def construct_blueprint(
         except ValueError:
             abort(404)
 
-    @distanceWorkouts.route('/createShareCode')
+    @distanceWorkouts.route('/createShareCode', methods=['GET'])
     @login_required
     def createShareCode():
         shareCode = uuid.uuid4().hex
@@ -164,7 +164,7 @@ def construct_blueprint(
             LOGGER.debug(f'Parsing session from FIT file "{fitFilePath}"')
             fitSession = FitSessionParser.parse(fitFilePath)
         except Exception as e:
-            LOGGER.error(f'Error parsing session from FIT file: "{fitFilePath}": {e}')
+            LOGGER.exception(f'Error parsing session from FIT file: "{fitFilePath}": {e}')
             os.remove(fitFilePath)
             return f'{baseErrorMessage}: {e!s}', 400
 

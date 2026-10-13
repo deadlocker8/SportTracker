@@ -49,7 +49,7 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
             )
         )
 
-    @fitnessWorkouts.route('/edit/<int:workout_id>')
+    @fitnessWorkouts.route('/edit/<int:workout_id>', methods=['GET'])
     @login_required
     def edit(workout_id: int):
         workout = fitnessWorkoutService.get_fitness_workout_by_id(workout_id, current_user.id)
@@ -111,7 +111,7 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
         except ValueError:
             abort(404)
 
-    @fitnessWorkouts.route('/delete/<int:workout_id>')
+    @fitnessWorkouts.route('/delete/<int:workout_id>', methods=['GET'])
     @login_required
     def delete(workout_id: int):
         try:

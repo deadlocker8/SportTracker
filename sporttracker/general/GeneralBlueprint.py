@@ -13,7 +13,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 def construct_blueprint():
     general = Blueprint('general', __name__, static_folder='static')
 
-    @general.route('/')
+    @general.route('/', methods=['GET'])
     @login_required
     def index():
         if current_user.isAdmin:
@@ -21,19 +21,19 @@ def construct_blueprint():
 
         return redirect(url_for('workouts.listWorkouts'))
 
-    @general.route('/about')
+    @general.route('/about', methods=['GET'])
     @login_required
     def about():
         currentDirectory = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
         changelogPath = os.path.join(currentDirectory, 'CHANGES.md')
         return render_template('about.jinja2', releases=ChangelogParser(changelogPath).parse())
 
-    @general.route('/icons')
+    @general.route('/icons', methods=['GET'])
     @login_required
     def icons():
         return render_template('icons.jinja2')
 
-    @general.route('/api')
+    @general.route('/api', methods=['GET'])
     @login_required
     def api():
         return redirect(url_for('api.docs'))

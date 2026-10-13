@@ -120,9 +120,8 @@ class AchievementCalculator:
             if summaries and len(summaries) == len(completedGoals):
                 currentStreak += 1
                 highestStreak = max(highestStreak, currentStreak)
-            elif summaries:
-                if not isEndReached:
-                    currentStreak = 0
+            elif summaries and not isEndReached:
+                currentStreak = 0
 
             month += 1
             if month > 12:

@@ -16,7 +16,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 def construct_blueprint():
     quickFilter = Blueprint('quickFilter', __name__, static_folder='static', url_prefix='/quickFilter')
 
-    @quickFilter.route('/toggle/<string:workoutType>')
+    @quickFilter.route('/toggle/<string:workoutType>', methods=['GET'])
     @login_required
     def toggleQuickFilter(workoutType):
         redirectUrl = request.args['redirectUrl']

@@ -20,7 +20,7 @@ def construct_blueprint(
 ):
     gpxTracks = Blueprint('gpxTracks', __name__, static_folder='static', url_prefix='/gpxTracks')
 
-    @gpxTracks.route('/workout/<string:file_format>/<int:workout_id>')
+    @gpxTracks.route('/workout/<string:file_format>/<int:workout_id>', methods=['GET'])
     @login_required
     def downloadGpxTrackByWorkoutId(workout_id: int, file_format: str):
         workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
@@ -34,7 +34,7 @@ def construct_blueprint(
 
         abort(404)
 
-    @gpxTracks.route('/workout/shared/<string:shareCode>/<string:file_format>')
+    @gpxTracks.route('/workout/shared/<string:shareCode>/<string:file_format>', methods=['GET'])
     def downloadGpxTrackBySharedWorkout(shareCode: str, file_format: str):
         workout = distanceWorkoutService.get_distance_workout_by_share_code(shareCode)
         if workout is None:
@@ -46,7 +46,7 @@ def construct_blueprint(
 
         abort(404)
 
-    @gpxTracks.route('/plannedTour/<string:file_format>/<int:tour_id>')
+    @gpxTracks.route('/plannedTour/<string:file_format>/<int:tour_id>', methods=['GET'])
     @login_required
     def downloadGpxTrackByPlannedTourId(tour_id: int, file_format: str):
         plannedTour = PlannedTourService.get_planned_tour_by_id(tour_id)
@@ -60,7 +60,7 @@ def construct_blueprint(
 
         abort(404)
 
-    @gpxTracks.route('/plannedTour/shared/<string:shareCode>/<string:file_format>')
+    @gpxTracks.route('/plannedTour/shared/<string:shareCode>/<string:file_format>', methods=['GET'])
     def downloadGpxTrackBySharedPlannedTour(shareCode: str, file_format: str):
         plannedTour = PlannedTourService.get_planned_tour_by_share_code(shareCode)
 
@@ -73,7 +73,7 @@ def construct_blueprint(
 
         abort(404)
 
-    @gpxTracks.route('/delete/workout/<int:workout_id>')
+    @gpxTracks.route('/delete/workout/<int:workout_id>', methods=['GET'])
     @login_required
     def deleteGpxTrackByWorkoutId(workout_id: int):
         workout = distanceWorkoutService.get_distance_workout_by_id(workout_id, current_user.id)
@@ -84,7 +84,7 @@ def construct_blueprint(
         gpxService.delete_gpx(workout, current_user.id)
         return Response(status=204)
 
-    @gpxTracks.route('/delete/plannedTour/<int:tour_id>')
+    @gpxTracks.route('/delete/plannedTour/<int:tour_id>', methods=['GET'])
     @login_required
     def deleteGpxTrackByPlannedTourId(tour_id: int):
         plannedTour = PlannedTourService.get_planned_tour_by_id(tour_id)
@@ -95,7 +95,7 @@ def construct_blueprint(
         gpxService.delete_gpx(plannedTour, current_user.id)
         return Response(status=204)
 
-    @gpxTracks.route('/previewImage/<int:tour_id>')
+    @gpxTracks.route('/previewImage/<int:tour_id>', methods=['GET'])
     @login_required
     def getPreviewImageByPlannedTourId(tour_id: int):
         plannedTour = PlannedTourService.get_planned_tour_by_id(tour_id)
@@ -114,7 +114,7 @@ def construct_blueprint(
         gpxPreviewImageFileName = gpxPreviewImageService.get_preview_image_path()
         return send_file(gpxPreviewImageFileName, mimetype='image/jpg')
 
-    @gpxTracks.route('/previewImage/longDistanceTour/<int:tour_id>')
+    @gpxTracks.route('/previewImage/longDistanceTour/<int:tour_id>', methods=['GET'])
     @login_required
     def getPreviewImageByLongDistanceTourId(tour_id: int):
         longDistanceTour = LongDistanceTourService.get_long_distance_tour_by_id(tour_id)

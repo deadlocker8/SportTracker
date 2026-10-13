@@ -60,7 +60,7 @@ class MonthGoalDurationMultipleFormModel(BaseModel):
 def construct_blueprint():
     monthGoalsDuration = Blueprint('monthGoalsDuration', __name__, static_folder='static', url_prefix='/goalsDuration')
 
-    @monthGoalsDuration.route('/add')
+    @monthGoalsDuration.route('/add', methods=['GET'])
     @login_required
     def add():
         return render_template('monthGoal/monthGoalDurationForm.jinja2')
@@ -83,7 +83,7 @@ def construct_blueprint():
 
         return redirect(url_for('monthGoals.listMonthGoals', year=monthGoal.year))
 
-    @monthGoalsDuration.route('/addMultiple')
+    @monthGoalsDuration.route('/addMultiple', methods=['GET'])
     @login_required
     def addMultiple():
         return render_template('monthGoal/monthGoalDurationMultipleForm.jinja2')
@@ -127,7 +127,7 @@ def construct_blueprint():
 
         return redirect(url_for('monthGoals.listMonthGoals', year=form.start_year))
 
-    @monthGoalsDuration.route('/edit/<int:goal_id>')
+    @monthGoalsDuration.route('/edit/<int:goal_id>', methods=['GET'])
     @login_required
     def edit(goal_id: int):
         monthGoal = MonthGoalService.get_month_goal_duration_by_id(goal_id, current_user.id)
@@ -168,7 +168,7 @@ def construct_blueprint():
 
         return redirect(url_for('monthGoals.listMonthGoals', year=monthGoal.year))
 
-    @monthGoalsDuration.route('/delete/<int:goal_id>')
+    @monthGoalsDuration.route('/delete/<int:goal_id>', methods=['GET'])
     @login_required
     def delete(goal_id: int):
         monthGoal = MonthGoalService.get_month_goal_duration_by_id(goal_id, current_user.id)

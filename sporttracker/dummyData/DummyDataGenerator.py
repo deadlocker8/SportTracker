@@ -227,7 +227,7 @@ class DummyDataGenerator:
 
         lastDayCurrentMonth = datetime.now().date() + relativedelta(day=31)
 
-        for monthIndex in range(self.NUMBER_OF_MONTHS):
+        for _ in range(self.NUMBER_OF_MONTHS):
             firstDay = date(year=lastDayCurrentMonth.year, month=lastDayCurrentMonth.month, day=1)
 
             indexesWithGpx = random.choices(range(numberOfWorkoutsPerMonth), k=numberOfWorkoutsWithGpx)
@@ -323,7 +323,7 @@ class DummyDataGenerator:
 
         lastDayCurrentMonth = datetime.now().date() + relativedelta(day=31)
 
-        for monthIndex in range(self.NUMBER_OF_MONTHS):
+        for _ in range(self.NUMBER_OF_MONTHS):
             firstDay = date(year=lastDayCurrentMonth.year, month=lastDayCurrentMonth.month, day=1)
 
             indexesWithParticipants = random.choices(
@@ -376,7 +376,7 @@ class DummyDataGenerator:
 
         db.session.commit()
 
-        for monthIndex in range(self.NUMBER_OF_MONTHS):
+        for _ in range(self.NUMBER_OF_MONTHS):
             firstDay = date(year=lastDayCurrentMonth.year, month=lastDayCurrentMonth.month, day=1)
             fakeTime = fake.date_time_between_dates(firstDay, lastDayCurrentMonth)
 
@@ -446,7 +446,7 @@ class DummyDataGenerator:
             self.__append_gpx(plannedTour)
             db.session.add(plannedTour)
 
-            self._gpxService.add_planned_tiles_for_planned_tour(plannedTour, 14, user.id)
+            self._gpxService.add_planned_tiles_for_planned_tour(plannedTour, 14)
 
             if index in sharedIndexes:
                 self._notificationService.on_planned_tour_created(plannedTour)
@@ -538,6 +538,6 @@ class DummyDataGenerator:
             microsecond=0,
         )
 
-        for x in range(1000):
+        for _ in range(1000):
             lastTime = lastTime + timedelta(seconds=random.randint(1, 5))
             db.session.add(HeartRateEntity(workout_id=workout.id, timestamp=lastTime, bpm=random.randint(85, 185)))

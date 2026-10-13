@@ -35,8 +35,8 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 def construct_blueprint(notification_service: NotificationService):
     workouts = Blueprint('workouts', __name__, static_folder='static', url_prefix='/workouts')
 
-    @workouts.route('/', defaults={'year': None, 'month': None})
-    @workouts.route('/<int:year>/<int:month>')
+    @workouts.route('/', defaults={'year': None, 'month': None}, methods=['GET'])
+    @workouts.route('/<int:year>/<int:month>', methods=['GET'])
     @login_required
     def listWorkouts(year: int, month: int):
         notification_service.on_workout_overview_opened(current_user.id)
@@ -73,14 +73,14 @@ def construct_blueprint(notification_service: NotificationService):
             monthNames=list(get_month_names(width='wide', locale=flask_babel.get_locale()).values()),
         )
 
-    @workouts.route('/add')
+    @workouts.route('/add', methods=['GET'])
     @login_required
     def add():
         return render_template(
             'workout/workoutChooser.jinja2',
         )
 
-    @workouts.route('/add/<string:workout_type>')
+    @workouts.route('/add/<string:workout_type>', methods=['GET'])
     @login_required
     def addType(workout_type: str):
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
@@ -93,7 +93,7 @@ def construct_blueprint(notification_service: NotificationService):
             plannedTours=PlannedTourService.get_planned_tours([workoutType]),
         )
 
-    @workouts.route('/heartRateData/<int:workout_id>')
+    @workouts.route('/heartRateData/<int:workout_id>', methods=['GET'])
     @login_required
     def getHeartRateData(workout_id: int):
         workout = Workout.query.filter(Workout.user_id == current_user.id).filter(Workout.id == workout_id).first()

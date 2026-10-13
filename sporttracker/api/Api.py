@@ -70,17 +70,17 @@ def construct_blueprint(
 ) -> Blueprint:
     api = Blueprint(API_BLUEPRINT_NAME, __name__, static_folder='static', url_prefix='/api/v2')
 
-    @api.route('/')
+    @api.route('/', methods=['GET'])
     @login_required
     def apiIndex():
         return redirect(url_for('api.docs'))
 
-    @api.route('/version')
+    @api.route('/version', methods=['GET'])
     @login_required
     def getVersion():
         return jsonify({'version': API_VERSION})
 
-    @api.route('/docs')
+    @api.route('/docs', methods=['GET'])
     @login_required
     def docs():
         return render_template('swaggerui/swaggerui.jinja2')
@@ -110,7 +110,7 @@ def construct_blueprint(
         login_user(user, remember=False)
         return '', 200
 
-    @api.route('/monthGoals/monthGoalDistance')
+    @api.route('/monthGoals/monthGoalDistance', methods=['GET'])
     @login_required
     def listMonthGoalDistance():
         monthGoals = (
@@ -162,7 +162,7 @@ def construct_blueprint(
 
         return {'id': monthGoal.id}, 200
 
-    @api.route('/monthGoals/monthGoalCount')
+    @api.route('/monthGoals/monthGoalCount', methods=['GET'])
     @login_required
     def listMonthGoalCount():
         monthGoals = (
@@ -205,7 +205,7 @@ def construct_blueprint(
 
         return {'id': monthGoal.id}, 200
 
-    @api.route('/monthGoals/monthGoalDuration')
+    @api.route('/monthGoals/monthGoalDuration', methods=['GET'])
     @login_required
     def listMonthGoalDuration():
         monthGoals = (
@@ -248,7 +248,7 @@ def construct_blueprint(
 
         return {'id': monthGoal.id}, 200
 
-    @api.route('/workouts/distanceWorkout')
+    @api.route('/workouts/distanceWorkout', methods=['GET'])
     @login_required
     def listDistanceWorkout():
         workouts = (
@@ -317,7 +317,7 @@ def construct_blueprint(
 
         return '', 200
 
-    @api.route('/workouts/fitnessWorkout')
+    @api.route('/workouts/fitnessWorkout', methods=['GET'])
     @login_required
     def listFitnessWorkout():
         workouts = (
@@ -428,13 +428,13 @@ def construct_blueprint(
         db.session.commit()
         LOGGER.debug(f'Updated average heart rate for workout {workout_id} ({averageHeartRate} bpm)')
 
-    @api.route('/settings/participants')
+    @api.route('/settings/participants', methods=['GET'])
     @login_required
     def listParticipants():
         participants = get_participants()
         return jsonify([MAPPER_PARTICIPANT.map(p) for p in participants])
 
-    @api.route('/settings/customFields')
+    @api.route('/settings/customFields', methods=['GET'])
     @login_required
     def listCustomFields():
         customFieldsWithValues = get_custom_fields_grouped_by_distance_workout_types_with_values()
@@ -445,13 +445,13 @@ def construct_blueprint(
 
         return jsonify(result)
 
-    @api.route('/plannedTours')
+    @api.route('/plannedTours', methods=['GET'])
     @login_required
     def listPlannedTours():
         plannedTours = PlannedTourService.get_planned_tours(WorkoutType.get_distance_workout_types())
         return jsonify([MAPPER_PLANNED_TOUR.map(p) for p in plannedTours])
 
-    @api.route('/maintenances')
+    @api.route('/maintenances', methods=['GET'])
     @login_required
     def listMaintenances():
         maintenancesWithEvents = get_maintenances_with_events(

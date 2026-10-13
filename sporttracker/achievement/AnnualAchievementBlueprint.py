@@ -26,12 +26,12 @@ def construct_blueprint():
         'annualAchievements', __name__, static_folder='static', url_prefix='/annualAchievements'
     )
 
-    @annualAchievements.route('/')
+    @annualAchievements.route('/', methods=['GET'])
     @login_required
     def showAnnualAchievements():
         return redirect(url_for('annualAchievements.showAnnualAchievementsByYear', year=datetime.now().year))
 
-    @annualAchievements.route('/<int:year>')
+    @annualAchievements.route('/<int:year>', methods=['GET'])
     @login_required
     def showAnnualAchievementsByYear(year: int):
         return render_template(

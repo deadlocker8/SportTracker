@@ -54,7 +54,7 @@ def construct_blueprint():
         url_prefix='/maintenanceEventInstances',
     )
 
-    @maintenanceEventInstances.route('/add/<int:maintenance_id>')
+    @maintenanceEventInstances.route('/add/<int:maintenance_id>', methods=['GET'])
     @login_required
     def add(maintenance_id: int):
         maintenance = get_maintenance_by_id(maintenance_id)
@@ -87,7 +87,7 @@ def construct_blueprint():
 
         return redirect(url_for('maintenances.listMaintenances'))
 
-    @maintenanceEventInstances.route('/edit/<int:event_id>')
+    @maintenanceEventInstances.route('/edit/<int:event_id>', methods=['GET'])
     @login_required
     def edit(event_id: int):
         maintenanceEvent = get_maintenance_event_by_id(event_id)
@@ -137,7 +137,7 @@ def construct_blueprint():
 
         return redirect(url_for('maintenances.listMaintenances'))
 
-    @maintenanceEventInstances.route('/delete/<int:event_id>')
+    @maintenanceEventInstances.route('/delete/<int:event_id>', methods=['GET'])
     @login_required
     def delete(event_id: int):
         maintenanceEvent = get_maintenance_event_by_id(event_id)

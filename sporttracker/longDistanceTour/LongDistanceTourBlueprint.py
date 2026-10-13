@@ -90,7 +90,7 @@ def construct_blueprint(
         'longDistanceTours', __name__, static_folder='static', url_prefix='/longDistanceTours'
     )
 
-    @longDistanceTours.route('/')
+    @longDistanceTours.route('/', methods=['GET'])
     @login_required
     def listLongDistanceTours():
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
@@ -106,7 +106,7 @@ def construct_blueprint(
             isGpxPreviewImagesEnabled=gpxPreviewImageSettings['enabled'],
         )
 
-    @longDistanceTours.route('/add')
+    @longDistanceTours.route('/add', methods=['GET'])
     @login_required
     def add():
         return render_template(
@@ -131,7 +131,7 @@ def construct_blueprint(
 
         return redirect(url_for('maps.showLongDistanceTour', tour_id=long_distance_tour.id))
 
-    @longDistanceTours.route('/edit/<int:tour_id>')
+    @longDistanceTours.route('/edit/<int:tour_id>', methods=['GET'])
     @login_required
     def edit(tour_id: int):
         longDistanceTour = longDistanceTourService.get_long_distance_tour_by_id(tour_id)
@@ -169,7 +169,7 @@ def construct_blueprint(
         except ValueError:
             abort(404)
 
-    @longDistanceTours.route('/delete/<int:tour_id>/<int:delete_linked_tours>')
+    @longDistanceTours.route('/delete/<int:tour_id>/<int:delete_linked_tours>', methods=['GET'])
     @login_required
     def delete(tour_id: int, delete_linked_tours: int):
         try:

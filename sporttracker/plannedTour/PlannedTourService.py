@@ -202,7 +202,7 @@ class PlannedTourService:
 
         if gpxMetadataId is not None:
             self._gpx_service.add_planned_tiles_for_planned_tour(
-                plannedTour, self._tile_hunting_settings['baseZoomLevel'], user_id
+                plannedTour, self._tile_hunting_settings['baseZoomLevel']
             )
 
         LOGGER.debug(f'Saved new planned tour: {plannedTour}')
@@ -320,7 +320,7 @@ class PlannedTourService:
 
         if shouldUpdateVisitedTiles and plannedTour.gpx_metadata_id is not None:
             self._gpx_service.add_planned_tiles_for_planned_tour(
-                plannedTour, self._tile_hunting_settings['baseZoomLevel'], user_id
+                plannedTour, self._tile_hunting_settings['baseZoomLevel']
             )
 
         self._notification_service.on_planned_tour_updated(plannedTour, previousSharedUsers)

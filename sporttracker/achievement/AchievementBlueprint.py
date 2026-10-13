@@ -22,7 +22,7 @@ LOGGER = logging.getLogger(Constants.APP_NAME)
 def construct_blueprint():
     achievements = Blueprint('achievements', __name__, static_folder='static', url_prefix='/achievements')
 
-    @achievements.route('/')
+    @achievements.route('/', methods=['GET'])
     @login_required
     def showAchievements():
         return render_template('achievement/achievements.jinja2', achievements=__get_achievements())

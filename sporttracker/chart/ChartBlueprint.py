@@ -57,12 +57,12 @@ def construct_blueprint(
 ):
     charts = Blueprint('charts', __name__, static_folder='static', url_prefix='/charts')
 
-    @charts.route('/')
+    @charts.route('/', methods=['GET'])
     @login_required
     def chartChooser():
         return render_template('chart/chartChooser.jinja2')
 
-    @charts.route('/distancePerYear')
+    @charts.route('/distancePerYear', methods=['GET'])
     @login_required
     def chartDistancePerYear():
         minYear, maxYear = __get_min_and_max_year()
@@ -74,7 +74,7 @@ def construct_blueprint(
 
         return render_template('chart/chartDistancePerYear.jinja2', chartDataDistancePerYear=chartDataDistancePerYear)
 
-    @charts.route('/distancePerMonth')
+    @charts.route('/distancePerMonth', methods=['GET'])
     @login_required
     def chartDistancePerMonth():
         minYear, maxYear = __get_min_and_max_year()
@@ -104,7 +104,7 @@ def construct_blueprint(
 
         return minDate.year, maxDate.year
 
-    @charts.route('/chartDistancePerCustomFieldChooser')
+    @charts.route('/chartDistancePerCustomFieldChooser', methods=['GET'])
     @login_required
     def chartDistancePerCustomFieldChooser():
         customFieldsByWorkoutType = get_custom_fields_grouped_by_distance_workout_types_with_values(
@@ -115,7 +115,7 @@ def construct_blueprint(
             customFieldsByWorkoutType=customFieldsByWorkoutType,
         )
 
-    @charts.route('/chartDistancePerCustomField/<string:workout_type>/<int:custom_field_id>')
+    @charts.route('/chartDistancePerCustomField/<string:workout_type>/<int:custom_field_id>', methods=['GET'])
     @login_required
     def chartDistancePerCustomField(workout_type: str, custom_field_id: int):
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
@@ -153,12 +153,12 @@ def construct_blueprint(
             chartTitle=f'{gettext("Distance per custom field")} "{customField.name}"',
         )
 
-    @charts.route('/chartDistancePerParticipantChooser')
+    @charts.route('/chartDistancePerParticipantChooser', methods=['GET'])
     @login_required
     def chartDistancePerParticipantChooser():
         return render_template('chart/chartDistancePerParticipantChooser.jinja2')
 
-    @charts.route('/chartDistancePerParticipantChooser/<string:workout_type>')
+    @charts.route('/chartDistancePerParticipantChooser/<string:workout_type>', methods=['GET'])
     @login_required
     def chartDistancePerParticipant(workout_type: str):
         keys = []
@@ -198,7 +198,7 @@ def construct_blueprint(
             chartTitle=f'{gettext("Distance per participant for workout type ")} "{workout_type}"',
         )
 
-    @charts.route('/chartAverageSpeed')
+    @charts.route('/chartAverageSpeed', methods=['GET'])
     @login_required
     def chartAverageSpeed():
         minYear, maxYear = __get_min_and_max_year()
@@ -226,7 +226,7 @@ def construct_blueprint(
 
         return render_template('chart/chartAverageSpeed.jinja2', chartDataAverageSpeed=chartDataAverageSpeed)
 
-    @charts.route('/durationPerWorkoutChooser')
+    @charts.route('/durationPerWorkoutChooser', methods=['GET'])
     @login_required
     def chartDurationPerWorkoutChooser():
         return render_template(
@@ -234,7 +234,7 @@ def construct_blueprint(
             workoutNamesByWorkoutType=__get_workout_names_by_type(False),
         )
 
-    @charts.route('/durationPerWorkout/<string:workout_type>/<int:workout_id>')
+    @charts.route('/durationPerWorkout/<string:workout_type>/<int:workout_id>', methods=['GET'])
     @login_required
     def chartDurationPerWorkout(workout_type: str, workout_id: int):
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
@@ -281,7 +281,7 @@ def construct_blueprint(
             chartTitle=f'{gettext("Duration per Workout")} "{workout.name}"',
         )
 
-    @charts.route('/speedPerWorkoutChooser')
+    @charts.route('/speedPerWorkoutChooser', methods=['GET'])
     @login_required
     def chartSpeedPerWorkoutChooser():
         return render_template(
@@ -310,7 +310,7 @@ def construct_blueprint(
             workoutNamesByWorkoutType[workoutType] = [WorkoutName(row[0], row[1]) for row in rows]
         return workoutNamesByWorkoutType
 
-    @charts.route('/speedPerWorkout/<string:workout_type>/<string:workout_id>')
+    @charts.route('/speedPerWorkout/<string:workout_type>/<string:workout_id>', methods=['GET'])
     @login_required
     def chartSpeedPerWorkout(workout_type: str, workout_id: int):
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
@@ -358,7 +358,7 @@ def construct_blueprint(
             chartTitle=f'{gettext("Speed per Workout")} "{workout.name}"',
         )
 
-    @charts.route('/calendar/<int:year>')
+    @charts.route('/calendar/<int:year>', methods=['GET'])
     @login_required
     def chartCalendar(year: int):
         singleWeekDayPattern = __get_single_week_day_pattern()
@@ -506,7 +506,7 @@ def construct_blueprint(
 
         return {'yearNames': yearNames, 'values': values, 'texts': texts, 'type': workoutType}
 
-    @charts.route('/durationPerMonth')
+    @charts.route('/durationPerMonth', methods=['GET'])
     @login_required
     def chartDurationPerMonth():
         minYear, maxYear = __get_min_and_max_year()
@@ -535,12 +535,12 @@ def construct_blueprint(
 
         return {'monthNames': monthNames, 'values': values, 'texts': texts, 'type': workoutType}
 
-    @charts.route('/chartMostPerformedWorkoutsChooser')
+    @charts.route('/chartMostPerformedWorkoutsChooser', methods=['GET'])
     @login_required
     def chartMostPerformedWorkoutsChooser():
         return render_template('chart/chartMostPerformedWorkoutsChooser.jinja2')
 
-    @charts.route('/chartMostPerformedWorkoutsChooser/<string:workout_type>')
+    @charts.route('/chartMostPerformedWorkoutsChooser/<string:workout_type>', methods=['GET'])
     @login_required
     def chartMostPerformedWorkouts(workout_type: str):
         rows = (
@@ -564,7 +564,7 @@ def construct_blueprint(
             workout_type=WorkoutType(workout_type),  # type: ignore[call-arg]
         )
 
-    @charts.route('/newTilesPerYear')
+    @charts.route('/newTilesPerYear', methods=['GET'])
     @login_required
     def chartNewTilesPerYear():
         minYear, maxYear = __get_min_and_max_year()
@@ -652,7 +652,7 @@ def construct_blueprint(
 
         return result
 
-    @charts.route('/heatmap/<string:y_axis>')
+    @charts.route('/heatmap/<string:y_axis>', methods=['GET'])
     @login_required
     def chartHeatmap(y_axis: str):
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
@@ -744,7 +744,7 @@ def construct_blueprint(
             'title': gettext('Heatmap Months'),
         }
 
-    @charts.route('/chartAccumulatedDistance')
+    @charts.route('/chartAccumulatedDistance', methods=['GET'])
     @login_required
     def chartAccumulatedDistance():
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
@@ -782,8 +782,8 @@ def construct_blueprint(
             quickFilterState=quickFilterState,
         )
 
-    @charts.route('/chartAccumulatedDistancePerMonth/', defaults={'year': None, 'month': None})
-    @charts.route('/chartAccumulatedDistancePerMonth/<int:year>/<int:month>')
+    @charts.route('/chartAccumulatedDistancePerMonth/', defaults={'year': None, 'month': None}, methods=['GET'])
+    @charts.route('/chartAccumulatedDistancePerMonth/<int:year>/<int:month>', methods=['GET'])
     @login_required
     def chartAccumulatedDistancePerMonth(year: int, month: int):
         today = date.today()

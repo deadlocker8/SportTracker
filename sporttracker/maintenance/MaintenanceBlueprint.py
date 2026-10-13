@@ -63,7 +63,7 @@ class MaintenanceFormModel(BaseModel):
 def construct_blueprint():
     maintenances = Blueprint('maintenances', __name__, static_folder='static', url_prefix='/maintenances')
 
-    @maintenances.route('/')
+    @maintenances.route('/', methods=['GET'])
     @login_required
     def listMaintenances():
         quickFilterState = get_quick_filter_state_by_user(current_user.id)
@@ -99,7 +99,7 @@ def construct_blueprint():
             maintenanceWithEvents=create_maintenance_model(maintenance),
         )
 
-    @maintenances.route('/add')
+    @maintenances.route('/add', methods=['GET'])
     @login_required
     def add():
         return render_template(
@@ -154,7 +154,7 @@ def construct_blueprint():
 
         return redirect(url_for('maintenances.listMaintenances'))
 
-    @maintenances.route('/edit/<int:maintenance_id>')
+    @maintenances.route('/edit/<int:maintenance_id>', methods=['GET'])
     @login_required
     def edit(maintenance_id: int):
         maintenance = get_maintenance_by_id(maintenance_id)
@@ -224,7 +224,7 @@ def construct_blueprint():
 
         return redirect(url_for('maintenances.listMaintenances'))
 
-    @maintenances.route('/delete/<int:maintenance_id>')
+    @maintenances.route('/delete/<int:maintenance_id>', methods=['GET'])
     @login_required
     def delete(maintenance_id: int):
         maintenance = get_maintenance_by_id(maintenance_id)
@@ -266,7 +266,7 @@ def construct_blueprint():
 
         return redirect(url_for('maintenances.listMaintenances'))
 
-    @maintenances.route('/resetFilter')
+    @maintenances.route('/resetFilter', methods=['GET'])
     @login_required
     def resetFilter():
         maintenanceFilterState = get_maintenance_filter_state_by_user(current_user.id)

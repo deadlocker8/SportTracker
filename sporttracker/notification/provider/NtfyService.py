@@ -32,7 +32,7 @@ class NtfyService(Listener):
                 user.id, NotificationProviderType.NTFY
             )
         except ValueError as e:
-            LOGGER.error(e)
+            LOGGER.exception(e)
             return
 
         if not notification_settings.is_active:
@@ -63,4 +63,4 @@ class NtfyService(Listener):
                 },
             )
         except Exception as e:
-            LOGGER.error(f'Error while sending ntfy message: {e}')
+            LOGGER.exception(f'Error while sending ntfy message: {e}')
