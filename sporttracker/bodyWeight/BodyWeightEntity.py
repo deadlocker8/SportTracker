@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import DateTime, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -9,14 +11,14 @@ class BodyWeight(db.Model):  # type: ignore[name-defined]
     __tablename__ = 'body_weight'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
-    datetime: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    datetime: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     weight: Mapped[int] = mapped_column(Integer, nullable=False)  # grams
 
     def get_date(self) -> str:
-        return self.datetime.strftime(DateFormats.DATE_FORMAT_DATE)  # type: ignore[attr-defined]
+        return self.datetime.strftime(DateFormats.DATE_FORMAT_DATE)
 
     def get_time(self) -> str:
-        return self.datetime.strftime(DateFormats.DATE_FORMAT_TIME)  # type: ignore[attr-defined]
+        return self.datetime.strftime(DateFormats.DATE_FORMAT_TIME)
 
     def __repr__(self):
         return f'BodyWeight(id: {self.id}, date: {self.datetime}, weight: {self.weight}, user_id: {self.user_id})'

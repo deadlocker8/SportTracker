@@ -100,8 +100,8 @@ class AchievementCalculator:
         currentYear = currentDate.year
         currentMonth = currentDate.month
 
-        year = firstWorkout.start_time.year  # type: ignore[attr-defined]
-        month = firstWorkout.start_time.month  # type: ignore[attr-defined]
+        year = firstWorkout.start_time.year
+        month = firstWorkout.start_time.month
 
         highestStreak = 0
         currentStreak = 0

@@ -44,8 +44,8 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
         return redirect(
             url_for(
                 'workouts.listWorkouts',
-                year=workout.start_time.year,  # type: ignore[attr-defined]
-                month=workout.start_time.month,  # type: ignore[attr-defined]
+                year=workout.start_time.year,
+                month=workout.start_time.month,
             )
         )
 
@@ -58,10 +58,10 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
             abort(404)
 
         workoutModel = FitnessWorkoutFormModel(
-            name=workout.name,  # type: ignore[arg-type]
+            name=workout.name,
             type=workout.type,
-            date=workout.start_time.strftime(DateFormats.DATE_FORMAT_DATE),  # type: ignore[attr-defined]
-            time=workout.start_time.strftime(DateFormats.DATE_FORMAT_TIME),  # type: ignore[attr-defined]
+            date=workout.start_time.strftime(DateFormats.DATE_FORMAT_DATE),
+            time=workout.start_time.strftime(DateFormats.DATE_FORMAT_TIME),
             duration_hours=workout.duration // 3600,
             duration_minutes=workout.duration % 3600 // 60,
             duration_seconds=workout.duration % 3600 % 60,
@@ -104,8 +104,8 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
             return redirect(
                 url_for(
                     'workouts.listWorkouts',
-                    year=workout.start_time.year,  # type: ignore[attr-defined]
-                    month=workout.start_time.month,  # type: ignore[attr-defined]
+                    year=workout.start_time.year,
+                    month=workout.start_time.month,
                 )
             )
         except ValueError:

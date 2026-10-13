@@ -25,14 +25,14 @@ class MaintenanceEvent(DateTimeAccess):
 
 class MaintenanceEventInstance(db.Model):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    event_date: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    event_date: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     maintenance_id = db.Column(db.Integer, db.ForeignKey('maintenance.id', ondelete='CASCADE'), nullable=False)
 
     def get_date(self) -> str:
-        return self.event_date.strftime(DateFormats.DATE_FORMAT_DATE)  # type: ignore[attr-defined]
+        return self.event_date.strftime(DateFormats.DATE_FORMAT_DATE)
 
     def get_time(self) -> str:
-        return self.event_date.strftime(DateFormats.DATE_FORMAT_TIME)  # type: ignore[attr-defined]
+        return self.event_date.strftime(DateFormats.DATE_FORMAT_TIME)
 
     def __repr__(self):
         return (

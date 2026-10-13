@@ -10,7 +10,7 @@ class MaintenanceFilterState(db.Model):  # type: ignore[name-defined]
     custom_workout_field_id = db.Column(
         db.Integer, db.ForeignKey('custom_workout_field.id', ondelete='SET NULL'), nullable=True
     )
-    custom_workout_field_value: Mapped[String] = mapped_column(String, nullable=True)
+    custom_workout_field_value: Mapped[str | None] = mapped_column(String, nullable=True)
 
     def __repr__(self):
         return (
@@ -25,7 +25,7 @@ class MaintenanceFilterState(db.Model):  # type: ignore[name-defined]
 
     def reset(self) -> None:
         self.custom_workout_field_id = None
-        self.custom_workout_field_value = None  # type: ignore[assignment]
+        self.custom_workout_field_value = None
 
 
 def get_maintenance_filter_state_by_user(user_id: int) -> MaintenanceFilterState:

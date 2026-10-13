@@ -529,12 +529,12 @@ class DummyDataGenerator:
     @staticmethod
     def __generate_dummy_heart_rate_data(workout: Workout) -> None:
         lastTime = datetime(
-            year=workout.start_time.year,  # type: ignore[attr-defined]
-            month=workout.start_time.month,  # type: ignore[attr-defined]
-            day=workout.start_time.day,  # type: ignore[attr-defined]
-            hour=workout.start_time.hour,  # type: ignore[attr-defined]
-            minute=workout.start_time.minute,  # type: ignore[attr-defined]
-            second=workout.start_time.second,  # type: ignore[attr-defined]
+            year=workout.start_time.year,
+            month=workout.start_time.month,
+            day=workout.start_time.day,
+            hour=workout.start_time.hour,
+            minute=workout.start_time.minute,
+            second=workout.start_time.second,
             microsecond=0,
         )
 

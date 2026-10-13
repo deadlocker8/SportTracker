@@ -163,8 +163,8 @@ class FitnessWorkoutService:
             user_id=user_id, workoutType=workout.type
         )
 
-        workout.name = form_model.name  # type: ignore[assignment]
-        workout.start_time = startTime  # type: ignore[assignment]
+        workout.name = form_model.name
+        workout.start_time = startTime
         workout.duration = form_model.calculate_duration()  # type: ignore[assignment]
         workout.average_heart_rate = form_model.average_heart_rate  # type: ignore[assignment]
         workout.participants = get_participants_by_ids(participant_ids)
@@ -213,8 +213,8 @@ class FitnessWorkoutService:
             FitnessWorkout.query.with_entities(func.sum(FitnessWorkout.duration))
             .filter(FitnessWorkout.type == workoutType)
             .filter(FitnessWorkout.user_id == user_id)
-            .filter(extract('year', FitnessWorkout.start_time) == year)  # type: ignore[attr-defined]
-            .filter(extract('month', FitnessWorkout.start_time) == month)  # type: ignore[attr-defined]
+            .filter(extract('year', FitnessWorkout.start_time) == year)
+            .filter(extract('month', FitnessWorkout.start_time) == month)
             .scalar()
             or 0
         )

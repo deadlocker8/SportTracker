@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import DateTime, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -9,5 +11,5 @@ class HeartRateEntity(db.Model):  # type: ignore[name-defined]
     workout_id: Mapped[int] = mapped_column(
         ForeignKey('workout.id', ondelete='CASCADE'), nullable=False, primary_key=True, index=True
     )
-    timestamp: Mapped[DateTime] = mapped_column(DateTime, nullable=False, primary_key=True)
+    timestamp: Mapped[datetime] = mapped_column(DateTime, nullable=False, primary_key=True)
     bpm: Mapped[int] = mapped_column(Integer, nullable=False, primary_key=True)

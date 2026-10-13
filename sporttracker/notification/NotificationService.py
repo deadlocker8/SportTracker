@@ -164,14 +164,14 @@ class NotificationService(Observable):
         workoutMonthDistance = DistanceWorkoutService.get_month_distance(
             user_id=user_id,
             workoutType=workout.type,
-            year=workout.start_time.year,  # type: ignore[attr-defined]
-            month=workout.start_time.month,  # type: ignore[attr-defined]
+            year=workout.start_time.year,
+            month=workout.start_time.month,
         )
 
         if workoutMonthDistance <= previousBestMonthDistance:
             return
 
-        monthDate = datetime(year=workout.start_time.year, month=workout.start_time.month, day=1).date()  # type: ignore[attr-defined]
+        monthDate = datetime(year=workout.start_time.year, month=workout.start_time.month, day=1).date()
         messageTemplate = gettext('{month} is now your best {workoutType} month with {distance} km')
 
         self.__add_notification(
@@ -192,8 +192,8 @@ class NotificationService(Observable):
         if previousCompletedMonthGoals is None:
             return
 
-        year = workout.start_time.year  # type: ignore[attr-defined]
-        month = workout.start_time.month  # type: ignore[attr-defined]
+        year = workout.start_time.year
+        month = workout.start_time.month
 
         newCompletedGoals = MonthGoalService.get_goal_summaries_new_completed(
             year=year,
@@ -207,8 +207,8 @@ class NotificationService(Observable):
             if isinstance(goal, MonthGoalDistanceSummary):
                 self.__on_month_goal_reached(
                     user_id=user_id,
-                    year=year,  # type: ignore[attr-defined]
-                    month=month,  # type: ignore[attr-defined]
+                    year=year,
+                    month=month,
                     workout_type=goal.type,
                     goalName=gettext('distance month goal'),
                     goal_perfect=f'{Helpers.format_decimal(goal.goal_distance_perfect, decimals=1)} km',
@@ -307,14 +307,14 @@ class NotificationService(Observable):
         workoutMonthDuration = FitnessWorkoutService.get_month_duration(
             user_id=user_id,
             workoutType=workout.type,
-            year=workout.start_time.year,  # type: ignore[attr-defined]
-            month=workout.start_time.month,  # type: ignore[attr-defined]
+            year=workout.start_time.year,
+            month=workout.start_time.month,
         )
 
         if workoutMonthDuration <= previousBestMonthDuration:
             return
 
-        monthDate = datetime(year=workout.start_time.year, month=workout.start_time.month, day=1).date()  # type: ignore[attr-defined]
+        monthDate = datetime(year=workout.start_time.year, month=workout.start_time.month, day=1).date()
         messageTemplate = gettext('{month} is now your best {workoutType} month with {duration} h')
 
         self.__add_notification(

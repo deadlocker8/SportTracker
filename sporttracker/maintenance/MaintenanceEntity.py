@@ -10,14 +10,14 @@ from sporttracker.workout.WorkoutType import WorkoutType
 class Maintenance(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     type = db.Column(db.Enum(WorkoutType))
-    description: Mapped[String] = mapped_column(String, nullable=False)
+    description: Mapped[str] = mapped_column(String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     is_reminder_active: Mapped[bool] = mapped_column(Boolean, nullable=False)
     reminder_limit: Mapped[int] = mapped_column(Integer, nullable=True)
     custom_workout_field_id = db.Column(
         db.Integer, db.ForeignKey('custom_workout_field.id', ondelete='SET NULL'), nullable=True
     )
-    custom_workout_field_value: Mapped[String] = mapped_column(String, nullable=True)
+    custom_workout_field_value: Mapped[str | None] = mapped_column(String, nullable=True)
 
     def __repr__(self):
         return (

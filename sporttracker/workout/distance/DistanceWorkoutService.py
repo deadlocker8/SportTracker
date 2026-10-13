@@ -211,8 +211,8 @@ class DistanceWorkoutService:
         else:
             plannedTour = PlannedTourService.get_planned_tour_by_id(int(form_model.planned_tour_id))
 
-        workout.name = form_model.name  # type: ignore[assignment]
-        workout.start_time = startTime  # type: ignore[assignment]
+        workout.name = form_model.name
+        workout.start_time = startTime
         workout.distance = form_model.distance * 1000  # type: ignore[assignment]
         workout.duration = form_model.calculate_duration()  # type: ignore[assignment]
         workout.average_heart_rate = form_model.average_heart_rate  # type: ignore[assignment]
@@ -337,8 +337,8 @@ class DistanceWorkoutService:
             DistanceWorkout.query.with_entities(func.sum(DistanceWorkout.distance))
             .filter(DistanceWorkout.type == workoutType)
             .filter(DistanceWorkout.user_id == user_id)
-            .filter(extract('year', DistanceWorkout.start_time) == year)  # type: ignore[attr-defined]
-            .filter(extract('month', DistanceWorkout.start_time) == month)  # type: ignore[attr-defined]
+            .filter(extract('year', DistanceWorkout.start_time) == year)
+            .filter(extract('month', DistanceWorkout.start_time) == month)
             .scalar()
             or 0
         )

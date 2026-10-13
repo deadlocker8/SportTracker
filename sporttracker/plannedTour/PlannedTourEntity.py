@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -20,9 +22,9 @@ planned_tour_user_association = Table(
 class PlannedTour(db.Model, DateTimeAccess):  # type: ignore[name-defined]
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     type = db.Column(db.Enum(WorkoutType))
-    name: Mapped[String] = mapped_column(String, nullable=False)
-    creation_date: Mapped[DateTime] = mapped_column(DateTime)
-    last_edit_date: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    creation_date: Mapped[datetime | None] = mapped_column(DateTime)
+    last_edit_date: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     last_edit_user_id: Mapped[int] = mapped_column(Integer, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     shared_users: Mapped[list[User]] = relationship(secondary=planned_tour_user_association)

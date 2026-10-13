@@ -16,8 +16,8 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False, primary_key=True)
     workout_types = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
     years = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
-    date_from: Mapped[Date] = mapped_column(Date, nullable=True)
-    date_to: Mapped[Date] = mapped_column(Date, nullable=True)
+    date_from: Mapped[date | None] = mapped_column(Date, nullable=True)
+    date_to: Mapped[date | None] = mapped_column(Date, nullable=True)
 
     def __repr__(self):
         return (
@@ -69,12 +69,12 @@ class QuickFilterState(db.Model):  # type: ignore[name-defined]
         return self.get_date_range() is not None
 
     def set_date_filter(self, date_from: date, date_to: date) -> None:
-        self.date_from = date_from  # type: ignore[assignment]
-        self.date_to = date_to  # type: ignore[assignment]
+        self.date_from = date_from
+        self.date_to = date_to
 
     def clear_date_filter(self) -> None:
-        self.date_from = None  # type: ignore[assignment]
-        self.date_to = None  # type: ignore[assignment]
+        self.date_from = None
+        self.date_to = None
 
     def get_effective_date_ranges(self) -> list[tuple[date, date]] | None:
         dateRange = self.get_date_range()

@@ -429,13 +429,13 @@ def construct_blueprint(
             if workout.type != workoutType:
                 continue
 
-            if workout.start_time.year != year:  # type: ignore[attr-defined]
+            if workout.start_time.year != year:
                 continue
 
-            if workout.start_time.month != month:  # type: ignore[attr-defined]
+            if workout.start_time.month != month:
                 continue
 
-            if workout.start_time.day != day:  # type: ignore[attr-defined]
+            if workout.start_time.day != day:
                 continue
 
             counter += 1
@@ -803,7 +803,7 @@ def construct_blueprint(
 
             distanceSumByDay: dict[int, float] = defaultdict(float)
             for workout in workouts:
-                distanceSumByDay[workout.start_time.day] += workout.distance / 1000  # type: ignore[attr-defined]
+                distanceSumByDay[workout.start_time.day] += workout.distance / 1000
 
             maxMonthDay = calendar.monthrange(year, month)[1]
 

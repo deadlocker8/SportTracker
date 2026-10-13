@@ -10,19 +10,19 @@ from sporttracker.plannedTour.TravelType import TravelType
 class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
     __tablename__ = 'filter_state_planned_tour'
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False, primary_key=True)
-    is_done_selected: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
-    is_todo_selected: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
+    is_done_selected: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    is_todo_selected: Mapped[bool] = mapped_column(Boolean, nullable=False)
     arrival_methods = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
     departure_methods = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
     directions = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
-    name_filter: Mapped[String] = mapped_column(String, nullable=True)
-    minimum_distance: Mapped[Integer] = mapped_column(Integer, nullable=True)
-    maximum_distance: Mapped[Integer] = mapped_column(Integer, nullable=True)
-    is_long_distance_tours_include_selected: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
-    is_long_distance_tours_exclude_selected: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
-    is_own_tours_active: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
-    is_shared_with_others_active: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
-    is_shared_by_others_active: Mapped[Boolean] = mapped_column(Boolean, nullable=False)
+    name_filter: Mapped[str | None] = mapped_column(String, nullable=True)
+    minimum_distance: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    maximum_distance: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    is_long_distance_tours_include_selected: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    is_long_distance_tours_exclude_selected: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    is_own_tours_active: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    is_shared_with_others_active: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    is_shared_by_others_active: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
     def __repr__(self):
         return (
@@ -90,19 +90,19 @@ class PlannedTourFilterState(db.Model):  # type: ignore[name-defined]
         is_shared_with_others_active: bool = True,
         is_shared_by_others_active: bool = True,
     ):
-        self.is_done_selected = is_done_selected  # type: ignore[assignment]
-        self.is_todo_selected = is_todo_selected  # type: ignore[assignment]
+        self.is_done_selected = is_done_selected
+        self.is_todo_selected = is_todo_selected
         self.arrival_methods = {enumValue.name: isActive for enumValue, isActive in arrival_methods.items()}
         self.departure_methods = {enumValue.name: isActive for enumValue, isActive in departure_methods.items()}
         self.directions = {enumValue.name: isActive for enumValue, isActive in directions.items()}
-        self.name_filter = name_filter  # type: ignore[assignment]
-        self.minimum_distance = minimum_distance  # type: ignore[assignment]
-        self.maximum_distance = maximum_distance  # type: ignore[assignment]
-        self.is_long_distance_tours_include_selected = is_long_distance_tours_include_selected  # type: ignore[assignment]
-        self.is_long_distance_tours_exclude_selected = is_long_distance_tours_exclude_selected  # type: ignore[assignment]
-        self.is_own_tours_active = is_own_tours_active  # type: ignore[assignment]
-        self.is_shared_with_others_active = is_shared_with_others_active  # type: ignore[assignment]
-        self.is_shared_by_others_active = is_shared_by_others_active  # type: ignore[assignment]
+        self.name_filter = name_filter
+        self.minimum_distance = minimum_distance
+        self.maximum_distance = maximum_distance
+        self.is_long_distance_tours_include_selected = is_long_distance_tours_include_selected
+        self.is_long_distance_tours_exclude_selected = is_long_distance_tours_exclude_selected
+        self.is_own_tours_active = is_own_tours_active
+        self.is_shared_with_others_active = is_shared_with_others_active
+        self.is_shared_by_others_active = is_shared_by_others_active
 
     def reset(self) -> None:
         self.update(

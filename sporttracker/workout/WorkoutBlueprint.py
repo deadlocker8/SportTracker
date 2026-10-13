@@ -106,7 +106,7 @@ def construct_blueprint(notification_service: NotificationService):
         timestamps = []
         values = []
         for row in heartRateData:
-            timestamps.append(row.timestamp.isoformat())  # type: ignore[attr-defined]
+            timestamps.append(row.timestamp.isoformat())
             values.append(row.bpm)
 
         return jsonify(

@@ -54,9 +54,9 @@ class DistanceWorkoutModel(BaseWorkoutModel):
     ) -> 'DistanceWorkoutModel':
         return DistanceWorkoutModel(
             id=workout.id,
-            name=workout.name,  # type: ignore[arg-type]
+            name=workout.name,
             type=workout.type,
-            start_time=workout.start_time,  # type: ignore[arg-type]
+            start_time=workout.start_time,
             distance=workout.distance,
             duration=workout.duration,
             average_heart_rate=workout.average_heart_rate,
@@ -79,9 +79,9 @@ class FitnessWorkoutModel(BaseWorkoutModel):
     ) -> 'FitnessWorkoutModel':
         return FitnessWorkoutModel(
             id=workout.id,
-            name=workout.name,  # type: ignore[arg-type]
+            name=workout.name,
             type=workout.type,
-            start_time=workout.start_time,  # type: ignore[arg-type]
+            start_time=workout.start_time,
             duration=workout.duration,
             average_heart_rate=workout.average_heart_rate,
             participants=[str(item.id) for item in workout.participants],
