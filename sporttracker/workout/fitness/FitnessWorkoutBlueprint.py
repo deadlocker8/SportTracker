@@ -61,7 +61,7 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
             name=workout.name,  # type: ignore[arg-type]
             type=workout.type,
             date=workout.start_time.strftime(DateFormats.DATE_FORMAT_DATE),  # type: ignore[attr-defined]
-            time=workout.start_time.strftime(DateFormats.DATE_FORMAT_DATE_TIME),  # type: ignore[attr-defined]
+            time=workout.start_time.strftime(DateFormats.DATE_FORMAT_TIME),  # type: ignore[attr-defined]
             duration_hours=workout.duration // 3600,
             duration_minutes=workout.duration % 3600 // 60,
             duration_seconds=workout.duration % 3600 % 60,
