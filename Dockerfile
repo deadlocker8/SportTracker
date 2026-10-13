@@ -1,7 +1,7 @@
 FROM python:3.14-slim AS poetry
 
 RUN apt-get update && apt-get install -y \
-    curl gcc python3-dev libc-dev build-essential libpq-dev \
+    curl gcc python3-dev libc-dev build-essential \
     && rm -rf /var/lib/apt/lists/*
 RUN curl https://install.python-poetry.org | python -
 
@@ -30,7 +30,7 @@ RUN npm ci && npm run build
 FROM python:3.14-slim
 
 RUN apt-get update && apt-get install -y \
-    libpq5 libstdc++6 \
+    libstdc++6 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY sporttracker/ /opt/SportTracker/sporttracker
