@@ -1,5 +1,6 @@
 # 2.2.1 - (XX.XX.XX)
 - fix: chart "speed per workout" no longer leads to server error (#317)
+- fix: tile hunting and workout map: improve display of info items on small devices (#315)
 
 # 2.2.0 - (13.10.26)
 - BREAKING CHANGE: you must update your settings.json (new option "maxClusterColor" in section "tileHunting", see settings-example.json)

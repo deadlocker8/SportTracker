@@ -8,22 +8,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-10 23:41+0200\n"
+"POT-Creation-Date: 2026-10-16 23:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../achievement/AchievementBlueprint.py:52
 #: ../achievement/AchievementBlueprint.py:137
 msgid "Month Goal Streak"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:53
-#: ../achievement/AchievementBlueprint.py:138
+#: ../achievement/AchievementBlueprint.py:54
+#: ../achievement/AchievementBlueprint.py:139
+#, python-brace-format
 msgid ""
 "You have achieved all your monthly goals for <span class=\"fw-"
 "bold\">{currentStreak}</span> months in a row!<br>(Best: <span class"
@@ -35,7 +36,8 @@ msgstr ""
 msgid "Longest Workout"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:75
+#: ../achievement/AchievementBlueprint.py:76
+#, python-brace-format
 msgid ""
 "You completed <span class=\"fw-bold\">{longestWorkoutDistance}</span> in "
 "one trip on <span class=\"fw-bold\">{longestWorkoutDate}</span>!"
@@ -47,6 +49,7 @@ msgid "Total Distance"
 msgstr ""
 
 #: ../achievement/AchievementBlueprint.py:94
+#, python-brace-format
 msgid ""
 "You completed a total of <span class=\"fw-bold\">{totalDistance} "
 "km</span>!"
@@ -57,7 +60,8 @@ msgstr ""
 msgid "Best Month"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:115
+#: ../achievement/AchievementBlueprint.py:116
+#, python-brace-format
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
 "<span class=\"fw-bold\">{bestMonthDistance}</span>!"
@@ -68,7 +72,8 @@ msgstr ""
 msgid "Longest Duration"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:160
+#: ../achievement/AchievementBlueprint.py:161
+#, python-brace-format
 msgid ""
 "You completed <span class=\"fw-bold\">{longestDuration}</span> in one "
 "workout on <span class=\"fw-bold\">{longestDurationDate}</span>!"
@@ -80,10 +85,12 @@ msgid "Total Duration"
 msgstr ""
 
 #: ../achievement/AchievementBlueprint.py:179
+#, python-brace-format
 msgid "You completed a total of <span class=\"fw-bold\">{totalDuration} h</span>!"
 msgstr ""
 
-#: ../achievement/AchievementBlueprint.py:196
+#: ../achievement/AchievementBlueprint.py:197
+#, python-brace-format
 msgid ""
 "<span class=\"fw-bold\">{bestMonthName}</span> was your best month with "
 "<span class=\"fw-bold\">{bestMonthDuration}</span>!"
@@ -125,8 +132,8 @@ msgid "Unknown user"
 msgstr ""
 
 #: ../authentication/AuthenticationBlueprint.py:36
-#: ../user/SettingsBlueprint.py:152 ../user/UserBlueprint.py:75
-#: ../user/UserBlueprint.py:135
+#: ../user/SettingsBlueprint.py:152 ../user/UserBlueprint.py:76
+#: ../user/UserBlueprint.py:136
 msgid "Password must not be empty"
 msgstr ""
 
@@ -242,24 +249,29 @@ msgid "now"
 msgstr ""
 
 #: ../notification/NotificationEntity.py:28
+#, python-brace-format
 msgid "{timedelta} ago"
 msgstr ""
 
 #: ../notification/NotificationService.py:123
+#, python-brace-format
 msgid "Maintenance \"{name}\" exceeds configured limit"
 msgstr ""
 
 #: ../notification/NotificationService.py:124
+#, python-brace-format
 msgid "Limit: {limit} km, Exceeded by: {limitExceededDistance} km"
 msgstr ""
 
 #: ../notification/NotificationService.py:145
+#, python-brace-format
 msgid ""
 "You completed a new distance record with {distance} km in one "
 "{workoutType} workout"
 msgstr ""
 
 #: ../notification/NotificationService.py:175
+#, python-brace-format
 msgid "{month} is now your best {workoutType} month with {distance} km"
 msgstr ""
 
@@ -276,52 +288,64 @@ msgid "duration month goal"
 msgstr ""
 
 #: ../notification/NotificationService.py:255
+#, python-brace-format
 msgid "You completed your {workoutType} {goalName} \"{goalPerfect}\" for {date}"
 msgstr ""
 
 #: ../notification/NotificationService.py:289
+#, python-brace-format
 msgid "You completed a new duration record with {duration} h in one {workoutType}"
 msgstr ""
 
 #: ../notification/NotificationService.py:318
+#, python-brace-format
 msgid "{month} is now your best {workoutType} month with {duration} h"
 msgstr ""
 
 #: ../notification/NotificationService.py:335
 #: ../notification/NotificationService.py:345
+#, python-brace-format
 msgid "{owner} has shared the planned tour \"{tour_name}\" with you"
 msgstr ""
 
 #: ../notification/NotificationService.py:347
+#, python-brace-format
 msgid "{owner} has updated the planned tour \"{tour_name}\""
 msgstr ""
 
 #: ../notification/NotificationService.py:349
+#, python-brace-format
 msgid "{owner} has revoked your access to the planned tour \"{tour_name}\""
 msgstr ""
 
 #: ../notification/NotificationService.py:355
+#, python-brace-format
 msgid "{owner} has deleted the planned tour \"{tour_name}\""
 msgstr ""
 
 #: ../notification/NotificationService.py:363
 #: ../notification/NotificationService.py:373
+#, python-brace-format
 msgid "{owner} has shared the long-distance tour \"{tour_name}\" with you"
 msgstr ""
 
 #: ../notification/NotificationService.py:375
+#, python-brace-format
 msgid "{owner} has updated the long-distance tour \"{tour_name}\""
 msgstr ""
 
 #: ../notification/NotificationService.py:377
+#, python-brace-format
 msgid "{owner} has revoked your access to the long-distance tour \"{tour_name}\""
 msgstr ""
 
 #: ../notification/NotificationService.py:383
+#, python-brace-format
 msgid "{owner} has deleted the long-distance tour \"{tour_name}\""
 msgstr ""
 
 #: ../notification/NotificationService.py:475
+#, python-brace-format
 msgid "Don't forget to check your annual statistics for {year}."
 msgstr ""
 
@@ -542,7 +566,7 @@ msgstr ""
 msgid "Body Weight"
 msgstr ""
 
-#: ../templates/macros.jinja2:195 ../templates/map/mapMacros.jinja2:155
+#: ../templates/macros.jinja2:195 ../templates/map/mapMacros.jinja2:154
 #: ../templates/map/mapTileHunting.jinja2:6
 #: ../templates/settings/settings.jinja2:50
 msgid "Tile Hunting"
@@ -1055,19 +1079,19 @@ msgid "Filter"
 msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:120
-#: ../templates/map/mapMacros.jinja2:263
+#: ../templates/map/mapMacros.jinja2:262
 #: ../templates/plannedTour/plannedToursMacros.jinja2:260
 msgid "Reset"
 msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:122
-#: ../templates/map/mapMacros.jinja2:265
+#: ../templates/map/mapMacros.jinja2:264
 #: ../templates/plannedTour/plannedToursMacros.jinja2:262
 msgid "Apply"
 msgstr ""
 
 #: ../templates/maintenance/maintenances.jinja2:122
-#: ../templates/map/mapMacros.jinja2:265
+#: ../templates/map/mapMacros.jinja2:264
 #: ../templates/plannedTour/plannedToursMacros.jinja2:262
 msgid "Applying..."
 msgstr ""
@@ -1264,50 +1288,50 @@ msgstr ""
 msgid "Reset zoom"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:131
+#: ../templates/map/mapMacros.jinja2:130
 #, python-format
 msgid "Show %(length)s linked Workouts"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:167
+#: ../templates/map/mapMacros.jinja2:166
 msgid "Show visited tiles"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:184
+#: ../templates/map/mapMacros.jinja2:183
 #: ../templates/map/mapTileHuntingHeatmap.jinja2:48
 msgid "Show grid"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:197
+#: ../templates/map/mapMacros.jinja2:196
 msgid "Only highlight new tiles"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:212
+#: ../templates/map/mapMacros.jinja2:211
 msgid "Show max square"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:229
+#: ../templates/map/mapMacros.jinja2:228
 msgid "Show max cluster"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:246
+#: ../templates/map/mapMacros.jinja2:245
 #: ../templates/settings/settings.jinja2:98
 msgid "Show planned tiles"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:273 ../templates/map/mapMacros.jinja2:281
+#: ../templates/map/mapMacros.jinja2:272 ../templates/map/mapMacros.jinja2:280
 msgid "Years"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:275 ../templates/map/mapMacros.jinja2:303
+#: ../templates/map/mapMacros.jinja2:274 ../templates/map/mapMacros.jinja2:302
 msgid "Date range"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:308
+#: ../templates/map/mapMacros.jinja2:307
 msgid "Start date"
 msgstr ""
 
-#: ../templates/map/mapMacros.jinja2:312
+#: ../templates/map/mapMacros.jinja2:311
 msgid "End date"
 msgstr ""
 
@@ -1414,6 +1438,7 @@ msgstr ""
 
 #: ../templates/map/mapTileHunting.jinja2:55
 #: ../templates/map/mapTileHunting.jinja2:77
+#, python-brace-format
 msgid ""
 "The size of the maximum square area that is completely covered by your "
 "visited tiles. If the checkbox &quot;Show max square&quot; is selected "
@@ -1429,6 +1454,7 @@ msgstr ""
 
 #: ../templates/map/mapTileHunting.jinja2:58
 #: ../templates/map/mapTileHunting.jinja2:80
+#, python-brace-format
 msgid ""
 "The size of the largest connected area of visited tiles. Two tiles are "
 "considered connected if they share a common edge. If the checkbox "
@@ -2178,12 +2204,14 @@ msgstr ""
 msgid "Float"
 msgstr ""
 
-#: ../user/SettingsBlueprint.py:165 ../user/UserBlueprint.py:80
-#: ../user/UserBlueprint.py:143
+#: ../user/SettingsBlueprint.py:165 ../user/UserBlueprint.py:81
+#: ../user/UserBlueprint.py:144
+#, python-brace-format
 msgid "Password must be at least {0} characters long"
 msgstr ""
 
 #: ../user/SettingsBlueprint.py:506 ../user/SettingsBlueprint.py:550
+#, python-brace-format
 msgid "Ntfy Settings: {0} must not be empty"
 msgstr ""
 
@@ -2196,24 +2224,29 @@ msgid "Test notification successfully sent"
 msgstr ""
 
 #: ../user/SettingsBlueprint.py:565
+#, python-brace-format
 msgid "Error sending test notification {0}"
 msgstr ""
 
-#: ../user/SettingsBlueprint.py:600
+#: ../user/SettingsBlueprint.py:601
+#, python-brace-format
 msgid ""
 "The specified field name \"{0}\" conflicts with a reserved field name and"
 " therefore can't be used as custom field name."
 msgstr ""
 
 #: ../user/SettingsBlueprint.py:614
+#, python-brace-format
 msgid "The specified field name \"{0}\" already exists."
 msgstr ""
 
 #: ../user/SettingsBlueprint.py:623
+#, python-brace-format
 msgid "The specified participant name \"{0}\" already exists."
 msgstr ""
 
-#: ../user/UserBlueprint.py:71 ../user/UserBlueprint.py:127
+#: ../user/UserBlueprint.py:72 ../user/UserBlueprint.py:128
+#, python-brace-format
 msgid "Username \"{0}\" already exists"
 msgstr ""
 
