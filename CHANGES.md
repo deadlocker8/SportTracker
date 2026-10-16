@@ -1,3 +1,6 @@
+# 2.2.1 - (XX.XX.XX)
+- fix: chart "speed per workout" no longer leads to server error (#317)
+
 # 2.2.0 - (13.10.26)
 - BREAKING CHANGE: you must update your settings.json (new option "maxClusterColor" in section "tileHunting", see settings-example.json)
 - add: planned tours can now also be filtered by the fact if they are private, shared with other users or shared by other users (#301)

@@ -310,7 +310,7 @@ def construct_blueprint(
             workoutNamesByWorkoutType[workoutType] = [WorkoutName(row[0], row[1]) for row in rows]
         return workoutNamesByWorkoutType
 
-    @charts.route('/speedPerWorkout/<string:workout_type>/<string:workout_id>', methods=['GET'])
+    @charts.route('/speedPerWorkout/<string:workout_type>/<int:workout_id>', methods=['GET'])
     @login_required
     def chartSpeedPerWorkout(workout_type: str, workout_id: int):
         workoutType = WorkoutType(workout_type)  # type: ignore[call-arg]
