@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Equipment') }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('equipment') }}
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        {% call macros.headline(gettext('Equipment'), url_for('equipment.add')) %}
+                            <span class="material-symbols-outlined filled fs-1">apparel</span>
+                        {% endcall %}
+                    </div>
+                </div>
+
+                {% if not equipment %}
+                    <div class="row mt-3">
+                        <div class="col col-12 mx-auto d-flex align-items-center justify-content-center">
+                            <span class="material-symbols-outlined fs-4 me-2">info</span>
+                            <span>{{ gettext('No equipments yet') }}</span>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if equipment %}
+                    {% for item in equipment %}
+                        <div>{{ item.name }}</div>
+                    {% endfor %}
+                {% endif %}
+            </section>
+        </div>
+
+        {{ macros.scripts(plotly=true) }}
+    </body>
+</html>
