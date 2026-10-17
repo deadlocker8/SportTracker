@@ -1,3 +1,6 @@
+# 2.3.0 - (XX.XX.XX)
+- fix: show autocomplete suggestions below text fields (#316)
+
 # 2.2.2 (24.10.26)
 - chore: update dependencies (including the certifi vulnerability fix)
 
