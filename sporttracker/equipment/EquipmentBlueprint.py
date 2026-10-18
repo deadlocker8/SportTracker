@@ -5,6 +5,8 @@ from flask import Blueprint, abort, redirect, render_template, url_for
 from flask_login import current_user, login_required
 
 from sporttracker import Constants
+from sporttracker.equipment.bike.BikeEntity import Bike
+from sporttracker.equipment.bike.BikeService import BikeService
 from sporttracker.equipment.clothes.ClothesEntity import Clothes
 from sporttracker.equipment.clothes.ClothesService import ClothesService
 from sporttracker.equipment.EquipmentModel import EquipmentGroupModel
@@ -14,7 +16,7 @@ from sporttracker.workout.WorkoutType import WorkoutType
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def construct_blueprint(clothesService: ClothesService) -> Blueprint:
+def construct_blueprint(clothesService: ClothesService, bikeService: BikeService) -> Blueprint:
     equipment = Blueprint('equipment', __name__, static_folder='static', url_prefix='/equipment')
 
     @equipment.route('/', methods=['GET'])
@@ -22,32 +24,55 @@ def construct_blueprint(clothesService: ClothesService) -> Blueprint:
     def listEquipment():
         equipmentGroupsByWorkoutType: dict[WorkoutType, list[EquipmentGroupModel]] = {}
 
+        bikes = bikeService.get_all_bikes_by_workout_type(WorkoutType.BIKING, current_user.id)
         bikingClothes = clothesService.get_all_clothes_by_workout_type(WorkoutType.BIKING, current_user.id)
         equipmentGroupsByWorkoutType[WorkoutType.BIKING] = [
-            EquipmentGroupModel(name=gettext('Bikes'), icon='fa-bicycle', is_font_awesome_icon=True, items=[]),
             EquipmentGroupModel(
-                name=gettext('Clothes'), icon='apparel', is_font_awesome_icon=False, items=bikingClothes
+                name=gettext('Bikes'),
+                icon=Bike.get_icon()[0],
+                is_font_awesome_icon=Bike.get_icon()[1],
+                add_url=url_for('equipment_bike.add', workout_type=WorkoutType.BIKING.name),
+                items=bikes,
+            ),
+            EquipmentGroupModel(
+                name=gettext('Clothes'),
+                icon=Clothes.get_icon()[0],
+                is_font_awesome_icon=Clothes.get_icon()[1],
+                add_url=url_for('equipment_clothes.add', workout_type=WorkoutType.BIKING.name),
+                items=bikingClothes,
             ),
         ]
 
         runningClothes = clothesService.get_all_clothes_by_workout_type(WorkoutType.RUNNING, current_user.id)
         equipmentGroupsByWorkoutType[WorkoutType.RUNNING] = [
             EquipmentGroupModel(
-                name=gettext('Clothes'), icon='apparel', is_font_awesome_icon=False, items=runningClothes
+                name=gettext('Clothes'),
+                icon=Clothes.get_icon()[0],
+                is_font_awesome_icon=Clothes.get_icon()[1],
+                add_url=url_for('equipment_clothes.add', workout_type=WorkoutType.RUNNING.name),
+                items=runningClothes,
             )
         ]
 
         hikingClothes = clothesService.get_all_clothes_by_workout_type(WorkoutType.HIKING, current_user.id)
         equipmentGroupsByWorkoutType[WorkoutType.HIKING] = [
             EquipmentGroupModel(
-                name=gettext('Clothes'), icon='apparel', is_font_awesome_icon=False, items=hikingClothes
+                name=gettext('Clothes'),
+                icon=Clothes.get_icon()[0],
+                is_font_awesome_icon=Clothes.get_icon()[1],
+                add_url=url_for('equipment_clothes.add', workout_type=WorkoutType.HIKING.name),
+                items=hikingClothes,
             )
         ]
 
         fitnessClothes = clothesService.get_all_clothes_by_workout_type(WorkoutType.FITNESS, current_user.id)
         equipmentGroupsByWorkoutType[WorkoutType.FITNESS] = [
             EquipmentGroupModel(
-                name=gettext('Clothes'), icon='apparel', is_font_awesome_icon=False, items=fitnessClothes
+                name=gettext('Clothes'),
+                icon=Clothes.get_icon()[0],
+                is_font_awesome_icon=Clothes.get_icon()[1],
+                add_url=url_for('equipment_clothes.add', workout_type=WorkoutType.FITNESS.name),
+                items=fitnessClothes,
             )
         ]
 
@@ -62,7 +87,10 @@ def construct_blueprint(clothesService: ClothesService) -> Blueprint:
 
         if isinstance(equipmentItem, Clothes):
             return redirect(url_for('equipment_clothes.edit', equipment_id=equipment_id))
+        elif isinstance(equipmentItem, Bike):
+            return redirect(url_for('equipment_bike.edit', equipment_id=equipment_id))
 
+        LOGGER.error(f'Could not determine edit url for equipment with id: {equipment_id}')
         abort(404)
 
     @equipment.route('/delete/<int:equipment_id>', methods=['GET'])
@@ -74,7 +102,10 @@ def construct_blueprint(clothesService: ClothesService) -> Blueprint:
 
         if isinstance(equipmentItem, Clothes):
             return redirect(url_for('equipment_clothes.delete', equipment_id=equipment_id))
+        elif isinstance(equipmentItem, Bike):
+            return redirect(url_for('equipment_bike.delete', equipment_id=equipment_id))
 
+        LOGGER.error(f'Could not determine delete url for equipment with id: {equipment_id}')
         abort(404)
 
     return equipment

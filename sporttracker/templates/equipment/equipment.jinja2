@@ -42,7 +42,7 @@
                     {% for group in groups %}
                         <div class="row">
                             <div class="col col-12 mx-auto">
-                                {% call macros.headline(group.name, addUrl=url_for('equipment_clothes.add', workout_type=workoutType.name), size='fs-4') %}
+                                {% call macros.headline(group.name, addUrl=group.add_url, size='fs-4') %}
                                     {% if group.is_font_awesome_icon %}
                                         <i class="fa-solid {{ group.icon }} fs-3 fa-fw"></i>
                                     {% else %}

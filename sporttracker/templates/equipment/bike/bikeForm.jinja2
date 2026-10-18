@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% set isEdit = false %}
+        {% if equipment and equipment.id is not none %}
+            {% set isEdit = true %}
+        {% endif %}
+
+        <meta charset="UTF-8">
+        <title>SportTracker - {% if isEdit %}{{ gettext('Edit Bike') }}{% else %}
+            {{ gettext('New Bike') }}{% endif %}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('equipments') }}
+        {% import 'workout/workoutMacros.jinja2' as workoutMacros with context %}
+        {% import 'equipment/equipmentMacros.jinja2' as equipmentMacros with context %}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                {{ equipmentMacros.equipment_header(workout_type, isEdit, gettext('New Bike'), gettext('Edit Bike'), url_for('equipment_bike.delete', equipment_id=equipment.id if equipment else -1), icon, is_font_awesome_icon) }}
+
+                <div class="row mt-5 text-start">
+                    <div class="col col-11 col-md-9 mx-auto">
+                        <form role="form" action="{% if isEdit %}{{ url_for('equipment_bike.editPost', equipment_id=equipment.id) }}{% else %}{{ url_for('equipment_bike.addPost') }}{% endif %}"
+                              onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);"
+                              method="post">
+
+                            <input type="hidden" name="workout_type" value="{{ workout_type.name }}">
+
+                            {{ equipmentMacros.equipment_form_name(equipment) }}
+
+                            {{ equipmentMacros.equipment_form_purchase_date(equipment) }}
+
+                            {{ equipmentMacros.equipment_form_is_active(equipment) }}
+
+                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-5 input-field-margin', id='buttonSaveEquipment') }}
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>
