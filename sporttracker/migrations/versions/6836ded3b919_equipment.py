@@ -35,13 +35,8 @@ def upgrade():
         op.create_table(
             'equipment',
             sa.Column('id', sa.Integer(), nullable=False),
+            sa.Column('class_type', sa.String(), nullable=False),
             sa.Column('user_id', sa.Integer(), nullable=False),
-            sa.Column(
-                'type',
-                postgresql.ENUM(name='equipmenttype', create_type=False),
-                nullable=True,
-                default='SINGLE',
-            ),
             sa.Column(
                 'workout_type',
                 postgresql.ENUM(name='workouttype', create_type=False),
