@@ -8,17 +8,19 @@
     </head>
     <body class="bg-dark text-light">
         {{ macros.navbar('equipment') }}
+        {% import 'workout/workoutMacros.jinja2' as workoutMacros with context %}
+
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
                 <div class="row">
                     <div class="col col-12 mx-auto">
-                        {% call macros.headline(gettext('Equipment'), url_for('equipment.add')) %}
+                        {% call macros.headline(gettext('Equipment')) %}
                             <span class="material-symbols-outlined filled fs-1">apparel</span>
                         {% endcall %}
                     </div>
                 </div>
 
-                {% if not equipment %}
+                {% if not equipmentGroupsByWorkoutType %}
                     <div class="row mt-3">
                         <div class="col col-12 mx-auto d-flex align-items-center justify-content-center">
                             <span class="material-symbols-outlined fs-4 me-2">info</span>
@@ -27,11 +29,35 @@
                     </div>
                 {% endif %}
 
-                {% if equipment %}
-                    {% for item in equipment %}
-                        <div>{{ item.name }}</div>
+                {% for workoutType, groups in equipmentGroupsByWorkoutType.items() %}
+                    <div class="row mt-5 mb-3">
+                        <div class="col col-12 mx-auto">
+                            <h3 class="d-flex align-items-center justify-content-center">
+                                {{ workoutMacros.workout_type_icon_small(workoutType, classes='me-3') }}
+                                <span class="me-3">{{ workoutType.get_localized_name() }}</span>
+                            </h3>
+                        </div>
+                    </div>
+
+                    {% for group in groups %}
+                        <div class="row">
+                            <div class="col col-12 mx-auto">
+                                {% call macros.headline(group.name, addUrl=url_for('equipment_clothes.add', workout_type=workoutType.name), size='fs-4') %}
+                                    {% if group.is_font_awesome_icon %}
+                                        <i class="fa-solid {{ group.icon }} fs-3 fa-fw"></i>
+                                    {% else %}
+                                        <span class="material-symbols-outlined filled fs-3">{{ group.icon }}</span>
+                                    {% endif %}
+                                {% endcall %}
+                            </div>
+                        </div>
+
+                        {% for item in items %}
+                            <div>{{ item.name }} - {{ item.purchase_date }}</div>
+
+                        {% endfor %}
                     {% endfor %}
-                {% endif %}
+                {% endfor %}
             </section>
         </div>
 

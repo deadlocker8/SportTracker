@@ -1,67 +1,45 @@
 import logging
+from gettext import gettext
 
-from flask import Blueprint, abort, redirect, render_template, url_for
+from flask import Blueprint, render_template
 from flask_login import current_user, login_required
-from flask_pydantic import validate
 
 from sporttracker import Constants
-from sporttracker.equipment.EquipmentService import EquipmentFormModel, EquipmentModel, EquipmentService
+from sporttracker.equipment.clothes.ClothesService import ClothesService
+from sporttracker.equipment.EquipmentModel import EquipmentGroupModel
+from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def construct_blueprint(equipmentService: EquipmentService) -> Blueprint:
+def construct_blueprint(clothesService: ClothesService) -> Blueprint:
     equipment = Blueprint('equipment', __name__, static_folder='static', url_prefix='/equipment')
 
     @equipment.route('/', methods=['GET'])
     @login_required
     def listEquipment():
-        return render_template(
-            'equipment/equipment.jinja2', equipment=equipmentService.get_all_equipment(current_user.id)
-        )
+        equipmentGroupsByWorkoutType: dict[WorkoutType, list[EquipmentGroupModel]] = {}
 
-    @equipment.route('/add', methods=['GET'])
-    @login_required
-    def add():
-        return render_template(
-            'equipment/equipmentForm.jinja2',
-        )
+        bikingClothes = clothesService.get_all_clothes_by_workout_type(WorkoutType.BIKING, current_user.id)
+        equipmentGroupsByWorkoutType[WorkoutType.BIKING] = [
+            EquipmentGroupModel(name=gettext('Bikes'), icon='fa-bicycle', is_font_awesome_icon=True, items=[]),
+            EquipmentGroupModel(
+                name=gettext('Clothes'), icon='apparel', is_font_awesome_icon=False, items=bikingClothes
+            ),
+        ]
 
-    @equipment.route('/post', methods=['POST'])
-    @login_required
-    @validate()
-    def addPost(form: EquipmentFormModel):
-        equipmentService.add_equipment(form, current_user.id)
-        return redirect(url_for('equipment.equipment'))
+        equipmentGroupsByWorkoutType[WorkoutType.RUNNING] = [
+            EquipmentGroupModel(name=gettext('Clothes'), icon='apparel', is_font_awesome_icon=False, items=[])
+        ]
 
-    @equipment.route('/edit/<int:equipment_id>', methods=['GET'])
-    @login_required
-    def edit(equipment_id: int):
-        equipmentItem = equipmentService.get_equipment_by_id(equipment_id, current_user.id)
-        if equipment is None:
-            abort(404)
+        equipmentGroupsByWorkoutType[WorkoutType.HIKING] = [
+            EquipmentGroupModel(name=gettext('Clothes'), icon='apparel', is_font_awesome_icon=False, items=[])
+        ]
 
-        equipmentModel = EquipmentModel.create_from_equipment(equipmentItem)  # type: ignore[arg-type]
+        equipmentGroupsByWorkoutType[WorkoutType.FITNESS] = [
+            EquipmentGroupModel(name=gettext('Clothes'), icon='apparel', is_font_awesome_icon=False, items=[])
+        ]
 
-        return render_template('equipment/equipmentForm.jinja2', equipmentModel=equipmentModel)
-
-    @equipment.route('/edit/<int:equipment_id>', methods=['POST'])
-    @login_required
-    @validate()
-    def editPost(equipment_id: int, form: EquipmentFormModel):
-        try:
-            equipmentService.update_equipment(equipment_id, form, current_user.id)
-            return redirect(url_for('equipment.equipment'))
-        except ValueError:
-            abort(404)
-
-    @equipment.route('/delete/<int:equipment_id>', methods=['GET'])
-    @login_required
-    def delete(equipment_id: int):
-        try:
-            equipmentService.delete_equipment(equipment_id, current_user.id)
-            return redirect(url_for('longDistanceTours.listLongDistanceTours'))
-        except ValueError:
-            abort(404)
+        return render_template('equipment/equipment.jinja2', equipmentGroupsByWorkoutType=equipmentGroupsByWorkoutType)
 
     return equipment

@@ -27,7 +27,8 @@ from sporttracker.chart import ChartBlueprint
 from sporttracker.db import db, migrate
 from sporttracker.dummyData.DummyDataGenerator import DummyDataGenerator
 from sporttracker.equipment import EquipmentBlueprint
-from sporttracker.equipment.EquipmentService import EquipmentService
+from sporttracker.equipment.clothes import ClothesBlueprint
+from sporttracker.equipment.clothes.ClothesService import ClothesService
 from sporttracker.general import GeneralBlueprint
 from sporttracker.gpx import GpxBlueprint
 from sporttracker.gpx.GpxService import GpxService
@@ -170,7 +171,7 @@ class SportTracker(FlaskBaseApp):
 
         app.config['USER_SERVICE'] = UserService(app.config['GPX_SERVICE'], app.config['LONG_DISTANCE_TOUR_SERVICE'])
 
-        app.config['EQUIPMENT_SERVICE'] = EquipmentService()
+        app.config['CLOTHES_SERVICE'] = ClothesService()
 
         if self._prepareDatabase:
             self.__prepare_database(app)
@@ -395,7 +396,8 @@ class SportTracker(FlaskBaseApp):
         )
         app.register_blueprint(AnnualAchievementBlueprint.construct_blueprint())
         app.register_blueprint(NotificationBlueprint.construct_blueprint(app.config['NOTIFICATION_SERVICE']))
-        app.register_blueprint(EquipmentBlueprint.construct_blueprint(app.config['EQUIPMENT_SERVICE']))
+        app.register_blueprint(EquipmentBlueprint.construct_blueprint(app.config['CLOTHES_SERVICE']))
+        app.register_blueprint(ClothesBlueprint.construct_blueprint(app.config['CLOTHES_SERVICE']))
 
     def __prepare_database(self, app):
         with app.app_context():
