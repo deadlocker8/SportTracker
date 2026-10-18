@@ -36,7 +36,7 @@ def construct_blueprint(clothesService: ClothesService) -> Blueprint:
         if equipmentItem is None:
             abort(404)
 
-        clothes = ClothesModel(
+        equipment = ClothesModel(
             id=equipmentItem.id,
             workout_type=equipmentItem.workout_type,
             name=equipmentItem.name,
@@ -47,7 +47,7 @@ def construct_blueprint(clothesService: ClothesService) -> Blueprint:
 
         return render_template(
             'equipment/clothes/clothesForm.jinja2',
-            clothes=clothes,
+            equipment=equipment,
             workout_type=equipmentItem.workout_type,
         )
 

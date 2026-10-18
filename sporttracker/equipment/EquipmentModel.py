@@ -21,7 +21,7 @@ class BaseEquipmentFormModel(BaseModel):
     name: str
     workout_type: str
     purchase_date: str
-    is_active: bool
+    is_active: bool | None = None
 
     @field_validator('name', mode='before')
     @classmethod

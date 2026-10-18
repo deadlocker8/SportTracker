@@ -52,10 +52,40 @@
                             </div>
                         </div>
 
-                        {% for item in items %}
-                            <div>{{ item.name }} - {{ item.purchase_date }}</div>
+                        <table class="table table-dark">
+                            <thead>
+                                <tr>
+                                    <th scope="col">{{ gettext('Name') }}</th>
+                                    <th scope="col">{{ gettext('Purchase Date') }}</th>
+                                    <th scope="col">{{ gettext('Is Active') }}</th>
+                                    <th scope="col">{{ gettext('Action') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in group.items %}
+                                    <tr>
+                                        <td>{{ item.name | e }}</td>
+                                        <td>{{ item.purchase_date }}</td>
+                                        <td>{{ item.is_active }}</td>
+                                        <td>
+                                            <a href="{{ url_for('equipment.edit', equipment_id=item.id) }}"
+                                               class="link-light text-decoration-none">
+                                                <span class="p-1 fs-5 material-symbols-outlined filled">edit</span>
+                                            </a>
+                                            <a href=""
+                                               class="link-light text-decoration-none"
+                                               data-bs-toggle="modal" data-bs-target="#delete-modal-{{ item.id }}">
+                                                <span class="p-1 fs-5 material-symbols-outlined filled">delete</span>
+                                            </a>
 
-                        {% endfor %}
+                                            {% call macros.deleteModal(gettext('Delete Equipment?'), gettext('Do you really want to delete the equipment "%(name)s"?<br><br>The equipment will also be removed from all associated workouts.', name=item.name), item.id) %}
+                                                {{ macros.buttonSubmitAutomaticallyDisabled(classes='btn btn-danger button-delete-modal-action', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl=url_for('equipment.delete', equipment_id=item.id)) }}
+                                            {% endcall %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     {% endfor %}
                 {% endfor %}
             </section>
