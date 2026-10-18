@@ -28,8 +28,8 @@ class Equipment(db.Model):  # type: ignore[name-defined]
     def get_date(self) -> str:
         return self.datetime.strftime(DateFormats.DATE_FORMAT_DATE)
 
-    @classmethod
-    def get_icon(cls) -> tuple[str, bool]:
+    @staticmethod
+    def get_icon() -> tuple[str, bool]:
         """
         Returns the icon and a bool stating whether icon is a font-awesome icon
         :return:

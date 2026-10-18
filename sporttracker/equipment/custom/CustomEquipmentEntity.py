@@ -14,6 +14,6 @@ class CustomEquipment(Equipment):  # type: ignore[name-defined]
         'polymorphic_identity': 'equipment_custom',
     }
 
-    @classmethod
-    def get_icon(cls) -> tuple[str, bool]:
-        return 'apparel', False
+    @staticmethod
+    def get_icon() -> tuple[str, bool]:
+        return 'shelves', False

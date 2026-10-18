@@ -14,6 +14,6 @@ class Bike(Equipment):  # type: ignore[name-defined]
         'polymorphic_identity': 'equipment_bike',
     }
 
-    @classmethod
-    def get_icon(cls) -> tuple[str, bool]:
+    @staticmethod
+    def get_icon() -> tuple[str, bool]:
         return 'fa-bicycle', True
