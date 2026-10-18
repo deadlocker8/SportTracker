@@ -177,6 +177,14 @@
                                             </span>&nbsp;{{ gettext('Maintenance') }}
                                         </a>
                                     </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center {% if activeLink == 'equipment' %}active {% endif %}"
+                                           href="{{ url_for('equipment.listEquipment') }}">
+                                            <span class="navbar-icon">
+                                                <span class="material-symbols-outlined filled fs-5">apparel</span>
+                                            </span>&nbsp;{{ gettext('Equipment') }}
+                                        </a>
+                                    </li>
                                     <li class="nav-item">
                                         <a class="dropdown-item d-flex align-items-center {% if activeLink == 'bodyWeight' %}active {% endif %}"
                                            href="{{ url_for('bodyWeight.listBodyWeight') }}">
