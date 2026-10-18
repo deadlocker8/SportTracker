@@ -86,7 +86,7 @@ class EquipmentService:
         equipment.name = form_model.name
         equipment.purchase_date = date.strptime(form_model.purchase_date, DATE_FORMAT_DATE)
         equipment.is_active = bool(form_model.is_active)
-        equipment.inactive_date = None if bool(form_model.is_active) else datetime.today()
+        equipment.inactive_date = None if bool(form_model.is_active) else datetime.today()  # type: ignore[assignment]
         db.session.commit()
 
         LOGGER.debug(f'Updated equipment: {equipment}')

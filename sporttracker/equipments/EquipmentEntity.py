@@ -18,7 +18,7 @@ class Equipment(db.Model):  # type: ignore[name-defined]
     name: Mapped[str] = mapped_column(String, nullable=False)
     purchase_date: Mapped[date] = mapped_column(Date, nullable=True)
     is_active = db.Column(db.Boolean(), nullable=False)
-    inactive_date: Mapped[date] | None = mapped_column(Date, nullable=True)
+    inactive_date: Mapped[date] = mapped_column(Date, nullable=True)
 
     def get_date(self) -> str:
         return self.datetime.strftime(DateFormats.DATE_FORMAT_DATE)
