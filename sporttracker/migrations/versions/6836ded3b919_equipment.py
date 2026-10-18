@@ -53,8 +53,55 @@ def upgrade():
             sa.PrimaryKeyConstraint('id'),
         )
 
+    if 'equipment_clothes' not in tableNames:
+        op.create_table(
+            'equipment_clothes',
+            sa.Column('id', sa.Integer(), nullable=False),
+            sa.Column(
+                'clothes_type',
+                postgresql.ENUM(name='clothestype', create_type=False),
+                nullable=False,
+            ),
+            sa.ForeignKeyConstraint(
+                ['id'],
+                ['equipment.id'],
+            ),
+            sa.PrimaryKeyConstraint('id'),
+        )
+
+    if 'equipment_custom' not in tableNames:
+        op.create_table(
+            'equipment_custom',
+            sa.Column('id', sa.Integer(), nullable=False),
+            sa.ForeignKeyConstraint(
+                ['id'],
+                ['equipment.id'],
+            ),
+            sa.PrimaryKeyConstraint('id'),
+        )
+
+    if 'equipment_bike' not in tableNames:
+        op.create_table(
+            'equipment_bike',
+            sa.Column('id', sa.Integer(), nullable=False),
+            sa.ForeignKeyConstraint(
+                ['id'],
+                ['equipment.id'],
+            ),
+            sa.PrimaryKeyConstraint('id'),
+        )
+
 
 def downgrade():
     tableNames = __get_table_names()
     if 'equipment' in tableNames:
         op.drop_table('equipment')
+
+    if 'equipment_clothes' in tableNames:
+        op.drop_table('equipment_clothes')
+
+    if 'equipment_custom' in tableNames:
+        op.drop_table('equipment_custom')
+
+    if 'equipment_bike' in tableNames:
+        op.drop_table('equipment_bike')
