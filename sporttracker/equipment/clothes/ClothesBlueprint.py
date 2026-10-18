@@ -5,6 +5,7 @@ from flask_login import current_user, login_required
 from flask_pydantic import validate
 
 from sporttracker import Constants
+from sporttracker.equipment.clothes.ClothesEntity import Clothes
 from sporttracker.equipment.clothes.ClothesModel import ClothesFormModel, ClothesModel
 from sporttracker.equipment.clothes.ClothesService import ClothesService
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -20,7 +21,12 @@ def construct_blueprint(clothesService: ClothesService) -> Blueprint:
     @equipment_clothes.route('/add/<string:workout_type>', methods=['GET'])
     @login_required
     def add(workout_type: str):
-        return render_template('equipment/clothes/clothesForm.jinja2', workout_type=WorkoutType(workout_type))  # type: ignore[call-arg]
+        return render_template(
+            'equipment/clothes/clothesForm.jinja2',
+            workout_type=WorkoutType(workout_type),  # type: ignore[call-arg]
+            icon=Clothes.get_icon()[0],
+            is_font_awesome_icon=Clothes.get_icon()[1],
+        )
 
     @equipment_clothes.route('/post', methods=['POST'])
     @login_required
@@ -50,6 +56,8 @@ def construct_blueprint(clothesService: ClothesService) -> Blueprint:
             'equipment/clothes/clothesForm.jinja2',
             equipment=equipment,
             workout_type=equipmentItem.workout_type,
+            icon=Clothes.get_icon()[0],
+            is_font_awesome_icon=Clothes.get_icon()[1],
         )
 
     @equipment_clothes.route('/edit/<int:equipment_id>', methods=['POST'])
