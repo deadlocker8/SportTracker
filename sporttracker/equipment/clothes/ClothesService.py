@@ -10,6 +10,7 @@ from sporttracker import Constants
 from sporttracker.db import db
 from sporttracker.equipment.clothes.ClothesEntity import Clothes
 from sporttracker.equipment.clothes.ClothesModel import ClothesFormModel
+from sporttracker.equipment.clothes.ClothesType import ClothesType
 from sporttracker.equipment.EquipmentModel import BaseEquipmentModel
 from sporttracker.helpers.DateFormats import DATE_FORMAT_DATE
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -26,6 +27,7 @@ class ClothesService:
             purchase_date=form_model.purchase_date,
             is_active=bool(form_model.is_active),
             inactive_date=None if bool(form_model.is_active) else datetime.today(),
+            clothes_type=ClothesType(form_model.clothes_type),  # type: ignore[call-arg]
             user_id=user_id,
         )
 
@@ -44,6 +46,7 @@ class ClothesService:
         clothes.purchase_date = date.strptime(form_model.purchase_date, DATE_FORMAT_DATE)
         clothes.is_active = bool(form_model.is_active)
         clothes.inactive_date = None if bool(form_model.is_active) else datetime.today()  # type: ignore[assignment]
+        clothes.clothes_type = ClothesType(form_model.clothes_type)  # type: ignore[call-arg]
         db.session.commit()
 
         LOGGER.debug(f'Updated clothes: {clothes}')

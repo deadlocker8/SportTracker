@@ -1,9 +1,10 @@
+from sporttracker.equipment.clothes.ClothesType import ClothesType
 from sporttracker.equipment.EquipmentModel import BaseEquipmentFormModel, BaseEquipmentModel
 
 
 class ClothesModel(BaseEquipmentModel):
-    pass
+    clothes_type: ClothesType
 
 
 class ClothesFormModel(BaseEquipmentFormModel):
-    pass
+    clothes_type: str

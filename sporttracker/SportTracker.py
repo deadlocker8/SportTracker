@@ -29,6 +29,7 @@ from sporttracker.dummyData.DummyDataGenerator import DummyDataGenerator
 from sporttracker.equipment import EquipmentBlueprint
 from sporttracker.equipment.clothes import ClothesBlueprint
 from sporttracker.equipment.clothes.ClothesService import ClothesService
+from sporttracker.equipment.clothes.ClothesType import ClothesType
 from sporttracker.general import GeneralBlueprint
 from sporttracker.gpx import GpxBlueprint
 from sporttracker.gpx.GpxService import GpxService
@@ -208,6 +209,7 @@ class SportTracker(FlaskBaseApp):
                 'notificationTypes': NotificationType.get_sorted(),
                 'mapMinZoomLevel': self._settings['tileHunting']['mapMinZoomLevel'],
                 'baseZoomLevel': self._settings['tileHunting']['baseZoomLevel'],
+                'clothesTypes': [x for x in ClothesType],
             }
 
         def format_decimal(value: float, decimals: int = 1) -> str:

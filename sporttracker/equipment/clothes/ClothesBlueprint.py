@@ -43,6 +43,7 @@ def construct_blueprint(clothesService: ClothesService) -> Blueprint:
             purchase_date=equipmentItem.purchase_date,
             is_active=equipmentItem.is_active,
             inactive_date=equipmentItem.inactive_date,
+            clothes_type=equipmentItem.clothes_type,
         )
 
         return render_template(
