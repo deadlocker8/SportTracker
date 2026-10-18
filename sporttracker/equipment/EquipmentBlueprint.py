@@ -24,8 +24,8 @@ def construct_blueprint(clothesService: ClothesService, bikeService: BikeService
     def listEquipment():
         equipmentGroupsByWorkoutType: dict[WorkoutType, list[EquipmentGroupModel]] = {}
 
-        bikes = bikeService.get_all_bikes_by_workout_type(WorkoutType.BIKING, current_user.id)
-        bikingClothes = clothesService.get_all_clothes_by_workout_type(WorkoutType.BIKING, current_user.id)
+        bikes = bikeService.get_all_by_workout_type(WorkoutType.BIKING, current_user.id)
+        bikingClothes = clothesService.get_all_by_workout_type(WorkoutType.BIKING, current_user.id)
         equipmentGroupsByWorkoutType[WorkoutType.BIKING] = [
             EquipmentGroupModel(
                 name=gettext('Bikes'),
@@ -43,7 +43,7 @@ def construct_blueprint(clothesService: ClothesService, bikeService: BikeService
             ),
         ]
 
-        runningClothes = clothesService.get_all_clothes_by_workout_type(WorkoutType.RUNNING, current_user.id)
+        runningClothes = clothesService.get_all_by_workout_type(WorkoutType.RUNNING, current_user.id)
         equipmentGroupsByWorkoutType[WorkoutType.RUNNING] = [
             EquipmentGroupModel(
                 name=gettext('Clothes'),
@@ -54,7 +54,7 @@ def construct_blueprint(clothesService: ClothesService, bikeService: BikeService
             )
         ]
 
-        hikingClothes = clothesService.get_all_clothes_by_workout_type(WorkoutType.HIKING, current_user.id)
+        hikingClothes = clothesService.get_all_by_workout_type(WorkoutType.HIKING, current_user.id)
         equipmentGroupsByWorkoutType[WorkoutType.HIKING] = [
             EquipmentGroupModel(
                 name=gettext('Clothes'),
@@ -65,7 +65,7 @@ def construct_blueprint(clothesService: ClothesService, bikeService: BikeService
             )
         ]
 
-        fitnessClothes = clothesService.get_all_clothes_by_workout_type(WorkoutType.FITNESS, current_user.id)
+        fitnessClothes = clothesService.get_all_by_workout_type(WorkoutType.FITNESS, current_user.id)
         equipmentGroupsByWorkoutType[WorkoutType.FITNESS] = [
             EquipmentGroupModel(
                 name=gettext('Clothes'),

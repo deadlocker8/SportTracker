@@ -32,13 +32,13 @@ def construct_blueprint(clothesService: ClothesService) -> Blueprint:
     @login_required
     @validate()
     def addPost(form: ClothesFormModel):
-        clothesService.add_clothes(form, current_user.id)
+        clothesService.add(form, current_user.id)
         return redirect(url_for('equipment.listEquipment'))
 
     @equipment_clothes.route('/edit/<int:equipment_id>', methods=['GET'])
     @login_required
     def edit(equipment_id: int):
-        equipmentItem = clothesService.get_clothes_by_id(equipment_id, current_user.id)
+        equipmentItem = clothesService.get_by_id(equipment_id, current_user.id)
         if equipmentItem is None:
             abort(404)
 
@@ -65,7 +65,7 @@ def construct_blueprint(clothesService: ClothesService) -> Blueprint:
     @validate()
     def editPost(equipment_id: int, form: ClothesFormModel):
         try:
-            clothesService.update_clothes(equipment_id, form, current_user.id)
+            clothesService.edit(equipment_id, form, current_user.id)
             return redirect(url_for('equipment.listEquipment'))
         except ValueError:
             abort(404)
@@ -74,7 +74,7 @@ def construct_blueprint(clothesService: ClothesService) -> Blueprint:
     @login_required
     def delete(equipment_id: int):
         try:
-            clothesService.delete_clothes(equipment_id, current_user.id)
+            clothesService.delete(equipment_id, current_user.id)
             return redirect(url_for('equipment.listEquipment'))
         except ValueError:
             abort(404)

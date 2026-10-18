@@ -30,13 +30,13 @@ def construct_blueprint(bikeService: BikeService) -> Blueprint:
     @login_required
     @validate()
     def addPost(form: BikeFormModel):
-        bikeService.add_bike(form, current_user.id)
+        bikeService.add(form, current_user.id)
         return redirect(url_for('equipment.listEquipment'))
 
     @equipment_bike.route('/edit/<int:equipment_id>', methods=['GET'])
     @login_required
     def edit(equipment_id: int):
-        equipmentItem = bikeService.get_bike_by_id(equipment_id, current_user.id)
+        equipmentItem = bikeService.get_by_id(equipment_id, current_user.id)
         if equipmentItem is None:
             abort(404)
 
@@ -62,7 +62,7 @@ def construct_blueprint(bikeService: BikeService) -> Blueprint:
     @validate()
     def editPost(equipment_id: int, form: BikeFormModel):
         try:
-            bikeService.update_bike(equipment_id, form, current_user.id)
+            bikeService.edit(equipment_id, form, current_user.id)
             return redirect(url_for('equipment.listEquipment'))
         except ValueError:
             abort(404)
@@ -71,7 +71,7 @@ def construct_blueprint(bikeService: BikeService) -> Blueprint:
     @login_required
     def delete(equipment_id: int):
         try:
-            bikeService.delete_bike(equipment_id, current_user.id)
+            bikeService.delete(equipment_id, current_user.id)
             return redirect(url_for('equipment.listEquipment'))
         except ValueError:
             abort(404)
