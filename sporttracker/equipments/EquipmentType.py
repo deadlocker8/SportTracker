@@ -8,6 +8,7 @@ from flask_babel import gettext
 class EquipmentType(enum.Enum):
     CLOTHES = 'CLOTHES', 'apparel', False, 0
     BIKE = 'BIKE', 'fa-bicycle', True, 1
+    CUSTOM = 'CUSTOM', 'shelves', False, 2
 
     icon: str
     is_font_awesome_icon: bool
