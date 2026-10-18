@@ -37,7 +37,7 @@
                                     <select class="form-select" id="clothes-type" name="clothes_type" required="required">
                                         {% for clothesType in clothesTypes %}
                                             <option value="{{ clothesType.name }}"
-                                                    {% if equipment and equipment.clothes_type == clothesType.name %}selected{% endif %}>{{ clothesType.get_localized_name() }}</option>
+                                                    {% if equipment and equipment.clothes_type.name == clothesType.name %}selected{% endif %}>{{ clothesType.get_localized_name() }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
