@@ -235,6 +235,15 @@ document.addEventListener('DOMContentLoaded', function()
             badgesDebug[i].style.display = 'none';
         });
     }
+
+    let checkboxEquipmentActive = document.getElementById('equipment-active-checkbox');
+    if(checkboxEquipmentActive !== null)
+    {
+        checkboxEquipmentActive.addEventListener('click', function()
+        {
+            document.getElementById('equipment-active').classList.toggle('hidden', checkboxEquipmentActive.checked);
+        });
+    }
 });
 
 function toggleFitFileImport(buttonImportFromFitFile, disable)

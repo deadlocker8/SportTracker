@@ -43,7 +43,7 @@ class BikeService:
         bike.name = form_model.name
         bike.purchase_date = date.strptime(form_model.purchase_date, DATE_FORMAT_DATE)
         bike.is_active = bool(form_model.is_active)
-        bike.inactive_date = None if bool(form_model.is_active) else datetime.today()  # type: ignore[assignment]
+        bike.inactive_date = self._parse_inactive_date(form_model)  # type: ignore[assignment]
         db.session.commit()
 
         LOGGER.debug(f'Updated bike: {bike}')
@@ -67,3 +67,13 @@ class BikeService:
         equipmentEntries = Bike.query.filter(Bike.user_id == user_id).filter(Bike.workout_type == workout_type).all()
 
         return natsorted(equipmentEntries, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
+
+    @staticmethod
+    def _parse_inactive_date(form_model: BikeFormModel) -> date | None:
+        if form_model.is_active:
+            return None
+
+        if form_model.inactive_date is None or not form_model.inactive_date:
+            return datetime.today()
+
+        return date.strptime(form_model.inactive_date, DATE_FORMAT_DATE)

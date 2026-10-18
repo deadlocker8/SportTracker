@@ -45,7 +45,7 @@ class ClothesService:
         clothes.name = form_model.name
         clothes.purchase_date = date.strptime(form_model.purchase_date, DATE_FORMAT_DATE)
         clothes.is_active = bool(form_model.is_active)
-        clothes.inactive_date = None if bool(form_model.is_active) else datetime.today()  # type: ignore[assignment]
+        clothes.inactive_date = self._parse_inactive_date(form_model)  # type: ignore[assignment]
         clothes.clothes_type = ClothesType(form_model.clothes_type)  # type: ignore[call-arg]
         db.session.commit()
 
@@ -72,3 +72,13 @@ class ClothesService:
         )
 
         return natsorted(equipmentEntries, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
+
+    @staticmethod
+    def _parse_inactive_date(form_model: ClothesFormModel) -> date | None:
+        if form_model.is_active:
+            return None
+
+        if form_model.inactive_date is None or not form_model.inactive_date:
+            return datetime.today()
+
+        return date.strptime(form_model.inactive_date, DATE_FORMAT_DATE)

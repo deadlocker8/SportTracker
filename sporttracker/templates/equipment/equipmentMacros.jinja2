@@ -71,14 +71,14 @@
 {% macro equipment_form_is_active(equipment) -%}
     <div class="mb-3 mt-5">
         <div class="row">
-            <div class="col col-6">
+            <div class="col col-12">
                 <label for="equipment-active" class="form-label">
                     <div class="d-flex align-items-center">
                         <span class="material-symbols-outlined filled me-3">check</span>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox"
                                     {% if equipment %}
-                                   {% if equipment.is_active %}checked{% endif %}
+                                        {% if equipment.is_active %}checked{% endif %}
                                     {% else %}
                                    checked
                                     {% endif %}
@@ -90,6 +90,12 @@
                         </div>
                     </div>
                 </label>
+
+                <div class="input-field-margin {% if not equipment or equipment.is_active %} hidden{% endif %}" id="equipment-active">
+                    <label for="equipment-inactive-date" class="form-label">{{ gettext('Inactive Since') }}</label>
+
+                    <input type="date" class="form-control" id="equipment-inactive-date" name="inactive_date" min="2000-01-01" value="{% if equipment %}{{ equipment.inactive_date }}{% endif %}">
+                </div>
             </div>
         </div>
     </div>
