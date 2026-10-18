@@ -26,8 +26,8 @@ from sporttracker.bodyWeight import BodyWeightBlueprint
 from sporttracker.chart import ChartBlueprint
 from sporttracker.db import db, migrate
 from sporttracker.dummyData.DummyDataGenerator import DummyDataGenerator
-from sporttracker.equipments import EquipmentBlueprint
-from sporttracker.equipments.EquipmentService import EquipmentService
+from sporttracker.equipment import EquipmentBlueprint
+from sporttracker.equipment.EquipmentService import EquipmentService
 from sporttracker.general import GeneralBlueprint
 from sporttracker.gpx import GpxBlueprint
 from sporttracker.gpx.GpxService import GpxService

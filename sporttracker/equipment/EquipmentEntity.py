@@ -4,7 +4,7 @@ from sqlalchemy import Date, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from sporttracker.db import db
-from sporttracker.equipments.EquipmentType import EquipmentType
+from sporttracker.equipment.EquipmentType import EquipmentType
 from sporttracker.helpers import DateFormats
 from sporttracker.workout.WorkoutType import WorkoutType
 
@@ -25,7 +25,7 @@ class Equipment(db.Model):  # type: ignore[name-defined]
 
     def __repr__(self):
         return (
-            f'EquipmentEntity('
+            f'Equipment('
             f'id: {self.id}, '
             f'user_id: {self.user_id}, '
             f'type: {self.type}, '

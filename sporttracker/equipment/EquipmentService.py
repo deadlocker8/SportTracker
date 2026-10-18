@@ -11,8 +11,8 @@ from pydantic import field_validator
 
 from sporttracker import Constants
 from sporttracker.db import db
-from sporttracker.equipments.EquipmentEntity import Equipment
-from sporttracker.equipments.EquipmentType import EquipmentType
+from sporttracker.equipment.EquipmentEntity import Equipment
+from sporttracker.equipment.EquipmentType import EquipmentType
 from sporttracker.helpers.DateFormats import DATE_FORMAT_DATE
 from sporttracker.workout.WorkoutType import WorkoutType
 

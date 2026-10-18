@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 from flask_pydantic import validate
 
 from sporttracker import Constants
-from sporttracker.equipments.EquipmentService import EquipmentFormModel, EquipmentModel, EquipmentService
+from sporttracker.equipment.EquipmentService import EquipmentFormModel, EquipmentModel, EquipmentService
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
