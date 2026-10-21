@@ -307,6 +307,18 @@ select[disabled] {
     font-size: 0.75rem;
 }
 
+.equipment-icon {
+    height: 10rem;
+}
+
+.equipment-icon svg {
+    font-size: 6rem;
+}
+
+.equipment-icon .material-symbols-outlined {
+    font-size: 5rem;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

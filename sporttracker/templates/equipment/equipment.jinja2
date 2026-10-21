@@ -43,40 +43,70 @@
                             </div>
                         </div>
 
-                        <table class="table table-dark">
-                            <thead>
-                                <tr>
-                                    <th scope="col">{{ gettext('Name') }}</th>
-                                    <th scope="col">{{ gettext('Purchase Date') }}</th>
-                                    <th scope="col">{{ gettext('Is Active') }}</th>
-                                    <th scope="col">{{ gettext('Action') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in group.items %}
-                                    <tr>
-                                        <td>{{ item.name | e }}</td>
-                                        <td>{{ item.purchase_date }}</td>
-                                        <td>{{ item.is_active }}</td>
-                                        <td>
-                                            <a href="{{ url_for('equipment.edit', equipment_id=item.id) }}"
-                                               class="link-light text-decoration-none">
-                                                <span class="p-1 fs-5 material-symbols-outlined filled">edit</span>
-                                            </a>
-                                            <a href=""
-                                               class="link-light text-decoration-none"
-                                               data-bs-toggle="modal" data-bs-target="#delete-modal-{{ item.id }}">
-                                                <span class="p-1 fs-5 material-symbols-outlined filled">delete</span>
-                                            </a>
+                        <div class="row py-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
+                            {% for item in group.items %}
+                                <div class="col mb-5">
+                                    <div class="card h-100">
+                                        <div class="card-header mb-0">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div class="d-flex align-items-center text-truncate">
+                                                    <div class="fs-5 text-truncate equipment-name px-2">
+                                                        {{ item.name | e }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                            {% call macros.deleteModal(gettext('Delete Equipment?'), gettext('Do you really want to delete the equipment "%(name)s"?<br><br>The equipment will also be removed from all associated workouts.', name=item.name), item.id) %}
-                                                {{ macros.buttonSubmitAutomaticallyDisabled(classes='btn btn-danger button-delete-modal-action', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl=url_for('equipment.delete', equipment_id=item.id)) }}
-                                            {% endcall %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                        <div class="bg-secondary d-flex align-items-center justify-content-center equipment-icon">
+                                            {% if group.is_font_awesome_icon %}
+                                                <i class="fa-solid {{ group.icon }} fa-fw text-white"></i>
+                                            {% else %}
+                                                <span class="material-symbols-outlined filled text-white">{{ group.icon }}</span>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="card-body">
+                                            <ol class="list-group list-group-flush">
+                                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                    <div>{{ gettext('Date of purchase:') }}</div>
+                                                    <div class="fw-bold">{{ item.purchase_date | format_date() }}</div>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                    <div>{{ gettext('Number of workouts:') }}</div>
+                                                    <div class="fw-bold">6385</div>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                    <div>{{ gettext('Total duration:') }}</div>
+                                                    <div class="fw-bold">600:30 h</div>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                    <div>{{ gettext('Total distance:') }}</div>
+                                                    <div class="fw-bold">1523,25 km</div>
+                                                </li>
+                                            </ol>
+                                        </div>
+
+                                        <div class="card-footer text-body-secondary d-flex align-items-center justify-content-between">
+                                            {% if item.is_active %}
+                                                <div class="badge rounded-pill text-bg-success d-flex align-items-center me-5">
+                                                    <div class="material-symbols-outlined filled fs-5">check</div>
+                                                    <div class="fs-6 fw-normal">&nbsp;{{ gettext('Active') }}</div>
+                                                </div>
+                                            {% else %}
+                                                <div class="badge rounded-pill text-bg-secondary d-flex align-items-center me-2">
+                                                    <div class="material-symbols-outlined fs-5">block</div>
+                                                    <div class="fs-6 fw-normal">&nbsp;{{ gettext('Disabled') }}</div>
+                                                </div>
+                                            {% endif %}
+                                            <a href="{{ url_for('equipment.edit', equipment_id=item.id) }}" class="btn btn-primary d-inline-flex align-items-center">
+                                                <span class="material-symbols-outlined filled text-light fs-5 me-1">edit</span>
+                                                <span>{{ gettext('Edit') }}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
                     {% endfor %}
                 {% endfor %}
             </section>
