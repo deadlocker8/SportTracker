@@ -32,6 +32,8 @@ from sporttracker.equipment.bike.BikeService import BikeService
 from sporttracker.equipment.clothes import ClothesBlueprint
 from sporttracker.equipment.clothes.ClothesService import ClothesService
 from sporttracker.equipment.clothes.ClothesType import ClothesType
+from sporttracker.equipment.custom import CustomEquipmentBlueprint
+from sporttracker.equipment.custom.CustomEquipmentService import CustomEquipmentService
 from sporttracker.general import GeneralBlueprint
 from sporttracker.gpx import GpxBlueprint
 from sporttracker.gpx.GpxService import GpxService
@@ -176,6 +178,7 @@ class SportTracker(FlaskBaseApp):
 
         app.config['CLOTHES_SERVICE'] = ClothesService()
         app.config['BIKE_SERVICE'] = BikeService()
+        app.config['CUSTOM_EQUIPMENT_SERVICE'] = CustomEquipmentService()
 
         if self._prepareDatabase:
             self.__prepare_database(app)
@@ -403,10 +406,13 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(NotificationBlueprint.construct_blueprint(app.config['NOTIFICATION_SERVICE']))
 
         app.register_blueprint(
-            EquipmentBlueprint.construct_blueprint(app.config['CLOTHES_SERVICE'], app.config['BIKE_SERVICE'])
+            EquipmentBlueprint.construct_blueprint(
+                app.config['CLOTHES_SERVICE'], app.config['BIKE_SERVICE'], app.config['CUSTOM_EQUIPMENT_SERVICE']
+            )
         )
         app.register_blueprint(ClothesBlueprint.construct_blueprint(app.config['CLOTHES_SERVICE']))
         app.register_blueprint(BikeBlueprint.construct_blueprint(app.config['BIKE_SERVICE']))
+        app.register_blueprint(CustomEquipmentBlueprint.construct_blueprint(app.config['CUSTOM_EQUIPMENT_SERVICE']))
 
     def __prepare_database(self, app):
         with app.app_context():

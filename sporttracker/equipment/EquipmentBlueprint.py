@@ -9,6 +9,8 @@ from sporttracker.equipment.bike.BikeEntity import Bike
 from sporttracker.equipment.bike.BikeService import BikeService
 from sporttracker.equipment.clothes.ClothesEntity import Clothes
 from sporttracker.equipment.clothes.ClothesService import ClothesService
+from sporttracker.equipment.custom.CustomEquipmentEntity import CustomEquipment
+from sporttracker.equipment.custom.CustomEquipmentService import CustomEquipmentService
 from sporttracker.equipment.EquipmentModel import EquipmentGroupModel
 from sporttracker.equipment.EquipmentService import EquipmentService
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -16,7 +18,9 @@ from sporttracker.workout.WorkoutType import WorkoutType
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
 
-def construct_blueprint(clothesService: ClothesService, bikeService: BikeService) -> Blueprint:
+def construct_blueprint(
+    clothesService: ClothesService, bikeService: BikeService, customEquipmentService: CustomEquipmentService
+) -> Blueprint:
     equipment = Blueprint('equipment', __name__, static_folder='static', url_prefix='/equipment')
 
     @equipment.route('/', methods=['GET'])
@@ -26,6 +30,7 @@ def construct_blueprint(clothesService: ClothesService, bikeService: BikeService
 
         bikes = bikeService.get_all_by_workout_type(WorkoutType.BIKING, current_user.id)
         bikingClothes = clothesService.get_all_by_workout_type(WorkoutType.BIKING, current_user.id)
+        bikingCustom = customEquipmentService.get_all_by_workout_type(WorkoutType.BIKING, current_user.id)
         equipmentGroupsByWorkoutType[WorkoutType.BIKING] = [
             EquipmentGroupModel(
                 name=gettext('Bikes'),
@@ -41,9 +46,17 @@ def construct_blueprint(clothesService: ClothesService, bikeService: BikeService
                 add_url=url_for('equipment_clothes.add', workout_type=WorkoutType.BIKING.name),
                 items=bikingClothes,
             ),
+            EquipmentGroupModel(
+                name=gettext('Custom'),
+                icon=CustomEquipment.get_icon()[0],
+                is_font_awesome_icon=Clothes.get_icon()[1],
+                add_url=url_for('equipment_custom.add', workout_type=WorkoutType.BIKING.name),
+                items=bikingCustom,
+            ),
         ]
 
         runningClothes = clothesService.get_all_by_workout_type(WorkoutType.RUNNING, current_user.id)
+        runningCustom = customEquipmentService.get_all_by_workout_type(WorkoutType.RUNNING, current_user.id)
         equipmentGroupsByWorkoutType[WorkoutType.RUNNING] = [
             EquipmentGroupModel(
                 name=gettext('Clothes'),
@@ -51,10 +64,18 @@ def construct_blueprint(clothesService: ClothesService, bikeService: BikeService
                 is_font_awesome_icon=Clothes.get_icon()[1],
                 add_url=url_for('equipment_clothes.add', workout_type=WorkoutType.RUNNING.name),
                 items=runningClothes,
-            )
+            ),
+            EquipmentGroupModel(
+                name=gettext('Custom'),
+                icon=CustomEquipment.get_icon()[0],
+                is_font_awesome_icon=Clothes.get_icon()[1],
+                add_url=url_for('equipment_custom.add', workout_type=WorkoutType.BIKING.name),
+                items=runningCustom,
+            ),
         ]
 
         hikingClothes = clothesService.get_all_by_workout_type(WorkoutType.HIKING, current_user.id)
+        hikingCustom = customEquipmentService.get_all_by_workout_type(WorkoutType.HIKING, current_user.id)
         equipmentGroupsByWorkoutType[WorkoutType.HIKING] = [
             EquipmentGroupModel(
                 name=gettext('Clothes'),
@@ -62,10 +83,18 @@ def construct_blueprint(clothesService: ClothesService, bikeService: BikeService
                 is_font_awesome_icon=Clothes.get_icon()[1],
                 add_url=url_for('equipment_clothes.add', workout_type=WorkoutType.HIKING.name),
                 items=hikingClothes,
-            )
+            ),
+            EquipmentGroupModel(
+                name=gettext('Custom'),
+                icon=CustomEquipment.get_icon()[0],
+                is_font_awesome_icon=Clothes.get_icon()[1],
+                add_url=url_for('equipment_custom.add', workout_type=WorkoutType.BIKING.name),
+                items=hikingCustom,
+            ),
         ]
 
         fitnessClothes = clothesService.get_all_by_workout_type(WorkoutType.FITNESS, current_user.id)
+        fitnessCustom = customEquipmentService.get_all_by_workout_type(WorkoutType.HIKING, current_user.id)
         equipmentGroupsByWorkoutType[WorkoutType.FITNESS] = [
             EquipmentGroupModel(
                 name=gettext('Clothes'),
@@ -73,7 +102,14 @@ def construct_blueprint(clothesService: ClothesService, bikeService: BikeService
                 is_font_awesome_icon=Clothes.get_icon()[1],
                 add_url=url_for('equipment_clothes.add', workout_type=WorkoutType.FITNESS.name),
                 items=fitnessClothes,
-            )
+            ),
+            EquipmentGroupModel(
+                name=gettext('Custom'),
+                icon=CustomEquipment.get_icon()[0],
+                is_font_awesome_icon=Clothes.get_icon()[1],
+                add_url=url_for('equipment_custom.add', workout_type=WorkoutType.BIKING.name),
+                items=fitnessCustom,
+            ),
         ]
 
         return render_template('equipment/equipment.jinja2', equipmentGroupsByWorkoutType=equipmentGroupsByWorkoutType)
