@@ -26,91 +26,16 @@ def construct_blueprint(
     @equipment.route('/', methods=['GET'])
     @login_required
     def listEquipment():
-        equipmentGroupsByWorkoutType: dict[WorkoutType, list[EquipmentGroupModel]] = {}
-
-        bikes = bikeService.get_all_by_workout_type(WorkoutType.BIKING, current_user.id)
-        bikingClothes = clothesService.get_all_by_workout_type(WorkoutType.BIKING, current_user.id)
-        bikingCustom = customEquipmentService.get_all_by_workout_type(WorkoutType.BIKING, current_user.id)
-        equipmentGroupsByWorkoutType[WorkoutType.BIKING] = [
-            EquipmentGroupModel(
-                name=gettext('Bikes'),
-                icon=Bike.get_icon()[0],
-                is_font_awesome_icon=Bike.get_icon()[1],
-                add_url=url_for('equipment_bike.add', workout_type=WorkoutType.BIKING.name),
-                items=bikes,
+        equipmentGroupsByWorkoutType: dict[WorkoutType, list[EquipmentGroupModel]] = {
+            WorkoutType.BIKING: __create_equipment_groups_for_workout_type(WorkoutType.BIKING, current_user.id, True),
+            WorkoutType.RUNNING: __create_equipment_groups_for_workout_type(
+                WorkoutType.RUNNING, current_user.id, False
             ),
-            EquipmentGroupModel(
-                name=gettext('Clothes'),
-                icon=Clothes.get_icon()[0],
-                is_font_awesome_icon=Clothes.get_icon()[1],
-                add_url=url_for('equipment_clothes.add', workout_type=WorkoutType.BIKING.name),
-                items=bikingClothes,
+            WorkoutType.HIKING: __create_equipment_groups_for_workout_type(WorkoutType.HIKING, current_user.id, False),
+            WorkoutType.FITNESS: __create_equipment_groups_for_workout_type(
+                WorkoutType.FITNESS, current_user.id, False
             ),
-            EquipmentGroupModel(
-                name=gettext('Custom'),
-                icon=CustomEquipment.get_icon()[0],
-                is_font_awesome_icon=Clothes.get_icon()[1],
-                add_url=url_for('equipment_custom.add', workout_type=WorkoutType.BIKING.name),
-                items=bikingCustom,
-            ),
-        ]
-
-        runningClothes = clothesService.get_all_by_workout_type(WorkoutType.RUNNING, current_user.id)
-        runningCustom = customEquipmentService.get_all_by_workout_type(WorkoutType.RUNNING, current_user.id)
-        equipmentGroupsByWorkoutType[WorkoutType.RUNNING] = [
-            EquipmentGroupModel(
-                name=gettext('Clothes'),
-                icon=Clothes.get_icon()[0],
-                is_font_awesome_icon=Clothes.get_icon()[1],
-                add_url=url_for('equipment_clothes.add', workout_type=WorkoutType.RUNNING.name),
-                items=runningClothes,
-            ),
-            EquipmentGroupModel(
-                name=gettext('Custom'),
-                icon=CustomEquipment.get_icon()[0],
-                is_font_awesome_icon=Clothes.get_icon()[1],
-                add_url=url_for('equipment_custom.add', workout_type=WorkoutType.BIKING.name),
-                items=runningCustom,
-            ),
-        ]
-
-        hikingClothes = clothesService.get_all_by_workout_type(WorkoutType.HIKING, current_user.id)
-        hikingCustom = customEquipmentService.get_all_by_workout_type(WorkoutType.HIKING, current_user.id)
-        equipmentGroupsByWorkoutType[WorkoutType.HIKING] = [
-            EquipmentGroupModel(
-                name=gettext('Clothes'),
-                icon=Clothes.get_icon()[0],
-                is_font_awesome_icon=Clothes.get_icon()[1],
-                add_url=url_for('equipment_clothes.add', workout_type=WorkoutType.HIKING.name),
-                items=hikingClothes,
-            ),
-            EquipmentGroupModel(
-                name=gettext('Custom'),
-                icon=CustomEquipment.get_icon()[0],
-                is_font_awesome_icon=Clothes.get_icon()[1],
-                add_url=url_for('equipment_custom.add', workout_type=WorkoutType.BIKING.name),
-                items=hikingCustom,
-            ),
-        ]
-
-        fitnessClothes = clothesService.get_all_by_workout_type(WorkoutType.FITNESS, current_user.id)
-        fitnessCustom = customEquipmentService.get_all_by_workout_type(WorkoutType.HIKING, current_user.id)
-        equipmentGroupsByWorkoutType[WorkoutType.FITNESS] = [
-            EquipmentGroupModel(
-                name=gettext('Clothes'),
-                icon=Clothes.get_icon()[0],
-                is_font_awesome_icon=Clothes.get_icon()[1],
-                add_url=url_for('equipment_clothes.add', workout_type=WorkoutType.FITNESS.name),
-                items=fitnessClothes,
-            ),
-            EquipmentGroupModel(
-                name=gettext('Custom'),
-                icon=CustomEquipment.get_icon()[0],
-                is_font_awesome_icon=Clothes.get_icon()[1],
-                add_url=url_for('equipment_custom.add', workout_type=WorkoutType.BIKING.name),
-                items=fitnessCustom,
-            ),
-        ]
+        }
 
         return render_template('equipment/equipment.jinja2', equipmentGroupsByWorkoutType=equipmentGroupsByWorkoutType)
 
@@ -143,5 +68,46 @@ def construct_blueprint(
 
         LOGGER.error(f'Could not determine delete url for equipment with id: {equipment_id}')
         abort(404)
+
+    def __create_equipment_groups_for_workout_type(
+        workout_type: WorkoutType, user_id: int, include_bikes: bool
+    ) -> list[EquipmentGroupModel]:
+        bikes = bikeService.get_all_by_workout_type(workout_type, user_id)
+        clothes = clothesService.get_all_by_workout_type(workout_type, user_id)
+        custom = customEquipmentService.get_all_by_workout_type(workout_type, user_id)
+
+        result = []
+        if include_bikes:
+            result.append(
+                EquipmentGroupModel(
+                    name=gettext('Bikes'),
+                    icon=Bike.get_icon()[0],
+                    is_font_awesome_icon=Bike.get_icon()[1],
+                    add_url=url_for('equipment_bike.add', workout_type=workout_type.name),
+                    items=bikes,
+                )
+            )
+
+        result.append(
+            EquipmentGroupModel(
+                name=gettext('Clothes'),
+                icon=Clothes.get_icon()[0],
+                is_font_awesome_icon=Clothes.get_icon()[1],
+                add_url=url_for('equipment_clothes.add', workout_type=workout_type.name),
+                items=clothes,
+            )
+        )
+
+        result.append(
+            EquipmentGroupModel(
+                name=gettext('Custom'),
+                icon=CustomEquipment.get_icon()[0],
+                is_font_awesome_icon=Clothes.get_icon()[1],
+                add_url=url_for('equipment_custom.add', workout_type=workout_type.name),
+                items=custom,
+            )
+        )
+
+        return result
 
     return equipment
