@@ -1,4 +1,7 @@
-# 2.2.1 - (XX.XX.XX)
+# 2.2.2 (24.10.26)
+- chore: update dependencies (including the certifi vulnerability fix)
+
+# 2.2.1 - (16.10.26)
 - fix: chart "speed per workout" no longer leads to server error (#317)
 - fix: tile hunting and workout map: improve display of info items on small devices (#315)
 
