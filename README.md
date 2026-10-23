@@ -254,6 +254,7 @@ Javascript dependencies can be found in `js/package.json` and corresponding `js/
 ### Additional dependencies
 - Google Material Symbols https://fonts.google.com/icons
 - Font Awesome Icons https://fontawesome.com/
+- Fashion Icons https://www.svgrepo.com/collection/fashion-icooon-mono-vectors
 - OpenStreetMap https://www.openstreetmap.org/about
 
 ### Icons / Images

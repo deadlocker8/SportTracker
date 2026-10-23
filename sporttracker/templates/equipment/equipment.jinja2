@@ -58,10 +58,14 @@
                                         </div>
 
                                         <div class="bg-secondary d-flex align-items-center justify-content-center equipment-icon">
-                                            {% if group.is_font_awesome_icon %}
-                                                <i class="fa-solid {{ group.icon }} fa-fw text-white"></i>
+                                            {% if item.clothes_type %}
+                                                <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + item.clothes_type.icon_file_name) }}" />
                                             {% else %}
-                                                <span class="material-symbols-outlined filled text-white">{{ group.icon }}</span>
+                                                {% if group.is_font_awesome_icon %}
+                                                    <i class="fa-solid {{ group.icon }} fa-fw text-white"></i>
+                                                {% else %}
+                                                    <span class="material-symbols-outlined filled text-white">{{ group.icon }}</span>
+                                                {% endif %}
                                             {% endif %}
                                         </div>
 
@@ -108,6 +112,7 @@
                             {% endfor %}
                         </div>
                     {% endfor %}
+                    <hr>
                 {% endfor %}
             </section>
         </div>

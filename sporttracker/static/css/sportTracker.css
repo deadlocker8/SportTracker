@@ -311,6 +311,12 @@ select[disabled] {
     height: 10rem;
 }
 
+.equipment-icon img {
+    height: 5rem;
+    width: 5rem;
+    filter: invert(1);
+}
+
 .equipment-icon svg {
     font-size: 6rem;
 }

@@ -4,22 +4,25 @@ from flask_babel import gettext
 
 
 class ClothesType(enum.Enum):
-    HEADGEAR = 'HEADGEAR', 0
-    TOPS = 'TOPS', 1
-    GLOVES = 'GLOVES', 2
-    BOTTOMS = 'BOTTOMS', 3
-    SHOES = 'SHOES', 4
-    MISC = 'MISC', 5
+    HEADGEAR = 'HEADGEAR', 'hat.svg', 0
+    TOPS = 'TOPS', 'shirt.svg', 1
+    GLOVES = 'GLOVES', 'glove.svg', 2
+    BOTTOMS = 'BOTTOMS', 'pants.svg', 3
+    SHOES = 'SHOES', 'shoe.svg', 4
+    MISC = 'MISC', 'checkroom.svg', 5
 
+    icon_file_name: str
     order: int
 
     def __new__(
         cls,
         name: str,
+        icon_file_name: str,
         order: int,
     ):
         member = object.__new__(cls)
         member._value_ = name
+        member.icon_file_name = icon_file_name
         member.order = order
         return member
 
