@@ -1,7 +1,7 @@
 from datetime import date
 from typing import ClassVar
 
-from sqlalchemy import Date, Integer, String
+from sqlalchemy import Column, Date, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import Mapped, mapped_column
 
 from sporttracker.db import db
@@ -47,3 +47,11 @@ class Equipment(db.Model):  # type: ignore[name-defined]
             f'is_active: {self.is_active}, '
             f'inactive_date: {self.inactive_date})'
         )
+
+
+workout_equipment_association = Table(
+    'workout_equipment_association',
+    db.Model.metadata,
+    Column('workout_id', ForeignKey('workout.id', ondelete='CASCADE')),
+    Column('equipment_id', ForeignKey('equipment.id', ondelete='CASCADE')),
+)

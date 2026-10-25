@@ -91,6 +91,21 @@ def upgrade():
             sa.PrimaryKeyConstraint('id'),
         )
 
+    if 'workout_equipment_association' not in tableNames:
+        op.create_table(
+            'workout_equipment_association',
+            sa.Column('workout_id', sa.Integer(), nullable=True),
+            sa.Column('equipment_id', sa.Integer(), nullable=True),
+            sa.ForeignKeyConstraint(
+                ['equipment_id'],
+                ['equipment.id'],
+            ),
+            sa.ForeignKeyConstraint(
+                ['workout_id'],
+                ['workout.id'],
+            ),
+        )
+
 
 def downgrade():
     tableNames = __get_table_names()
@@ -105,3 +120,6 @@ def downgrade():
 
     if 'equipment_bike' in tableNames:
         op.drop_table('equipment_bike')
+
+    if 'workout_equipment_association' in tableNames:
+        op.drop_table('workout_equipment_association')

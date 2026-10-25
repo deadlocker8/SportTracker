@@ -8,6 +8,7 @@ from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from sporttracker.db import db
+from sporttracker.equipment.EquipmentEntity import Equipment, workout_equipment_association
 from sporttracker.user.ParticipantEntity import Participant, workout_participant_association
 from sporttracker.user.UserEntity import User
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -24,6 +25,7 @@ class Workout(db.Model):  # type: ignore[name-defined]
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     average_heart_rate: Mapped[int] = mapped_column(Integer, nullable=True)
     participants: Mapped[list[Participant]] = relationship(secondary=workout_participant_association)
+    equipment: Mapped[list[Equipment]] = relationship(secondary=workout_equipment_association)
     custom_fields = db.Column(JSON)
 
     __mapper_args__: ClassVar[dict[str, str]] = {
@@ -42,7 +44,8 @@ class Workout(db.Model):  # type: ignore[name-defined]
             f'custom_fields: {self.custom_fields}, '
             f'participants: {self.participants}, '
             f'user_id: {self.user_id}, '
-            f'average_heart_rate: {self.average_heart_rate})'
+            f'average_heart_rate: {self.average_heart_rate}, '
+            f'equipment: {self.equipment})'
         )
 
 
