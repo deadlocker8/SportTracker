@@ -72,9 +72,9 @@ def construct_blueprint(
     def __create_equipment_groups_for_workout_type(
         workout_type: WorkoutType, user_id: int, include_bikes: bool
     ) -> list[EquipmentGroupModel]:
-        bikes = bikeService.get_all_by_workout_type(workout_type, user_id)
-        clothes = clothesService.get_all_by_workout_type(workout_type, user_id)
-        custom = customEquipmentService.get_all_by_workout_type(workout_type, user_id)
+        bikes = bikeService.get_all_statistic_items_by_workout_type(workout_type, user_id)
+        clothes = clothesService.get_all_statistic_items_by_workout_type(workout_type, user_id)
+        custom = customEquipmentService.get_all_statistic_items_by_workout_type(workout_type, user_id)
 
         result = []
         if include_bikes:

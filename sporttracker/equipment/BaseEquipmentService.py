@@ -10,7 +10,7 @@ from natsort import natsort, natsorted
 from sporttracker import Constants
 from sporttracker.db import db
 from sporttracker.equipment.EquipmentEntity import Equipment
-from sporttracker.equipment.EquipmentModel import BaseEquipmentFormModel, BaseEquipmentModel
+from sporttracker.equipment.EquipmentModel import BaseEquipmentFormModel, EquipmentStatisticModel
 from sporttracker.helpers.DateFormats import DATE_FORMAT_DATE
 from sporttracker.workout.WorkoutType import WorkoutType
 
@@ -71,14 +71,21 @@ class BaseEquipmentService(Generic[TEntity, TForm]):
         )
 
     @classmethod
-    def get_all_by_workout_type(cls, workout_type: WorkoutType, user_id: int) -> list[BaseEquipmentModel]:
-        equipmentEntries = (
+    def get_all_statistic_items_by_workout_type(
+        cls, workout_type: WorkoutType, user_id: int
+    ) -> list[EquipmentStatisticModel]:
+        equipments = (
             cls.entity_class.query.filter(cls.entity_class.user_id == user_id)
             .filter(cls.entity_class.workout_type == workout_type)
             .all()
         )
 
-        return natsorted(equipmentEntries, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
+        items = []
+        for equipment in equipments:
+            # TODO
+            items.append(EquipmentStatisticModel(equipment, 4523, 603 * 60 * 60 + 60 * 20, 152728))
+
+        return natsorted(items, alg=natsort.ns.IGNORECASE, key=attrgetter('equipment.name'))
 
     @classmethod
     def _get_or_raise(cls, equipment_id: int, user_id: int) -> TEntity:

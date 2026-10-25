@@ -51,15 +51,15 @@
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <div class="d-flex align-items-center text-truncate">
                                                     <div class="fs-5 text-truncate equipment-name px-2">
-                                                        {{ item.name | e }}
+                                                        {{ item.equipment.name | e }}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="bg-secondary d-flex align-items-center justify-content-center equipment-icon">
-                                            {% if item.clothes_type %}
-                                                <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + item.clothes_type.icon_file_name) }}" />
+                                            {% if item.equipment.clothes_type %}
+                                                <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + item.equipment.clothes_type.icon_file_name) }}" />
                                             {% else %}
                                                 {% if group.is_font_awesome_icon %}
                                                     <i class="fa-solid {{ group.icon }} fa-fw text-white"></i>
@@ -73,25 +73,25 @@
                                             <ol class="list-group list-group-flush">
                                                 <li class="list-group-item d-flex justify-content-between align-items-start">
                                                     <div>{{ gettext('Date of purchase:') }}</div>
-                                                    <div class="fw-bold">{{ item.purchase_date | format_date() }}</div>
+                                                    <div class="fw-bold">{{ item.equipment.purchase_date | format_date() }}</div>
                                                 </li>
                                                 <li class="list-group-item d-flex justify-content-between align-items-start">
                                                     <div>{{ gettext('Number of workouts:') }}</div>
-                                                    <div class="fw-bold">6385</div>
+                                                    <div class="fw-bold">{{ item.number_of_workouts }}</div>
                                                 </li>
                                                 <li class="list-group-item d-flex justify-content-between align-items-start">
                                                     <div>{{ gettext('Total duration:') }}</div>
-                                                    <div class="fw-bold">600:30 h</div>
+                                                    <div class="fw-bold">{{ item.total_duration | format_duration() }} h</div>
                                                 </li>
                                                 <li class="list-group-item d-flex justify-content-between align-items-start">
                                                     <div>{{ gettext('Total distance:') }}</div>
-                                                    <div class="fw-bold">1523,25 km</div>
+                                                    <div class="fw-bold">{{ (item.total_distance / 1000) | format_decimal(2) }} km</div>
                                                 </li>
                                             </ol>
                                         </div>
 
                                         <div class="card-footer text-body-secondary d-flex align-items-center justify-content-between">
-                                            {% if item.is_active %}
+                                            {% if item.equipment.is_active %}
                                                 <div class="badge rounded-pill text-bg-success d-flex align-items-center me-5">
                                                     <div class="material-symbols-outlined filled fs-5">check</div>
                                                     <div class="fs-6 fw-normal">&nbsp;{{ gettext('Active') }}</div>
@@ -102,7 +102,7 @@
                                                     <div class="fs-6 fw-normal">&nbsp;{{ gettext('Disabled') }}</div>
                                                 </div>
                                             {% endif %}
-                                            <a href="{{ url_for('equipment.edit', equipment_id=item.id) }}" class="btn btn-primary d-inline-flex align-items-center">
+                                            <a href="{{ url_for('equipment.edit', equipment_id=item.equipment.id) }}" class="btn btn-primary d-inline-flex align-items-center">
                                                 <span class="material-symbols-outlined filled text-light fs-5 me-1">edit</span>
                                                 <span>{{ gettext('Edit') }}</span>
                                             </a>

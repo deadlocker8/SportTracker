@@ -33,9 +33,17 @@ class BaseEquipmentFormModel(BaseModel):
 
 
 @dataclass
+class EquipmentStatisticModel:
+    equipment: BaseEquipmentModel
+    number_of_workouts: int
+    total_duration: int
+    total_distance: int
+
+
+@dataclass
 class EquipmentGroupModel:
     name: str
     icon: str
     is_font_awesome_icon: bool
     add_url: str
-    items: list[BaseEquipmentModel]
+    items: list[EquipmentStatisticModel]
