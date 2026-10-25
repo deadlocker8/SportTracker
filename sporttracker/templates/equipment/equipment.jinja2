@@ -58,15 +58,17 @@
                                         </div>
 
                                         <div class="bg-secondary d-flex align-items-center justify-content-center equipment-icon">
-                                            {% if item.equipment.clothes_type %}
-                                                <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + item.equipment.clothes_type.icon_file_name) }}" />
-                                            {% else %}
-                                                {% if group.is_font_awesome_icon %}
-                                                    <i class="fa-solid {{ group.icon }} fa-fw text-white"></i>
+                                            <a href="{{ url_for('equipment.edit', equipment_id=item.equipment.id) }}">
+                                                {% if item.equipment.clothes_type %}
+                                                    <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + item.equipment.clothes_type.icon_file_name) }}" />
                                                 {% else %}
-                                                    <span class="material-symbols-outlined filled text-white">{{ group.icon }}</span>
+                                                    {% if group.is_font_awesome_icon %}
+                                                        <i class="fa-solid {{ group.icon }} fa-fw text-white"></i>
+                                                    {% else %}
+                                                        <span class="material-symbols-outlined filled text-white">{{ group.icon }}</span>
+                                                    {% endif %}
                                                 {% endif %}
-                                            {% endif %}
+                                            </a>
                                         </div>
 
                                         <div class="card-body">
