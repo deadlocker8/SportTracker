@@ -12,6 +12,7 @@ from sporttracker.db import db
 from sporttracker.equipment.EquipmentEntity import Equipment
 from sporttracker.equipment.EquipmentModel import BaseEquipmentFormModel, EquipmentStatisticModel
 from sporttracker.helpers.DateFormats import DATE_FORMAT_DATE
+from sporttracker.workout.WorkoutEntity import Workout
 from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -82,8 +83,22 @@ class BaseEquipmentService(Generic[TEntity, TForm]):
 
         items = []
         for equipment in equipments:
-            # TODO
-            items.append(EquipmentStatisticModel(equipment, 4523, 603 * 60 * 60 + 60 * 20, 152728))
+            workouts = (
+                Workout.query.filter(Workout.user_id == user_id).filter(Workout.equipment.any(id=equipment.id)).all()
+            )
+
+            items.append(
+                EquipmentStatisticModel(
+                    equipment=equipment,
+                    number_of_workouts=len(workouts),
+                    total_duration=sum(workout.duration for workout in workouts),
+                    total_distance=sum(
+                        workout.distance
+                        for workout in workouts
+                        if workout.type in WorkoutType.get_distance_workout_types()
+                    ),
+                )
+            )
 
         return natsorted(items, alg=natsort.ns.IGNORECASE, key=attrgetter('equipment.name'))
 
