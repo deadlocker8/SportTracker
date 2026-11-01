@@ -607,18 +607,11 @@
                             {% set ns = namespace(groupItemCounter = 0) %}
                             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
                                 {% for equipment in group.items %}
-                                    {% if equipment.is_active %}
+                                    {% if equipment.is_active or equipment in selectedEquipment %}
                                         {% set ns.groupItemCounter = ns.groupItemCounter + 1 %}
                                         <div class="col">
-                                            {{ workout_form_equipment_card(equipment, group, true) }}
+                                            {{ workout_form_equipment_card(equipment, group) }}
                                         </div>
-                                    {% else %}
-                                        {% if equipment in selectedEquipment %}
-                                            {% set ns.groupItemCounter = ns.groupItemCounter + 1 %}
-                                            <div class="col">
-                                                {{ workout_form_equipment_card(equipment, group, false) }}
-                                            </div>
-                                        {% endif %}
                                     {% endif %}
                                 {% endfor %}
                             </div>
@@ -639,35 +632,35 @@
     </div>
 {%- endmacro %}
 
-{% macro workout_form_equipment_card(equipment, group, is_active) -%}
+{% macro workout_form_equipment_card(equipment, group) -%}
     <div class="card h-100 equipment-modal-card border-0"
          role="button"
          tabindex="0"
          data-equipment-id="{{ equipment.id }}"
          data-bs-theme="light">
-        <div class="card-header">
-            <div class="d-flex align-items-center justify-content-between gap-2">
-                <div class="fs-6 text-truncate equipment-name px-2 min-width-0">{{ equipment.name | e }}</div>
+
+        <div class="card-body d-flex flex-row align-items-center justify-content-between p-0">
+            <div class="d-flex align-items-center gap-2 flex-grow-1 overflow-hidden">
+                <div class="d-flex align-items-center justify-content-center equipment-select-icon bg-secondary rounded-start">
+                    {% if equipment.clothes_type %}
+                        <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + equipment.clothes_type.icon_file_name) }}" />
+                    {% else %}
+                        {% if group.is_font_awesome_icon %}
+                            <i class="fa-solid {{ group.icon }} fa-fw text-white"></i>
+                        {% else %}
+                            <span class="material-symbols-outlined filled text-white">{{ group.icon }}</span>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+                <div class="flex-fill w-100 fs-6 text-truncate equipment-name">{{ equipment.name | e }}</div>
+            </div>
+            <div class="d-flex align-items-center gap-2 me-2 flex-shrink-0">
                 <div>
-                    {% if not is_active %}
+                    {% if not equipment.is_active %}
                         <span class="badge rounded-pill text-bg-danger flex-shrink-0">{{ gettext('Disabled') }}</span>
                     {% endif %}
-                    <span class="badge rounded-pill text-bg-success equipment-selected-badge flex-shrink-0 {% if equipment.id | string not in selectedIds %}hidden{% endif %}">{{ gettext('Selected') }}</span>
                 </div>
-            </div>
-        </div>
-
-        <div class="card-body bg-secondary rounded-bottom">
-            <div class="d-flex align-items-center justify-content-center equipment-icon equipment-icon-small">
-                {% if equipment.clothes_type %}
-                    <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + equipment.clothes_type.icon_file_name) }}" />
-                {% else %}
-                    {% if group.is_font_awesome_icon %}
-                        <i class="fa-solid {{ group.icon }} fa-fw text-white"></i>
-                    {% else %}
-                        <span class="material-symbols-outlined filled text-white">{{ group.icon }}</span>
-                    {% endif %}
-                {% endif %}
             </div>
         </div>
     </div>

@@ -334,22 +334,23 @@ select[disabled] {
     font-size: 5rem;
 }
 
-.equipment-icon-small {
-    height: 5rem;
+.equipment-select-icon {
+    min-height: 3rem;
+    min-width: 3rem;
 }
 
-.equipment-icon-small img {
-    height: 3rem;
-    width: 3rem;
+.equipment-select-icon img {
+    height: 1.5rem;
+    width: 1.5rem;
     filter: invert(1);
 }
 
-.equipment-icon-small svg {
-    font-size: 4rem;
+.equipment-select-ico svg {
+    font-size: 2rem;
 }
 
-.equipment-icon-small .material-symbols-outlined {
-    font-size: 3rem;
+.equipment-select-ico .material-symbols-outlined {
+    font-size: 1.5rem;
 }
 
 .debug {

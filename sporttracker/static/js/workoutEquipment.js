@@ -28,17 +28,15 @@ document.addEventListener('DOMContentLoaded', function()
         });
     }
 
-    function syncModalBadges()
+    function updateCards()
     {
         const selectedIds = new Set(getSelectedIds());
 
         for(const card of cards)
         {
-            const badge = card.querySelector('.equipment-selected-badge');
-            if(badge !== null)
-            {
-                badge.classList.toggle('hidden', !selectedIds.has(card.dataset.equipmentId));
-            }
+            const icon = card.querySelector('.equipment-select-icon');
+            icon.classList.toggle('bg-secondary', !selectedIds.has(card.dataset.equipmentId));
+            icon.classList.toggle('bg-success', selectedIds.has(card.dataset.equipmentId));
         }
     }
 
@@ -69,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function()
             hiddenInput.remove();
         }
 
-        syncModalBadges();
+        updateCards();
         updateSelectedCount();
     }
 
@@ -92,9 +90,9 @@ document.addEventListener('DOMContentLoaded', function()
 
     if(modalElement !== null)
     {
-        modalElement.addEventListener('show.bs.modal', syncModalBadges);
+        modalElement.addEventListener('show.bs.modal', updateCards);
     }
 
-    syncModalBadges();
+    updateCards();
     updateSelectedCount();
 });
