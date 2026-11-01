@@ -607,34 +607,17 @@
                             {% if group.items %}
                                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
                                     {% for equipment in group.items %}
-                                        <div class="col">
-                                            <div class="card h-100 equipment-modal-card border-0"
-                                                 role="button"
-                                                 tabindex="0"
-                                                 data-equipment-id="{{ equipment.id }}"
-                                                 data-bs-theme="light">
-                                                <div class="card-header">
-                                                    <div class="d-flex align-items-center justify-content-between gap-2">
-                                                        <div class="fs-6 text-truncate equipment-name px-2 min-width-0">{{ equipment.name | e }}</div>
-                                                        <span class="badge rounded-pill text-bg-success equipment-selected-badge flex-shrink-0 {% if equipment.id | string not in selectedIds %}hidden{% endif %}">{{ gettext('Selected') }}</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="card-body bg-secondary rounded-bottom">
-                                                    <div class="d-flex align-items-center justify-content-center equipment-icon equipment-icon-small">
-                                                        {% if equipment.clothes_type %}
-                                                            <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + equipment.clothes_type.icon_file_name) }}" />
-                                                        {% else %}
-                                                            {% if group.is_font_awesome_icon %}
-                                                                <i class="fa-solid {{ group.icon }} fa-fw text-white"></i>
-                                                            {% else %}
-                                                                <span class="material-symbols-outlined filled text-white">{{ group.icon }}</span>
-                                                            {% endif %}
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
+                                        {% if equipment.is_active %}
+                                            <div class="col">
+                                                {{ workout_form_equipment_card(equipment, group, true) }}
                                             </div>
-                                        </div>
+                                        {% else %}
+                                            {% if equipment in selectedEquipment %}
+                                                <div class="col">
+                                                    {{ workout_form_equipment_card(equipment, group, false) }}
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
                                     {% endfor %}
                                 </div>
                             {% else %}
@@ -649,6 +632,40 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ gettext('Close') }}</button>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{ gettext('Apply') }}</button>
                 </div>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro workout_form_equipment_card(equipment, group, is_active) -%}
+    <div class="card h-100 equipment-modal-card border-0"
+         role="button"
+         tabindex="0"
+         data-equipment-id="{{ equipment.id }}"
+         data-bs-theme="light">
+        <div class="card-header">
+            <div class="d-flex align-items-center justify-content-between gap-2">
+                <div class="fs-6 text-truncate equipment-name px-2 min-width-0">{{ equipment.name | e }}</div>
+                <div>
+                    {% if not is_active %}
+                        <span class="badge rounded-pill text-bg-danger flex-shrink-0">{{ gettext('Disabled') }}</span>
+                    {% endif %}
+                    <span class="badge rounded-pill text-bg-success equipment-selected-badge flex-shrink-0 {% if equipment.id | string not in selectedIds %}hidden{% endif %}">{{ gettext('Selected') }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body bg-secondary rounded-bottom">
+            <div class="d-flex align-items-center justify-content-center equipment-icon equipment-icon-small">
+                {% if equipment.clothes_type %}
+                    <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + equipment.clothes_type.icon_file_name) }}" />
+                {% else %}
+                    {% if group.is_font_awesome_icon %}
+                        <i class="fa-solid {{ group.icon }} fa-fw text-white"></i>
+                    {% else %}
+                        <span class="material-symbols-outlined filled text-white">{{ group.icon }}</span>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>

@@ -72,11 +72,10 @@ class BaseEquipmentService(Generic[TEntity, TForm]):
         )
 
     @classmethod
-    def get_all_active_by_workout_type(cls, workout_type: WorkoutType, user_id: int) -> list[TEntity]:
+    def get_all_by_workout_type(cls, workout_type: WorkoutType, user_id: int) -> list[TEntity]:
         equipments = (
             cls.entity_class.query.filter(cls.entity_class.user_id == user_id)
             .filter(cls.entity_class.workout_type == workout_type)
-            .filter(cls.entity_class.is_active.is_(True))
             .all()
         )
 

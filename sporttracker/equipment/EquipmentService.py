@@ -48,7 +48,7 @@ class EquipmentService:
                 EquipmentService.__create_selection_group(
                     gettext('Bikes'),
                     Bike,
-                    BikeService.get_all_active_by_workout_type(workout_type, user_id),
+                    BikeService.get_all_by_workout_type(workout_type, user_id),
                 )
             )
 
@@ -56,14 +56,14 @@ class EquipmentService:
             EquipmentService.__create_selection_group(
                 gettext('Clothes'),
                 Clothes,
-                ClothesService.get_all_active_by_workout_type(workout_type, user_id),
+                ClothesService.get_all_by_workout_type(workout_type, user_id),
             )
         )
         groups.append(
             EquipmentService.__create_selection_group(
                 gettext('Custom'),
                 CustomEquipment,
-                CustomEquipmentService.get_all_active_by_workout_type(workout_type, user_id),
+                CustomEquipmentService.get_all_by_workout_type(workout_type, user_id),
             )
         )
 
