@@ -74,10 +74,10 @@ class TestFitnessWorkouts(SeleniumTestBaseClass):
             selenium.find_element(By.XPATH, f'//label[@for="{category}"]').click()
 
     @staticmethod
-    def __close_equipment_modal(selenium):
+    def __submit_equipment_modal(selenium):
         selenium.find_element(
             By.XPATH,
-            '//div[@id="workout-equipment-modal"]//button[text()="Done"]',
+            '//div[@id="workout-equipment-modal"]//button[text()="Apply"]',
         ).click()
         WebDriverWait(selenium, 5).until(
             expected_conditions.invisibility_of_element_located((By.ID, 'workout-equipment-modal'))
@@ -147,7 +147,7 @@ class TestFitnessWorkouts(SeleniumTestBaseClass):
             By.CSS_SELECTOR, f'{clothes_card_selector} .equipment-selected-badge'
         ).is_displayed()
         assert selected_count.text == '1'
-        self.__close_equipment_modal(selenium)
+        self.__submit_equipment_modal(selenium)
 
         assert selected_count.text == '1'
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
