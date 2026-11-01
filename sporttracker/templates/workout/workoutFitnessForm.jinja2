@@ -14,6 +14,7 @@
         {% import 'plannedTour/plannedToursMacros.jinja2' as plannedToursMacros with context %}
 
         {{ macros.scripts() }}
+        <script defer src="{{ url_for('static', filename='js/workoutEquipment.js') }}" type="text/javascript"></script>
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
@@ -72,6 +73,8 @@
                             {% endfor %}
 
                             {{ workoutMacros.workout_form_participants(workout, participants) }}
+
+                            {{ workoutMacros.workout_form_equipment(workout, equipmentGroups, selectedEquipment) }}
 
                             {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-5 input-field-margin', id='buttonSaveWorkout') }}
                         </form>

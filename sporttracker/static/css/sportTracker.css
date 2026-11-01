@@ -311,6 +311,15 @@ select[disabled] {
     height: 10rem;
 }
 
+.equipment-modal-card {
+    cursor: pointer;
+}
+
+.equipment-modal-card:focus-visible {
+    outline: 2px solid var(--bs-primary);
+    outline-offset: 2px;
+}
+
 .equipment-icon img {
     height: 5rem;
     width: 5rem;
@@ -323,6 +332,24 @@ select[disabled] {
 
 .equipment-icon .material-symbols-outlined {
     font-size: 5rem;
+}
+
+.equipment-icon-small {
+    height: 5rem;
+}
+
+.equipment-icon-small img {
+    height: 3rem;
+    width: 3rem;
+    filter: invert(1);
+}
+
+.equipment-icon-small svg {
+    font-size: 4rem;
+}
+
+.equipment-icon-small .material-symbols-outlined {
+    font-size: 3rem;
 }
 
 .debug {

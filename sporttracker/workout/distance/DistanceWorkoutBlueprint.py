@@ -8,6 +8,7 @@ from flask_login import current_user, login_required
 from flask_pydantic import validate
 
 from sporttracker import Constants
+from sporttracker.equipment.EquipmentService import EquipmentService
 from sporttracker.fit.FitSessionParser import FitSession, FitSessionParser
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.helpers import DateFormats
@@ -41,10 +42,12 @@ def construct_blueprint(
     @validate()
     def addPost(form: DistanceWorkoutFormModel):
         participant_ids = [int(item) for item in request.form.getlist('participants')]
+        equipment_ids = [int(item) for item in request.form.getlist('equipment_ids')]
         workout = distanceWorkoutService.add_workout(
             form_model=form,
             files=request.files,
             participant_ids=participant_ids,
+            equipment_ids=equipment_ids,
             user_id=current_user.id,
         )
 
@@ -96,6 +99,8 @@ def construct_blueprint(
             participants=get_participants(),
             workoutNames=get_workout_names_by_type(workout.type),
             plannedTours=PlannedTourService.get_planned_tours([workout.type]),
+            equipmentGroups=EquipmentService.get_selection_groups_by_workout_type(workout.type, current_user.id),
+            selectedEquipment=workout.equipment,
         )
 
     @distanceWorkouts.route('/edit/<int:workout_id>', methods=['POST'])
@@ -104,11 +109,13 @@ def construct_blueprint(
     def editPost(workout_id: int, form: DistanceWorkoutFormModel):
         try:
             participant_ids = [int(item) for item in request.form.getlist('participants')]
+            equipment_ids = [int(item) for item in request.form.getlist('equipment_ids')]
             workout = distanceWorkoutService.edit_workout(
                 workout_id=workout_id,
                 form_model=form,
                 files=request.files,
                 participant_ids=participant_ids,
+                equipment_ids=equipment_ids,
                 user_id=current_user.id,
             )
             return redirect(
@@ -207,6 +214,9 @@ def construct_blueprint(
             participants=get_participants(),
             workoutNames=get_workout_names_by_type(fitSession.workout_type),
             plannedTours=PlannedTourService.get_planned_tours([fitSession.workout_type]),
+            equipmentGroups=EquipmentService.get_selection_groups_by_workout_type(
+                fitSession.workout_type, current_user.id
+            ),
         )
 
     return distanceWorkouts

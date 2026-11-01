@@ -4,6 +4,7 @@ from typing import Any
 
 from pydantic import BaseModel, field_validator
 
+from sporttracker.equipment.EquipmentEntity import Equipment
 from sporttracker.workout.WorkoutType import WorkoutType
 
 
@@ -47,3 +48,11 @@ class EquipmentGroupModel:
     is_font_awesome_icon: bool
     add_url: str
     items: list[EquipmentStatisticModel]
+
+
+@dataclass
+class EquipmentSelectionGroupModel:
+    name: str
+    icon: str
+    is_font_awesome_icon: bool
+    items: list[Equipment]

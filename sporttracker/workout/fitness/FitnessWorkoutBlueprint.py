@@ -5,6 +5,7 @@ from flask_login import current_user, login_required
 from flask_pydantic import validate
 
 from sporttracker import Constants
+from sporttracker.equipment.EquipmentService import EquipmentService
 from sporttracker.helpers import DateFormats
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
@@ -29,6 +30,7 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
     @validate()
     def addPost(form: FitnessWorkoutFormModel):
         participant_ids = [int(item) for item in request.form.getlist('participants')]
+        equipment_ids = [int(item) for item in request.form.getlist('equipment_ids')]
         fitness_workout_categories = [
             FitnessWorkoutCategoryType(item)  # type: ignore[call-arg]
             for item in request.form.getlist('fitness_workout_categories')
@@ -37,6 +39,7 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
         workout = fitnessWorkoutService.add_workout(
             form_model=form,
             participant_ids=participant_ids,
+            equipment_ids=equipment_ids,
             fitness_workout_categories=fitness_workout_categories,
             user_id=current_user.id,
         )
@@ -80,6 +83,8 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
             participants=get_participants(),
             workoutNames=get_workout_names_by_type(workout.type),
             plannedTours=PlannedTourService.get_planned_tours([workout.type]),
+            equipmentGroups=EquipmentService.get_selection_groups_by_workout_type(workout.type, current_user.id),
+            selectedEquipment=workout.equipment,
         )
 
     @fitnessWorkouts.route('/edit/<int:workout_id>', methods=['POST'])
@@ -88,6 +93,7 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
     def editPost(workout_id: int, form: FitnessWorkoutFormModel):
         try:
             participant_ids = [int(item) for item in request.form.getlist('participants')]
+            equipment_ids = [int(item) for item in request.form.getlist('equipment_ids')]
             fitness_workout_categories = [
                 FitnessWorkoutCategoryType(item)  # type: ignore[call-arg]
                 for item in request.form.getlist('fitness_workout_categories')
@@ -97,6 +103,7 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
                 workout_id=workout_id,
                 form_model=form,
                 participant_ids=participant_ids,
+                equipment_ids=equipment_ids,
                 fitness_workout_categories=fitness_workout_categories,
                 user_id=current_user.id,
             )

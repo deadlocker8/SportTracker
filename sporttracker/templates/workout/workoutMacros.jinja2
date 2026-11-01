@@ -547,6 +547,113 @@
     </div>
 {%- endmacro %}
 
+{% macro workout_form_equipment(workout, equipmentGroups, selectedEquipment=[]) -%}
+    {% set equipmentGroups = equipmentGroups | default([], true) %}
+    {% set selectedEquipment = selectedEquipment | default([], true) %}
+    {% set selectedIds = selectedEquipment | map(attribute='id') | map('string') | list %}
+    <div class="mb-3" id="workout-equipment">
+        <label class="form-label">
+            <div class="d-flex align-items-center">
+                <span class="material-symbols-outlined filled me-3">apparel</span>
+                <span>{{ gettext('Equipment') }}</span>
+            </div>
+        </label>
+
+        <div id="workout-equipment-hidden-inputs">
+            {% for equipment in selectedEquipment %}
+                <input type="hidden" name="equipment_ids" value="{{ equipment.id }}">
+            {% endfor %}
+        </div>
+
+        <div class="input-field-margin d-flex flex-row align-items-center gap-3">
+            <div class="badge rounded-pill text-bg-secondary d-flex flex-row px-3 lh-lg" id="workout-equipment-selected-container">
+                <div id="workout-equipment-selected-count">{{ selectedEquipment | length }}</div>
+                <div class="ms-1">{{ gettext('selected') }}</div>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-sm d-flex align-items-center button-automatically-disabled" data-bs-toggle="modal" data-bs-target="#workout-equipment-modal" id="buttonWorkoutEquipmentEdit">
+                <span class="material-symbols-outlined filled fs-4 me-2">apparel</span>{{ gettext('Edit Equipment') }}
+            </button>
+        </div>
+
+        {{ workout_equipment_modal(equipmentGroups) }}
+    </div>
+{%- endmacro %}
+
+{% macro workout_equipment_modal(equipmentGroups) -%}
+    <div class="modal fade" id="workout-equipment-modal" tabindex="-1" data-bs-theme="dark">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="fs-5 d-flex align-items-center justify-content-center">
+                        <span class="d-flex align-items-center justify-content-center">
+                            <span class="material-symbols-outlined filled fs-5">apparel</span>
+                        </span>
+                        <span class="ms-2">{{ gettext('Choose Equipment') }}</span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    {% for group in equipmentGroups %}
+                        <div class="mb-4">
+                            <h5 class="d-flex align-items-center justify-content-center mb-3">
+                                {% if group.is_font_awesome_icon %}
+                                    <i class="fa-solid {{ group.icon }} fs-5 fa-fw me-2"></i>
+                                {% else %}
+                                    <span class="material-symbols-outlined filled fs-5 me-2">{{ group.icon }}</span>
+                                {% endif %}
+                                <span>{{ group.name }}</span>
+                            </h5>
+
+                            {% if group.items %}
+                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+                                    {% for equipment in group.items %}
+                                        <div class="col">
+                                            <div class="card h-100 equipment-modal-card border-0"
+                                                 role="button"
+                                                 tabindex="0"
+                                                 data-equipment-id="{{ equipment.id }}"
+                                                 data-bs-theme="light">
+                                                <div class="card-header">
+                                                    <div class="d-flex align-items-center justify-content-between gap-2">
+                                                        <div class="fs-6 text-truncate equipment-name px-2 min-width-0">{{ equipment.name | e }}</div>
+                                                        <span class="badge rounded-pill text-bg-success equipment-selected-badge flex-shrink-0 {% if equipment.id | string not in selectedIds %}hidden{% endif %}">{{ gettext('Selected') }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card-body bg-secondary rounded-bottom">
+                                                    <div class="d-flex align-items-center justify-content-center equipment-icon equipment-icon-small">
+                                                        {% if equipment.clothes_type %}
+                                                            <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + equipment.clothes_type.icon_file_name) }}" />
+                                                        {% else %}
+                                                            {% if group.is_font_awesome_icon %}
+                                                                <i class="fa-solid {{ group.icon }} fa-fw text-white"></i>
+                                                            {% else %}
+                                                                <span class="material-symbols-outlined filled text-white">{{ group.icon }}</span>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="text-center text-body-secondary equipment-group-placeholder">
+                                    {{ gettext('No equipment available') }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ gettext('Close') }}</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{ gettext('Apply') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
 {% macro workout_form_custom_field_input(field) -%}
     {% set escapedName=field.custom_field.get_escaped_name() %}
     <div class="mb-3">

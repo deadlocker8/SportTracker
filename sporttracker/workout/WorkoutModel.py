@@ -107,6 +107,7 @@ class BaseWorkoutFormModel(BaseModel):
     duration_minutes: int
     duration_seconds: int
     participants: list[str] | str | None = None
+    equipment_ids: list[str] | str | None = None
     average_heart_rate: int | None = None
 
     def calculate_start_time(self) -> datetime:

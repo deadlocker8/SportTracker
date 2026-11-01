@@ -13,6 +13,7 @@
         {% import 'workout/workoutMacros.jinja2' as workoutMacros with context %}
 
         {{ macros.scripts() }}
+        <script defer src="{{ url_for('static', filename='js/workoutEquipment.js') }}" type="text/javascript"></script>
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
@@ -67,6 +68,8 @@
                             {{ workoutMacros.workout_form_gpx(workout, workoutFromFitImport, workout_id) }}
 
                             {{ workoutMacros.form_linked_planned_tour(workout, plannedTours) }}
+
+                            {{ workoutMacros.workout_form_equipment(workout, equipmentGroups, selectedEquipment) }}
 
                             {{ workoutMacros.form_share_link(workout, 'maps.showSharedSingleWorkout', 'distanceWorkouts.createShareCode')}}
 

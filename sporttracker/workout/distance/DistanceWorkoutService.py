@@ -21,6 +21,7 @@ from werkzeug.datastructures import FileStorage
 from sporttracker import Constants
 from sporttracker.api.FormModels import DistanceWorkoutApiFormModel
 from sporttracker.db import db
+from sporttracker.equipment.EquipmentService import EquipmentService
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
@@ -50,6 +51,7 @@ class DistanceWorkoutService:
         form_model: DistanceWorkoutFormModel,
         files: dict[str, FileStorage],
         participant_ids: list[int],
+        equipment_ids: list[int],
         user_id: int,
     ) -> DistanceWorkout:
         if form_model.fit_file_name:  # only filled during import from FIT file
@@ -57,7 +59,10 @@ class DistanceWorkoutService:
 
         gpxMetadataId = self._gpx_service.handle_gpx_upload_for_workout(files)
 
+        workoutType = WorkoutType(form_model.type)  # type: ignore[call-arg]
+
         participants = get_participants_by_ids(participant_ids)
+        equipment = EquipmentService.get_equipment_by_ids(equipment_ids, user_id, workoutType)
         if form_model.planned_tour_id == '-1':
             plannedTour = None
         else:
@@ -66,7 +71,7 @@ class DistanceWorkoutService:
         startTime = form_model.calculate_start_time()
         workout = DistanceWorkout(
             name=form_model.name,
-            type=WorkoutType(form_model.type),  # type: ignore[call-arg]
+            type=workoutType,
             start_time=startTime,
             duration=form_model.calculate_duration(),
             distance=form_model.distance * 1000,
@@ -76,6 +81,7 @@ class DistanceWorkoutService:
             custom_fields=form_model.model_extra,
             user_id=user_id,
             participants=participants,
+            equipment=equipment,
             share_code=form_model.share_code if form_model.share_code else None,
             planned_tour=plannedTour,
         )
@@ -189,6 +195,7 @@ class DistanceWorkoutService:
         form_model: DistanceWorkoutFormModel,
         files: dict[str, FileStorage],
         participant_ids: list[int],
+        equipment_ids: list[int],
         user_id: int,
     ) -> DistanceWorkout:
         workout = self.get_distance_workout_by_id(workout_id, user_id)
@@ -197,6 +204,7 @@ class DistanceWorkoutService:
             raise ValueError(f'No distance workout with ID {workout_id} found')
 
         startTime = form_model.calculate_start_time()
+        equipment = EquipmentService.get_equipment_by_ids(equipment_ids, user_id, workout.type)
         previousLongestDistance = self.get_longest_workout_distance(user_id, workout.type)
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
             startTime.year, startTime.month, [workout.type], user_id
@@ -218,6 +226,7 @@ class DistanceWorkoutService:
         workout.average_heart_rate = form_model.average_heart_rate  # type: ignore[assignment]
         workout.elevation_sum = form_model.elevation_sum  # type: ignore[assignment]
         workout.participants = get_participants_by_ids(participant_ids)
+        workout.equipment = equipment  # type: ignore[assignment]
         workout.share_code = form_model.share_code if form_model.share_code else None  # type: ignore[assignment]
         workout.planned_tour = plannedTour  # type: ignore[assignment]
 

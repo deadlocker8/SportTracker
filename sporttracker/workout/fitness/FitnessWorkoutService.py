@@ -14,6 +14,7 @@ if TYPE_CHECKING:
 from sporttracker import Constants
 from sporttracker.api.FormModels import FitnessWorkoutApiFormModel
 from sporttracker.db import db
+from sporttracker.equipment.EquipmentService import EquipmentService
 from sporttracker.monthGoal.MonthGoalService import MonthGoalService
 from sporttracker.user.ParticipantEntity import get_participants_by_ids
 from sporttracker.workout.distance.DistanceWorkoutEntity import DistanceWorkout
@@ -47,21 +48,25 @@ class FitnessWorkoutService:
         self,
         form_model: FitnessWorkoutFormModel,
         participant_ids: list[int],
+        equipment_ids: list[int],
         fitness_workout_categories: list[FitnessWorkoutCategoryType],
         user_id: int,
     ) -> DistanceWorkout:
+        workoutType = WorkoutType(form_model.type)  # type: ignore[call-arg]
         participants = get_participants_by_ids(participant_ids)
+        equipment = EquipmentService.get_equipment_by_ids(equipment_ids, user_id, workoutType)
 
         startTime = form_model.calculate_start_time()
         workout = FitnessWorkout(
             name=form_model.name,
-            type=WorkoutType(form_model.type),  # type: ignore[call-arg]
+            type=workoutType,
             start_time=startTime,
             duration=form_model.calculate_duration(),
             average_heart_rate=form_model.average_heart_rate,
             custom_fields=form_model.model_extra,
             user_id=user_id,
             participants=participants,
+            equipment=equipment,
             fitness_workout_type=FitnessWorkoutType(form_model.fitness_workout_type),  # type: ignore[call-arg]
         )
 
@@ -145,6 +150,7 @@ class FitnessWorkoutService:
         workout_id: int,
         form_model: FitnessWorkoutFormModel,
         participant_ids: list[int],
+        equipment_ids: list[int],
         fitness_workout_categories: list[FitnessWorkoutCategoryType],
         user_id: int,
     ) -> DistanceWorkout:
@@ -154,6 +160,11 @@ class FitnessWorkoutService:
             raise ValueError(f'No fitness workout with ID {workout_id} found')
 
         startTime = form_model.calculate_start_time()
+        equipment = EquipmentService.get_equipment_by_ids(
+            equipment_ids,
+            user_id,
+            WorkoutType(form_model.type),  # type: ignore[call-arg]
+        )
 
         previousLongestDuration = self.get_previous_longest_workout_duration(user_id, workout.type)
         previousCompletedMonthGoals = MonthGoalService.get_goal_summaries_for_completed_goals(
@@ -168,6 +179,7 @@ class FitnessWorkoutService:
         workout.duration = form_model.calculate_duration()  # type: ignore[assignment]
         workout.average_heart_rate = form_model.average_heart_rate  # type: ignore[assignment]
         workout.participants = get_participants_by_ids(participant_ids)
+        workout.equipment = equipment  # type: ignore[assignment]
         workout.fitness_workout_type = (
             None if form_model.fitness_workout_type is None else FitnessWorkoutType(form_model.fitness_workout_type)  # type: ignore[call-arg]
         )
