@@ -1,7 +1,7 @@
 import logging
-from gettext import gettext
 
 from flask import Blueprint, abort, redirect, render_template, url_for
+from flask_babel import gettext
 from flask_login import current_user, login_required
 
 from sporttracker import Constants
