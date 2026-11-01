@@ -51,8 +51,16 @@ class EquipmentGroupModel:
 
 
 @dataclass
+class EquipmentSelectionSubGroupModel:
+    name: str
+    icon: str
+    items: list[Equipment]
+
+
+@dataclass
 class EquipmentSelectionGroupModel:
     name: str
     icon: str
     is_font_awesome_icon: bool
     items: list[Equipment]
+    sub_groups: list[EquipmentSelectionSubGroupModel]

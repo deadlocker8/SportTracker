@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from collections import defaultdict
 
 from flask_babel import gettext
 
@@ -12,7 +13,7 @@ from sporttracker.equipment.clothes.ClothesService import ClothesService
 from sporttracker.equipment.custom.CustomEquipmentEntity import CustomEquipment
 from sporttracker.equipment.custom.CustomEquipmentService import CustomEquipmentService
 from sporttracker.equipment.EquipmentEntity import Equipment
-from sporttracker.equipment.EquipmentModel import EquipmentSelectionGroupModel
+from sporttracker.equipment.EquipmentModel import EquipmentSelectionGroupModel, EquipmentSelectionSubGroupModel
 from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -46,24 +47,36 @@ class EquipmentService:
         if workout_type == WorkoutType.BIKING:
             groups.append(
                 EquipmentService.__create_selection_group(
-                    gettext('Bikes'),
-                    Bike,
-                    BikeService.get_all_by_workout_type(workout_type, user_id),
+                    name=gettext('Bikes'),
+                    equipment_class=Bike,
+                    items=BikeService.get_all_by_workout_type(workout_type, user_id),
+                    sub_groups=[],
                 )
             )
 
+        clothes = ClothesService.get_all_by_workout_type(workout_type, user_id)
+        clothes_groups = defaultdict(list)
+        for item in clothes:
+            clothes_groups[item.clothes_type].append(item)
+        clothes_groups_sorted = dict(sorted(clothes_groups.items(), key=lambda item: item[0].order))
+
         groups.append(
             EquipmentService.__create_selection_group(
-                gettext('Clothes'),
-                Clothes,
-                ClothesService.get_all_by_workout_type(workout_type, user_id),
+                name=gettext('Clothes'),
+                equipment_class=Clothes,
+                items=[],
+                sub_groups=[
+                    EquipmentSelectionSubGroupModel(name=key.get_localized_name(), icon=key.icon_file_name, items=value)
+                    for key, value in clothes_groups_sorted.items()
+                ],
             )
         )
         groups.append(
             EquipmentService.__create_selection_group(
-                gettext('Custom'),
-                CustomEquipment,
-                CustomEquipmentService.get_all_by_workout_type(workout_type, user_id),
+                name=gettext('Custom'),
+                equipment_class=CustomEquipment,
+                items=CustomEquipmentService.get_all_by_workout_type(workout_type, user_id),
+                sub_groups=[],
             )
         )
 
@@ -71,7 +84,10 @@ class EquipmentService:
 
     @staticmethod
     def __create_selection_group(
-        name: str, equipment_class: type[Equipment], items: list[Equipment]
+        name: str,
+        equipment_class: type[Equipment],
+        items: list[Equipment],
+        sub_groups: list[EquipmentSelectionSubGroupModel],
     ) -> EquipmentSelectionGroupModel:
         icon, is_font_awesome_icon = equipment_class.get_icon()
 
@@ -80,4 +96,5 @@ class EquipmentService:
             icon=icon,
             is_font_awesome_icon=is_font_awesome_icon,
             items=items,
+            sub_groups=sub_groups,
         )

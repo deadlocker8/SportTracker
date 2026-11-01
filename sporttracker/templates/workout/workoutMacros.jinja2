@@ -572,7 +572,7 @@
             </div>
 
             <button type="button" class="btn btn-primary btn-sm d-flex align-items-center button-automatically-disabled" data-bs-toggle="modal" data-bs-target="#workout-equipment-modal" id="buttonWorkoutEquipmentEdit">
-                <span class="material-symbols-outlined filled fs-4 me-2">apparel</span>{{ gettext('Edit Equipment') }}
+                <span class="material-symbols-outlined filled fs-4 me-2">apparel</span>{{ gettext('Select equipment') }}
             </button>
         </div>
 
@@ -615,6 +615,22 @@
                                     {% endif %}
                                 {% endfor %}
                             </div>
+
+                            {% for sub_group in group.sub_groups %}
+                                <div class="mb-2">{{ sub_group.name }}</div>
+                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gx-3">
+                                    {% for equipment in sub_group.items %}
+                                        {% if equipment.is_active or equipment in selectedEquipment %}
+                                            {% set ns.groupItemCounter = ns.groupItemCounter + 1 %}
+                                            <div class="col mt-0 mb-3">
+                                                {{ workout_form_equipment_card(equipment, sub_group) }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <hr class="mt-0">
+                            {% endfor %}
+
                             {% if ns.groupItemCounter == 0 %}
                                 <div class="text-center text-body-secondary equipment-group-placeholder">
                                     {{ gettext('No equipment available') }}
