@@ -50,6 +50,8 @@ def construct_blueprint(
             return redirect(url_for('equipment_clothes.edit', equipment_id=equipment_id))
         elif isinstance(equipmentItem, Bike):
             return redirect(url_for('equipment_bike.edit', equipment_id=equipment_id))
+        elif isinstance(equipmentItem, CustomEquipment):
+            return redirect(url_for('equipment_custom.edit', equipment_id=equipment_id))
 
         LOGGER.error(f'Could not determine edit url for equipment with id: {equipment_id}')
         abort(404)
@@ -65,6 +67,8 @@ def construct_blueprint(
             return redirect(url_for('equipment_clothes.delete', equipment_id=equipment_id))
         elif isinstance(equipmentItem, Bike):
             return redirect(url_for('equipment_bike.delete', equipment_id=equipment_id))
+        elif isinstance(equipmentItem, CustomEquipment):
+            return redirect(url_for('equipment_custom.delete', equipment_id=equipment_id))
 
         LOGGER.error(f'Could not determine delete url for equipment with id: {equipment_id}')
         abort(404)
