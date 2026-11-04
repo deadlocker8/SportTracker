@@ -97,17 +97,19 @@ class BaseEquipmentService(Generic[TEntity, TForm]):
                 Workout.query.filter(Workout.user_id == user_id).filter(Workout.equipment.any(id=equipment.id)).all()
             )
 
+            total_distance = None
+            if equipment.workout_type in WorkoutType.get_distance_workout_types():
+                total_distance = sum(
+                    workout.distance for workout in workouts if workout.type in WorkoutType.get_distance_workout_types()
+                )
+
             items.append(
                 EquipmentStatisticModel(
                     equipment=equipment,
                     number_of_workouts=len(workouts),
                     total_duration=sum(workout.duration for workout in workouts),
-                    total_distance=sum(
-                        workout.distance
-                        for workout in workouts
-                        if workout.type in WorkoutType.get_distance_workout_types()
-                    ),
-                )
+                    total_distance=total_distance,
+                ),
             )
 
         return natsorted(items, alg=natsort.ns.IGNORECASE, key=attrgetter('equipment.name'))

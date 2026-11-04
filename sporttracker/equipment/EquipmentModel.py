@@ -38,7 +38,7 @@ class EquipmentStatisticModel:
     equipment: BaseEquipmentModel
     number_of_workouts: int
     total_duration: int
-    total_distance: int
+    total_distance: int | None
 
 
 @dataclass
