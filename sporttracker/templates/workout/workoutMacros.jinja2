@@ -616,9 +616,8 @@
                                 {% endfor %}
                             </div>
 
-                            {% for sub_group in group.sub_groups %}
-                                <div class="mb-2">{{ sub_group.name }}</div>
-                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gx-3">
+                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gx-3 mt-3">
+                                {% for sub_group in group.sub_groups %}
                                     {% for equipment in sub_group.items %}
                                         {% if equipment.is_active or equipment in selectedEquipment %}
                                             {% set ns.groupItemCounter = ns.groupItemCounter + 1 %}
@@ -627,9 +626,8 @@
                                             </div>
                                         {% endif %}
                                     {% endfor %}
-                                </div>
-                                <hr class="mt-0">
-                            {% endfor %}
+                                {% endfor %}
+                            </div>
 
                             {% if ns.groupItemCounter == 0 %}
                                 <div class="text-center text-body-secondary equipment-group-placeholder">
