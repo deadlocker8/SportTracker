@@ -12,6 +12,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from sporttracker.db import db
 from sporttracker.equipment.bike.BikeEntity import Bike
 from sporttracker.equipment.clothes.ClothesEntity import Clothes
+from sporttracker.equipment.clothes.ClothesType import ClothesType
 from sporttracker.equipment.custom.CustomEquipmentEntity import CustomEquipment
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
@@ -59,6 +60,7 @@ def prepare_test_data(app):
                 name='My Clothes',
                 workout_type=WorkoutType.BIKING,
                 purchase_date=date(2021, 1, 1),
+                clothes_type=ClothesType.TOPS,
                 is_active=True,
                 user_id=user.id,
             )

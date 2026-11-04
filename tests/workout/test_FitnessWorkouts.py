@@ -9,6 +9,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from sporttracker.db import db
 from sporttracker.equipment.clothes.ClothesEntity import Clothes
+from sporttracker.equipment.clothes.ClothesType import ClothesType
 from sporttracker.user.UserEntity import Language, create_user
 from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 from sporttracker.workout.WorkoutType import WorkoutType
@@ -25,6 +26,7 @@ def prepare_test_data(app):
                 name='My Clothes',
                 workout_type=WorkoutType.FITNESS,
                 purchase_date=date(2021, 1, 1),
+                clothes_type=ClothesType.TOPS,
                 is_active=True,
                 user_id=user.id,
             )
