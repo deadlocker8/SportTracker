@@ -57,19 +57,17 @@
                                             </div>
                                         </div>
 
-                                        <div class="bg-secondary d-flex align-items-center justify-content-center equipment-icon">
-                                            <a href="{{ url_for('equipment.edit', equipment_id=item.equipment.id) }}">
-                                                {% if item.equipment.clothes_type %}
-                                                    <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + item.equipment.clothes_type.icon_file_name) }}" />
+                                        <a href="{{ url_for('equipment.edit', equipment_id=item.equipment.id) }}" class="bg-secondary d-flex align-items-center justify-content-center equipment-icon">
+                                            {% if item.equipment.clothes_type %}
+                                                <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + item.equipment.clothes_type.icon_file_name) }}" />
+                                            {% else %}
+                                                {% if group.is_font_awesome_icon %}
+                                                    <i class="fa-solid {{ group.icon }} fa-fw text-white"></i>
                                                 {% else %}
-                                                    {% if group.is_font_awesome_icon %}
-                                                        <i class="fa-solid {{ group.icon }} fa-fw text-white"></i>
-                                                    {% else %}
-                                                        <span class="material-symbols-outlined filled text-white">{{ group.icon }}</span>
-                                                    {% endif %}
+                                                    <span class="material-symbols-outlined filled text-white">{{ group.icon }}</span>
                                                 {% endif %}
-                                            </a>
-                                        </div>
+                                            {% endif %}
+                                        </a>
 
                                         <div class="card-body">
                                             <ol class="list-group list-group-flush">
