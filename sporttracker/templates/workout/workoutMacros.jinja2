@@ -655,7 +655,7 @@
 
         <div class="card-body d-flex flex-row align-items-center justify-content-between p-0">
             <div class="d-flex align-items-center gap-2 flex-grow-1 overflow-hidden">
-                <div class="d-flex align-items-center justify-content-center equipment-select-icon bg-secondary rounded-start">
+                <div class="d-flex align-items-center justify-content-center equipment-select-icon bg-secondary rounded-start" data-selected="0">
                     {% if equipment.clothes_type %}
                         <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + equipment.clothes_type.icon_file_name) }}"/>
                     {% else %}

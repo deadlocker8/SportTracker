@@ -322,24 +322,22 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
         bike_card = selenium.find_element(By.CSS_SELECTOR, bike_card_selector)
         selenium.execute_script('arguments[0].click();', bike_card)
 
-        bike_badge = selenium.find_element(By.CSS_SELECTOR, f'{bike_card_selector} .equipment-selected-badge')
-        assert bike_badge.is_displayed()
-        assert selected_count.text == '1'
+        bike_select_icon = selenium.find_element(By.CSS_SELECTOR, f'{bike_card_selector} .equipment-select-icon')
+        assert bike_select_icon.get_attribute('data-selected') == 'true'
 
         selenium.execute_script('arguments[0].click();', bike_card)
-        assert not bike_badge.is_displayed()
+        assert bike_select_icon.get_attribute('data-selected') == 'false'
         assert selected_count.text == '0'
 
         selenium.execute_script('arguments[0].click();', bike_card)
+        assert bike_select_icon.get_attribute('data-selected') == 'true'
+
         selenium.execute_script(
             'arguments[0].click();',
             selenium.find_element(By.CSS_SELECTOR, clothes_card_selector),
         )
-
-        assert bike_badge.is_displayed()
-        assert selenium.find_element(
-            By.CSS_SELECTOR, f'{clothes_card_selector} .equipment-selected-badge'
-        ).is_displayed()
+        clothes_select_icon = selenium.find_element(By.CSS_SELECTOR, f'{clothes_card_selector} .equipment-select-icon')
+        assert clothes_select_icon.get_attribute('data-selected') == 'true'
         assert selected_count.text == '2'
         assert not selenium.find_elements(By.CSS_SELECTOR, '#workout-equipment-chips')
 

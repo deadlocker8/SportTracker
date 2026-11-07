@@ -145,10 +145,8 @@ class TestFitnessWorkouts(SeleniumTestBaseClass):
             'arguments[0].click();',
             selenium.find_element(By.CSS_SELECTOR, clothes_card_selector),
         )
-        assert selenium.find_element(
-            By.CSS_SELECTOR, f'{clothes_card_selector} .equipment-selected-badge'
-        ).is_displayed()
-        assert selected_count.text == '1'
+        clothes_select_icon = selenium.find_element(By.CSS_SELECTOR, f'{clothes_card_selector} .equipment-select-icon')
+        assert clothes_select_icon.get_attribute('data-selected') == 'true'
         self.__submit_equipment_modal(selenium)
 
         assert selected_count.text == '1'

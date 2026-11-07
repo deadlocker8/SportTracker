@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function()
         for(const card of cards)
         {
             const icon = card.querySelector('.equipment-select-icon');
+            icon.dataset.selected = selectedIds.has(card.dataset.equipmentId);
             icon.classList.toggle('bg-secondary', !selectedIds.has(card.dataset.equipmentId));
             icon.classList.toggle('bg-success', selectedIds.has(card.dataset.equipmentId));
         }
