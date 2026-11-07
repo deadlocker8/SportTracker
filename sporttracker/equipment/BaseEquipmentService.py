@@ -73,26 +73,22 @@ class BaseEquipmentService(Generic[TEntity, TForm]):
 
     @classmethod
     def get_all_by_workout_type(cls, workout_type: WorkoutType, user_id: int) -> list[TEntity]:
-        equipments = (
+        equipment_items = (
             cls.entity_class.query.filter(cls.entity_class.user_id == user_id)
             .filter(cls.entity_class.workout_type == workout_type)
             .all()
         )
 
-        return natsorted(equipments, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
+        return natsorted(equipment_items, alg=natsort.ns.IGNORECASE, key=attrgetter('name'))
 
     @classmethod
     def get_all_statistic_items_by_workout_type(
         cls, workout_type: WorkoutType, user_id: int
     ) -> list[EquipmentStatisticModel]:
-        equipments = (
-            cls.entity_class.query.filter(cls.entity_class.user_id == user_id)
-            .filter(cls.entity_class.workout_type == workout_type)
-            .all()
-        )
+        equipment_items = cls.get_all_by_workout_type(workout_type, user_id)
 
         items = []
-        for equipment in equipments:
+        for equipment in equipment_items:
             workouts = (
                 Workout.query.filter(Workout.user_id == user_id).filter(Workout.equipment.any(id=equipment.id)).all()
             )
