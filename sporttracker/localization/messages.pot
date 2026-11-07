@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-02 00:23+0100\n"
+"POT-Creation-Date: 2026-11-07 13:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -209,15 +209,27 @@ msgstr ""
 msgid "Heatmap Months"
 msgstr ""
 
-#: ../equipment/EquipmentBlueprint.py:83 ../equipment/EquipmentService.py:50
+#: ../equipment/EquipmentBlueprint.py:89
+msgid "Add bike"
+msgstr ""
+
+#: ../equipment/EquipmentBlueprint.py:99
+msgid "Add clothes"
+msgstr ""
+
+#: ../equipment/EquipmentBlueprint.py:109
+msgid "Add custom equipment"
+msgstr ""
+
+#: ../equipment/EquipmentService.py:50
 msgid "Bikes"
 msgstr ""
 
-#: ../equipment/EquipmentBlueprint.py:93 ../equipment/EquipmentService.py:65
+#: ../equipment/EquipmentService.py:65
 msgid "Clothes"
 msgstr ""
 
-#: ../equipment/EquipmentBlueprint.py:103 ../equipment/EquipmentService.py:76
+#: ../equipment/EquipmentService.py:76
 msgid "Custom"
 msgstr ""
 
@@ -642,8 +654,8 @@ msgstr ""
 
 #: ../templates/macros.jinja2:338 ../templates/settings/settings.jinja2:351
 #: ../templates/workout/workoutChooser.jinja2:86
-#: ../templates/workout/workoutMacros.jinja2:870
-#: ../templates/workout/workoutMacros.jinja2:892
+#: ../templates/workout/workoutMacros.jinja2:868
+#: ../templates/workout/workoutMacros.jinja2:890
 msgid "Cancel"
 msgstr ""
 
@@ -676,7 +688,7 @@ msgstr ""
 #: ../templates/achievement/annualAchievements.jinja2:62
 #: ../templates/plannedTour/plannedToursMacros.jinja2:87
 #: ../templates/workout/workoutMacros.jinja2:193
-#: ../templates/workout/workoutMacros.jinja2:643
+#: ../templates/workout/workoutMacros.jinja2:641
 msgid "Close"
 msgstr ""
 
@@ -788,7 +800,7 @@ msgstr ""
 #: ../templates/workout/workoutHikingForm.jinja2:27
 #: ../templates/workout/workoutHikingForm.jinja2:31
 #: ../templates/workout/workoutMacros.jinja2:506
-#: ../templates/workout/workoutMacros.jinja2:772
+#: ../templates/workout/workoutMacros.jinja2:770
 #: ../templates/workout/workoutRunningForm.jinja2:27
 #: ../templates/workout/workoutRunningForm.jinja2:31
 msgid "Delete"
@@ -957,29 +969,29 @@ msgstr ""
 msgid "Number of tiles"
 msgstr ""
 
-#: ../templates/equipment/equipment.jinja2:77
+#: ../templates/equipment/equipment.jinja2:79
 msgid "Date of purchase:"
 msgstr ""
 
-#: ../templates/equipment/equipment.jinja2:81
+#: ../templates/equipment/equipment.jinja2:83
 msgid "Number of workouts:"
 msgstr ""
 
-#: ../templates/equipment/equipment.jinja2:85
+#: ../templates/equipment/equipment.jinja2:87
 msgid "Total duration:"
 msgstr ""
 
-#: ../templates/equipment/equipment.jinja2:89
+#: ../templates/equipment/equipment.jinja2:92
 msgid "Total distance:"
 msgstr ""
 
-#: ../templates/equipment/equipment.jinja2:99
+#: ../templates/equipment/equipment.jinja2:103
 #: ../templates/equipment/equipmentMacros.jinja2:88
 msgid "Active"
 msgstr ""
 
-#: ../templates/equipment/equipment.jinja2:104
-#: ../templates/workout/workoutMacros.jinja2:677
+#: ../templates/equipment/equipment.jinja2:108
+#: ../templates/workout/workoutMacros.jinja2:675
 msgid "Disabled"
 msgstr ""
 
@@ -1209,7 +1221,7 @@ msgstr ""
 #: ../templates/maintenance/maintenances.jinja2:122
 #: ../templates/map/mapMacros.jinja2:264
 #: ../templates/plannedTour/plannedToursMacros.jinja2:262
-#: ../templates/workout/workoutMacros.jinja2:644
+#: ../templates/workout/workoutMacros.jinja2:642
 msgid "Apply"
 msgstr ""
 
@@ -2019,7 +2031,7 @@ msgid ""
 msgstr ""
 
 #: ../templates/settings/settings.jinja2:84
-#: ../templates/workout/workoutMacros.jinja2:763
+#: ../templates/workout/workoutMacros.jinja2:761
 msgid "Copied"
 msgstr ""
 
@@ -2278,43 +2290,43 @@ msgstr ""
 msgid "Choose Equipment"
 msgstr ""
 
-#: ../templates/workout/workoutMacros.jinja2:636
+#: ../templates/workout/workoutMacros.jinja2:634
 msgid "No equipment available"
 msgstr ""
 
-#: ../templates/workout/workoutMacros.jinja2:749
+#: ../templates/workout/workoutMacros.jinja2:747
 msgid "Share via link"
 msgstr ""
 
-#: ../templates/workout/workoutMacros.jinja2:771
+#: ../templates/workout/workoutMacros.jinja2:769
 msgid "Delete shared link?"
 msgstr ""
 
-#: ../templates/workout/workoutMacros.jinja2:771
+#: ../templates/workout/workoutMacros.jinja2:769
 msgid "Do you really want to delete this shared link?"
 msgstr ""
 
-#: ../templates/workout/workoutMacros.jinja2:778
+#: ../templates/workout/workoutMacros.jinja2:776
 msgid "Create link"
 msgstr ""
 
-#: ../templates/workout/workoutMacros.jinja2:789
+#: ../templates/workout/workoutMacros.jinja2:787
 msgid "Based on Planned Tour"
 msgstr ""
 
-#: ../templates/workout/workoutMacros.jinja2:794
+#: ../templates/workout/workoutMacros.jinja2:792
 msgid "Not based on a Planned Tour"
 msgstr ""
 
-#: ../templates/workout/workoutMacros.jinja2:796
+#: ../templates/workout/workoutMacros.jinja2:794
 msgid "shared by "
 msgstr ""
 
-#: ../templates/workout/workoutMacros.jinja2:858
+#: ../templates/workout/workoutMacros.jinja2:856
 msgid "Choose year"
 msgstr ""
 
-#: ../templates/workout/workoutMacros.jinja2:880
+#: ../templates/workout/workoutMacros.jinja2:878
 msgid "Choose month"
 msgstr ""
 

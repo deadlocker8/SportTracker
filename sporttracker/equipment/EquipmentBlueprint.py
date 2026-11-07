@@ -86,7 +86,7 @@ def construct_blueprint(
                 EquipmentGroupModel(
                     icon=Bike.get_icon()[0],
                     is_font_awesome_icon=Bike.get_icon()[1],
-                    add_text=gettext('New bike'),
+                    add_text=gettext('Add bike'),
                     add_url=url_for('equipment_bike.add', workout_type=workout_type.name),
                     items=bikes,
                 )
@@ -96,7 +96,7 @@ def construct_blueprint(
             EquipmentGroupModel(
                 icon=Clothes.get_icon()[0],
                 is_font_awesome_icon=Clothes.get_icon()[1],
-                add_text=gettext('New clothes'),
+                add_text=gettext('Add clothes'),
                 add_url=url_for('equipment_clothes.add', workout_type=workout_type.name),
                 items=clothes,
             )
@@ -106,7 +106,7 @@ def construct_blueprint(
             EquipmentGroupModel(
                 icon=CustomEquipment.get_icon()[0],
                 is_font_awesome_icon=Clothes.get_icon()[1],
-                add_text=gettext('New custom equipment'),
+                add_text=gettext('Add custom equipment'),
                 add_url=url_for('equipment_custom.add', workout_type=workout_type.name),
                 items=custom,
             )

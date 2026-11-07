@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-02 00:23+0100\n"
-"PO-Revision-Date: 2026-11-02 00:23+0100\n"
+"POT-Creation-Date: 2026-11-07 13:18+0100\n"
+"PO-Revision-Date: 2026-11-07 13:18+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -222,15 +222,27 @@ msgstr "Heatmap Wochentage"
 msgid "Heatmap Months"
 msgstr "Heatmap Monate"
 
-#: ../equipment/EquipmentBlueprint.py:83 ../equipment/EquipmentService.py:50
+#: ../equipment/EquipmentBlueprint.py:89
+msgid "Add bike"
+msgstr "Fahrrad hinzufügen"
+
+#: ../equipment/EquipmentBlueprint.py:99
+msgid "Add clothes"
+msgstr "Kleidung hinzufügen"
+
+#: ../equipment/EquipmentBlueprint.py:109
+msgid "Add custom equipment"
+msgstr "Benutzerdefinierte Ausrüstung hinzufügen"
+
+#: ../equipment/EquipmentService.py:50
 msgid "Bikes"
 msgstr "Fahrräder"
 
-#: ../equipment/EquipmentBlueprint.py:93 ../equipment/EquipmentService.py:65
+#: ../equipment/EquipmentService.py:65
 msgid "Clothes"
 msgstr "Kleidung"
 
-#: ../equipment/EquipmentBlueprint.py:103 ../equipment/EquipmentService.py:76
+#: ../equipment/EquipmentService.py:76
 msgid "Custom"
 msgstr "Benutzerdefiniert"
 
@@ -658,8 +670,8 @@ msgstr "Logout"
 
 #: ../templates/macros.jinja2:338 ../templates/settings/settings.jinja2:351
 #: ../templates/workout/workoutChooser.jinja2:86
-#: ../templates/workout/workoutMacros.jinja2:870
-#: ../templates/workout/workoutMacros.jinja2:892
+#: ../templates/workout/workoutMacros.jinja2:868
+#: ../templates/workout/workoutMacros.jinja2:890
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -691,7 +703,7 @@ msgstr "Mehr anzeigen"
 #: ../templates/achievement/annualAchievements.jinja2:62
 #: ../templates/plannedTour/plannedToursMacros.jinja2:87
 #: ../templates/workout/workoutMacros.jinja2:193
-#: ../templates/workout/workoutMacros.jinja2:643
+#: ../templates/workout/workoutMacros.jinja2:641
 msgid "Close"
 msgstr "Schließen"
 
@@ -804,7 +816,7 @@ msgstr "Willst du diesen Gewichtseintrag wirklich löschen?"
 #: ../templates/workout/workoutHikingForm.jinja2:27
 #: ../templates/workout/workoutHikingForm.jinja2:31
 #: ../templates/workout/workoutMacros.jinja2:506
-#: ../templates/workout/workoutMacros.jinja2:772
+#: ../templates/workout/workoutMacros.jinja2:770
 #: ../templates/workout/workoutRunningForm.jinja2:27
 #: ../templates/workout/workoutRunningForm.jinja2:31
 msgid "Delete"
@@ -973,29 +985,29 @@ msgstr ""
 msgid "Number of tiles"
 msgstr "Anzahl Kacheln"
 
-#: ../templates/equipment/equipment.jinja2:77
+#: ../templates/equipment/equipment.jinja2:79
 msgid "Date of purchase:"
 msgstr "Kaufdatum:"
 
-#: ../templates/equipment/equipment.jinja2:81
+#: ../templates/equipment/equipment.jinja2:83
 msgid "Number of workouts:"
 msgstr "Anzahl Workouts:"
 
-#: ../templates/equipment/equipment.jinja2:85
+#: ../templates/equipment/equipment.jinja2:87
 msgid "Total duration:"
 msgstr "Gesamtdauer:"
 
-#: ../templates/equipment/equipment.jinja2:89
+#: ../templates/equipment/equipment.jinja2:92
 msgid "Total distance:"
 msgstr "Gesamtstrecke:"
 
-#: ../templates/equipment/equipment.jinja2:99
+#: ../templates/equipment/equipment.jinja2:103
 #: ../templates/equipment/equipmentMacros.jinja2:88
 msgid "Active"
 msgstr "Aktiv"
 
-#: ../templates/equipment/equipment.jinja2:104
-#: ../templates/workout/workoutMacros.jinja2:677
+#: ../templates/equipment/equipment.jinja2:108
+#: ../templates/workout/workoutMacros.jinja2:675
 msgid "Disabled"
 msgstr "Deaktiviert"
 
@@ -1229,7 +1241,7 @@ msgstr "Zurücksetzen"
 #: ../templates/maintenance/maintenances.jinja2:122
 #: ../templates/map/mapMacros.jinja2:264
 #: ../templates/plannedTour/plannedToursMacros.jinja2:262
-#: ../templates/workout/workoutMacros.jinja2:644
+#: ../templates/workout/workoutMacros.jinja2:642
 msgid "Apply"
 msgstr "Übernehmen"
 
@@ -2054,7 +2066,7 @@ msgstr ""
 "Link wird nach dem Speichern angezeigt)"
 
 #: ../templates/settings/settings.jinja2:84
-#: ../templates/workout/workoutMacros.jinja2:763
+#: ../templates/workout/workoutMacros.jinja2:761
 msgid "Copied"
 msgstr "Kopiert"
 
@@ -2322,43 +2334,43 @@ msgstr "Ausrüstung auswählen"
 msgid "Choose Equipment"
 msgstr "Ausrüstung auswählen"
 
-#: ../templates/workout/workoutMacros.jinja2:636
+#: ../templates/workout/workoutMacros.jinja2:634
 msgid "No equipment available"
 msgstr "Keine Ausrüstung verfügbar"
 
-#: ../templates/workout/workoutMacros.jinja2:749
+#: ../templates/workout/workoutMacros.jinja2:747
 msgid "Share via link"
 msgstr "Als Link teilen"
 
-#: ../templates/workout/workoutMacros.jinja2:771
+#: ../templates/workout/workoutMacros.jinja2:769
 msgid "Delete shared link?"
 msgstr "Geteilten Link löschen?"
 
-#: ../templates/workout/workoutMacros.jinja2:771
+#: ../templates/workout/workoutMacros.jinja2:769
 msgid "Do you really want to delete this shared link?"
 msgstr "Willst du diesen geteilten Link wirklich löschen?"
 
-#: ../templates/workout/workoutMacros.jinja2:778
+#: ../templates/workout/workoutMacros.jinja2:776
 msgid "Create link"
 msgstr "Link erzeugen"
 
-#: ../templates/workout/workoutMacros.jinja2:789
+#: ../templates/workout/workoutMacros.jinja2:787
 msgid "Based on Planned Tour"
 msgstr "Basiert auf geplanter Tour"
 
-#: ../templates/workout/workoutMacros.jinja2:794
+#: ../templates/workout/workoutMacros.jinja2:792
 msgid "Not based on a Planned Tour"
 msgstr "Basiert auf keiner geplanten Tour"
 
-#: ../templates/workout/workoutMacros.jinja2:796
+#: ../templates/workout/workoutMacros.jinja2:794
 msgid "shared by "
 msgstr "geteilt von "
 
-#: ../templates/workout/workoutMacros.jinja2:858
+#: ../templates/workout/workoutMacros.jinja2:856
 msgid "Choose year"
 msgstr "Jahr wählen"
 
-#: ../templates/workout/workoutMacros.jinja2:880
+#: ../templates/workout/workoutMacros.jinja2:878
 msgid "Choose month"
 msgstr "Monat wählen"
 
@@ -2686,3 +2698,12 @@ msgstr "Wiederh."
 
 #~ msgid "Selected"
 #~ msgstr "Ausgewählt"
+
+#~ msgid "New bike"
+#~ msgstr "Neues Fahrrad"
+
+#~ msgid "New clothes"
+#~ msgstr "Neue Kleidung"
+
+#~ msgid "New custom equipment"
+#~ msgstr "Neue benutzerdefinierte Ausrüstung"
