@@ -7,6 +7,7 @@ from sqlalchemy import Boolean, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from sporttracker.db import db
+from sporttracker.equipment.EquipmentFilterStateEntity import EquipmentFilterState
 from sporttracker.maintenance.MaintenanceFilterStateEntity import MaintenanceFilterState
 from sporttracker.notification.NotificationSettingsEntity import NotificationSettings
 from sporttracker.notification.provider.NotificationProviderType import NotificationProviderType
@@ -137,6 +138,11 @@ def create_user(username: str, password: str, isAdmin: bool, language: Language,
     tileHuntingFilterState = TileHuntingFilterState(user_id=user.id)
     tileHuntingFilterState.reset()
     db.session.add(tileHuntingFilterState)
+    db.session.commit()
+
+    equipmentFilterState = EquipmentFilterState(user_id=user.id)
+    equipmentFilterState.reset()
+    db.session.add(equipmentFilterState)
     db.session.commit()
 
     for providerType in NotificationProviderType:

@@ -362,6 +362,10 @@ select[disabled] {
     border-radius: 25px !important;
 }
 
+.invert {
+    filter: invert(1);
+}
+
 .debug {
     outline: 1px solid red !important;
 }

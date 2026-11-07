@@ -9,6 +9,7 @@
     <body class="bg-dark text-light">
         {{ macros.navbar('equipment') }}
         {% import 'workout/workoutMacros.jinja2' as workoutMacros with context %}
+        {% import 'equipment/equipmentMacros.jinja2' as equipmentMacros with context %}
 
         <div id="main" class="center-align">
             <section class="py-5 text-center container">
@@ -19,6 +20,11 @@
                         {% endcall %}
                     </div>
                 </div>
+
+                <button id="buttonFilter" class="btn btn-sm {% if equipmentFilterState.is_any_filter_active() %}btn-light{% else %}btn-outline-light{% endif %} d-inline-flex align-items-center" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas">
+                    <span class="material-symbols-outlined fs-5">filter_alt</span>
+                    <span class="ms-2">{{ gettext('Filter') }}</span>
+                </button>
 
                 {% for workoutType, groups in equipmentGroupsByWorkoutType.items() %}
                     <div class="row mt-5 mb-3">
@@ -120,6 +126,19 @@
                     <hr>
                 {% endfor %}
             </section>
+
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas" data-bs-theme="dark">
+                <div class="offcanvas-header pb-2 bg-dark text-white">
+                    <h5 class="offcanvas-title mx-auto d-flex flex-row align-items-center justify-content-center">
+                        <span class="material-symbols-outlined fs-5">filter_alt</span>
+                        <span>{{ gettext('Filter') }}</span>
+                    </h5>
+                    <button type="button" class="btn-close ms-0" data-bs-dismiss="offcanvas" data-bs-theme="dark"></button>
+                </div>
+                <div class="offcanvas-body pt-0 bg-dark text-white">
+                    {{ equipmentMacros.equipmentFilter(equipmentFilterState, url_for('equipment.listEquipment')) }}
+                </div>
+            </div>
         </div>
 
         {{ macros.scripts(plotly=true) }}

@@ -34,6 +34,7 @@ from sporttracker.equipment.clothes.ClothesService import ClothesService
 from sporttracker.equipment.clothes.ClothesType import ClothesType
 from sporttracker.equipment.custom import CustomEquipmentBlueprint
 from sporttracker.equipment.custom.CustomEquipmentService import CustomEquipmentService
+from sporttracker.equipment.EquipmentType import EquipmentType
 from sporttracker.general import GeneralBlueprint
 from sporttracker.gpx import GpxBlueprint
 from sporttracker.gpx.GpxService import GpxService
@@ -216,6 +217,7 @@ class SportTracker(FlaskBaseApp):
                 'mapMinZoomLevel': self._settings['tileHunting']['mapMinZoomLevel'],
                 'baseZoomLevel': self._settings['tileHunting']['baseZoomLevel'],
                 'clothesTypes': [x for x in ClothesType],
+                'equipmentTypes': [x for x in EquipmentType],
             }
 
         def format_decimal(value: float, decimals: int = 1) -> str:

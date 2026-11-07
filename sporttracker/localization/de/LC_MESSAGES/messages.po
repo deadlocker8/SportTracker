@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-07 13:18+0100\n"
-"PO-Revision-Date: 2026-11-07 13:18+0100\n"
+"POT-Creation-Date: 2026-11-07 23:01+0100\n"
+"PO-Revision-Date: 2026-11-07 23:01+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -135,7 +135,7 @@ msgstr "Stunden"
 
 #: ../achievement/AnnualAchievementBlueprint.py:302
 #: ../templates/chart/chartAverageSpeed.jinja2:2
-#: ../templates/chart/chartChooser.jinja2:42 ../user/UserEntity.py:85
+#: ../templates/chart/chartChooser.jinja2:42 ../user/UserEntity.py:86
 msgid "Average Speed"
 msgstr "Durchschnittliche Geschwindigkeit"
 
@@ -222,27 +222,27 @@ msgstr "Heatmap Wochentage"
 msgid "Heatmap Months"
 msgstr "Heatmap Monate"
 
-#: ../equipment/EquipmentBlueprint.py:89
+#: ../equipment/EquipmentBlueprint.py:149
 msgid "Add bike"
 msgstr "Fahrrad hinzufügen"
 
-#: ../equipment/EquipmentBlueprint.py:99
+#: ../equipment/EquipmentBlueprint.py:166
 msgid "Add clothes"
 msgstr "Kleidung hinzufügen"
 
-#: ../equipment/EquipmentBlueprint.py:109
+#: ../equipment/EquipmentBlueprint.py:182
 msgid "Add custom equipment"
 msgstr "Benutzerdefinierte Ausrüstung hinzufügen"
 
-#: ../equipment/EquipmentService.py:50
+#: ../equipment/EquipmentService.py:50 ../equipment/EquipmentType.py:32
 msgid "Bikes"
 msgstr "Fahrräder"
 
-#: ../equipment/EquipmentService.py:65
+#: ../equipment/EquipmentService.py:65 ../equipment/EquipmentType.py:34
 msgid "Clothes"
 msgstr "Kleidung"
 
-#: ../equipment/EquipmentService.py:76
+#: ../equipment/EquipmentService.py:76 ../equipment/EquipmentType.py:36
 msgid "Custom"
 msgstr "Benutzerdefiniert"
 
@@ -627,7 +627,7 @@ msgid "Maintenance"
 msgstr "Wartung"
 
 #: ../templates/equipment/equipment.jinja2:5
-#: ../templates/equipment/equipment.jinja2:17 ../templates/macros.jinja2:185
+#: ../templates/equipment/equipment.jinja2:18 ../templates/macros.jinja2:185
 #: ../templates/workout/workoutMacros.jinja2:558
 msgid "Equipment"
 msgstr "Ausrüstung"
@@ -985,28 +985,46 @@ msgstr ""
 msgid "Number of tiles"
 msgstr "Anzahl Kacheln"
 
-#: ../templates/equipment/equipment.jinja2:79
+#: ../templates/equipment/equipment.jinja2:26
+#: ../templates/equipment/equipment.jinja2:134
+#: ../templates/maintenance/maintenances.jinja2:32
+#: ../templates/maintenance/maintenances.jinja2:112
+#: ../templates/map/mapMultipleWorkouts.jinja2:41
+#: ../templates/map/mapMultipleWorkouts.jinja2:63
+#: ../templates/map/mapMultipleWorkouts.jinja2:80
+#: ../templates/map/mapTileHunting.jinja2:27
+#: ../templates/map/mapTileHunting.jinja2:98
+#: ../templates/map/mapTileHuntingHeatmap.jinja2:27
+#: ../templates/map/mapTileHuntingHeatmap.jinja2:67
+#: ../templates/plannedTour/plannedTours.jinja2:32
+#: ../templates/plannedTour/plannedTours.jinja2:139
+msgid "Filter"
+msgstr "Filter"
+
+#: ../templates/equipment/equipment.jinja2:85
 msgid "Date of purchase:"
 msgstr "Kaufdatum:"
 
-#: ../templates/equipment/equipment.jinja2:83
+#: ../templates/equipment/equipment.jinja2:89
 msgid "Number of workouts:"
 msgstr "Anzahl Workouts:"
 
-#: ../templates/equipment/equipment.jinja2:87
+#: ../templates/equipment/equipment.jinja2:93
 msgid "Total duration:"
 msgstr "Gesamtdauer:"
 
-#: ../templates/equipment/equipment.jinja2:92
+#: ../templates/equipment/equipment.jinja2:98
 msgid "Total distance:"
 msgstr "Gesamtstrecke:"
 
-#: ../templates/equipment/equipment.jinja2:103
+#: ../templates/equipment/equipment.jinja2:109
 #: ../templates/equipment/equipmentMacros.jinja2:88
+#: ../templates/equipment/equipmentMacros.jinja2:151
 msgid "Active"
 msgstr "Aktiv"
 
-#: ../templates/equipment/equipment.jinja2:108
+#: ../templates/equipment/equipment.jinja2:114
+#: ../templates/equipment/equipmentMacros.jinja2:161
 #: ../templates/workout/workoutMacros.jinja2:675
 msgid "Disabled"
 msgstr "Deaktiviert"
@@ -1042,6 +1060,41 @@ msgstr "Kaufdatum"
 #: ../templates/equipment/equipmentMacros.jinja2:95
 msgid "Inactive Since"
 msgstr "Deaktiviert seit"
+
+#: ../templates/equipment/equipmentMacros.jinja2:140
+#: ../templates/plannedTour/plannedToursMacros.jinja2:97
+msgid "Status"
+msgstr "Status"
+
+#: ../templates/equipment/equipmentMacros.jinja2:173
+#: ../templates/maintenance/maintenances.jinja2:120
+#: ../templates/map/mapMacros.jinja2:262
+#: ../templates/plannedTour/plannedToursMacros.jinja2:260
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: ../templates/equipment/equipmentMacros.jinja2:175
+#: ../templates/maintenance/maintenances.jinja2:122
+#: ../templates/map/mapMacros.jinja2:264
+#: ../templates/plannedTour/plannedToursMacros.jinja2:262
+#: ../templates/workout/workoutMacros.jinja2:642
+msgid "Apply"
+msgstr "Übernehmen"
+
+#: ../templates/equipment/equipmentMacros.jinja2:175
+#: ../templates/maintenance/maintenances.jinja2:122
+#: ../templates/map/mapMacros.jinja2:264
+#: ../templates/plannedTour/plannedToursMacros.jinja2:262
+msgid "Applying..."
+msgstr "Übernehmen..."
+
+#: ../templates/equipment/equipmentMacros.jinja2:181
+msgid "Equipment Type"
+msgstr "Ausrüstungstyp"
+
+#: ../templates/equipment/equipmentMacros.jinja2:184
+msgid "Clothes Type"
+msgstr "Kleidungstyp"
 
 #: ../templates/equipment/bike/bikeForm.jinja2:11
 #: ../templates/equipment/bike/bikeForm.jinja2:23
@@ -1218,39 +1271,6 @@ msgstr "über Limit"
 msgid "Value:"
 msgstr "Wert:"
 
-#: ../templates/maintenance/maintenances.jinja2:32
-#: ../templates/maintenance/maintenances.jinja2:112
-#: ../templates/map/mapMultipleWorkouts.jinja2:41
-#: ../templates/map/mapMultipleWorkouts.jinja2:63
-#: ../templates/map/mapMultipleWorkouts.jinja2:80
-#: ../templates/map/mapTileHunting.jinja2:27
-#: ../templates/map/mapTileHunting.jinja2:98
-#: ../templates/map/mapTileHuntingHeatmap.jinja2:27
-#: ../templates/map/mapTileHuntingHeatmap.jinja2:67
-#: ../templates/plannedTour/plannedTours.jinja2:32
-#: ../templates/plannedTour/plannedTours.jinja2:139
-msgid "Filter"
-msgstr "Filter"
-
-#: ../templates/maintenance/maintenances.jinja2:120
-#: ../templates/map/mapMacros.jinja2:262
-#: ../templates/plannedTour/plannedToursMacros.jinja2:260
-msgid "Reset"
-msgstr "Zurücksetzen"
-
-#: ../templates/maintenance/maintenances.jinja2:122
-#: ../templates/map/mapMacros.jinja2:264
-#: ../templates/plannedTour/plannedToursMacros.jinja2:262
-#: ../templates/workout/workoutMacros.jinja2:642
-msgid "Apply"
-msgstr "Übernehmen"
-
-#: ../templates/maintenance/maintenances.jinja2:122
-#: ../templates/map/mapMacros.jinja2:264
-#: ../templates/plannedTour/plannedToursMacros.jinja2:262
-msgid "Applying..."
-msgstr "Übernehmen..."
-
 #: ../templates/maintenance/maintenances.jinja2:130
 msgid "Custom Workout Field"
 msgstr "Benutzerdefiniertes Feld"
@@ -1290,19 +1310,19 @@ msgstr "Workout öffnen"
 #: ../templates/map/mapPlannedTour.jinja2:41
 #: ../templates/map/mapPlannedTour.jinja2:116
 #: ../templates/map/mapSingleWorkout.jinja2:46
-#: ../templates/map/mapSingleWorkout.jinja2:121 ../user/UserEntity.py:81
+#: ../templates/map/mapSingleWorkout.jinja2:121 ../user/UserEntity.py:82
 msgid "Distance"
 msgstr "Strecke"
 
 #: ../templates/map/mapLongDistanceTour.jinja2:119
 #: ../templates/map/mapSingleWorkout.jinja2:49
 #: ../templates/map/mapSingleWorkout.jinja2:125
-#: ../templates/workout/workoutMacros.jinja2:401 ../user/UserEntity.py:83
+#: ../templates/workout/workoutMacros.jinja2:401 ../user/UserEntity.py:84
 msgid "Duration"
 msgstr "Dauer"
 
 #: ../templates/map/mapLongDistanceTour.jinja2:123
-#: ../templates/map/mapSingleWorkout.jinja2:153 ../user/UserEntity.py:89
+#: ../templates/map/mapSingleWorkout.jinja2:153 ../user/UserEntity.py:90
 msgid "Elevation Sum"
 msgstr "Summe Höhen&shy;meter"
 
@@ -1904,10 +1924,6 @@ msgstr "geteilt per Etappentour"
 msgid "No other users available"
 msgstr "Keine anderen Benutzer verfügbar"
 
-#: ../templates/plannedTour/plannedToursMacros.jinja2:97
-msgid "Status"
-msgstr "Status"
-
 #: ../templates/plannedTour/plannedToursMacros.jinja2:108
 msgid "completed"
 msgstr "abgeschlossen"
@@ -2286,7 +2302,7 @@ msgstr "Startuhrzeit"
 msgid "Seconds"
 msgstr "Sekunden"
 
-#: ../templates/workout/workoutMacros.jinja2:427 ../user/UserEntity.py:87
+#: ../templates/workout/workoutMacros.jinja2:427 ../user/UserEntity.py:88
 msgid "Average Heart Rate"
 msgstr "Durchschnittliche Herzfrequenz"
 
