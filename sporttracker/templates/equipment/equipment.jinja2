@@ -61,7 +61,7 @@
                                             </div>
                                         </div>
 
-                                        <a href="{{ url_for('equipment.edit', equipment_id=item.equipment.id) }}" class="bg-secondary d-flex align-items-center justify-content-center equipment-icon">
+                                        <a href="{{ url_for('equipment.edit', equipment_id=item.equipment.id) }}" class="text-decoration-none bg-secondary d-flex align-items-center justify-content-center equipment-icon">
                                             {% if item.equipment.clothes_type %}
                                                 <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + item.equipment.clothes_type.icon_file_name) }}" />
                                             {% else %}
