@@ -476,36 +476,36 @@
                     <span class="badge bg-success lh-lg rounded-pill d-flex align-items-center px-3 text-wrap">{{ gpxFileLinkedText }}</span>
                     {% if suppressButtons is not true %}
                         <div id="gpxButtons" class="d-flex mt-3 mt-md-0">
-                        <a href="{{ mapUrl }}"
-                           class="btn btn-primary btn-sm ms-0 ms-md-3 d-flex align-items-center"
-                           target="_blank">
-                            <span class="material-symbols-outlined filled fs-4">map</span>
-                        </a>
-                        <a href="{{ downloadUrlGpx }}"
-                           class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
-                           id="buttonGpxTrackDownload"
-                           target="_blank">
-                            <span class="material-symbols-outlined fs-4">download</span>
-                            <span>GPX</span>
-                        </a>
-                        {% if hasGpxTrack and item.has_fit_file %}
-                            <a href="{{ downloadUrlFit }}"
+                            <a href="{{ mapUrl }}"
+                               class="btn btn-primary btn-sm ms-0 ms-md-3 d-flex align-items-center"
+                               target="_blank">
+                                <span class="material-symbols-outlined filled fs-4">map</span>
+                            </a>
+                            <a href="{{ downloadUrlGpx }}"
                                class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
-                               id="buttonFitTrackDownload"
+                               id="buttonGpxTrackDownload"
                                target="_blank">
                                 <span class="material-symbols-outlined fs-4">download</span>
-                                <span>FIT</span>
+                                <span>GPX</span>
                             </a>
-                        {% endif %}
+                            {% if hasGpxTrack and item.has_fit_file %}
+                                <a href="{{ downloadUrlFit }}"
+                                   class="btn btn-primary btn-sm ms-3 d-flex align-items-center"
+                                   id="buttonFitTrackDownload"
+                                   target="_blank">
+                                    <span class="material-symbols-outlined fs-4">download</span>
+                                    <span>FIT</span>
+                                </a>
+                            {% endif %}
 
-                        <button type="button" class="btn btn-danger btn-sm ms-3 d-flex align-items-center button-automatically-disabled" data-bs-toggle="modal" data-bs-target="#delete-modal-gpx">
-                            <span class="material-symbols-outlined filled fs-4">delete</span>
-                        </button>
+                            <button type="button" class="btn btn-danger btn-sm ms-3 d-flex align-items-center button-automatically-disabled" data-bs-toggle="modal" data-bs-target="#delete-modal-gpx">
+                                <span class="material-symbols-outlined filled fs-4">delete</span>
+                            </button>
 
-                        {% call macros.deleteModal(gettext('Delete GPX and FIT Track?'), gettext('Do you really want to delete this associated GPX and FIT file?'), 'gpx') %}
-                            {{ macros.buttonSubmitAutomaticallyDisabled(type="button", classes='btn btn-danger', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl=deleteUrl, id='buttonGpxTrackDelete', dismissModal=true) }}
-                        {% endcall %}
-                    </div>
+                            {% call macros.deleteModal(gettext('Delete GPX and FIT Track?'), gettext('Do you really want to delete this associated GPX and FIT file?'), 'gpx') %}
+                                {{ macros.buttonSubmitAutomaticallyDisabled(type="button", classes='btn btn-danger', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl=deleteUrl, id='buttonGpxTrackDelete', dismissModal=true) }}
+                            {% endcall %}
+                        </div>
                     {% endif %}
                 </div>
             {% endif %}
@@ -529,7 +529,7 @@
             <div class="form-check input-field-margin">
                 <input class="form-check-input participant-checkbox" type="checkbox" {% if workout and participant.id|string in workout.participants %}checked{% endif %} id="participant-{{ participant.id }}" name="participants" value="{{ participant.id }}">
                 <label class="form-check-label" for="participant-{{ participant.id }}">
-                    {{ participant.name | e}}
+                    {{ participant.name | e }}
                 </label>
             </div>
         {% endfor %}
@@ -657,7 +657,7 @@
             <div class="d-flex align-items-center gap-2 flex-grow-1 overflow-hidden">
                 <div class="d-flex align-items-center justify-content-center equipment-select-icon bg-secondary rounded-start">
                     {% if equipment.clothes_type %}
-                        <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + equipment.clothes_type.icon_file_name) }}" />
+                        <img class="icon-svg-small" src="{{ url_for('static', filename="images/clothes/" + equipment.clothes_type.icon_file_name) }}"/>
                     {% else %}
                         {% if group.is_font_awesome_icon %}
                             <i class="fa-solid {{ group.icon }} fa-fw text-white"></i>
@@ -683,7 +683,7 @@
 {% macro workout_form_custom_field_input(field) -%}
     {% set escapedName=field.custom_field.get_escaped_name() %}
     <div class="mb-3">
-        <label for="workout-{{ escapedName }}" class="form-label input-field-margin">{{ field.custom_field.name | e}}</label>
+        <label for="workout-{{ escapedName }}" class="form-label input-field-margin">{{ field.custom_field.name | e }}</label>
         <div class="d-flex align-items-center">
             <span class="material-symbols-outlined filled me-3">drive_file_rename_outline</span>
 
@@ -861,7 +861,7 @@
                             <div class="col col-6 col-md-4 text-center py-4 btn btn-dark btn-select-year" data-year="{{ availableYear }}" data-bs-toggle="modal" data-bs-target="#modalMonthSelect">
                                 <h3 class="mb-0">{{ availableYear }}</h3>
                             </div>
-                        {%  endfor %}
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -883,7 +883,7 @@
                             <div class="col col-6 col-md-4 text-center py-4 btn btn-dark btn-select-month" data-month="{{ loop.index }}">
                                 <h4 class="mb-0">{{ monthName }}</h4>
                             </div>
-                        {%  endfor %}
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -892,4 +892,4 @@
             </div>
         </div>
     </div>
-{%- endmacro  %}
+{%- endmacro %}
