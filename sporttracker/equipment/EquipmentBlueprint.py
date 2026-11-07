@@ -1,4 +1,5 @@
 import logging
+from typing import cast
 
 from flask import Blueprint, abort, redirect, render_template, url_for
 from flask_babel import gettext
@@ -78,6 +79,7 @@ def construct_blueprint(
     ) -> list[EquipmentGroupModel]:
         bikes = bikeService.get_all_statistic_items_by_workout_type(workout_type, user_id)
         clothes = clothesService.get_all_statistic_items_by_workout_type(workout_type, user_id)
+        clothes.sort(key=lambda item: cast(Clothes, item.equipment).clothes_type.order)
         custom = customEquipmentService.get_all_statistic_items_by_workout_type(workout_type, user_id)
 
         result = []
