@@ -23,7 +23,7 @@
                 {% for workoutType, groups in equipmentGroupsByWorkoutType.items() %}
                     <div class="row mt-5 mb-3">
                         <div class="col col-12 mx-auto">
-                            <h3 class="d-flex align-items-center justify-content-center">
+                            <h3 class="d-flex align-items-center justify-content-start">
                                 {{ workoutMacros.workout_type_icon_small(workoutType, classes='me-3') }}
                                 <span class="me-3">{{ workoutType.get_localized_name() }}</span>
                             </h3>
@@ -31,19 +31,23 @@
                     </div>
 
                     {% for group in groups %}
-                        <div class="row">
-                            <div class="col col-12 mx-auto">
-                                {% call macros.headline(group.name, addUrl=group.add_url, size='fs-4') %}
-                                    {% if group.is_font_awesome_icon %}
-                                        <i class="fa-solid {{ group.icon }} fs-3 fa-fw"></i>
-                                    {% else %}
-                                        <span class="material-symbols-outlined filled fs-3">{{ group.icon }}</span>
-                                    {% endif %}
-                                {% endcall %}
-                            </div>
-                        </div>
-
                         <div class="row py-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
+                            <div class="col mb-5">
+                                <a href="{{ group.add_url }}" class="link-light text-decoration-none h-100 border border-white border-5 rounded equipment-new-border d-flex flex-column align-item-center justify-content-center gap-4 py-5">
+                                    <div>
+                                        {% if group.is_font_awesome_icon %}
+                                            <i class="fa-solid {{ group.icon }} equipment-new-icon fa-fw"></i>
+                                        {% else %}
+                                            <span class="material-symbols-outlined filled equipment-new-icon">{{ group.icon }}</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="fs-5">{{ group.add_text }}</div>
+                                    <div>
+                                        <span class="rounded-circle bg-primary p-1 fs-1 material-symbols-outlined">add</span>
+                                    </div>
+                                </a>
+                            </div>
+
                             {% for item in group.items %}
                                 <div class="col mb-5">
                                     <div class="card h-100">

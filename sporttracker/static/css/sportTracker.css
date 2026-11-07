@@ -353,6 +353,15 @@ select[disabled] {
     font-size: 1.5rem;
 }
 
+.equipment-new-icon {
+    font-size: 3rem;
+}
+
+.equipment-new-border {
+    border-style: dashed !important;
+    border-radius: 25px !important;
+}
+
 .debug {
     outline: 1px solid red !important;
 }

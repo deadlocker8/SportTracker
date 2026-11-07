@@ -43,9 +43,9 @@ class EquipmentStatisticModel:
 
 @dataclass
 class EquipmentGroupModel:
-    name: str
     icon: str
     is_font_awesome_icon: bool
+    add_text: str
     add_url: str
     items: list[EquipmentStatisticModel]
 
