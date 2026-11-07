@@ -21,6 +21,7 @@ from sporttracker.equipment.EquipmentFilterStateEntity import (
 from sporttracker.equipment.EquipmentModel import EquipmentGroupModel, EquipmentStatisticModel
 from sporttracker.equipment.EquipmentService import EquipmentService
 from sporttracker.equipment.EquipmentType import EquipmentType
+from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
 from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -35,26 +36,29 @@ def construct_blueprint(
     @login_required
     def listEquipment():
         equipmentFilterState = get_equipment_filter_state_by_user(current_user.id)
+        quickFilterState = get_quick_filter_state_by_user(current_user.id)
+
+        includeBikesByWorkoutType = {
+            WorkoutType.BIKING: True,
+            WorkoutType.RUNNING: False,
+            WorkoutType.HIKING: False,
+            WorkoutType.FITNESS: False,
+        }
+        activeWorkoutTypes = quickFilterState.get_active_workout_types()
 
         equipmentGroupsByWorkoutType: dict[WorkoutType, list[EquipmentGroupModel]] = {
-            WorkoutType.BIKING: __create_equipment_groups_for_workout_type(
-                WorkoutType.BIKING, current_user.id, True, equipmentFilterState
-            ),
-            WorkoutType.RUNNING: __create_equipment_groups_for_workout_type(
-                WorkoutType.RUNNING, current_user.id, False, equipmentFilterState
-            ),
-            WorkoutType.HIKING: __create_equipment_groups_for_workout_type(
-                WorkoutType.HIKING, current_user.id, False, equipmentFilterState
-            ),
-            WorkoutType.FITNESS: __create_equipment_groups_for_workout_type(
-                WorkoutType.FITNESS, current_user.id, False, equipmentFilterState
-            ),
+            workoutType: __create_equipment_groups_for_workout_type(
+                workoutType, current_user.id, includeBikes, equipmentFilterState
+            )
+            for workoutType, includeBikes in includeBikesByWorkoutType.items()
+            if workoutType in activeWorkoutTypes
         }
 
         return render_template(
             'equipment/equipment.jinja2',
             equipmentGroupsByWorkoutType=equipmentGroupsByWorkoutType,
             equipmentFilterState=equipmentFilterState,
+            quickFilterState=quickFilterState,
         )
 
     @equipment.route('/applyFilter', methods=['POST'])
