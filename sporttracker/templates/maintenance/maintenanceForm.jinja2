@@ -96,6 +96,33 @@
                                 </div>
                             </div>
 
+                            <div class="mb-3">
+                                <label for="maintenance-event-equipment-type" class="form-label input-field-margin">{{ gettext('Filter by equipment') }}</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="material-symbols-outlined me-3">filter_alt</span>
+                                    <select class="form-select" id="maintenance-event-equipment-type">
+                                        <option class="maintenance-event-equipment-type-select-placeholder"></option>
+
+                                        {% for equipmentType in equipmentTypes %}
+                                            <option value="{{ equipmentType.name }}">{{ equipmentType.get_localized_name() }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <label for="maintenance-event-equipment" class="form-label"></label>
+                                    <select class="form-select ms-3" id="maintenance-event-equipment" name="equipment_id">
+                                        <option class="maintenance-event-equipment-select-placeholder"></option>
+
+                                        {% for workoutType, equipmentByType in equipmentByWorkoutType.items() %}
+                                            {% for equipmentType, equipmentItems in equipmentByType.items() %}
+                                                {% for equipment in equipmentItems %}
+                                                    <option value="{{ equipment.id }}" data-workout-type="{{ workoutType.name }}" data-equipment-type="{{ equipmentType.name }}">{{ equipment.name | e }}</option>
+                                                {% endfor %}
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="mb-3 mt-5" id="maintenance-event-reminder-container">
                                 <label for="maintenance-event-reminder" class="form-label">
                                     <div class="d-flex align-items-center">
@@ -141,6 +168,7 @@
         <script>
             initialCustomFieldId = '{% if maintenance and maintenance.custom_field_id is not none %}{{ maintenance.custom_field_id }}{% endif %}';
             initialCustomFieldValue = '{% if maintenance and maintenance.custom_field_value is not none %}{{ maintenance.custom_field_value }}{% endif %}';
+            initialEquipmentId = '{% if maintenance and maintenance.equipment_id is not none %}{{ maintenance.equipment_id }}{% endif %}';
         </script>
         <script defer src="{{ url_for('static', filename='js/maintenancesCommon.js') }}" type="text/javascript"></script>
         <script defer src="{{ url_for('static', filename='js/maintenancesForm.js') }}" type="text/javascript"></script>

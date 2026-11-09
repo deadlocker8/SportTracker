@@ -5,6 +5,7 @@ from operator import attrgetter
 import natsort
 from natsort import natsorted
 
+from sporttracker.equipment.EquipmentService import EquipmentService
 from sporttracker.maintenance.MaintenanceEntity import Maintenance
 from sporttracker.maintenance.MaintenanceEventInstanceBlueprint import MaintenanceEventInstanceModel
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
@@ -30,6 +31,7 @@ class MaintenanceWithEventsModel:
     events: list[MaintenanceEventInstanceModel]
     custom_workout_field_name: str | None
     custom_workout_field_value: str | None
+    equipment_name: str | None
 
 
 def get_maintenances_with_events(
@@ -74,6 +76,13 @@ def create_maintenance_model(maintenance: Maintenance) -> MaintenanceWithEventsM
     customWorkoutField = get_custom_field_by_id(maintenance.custom_workout_field_id, maintenance.user_id)
     customWorkoutFieldName = None if customWorkoutField is None else customWorkoutField.name
 
+    equipment = (
+        None
+        if maintenance.equipment_id is None
+        else EquipmentService.get_equipment_by_id(maintenance.equipment_id, maintenance.user_id)
+    )
+    equipmentName = None if equipment is None else equipment.name
+
     return MaintenanceWithEventsModel(
         id=maintenance.id,
         type=maintenance.type,
@@ -85,6 +94,7 @@ def create_maintenance_model(maintenance: Maintenance) -> MaintenanceWithEventsM
         events=eventModels,
         custom_workout_field_name=customWorkoutFieldName,  # type: ignore[arg-type]
         custom_workout_field_value=maintenance.custom_workout_field_value,  # type: ignore[arg-type]
+        equipment_name=equipmentName,
     )
 
 
@@ -107,6 +117,7 @@ def __convert_events_to_models(
             [maintenance.type],
             customWorkoutFieldName,  # type: ignore[arg-type]
             maintenance.custom_workout_field_value,  # type: ignore[arg-type]
+            maintenance.equipment_id,
         )
         numberOfDaysSinceEvent = (event.event_date - previousEventDate).days  # type: ignore[operator]
         previousEventDate = event.event_date
@@ -125,6 +136,7 @@ def __convert_events_to_models(
         [maintenance.type],
         customWorkoutFieldName,  # type: ignore[arg-type]
         maintenance.custom_workout_field_value,  # type: ignore[arg-type]
+        maintenance.equipment_id,
     )
 
     eventModels.append(

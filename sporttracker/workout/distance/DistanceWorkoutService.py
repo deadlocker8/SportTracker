@@ -325,6 +325,7 @@ class DistanceWorkoutService:
         workoutTypes: list[WorkoutType],
         customWorkoutFieldName: str | None = None,
         customWorkoutFieldValue: str | None = None,
+        equipmentId: int | None = None,
     ) -> int:
         query = (
             DistanceWorkout.query.with_entities(func.sum(DistanceWorkout.distance))
@@ -333,7 +334,9 @@ class DistanceWorkoutService:
             .filter(DistanceWorkout.start_time.between(startDateTime, endDateTime))
         )
 
-        if customWorkoutFieldName is not None and customWorkoutFieldValue is not None:
+        if equipmentId is not None:
+            query = query.filter(DistanceWorkout.equipment.any(id=equipmentId))
+        elif customWorkoutFieldName is not None and customWorkoutFieldValue is not None:
             query = query.filter(
                 DistanceWorkout.custom_fields[customWorkoutFieldName].astext.cast(String) == customWorkoutFieldValue
             )

@@ -10,6 +10,7 @@ from pydantic import BaseModel, field_validator
 
 from sporttracker import Constants
 from sporttracker.db import db
+from sporttracker.equipment.EquipmentService import EquipmentService
 from sporttracker.maintenance.MaintenanceEntity import Maintenance, get_maintenance_by_id
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     get_maintenance_events_by_maintenance_id,
@@ -32,6 +33,7 @@ class MaintenanceModel:
     reminder_limit: int | None
     custom_field_id: int | None = None
     custom_field_value: str | None = None
+    equipment_id: int | None = None
 
 
 class MaintenanceFormModel(BaseModel):
@@ -41,6 +43,7 @@ class MaintenanceFormModel(BaseModel):
     reminder_limit: int | None = None
     custom_field_id: int | None = None
     custom_field_value: str | None = None
+    equipment_id: int | None = None
 
     @field_validator('description', mode='before')
     @classmethod
@@ -49,8 +52,8 @@ class MaintenanceFormModel(BaseModel):
             return v.strip()
         return v
 
-    @field_validator(*['custom_field_id'], mode='before')
-    def custom_field_id_check(cls, value: str, info) -> str | None:
+    @field_validator(*['custom_field_id', 'equipment_id'], mode='before')
+    def nullable_id_check(cls, value: str, info) -> str | None:
         if isinstance(value, str):
             value = value.strip()
 
@@ -58,6 +61,28 @@ class MaintenanceFormModel(BaseModel):
             return None
 
         return value
+
+
+def _get_valid_equipment_id(
+    equipment_id: int | None,
+    workout_type: WorkoutType,
+    user_id: int,
+    existing_equipment_id: int | None = None,
+) -> int | None:
+    if equipment_id is None:
+        return None
+
+    equipment = EquipmentService.get_equipment_by_id(equipment_id, user_id)
+    if equipment is None:
+        return None
+
+    if equipment.workout_type != workout_type:
+        return None
+
+    if not equipment.is_active and equipment.id != existing_equipment_id:
+        return None
+
+    return equipment.id
 
 
 def construct_blueprint():
@@ -107,6 +132,9 @@ def construct_blueprint():
             customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(
                 WorkoutType.get_distance_workout_types()
             ),
+            equipmentByWorkoutType=EquipmentService.get_equipment_grouped_by_workout_type_and_type(
+                WorkoutType.get_distance_workout_types(), current_user.id
+            ),
             maintenanceFilterState=get_maintenance_filter_state_by_user(current_user.id),
         )
 
@@ -118,18 +146,24 @@ def construct_blueprint():
         if form.reminder_limit is not None:
             reminderLimit = form.reminder_limit * 1000
 
-        customFieldId = form.custom_field_id
-        if form.custom_field_value is None:
-            # if no value is selected then no custom field id should be saved
-            customFieldId = None
-
-        customFieldValue = form.custom_field_value
-        if form.custom_field_id is None:
-            # if no custom field is selected then the value needs to be ignored
-            customFieldValue = None
-
         workoutType = WorkoutType(form.type)  # type: ignore[call-arg]
         if workoutType in WorkoutType.get_distance_workout_types():
+            customFieldId = form.custom_field_id
+            customFieldValue = form.custom_field_value
+            if customFieldValue is None:
+                # if no value is selected then no custom field id should be saved
+                customFieldId = None
+            if customFieldId is None:
+                # if no custom field is selected then the value needs to be ignored
+                customFieldValue = None
+
+            equipmentId = _get_valid_equipment_id(form.equipment_id, workoutType, current_user.id)
+            if equipmentId is not None:
+                customFieldId = None
+                customFieldValue = None
+            elif customFieldId is not None:
+                equipmentId = None
+
             maintenance = Maintenance(
                 type=workoutType,
                 description=form.description,
@@ -138,6 +172,7 @@ def construct_blueprint():
                 reminder_limit=reminderLimit,
                 custom_workout_field_id=customFieldId,
                 custom_workout_field_value=customFieldValue,
+                equipment_id=equipmentId,
             )
         else:
             maintenance = Maintenance(
@@ -171,6 +206,7 @@ def construct_blueprint():
             # type: ignore[arg-type]
             custom_field_id=maintenance.custom_workout_field_id,
             custom_field_value=maintenance.custom_workout_field_value,  # type: ignore[arg-type]
+            equipment_id=maintenance.equipment_id,
         )
 
         return render_template(
@@ -179,6 +215,9 @@ def construct_blueprint():
             maintenance_id=maintenance_id,
             customFieldsByWorkoutType=get_custom_fields_grouped_by_distance_workout_types_with_values(
                 WorkoutType.get_distance_workout_types()
+            ),
+            equipmentByWorkoutType=EquipmentService.get_equipment_grouped_by_workout_type_and_type(
+                WorkoutType.get_distance_workout_types(), current_user.id, maintenance.equipment_id
             ),
             maintenanceFilterState=get_maintenance_filter_state_by_user(current_user.id),
         )
@@ -205,19 +244,34 @@ def construct_blueprint():
             maintenance.is_reminder_active = bool(form.is_reminder_active)
             maintenance.reminder_limit = reminderLimit  # type: ignore[assignment]
 
-            maintenance.custom_workout_field_id = form.custom_field_id
-            if form.custom_field_value is None:
+            customFieldId = form.custom_field_id
+            customFieldValue = form.custom_field_value
+            if customFieldValue is None:
                 # if no value is selected then no custom field id should be saved
-                maintenance.custom_workout_field_id = None
-
-            maintenance.custom_workout_field_value = form.custom_field_value  # type: ignore[assignment]
-            if form.custom_field_id is None:
+                customFieldId = None
+            if customFieldId is None:
                 # if no custom field is selected then the value needs to be ignored
-                maintenance.custom_workout_field_value = None  # type: ignore[assignment]
+                customFieldValue = None
+
+            equipmentId = _get_valid_equipment_id(
+                form.equipment_id, workoutType, current_user.id, maintenance.equipment_id
+            )
+            if equipmentId is not None:
+                customFieldId = None
+                customFieldValue = None
+            elif customFieldId is not None:
+                equipmentId = None
+
+            maintenance.custom_workout_field_id = customFieldId
+            maintenance.custom_workout_field_value = customFieldValue  # type: ignore[assignment]
+            maintenance.equipment_id = equipmentId
 
         else:
             maintenance.is_reminder_active = False
             maintenance.reminder_limit = None  # type: ignore[assignment]
+            maintenance.custom_workout_field_id = None
+            maintenance.custom_workout_field_value = None
+            maintenance.equipment_id = None
 
         LOGGER.debug(f'Updated maintenance: {maintenance}')
         db.session.commit()

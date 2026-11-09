@@ -14,6 +14,7 @@ from sporttracker.equipment.custom.CustomEquipmentEntity import CustomEquipment
 from sporttracker.equipment.custom.CustomEquipmentService import CustomEquipmentService
 from sporttracker.equipment.EquipmentEntity import Equipment
 from sporttracker.equipment.EquipmentModel import EquipmentSelectionGroupModel, EquipmentSelectionSubGroupModel
+from sporttracker.equipment.EquipmentType import EquipmentType
 from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
@@ -37,6 +38,30 @@ class EquipmentService:
             .filter(Equipment.id.in_(unique_ids))
             .all()
         )
+
+    @staticmethod
+    def get_equipment_grouped_by_workout_type_and_type(
+        workout_types: list[WorkoutType], user_id: int, selected_equipment_id: int | None = None
+    ) -> dict[WorkoutType, dict[EquipmentType, list[Equipment]]]:
+        result = {}
+
+        for workout_type in workout_types:
+            equipment_by_type = {}
+
+            equipment_candidates = [
+                (EquipmentType.BIKE, BikeService.get_all_by_workout_type(workout_type, user_id)),
+                (EquipmentType.CLOTHES, ClothesService.get_all_by_workout_type(workout_type, user_id)),
+                (EquipmentType.CUSTOM, CustomEquipmentService.get_all_by_workout_type(workout_type, user_id)),
+            ]
+
+            for equipment_type, equipment_items in equipment_candidates:
+                available_items = [e for e in equipment_items if e.is_active or e.id == selected_equipment_id]
+                if available_items:
+                    equipment_by_type[equipment_type] = available_items
+
+            result[workout_type] = equipment_by_type
+
+        return result
 
     @staticmethod
     def get_selection_groups_by_workout_type(
