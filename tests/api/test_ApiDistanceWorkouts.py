@@ -39,6 +39,7 @@ class TestDistanceWorkout:
             'average_heart_rate': 130,
             'elevation_sum': 650,
             'participants': [],
+            'equipment': [],
         }
         payload.update(overrides)
         return payload
@@ -75,6 +76,7 @@ class TestDistanceWorkout:
                 'participants': [],
                 'distance': 22500,
                 'elevation_sum': 650,
+                'equipment': [],
                 'planned_tour_id': None,
                 'has_gpx': False,
                 'custom_fields': {},
@@ -203,3 +205,10 @@ class TestDistanceWorkout:
             json={'data': [{'timestamp': '2026-01-15 15:30:00'}]},
         )
         assert response.status_code == 400
+
+    def test_add_with_equipment(self, client):
+        response = client.post(self.URL, json=self.__build_payload(equipment=[1]))
+        assert response.status_code == 200
+
+        jsonData = client.get(self.URL).get_json()
+        assert jsonData[0]['equipment'] == [1]

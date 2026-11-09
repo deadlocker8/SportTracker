@@ -21,6 +21,7 @@ from sporttracker.api.FormModels import (
 from sporttracker.api.Mapper import (
     MAPPER_CUSTOM_FIELD,
     MAPPER_DISTANCE_WORKOUT,
+    MAPPER_EQUIPMENT,
     MAPPER_FITNESS_WORKOUT,
     MAPPER_MAINTENANCE,
     MAPPER_MONTH_GOAL_COUNT,
@@ -31,6 +32,7 @@ from sporttracker.api.Mapper import (
 )
 from sporttracker.bodyWeight.BodyWeightService import BodyWeightService
 from sporttracker.db import db
+from sporttracker.equipment.EquipmentEntity import Equipment
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.helpers import DateFormats
 from sporttracker.maintenance.MaintenanceEventsCollector import get_maintenances_with_events
@@ -57,7 +59,7 @@ from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
-API_VERSION = '2.1.0'
+API_VERSION = '2.2.0'
 
 API_BLUEPRINT_NAME = 'api'
 
@@ -444,6 +446,17 @@ def construct_blueprint(
             result[workoutType.name] = [MAPPER_CUSTOM_FIELD.map(f.custom_field) for f in fields]
 
         return jsonify(result)
+
+    @api.route('/equipment', methods=['GET'])
+    @login_required
+    def listEquipment():
+        equipmentItems = (
+            Equipment.query.filter(Equipment.user_id == current_user.id)
+            .order_by(Equipment.workout_type.asc(), Equipment.name.asc())
+            .all()
+        )
+
+        return jsonify([MAPPER_EQUIPMENT.map(e) for e in equipmentItems])
 
     @api.route('/plannedTours', methods=['GET'])
     @login_required

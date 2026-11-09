@@ -41,6 +41,7 @@ class DistanceWorkoutApiModel:
     duration: int
     average_heart_rate: int
     participants: list[int]
+    equipment: list[int]
     distance: int
     elevation_sum: int
     planned_tour_id: int
@@ -58,6 +59,7 @@ class FitnessWorkoutApiModel:
     duration: int
     average_heart_rate: int
     participants: list[int]
+    equipment: list[int]
     fitness_workout_type: str
     fitness_workout_categories: list[str]
     custom_fields: dict[str, str | int | float]
@@ -67,6 +69,18 @@ class FitnessWorkoutApiModel:
 class ParticipantApiModel:
     id: int
     name: str
+
+
+@dataclass
+class EquipmentApiModel:
+    id: int
+    workout_type: str
+    equipment_type: str
+    name: str
+    purchase_date: str | None
+    is_active: bool
+    inactive_date: str | None
+    clothes_type: str | None
 
 
 @dataclass

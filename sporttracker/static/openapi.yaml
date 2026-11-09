@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Sport-Tracker-API
-  version: 2.1.0
+  version: 2.2.0
 servers:
   - url: '/'
 paths:
@@ -299,6 +299,21 @@ paths:
                     items:
                       $ref: '#/components/schemas/CustomField'
 
+  /api/v2/equipment:
+    get:
+      summary: Lists all available equipment
+      tags:
+       - equipment
+      responses:
+        200:
+          description: "Okay"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Equipment'
+
   /api/v2/plannedTours:
     get:
       summary: Lists all planned tours
@@ -392,6 +407,12 @@ components:
         planned_tour_id:
           type: integer
           description: Optional id of a planned tour this workout is based on.
+        equipment:
+          type: array
+          description: Optional list of IDs of equipment. Available equipment can be queried via API.
+          items:
+            type: integer
+          example: []
         custom_fields:
           type: object
           example: {'bike': 'Cube'}
@@ -440,6 +461,12 @@ components:
         planned_tour_id:
           type: integer
           description: Optional id of a planned tour this workout is based on.
+        equipment:
+          type: array
+          description: List of IDs of assigned equipment.
+          items:
+            type: integer
+          example: []
         custom_fields:
           type: object
           example: {'bike': 'Cube'}
@@ -495,6 +522,12 @@ components:
         participants:
           type: array
           description: Optional list of IDs of participants
+          items:
+            type: integer
+          example: []
+        equipment:
+          type: array
+          description: Optional list of IDs of equipment. Available equipment can be queried via API.
           items:
             type: integer
           example: []
@@ -749,6 +782,42 @@ components:
         is_required:
           type: boolean
           description: Is this custom field required when creating a new workout?
+
+    Equipment:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the custom field
+        workout_type:
+          example: BIKING
+          type: string
+          enum: [ BIKING, RUNNING, HIKING, FITNESS ]
+          description: Distance or fitness workout type
+        equipment_type:
+          example: CLOTHES
+          type: string
+          enum: [ BIKE, CLOTHES, CUSTOM ]
+          description: Type of the equipment
+        name:
+          type: string
+          description: Name of the custom field
+        purchase_date:
+          type: string
+          example: 2026-11-10
+          description: Purchase date in the format YYYY-MM-DD
+        is_active:
+          type: boolean
+          description: Is this equipment activated?
+        inactive_date:
+          type: string
+          example: 2026-11-10
+          description: Date of inactivation in the format YYYY-MM-DD
+        clothes_type:
+          example: TOPS
+          type: string
+          enum: [ HEADGEAR, TOPS, GLOVES, BOTTOMS, SHOES, MISC ]
+          description: Type of clothes. Only available for equipment of type CLOTHES.
 
     PlannedTour:
       type: object

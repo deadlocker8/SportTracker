@@ -98,16 +98,20 @@ class FitnessWorkoutService:
     ) -> DistanceWorkout:
         participants = get_participants_by_ids(form_model.participants)
 
+        workoutType = WorkoutType(form_model.workout_type)  # type: ignore[call-arg]
+        equipment = EquipmentService.get_equipment_by_ids(form_model.equipment or [], user_id, workoutType)
+
         startTime = form_model.calculate_start_time()
         workout = FitnessWorkout(
             name=form_model.name,
-            type=WorkoutType(form_model.workout_type),  # type: ignore[call-arg]
+            type=workoutType,
             start_time=startTime,
             duration=form_model.duration,
             average_heart_rate=form_model.average_heart_rate,
             custom_fields={} if form_model.custom_fields is None else form_model.custom_fields,
             user_id=user_id,
             participants=participants,
+            equipment=equipment,
             fitness_workout_type=FitnessWorkoutType(form_model.fitness_workout_type),  # type: ignore[call-arg]
         )
 

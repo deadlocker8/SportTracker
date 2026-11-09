@@ -1,7 +1,13 @@
+from datetime import date
+
 import pytest
 
+from sporttracker.db import db
+from sporttracker.equipment.clothes.ClothesEntity import Clothes
+from sporttracker.equipment.clothes.ClothesType import ClothesType
 from sporttracker.SportTracker import create_test_app
 from sporttracker.user.UserEntity import Language, User, create_user
+from sporttracker.workout.WorkoutType import WorkoutType
 from tests.TestConstants import TEST_PASSWORD, TEST_USERNAME
 
 
@@ -20,7 +26,29 @@ def app(tmp_path):
 @pytest.fixture(autouse=True)
 def prepare_test_data(app):
     with app.app_context():
-        create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH, 2026)
+        createdUser = create_user(TEST_USERNAME, TEST_PASSWORD, False, Language.ENGLISH, 2026)
+
+        db.session.add(
+            Clothes(
+                name='Shoes',
+                workout_type=WorkoutType.BIKING,
+                purchase_date=date(2023, 1, 1),
+                clothes_type=ClothesType.SHOES,
+                is_active=True,
+                user_id=createdUser.id,
+            )
+        )
+        db.session.add(
+            Clothes(
+                name='Weights',
+                workout_type=WorkoutType.FITNESS,
+                purchase_date=date(2023, 1, 1),
+                clothes_type=None,
+                is_active=True,
+                user_id=createdUser.id,
+            )
+        )
+        db.session.commit()
 
 
 @pytest.fixture

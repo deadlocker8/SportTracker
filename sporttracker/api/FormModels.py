@@ -41,6 +41,7 @@ class DistanceWorkoutApiFormModel(BaseModel):
     average_heart_rate: int | None = None
     elevation_sum: int | None = None
     planned_tour_id: int | None = None
+    equipment: list[int] | None = None
     custom_fields: dict[str, str | int | float] | None = None
 
     @field_validator('name', mode='before')
@@ -64,6 +65,7 @@ class FitnessWorkoutApiFormModel(BaseModel):
     fitness_workout_type: str
     fitness_workout_categories: list[str] | None = None
     average_heart_rate: int | None = None
+    equipment: list[int] | None = None
     custom_fields: dict[str, str | int | float] | None = None
 
     @field_validator('name', mode='before')

@@ -15,6 +15,7 @@ class TestFitnessWorkout:
             'start_time': '15:30',
             'duration': 1800,
             'average_heart_rate': 130,
+            'equipment': [],
             'fitness_workout_type': 'DURATION_BASED',
             'fitness_workout_categories': ['ARMS', 'CORE'],
             'participants': [],
@@ -52,6 +53,7 @@ class TestFitnessWorkout:
         assert jsonData[0]['duration'] == 1800
         assert jsonData[0]['average_heart_rate'] == 130
         assert jsonData[0]['participants'] == []
+        assert jsonData[0]['equipment'] == []
         assert jsonData[0]['fitness_workout_type'] == 'DURATION_BASED'
         assert set(jsonData[0]['fitness_workout_categories']) == {'ARMS', 'CORE'}
         assert jsonData[0]['custom_fields'] == {}
@@ -109,3 +111,10 @@ class TestFitnessWorkout:
             json={'data': [{'timestamp': '2026-01-15 15:30:00'}]},
         )
         assert response.status_code == 400
+
+    def test_add_with_equipment(self, client):
+        response = client.post(self.URL, json=self.__build_payload(equipment=[2]))
+        assert response.status_code == 200
+
+        jsonData = client.get(self.URL).get_json()
+        assert jsonData[0]['equipment'] == [2]

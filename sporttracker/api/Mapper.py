@@ -3,6 +3,7 @@ from collections.abc import Callable
 from sporttracker.api.Models import (
     CustomFieldApiModel,
     DistanceWorkoutApiModel,
+    EquipmentApiModel,
     FitnessWorkoutApiModel,
     MaintenanceApiModel,
     MonthGoalCountApiModel,
@@ -11,6 +12,11 @@ from sporttracker.api.Models import (
     ParticipantApiModel,
     PlannedTourApiModel,
 )
+from sporttracker.equipment.bike.BikeEntity import Bike
+from sporttracker.equipment.clothes.ClothesEntity import Clothes
+from sporttracker.equipment.custom.CustomEquipmentEntity import CustomEquipment
+from sporttracker.equipment.EquipmentEntity import Equipment
+from sporttracker.equipment.EquipmentType import EquipmentType
 from sporttracker.helpers import DateFormats
 from sporttracker.maintenance.MaintenanceEventsCollector import MaintenanceWithEventsModel
 from sporttracker.monthGoal.MonthGoalEntity import MonthGoalCount, MonthGoalDistance, MonthGoalDuration
@@ -22,15 +28,15 @@ from sporttracker.workout.fitness.FitnessWorkoutEntity import FitnessWorkout
 
 
 class Mapper:
-    def __init__(self, source_type: type, target_type: type, mappings: dict[str, Callable]) -> None:
-        self._source_type = source_type
+    def __init__(self, source_types: list[type], target_type: type, mappings: dict[str, Callable]) -> None:
+        self._source_types = source_types
         self._target_type = target_type
         self._mappings = mappings
 
     def map(self, source: object) -> object:
-        if type(source) is not self._source_type:
+        if type(source) not in self._source_types:
             raise ValueError(
-                f'Could not map {self._source_type} to {self._target_type}: Source is not of type {self._source_type}'
+                f'Could not map {type(source)} to {self._target_type}: Source is not of type {self._source_types}'
             )
 
         properties = {}
@@ -41,7 +47,7 @@ class Mapper:
 
 
 MAPPER_MONTH_GOAL_DISTANCE = Mapper(
-    MonthGoalDistance,
+    [MonthGoalDistance],
     MonthGoalDistanceApiModel,
     {
         'id': lambda source: source.id,
@@ -54,7 +60,7 @@ MAPPER_MONTH_GOAL_DISTANCE = Mapper(
 )
 
 MAPPER_MONTH_GOAL_COUNT = Mapper(
-    MonthGoalCount,
+    [MonthGoalCount],
     MonthGoalCountApiModel,
     {
         'id': lambda source: source.id,
@@ -67,7 +73,7 @@ MAPPER_MONTH_GOAL_COUNT = Mapper(
 )
 
 MAPPER_MONTH_GOAL_DURATION = Mapper(
-    MonthGoalDuration,
+    [MonthGoalDuration],
     MonthGoalDurationApiModel,
     {
         'id': lambda source: source.id,
@@ -80,7 +86,7 @@ MAPPER_MONTH_GOAL_DURATION = Mapper(
 )
 
 MAPPER_DISTANCE_WORKOUT = Mapper(
-    DistanceWorkout,
+    [DistanceWorkout],
     DistanceWorkoutApiModel,
     {
         'id': lambda source: source.id,
@@ -91,6 +97,7 @@ MAPPER_DISTANCE_WORKOUT = Mapper(
         'duration': lambda source: source.duration,
         'average_heart_rate': lambda source: source.average_heart_rate,
         'participants': lambda source: [item.id for item in source.participants],
+        'equipment': lambda source: [item.id for item in source.equipment],
         'distance': lambda source: source.distance,
         'elevation_sum': lambda source: source.elevation_sum,
         'planned_tour_id': lambda source: source.planned_tour.id if source.planned_tour else None,
@@ -100,7 +107,7 @@ MAPPER_DISTANCE_WORKOUT = Mapper(
 )
 
 MAPPER_FITNESS_WORKOUT = Mapper(
-    FitnessWorkout,
+    [FitnessWorkout],
     FitnessWorkoutApiModel,
     {
         'id': lambda source: source.id,
@@ -111,6 +118,7 @@ MAPPER_FITNESS_WORKOUT = Mapper(
         'duration': lambda source: source.duration,
         'average_heart_rate': lambda source: source.average_heart_rate,
         'participants': lambda source: [item.id for item in source.participants],
+        'equipment': lambda source: [item.id for item in source.equipment],
         'fitness_workout_type': lambda source: source.fitness_workout_type.name,
         'fitness_workout_categories': lambda source: [c.name for c in source.get_workout_categories()],
         'custom_fields': lambda source: source.custom_fields,
@@ -118,7 +126,7 @@ MAPPER_FITNESS_WORKOUT = Mapper(
 )
 
 MAPPER_PARTICIPANT = Mapper(
-    Participant,
+    [Participant],
     ParticipantApiModel,
     {
         'id': lambda source: source.id,
@@ -126,8 +134,41 @@ MAPPER_PARTICIPANT = Mapper(
     },
 )
 
+
+def _get_equipment_type(equipment: Equipment) -> str:
+    if isinstance(equipment, Bike):
+        return EquipmentType.BIKE.name
+    elif isinstance(equipment, Clothes):
+        return EquipmentType.CLOTHES.name
+    elif isinstance(equipment, CustomEquipment):
+        return EquipmentType.CUSTOM.name
+
+    raise ValueError(f'Could not determine equipment type for: {equipment}')
+
+
+MAPPER_EQUIPMENT = Mapper(
+    [Equipment, Bike, Clothes, CustomEquipment],
+    EquipmentApiModel,
+    {
+        'id': lambda source: source.id,
+        'workout_type': lambda source: source.workout_type.name,
+        'equipment_type': lambda source: _get_equipment_type(source),  # type: ignore[arg-type]
+        'name': lambda source: source.name,
+        'purchase_date': lambda source: (
+            source.purchase_date.strftime(DateFormats.DATE_FORMAT_DATE) if source.purchase_date else None
+        ),
+        'is_active': lambda source: source.is_active,
+        'inactive_date': lambda source: (
+            source.inactive_date.strftime(DateFormats.DATE_FORMAT_DATE) if source.inactive_date else None
+        ),
+        'clothes_type': lambda source: (
+            source.clothes_type.name if isinstance(source, Clothes) and source.clothes_type else None
+        ),
+    },
+)
+
 MAPPER_PLANNED_TOUR = Mapper(
-    PlannedTour,
+    [PlannedTour],
     PlannedTourApiModel,
     {
         'id': lambda source: source.id,
@@ -137,7 +178,7 @@ MAPPER_PLANNED_TOUR = Mapper(
 )
 
 MAPPER_MAINTENANCE = Mapper(
-    MaintenanceWithEventsModel,
+    [MaintenanceWithEventsModel],
     MaintenanceApiModel,
     {
         'id': lambda source: source.id,
@@ -151,7 +192,7 @@ MAPPER_MAINTENANCE = Mapper(
 )
 
 MAPPER_CUSTOM_FIELD = Mapper(
-    CustomWorkoutField,
+    [CustomWorkoutField],
     CustomFieldApiModel,
     {
         'id': lambda source: source.id,
