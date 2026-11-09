@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-07 23:01+0100\n"
-"PO-Revision-Date: 2026-11-07 23:01+0100\n"
+"POT-Creation-Date: 2026-11-09 22:39+0100\n"
+"PO-Revision-Date: 2026-11-09 22:39+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -222,27 +222,27 @@ msgstr "Heatmap Wochentage"
 msgid "Heatmap Months"
 msgstr "Heatmap Monate"
 
-#: ../equipment/EquipmentBlueprint.py:149
+#: ../equipment/EquipmentBlueprint.py:153
 msgid "Add bike"
 msgstr "Fahrrad hinzufügen"
 
-#: ../equipment/EquipmentBlueprint.py:166
+#: ../equipment/EquipmentBlueprint.py:170
 msgid "Add clothes"
 msgstr "Kleidung hinzufügen"
 
-#: ../equipment/EquipmentBlueprint.py:182
+#: ../equipment/EquipmentBlueprint.py:186
 msgid "Add custom equipment"
 msgstr "Benutzerdefinierte Ausrüstung hinzufügen"
 
-#: ../equipment/EquipmentService.py:50 ../equipment/EquipmentType.py:32
+#: ../equipment/EquipmentService.py:75 ../equipment/EquipmentType.py:32
 msgid "Bikes"
 msgstr "Fahrräder"
 
-#: ../equipment/EquipmentService.py:65 ../equipment/EquipmentType.py:34
+#: ../equipment/EquipmentService.py:90 ../equipment/EquipmentType.py:34
 msgid "Clothes"
 msgstr "Kleidung"
 
-#: ../equipment/EquipmentService.py:76 ../equipment/EquipmentType.py:36
+#: ../equipment/EquipmentService.py:101 ../equipment/EquipmentType.py:36
 msgid "Custom"
 msgstr "Benutzerdefiniert"
 
@@ -270,7 +270,7 @@ msgstr "Schuhe"
 msgid "Misc"
 msgstr "Sonstiges"
 
-#: ../maintenance/MaintenanceBlueprint.py:95
+#: ../maintenance/MaintenanceBlueprint.py:120
 msgid "Maintenance does not exist anymore"
 msgstr "Wartung existiert nicht mehr"
 
@@ -628,6 +628,8 @@ msgstr "Wartung"
 
 #: ../templates/equipment/equipment.jinja2:5
 #: ../templates/equipment/equipment.jinja2:18 ../templates/macros.jinja2:185
+#: ../templates/maintenance/maintenance.jinja2:91
+#: ../templates/maintenance/maintenances.jinja2:102
 #: ../templates/workout/workoutMacros.jinja2:558
 msgid "Equipment"
 msgstr "Ausrüstung"
@@ -656,7 +658,7 @@ msgid "Login"
 msgstr "Login"
 
 #: ../templates/macros.jinja2:272
-#: ../templates/maintenance/maintenanceForm.jinja2:126
+#: ../templates/maintenance/maintenanceForm.jinja2:153
 #: ../templates/settings/settings.jinja2:390
 #: ../templates/settings/settings.jinja2:425
 #: ../templates/settings/settings.jinja2:437
@@ -985,10 +987,10 @@ msgstr ""
 msgid "Number of tiles"
 msgstr "Anzahl Kacheln"
 
-#: ../templates/equipment/equipment.jinja2:26
-#: ../templates/equipment/equipment.jinja2:134
+#: ../templates/equipment/equipment.jinja2:30
+#: ../templates/equipment/equipment.jinja2:138
 #: ../templates/maintenance/maintenances.jinja2:32
-#: ../templates/maintenance/maintenances.jinja2:112
+#: ../templates/maintenance/maintenances.jinja2:117
 #: ../templates/map/mapMultipleWorkouts.jinja2:41
 #: ../templates/map/mapMultipleWorkouts.jinja2:63
 #: ../templates/map/mapMultipleWorkouts.jinja2:80
@@ -1001,29 +1003,29 @@ msgstr "Anzahl Kacheln"
 msgid "Filter"
 msgstr "Filter"
 
-#: ../templates/equipment/equipment.jinja2:85
+#: ../templates/equipment/equipment.jinja2:89
 msgid "Date of purchase:"
 msgstr "Kaufdatum:"
 
-#: ../templates/equipment/equipment.jinja2:89
+#: ../templates/equipment/equipment.jinja2:93
 msgid "Number of workouts:"
 msgstr "Anzahl Workouts:"
 
-#: ../templates/equipment/equipment.jinja2:93
+#: ../templates/equipment/equipment.jinja2:97
 msgid "Total duration:"
 msgstr "Gesamtdauer:"
 
-#: ../templates/equipment/equipment.jinja2:98
+#: ../templates/equipment/equipment.jinja2:102
 msgid "Total distance:"
 msgstr "Gesamtstrecke:"
 
-#: ../templates/equipment/equipment.jinja2:109
+#: ../templates/equipment/equipment.jinja2:113
 #: ../templates/equipment/equipmentMacros.jinja2:88
 #: ../templates/equipment/equipmentMacros.jinja2:151
 msgid "Active"
 msgstr "Aktiv"
 
-#: ../templates/equipment/equipment.jinja2:114
+#: ../templates/equipment/equipment.jinja2:118
 #: ../templates/equipment/equipmentMacros.jinja2:161
 #: ../templates/workout/workoutMacros.jinja2:675
 msgid "Disabled"
@@ -1067,14 +1069,14 @@ msgid "Status"
 msgstr "Status"
 
 #: ../templates/equipment/equipmentMacros.jinja2:173
-#: ../templates/maintenance/maintenances.jinja2:120
+#: ../templates/maintenance/maintenances.jinja2:125
 #: ../templates/map/mapMacros.jinja2:262
 #: ../templates/plannedTour/plannedToursMacros.jinja2:260
 msgid "Reset"
 msgstr "Zurücksetzen"
 
 #: ../templates/equipment/equipmentMacros.jinja2:175
-#: ../templates/maintenance/maintenances.jinja2:122
+#: ../templates/maintenance/maintenances.jinja2:127
 #: ../templates/map/mapMacros.jinja2:264
 #: ../templates/plannedTour/plannedToursMacros.jinja2:262
 #: ../templates/workout/workoutMacros.jinja2:642
@@ -1082,7 +1084,7 @@ msgid "Apply"
 msgstr "Übernehmen"
 
 #: ../templates/equipment/equipmentMacros.jinja2:175
-#: ../templates/maintenance/maintenances.jinja2:122
+#: ../templates/maintenance/maintenances.jinja2:127
 #: ../templates/map/mapMacros.jinja2:264
 #: ../templates/plannedTour/plannedToursMacros.jinja2:262
 msgid "Applying..."
@@ -1247,15 +1249,19 @@ msgstr "Beschreibung"
 msgid "Filter by custom workout field"
 msgstr "Filtern nach benutzerdefiniertem Feld"
 
-#: ../templates/maintenance/maintenanceForm.jinja2:109
+#: ../templates/maintenance/maintenanceForm.jinja2:100
+msgid "Filter by equipment"
+msgstr "Filtern nach Ausrüstung"
+
+#: ../templates/maintenance/maintenanceForm.jinja2:136
 msgid "Activate Reminder"
 msgstr "Erinnerung aktivieren"
 
-#: ../templates/maintenance/maintenanceForm.jinja2:116
+#: ../templates/maintenance/maintenanceForm.jinja2:143
 msgid "Limit (in km)"
 msgstr "Limit (in km)"
 
-#: ../templates/maintenance/maintenanceForm.jinja2:125
+#: ../templates/maintenance/maintenanceForm.jinja2:152
 msgid "Notifications can be configured in the "
 msgstr "Konfigurieren von Benachrichtigungen in den "
 
@@ -1271,7 +1277,7 @@ msgstr "über Limit"
 msgid "Value:"
 msgstr "Wert:"
 
-#: ../templates/maintenance/maintenances.jinja2:130
+#: ../templates/maintenance/maintenances.jinja2:135
 msgid "Custom Workout Field"
 msgstr "Benutzerdefiniertes Feld"
 
