@@ -11,6 +11,11 @@ from faker import Faker
 from sporttracker import Constants
 from sporttracker.bodyWeight.BodyWeightEntity import BodyWeight
 from sporttracker.db import db
+from sporttracker.equipment.bike.BikeEntity import Bike
+from sporttracker.equipment.clothes.ClothesEntity import Clothes
+from sporttracker.equipment.clothes.ClothesType import ClothesType
+from sporttracker.equipment.custom.CustomEquipmentEntity import CustomEquipment
+from sporttracker.equipment.EquipmentEntity import Equipment
 from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.longDistanceTour.LongDistanceTourEntity import (
@@ -71,6 +76,8 @@ class DummyDataGenerator:
 
             self.__generate_demo_custom_field(user)
 
+            equipment = self.__generate_demo_equipment(user)
+
             plannedTour = self.__generate_demo_planned_tours(user, user2, [1])
             self.__generate_demo_planned_tours(user2, user, [0, 1])
 
@@ -84,6 +91,7 @@ class DummyDataGenerator:
                 numberOfWorkoutsWithLinkedPlannedTour=1,
                 numberOfWorkoutsWithHeartRateData=1,
                 plannedTour=plannedTour,
+                equipment=equipment[WorkoutType.BIKING],
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_BIKING,
                 distanceMin=15.0,
                 distanceMax=50.0,
@@ -99,6 +107,7 @@ class DummyDataGenerator:
                 numberOfWorkoutsWithLinkedPlannedTour=0,
                 numberOfWorkoutsWithHeartRateData=1,
                 plannedTour=plannedTour,
+                equipment=equipment[WorkoutType.RUNNING],
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_RUNNING,
                 distanceMin=2.0,
                 distanceMax=6.0,
@@ -114,6 +123,7 @@ class DummyDataGenerator:
                 numberOfWorkoutsWithLinkedPlannedTour=0,
                 numberOfWorkoutsWithHeartRateData=1,
                 plannedTour=plannedTour,
+                equipment=equipment[WorkoutType.HIKING],
                 averageSpeed=self.AVERAGE_SPEED_IN_KMH_HIKING,
                 distanceMin=6.0,
                 distanceMax=18.0,
@@ -125,6 +135,7 @@ class DummyDataGenerator:
                 numberOfWorkoutsWithParticipants=1,
                 durationMin=20 * 60,
                 durationMax=90 * 60,
+                equipment=equipment[WorkoutType.FITNESS],
             )
 
             self.__generate_demo_month_goals(user)
@@ -147,6 +158,133 @@ class DummyDataGenerator:
             db.session.commit()
 
         return user
+
+    def __generate_demo_equipment(self, user: User) -> dict[WorkoutType, list[Equipment]]:
+        LOGGER.debug('Generate dummy equipment...')
+
+        equipmentByWorkoutType = {
+            WorkoutType.BIKING: [
+                Bike(
+                    name='Gravel Bike',
+                    workout_type=WorkoutType.BIKING,
+                    purchase_date=date(2021, 3, 1),
+                    is_active=True,
+                    user_id=user.id,
+                ),
+                Bike(
+                    name='Old Road Bike',
+                    workout_type=WorkoutType.BIKING,
+                    purchase_date=date(2015, 5, 1),
+                    is_active=False,
+                    inactive_date=date(2023, 9, 1),
+                    user_id=user.id,
+                ),
+                Clothes(
+                    name='Biking Jersey',
+                    workout_type=WorkoutType.BIKING,
+                    purchase_date=date(2022, 4, 1),
+                    clothes_type=ClothesType.TOPS,
+                    is_active=True,
+                    user_id=user.id,
+                ),
+                Clothes(
+                    name='Biking Shoes',
+                    workout_type=WorkoutType.BIKING,
+                    purchase_date=date(2022, 4, 1),
+                    clothes_type=ClothesType.SHOES,
+                    is_active=True,
+                    user_id=user.id,
+                ),
+                CustomEquipment(
+                    name='Bike Trailer',
+                    workout_type=WorkoutType.BIKING,
+                    purchase_date=date(2023, 6, 1),
+                    is_active=True,
+                    user_id=user.id,
+                ),
+            ],
+            WorkoutType.RUNNING: [
+                Clothes(
+                    name='Running Shirt',
+                    workout_type=WorkoutType.RUNNING,
+                    purchase_date=date(2022, 2, 1),
+                    clothes_type=ClothesType.TOPS,
+                    is_active=True,
+                    user_id=user.id,
+                ),
+                Clothes(
+                    name='Running Shoes',
+                    workout_type=WorkoutType.RUNNING,
+                    purchase_date=date(2023, 1, 1),
+                    clothes_type=ClothesType.SHOES,
+                    is_active=True,
+                    user_id=user.id,
+                ),
+                CustomEquipment(
+                    name='Hydration Vest',
+                    workout_type=WorkoutType.RUNNING,
+                    purchase_date=date(2023, 3, 1),
+                    is_active=True,
+                    user_id=user.id,
+                ),
+            ],
+            WorkoutType.HIKING: [
+                Clothes(
+                    name='Hiking Jacket',
+                    workout_type=WorkoutType.HIKING,
+                    purchase_date=date(2021, 10, 1),
+                    clothes_type=ClothesType.TOPS,
+                    is_active=True,
+                    user_id=user.id,
+                ),
+                Clothes(
+                    name='Hiking Boots',
+                    workout_type=WorkoutType.HIKING,
+                    purchase_date=date(2021, 10, 1),
+                    clothes_type=ClothesType.SHOES,
+                    is_active=True,
+                    user_id=user.id,
+                ),
+                CustomEquipment(
+                    name='Trekking Poles',
+                    workout_type=WorkoutType.HIKING,
+                    purchase_date=date(2022, 5, 1),
+                    is_active=True,
+                    user_id=user.id,
+                ),
+            ],
+            WorkoutType.FITNESS: [
+                Clothes(
+                    name='Training Shirt',
+                    workout_type=WorkoutType.FITNESS,
+                    purchase_date=date(2022, 8, 1),
+                    clothes_type=ClothesType.TOPS,
+                    is_active=True,
+                    user_id=user.id,
+                ),
+                CustomEquipment(
+                    name='Yoga Mat',
+                    workout_type=WorkoutType.FITNESS,
+                    purchase_date=date(2022, 8, 1),
+                    is_active=True,
+                    user_id=user.id,
+                ),
+                CustomEquipment(
+                    name='Dumbbells',
+                    workout_type=WorkoutType.FITNESS,
+                    purchase_date=date(2023, 1, 1),
+                    is_active=True,
+                    user_id=user.id,
+                ),
+            ],
+        }
+
+        for equipmentItems in equipmentByWorkoutType.values():
+            db.session.add_all(equipmentItems)
+
+        db.session.commit()
+
+        return equipmentByWorkoutType
 
     def __generate_demo_month_goals(self, user) -> None:
         db.session.add(
@@ -217,6 +355,7 @@ class DummyDataGenerator:
         numberOfWorkoutsWithLinkedPlannedTour: int,
         numberOfWorkoutsWithHeartRateData: int,
         plannedTour: PlannedTour,
+        equipment: list[Equipment],
         averageSpeed: int,
         distanceMin: float,
         distanceMax: float,
@@ -274,6 +413,8 @@ class DummyDataGenerator:
                 if index in indexesWithLinkedPlannedTour:
                     workout.planned_tour = plannedTour
 
+                self.__assign_demo_equipment(workout, equipment)
+
                 db.session.add(workout)
                 db.session.commit()
 
@@ -316,6 +457,7 @@ class DummyDataGenerator:
         numberOfWorkoutsWithParticipants: int,
         durationMin: int,
         durationMax: int,
+        equipment: list[Equipment],
     ) -> None:
         LOGGER.debug('Generate dummy fitness workouts...')
 
@@ -348,6 +490,8 @@ class DummyDataGenerator:
 
                 if index in indexesWithParticipants:
                     workout.participants = [self.__get_participant()]
+
+                self.__assign_demo_equipment(workout, equipment)
 
                 db.session.add(workout)
                 db.session.commit()
@@ -400,6 +544,14 @@ class DummyDataGenerator:
 
     def __get_participant(self) -> Participant:
         return Participant.query.first()
+
+    @staticmethod
+    def __assign_demo_equipment(workout: Workout, equipment: list[Equipment]) -> None:
+        activeEquipment = [item for item in equipment if item.is_active]
+        if not activeEquipment:
+            return
+
+        workout.equipment = random.sample(activeEquipment, k=random.randint(1, min(2, len(activeEquipment))))
 
     def __generate_demo_custom_field(self, user) -> None:
         db.session.add(
