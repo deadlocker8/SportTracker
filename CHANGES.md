@@ -1,4 +1,5 @@
 # 2.3.0 - (XX.XX.XX)
+- add: it is now possible to manage equipment such as bikes, clothes and custom equipment. Multiple equipment items can be connected to each workout and the equipment page offers per-item statistics (#275)
 - fix: show autocomplete suggestions below text fields (#316)
 
 # 2.2.2 (24.10.26)

@@ -108,6 +108,13 @@ SportTracker can be configured to send notifications via a ntfy server once a ma
 
 ![](docs/screenshots/maintenance.png)
 
+### Equipment
+Manage the equipment you use for each workout type, such as bikes, clothes or custom equipment.  
+Each item tracks its purchase date and whether it is still active. You can select one or more equipment items when adding a workout.  
+The equipment overview shows statistics per item (number of workouts, total duration and total distance) and can be filtered.
+
+![](docs/screenshots/equipment.jpg)
+
 ### Planned Tours
 Plan and save routes for distance-based workout types and view them on a map. Once you have actually completed a planned tour, you can link the corresponding workout to it.
 
