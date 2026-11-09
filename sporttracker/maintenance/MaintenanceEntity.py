@@ -18,6 +18,7 @@ class Maintenance(db.Model, DateTimeAccess):  # type: ignore[name-defined]
         db.Integer, db.ForeignKey('custom_workout_field.id', ondelete='SET NULL'), nullable=True
     )
     custom_workout_field_value: Mapped[str | None] = mapped_column(String, nullable=True)
+    equipment_id = db.Column(db.Integer, db.ForeignKey('equipment.id', ondelete='SET NULL'), nullable=True)
 
     def __repr__(self):
         return (
@@ -29,7 +30,8 @@ class Maintenance(db.Model, DateTimeAccess):  # type: ignore[name-defined]
             f'is_reminder_active: {self.is_reminder_active}, '
             f'reminder_limit: {self.reminder_limit}, '
             f'custom_workout_field_id: {self.custom_workout_field_id}, '
-            f'custom_workout_field_value: {self.custom_workout_field_value})'
+            f'custom_workout_field_value: {self.custom_workout_field_value}, '
+            f'equipment_id: {self.equipment_id})'
         )
 
 
