@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SportTracker - {{ gettext('Manage Equipment Presets') }} - {{ workout_type.get_localized_name() }}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('equipment') }}
+        {% import 'workout/workoutMacros.jinja2' as workoutMacros with context %}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row mb-3">
+                    <div class="col col-12 mx-auto">
+                        {% call macros.headline(gettext('Manage Equipment Presets'), url_for('equipment_presets.add', workout_type=workout_type.name)) %}
+                            <span class="material-symbols-outlined filled fs-1">bookmarks</span>
+                        {% endcall %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        <div class="d-flex align-items-center justify-content-center mb-4">
+                            {{ workoutMacros.workout_type_icon_small(workout_type, classes='me-2') }}
+                            <span class="fs-4">{{ workout_type.get_localized_name() }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-5">
+                    <div class="col col-12 mx-auto">
+                        <a href="{{ url_for('equipment.listEquipment') }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">
+                            <span class="material-symbols-outlined fs-5 me-2">arrow_back</span>
+                            <span>{{ gettext('Back to equipment') }}</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-xxl-8 col-lg-10 col-sm-12 mx-auto px-xxl-5 px-xl-4 px-lg-3">
+                        {% for preset in presets %}
+                            <div class="card mb-4">
+                                <div class="d-flex align-items-center justify-content-between p-3">
+                                    <div class="fs-5 text-truncate">{{ preset.name | e }}</div>
+                                    <div class="d-flex flex-row align-items-center gap-3 ms-3">
+                                        <div class="text-body-secondary text-nowrap">
+                                            {{ preset.equipment | length }} {{ gettext('selected') }}
+                                        </div>
+                                        <a href="{{ url_for('equipment_presets.edit', preset_id=preset.id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">
+                                            <span class="material-symbols-outlined filled fs-5">edit</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="col col-12">
+                                <div class="text-body-secondary text-center py-5">{{ gettext('No equipment presets yet') }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% for preset in presets %}
+                    {% call macros.deleteModal(
+                        gettext('Delete Preset?'),
+                        gettext('Do you really want to delete the equipment preset "%(name)s"?', name=preset.name | e),
+                        idSuffix='equipment-preset-' ~ preset.id
+                    ) %}
+                        {{ macros.buttonSubmitAutomaticallyDisabled(classes='btn btn-danger button-delete-modal-action', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl=url_for('equipment_presets.delete', preset_id=preset.id)) }}
+                    {% endcall %}
+                {% endfor %}
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+    </body>
+</html>

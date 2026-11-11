@@ -33,10 +33,16 @@
                 {% for workoutType, groups in equipmentGroupsByWorkoutType.items() %}
                     <div class="row mt-5 mb-3">
                         <div class="col col-12 mx-auto">
-                            <h3 class="d-flex align-items-center justify-content-start">
-                                {{ workoutMacros.workout_type_icon_small(workoutType, classes='me-3') }}
-                                <span class="me-3">{{ workoutType.get_localized_name() }}</span>
-                            </h3>
+                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                                <h3 class="d-flex align-items-center justify-content-start mb-0">
+                                    {{ workoutMacros.workout_type_icon_small(workoutType, classes='me-3') }}
+                                    <span class="me-3">{{ workoutType.get_localized_name() }}</span>
+                                </h3>
+                                <a href="{{ url_for('equipment_presets.listPresets', workout_type=workoutType.name) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">
+                                    <span class="material-symbols-outlined filled fs-5 me-2">bookmarks</span>
+                                    <span>{{ gettext('Manage Presets') }}</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
 
