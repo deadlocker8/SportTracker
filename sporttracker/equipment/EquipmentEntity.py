@@ -55,3 +55,10 @@ workout_equipment_association = Table(
     Column('workout_id', ForeignKey('workout.id', ondelete='CASCADE')),
     Column('equipment_id', ForeignKey('equipment.id', ondelete='CASCADE')),
 )
+
+equipment_preset_equipment_association = Table(
+    'equipment_preset_equipment_association',
+    db.Model.metadata,
+    Column('equipment_preset_id', ForeignKey('equipment_preset.id', ondelete='CASCADE')),
+    Column('equipment_id', ForeignKey('equipment.id', ondelete='CASCADE')),
+)
