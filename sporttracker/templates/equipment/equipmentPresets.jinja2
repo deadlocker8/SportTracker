@@ -61,16 +61,6 @@
                         {% endfor %}
                     </div>
                 </div>
-
-                {% for preset in presets %}
-                    {% call macros.deleteModal(
-                        gettext('Delete Preset?'),
-                        gettext('Do you really want to delete the equipment preset "%(name)s"?', name=preset.name | e),
-                        idSuffix='equipment-preset-' ~ preset.id
-                    ) %}
-                        {{ macros.buttonSubmitAutomaticallyDisabled(classes='btn btn-danger button-delete-modal-action', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl=url_for('equipment_presets.delete', preset_id=preset.id)) }}
-                    {% endcall %}
-                {% endfor %}
             </section>
         </div>
 
