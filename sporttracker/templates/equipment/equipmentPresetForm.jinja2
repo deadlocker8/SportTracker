@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        {% set isEdit = preset is defined and preset is not none and preset.id is not none %}
+        <title>SportTracker - {% if isEdit %}{{ gettext('Edit Equipment Preset') }}{% else %}{{ gettext('New Equipment Preset') }}{% endif %}</title>
+        {% import 'macros.jinja2' as macros with context %}
+        {{ macros.header() }}
+    </head>
+    <body class="bg-dark text-light">
+        {{ macros.navbar('equipment') }}
+        {% import 'workout/workoutMacros.jinja2' as workoutMacros with context %}
+        {% set selectedEquipment = preset.equipment if isEdit else [] %}
+
+        <div id="main" class="center-align">
+            <section class="py-5 text-center container">
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        <h3 class="d-flex align-items-center justify-content-center">
+                            {{ workoutMacros.workout_type_icon_small(workout_type, classes='me-3') }}
+                            <span class="me-3">{{ workout_type.get_localized_name() }}</span>
+                        </h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-12 mx-auto">
+                        {% if isEdit %}
+                            {% call macros.headline(gettext('Edit Equipment Preset'), size='fs-3') %}
+                                <span class="material-symbols-outlined filled fs-3">bookmarks</span>
+                            {% endcall %}
+                            <button type="button" class="btn btn-danger mt-3 d-flex align-items-center mx-auto button-automatically-disabled" data-bs-toggle="modal" data-bs-target="#delete-modal-0">
+                                <span class="material-symbols-outlined filled text-light">delete</span>&nbsp;{{ gettext('Delete') }}
+                            </button>
+                            {% call macros.deleteModal(
+                                gettext('Delete Preset?'),
+                                gettext('Do you really want to delete the equipment preset "%(name)s"?', name=preset.name | e)
+                            ) %}
+                                {{ macros.buttonSubmitAutomaticallyDisabled(classes='btn btn-danger button-delete-modal-action', icon='delete', text=gettext('Delete'), disabledText=gettext('Deleting...'), dataUrl=url_for('equipment_presets.delete', preset_id=preset.id)) }}
+                            {% endcall %}
+                        {% else %}
+                            {% call macros.headline(gettext('New Preset'), size='fs-3') %}
+                                <span class="material-symbols-outlined filled fs-3">bookmarks</span>
+                            {% endcall %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row mt-5 text-start">
+                    <div class="col col-11 col-md-9 mx-auto">
+                        <form role="form"
+                              action="{% if isEdit %}{{ url_for('equipment_presets.editPost', preset_id=preset.id) }}{% else %}{{ url_for('equipment_presets.addPost') }}{% endif %}"
+                              method="post">
+                            <input type="hidden" name="workout_type" value="{{ workout_type.name }}">
+
+                            <div class="mb-3">
+                                <div class="form-group">
+                                    <label for="equipment-preset-name" class="form-label input-field-margin">{{ gettext('Name') }}</label>
+                                    <div class="d-flex align-items-center">
+                                        <span class="material-symbols-outlined filled me-3">article</span>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="equipment-preset-name"
+                                               name="name"
+                                               required="required"
+                                               {% if isEdit %}value="{{ preset.name | e }}"{% endif %}>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="equipment-preset-hidden-inputs">
+                                {% for equipment in selectedEquipment %}
+                                    <input type="hidden" name="equipment_ids" value="{{ equipment.id }}">
+                                {% endfor %}
+                            </div>
+
+                            <div class="mb-3 mt-5">
+                                <label class="form-label">
+                                    <span class="d-flex align-items-center">
+                                        <span class="material-symbols-outlined filled me-3">apparel</span>
+                                        <span>{{ gettext('Equipment') }}</span>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div id="equipment-preset-equipment" class="input-field-margin">
+                                {{ workoutMacros.workout_equipment_selection(equipment_groups, selectedEquipment) }}
+                            </div>
+
+                            {{ macros.buttonSubmitAutomaticallyDisabled(classes='mt-5 input-field-margin', id='buttonSaveEquipmentPreset') }}
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{ macros.scripts() }}
+        <script defer src="{{ url_for('static', filename='js/equipmentPresetForm.js', v=versionName) }}" type="text/javascript"></script>
+    </body>
+</html>
