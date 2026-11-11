@@ -35,6 +35,7 @@ from sporttracker.equipment.clothes.ClothesType import ClothesType
 from sporttracker.equipment.custom import CustomEquipmentBlueprint
 from sporttracker.equipment.custom.CustomEquipmentService import CustomEquipmentService
 from sporttracker.equipment.EquipmentType import EquipmentType
+from sporttracker.equipment.presets import EquipmentPresetBlueprint
 from sporttracker.general import GeneralBlueprint
 from sporttracker.gpx import GpxBlueprint
 from sporttracker.gpx.GpxService import GpxService
@@ -415,6 +416,7 @@ class SportTracker(FlaskBaseApp):
         app.register_blueprint(ClothesBlueprint.construct_blueprint(app.config['CLOTHES_SERVICE']))
         app.register_blueprint(BikeBlueprint.construct_blueprint(app.config['BIKE_SERVICE']))
         app.register_blueprint(CustomEquipmentBlueprint.construct_blueprint(app.config['CUSTOM_EQUIPMENT_SERVICE']))
+        app.register_blueprint(EquipmentPresetBlueprint.construct_blueprint())
 
     def __prepare_database(self, app):
         with app.app_context():
