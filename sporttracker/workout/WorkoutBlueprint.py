@@ -11,6 +11,7 @@ from flask_login import current_user, login_required
 
 from sporttracker import Constants
 from sporttracker.equipment.EquipmentService import EquipmentService
+from sporttracker.equipment.presets.EquipmentPresetService import EquipmentPresetService
 from sporttracker.maintenance.MaintenanceEventInstanceEntity import (
     get_maintenance_events_by_year_and_month_by_type,
 )
@@ -93,6 +94,7 @@ def construct_blueprint(notification_service: NotificationService):
             workoutNames=get_workout_names_by_type(workoutType),
             plannedTours=PlannedTourService.get_planned_tours([workoutType]),
             equipmentGroups=EquipmentService.get_selection_groups_by_workout_type(workoutType, current_user.id),
+            equipmentPresets=EquipmentPresetService.get_all_by_workout_type(workoutType, current_user.id),
         )
 
     @workouts.route('/heartRateData/<int:workout_id>', methods=['GET'])

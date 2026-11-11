@@ -50,6 +50,30 @@ document.addEventListener('DOMContentLoaded', function()
         selectedCountContainer.classList.toggle('text-bg-success', numberOfSelectedElements > 0);
     }
 
+    function clearSelection()
+    {
+        hiddenInputsContainer.innerHTML = '';
+    }
+
+    function setSelection(equipmentIds)
+    {
+        clearSelection();
+
+        const uniqueIds = new Set(equipmentIds);
+
+        for(const equipmentId of uniqueIds)
+        {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'equipment_ids';
+            input.value = equipmentId;
+            hiddenInputsContainer.appendChild(input);
+        }
+
+        updateCards();
+        updateSelectedCount();
+    }
+
     function toggleEquipmentFromCard(card)
     {
         const equipmentId = card.dataset.equipmentId;
@@ -85,6 +109,29 @@ document.addEventListener('DOMContentLoaded', function()
             {
                 event.preventDefault();
                 toggleEquipmentFromCard(card);
+            }
+        });
+    }
+
+    const presetButtons = equipmentContainer.querySelectorAll('.workout-equipment-preset');
+    for(const presetButton of presetButtons)
+    {
+        presetButton.addEventListener('click', function()
+        {
+            const equipmentIds = presetButton.dataset.equipmentIds.length > 0
+                ? presetButton.dataset.equipmentIds.split(',')
+                : [];
+
+            setSelection(equipmentIds);
+
+            const dropdown = presetButton.closest('.dropdown');
+            if(dropdown !== null)
+            {
+                const dropdownToggle = dropdown.querySelector('[data-bs-toggle="dropdown"]');
+                if(dropdownToggle !== null && window.bootstrap)
+                {
+                    window.bootstrap.Dropdown.getOrCreateInstance(dropdownToggle).hide();
+                }
             }
         });
     }

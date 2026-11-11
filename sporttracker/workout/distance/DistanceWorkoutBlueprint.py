@@ -9,6 +9,7 @@ from flask_pydantic import validate
 
 from sporttracker import Constants
 from sporttracker.equipment.EquipmentService import EquipmentService
+from sporttracker.equipment.presets.EquipmentPresetService import EquipmentPresetService
 from sporttracker.fit.FitSessionParser import FitSession, FitSessionParser
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.helpers import DateFormats
@@ -101,6 +102,7 @@ def construct_blueprint(
             plannedTours=PlannedTourService.get_planned_tours([workout.type]),
             equipmentGroups=EquipmentService.get_selection_groups_by_workout_type(workout.type, current_user.id),
             selectedEquipment=workout.equipment,
+            equipmentPresets=EquipmentPresetService.get_all_by_workout_type(workout.type, current_user.id),
         )
 
     @distanceWorkouts.route('/edit/<int:workout_id>', methods=['POST'])
@@ -217,6 +219,7 @@ def construct_blueprint(
             equipmentGroups=EquipmentService.get_selection_groups_by_workout_type(
                 fitSession.workout_type, current_user.id
             ),
+            equipmentPresets=EquipmentPresetService.get_all_by_workout_type(fitSession.workout_type, current_user.id),
         )
 
     return distanceWorkouts

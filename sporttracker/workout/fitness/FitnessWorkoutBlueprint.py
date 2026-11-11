@@ -6,6 +6,7 @@ from flask_pydantic import validate
 
 from sporttracker import Constants
 from sporttracker.equipment.EquipmentService import EquipmentService
+from sporttracker.equipment.presets.EquipmentPresetService import EquipmentPresetService
 from sporttracker.helpers import DateFormats
 from sporttracker.plannedTour.PlannedTourService import PlannedTourService
 from sporttracker.user.CustomWorkoutFieldEntity import get_custom_fields_by_workout_type_with_values
@@ -85,6 +86,7 @@ def construct_blueprint(fitnessWorkoutService: FitnessWorkoutService):
             plannedTours=PlannedTourService.get_planned_tours([workout.type]),
             equipmentGroups=EquipmentService.get_selection_groups_by_workout_type(workout.type, current_user.id),
             selectedEquipment=workout.equipment,
+            equipmentPresets=EquipmentPresetService.get_all_by_workout_type(workout.type, current_user.id),
         )
 
     @fitnessWorkouts.route('/edit/<int:workout_id>', methods=['POST'])

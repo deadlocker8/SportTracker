@@ -54,7 +54,7 @@ body {
     padding: 0.2rem;
 }
 
-/* smalled than xxl */
+/* smaller than xxl */
 @media (max-width: 1399.98px) {
     .map-smaller {
         height: 42vh !important;
@@ -360,6 +360,22 @@ select[disabled] {
 .equipment-new-border {
     border-style: dashed !important;
     border-radius: 25px !important;
+}
+
+.workout-equipment-preset {
+    max-width: 80vw;
+}
+
+@media (min-width: 567px) {
+    .workout-equipment-preset {
+        max-width: 70vw;
+    }
+}
+
+@media (min-width: 768px) {
+    .workout-equipment-preset {
+        max-width: 500px;
+    }
 }
 
 .invert {
