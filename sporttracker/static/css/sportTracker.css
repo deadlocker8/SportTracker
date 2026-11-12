@@ -366,6 +366,11 @@ select[disabled] {
     max-width: 80vw;
 }
 
+.workout-equipment-preset:hover {
+    background-color: var(--bs-primary);
+    color: white;
+}
+
 @media (min-width: 567px) {
     .workout-equipment-preset {
         max-width: 70vw;

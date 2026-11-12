@@ -642,7 +642,7 @@
                         <span class="ms-2">{{ gettext('Choose Equipment') }}</span>
                     </div>
 
-                    <div class="dropdown">
+                    <div class="dropdown" data-bs-theme="light">
                         <button type="button"
                                 class="btn btn-sm btn-primary dropdown-toggle d-inline-flex align-items-center"
                                 id="workout-equipment-presets-dropdown"
@@ -666,10 +666,10 @@
                                             data-equipment-ids="{{ preset.equipment | map(attribute='id') | join(',') }}">
                                         {{ preset.name | e }}
                                     </button>
+                                    {% if not loop.last %}
+                                        <hr class="dropdown-divider my-0">
+                                    {% endif %}
                                 </li>
-                                {% if not loop.last %}
-                                    <li><hr class="dropdown-divider"></li>
-                                {% endif %}
                             {% endfor %}
                         </ul>
                     </div>
