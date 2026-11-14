@@ -4,6 +4,7 @@
 - add: it is also possible to manage presets for equipment items. Those presets can then be used when assigning equipment to workouts (#319)
 - add: added advanced search filters (year, month, participants and distance) (#15)
 - fix: show autocomplete suggestions below text fields (#316)
+- chore: update dependencies (#303)
 
 # 2.2.2 (24.10.26)
 - chore: update dependencies (including the certifi vulnerability fix)
