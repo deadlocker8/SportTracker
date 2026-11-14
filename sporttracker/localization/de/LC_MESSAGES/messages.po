@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-12 00:26+0100\n"
-"PO-Revision-Date: 2026-11-12 00:27+0100\n"
+"POT-Creation-Date: 2026-11-14 13:11+0100\n"
+"PO-Revision-Date: 2026-11-14 13:12+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -650,7 +650,8 @@ msgstr "Tile Hunting"
 msgid "Tile Hunting Heatmap"
 msgstr "Tile Hunting Heatmap"
 
-#: ../templates/macros.jinja2:229
+#: ../templates/macros.jinja2:229 ../templates/search/searchMacros.jinja2:11
+#: ../templates/search/searchMacros.jinja2:113
 msgid "Search"
 msgstr "Suche"
 
@@ -690,11 +691,11 @@ msgstr "Speichere..."
 msgid "of"
 msgstr "von"
 
-#: ../templates/search.jinja2:38 ../templates/search.jinja2:51
+#: ../templates/search.jinja2:38 ../templates/search.jinja2:59
 msgid "Search Results"
 msgstr "Suchergebnisse"
 
-#: ../templates/search.jinja2:64
+#: ../templates/search.jinja2:71
 msgid "No search results"
 msgstr "Keine Suchergebnisse"
 
@@ -814,16 +815,16 @@ msgstr "Willst du diesen Gewichtseintrag wirklich löschen?"
 #: ../templates/settings/settings.jinja2:158
 #: ../templates/settings/settings.jinja2:203 ../templates/user/userForm.jinja2:23
 #: ../templates/user/userForm.jinja2:27
-#: ../templates/workout/workoutBikingForm.jinja2:27
-#: ../templates/workout/workoutBikingForm.jinja2:31
-#: ../templates/workout/workoutFitnessForm.jinja2:28
-#: ../templates/workout/workoutFitnessForm.jinja2:32
-#: ../templates/workout/workoutHikingForm.jinja2:27
-#: ../templates/workout/workoutHikingForm.jinja2:31
+#: ../templates/workout/workoutBikingForm.jinja2:28
+#: ../templates/workout/workoutBikingForm.jinja2:32
+#: ../templates/workout/workoutFitnessForm.jinja2:29
+#: ../templates/workout/workoutFitnessForm.jinja2:33
+#: ../templates/workout/workoutHikingForm.jinja2:28
+#: ../templates/workout/workoutHikingForm.jinja2:32
 #: ../templates/workout/workoutMacros.jinja2:506
 #: ../templates/workout/workoutMacros.jinja2:810
-#: ../templates/workout/workoutRunningForm.jinja2:27
-#: ../templates/workout/workoutRunningForm.jinja2:31
+#: ../templates/workout/workoutRunningForm.jinja2:28
+#: ../templates/workout/workoutRunningForm.jinja2:32
 msgid "Delete"
 msgstr "Löschen"
 
@@ -841,11 +842,11 @@ msgstr "Löschen"
 #: ../templates/plannedTour/plannedTourForm.jinja2:31
 #: ../templates/settings/settings.jinja2:158
 #: ../templates/settings/settings.jinja2:203 ../templates/user/userForm.jinja2:27
-#: ../templates/workout/workoutBikingForm.jinja2:31
-#: ../templates/workout/workoutFitnessForm.jinja2:32
-#: ../templates/workout/workoutHikingForm.jinja2:31
+#: ../templates/workout/workoutBikingForm.jinja2:32
+#: ../templates/workout/workoutFitnessForm.jinja2:33
+#: ../templates/workout/workoutHikingForm.jinja2:32
 #: ../templates/workout/workoutMacros.jinja2:506
-#: ../templates/workout/workoutRunningForm.jinja2:31
+#: ../templates/workout/workoutRunningForm.jinja2:32
 msgid "Deleting..."
 msgstr "Lösche..."
 
@@ -1081,6 +1082,7 @@ msgstr "Status"
 #: ../templates/maintenance/maintenances.jinja2:125
 #: ../templates/map/mapMacros.jinja2:262
 #: ../templates/plannedTour/plannedToursMacros.jinja2:260
+#: ../templates/search/searchMacros.jinja2:111
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -1140,7 +1142,7 @@ msgstr "Zurück zur Ausrüstung"
 msgid "selected"
 msgstr "ausgewählt"
 
-#: ../templates/equipment/equipmentPresets.jinja2:59
+#: ../templates/equipment/equipmentPresets.jinja2:60
 msgid "No equipment presets yet"
 msgstr "Es wurden noch keine Ausrüstungsvorlagen angelegt"
 
@@ -1985,11 +1987,13 @@ msgid "not completed"
 msgstr "nicht abgeschlossen"
 
 #: ../templates/plannedTour/plannedToursMacros.jinja2:166
+#: ../templates/search/searchMacros.jinja2:84
 #: ../templates/workout/workoutMacros.jinja2:390
 msgid "Distance (in km)"
 msgstr "Strecke (in km)"
 
 #: ../templates/plannedTour/plannedToursMacros.jinja2:178
+#: ../templates/search/searchMacros.jinja2:95
 msgid "to"
 msgstr "bis"
 
@@ -2024,6 +2028,36 @@ msgstr "Anreiseart"
 #: ../templates/plannedTour/plannedToursMacros.jinja2:280
 msgid "Departure Method"
 msgstr "Abreiseart"
+
+#: ../templates/search/searchMacros.jinja2:24
+msgid "Year & Month"
+msgstr "Jahr & Monat"
+
+#: ../templates/search/searchMacros.jinja2:28
+msgid "All years"
+msgstr "Alle Jahre"
+
+#: ../templates/search/searchMacros.jinja2:35
+msgid "All months"
+msgstr "Alle Monate"
+
+#: ../templates/search/searchMacros.jinja2:44
+#: ../templates/settings/settings.jinja2:175
+#: ../templates/workout/workoutMacros.jinja2:525
+msgid "Participants"
+msgstr "Teilnehmer"
+
+#: ../templates/search/searchMacros.jinja2:56
+msgid "Any participant"
+msgstr "Beliebiger Teilnehmer"
+
+#: ../templates/search/searchMacros.jinja2:77
+msgid "No participants available"
+msgstr "keine Teilnehmer verfügbar"
+
+#: ../templates/search/searchMacros.jinja2:113
+msgid "Searching..."
+msgstr "Suche..."
 
 #: ../templates/serverStatistics/serverStatistics.jinja2:63
 #: ../templates/serverStatistics/serverStatistics.jinja2:90
@@ -2170,11 +2204,6 @@ msgstr ""
 "benutzerdefinierte Feld wird auch aus allen Wartungen, die dieses Feld als "
 "Filter verwenden, entfernt."
 
-#: ../templates/settings/settings.jinja2:175
-#: ../templates/workout/workoutMacros.jinja2:525
-msgid "Participants"
-msgstr "Teilnehmer"
-
 #: ../templates/settings/settings.jinja2:202
 msgid "Delete Participant?"
 msgstr "Teilnehmer löschen?"
@@ -2259,27 +2288,27 @@ msgid "Administrator"
 msgstr "Administrator"
 
 #: ../templates/workout/workoutBikingForm.jinja2:6
-#: ../templates/workout/workoutBikingForm.jinja2:23
+#: ../templates/workout/workoutBikingForm.jinja2:24
 msgid "Edit Biking Workout"
 msgstr "Fahrrad Workout bearbeiten"
 
 #: ../templates/workout/workoutBikingForm.jinja2:6
-#: ../templates/workout/workoutBikingForm.jinja2:34
+#: ../templates/workout/workoutBikingForm.jinja2:35
 #: ../templates/workout/workoutChooser.jinja2:29
 msgid "New Biking Workout"
 msgstr "Neues Fahrrad Workout"
 
-#: ../templates/workout/workoutBikingForm.jinja2:30
-#: ../templates/workout/workoutFitnessForm.jinja2:31
-#: ../templates/workout/workoutHikingForm.jinja2:30
-#: ../templates/workout/workoutRunningForm.jinja2:30
+#: ../templates/workout/workoutBikingForm.jinja2:31
+#: ../templates/workout/workoutFitnessForm.jinja2:32
+#: ../templates/workout/workoutHikingForm.jinja2:31
+#: ../templates/workout/workoutRunningForm.jinja2:31
 msgid "Delete Workout?"
 msgstr "Workout löschen?"
 
-#: ../templates/workout/workoutBikingForm.jinja2:30
-#: ../templates/workout/workoutFitnessForm.jinja2:31
-#: ../templates/workout/workoutHikingForm.jinja2:30
-#: ../templates/workout/workoutRunningForm.jinja2:30
+#: ../templates/workout/workoutBikingForm.jinja2:31
+#: ../templates/workout/workoutFitnessForm.jinja2:32
+#: ../templates/workout/workoutHikingForm.jinja2:31
+#: ../templates/workout/workoutRunningForm.jinja2:31
 #, python-format
 msgid "Do you really want to delete the workout \"%(name)s\" (ID: %(id)d)?"
 msgstr "Willst du das Workout \"%(name)s\" (ID: %(id)d) wirklich löschen?"
@@ -2291,19 +2320,19 @@ msgstr "Neues Workout"
 
 #: ../templates/workout/workoutChooser.jinja2:36
 #: ../templates/workout/workoutRunningForm.jinja2:6
-#: ../templates/workout/workoutRunningForm.jinja2:34
+#: ../templates/workout/workoutRunningForm.jinja2:35
 msgid "New Running Workout"
 msgstr "Neues Lauf Workout"
 
 #: ../templates/workout/workoutChooser.jinja2:43
 #: ../templates/workout/workoutHikingForm.jinja2:6
-#: ../templates/workout/workoutHikingForm.jinja2:34
+#: ../templates/workout/workoutHikingForm.jinja2:35
 msgid "New Hiking Workout"
 msgstr "Neues Wander Workout"
 
 #: ../templates/workout/workoutChooser.jinja2:50
 #: ../templates/workout/workoutFitnessForm.jinja2:6
-#: ../templates/workout/workoutFitnessForm.jinja2:35
+#: ../templates/workout/workoutFitnessForm.jinja2:36
 msgid "New Fitness Workout"
 msgstr "Neues Fitness Workout"
 
@@ -2321,20 +2350,20 @@ msgid "Import"
 msgstr "Importieren"
 
 #: ../templates/workout/workoutFitnessForm.jinja2:6
-#: ../templates/workout/workoutFitnessForm.jinja2:24
+#: ../templates/workout/workoutFitnessForm.jinja2:25
 msgid "Edit Fitness Workout"
 msgstr "Fitness Workout bearbeiten"
 
-#: ../templates/workout/workoutFitnessForm.jinja2:61
+#: ../templates/workout/workoutFitnessForm.jinja2:62
 msgid "Workout Type"
 msgstr "Workouttyp"
 
-#: ../templates/workout/workoutFitnessForm.jinja2:67
+#: ../templates/workout/workoutFitnessForm.jinja2:68
 msgid "Workout Categories"
 msgstr "Workoutkategorien"
 
 #: ../templates/workout/workoutHikingForm.jinja2:6
-#: ../templates/workout/workoutHikingForm.jinja2:23
+#: ../templates/workout/workoutHikingForm.jinja2:24
 msgid "Edit Hiking Workout"
 msgstr "Wander Workout bearbeiten"
 
@@ -2447,7 +2476,7 @@ msgid "Choose month"
 msgstr "Monat wählen"
 
 #: ../templates/workout/workoutRunningForm.jinja2:6
-#: ../templates/workout/workoutRunningForm.jinja2:23
+#: ../templates/workout/workoutRunningForm.jinja2:24
 msgid "Edit Running Workout"
 msgstr "Lauf Workout bearbeiten"
 
