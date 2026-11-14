@@ -1,0 +1,120 @@
+{% import 'macros.jinja2' as macros with context %}
+
+{% macro searchFilterSectionHeader(icon, title) -%}
+    <div class="d-flex align-items-center justify-content-center">
+        <span class="material-symbols-outlined fs-5">{{ icon }}</span>
+        <span class="ms-2">{{ title }}</span>
+    </div>
+{%- endmacro %}
+
+{% macro searchFilterText(searchText) -%}
+    {{ searchFilterSectionHeader('search', gettext('Search')) }}
+
+    <div class="d-flex flex-column align-items-start justify-content-center px-1 w-100">
+        <div class="text-nowrap mb-2 w-100">
+            <input class="form-control" type="search"
+                   id="searchFilterText"
+                   name="searchText"
+                   value="{{ searchText | e }}">
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro searchFilterYearAndMonth(availableYears, monthNames, selectedYear, selectedMonth) -%}
+    {{ searchFilterSectionHeader('filter_alt', gettext('Year & Month')) }}
+
+    <div class="d-flex flex-column align-items-start justify-content-center px-1 w-100">
+        <select class="form-select mb-2" id="searchFilterYear" name="year">
+            <option value="">{{ gettext('All years') }}</option>
+            {% for availableYear in availableYears %}
+                <option value="{{ availableYear }}" {% if selectedYear == availableYear %}selected{% endif %}>{{ availableYear }}</option>
+            {% endfor %}
+        </select>
+
+        <select class="form-select" id="searchFilterMonth" name="month">
+            <option value="">{{ gettext('All months') }}</option>
+            {% for monthName in monthNames %}
+                <option value="{{ loop.index }}" {% if selectedMonth == loop.index %}selected{% endif %}>{{ monthName }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{%- endmacro %}
+
+{% macro searchFilterParticipants(participants, selectedParticipantIds) -%}
+    {{ searchFilterSectionHeader('filter_alt', gettext('Participants')) }}
+
+    <div class="d-flex flex-column align-items-start justify-content-center px-1">
+        <input type="hidden" name="participantsFilterActive" value="1">
+
+        {% for participant in participants %}
+            <div class="form-check text-nowrap {% if not loop.last %}mb-2{% endif %}">
+                <input class="form-check-input" type="checkbox"
+                       id="searchFilterParticipant-{{ participant.id }}"
+                       name="participants"
+                       value="{{ participant.id }}"
+                       {% if participant.id in selectedParticipantIds %}checked{% endif %}>
+                <label class="form-check-label" for="searchFilterParticipant-{{ participant.id }}">
+                    {{ participant.name | e }}
+                </label>
+            </div>
+        {% endfor %}
+
+        {% if not participants %}
+            <div class="d-flex align-items-center input-field-margin">
+                <span class="material-symbols-outlined fs-4 me-2">info</span>
+                <span>{{ gettext('No participants available') }}</span>
+            </div>
+        {% endif %}
+    </div>
+{%- endmacro %}
+
+{% macro searchFilterDistance(distanceMin, distanceMax) -%}
+    {{ searchFilterSectionHeader('filter_alt', gettext('Distance (in km)')) }}
+
+    <div class="d-flex flex-row align-items-center justify-content-center px-1">
+        <div class="text-nowrap w-100">
+            <input class="form-control"
+                   type="number" min="0"
+                   id="searchFilterDistanceMin"
+                   name="distanceMin"
+                   value="{% if distanceMin is not none %}{{ distanceMin }}{% endif %}">
+        </div>
+
+        <span class="my-2 my-md-0 mx-2">{{ gettext('to') }}</span>
+
+        <div class="text-nowrap w-100">
+            <input class="form-control"
+                   type="number" min="0"
+                   id="searchFilterDistanceMax"
+                   name="distanceMax"
+                   value="{% if distanceMax is not none %}{{ distanceMax }}{% endif %}">
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro searchFilter(searchParameters, resetUrl, classes='mt-2') -%}
+    <form class="{{ classes }}" method="GET" action="{{ url_for('search.performSearch') }}"
+          onsubmit="return automaticallyDisableButtonsOnFormSubmit(this);">
+        <div class="d-flex align-items-center justify-content-center gap-2 py-3">
+            <a href="{{ resetUrl }}" id="buttonResetSearchFilter" class="btn btn-sm btn-outline-danger text-nowrap">{{ gettext('Reset') }}</a>
+
+            {{ macros.buttonSubmitAutomaticallyDisabled(text=gettext('Search'), disabledText=gettext('Searching...'), icon=none, classes='btn-sm btn-primary text-nowrap', id='buttonApplySearchFilter') }}
+        </div>
+
+        <div class="my-3 d-flex flex-column align-items-start justify-content-start gap-3 overflow-x-auto">
+            <hr class="w-100 my-0"/>
+
+            {{ searchFilterText(searchParameters.searchText) }}
+            <hr class="w-100 my-0"/>
+
+            {{ searchFilterYearAndMonth(searchParameters.availableYears, searchParameters.get_month_names(), searchParameters.selectedYear, searchParameters.selectedMonth) }}
+            <hr class="w-100 my-0"/>
+
+            {{ searchFilterParticipants(searchParameters.participants, searchParameters.selectedParticipantIds) }}
+            <hr class="w-100 my-0"/>
+
+            {{ searchFilterDistance(searchParameters.distanceMin, searchParameters.distanceMax) }}
+            <hr class="w-100 my-0"/>
+        </div>
+    </form>
+{%- endmacro %}

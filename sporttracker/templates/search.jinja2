@@ -6,7 +6,7 @@
     <nav>
         <ul class="pagination justify-content-center mt-3">
             <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
-                <a class="page-link" href="{{ url_for('search.performSearch', searchText=searchText, pageNumber=pagination.prev_num) }}" aria-label="Previous">
+                <a class="page-link" href="{{ searchParameters.build_url(pagination.prev_num) }}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
@@ -14,9 +14,9 @@
             {% for pageNumber in pagination.iter_pages() %}
                 {% if pageNumber %}
                     {% if pageNumber != pagination.page %}
-                        <li class="page-item"><a class="page-link" href="{{ url_for('search.performSearch', searchText=searchText, pageNumber=pageNumber) }}">{{ pageNumber }}</a></li>
+                        <li class="page-item"><a class="page-link" href="{{ searchParameters.build_url(pageNumber) }}">{{ pageNumber }}</a></li>
                     {% else %}
-                        <li class="page-item active"><a class="page-link" href="{{ url_for('search.performSearch', searchText=searchText, pageNumber=pageNumber) }}">{{ pageNumber }}</a></li>
+                        <li class="page-item active"><a class="page-link" href="{{ searchParameters.build_url(pageNumber) }}">{{ pageNumber }}</a></li>
                     {% endif %}
                 {% else %}
                     <li class="page-item disabled"><a class="page-link">...</a></li>
@@ -24,7 +24,7 @@
             {% endfor %}
 
             <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
-                <a class="page-link" href="{{ url_for('search.performSearch', searchText=searchText, pageNumber=pagination.next_num) }}" aria-label="Next">
+                <a class="page-link" href="{{ searchParameters.build_url(pagination.next_num) }}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
@@ -43,62 +43,71 @@
         {{ macros.navbar('search') }}
 
         {% import 'workout/workoutMacros.jinja2' as workoutMacros with context %}
+        {% import 'search/searchMacros.jinja2' as searchMacros with context %}
 
         <div id="main" class="center-align">
-            <section class="py-5 text-center container">
-                <div class="row mb-3">
-                    <div class="col col-12 mx-auto">
-                        {% call macros.headline(gettext('Search Results')) %}
-                            <i class="fa-solid fa-fw fa-magnifying-glass fs-2"></i>
-                        {% endcall %}
+            <section class="py-5 container">
+                <div class="row">
+                    <aside class="col-12 col-lg-3 mb-4 mb-lg-0">
+                        <div class="bg-dark">
+                            {{ searchMacros.searchFilter(searchParameters, searchParameters.build_url(includeFilters=false)) }}
+                        </div>
+                    </aside>
+
+                    <div class="col-12 col-lg-9 text-center">
+                        <div class="mb-3">
+                            {% call macros.headline(gettext('Search Results')) %}
+                                <i class="fa-solid fa-fw fa-magnifying-glass fs-2"></i>
+                            {% endcall %}
+                        </div>
+
+                        <div class="my-3">
+                            {{ macros.workout_type_quick_filter(searchParameters.build_url(), false) }}
+                        </div>
+
+                        {% if pagination.total == 0 %}
+                            <div class="row my-5">
+                                <div class="col col-12 fst-italic">
+                                    <h4>{{ gettext('No search results') }}</h4>
+                                </div>
+                            </div>
+
+                        {% else %}
+                            <div class="row mb-3">
+                                <div class="col col-12">
+                                    {{ render_pagination(pagination) }}
+                                </div>
+                            </div>
+
+                            {% for monthName, workouts in results.items() %}
+                                <h3 class="mt-4">{{ monthName }}</h3>
+                                {% for workout in workouts %}
+                                    {% if workout.__class__.__name__ == 'DistanceWorkoutModel' %}
+                                        <div class="d-none d-lg-block">
+                                            {{ workoutMacros.render_distance_workout_card(workout, renderAsRow=true, useSmallIcon=true) }}
+                                        </div>
+                                        <div class="d-lg-none">
+                                            {{ workoutMacros.render_distance_workout_card(workout, renderAsRow=false, useSmallIcon=true) }}
+                                        </div>
+                                    {% elif workout.__class__.__name__ == 'FitnessWorkoutModel' %}
+                                        <div class="d-none d-lg-block">
+                                            {{ workoutMacros.render_fitness_workout_card(workout, renderAsRow=true, useSmallIcon=true) }}
+                                        </div>
+                                        <div class="d-lg-none">
+                                            {{ workoutMacros.render_fitness_workout_card(workout, renderAsRow=false, useSmallIcon=true) }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+
+                             <div class="row mb-3">
+                                <div class="col col-12">
+                                    {{ render_pagination(pagination) }}
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
-
-                <div class="my-3">
-                    {{ macros.workout_type_quick_filter(url_for('search.performSearch', searchText=searchText), false) }}
-                </div>
-
-                {% if pagination.total == 0 %}
-                    <div class="row my-5">
-                        <div class="col col-12 fst-italic">
-                            <h4>{{ gettext('No search results') }}</h4>
-                        </div>
-                    </div>
-
-                {% else %}
-                    <div class="row mb-3">
-                        <div class="col col-12">
-                            {{ render_pagination(pagination) }}
-                        </div>
-                    </div>
-
-                    {% for monthName, workouts in results.items() %}
-                        <h3 class="mt-4">{{ monthName }}</h3>
-                        {% for workout in workouts %}
-                            {% if workout.__class__.__name__ == 'DistanceWorkoutModel' %}
-                                <div class="d-none d-lg-block">
-                                    {{ workoutMacros.render_distance_workout_card(workout, renderAsRow=true, useSmallIcon=true) }}
-                                </div>
-                                <div class="d-lg-none">
-                                    {{ workoutMacros.render_distance_workout_card(workout, renderAsRow=false, useSmallIcon=true) }}
-                                </div>
-                            {% elif workout.__class__.__name__ == 'FitnessWorkoutModel' %}
-                                <div class="d-none d-lg-block">
-                                    {{ workoutMacros.render_fitness_workout_card(workout, renderAsRow=true, useSmallIcon=true) }}
-                                </div>
-                                <div class="d-lg-none">
-                                    {{ workoutMacros.render_fitness_workout_card(workout, renderAsRow=false, useSmallIcon=true) }}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    {% endfor %}
-
-                     <div class="row mb-3">
-                        <div class="col col-12">
-                            {{ render_pagination(pagination) }}
-                        </div>
-                    </div>
-                {% endif %}
             </section>
         </div>
 
