@@ -1,116 +1,24 @@
 document.addEventListener('DOMContentLoaded', function()
 {
     const equipmentContainer = document.getElementById('workout-equipment');
-    const hiddenInputsContainer = document.getElementById('workout-equipment-hidden-inputs');
     const selectedCountContainer = document.getElementById('workout-equipment-selected-container');
     const selectedCountElement = document.getElementById('workout-equipment-selected-count');
     const modalElement = document.getElementById('workout-equipment-modal');
-    const cards = equipmentContainer.querySelectorAll('.equipment-modal-card');
 
-    function findHiddenInput(equipmentId)
-    {
-        for(const input of hiddenInputsContainer.querySelectorAll('input[name="equipment_ids"]'))
+    const selection = createEquipmentSelection({
+        equipmentContainerId: 'workout-equipment',
+        hiddenInputsContainerId: 'workout-equipment-hidden-inputs',
+        onSelectionChanged: function(selectedIds)
         {
-            if(input.value === equipmentId)
-            {
-                return input;
-            }
+            selectedCountElement.textContent = selectedIds.length;
+            selectedCountContainer.classList.toggle('text-bg-secondary', selectedIds.length === 0);
+            selectedCountContainer.classList.toggle('text-bg-success', selectedIds.length > 0);
         }
+    });
 
-        return null;
-    }
-
-    function getSelectedIds()
+    if(selection === null)
     {
-        return Array.from(hiddenInputsContainer.querySelectorAll('input[name="equipment_ids"]')).map(function(input)
-        {
-            return input.value;
-        });
-    }
-
-    function updateCards()
-    {
-        const selectedIds = new Set(getSelectedIds());
-
-        for(const card of cards)
-        {
-            const icon = card.querySelector('.equipment-select-icon');
-            icon.dataset.selected = selectedIds.has(card.dataset.equipmentId);
-            icon.classList.toggle('bg-secondary', !selectedIds.has(card.dataset.equipmentId));
-            icon.classList.toggle('bg-success', selectedIds.has(card.dataset.equipmentId));
-        }
-    }
-
-    function updateSelectedCount()
-    {
-        let numberOfSelectedElements = getSelectedIds().length;
-
-        selectedCountElement.textContent = numberOfSelectedElements;
-        selectedCountContainer.classList.toggle('text-bg-secondary', numberOfSelectedElements === 0);
-        selectedCountContainer.classList.toggle('text-bg-success', numberOfSelectedElements > 0);
-    }
-
-    function clearSelection()
-    {
-        hiddenInputsContainer.innerHTML = '';
-    }
-
-    function setSelection(equipmentIds)
-    {
-        clearSelection();
-
-        const uniqueIds = new Set(equipmentIds);
-
-        for(const equipmentId of uniqueIds)
-        {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'equipment_ids';
-            input.value = equipmentId;
-            hiddenInputsContainer.appendChild(input);
-        }
-
-        updateCards();
-        updateSelectedCount();
-    }
-
-    function toggleEquipmentFromCard(card)
-    {
-        const equipmentId = card.dataset.equipmentId;
-
-        let hiddenInput = findHiddenInput(equipmentId);
-        if(hiddenInput === null)
-        {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'equipment_ids';
-            input.value = equipmentId;
-            hiddenInputsContainer.appendChild(input);
-        }
-        else
-        {
-            hiddenInput.remove();
-        }
-
-        updateCards();
-        updateSelectedCount();
-    }
-
-    for(const card of cards)
-    {
-        card.addEventListener('click', function()
-        {
-            toggleEquipmentFromCard(card);
-        });
-
-        card.addEventListener('keydown', function(event)
-        {
-            if(event.key === 'Enter' || event.key === ' ')
-            {
-                event.preventDefault();
-                toggleEquipmentFromCard(card);
-            }
-        });
+        return;
     }
 
     const presetButtons = equipmentContainer.querySelectorAll('.workout-equipment-preset');
@@ -122,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function()
                 ? presetButton.dataset.equipmentIds.split(',')
                 : [];
 
-            setSelection(equipmentIds);
+            selection.setSelection(equipmentIds);
 
             const dropdown = presetButton.closest('.dropdown');
             if(dropdown !== null)
@@ -138,9 +46,6 @@ document.addEventListener('DOMContentLoaded', function()
 
     if(modalElement !== null)
     {
-        modalElement.addEventListener('show.bs.modal', updateCards);
+        modalElement.addEventListener('show.bs.modal', selection.updateCards);
     }
-
-    updateCards();
-    updateSelectedCount();
 });
