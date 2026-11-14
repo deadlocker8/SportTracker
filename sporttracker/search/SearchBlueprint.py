@@ -4,7 +4,7 @@ from itertools import groupby
 from flask import Blueprint, render_template, request
 from flask_babel import format_datetime
 from flask_login import current_user, login_required
-from sqlalchemy import extract, false, or_
+from sqlalchemy import extract, or_
 
 from sporttracker import Constants
 from sporttracker.db import db
@@ -49,19 +49,14 @@ def construct_blueprint():
         participants = get_participants()
         availableParticipantIds = {participant.id for participant in participants}
 
-        isParticipantFilterActive, rawParticipantIds = __get_selected_participant_ids()
+        isParticipantFilterActive, rawParticipantIds = __get_participant_filter_state()
         selectedParticipantIds = [
             int(participantId) for participantId in rawParticipantIds if participantId in availableParticipantIds
         ]
 
         if isParticipantFilterActive:
             checkedParticipantIds = set(selectedParticipantIds)
-
-            if checkedParticipantIds == availableParticipantIds:
-                isParticipantFilterActive = False
-                participantFilter: list[int] | None = None
-            else:
-                participantFilter = selectedParticipantIds
+            participantFilter = checkedParticipantIds
         else:
             checkedParticipantIds = availableParticipantIds
             participantFilter = None
@@ -87,7 +82,7 @@ def construct_blueprint():
 
         if participantFilter is not None:
             if not participantFilter:
-                query = query.filter(false())
+                query = query.filter(~Workout.participants.any())
             else:
                 query = query.filter(Workout.participants.any(Participant.id.in_(participantFilter)))
 
@@ -140,7 +135,7 @@ def construct_blueprint():
             isParticipantFilterActive=isParticipantFilterActive,
             selectedYear=selectedYear,
             selectedMonth=selectedMonth,
-            selectedParticipantIds=checkedParticipantIds,
+            selectedParticipantIds=checkedParticipantIds,  # type: ignore[arg-type]
             distanceMin=distanceMin // 1000 if distanceMin is not None else None,
             distanceMax=distanceMax // 1000 if distanceMax is not None else None,
         )
@@ -176,8 +171,10 @@ def __get_distance_arg(name: str) -> int | None:
     return value * 1000
 
 
-def __get_selected_participant_ids() -> tuple[bool, list[int]]:
-    isParticipantFilterActive = request.args.get('participantsFilterActive') == '1'
+def __get_participant_filter_state() -> tuple[bool, list[int]]:
+    isFormSubmitted = request.args.get('participantsFilterActive') == '1'
+    isAnyParticipantSelected = request.args.get('anyParticipant') == '1'
+    isParticipantFilterActive = isFormSubmitted and not isAnyParticipantSelected
 
     participantIds = []
     for item in request.args.getlist('participants'):

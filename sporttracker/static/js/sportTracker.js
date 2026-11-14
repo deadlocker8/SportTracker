@@ -244,6 +244,23 @@ document.addEventListener('DOMContentLoaded', function()
             document.getElementById('equipment-active').classList.toggle('hidden', checkboxEquipmentActive.checked);
         });
     }
+
+    let checkboxSearchFilterAnyParticipant = document.getElementById('searchFilterAnyParticipant');
+    if(checkboxSearchFilterAnyParticipant !== null)
+    {
+        let participantCheckboxes = document.querySelectorAll('.search-filter-participant-checkbox');
+
+        let toggleParticipantCheckboxes = function()
+        {
+            participantCheckboxes.forEach((participantCheckbox) =>
+            {
+                participantCheckbox.disabled = checkboxSearchFilterAnyParticipant.checked;
+            });
+        };
+
+        checkboxSearchFilterAnyParticipant.addEventListener('click', toggleParticipantCheckboxes);
+        toggleParticipantCheckboxes();
+    }
 });
 
 function toggleFitFileImport(buttonImportFromFitFile, disable)

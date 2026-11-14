@@ -118,6 +118,7 @@ class TestSearch(SeleniumTestBaseClass):
         )
 
         assert selenium.find_element(By.ID, 'searchFilterText').get_attribute('value') == 'Ride'
+        assert selenium.find_element(By.ID, 'searchFilterAnyParticipant').is_selected()
         assert selenium.find_element(By.ID, 'searchFilterYear').is_displayed()
         assert selenium.find_element(By.ID, 'searchFilterMonth').is_displayed()
         assert selenium.find_element(By.ID, 'searchFilterDistanceMin').is_displayed()
@@ -156,6 +157,66 @@ class TestSearch(SeleniumTestBaseClass):
         self.__assert_workout_visible(selenium, 'Trail Run')
         self.__assert_workout_not_visible(selenium, 'Evening Ride')
         self.__assert_workout_not_visible(selenium, 'Workout Session')
+
+    def test_filter_by_no_participants(self, server, selenium: WebDriver):
+        self.login(selenium)
+        selenium.get(self.build_url('/search/search?participantsFilterActive=1'))
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Search Results')
+        )
+
+        self.__assert_workout_visible(selenium, 'Long Ride')
+        self.__assert_workout_visible(selenium, 'Workout Session')
+        self.__assert_workout_not_visible(selenium, 'Morning Ride')
+        self.__assert_workout_not_visible(selenium, 'Evening Ride')
+        self.__assert_workout_not_visible(selenium, 'Trail Run')
+
+    def test_filter_by_any_participant(self, server, selenium: WebDriver):
+        self.login(selenium)
+        selenium.get(self.build_url('/search/search?participantsFilterActive=1&anyParticipant=1'))
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Search Results')
+        )
+
+        checkboxAnyParticipant = selenium.find_element(By.ID, 'searchFilterAnyParticipant')
+        assert checkboxAnyParticipant.is_selected()
+
+        participantCheckboxes = selenium.find_elements(By.CLASS_NAME, 'search-filter-participant-checkbox')
+        assert len(participantCheckboxes) > 0
+        assert all(not participantCheckbox.is_enabled() for participantCheckbox in participantCheckboxes)
+
+        checkboxAnyParticipant.click()
+        assert all(participantCheckbox.is_enabled() for participantCheckbox in participantCheckboxes)
+
+        self.__assert_workout_visible(selenium, 'Morning Ride')
+        self.__assert_workout_visible(selenium, 'Long Ride')
+        self.__assert_workout_visible(selenium, 'Evening Ride')
+        self.__assert_workout_visible(selenium, 'Trail Run')
+        self.__assert_workout_visible(selenium, 'Workout Session')
+
+    def test_filter_by_all_participants(self, server, selenium: WebDriver, app):
+        with app.app_context():
+            alice = Participant.query.filter(Participant.name == 'Alice').first()
+            bob = Participant.query.filter(Participant.name == 'Bob').first()
+            assert alice is not None
+            assert bob is not None
+            aliceId = alice.id
+            bobId = bob.id
+
+        self.login(selenium)
+        selenium.get(
+            self.build_url(f'/search/search?participantsFilterActive=1&participants={aliceId}&participants={bobId}')
+        )
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Search Results')
+        )
+
+        self.__assert_workout_visible(selenium, 'Morning Ride')
+        self.__assert_workout_visible(selenium, 'Evening Ride')
+        self.__assert_workout_visible(selenium, 'Trail Run')
 
     def test_filter_by_distance_keeps_fitness_workouts(self, server, selenium: WebDriver):
         self.login(selenium)
