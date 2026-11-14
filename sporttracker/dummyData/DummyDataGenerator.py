@@ -16,6 +16,7 @@ from sporttracker.equipment.clothes.ClothesEntity import Clothes
 from sporttracker.equipment.clothes.ClothesType import ClothesType
 from sporttracker.equipment.custom.CustomEquipmentEntity import CustomEquipment
 from sporttracker.equipment.EquipmentEntity import Equipment
+from sporttracker.equipment.presets.EquipmentPresetEntity import EquipmentPreset
 from sporttracker.gpx.GpxMetadataEntity import GpxMetadata
 from sporttracker.gpx.GpxService import GpxService
 from sporttracker.longDistanceTour.LongDistanceTourEntity import (
@@ -77,6 +78,7 @@ class DummyDataGenerator:
             self.__generate_demo_custom_field(user)
 
             equipment = self.__generate_demo_equipment(user)
+            self.__generate_demo_equipment_presets(equipment, user)
 
             plannedTour = self.__generate_demo_planned_tours(user, user2, [1])
             self.__generate_demo_planned_tours(user2, user, [0, 1])
@@ -285,6 +287,20 @@ class DummyDataGenerator:
         db.session.commit()
 
         return equipmentByWorkoutType
+
+    @staticmethod
+    def __generate_demo_equipment_presets(equipment: dict[WorkoutType, list[Equipment]], user: User) -> None:
+        LOGGER.debug('Generate dummy equipment presets...')
+
+        db.session.add(
+            EquipmentPreset(
+                user_id=user.id,
+                workout_type=WorkoutType.BIKING,
+                name='Preset 1',
+                equipment=random.sample(equipment[WorkoutType.BIKING], 2),
+            )
+        )
+        db.session.commit()
 
     def __generate_demo_month_goals(self, user) -> None:
         db.session.add(
