@@ -48,11 +48,12 @@
                                         <div class="text-body-secondary text-nowrap">
                                             {{ preset.equipment | length }} {{ gettext('selected') }}
                                         </div>
-                                        <a href="{{ url_for('equipment_presets.edit', preset_id=preset.id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">
+                                        <a class="btn btn-sm btn-primary d-inline-flex align-items-center">
                                             <span class="material-symbols-outlined filled fs-5">edit</span>
                                         </a>
                                     </div>
                                 </div>
+                                <a href="{{ url_for('equipment_presets.edit', preset_id=preset.id) }}" class="text-decoration-none stretched-link"></a>
                             </div>
                         {% else %}
                             <div class="col col-12">
