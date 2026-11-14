@@ -14,6 +14,7 @@ from sporttracker.equipment.bike.BikeEntity import Bike
 from sporttracker.equipment.clothes.ClothesEntity import Clothes
 from sporttracker.equipment.clothes.ClothesType import ClothesType
 from sporttracker.equipment.custom.CustomEquipmentEntity import CustomEquipment
+from sporttracker.equipment.presets.EquipmentPresetService import EquipmentPresetService
 from sporttracker.plannedTour.PlannedTourEntity import PlannedTour
 from sporttracker.plannedTour.TravelDirection import TravelDirection
 from sporttracker.plannedTour.TravelType import TravelType
@@ -344,6 +345,65 @@ class TestDistanceWorkouts(SeleniumTestBaseClass):
         self.__submit_equipment_modal(selenium)
 
         assert selenium.find_element(By.ID, 'workout-equipment-selected-count').text == '2'
+        self.click_button_by_id(selenium, 'buttonSaveWorkout')
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.text_to_be_present_in_element((By.CLASS_NAME, 'headline-text'), 'Workouts')
+        )
+
+    def test_add_workout_with_equipment_preset_deselects_other_equipment(self, server, selenium: WebDriver, app):
+        with app.app_context():
+            user = User.query.filter(User.username == TEST_USERNAME).first()
+            bike_id = Bike.query.filter(Bike.name == 'My Bike').first().id
+            clothes_id = Clothes.query.filter(Clothes.name == 'My Clothes').first().id
+
+            EquipmentPresetService.add('Bike only', WorkoutType.BIKING, [bike_id], user.id)
+
+        self.login(selenium)
+        self.__open_form(selenium)
+        self.__fill_form(selenium, 'My Workout', '2023-02-01', '15:30', 22.5, 1, 13, 46, 123, 650)
+
+        buttonEditEquipment = selenium.find_element(By.ID, 'buttonWorkoutEquipmentEdit')
+        selenium.execute_script('arguments[0].scrollIntoView();', buttonEditEquipment)
+        time.sleep(1)
+        buttonEditEquipment.click()
+
+        bike_card_selector = f'.equipment-modal-card[data-equipment-id="{bike_id}"]'
+        clothes_card_selector = f'.equipment-modal-card[data-equipment-id="{clothes_id}"]'
+
+        WebDriverWait(selenium, 5).until(
+            expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, bike_card_selector))
+        )
+
+        # manually select equipment that is not part of the preset
+        selenium.execute_script(
+            'arguments[0].click();',
+            selenium.find_element(By.CSS_SELECTOR, clothes_card_selector),
+        )
+
+        clothes_select_icon = selenium.find_element(By.CSS_SELECTOR, f'{clothes_card_selector} .equipment-select-icon')
+        assert clothes_select_icon.get_attribute('data-selected') == 'true'
+        assert selenium.find_element(By.ID, 'workout-equipment-selected-count').text == '1'
+
+        # apply the preset
+        selenium.find_element(By.ID, 'workout-equipment-presets-dropdown').click()
+        preset_button = selenium.find_element(By.CSS_SELECTOR, '.workout-equipment-preset')
+        WebDriverWait(selenium, 5).until(expected_conditions.element_to_be_clickable(preset_button))
+        selenium.execute_script('arguments[0].click();', preset_button)
+
+        bike_select_icon = selenium.find_element(By.CSS_SELECTOR, f'{bike_card_selector} .equipment-select-icon')
+        assert bike_select_icon.get_attribute('data-selected') == 'true'
+        assert clothes_select_icon.get_attribute('data-selected') == 'false'
+        assert selenium.find_element(By.ID, 'workout-equipment-selected-count').text == '1'
+
+        hidden_inputs = selenium.find_elements(
+            By.CSS_SELECTOR, '#workout-equipment-hidden-inputs input[name="equipment_ids"]'
+        )
+        assert {hidden_input.get_attribute('value') for hidden_input in hidden_inputs} == {str(bike_id)}
+
+        self.__submit_equipment_modal(selenium)
+
+        assert selenium.find_element(By.ID, 'workout-equipment-selected-count').text == '1'
         self.click_button_by_id(selenium, 'buttonSaveWorkout')
 
         WebDriverWait(selenium, 5).until(
