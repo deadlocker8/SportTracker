@@ -23,7 +23,7 @@ Flask-Login = "0.6.3"
 Flask-Bcrypt = "1.0.1"
 Flask-Migrate = "4.1.0"
 flask-babel = "4.0.0"
-python-dateutil = "2.9.0.post0"
+python-dateutil = "4.0.0"
 psycopg = { version = "3.3.9", extras = ["binary"] }
 gpxpy = "1.6.2"
 faker = "40.44.0"
