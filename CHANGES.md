@@ -1,4 +1,4 @@
-# 2.3.0 - (XX.XX.XX)
+# 2.3.0 - (14.11.26)
 - add: new API version v2.2.0 (#275)
 - add: it is now possible to manage equipment such as bikes, clothes and custom equipment. Multiple equipment items can be connected to each workout and the equipment page offers per-item statistics (#275)
 - add: it is also possible to manage presets for equipment items. Those presets can then be used when assigning equipment to workouts (#319)
@@ -6,7 +6,7 @@
 - fix: show autocomplete suggestions below text fields (#316)
 - chore: update dependencies (#303)
 
-# 2.2.2 (24.10.26)
+# 2.2.2 - (24.10.26)
 - chore: update dependencies (including the certifi vulnerability fix)
 
 # 2.2.1 - (16.10.26)
