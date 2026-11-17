@@ -84,6 +84,8 @@ def construct_blueprint(
             clothesTypes,
             request.form.get('equipmentFilterStatusActive', 'off').strip().lower() == 'on',
             request.form.get('equipmentFilterStatusInactive', 'off').strip().lower() == 'on',
+            request.form.get('equipmentFilterOwnedActive', 'off').strip().lower() == 'on',
+            request.form.get('equipmentFilterNotOwnedInactive', 'off').strip().lower() == 'on',
         )
         db.session.commit()
 
@@ -203,6 +205,12 @@ def __is_equipment_statistic_item_visible(
         return False
 
     if not equipment.is_active and not equipment_filter_state.is_inactive_selected:
+        return False
+
+    if equipment.is_owned and not equipment_filter_state.is_owned_selected:
+        return False
+
+    if not equipment.is_owned and not equipment_filter_state.is_owned_selected:
         return False
 
     if isinstance(equipment, Clothes):

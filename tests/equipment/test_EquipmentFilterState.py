@@ -11,6 +11,8 @@ class TestEquipmentFilterState:
             {t: False for t in ClothesType},
             False,
             False,
+            False,
+            False,
         )
 
         equipmentFilterState.reset()
@@ -19,6 +21,8 @@ class TestEquipmentFilterState:
         assert equipmentFilterState.clothes_types == {t.name: True for t in ClothesType}
         assert equipmentFilterState.is_active_selected is True
         assert equipmentFilterState.is_inactive_selected is True
+        assert equipmentFilterState.is_owned_selected is True
+        assert equipmentFilterState.is_not_owned_selected is True
 
     def test_get_selected_equipment_types(self) -> None:
         equipmentFilterState = EquipmentFilterState()
@@ -52,4 +56,9 @@ class TestEquipmentFilterState:
         assert equipmentFilterState.is_any_filter_active() is False
 
         equipmentFilterState.is_active_selected = False
+        assert equipmentFilterState.is_any_filter_active() is True
+
+        equipmentFilterState.reset()
+
+        equipmentFilterState.is_owned_selected = False
         assert equipmentFilterState.is_any_filter_active() is True

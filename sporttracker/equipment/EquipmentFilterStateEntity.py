@@ -14,6 +14,8 @@ class EquipmentFilterState(db.Model):  # type: ignore[name-defined]
     clothes_types = db.Column(MutableDict.as_mutable(JSON))  # type: ignore[arg-type]
     is_active_selected: Mapped[bool] = mapped_column(Boolean, nullable=False)
     is_inactive_selected: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    is_owned_selected: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    is_not_owned_selected: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
     def __repr__(self):
         return (
@@ -22,7 +24,9 @@ class EquipmentFilterState(db.Model):  # type: ignore[name-defined]
             f'equipment_types: {self.equipment_types}, '
             f'clothes_types: {self.clothes_types}, '
             f'is_active_selected: {self.is_active_selected}, '
-            f'is_inactive_selected: {self.is_inactive_selected})'
+            f'is_inactive_selected: {self.is_inactive_selected}, '
+            f'is_owned_selected: {self.is_inactive_selected}, '
+            f'is_not_owned_selected: {self.is_inactive_selected}, '
         )
 
     def get_equipment_types(self) -> dict[EquipmentType, bool]:
@@ -61,16 +65,22 @@ class EquipmentFilterState(db.Model):  # type: ignore[name-defined]
         clothes_types: dict[ClothesType, bool],
         is_active_selected: bool,
         is_inactive_selected: bool,
+        is_owned_selected: bool,
+        is_not_owned_selected: bool,
     ):
         self.equipment_types = {enumValue.name: isActive for enumValue, isActive in equipment_types.items()}
         self.clothes_types = {enumValue.name: isActive for enumValue, isActive in clothes_types.items()}
         self.is_active_selected = is_active_selected
         self.is_inactive_selected = is_inactive_selected
+        self.is_owned_selected = is_owned_selected
+        self.is_not_owned_selected = is_not_owned_selected
 
     def reset(self) -> None:
         self.update(
             {equipmentType: True for equipmentType in EquipmentType},
             {clothesType: True for clothesType in ClothesType},
+            True,
+            True,
             True,
             True,
         )
@@ -101,6 +111,12 @@ class EquipmentFilterState(db.Model):  # type: ignore[name-defined]
             return True
 
         if not self.is_inactive_selected:
+            return True
+
+        if not self.is_owned_selected:
+            return True
+
+        if not self.is_not_owned_selected:
             return True
 
         if not all((self.equipment_types or {}).values()):
