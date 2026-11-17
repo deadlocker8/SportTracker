@@ -16,6 +16,7 @@ class Equipment(db.Model):  # type: ignore[name-defined]
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     workout_type = db.Column(db.Enum(WorkoutType))
     name: Mapped[str] = mapped_column(String, nullable=False)
+    is_owned = db.Column(db.Boolean(), nullable=False)
     purchase_date: Mapped[date] = mapped_column(Date, nullable=True)
     is_active = db.Column(db.Boolean(), nullable=False)
     inactive_date: Mapped[date] = mapped_column(Date, nullable=True)
@@ -43,6 +44,7 @@ class Equipment(db.Model):  # type: ignore[name-defined]
             f'user_id: {self.user_id}, '
             f'workout_type: {self.workout_type}, '
             f'name: {self.name}, '
+            f'is_owned: {self.is_owned}, '
             f'purchase_date: {self.purchase_date}, '
             f'is_active: {self.is_active}, '
             f'inactive_date: {self.inactive_date})'
