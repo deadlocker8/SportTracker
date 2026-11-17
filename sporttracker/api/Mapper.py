@@ -154,6 +154,7 @@ MAPPER_EQUIPMENT = Mapper(
         'workout_type': lambda source: source.workout_type.name,
         'equipment_type': lambda source: _get_equipment_type(source),  # type: ignore[arg-type]
         'name': lambda source: source.name,
+        'is_owned': lambda source: source.is_owned,
         'purchase_date': lambda source: (
             source.purchase_date.strftime(DateFormats.DATE_FORMAT_DATE) if source.purchase_date else None
         ),

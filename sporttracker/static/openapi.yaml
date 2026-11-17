@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Sport-Tracker-API
-  version: 2.2.0
+  version: 2.3.0
 servers:
   - url: '/'
 paths:
@@ -802,10 +802,13 @@ components:
         name:
           type: string
           description: Name of the custom field
+        is_owned:
+          type: boolean
+          description: Is this equipment owned by the user or a rental?
         purchase_date:
           type: string
           example: 2026-11-10
-          description: Purchase date in the format YYYY-MM-DD
+          description: Purchase date in the format YYYY-MM-DD. Only available if is_owned is true
         is_active:
           type: boolean
           description: Is this equipment activated?

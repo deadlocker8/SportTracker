@@ -59,7 +59,7 @@ from sporttracker.workout.WorkoutType import WorkoutType
 
 LOGGER = logging.getLogger(Constants.APP_NAME)
 
-API_VERSION = '2.2.0'
+API_VERSION = '2.3.0'
 
 API_BLUEPRINT_NAME = 'api'
 

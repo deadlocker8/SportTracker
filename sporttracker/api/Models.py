@@ -76,6 +76,7 @@ class EquipmentApiModel:
     id: int
     workout_type: str
     equipment_type: str
+    is_owned: bool
     name: str
     purchase_date: str | None
     is_active: bool
