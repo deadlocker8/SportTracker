@@ -124,6 +124,15 @@
                         {{ materialize_icon('gpx/fit file size', 'hard_drive', false) }}
                         {{ materialize_icon('preview images', 'photo') }}
                     {% endcall %}
+
+                    {% call group('equipment form') %}
+                        {{ materialize_icon('name', 'edit', true) }}
+                        {{ materialize_icon('is owned', 'person', true) }}
+                        {{ materialize_icon('purchase date', 'event', true) }}
+                        {{ materialize_icon('is active', 'check') }}
+                        {{ materialize_icon('clothes type', 'stars', true) }}
+                    {% endcall %}
+
                 </div>
 
                 <div class="d-flex flex-column justify-content-between">
