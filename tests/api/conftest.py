@@ -32,6 +32,7 @@ def prepare_test_data(app):
             Clothes(
                 name='Shoes',
                 workout_type=WorkoutType.BIKING,
+                is_owned=True,
                 purchase_date=date(2023, 1, 1),
                 clothes_type=ClothesType.SHOES,
                 is_active=True,
@@ -42,6 +43,7 @@ def prepare_test_data(app):
             Clothes(
                 name='Weights',
                 workout_type=WorkoutType.FITNESS,
+                is_owned=True,
                 purchase_date=date(2023, 1, 1),
                 clothes_type=None,
                 is_active=True,

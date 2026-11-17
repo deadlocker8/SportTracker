@@ -25,6 +25,7 @@ def prepare_test_data(app):
             Clothes(
                 name='My Clothes',
                 workout_type=WorkoutType.FITNESS,
+                is_owned=True,
                 purchase_date=date(2021, 1, 1),
                 clothes_type=ClothesType.TOPS,
                 is_active=True,

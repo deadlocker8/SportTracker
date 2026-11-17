@@ -26,6 +26,7 @@ def prepare_test_data(app):
                 Bike(
                     name='Bike 1',
                     workout_type=WorkoutType.BIKING,
+                    is_owned=True,
                     purchase_date=date(2020, 1, 1),
                     is_active=True,
                     user_id=user.id,
@@ -33,6 +34,7 @@ def prepare_test_data(app):
                 Bike(
                     name='Bike 2',
                     workout_type=WorkoutType.BIKING,
+                    is_owned=True,
                     purchase_date=date(2021, 1, 1),
                     is_active=True,
                     user_id=user.id,
@@ -40,6 +42,7 @@ def prepare_test_data(app):
                 Clothes(
                     name='Clothes 1',
                     workout_type=WorkoutType.BIKING,
+                    is_owned=True,
                     purchase_date=date(2021, 1, 1),
                     clothes_type=ClothesType.TOPS,
                     is_active=True,
@@ -48,6 +51,7 @@ def prepare_test_data(app):
                 CustomEquipment(
                     name='Inactive Equipment',
                     workout_type=WorkoutType.BIKING,
+                    is_owned=True,
                     purchase_date=date(2022, 1, 1),
                     is_active=False,
                     user_id=user.id,
