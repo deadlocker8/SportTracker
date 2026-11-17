@@ -46,6 +46,7 @@ def construct_blueprint(clothesService: ClothesService) -> Blueprint:
             id=equipmentItem.id,
             workout_type=equipmentItem.workout_type,
             name=equipmentItem.name,
+            is_owned=equipmentItem.is_owned,
             purchase_date=equipmentItem.purchase_date,
             is_active=equipmentItem.is_active,
             inactive_date=equipmentItem.inactive_date,

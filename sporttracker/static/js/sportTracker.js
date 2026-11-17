@@ -236,6 +236,15 @@ document.addEventListener('DOMContentLoaded', function()
         });
     }
 
+    let checkboxEquipmentOwned = document.getElementById('equipment-owned-checkbox');
+    if(checkboxEquipmentOwned !== null)
+    {
+        checkboxEquipmentOwned.addEventListener('click', function()
+        {
+            document.getElementById('equipment-owned').classList.toggle('hidden', !checkboxEquipmentOwned.checked);
+        });
+    }
+
     let checkboxEquipmentActive = document.getElementById('equipment-active-checkbox');
     if(checkboxEquipmentActive !== null)
     {

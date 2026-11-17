@@ -13,6 +13,7 @@ class BaseEquipmentModel:
     id: int
     workout_type: WorkoutType
     name: str
+    is_owned: bool
     purchase_date: date
     is_active: bool
     inactive_date: date | None
@@ -21,6 +22,7 @@ class BaseEquipmentModel:
 class BaseEquipmentFormModel(BaseModel):
     name: str
     workout_type: str
+    is_owned: bool | None = None
     purchase_date: str
     is_active: bool | None = None
     inactive_date: str | None = None

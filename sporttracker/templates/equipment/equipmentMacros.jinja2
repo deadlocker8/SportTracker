@@ -53,22 +53,51 @@
     </div>
 {%- endmacro %}
 
-{% macro equipment_form_purchase_date(equipment) -%}
-    <div class="mb-3">
+{% macro equipment_form_is_owned(equipment) -%}
+    <div class="my-4">
         <div class="row">
             <div class="col col-12">
-                <label for="equipment-purchase-date" class="form-label input-field-margin">{{ gettext('Purchase Date') }}</label>
-                <div class="d-flex align-items-center">
-                    <span class="material-symbols-outlined filled me-3">event</span>
-                    <input type="date" class="form-control" id="equipment-purchase-date" name="purchase_date" min="2000-01-01" value="{% if equipment %}{{ equipment.purchase_date }}{% endif %}">
+                <label for="equipment-owned" class="form-label">
+                    <div class="d-flex align-items-center">
+                        <span class="material-symbols-outlined filled me-3">person</span>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                                    {% if equipment %}
+                                        {% if equipment.is_owned %}checked{% endif %}
+                                    {% else %}
+                                        checked
+                                    {% endif %}
+                                   id="equipment-owned-checkbox"
+                                   name="is_owned">
+                            <label class="form-check-label" for="equipment-owned-checkbox">
+                                {{ gettext('Is owned by me') }}
+                            </label>
+                        </div>
+                    </div>
+                </label>
+
+                <div class="{% if equipment and not equipment.is_owned %}hidden{% endif %}" id="equipment-owned">
+                    {{ equipment_form_purchase_date(equipment) }}
                 </div>
             </div>
         </div>
     </div>
 {%- endmacro %}
 
+{% macro equipment_form_purchase_date(equipment) -%}
+    <div class="row">
+        <div class="col col-12">
+            <label for="equipment-purchase-date" class="form-label input-field-margin">{{ gettext('Purchase Date') }}</label>
+            <div class="d-flex align-items-center">
+                <span class="material-symbols-outlined filled me-3">event</span>
+                <input type="date" class="form-control" id="equipment-purchase-date" name="purchase_date" min="2000-01-01" value="{% if equipment %}{{ equipment.purchase_date }}{% endif %}">
+            </div>
+        </div>
+    </div>
+{%- endmacro %}
+
 {% macro equipment_form_is_active(equipment) -%}
-    <div class="mb-3 mt-5">
+    <div class="my-4">
         <div class="row">
             <div class="col col-12">
                 <label for="equipment-active" class="form-label">
@@ -99,7 +128,6 @@
         </div>
     </div>
 {%- endmacro %}
-
 
 {% macro equipment_filter_enum(availableTypes, selectedTypes, title, identifier, isClothesType=false) -%}
     <div class="d-flex align-items-center justify-content-center">

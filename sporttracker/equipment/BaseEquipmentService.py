@@ -27,10 +27,13 @@ class BaseEquipmentService(Generic[TEntity, TForm]):
 
     @classmethod
     def add(cls, form: TForm, user_id: int) -> None:
+        is_owned = bool(form.is_owned)
+
         entity = cls.entity_class(
             workout_type=WorkoutType(form.workout_type),  # type: ignore[call-arg]
             name=form.name,
-            purchase_date=cls._parse_purchase_date(form.purchase_date),
+            is_owned=is_owned,
+            purchase_date=cls._parse_purchase_date(form.purchase_date) if is_owned else None,
             is_active=bool(form.is_active),
             inactive_date=cls._parse_inactive_date(form),
             user_id=user_id,
@@ -45,9 +48,11 @@ class BaseEquipmentService(Generic[TEntity, TForm]):
     def edit(cls, equipment_id: int, form: TForm, user_id: int) -> None:
         entity = cls._get_or_raise(equipment_id, user_id)
 
+        is_owned = bool(form.is_owned)
         entity.workout_type = WorkoutType(form.workout_type)  # type: ignore[call-arg]
         entity.name = form.name
-        entity.purchase_date = cls._parse_purchase_date(form.purchase_date)  # type: ignore[assignment]
+        entity.is_owned = is_owned
+        entity.purchase_date = cls._parse_purchase_date(form.purchase_date) if is_owned else None  # type: ignore[assignment]
         entity.is_active = bool(form.is_active)
         entity.inactive_date = cls._parse_inactive_date(form)  # type: ignore[assignment]
         cls._apply_extra_fields(entity, form)
