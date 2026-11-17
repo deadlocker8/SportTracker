@@ -1,6 +1,7 @@
 # 2.4.0 - (XX.XX.XX)
 - add: equipment: date of purchase is no longer a mandatory input field (#321)
 - add: equipment: it is now possible to mark equipment as owned or not owned (e.g. for rental equipment) (#322)
+- add: search: allow to filter by equipment (#323)
 
 # 2.3.0 - (14.11.26)
 - add: new API version v2.2.0 (#275)

@@ -109,6 +109,29 @@ function createEquipmentSelection(options)
         });
     }
 
+    const selectAllButton = equipmentContainer.querySelector('.equipment-select-all');
+    if(selectAllButton !== null)
+    {
+        selectAllButton.addEventListener('click', function()
+        {
+            setSelection(Array.from(cards).map(function(card)
+            {
+                return card.dataset.equipmentId;
+            }));
+        });
+    }
+
+    const deselectAllButton = equipmentContainer.querySelector('.equipment-deselect-all');
+    if(deselectAllButton !== null)
+    {
+        deselectAllButton.addEventListener('click', function()
+        {
+            clearSelection();
+            updateCards();
+            onSelectionChanged(getSelectedIds());
+        });
+    }
+
     updateCards();
     onSelectionChanged(getSelectedIds());
 

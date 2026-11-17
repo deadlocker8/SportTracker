@@ -66,3 +66,21 @@ class EquipmentSelectionGroupModel:
     is_font_awesome_icon: bool
     items: list[Equipment]
     sub_groups: list[EquipmentSelectionSubGroupModel]
+
+    def get_equipment_ids(self) -> list[int]:
+        equipment_ids = [item.id for item in self.items]
+        for sub_group in self.sub_groups:
+            equipment_ids.extend(item.id for item in sub_group.items)
+        return equipment_ids
+
+
+@dataclass
+class EquipmentSelectionWorkoutTypeGroupModel:
+    workout_type: WorkoutType
+    groups: list[EquipmentSelectionGroupModel]
+
+    def get_equipment_ids(self) -> list[int]:
+        equipment_ids: list[int] = []
+        for group in self.groups:
+            equipment_ids.extend(group.get_equipment_ids())
+        return equipment_ids

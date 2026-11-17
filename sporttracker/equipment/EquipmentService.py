@@ -13,7 +13,11 @@ from sporttracker.equipment.clothes.ClothesService import ClothesService
 from sporttracker.equipment.custom.CustomEquipmentEntity import CustomEquipment
 from sporttracker.equipment.custom.CustomEquipmentService import CustomEquipmentService
 from sporttracker.equipment.EquipmentEntity import Equipment
-from sporttracker.equipment.EquipmentModel import EquipmentSelectionGroupModel, EquipmentSelectionSubGroupModel
+from sporttracker.equipment.EquipmentModel import (
+    EquipmentSelectionGroupModel,
+    EquipmentSelectionSubGroupModel,
+    EquipmentSelectionWorkoutTypeGroupModel,
+)
 from sporttracker.equipment.EquipmentType import EquipmentType
 from sporttracker.workout.WorkoutType import WorkoutType
 
@@ -67,43 +71,65 @@ class EquipmentService:
     def get_selection_groups_by_workout_type(
         workout_type: WorkoutType, user_id: int
     ) -> list[EquipmentSelectionGroupModel]:
-        groups = []
+        return EquipmentService.__create_selection_groups_for_workout_type(
+            workout_type, user_id, include_empty_groups=True
+        )
 
-        if workout_type == WorkoutType.BIKING:
+    @staticmethod
+    def get_selection_groups_for_all_workout_types(user_id: int) -> list[EquipmentSelectionWorkoutTypeGroupModel]:
+        result: list[EquipmentSelectionWorkoutTypeGroupModel] = []
+        for workout_type in WorkoutType:
+            groups = EquipmentService.__create_selection_groups_for_workout_type(workout_type, user_id)
+            result.append(EquipmentSelectionWorkoutTypeGroupModel(workout_type=workout_type, groups=groups))
+
+        return result
+
+    @staticmethod
+    def __create_selection_groups_for_workout_type(
+        workout_type: WorkoutType, user_id: int, include_empty_groups: bool = False
+    ) -> list[EquipmentSelectionGroupModel]:
+        groups: list[EquipmentSelectionGroupModel] = []
+
+        bikes = BikeService.get_all_by_workout_type(workout_type, user_id)
+        if workout_type == WorkoutType.BIKING and (bikes or include_empty_groups):
             groups.append(
                 EquipmentService.__create_selection_group(
                     name=gettext('Bikes'),
                     equipment_class=Bike,
-                    items=BikeService.get_all_by_workout_type(workout_type, user_id),
+                    items=bikes,
                     sub_groups=[],
                 )
             )
 
-        clothes = ClothesService.get_all_by_workout_type(workout_type, user_id)
         clothes_groups = defaultdict(list)
-        for item in clothes:
+        for item in ClothesService.get_all_by_workout_type(workout_type, user_id):
             clothes_groups[item.clothes_type].append(item)
         clothes_groups_sorted = dict(sorted(clothes_groups.items(), key=lambda item: item[0].order))
+        if clothes_groups_sorted or include_empty_groups:
+            groups.append(
+                EquipmentService.__create_selection_group(
+                    name=gettext('Clothes'),
+                    equipment_class=Clothes,
+                    items=[],
+                    sub_groups=[
+                        EquipmentSelectionSubGroupModel(
+                            name=key.get_localized_name(), icon=key.icon_file_name, items=value
+                        )
+                        for key, value in clothes_groups_sorted.items()
+                    ],
+                )
+            )
 
-        groups.append(
-            EquipmentService.__create_selection_group(
-                name=gettext('Clothes'),
-                equipment_class=Clothes,
-                items=[],
-                sub_groups=[
-                    EquipmentSelectionSubGroupModel(name=key.get_localized_name(), icon=key.icon_file_name, items=value)
-                    for key, value in clothes_groups_sorted.items()
-                ],
+        custom_equipment = CustomEquipmentService.get_all_by_workout_type(workout_type, user_id)
+        if custom_equipment or include_empty_groups:
+            groups.append(
+                EquipmentService.__create_selection_group(
+                    name=gettext('Custom'),
+                    equipment_class=CustomEquipment,
+                    items=custom_equipment,
+                    sub_groups=[],
+                )
             )
-        )
-        groups.append(
-            EquipmentService.__create_selection_group(
-                name=gettext('Custom'),
-                equipment_class=CustomEquipment,
-                items=CustomEquipmentService.get_all_by_workout_type(workout_type, user_id),
-                sub_groups=[],
-            )
-        )
 
         return groups
 

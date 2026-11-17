@@ -8,6 +8,8 @@ from sqlalchemy import extract, or_
 
 from sporttracker import Constants
 from sporttracker.db import db
+from sporttracker.equipment.EquipmentEntity import Equipment
+from sporttracker.equipment.EquipmentService import EquipmentService
 from sporttracker.quickFilter.QuickFilterStateEntity import get_quick_filter_state_by_user
 from sporttracker.search.SearchParameters import SearchParameters
 from sporttracker.user.ParticipantEntity import Participant, get_participants
@@ -61,6 +63,22 @@ def construct_blueprint():
             checkedParticipantIds = availableParticipantIds
             participantFilter = None
 
+        equipmentGroupsByWorkoutType = EquipmentService.get_selection_groups_for_all_workout_types(current_user.id)
+        availableEquipmentIds = {
+            equipmentId
+            for workoutTypeGroup in equipmentGroupsByWorkoutType
+            for equipmentId in workoutTypeGroup.get_equipment_ids()
+        }
+
+        isEquipmentFilterActive, rawEquipmentIds = __get_equipment_filter_state()
+        selectedEquipmentIds = [equipmentId for equipmentId in rawEquipmentIds if equipmentId in availableEquipmentIds]
+
+        if isEquipmentFilterActive:
+            equipmentFilter = set(selectedEquipmentIds)
+        else:
+            selectedEquipmentIds = sorted(availableEquipmentIds)
+            equipmentFilter = None
+
         pageNumberValue = __get_int_arg('pageNumber')
         if pageNumberValue is None:
             pageNumberValue = 1
@@ -85,6 +103,12 @@ def construct_blueprint():
                 query = query.filter(~Workout.participants.any())
             else:
                 query = query.filter(Workout.participants.any(Participant.id.in_(participantFilter)))
+
+        if equipmentFilter is not None:
+            if equipmentFilter:
+                query = query.filter(Workout.equipment.any(Equipment.id.in_(equipmentFilter)))
+            else:
+                query = query.filter(~Workout.equipment.any())
 
         if distanceMin is not None or distanceMax is not None:
             distanceQuery = db.select(DistanceWorkout.id)
@@ -133,6 +157,9 @@ def construct_blueprint():
             availableYears=availableYears,
             participants=participants,
             isParticipantFilterActive=isParticipantFilterActive,
+            equipmentGroupsByWorkoutType=equipmentGroupsByWorkoutType,
+            isEquipmentFilterActive=isEquipmentFilterActive,
+            selectedEquipmentIds=selectedEquipmentIds,
             selectedYear=selectedYear,
             selectedMonth=selectedMonth,
             selectedParticipantIds=checkedParticipantIds,  # type: ignore[arg-type]
@@ -184,3 +211,23 @@ def __get_participant_filter_state() -> tuple[bool, list[int]]:
             continue
 
     return isParticipantFilterActive, participantIds
+
+
+def __get_equipment_filter_state() -> tuple[bool, list[int]]:
+    isFormSubmitted = request.args.get('equipmentFilterActive') == '1'
+    isAllEquipmentSelected = request.args.get('allEquipment') == '1'
+    isEquipmentFilterActive = isFormSubmitted and not isAllEquipmentSelected
+
+    equipmentIds = []
+    seenEquipmentIds = set()
+    for item in request.args.getlist('equipment_ids'):
+        try:
+            equipmentId = int(item)
+        except ValueError:
+            continue
+
+        if equipmentId not in seenEquipmentIds:
+            equipmentIds.append(equipmentId)
+            seenEquipmentIds.add(equipmentId)
+
+    return isEquipmentFilterActive, equipmentIds

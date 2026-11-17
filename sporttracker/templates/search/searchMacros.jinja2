@@ -1,4 +1,5 @@
 {% import 'macros.jinja2' as macros with context %}
+{% import 'workout/workoutMacros.jinja2' as workoutMacros with context %}
 
 {% macro searchFilterSectionHeader(icon, title) -%}
     <div class="d-flex align-items-center justify-content-center">
@@ -80,6 +81,40 @@
     </div>
 {%- endmacro %}
 
+{% macro searchFilterEquipment(equipmentGroupsByWorkoutType, selectedEquipmentIds, isEquipmentFilterActive) -%}
+    {{ searchFilterSectionHeader('apparel', gettext('Equipment')) }}
+
+    <div class="d-flex flex-column align-items-start justify-content-center px-1 w-100" id="search-equipment">
+        <input type="hidden" name="equipmentFilterActive" value="1">
+
+        <div class="form-check text-nowrap mb-3">
+            <input class="form-check-input" type="checkbox" id="searchFilterAllEquipment" name="allEquipment" value="1" {% if not isEquipmentFilterActive %}checked{% endif %}>
+            <label class="form-check-label" for="searchFilterAllEquipment">
+                {{ gettext('All equipment') }}
+            </label>
+        </div>
+
+        <div id="search-equipment-hidden-inputs">
+            {% for equipmentId in selectedEquipmentIds %}
+                <input type="hidden" name="equipment_ids" value="{{ equipmentId }}">
+            {% endfor %}
+        </div>
+
+        <div class="d-flex flex-row flex-lg-column align-items-start gap-3">
+            <div class="badge rounded-pill text-bg-secondary d-flex flex-row px-3 lh-lg {% if not isEquipmentFilterActive %}opacity-50{% endif %}" id="search-equipment-selected-container" {% if not isEquipmentFilterActive %}aria-disabled="true"{% endif %}>
+                <div id="search-equipment-selected-count">{{ selectedEquipmentIds | length }}</div>
+                <div class="ms-1">{{ gettext('selected') }}</div>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-sm d-flex align-items-center button-automatically-disabled" data-bs-toggle="modal" data-bs-target="#search-equipment-modal" id="buttonSearchEquipmentSelect" {% if not isEquipmentFilterActive %}disabled{% endif %}>
+                <span class="material-symbols-outlined filled fs-4 me-2">apparel</span>{{ gettext('Select equipment') }}
+            </button>
+        </div>
+
+        {{ workoutMacros.workout_equipment_modal([], selectedEquipment=[], equipmentPresets=[], modalId='search-equipment-modal', showPresets=false, selectedEquipmentIds=selectedEquipmentIds, showInactive=true, workoutTypeGroups=equipmentGroupsByWorkoutType) }}
+    </div>
+{%- endmacro %}
+
 {% macro searchFilterDistance(distanceMin, distanceMax) -%}
     {{ searchFilterSectionHeader('filter_alt', gettext('Distance (in km)')) }}
 
@@ -122,11 +157,10 @@
             {{ searchFilterYearAndMonth(searchParameters.availableYears, searchParameters.get_month_names(), searchParameters.selectedYear, searchParameters.selectedMonth) }}
             <hr class="w-100 my-0"/>
 
-            {{ searchFilterParticipants(
-                searchParameters.participants,
-                searchParameters.selectedParticipantIds,
-                searchParameters.isParticipantFilterActive
-            ) }}
+            {{ searchFilterParticipants(searchParameters.participants, searchParameters.selectedParticipantIds, searchParameters.isParticipantFilterActive) }}
+            <hr class="w-100 my-0"/>
+
+            {{ searchFilterEquipment(searchParameters.equipmentGroupsByWorkoutType, searchParameters.selectedEquipmentIds, searchParameters.isEquipmentFilterActive) }}
             <hr class="w-100 my-0"/>
 
             {{ searchFilterDistance(searchParameters.distanceMin, searchParameters.distanceMax) }}

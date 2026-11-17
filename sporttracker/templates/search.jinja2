@@ -112,5 +112,7 @@
         </div>
 
         {{ macros.scripts() }}
+        <script defer src="{{ url_for('static', filename='js/equipmentCommon.js', v=versionName) }}" type="text/javascript"></script>
+        <script defer src="{{ url_for('static', filename='js/searchEquipment.js', v=versionName) }}" type="text/javascript"></script>
     </body>
 </html>

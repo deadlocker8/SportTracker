@@ -5,6 +5,7 @@ import flask_babel
 from babel.dates import get_month_names as get_babel_month_names
 from flask import url_for
 
+from sporttracker.equipment.EquipmentModel import EquipmentSelectionWorkoutTypeGroupModel
 from sporttracker.user.ParticipantEntity import Participant
 
 
@@ -14,6 +15,9 @@ class SearchParameters:
     availableYears: list[int]
     participants: list[Participant]
     isParticipantFilterActive: bool
+    equipmentGroupsByWorkoutType: list[EquipmentSelectionWorkoutTypeGroupModel]
+    isEquipmentFilterActive: bool
+    selectedEquipmentIds: list[int]
     selectedYear: int | None
     selectedMonth: int | None
     selectedParticipantIds: list[int]
@@ -46,6 +50,12 @@ class SearchParameters:
             if self.isParticipantFilterActive:
                 params['participantsFilterActive'] = '1'
                 params['participants'] = self.selectedParticipantIds
+
+            params['equipmentFilterActive'] = '1'
+            if self.isEquipmentFilterActive:
+                params['equipment_ids'] = self.selectedEquipmentIds
+            else:
+                params['allEquipment'] = '1'
 
         if pageNumber is not None:
             params['pageNumber'] = pageNumber
