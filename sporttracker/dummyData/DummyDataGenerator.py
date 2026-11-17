@@ -169,6 +169,7 @@ class DummyDataGenerator:
                 Bike(
                     name='Gravel Bike',
                     workout_type=WorkoutType.BIKING,
+                    is_owned=True,
                     purchase_date=date(2021, 3, 1),
                     is_active=True,
                     user_id=user.id,
@@ -176,6 +177,7 @@ class DummyDataGenerator:
                 Bike(
                     name='Old Road Bike',
                     workout_type=WorkoutType.BIKING,
+                    is_owned=True,
                     purchase_date=date(2015, 5, 1),
                     is_active=False,
                     inactive_date=date(2023, 9, 1),
@@ -184,6 +186,7 @@ class DummyDataGenerator:
                 Clothes(
                     name='Biking Jersey',
                     workout_type=WorkoutType.BIKING,
+                    is_owned=True,
                     purchase_date=date(2022, 4, 1),
                     clothes_type=ClothesType.TOPS,
                     is_active=True,
@@ -192,6 +195,7 @@ class DummyDataGenerator:
                 Clothes(
                     name='Biking Shoes',
                     workout_type=WorkoutType.BIKING,
+                    is_owned=True,
                     purchase_date=date(2022, 4, 1),
                     clothes_type=ClothesType.SHOES,
                     is_active=True,
@@ -200,6 +204,7 @@ class DummyDataGenerator:
                 CustomEquipment(
                     name='Bike Trailer',
                     workout_type=WorkoutType.BIKING,
+                    is_owned=True,
                     purchase_date=date(2023, 6, 1),
                     is_active=True,
                     user_id=user.id,
@@ -209,6 +214,7 @@ class DummyDataGenerator:
                 Clothes(
                     name='Running Shirt',
                     workout_type=WorkoutType.RUNNING,
+                    is_owned=True,
                     purchase_date=date(2022, 2, 1),
                     clothes_type=ClothesType.TOPS,
                     is_active=True,
@@ -217,6 +223,7 @@ class DummyDataGenerator:
                 Clothes(
                     name='Running Shoes',
                     workout_type=WorkoutType.RUNNING,
+                    is_owned=True,
                     purchase_date=date(2023, 1, 1),
                     clothes_type=ClothesType.SHOES,
                     is_active=True,
@@ -225,6 +232,7 @@ class DummyDataGenerator:
                 CustomEquipment(
                     name='Hydration Vest',
                     workout_type=WorkoutType.RUNNING,
+                    is_owned=True,
                     purchase_date=date(2023, 3, 1),
                     is_active=True,
                     user_id=user.id,
@@ -234,6 +242,7 @@ class DummyDataGenerator:
                 Clothes(
                     name='Hiking Jacket',
                     workout_type=WorkoutType.HIKING,
+                    is_owned=True,
                     purchase_date=date(2021, 10, 1),
                     clothes_type=ClothesType.TOPS,
                     is_active=True,
@@ -242,6 +251,7 @@ class DummyDataGenerator:
                 Clothes(
                     name='Hiking Boots',
                     workout_type=WorkoutType.HIKING,
+                    is_owned=True,
                     purchase_date=date(2021, 10, 1),
                     clothes_type=ClothesType.SHOES,
                     is_active=True,
@@ -250,6 +260,7 @@ class DummyDataGenerator:
                 CustomEquipment(
                     name='Trekking Poles',
                     workout_type=WorkoutType.HIKING,
+                    is_owned=True,
                     purchase_date=date(2022, 5, 1),
                     is_active=True,
                     user_id=user.id,
@@ -259,6 +270,7 @@ class DummyDataGenerator:
                 Clothes(
                     name='Training Shirt',
                     workout_type=WorkoutType.FITNESS,
+                    is_owned=True,
                     purchase_date=date(2022, 8, 1),
                     clothes_type=ClothesType.TOPS,
                     is_active=True,
@@ -267,6 +279,7 @@ class DummyDataGenerator:
                 CustomEquipment(
                     name='Yoga Mat',
                     workout_type=WorkoutType.FITNESS,
+                    is_owned=True,
                     purchase_date=date(2022, 8, 1),
                     is_active=True,
                     user_id=user.id,
@@ -274,6 +287,7 @@ class DummyDataGenerator:
                 CustomEquipment(
                     name='Dumbbells',
                     workout_type=WorkoutType.FITNESS,
+                    is_owned=True,
                     purchase_date=date(2023, 1, 1),
                     is_active=True,
                     user_id=user.id,
