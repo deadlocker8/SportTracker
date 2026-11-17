@@ -1,4 +1,4 @@
-# 2.4.0 - (XX.XX.XX)
+# 2.4.0 - (18.11.26)
 - add: equipment: date of purchase is no longer a mandatory input field (#321)
 - add: equipment: it is now possible to mark equipment as owned or not owned (e.g. for rental equipment) (#322)
 - add: search: allow to filter by equipment (#323)
