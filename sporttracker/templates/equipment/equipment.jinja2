@@ -93,7 +93,13 @@
                                             <ol class="list-group list-group-flush">
                                                 <li class="list-group-item d-flex justify-content-between align-items-start">
                                                     <div>{{ gettext('Date of purchase:') }}</div>
-                                                    <div class="fw-bold">{{ item.equipment.purchase_date | format_date() }}</div>
+                                                    <div class="fw-bold">
+                                                        {% if item.equipment.purchase_date is none %}
+                                                            {{ gettext('unknown') }}
+                                                        {% else %}
+                                                            {{ item.equipment.purchase_date | format_date() }}
+                                                        {% endif %}
+                                                    </div>
                                                 </li>
                                                 <li class="list-group-item d-flex justify-content-between align-items-start">
                                                     <div>{{ gettext('Number of workouts:') }}</div>

@@ -1,3 +1,6 @@
+# 2.4.0 - (XX.XX.XX)
+- add: equipment: date of purchase is no longer a mandatory input field (#321)
+
 # 2.3.0 - (14.11.26)
 - add: new API version v2.2.0 (#275)
 - add: it is now possible to manage equipment such as bikes, clothes and custom equipment. Multiple equipment items can be connected to each workout and the equipment page offers per-item statistics (#275)

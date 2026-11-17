@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-14 13:11+0100\n"
+"POT-Creation-Date: 2026-11-17 21:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1001,6 +1001,10 @@ msgstr ""
 msgid "Date of purchase:"
 msgstr ""
 
+#: ../templates/equipment/equipment.jinja2:96
+msgid "unknown"
+msgstr ""
+
 #: ../templates/equipment/equipment.jinja2:99
 msgid "Number of workouts:"
 msgstr ""
@@ -1014,13 +1018,13 @@ msgid "Total distance:"
 msgstr ""
 
 #: ../templates/equipment/equipment.jinja2:119
-#: ../templates/equipment/equipmentMacros.jinja2:88
-#: ../templates/equipment/equipmentMacros.jinja2:151
+#: ../templates/equipment/equipmentMacros.jinja2:87
+#: ../templates/equipment/equipmentMacros.jinja2:150
 msgid "Active"
 msgstr ""
 
 #: ../templates/equipment/equipment.jinja2:124
-#: ../templates/equipment/equipmentMacros.jinja2:161
+#: ../templates/equipment/equipmentMacros.jinja2:160
 #: ../templates/workout/workoutMacros.jinja2:715
 msgid "Disabled"
 msgstr ""
@@ -1052,16 +1056,16 @@ msgstr ""
 msgid "Purchase Date"
 msgstr ""
 
-#: ../templates/equipment/equipmentMacros.jinja2:95
+#: ../templates/equipment/equipmentMacros.jinja2:94
 msgid "Inactive Since"
 msgstr ""
 
-#: ../templates/equipment/equipmentMacros.jinja2:140
+#: ../templates/equipment/equipmentMacros.jinja2:139
 #: ../templates/plannedTour/plannedToursMacros.jinja2:97
 msgid "Status"
 msgstr ""
 
-#: ../templates/equipment/equipmentMacros.jinja2:173
+#: ../templates/equipment/equipmentMacros.jinja2:172
 #: ../templates/maintenance/maintenances.jinja2:125
 #: ../templates/map/mapMacros.jinja2:262
 #: ../templates/plannedTour/plannedToursMacros.jinja2:260
@@ -1069,7 +1073,7 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
-#: ../templates/equipment/equipmentMacros.jinja2:175
+#: ../templates/equipment/equipmentMacros.jinja2:174
 #: ../templates/maintenance/maintenances.jinja2:127
 #: ../templates/map/mapMacros.jinja2:264
 #: ../templates/plannedTour/plannedToursMacros.jinja2:262
@@ -1077,18 +1081,18 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: ../templates/equipment/equipmentMacros.jinja2:175
+#: ../templates/equipment/equipmentMacros.jinja2:174
 #: ../templates/maintenance/maintenances.jinja2:127
 #: ../templates/map/mapMacros.jinja2:264
 #: ../templates/plannedTour/plannedToursMacros.jinja2:262
 msgid "Applying..."
 msgstr ""
 
-#: ../templates/equipment/equipmentMacros.jinja2:181
+#: ../templates/equipment/equipmentMacros.jinja2:180
 msgid "Equipment Type"
 msgstr ""
 
-#: ../templates/equipment/equipmentMacros.jinja2:184
+#: ../templates/equipment/equipmentMacros.jinja2:183
 msgid "Clothes Type"
 msgstr ""
 
