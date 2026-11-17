@@ -2,6 +2,8 @@
 - add: equipment: date of purchase is no longer a mandatory input field (#321)
 - add: equipment: it is now possible to mark equipment as owned or not owned (e.g. for rental equipment) (#322)
 - add: search: allow to filter by equipment (#323)
+- chore: update dependencies (#314)
+- chore: a new version of GpxToImageRenderer (v1.2.0) is available
 
 # 2.3.0 - (14.11.26)
 - add: new API version v2.2.0 (#275)
